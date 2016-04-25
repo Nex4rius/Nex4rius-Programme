@@ -1,8 +1,8 @@
 --
 --   Configuration file
 --
-RF = false --show energy in RF instead of EU
-autoclose = 30 --in seconds
+RF = false -- show energy in RF instead of EU
+autoclosetime = 30 -- in seconds -- false for no autoclose
 component = require("component")
 sg = component.getPrimary("stargate")
 time = "-"
