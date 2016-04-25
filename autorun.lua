@@ -272,8 +272,6 @@ function eventLoop()
   while running do
     showState()
     e = {pull_event()}
-    print(e)
-    print(e[1])
     if e[1] == nil then
     else
       name = e[1]
