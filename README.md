@@ -1,1 +1,2 @@
-# Stargate-Programm for SGCraft and OpenComputers
+# Stargate-Programm for 
+# SGCraft and OpenComputers
