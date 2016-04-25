@@ -31,7 +31,11 @@ end
 --   Event API compatibility functions
 
 function pull_event()
-  return event.pull(1)
+  if state == "Idle" and energy >= 4000000 then
+    return event.pull()
+  else
+    return event.pull(0.1)
+  end
 end
 
 key_event_name = "key_down"
