@@ -147,7 +147,7 @@ end
 
 function autoclose()
   if autoclosetime == false then
-    showAt(40, 12, "Autoclose:    off)
+    showAt(40, 12, "Autoclose:    off")
   else
     showAt(40, 12, "Autoclose:    " .. autoclosetime .. "s")
     if autoclosetime < activationtime then
