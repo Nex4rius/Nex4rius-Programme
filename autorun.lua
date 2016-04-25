@@ -57,7 +57,7 @@ function iriscontroller()
       sg.sendMessage("IDC Accepted Iris: Offline")
     else
       sg.openIris()
-      os.sleep(5)
+      os.sleep(2)
       sg.sendMessage("IDC Accepted Iris: Open")
     end
     iriscontrol = "off"
@@ -150,7 +150,7 @@ function autoclose()
     showAt(40, 12, "Autoclose:    off")
   else
     showAt(40, 12, "Autoclose:    " .. autoclosetime .. "s")
-    if autoclosetime < activationtime then
+    if (activationtime - os.time()) / sectime > autoclosetime and state == "Connected" then
       sg.disconnect()
     end
   end
@@ -233,7 +233,7 @@ handlers[key_event_name] = function(e)
       if wormhole == "in" then
         if iris == "Offline" then
         else
-          os.sleep(5)
+          os.sleep(2)
           sg.sendMessage("Manual Override: Iris Open")
         end
       end
@@ -326,3 +326,4 @@ messageshow = true
 
 running = true
 main()
+
