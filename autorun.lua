@@ -141,7 +141,19 @@ function showState()
   showAt(40, 9,  "Engaged:      " .. chevrons)
   showAt(40, 10,  "Direction:    " .. direction)
   activetime()
-  showAt(40, 12, "Version:      1.2.10")
+  autoclose()
+  showAt(40, 13, "Version:      1.3.0")
+end
+
+function autoclose()
+  if autoclosetime == false then
+    showAt(40, 12, "Autoclose:    off)
+  else
+    showAt(40, 12, "Autoclose:    " .. autoclosetime .. "s")
+    if autoclosetime < activationtime then
+      sg.disconnect()
+    end
+  end
 end
 
 function showenergy()
