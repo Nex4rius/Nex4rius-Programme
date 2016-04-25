@@ -2,7 +2,7 @@
 --   Configuration file
 --
 RF = false -- show energy in RF instead of EU
-autoclosetime = 30 -- in seconds -- false for no autoclose
+autoclosetime = 60 -- in seconds -- false for no autoclose
 component = require("component")
 sg = component.getPrimary("stargate")
 time = "-"
@@ -19,6 +19,7 @@ iriscontrol = "on"
 codeaccepted = "-"
 energytype = "EU"
 energymultiplicator = 20
+energy = 0
 control = "On"
 send = true
 IDCyes = false
