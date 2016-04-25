@@ -2,12 +2,12 @@
 --  Interactive stargate control program
 --  Shows stargate state and allows dialling
 --  addresses selected from a list
---  automated Iris control
+--  with automated Iris control
 --
 
-dofile("config")
-dofile("compat")
-dofile("addresses")
+dofile("config.lua")
+dofile("compat.lua")
+dofile("addresses.lua")
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
@@ -17,11 +17,10 @@ function showMenu()
   setCursor(1, 1)
   for i, na in pairs(addresses) do
     print(string.format("%d %s", i, na[1]))
-    ok, result = pcall(sg.energyToDial, na[2])
-    if ok then
-      print("  ".. string.format("%.1f", (result*energymultiplicator)/1000).." k")
-    else
+    if sg.energyToDial(na[2]) == nil then
       print("  Error")
+    else
+      print("  ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
     end
   end
   iris = sg.irisState()
@@ -44,6 +43,9 @@ function getIrisState()
 end
 
 function iriscontroller()
+  if ICDyes == true and incode == "Request: Disconnect Stargate" then
+    sg.disconnect()
+  end
   if state == "Dialing" then
     messageshow = true
   end
@@ -55,6 +57,7 @@ function iriscontroller()
       sg.sendMessage("IDC Accepted Iris: Offline")
     else
       sg.openIris()
+      os.sleep(5)
       sg.sendMessage("IDC Accepted Iris: Open")
     end
     iriscontrol = "off"
@@ -113,7 +116,7 @@ function iriscontroller()
   if state == "Idle" then
     activationtime = 0
     entercode = false
-    showAt(28, 3,  "Remote Name:               ")
+    showAt(40, 3,  "Remote Name:               ")
   end
 end
 
@@ -124,28 +127,28 @@ function showState()
   iris = sg.irisState()
   iriscontroller()
   energy = sg.energyAvailable()*energymultiplicator
-  showAt(28, 1,  "Local Addr:   " .. locAddr)
-  showAt(28, 2,  "Remote Addr:  " .. remAddr)
-  showAt(28, 4,  "State:        " .. state)
+  showAt(40, 1,  "Local Addr:   " .. locAddr)
+  showAt(40, 2,  "Remote Addr:  " .. remAddr)
+  showAt(40, 4,  "State:        " .. state)
   showenergy()
-  showAt(28, 6,  "Iris:         " .. iris)
-  showAt(28, 7,  "Iris Control: " .. control)
+  showAt(40, 6,  "Iris:         " .. iris)
+  showAt(40, 7,  "Iris Control: " .. control)
   if IDCyes == true then
-    showAt(28, 8, "IDC:          Accepted")
+    showAt(40, 8, "IDC:          Accepted")
   else
-    showAt(28, 8, "IDC:          " .. incode)
+    showAt(40, 8, "IDC:          " .. incode)
   end
-  showAt(28, 9,  "Engaged:      " .. chevrons)
-  showAt(28, 10,  "Direction:    " .. direction)
+  showAt(40, 9,  "Engaged:      " .. chevrons)
+  showAt(40, 10,  "Direction:    " .. direction)
   activetime()
---  showAt(28, 12, "Version:      1.2.6")
+  showAt(40, 12, "Version:      1.2.8")
 end
 
 function showenergy()
   if energy < 10000000 then
-    showAt(28, 5, "Energy "..energytype..":    " .. string.format("%.1f", energy/1000) .. " k")
+    showAt(40, 5, "Energy "..energytype..":    " .. string.format("%.1f", energy/1000) .. " k")
   else
-    showAt(28, 5, "Energy "..energytype..":    " .. string.format("%.1f", energy/1000000) .. " M")
+    showAt(40, 5, "Energy "..energytype..":    " .. string.format("%.1f", energy/1000000) .. " M")
   end
 end
 
@@ -156,32 +159,20 @@ function activetime()
     end
     time = (activationtime - os.time())/sectime
     if time > 0 then
-      if time < 90 then
-        showAt(28, 11, "Time:         " .. string.format("%.1f", time) .. "s")
-      else
-        showAt(28, 11, "Time:         " .. string.format("%.2f", time/60) .. " min")
-      end
+      showAt(40, 11, "Time:         " .. string.format("%.1f", time) .. "s")
     end
   else
-    showAt(28, 11, "Time:         -")
+    showAt(40, 11, "Time:               ")
   end
 end
 
 function showAt(x, y, s)
   setCursor(x, y)
   write(pad(s, 50))
---  write(string.rep(" ", 20))
---  setCursor(x, y)
---  write(s)
 end
 
 function showMessage(mess)
   showAt(1, screen_height, mess)
---  setCursor(1, screen_height)
---  term.clearLine()
---  if mess then
---    write(mess)
---  end
 end
 
 function showError(mess)
@@ -196,7 +187,7 @@ handlers = {}
 
 function dial(name, addr)
   showMessage(string.format("Dialling %s (%s)", name, addr))
-  showAt(28, 3,  "Remote Name:  " .. name)--string.format("%s", name))
+  showAt(40, 3,  "Remote Name:  " .. name)--string.format("%s", name))
   sg.dial(addr)
 end
 
@@ -219,13 +210,18 @@ handlers[key_event_name] = function(e)
       showMessage("Stargate not Connected")
     end
   elseif c == "d" then
-    sg.disconnect()
+    if state == "Connected" and direction == "Incoming" then
+        sg.sendMessage("Request: Disconnect Stargate")
+    else
+        sg.disconnect()
+    end
   elseif c == "o" then
     if iris == "Offline" then else
       sg.openIris()
       if wormhole == "in" then
         if iris == "Offline" then
         else
+          os.sleep(5)
           sg.sendMessage("Manual Override: Iris Open")
         end
       end
@@ -276,24 +272,29 @@ function eventLoop()
   while running do
     showState()
     e = {pull_event()}
-    name = e[1]
-    f = handlers[name]
-    if f then
-      showMessage("")
-      ok, result = pcall(f, e)
-      if not ok then
-        showError(result)
+    print(e)
+    print(e[1])
+    if e[1] == nil then
+    else
+      name = e[1]
+      f = handlers[name]
+      if f then
+        showMessage("")
+        ok, result = pcall(f, e)
+        if not ok then
+          showError(result)
+        end
       end
-    end
-    if string.sub(e[1],1,3) == "sgM" and direction == "Incoming" and wormhole == "in" then
-      if e[3] == "" then else
-        incode = e[3]
+      if string.sub(e[1],1,3) == "sgM" and direction == "Incoming" and wormhole == "in" then
+        if e[3] == "" then else
+          incode = e[3]
+          messageshow = true
+        end
+      end
+      if string.sub(e[1],1,3) == "sgM" and direction == "Outgoing" then
+        codeaccepted = e[3]
         messageshow = true
       end
-    end
-    if string.sub(e[1],1,3) == "sgM" and direction == "Outgoing" then
-      codeaccepted = e[3]
-      messageshow = true
     end
   end
 end
@@ -310,7 +311,7 @@ if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
   sg.openIris()
 end
 
-showAt(28, 3,  "Remote Name:")
+showAt(40, 3,  "Remote Name:")
 messageshow = true
 
 running = true
