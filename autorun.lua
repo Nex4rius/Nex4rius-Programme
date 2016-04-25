@@ -142,7 +142,7 @@ function showState()
   showAt(40, 10,  "Direction:    " .. direction)
   activetime()
   autoclose()
-  showAt(40, 13, "Version:      1.3.0")
+--  showAt(40, 13, "Version:      1.3.1")
 end
 
 function autoclose()
