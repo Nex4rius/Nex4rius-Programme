@@ -31,7 +31,7 @@ end
 --   Event API compatibility functions
 
 function pull_event()
-  return event.pull()
+  return event.pull(1)
 end
 
 key_event_name = "key_down"
