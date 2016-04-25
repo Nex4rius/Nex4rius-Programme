@@ -43,7 +43,7 @@ function getIrisState()
 end
 
 function iriscontroller()
-  if incode == "Request: Disconnect Stargate" then
+  if codeaccepted == "Request: Disconnect Stargate" then
     sg.disconnect()
   end
   if state == "Dialing" then
@@ -141,7 +141,7 @@ function showState()
   showAt(40, 9,  "Engaged:      " .. chevrons)
   showAt(40, 10,  "Direction:    " .. direction)
   activetime()
-  showAt(40, 12, "Version:      1.2.9")
+  showAt(40, 12, "Version:      1.2.10")
 end
 
 function showenergy()
