@@ -31,9 +31,10 @@ end
 --   Event API compatibility functions
 
 function pull_event()
-  if state == "Idle" and energy >= 4000000 then
+  if state == "Idle" and checkEnergy == energy then
     return event.pull()
   else
+    checkEnergy = energy
     return event.pull(0.1)
   end
 end
