@@ -16,6 +16,14 @@ function try(func, ...)
   end
 end
 
+function check(...)
+  values = {...}
+  if values[1] == nil then
+    error(values[2], 0)
+  end
+  return ...
+end
+
 --   Terminal API compatibility functions
 
 screen_width, screen_height = gpu.getResolution()
