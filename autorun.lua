@@ -164,7 +164,7 @@ function showState()
   autoclose()
   neueZeile(1)
   if debug == true then
-    showAt(40, zeile, "Version:      1.3.3")
+    showAt(40, zeile, "Version:      1.3.4")
     neueZeile(1)
   end
   showControls()
@@ -256,7 +256,7 @@ handlers = {}
 function dial(name, addr)
   showMessage(string.format("Dialling %s (%s)", name, addr))
   remoteName = name
-  sg.dial(addr)
+  check(sg.dial(addr))
 end
 
 handlers[key_event_name] = function(e)
