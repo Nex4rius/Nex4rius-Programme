@@ -23,6 +23,7 @@ energy = 0
 control = "On"
 send = true
 IDCyes = false
+seite = 1
 
 if RF == true then
   energytpye = "RF"
