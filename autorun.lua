@@ -31,8 +31,8 @@ function showMenu()
       else
         print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
       end
-      maxseiten = i
     end
+    maxseiten = i / 9
   end
   iris = sg.irisState()
 end
@@ -108,7 +108,7 @@ function iriscontroller()
   end
   if codeaccepted == "-" or codeaccepted == nil then
   elseif messageshow == true then
-    gpu.setForeground(0x555555)
+    gpu.setForeground(0xFF0000)
     showMessage("Message received: "..codeaccepted)
     gpu.setForeground(0xFFFFFF)
     messageshow = false
@@ -118,7 +118,7 @@ function iriscontroller()
   if state == "Idle" then
     activationtime = 0
     entercode = false
-    showAt(40, 3,  "Remote Name:               ")
+    remoteName = ""
   end
 end
 
@@ -137,7 +137,9 @@ function showState()
   showAt(40, zeile,  "Local Addr:   " .. locAddr)
   neueZeile(1)
   showAt(40, zeile,  "Remote Addr:  " .. remAddr)
-  neueZeile(2)
+  neueZeile(1)
+  showAt(40, zeile,  "Remote Name:  " .. remoteName)
+  neueZeile(1)
   showAt(40, zeile,  "State:        " .. state)
   neueZeile(1)
   showenergy()
@@ -145,6 +147,7 @@ function showState()
   showAt(40, zeile,  "Iris:         " .. iris)
   neueZeile(1)
   showAt(40, zeile,  "Iris Control: " .. control)
+  neueZeile(1)
   if IDCyes == true then
     showAt(40, zeile, "IDC:          Accepted")
     neueZeile(1)
@@ -153,7 +156,7 @@ function showState()
     neueZeile(1)
   end
   showAt(40, zeile,  "Engaged:      " .. chevrons)
-  neueZeile()
+  neueZeile(1)
   showAt(40, zeile,  "Direction:    " .. direction)
   neueZeile(1)
   activetime()
@@ -161,7 +164,7 @@ function showState()
   autoclose()
   neueZeile(1)
   if debug == true then
-    showAt(40, zeile, "Version:      1.3.2")
+    showAt(40, zeile, "Version:      1.3.3")
     neueZeile(1)
   end
   showControls()
@@ -185,7 +188,7 @@ function showControls()
   end
   showAt(40, zeile, "E Enter IDC")
   neueZeile(1)
-  if maxseiten > seite then
+  if maxseiten > seite + 1 then
     showAt(40, zeile, "→ Next Page")
     neueZeile(1)
   end
@@ -252,7 +255,7 @@ handlers = {}
 
 function dial(name, addr)
   showMessage(string.format("Dialling %s (%s)", name, addr))
-  showAt(40, 3,  "Remote Name:  " .. name)--string.format("%s", name))
+  remoteName = name
   sg.dial(addr)
 end
 
@@ -325,6 +328,19 @@ handlers[key_event_name] = function(e)
         control = "On"
       end
     end
+  elseif e[3] == 0 and e[4] == 203 then
+    if seite == 0 then
+    else
+      seite = seite - 1
+      term.clear()
+      showMenu()
+    end
+  elseif e[3] == 0 and e[4] == 205 then
+    if seite + 1 < maxseiten then
+      seite = seite + 1
+      term.clear()
+      showMenu()
+    end
   end
 end
 
@@ -376,7 +392,6 @@ if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
   sg.openIris()
 end
 
-showAt(40, 3,  "Remote Name:")
 messageshow = true
 
 running = true
