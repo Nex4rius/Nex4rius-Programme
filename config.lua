@@ -23,6 +23,11 @@ energy = 0
 control = "On"
 send = true
 IDCyes = false
+seite = 0
+maxseiten = 0
+zeile = 1
+remoteName = ""
+checkEnergy = 0
 
 if RF == true then
   energytpye = "RF"
