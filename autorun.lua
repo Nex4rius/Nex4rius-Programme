@@ -122,8 +122,8 @@ function iriscontroller()
   end
 end
 
-function neueZeile()
-  zeile = zeile + 1
+function neueZeile(b)
+  zeile = zeile + b
 end
 
 function showState()
@@ -135,64 +135,63 @@ function showState()
   energy = sg.energyAvailable()*energymultiplicator
   zeile = 1
   showAt(40, zeile,  "Local Addr:   " .. locAddr)
-  neueZeile()
+  neueZeile(1)
   showAt(40, zeile,  "Remote Addr:  " .. remAddr)
-  neueZeile()
-  neueZeile()
+  neueZeile(2)
   showAt(40, zeile,  "State:        " .. state)
-  neueZeile()
+  neueZeile(1)
   showenergy()
-  neueZeile()
+  neueZeile(1)
   showAt(40, zeile,  "Iris:         " .. iris)
-  neueZeile()
+  neueZeile(1)
   showAt(40, zeile,  "Iris Control: " .. control)
   if IDCyes == true then
     showAt(40, zeile, "IDC:          Accepted")
-    neueZeile()
+    neueZeile(1)
   else
     showAt(40, zeile, "IDC:          " .. incode)
-    neueZeile()
+    neueZeile(1)
   end
   showAt(40, zeile,  "Engaged:      " .. chevrons)
   neueZeile()
   showAt(40, zeile,  "Direction:    " .. direction)
-  neueZeile()
+  neueZeile(1)
   activetime()
-  neueZeile()
+  neueZeile(1)
   autoclose()
-  neueZeile()
+  neueZeile(1)
   if debug == true then
     showAt(40, zeile, "Version:      1.3.2")
-    neueZeile()
+    neueZeile(1)
   end
   showControls()
 end 
 
 function showControls()
-  zeile = zeile + 3
+  neueZeile(3)
   showAt(40, zeile, "Controls")
-  neueZeile()
+  neueZeile(1)
   showAt(40, zeile, "D Disconnect")
-  neueZeile()
+  neueZeile(1)
   if iris == "Offline" then
     control = "Off"
   else
     showAt(40, zeile, "O Open Iris")
-    neueZeile()
+    neueZeile(1)
     showAt(40, zeile, "C Close Iris")
-    neueZeile()
+    neueZeile(1)
     showAt(40, zeile, "I Iris Control On/Off")
-    neueZeile()
+    neueZeile(1)
   end
   showAt(40, zeile, "E Enter IDC")
-  neueZeile()
+  neueZeile(1)
   if maxseiten > seite then
     showAt(40, zeile, "→ Next Page")
-    neueZeile()
+    neueZeile(1)
   end
   if seite >= 1 then
     showAt(40, zeile, "← Previous Page")
-    neueZeile()
+    neueZeile(1)
   end
   if debug == true then
     showAt(40, zeile, "Q Quit")
