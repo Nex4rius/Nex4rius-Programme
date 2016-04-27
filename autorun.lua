@@ -3,11 +3,16 @@
 --  Shows stargate state and allows dialling
 --  addresses selected from a list
 --  with automated Iris control
+--  by DarknessShadow
 --
 
 dofile("config.lua")
 dofile("compat.lua")
 dofile("addresses.lua")
+
+debug = false
+
+gpu.setBackground(0x333333)
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
@@ -15,26 +20,21 @@ end
 
 function showMenu()
   setCursor(1, 1)
+  print("Address Page " .. seite + 1)
   for i, na in pairs(addresses) do
-    print(string.format("%d %s", i, na[1]))
-    if sg.energyToDial(na[2]) == nil then
-      print("  Error")
-    else
-      print("  ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
+    if i >= 1 + seite * 9 and i <= 9 + seite * 9 then
+      print(i - seite * 9 .. " " .. na[1])
+      if sg.energyToDial(na[2]) == nil then
+        gpu.setForeground(0xFF0000)
+        print("   <Error>")
+        gpu.setForeground(0xFFFFFF)
+      else
+        print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
+      end
+      maxseiten = i
     end
   end
   iris = sg.irisState()
-  print("")
-  print("D Disconnect")
-  if iris == "Offline" then
-    control = "Off"
-  else
-    print("O Open Iris")
-    print("C Close Iris")
-    print("I Iris Control On/Off")
-  end
-  print("E Enter IDC")
---  print("Q Quit")
 end
 
 function getIrisState()
@@ -108,7 +108,9 @@ function iriscontroller()
   end
   if codeaccepted == "-" or codeaccepted == nil then
   elseif messageshow == true then
+    gpu.setForeground(0x555555)
     showMessage("Message received: "..codeaccepted)
+    gpu.setForeground(0xFFFFFF)
     messageshow = false
     incode = "-"
     codeaccepted = "-"
@@ -120,6 +122,10 @@ function iriscontroller()
   end
 end
 
+function neueZeile()
+  zeile = zeile + 1
+end
+
 function showState()
   locAddr = sg.localAddress()
   remAddr = sg.remoteAddress()
@@ -127,29 +133,77 @@ function showState()
   iris = sg.irisState()
   iriscontroller()
   energy = sg.energyAvailable()*energymultiplicator
-  showAt(40, 1,  "Local Addr:   " .. locAddr)
-  showAt(40, 2,  "Remote Addr:  " .. remAddr)
-  showAt(40, 4,  "State:        " .. state)
+  zeile = 1
+  showAt(40, zeile,  "Local Addr:   " .. locAddr)
+  neueZeile()
+  showAt(40, zeile,  "Remote Addr:  " .. remAddr)
+  neueZeile()
+  neueZeile()
+  showAt(40, zeile,  "State:        " .. state)
+  neueZeile()
   showenergy()
-  showAt(40, 6,  "Iris:         " .. iris)
-  showAt(40, 7,  "Iris Control: " .. control)
+  neueZeile()
+  showAt(40, zeile,  "Iris:         " .. iris)
+  neueZeile()
+  showAt(40, zeile,  "Iris Control: " .. control)
   if IDCyes == true then
-    showAt(40, 8, "IDC:          Accepted")
+    showAt(40, zeile, "IDC:          Accepted")
+    neueZeile()
   else
-    showAt(40, 8, "IDC:          " .. incode)
+    showAt(40, zeile, "IDC:          " .. incode)
+    neueZeile()
   end
-  showAt(40, 9,  "Engaged:      " .. chevrons)
-  showAt(40, 10,  "Direction:    " .. direction)
+  showAt(40, zeile,  "Engaged:      " .. chevrons)
+  neueZeile()
+  showAt(40, zeile,  "Direction:    " .. direction)
+  neueZeile()
   activetime()
+  neueZeile()
   autoclose()
---  showAt(40, 13, "Version:      1.3.1")
+  neueZeile()
+  if debug == true then
+    showAt(40, zeile, "Version:      1.3.2")
+    neueZeile()
+  end
+  showControls()
+end 
+
+function showControls()
+  zeile = zeile + 3
+  showAt(40, zeile, "Controls")
+  neueZeile()
+  showAt(40, zeile, "D Disconnect")
+  neueZeile()
+  if iris == "Offline" then
+    control = "Off"
+  else
+    showAt(40, zeile, "O Open Iris")
+    neueZeile()
+    showAt(40, zeile, "C Close Iris")
+    neueZeile()
+    showAt(40, zeile, "I Iris Control On/Off")
+    neueZeile()
+  end
+  showAt(40, zeile, "E Enter IDC")
+  neueZeile()
+  if maxseiten > seite then
+    showAt(40, zeile, "→ Next Page")
+    neueZeile()
+  end
+  if seite >= 1 then
+    showAt(40, zeile, "← Previous Page")
+    neueZeile()
+  end
+  if debug == true then
+    showAt(40, zeile, "Q Quit")
+  end
 end
 
 function autoclose()
   if autoclosetime == false then
-    showAt(40, 12, "Autoclose:    off")
+    showAt(40, zeile, "Autoclose:    off")
   else
-    showAt(40, 12, "Autoclose:    " .. autoclosetime .. "s")
+    showAt(40, zeile, "Autoclose:    " .. autoclosetime .. "s")
     if (activationtime - os.time()) / sectime > autoclosetime and state == "Connected" then
       sg.disconnect()
     end
@@ -158,9 +212,9 @@ end
 
 function showenergy()
   if energy < 10000000 then
-    showAt(40, 5, "Energy "..energytype..":    " .. string.format("%.1f", energy/1000) .. " k")
+    showAt(40, zeile, "Energy "..energytype..":    " .. string.format("%.1f", energy/1000) .. " k")
   else
-    showAt(40, 5, "Energy "..energytype..":    " .. string.format("%.1f", energy/1000000) .. " M")
+    showAt(40, zeile, "Energy "..energytype..":    " .. string.format("%.1f", energy/1000000) .. " M")
   end
 end
 
@@ -171,10 +225,10 @@ function activetime()
     end
     time = (activationtime - os.time())/sectime
     if time > 0 then
-      showAt(40, 11, "Time:         " .. string.format("%.1f", time) .. "s")
+      showAt(40, zeile, "Time:         " .. string.format("%.1f", time) .. "s")
     end
   else
-    showAt(40, 11, "Time:               ")
+    showAt(40, zeile, "Time:               ")
   end
 end
 
@@ -253,6 +307,7 @@ handlers[key_event_name] = function(e)
   elseif c == "q" then
     running = false
   elseif c >= "1" and c <= "9" then
+    c = c + seite * 9
     na = addresses[tonumber(c)]
     iriscontrol = "off"
     wormhole = "out"
@@ -313,6 +368,7 @@ function main()
   term.clear()
   showMenu()
   eventLoop()
+  gpu.setBackground(0x00000)
   term.clear()
   setCursor(1, 1)
 end
@@ -326,4 +382,3 @@ messageshow = true
 
 running = true
 main()
-
