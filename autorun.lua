@@ -127,6 +127,7 @@ function neueZeile(b)
 end
 
 function showState()
+  gpu.setBackground(0x333333)
   locAddr = sg.localAddress()
   remAddr = sg.remoteAddress()
   state, chevrons, direction = sg.stargateState()
@@ -146,8 +147,11 @@ function showState()
   neueZeile(1)
   showAt(40, zeile,  "Iris:         " .. iris)
   neueZeile(1)
-  showAt(40, zeile,  "Iris Control: " .. control)
-  neueZeile(1)
+  if iris == "Offline" then
+  else
+    showAt(40, zeile,  "Iris Control: " .. control)
+    neueZeile(1)
+  end
   if IDCyes == true then
     showAt(40, zeile, "IDC:          Accepted")
     neueZeile(1)
@@ -164,7 +168,7 @@ function showState()
   autoclose()
   neueZeile(1)
   if debug == true then
-    showAt(40, zeile, "Version:      1.3.4")
+    showAt(40, zeile, "Version:      1.3.5")
     neueZeile(1)
   end
   showControls()
@@ -230,13 +234,17 @@ function activetime()
       showAt(40, zeile, "Time:         " .. string.format("%.1f", time) .. "s")
     end
   else
-    showAt(40, zeile, "Time:               ")
+    showAt(40, zeile, "Time:")
   end
 end
 
-function showAt(x, y, s)
+function showAt(x, y, s, h)
   setCursor(x, y)
-  write(pad(s, 50))
+  if h == nil then
+    write(pad(s, 50))
+  else
+    write(pad(s, 1))
+  end
 end
 
 function showMessage(mess)
