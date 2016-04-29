@@ -7,6 +7,7 @@
 --  change it to whatever you want
 --  for no IDC set it to "" (Iris will never open automatically)
 --
+
 IDC = ""
 
 addresses = {
