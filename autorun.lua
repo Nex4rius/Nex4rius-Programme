@@ -81,6 +81,7 @@ function iriscontroller()
     activationtime = 0
     entercode = false
     showidc = ""
+    AddNewAddress = false
   end
   if state == "Idle" and control == "On" then
     iriscontrol = "on"
@@ -128,6 +129,36 @@ function neueZeile(b)
   zeile = zeile + b
 end
 
+function newAddress(g)
+  if AddNewAddress == true then
+    f = io.open ("addresses.lua", "a")
+    f:seek ("end", -1)
+    f:write('  {"' .. g .. '", "' .. g .. '", ""},\n}')
+    f:close ()
+    AddNewAddress = false
+    dofile("addresses.lua")
+    showMenu()
+  end
+end
+
+function destinationName()
+  if remoteName == "" and state == "Dialling" and wormhole == "in" then
+    for j, na in pairs(addresses) do
+      if remAddr == na[2] then
+        if na[1] == na[2] then
+          remoteName = "Unknown"
+        else
+          remoteName = na[1]
+          break
+        end
+      end
+    end
+    if remoteName == "" then
+      newAddress(remAddr)
+    end
+  end
+end
+
 function getAddress(A)
   if A == "" or A == nil then
     return ""
@@ -138,13 +169,15 @@ end
 
 function showState()
   gpu.setBackground(0x333333)
+  locAddr = getAddress(sg.localAddress())
   remAddr = getAddress(sg.remoteAddress())
+  destinationName()
   state, chevrons, direction = sg.stargateState()
   iris = sg.irisState()
   iriscontroller()
   energy = sg.energyAvailable()*energymultiplicator
   zeile = 1
-  showAt(40, zeile,  "Local Address:    " .. getAddress(sg.localAddress()))
+  showAt(40, zeile,  "Local Address:    " .. locAddr)
   neueZeile(1)
   showAt(40, zeile,  "Destination Addr: " .. remAddr)
   neueZeile(1)
@@ -177,7 +210,7 @@ function showState()
   autoclose()
   neueZeile(1)
   if debug == true then
-    showAt(40, zeile, "Version:          1.3.7")
+    showAt(40, zeile, "Version:          1.3.8")
     neueZeile(1)
   end
   showControls()
