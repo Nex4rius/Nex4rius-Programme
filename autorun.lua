@@ -43,9 +43,6 @@ function getIrisState()
 end
 
 function iriscontroller()
-  if codeaccepted == "Request: Disconnect Stargate" then
-    sg.disconnect()
-  end
   if state == "Dialing" then
     messageshow = true
   end
@@ -111,6 +108,11 @@ function iriscontroller()
     gpu.setForeground(0xFF0000)
     showMessage("Message received: "..codeaccepted)
     gpu.setForeground(0xFFFFFF)
+    if codeaccepted == "Request: Disconnect Stargate" then
+      os.sleep(1)
+      sg.disconnect()
+      os.sleep(1)
+    end
     messageshow = false
     incode = "-"
     codeaccepted = "-"
@@ -168,7 +170,7 @@ function showState()
   autoclose()
   neueZeile(1)
   if debug == true then
-    showAt(40, zeile, "Version:      1.3.5")
+    showAt(40, zeile, "Version:      1.3.6")
     neueZeile(1)
   end
   showControls()
@@ -207,7 +209,7 @@ end
 
 function autoclose()
   if autoclosetime == false then
-    showAt(40, zeile, "Autoclose:    off")
+    showAt(40, zeile, "Autoclose:    Off")
   else
     showAt(40, zeile, "Autoclose:    " .. autoclosetime .. "s")
     if (activationtime - os.time()) / sectime > autoclosetime and state == "Connected" then
@@ -341,12 +343,14 @@ handlers[key_event_name] = function(e)
     else
       seite = seite - 1
       term.clear()
+      showState()
       showMenu()
     end
   elseif e[3] == 0 and e[4] == 205 then
     if seite + 1 < maxseiten then
       seite = seite + 1
       term.clear()
+      showState()
       showMenu()
     end
   end
