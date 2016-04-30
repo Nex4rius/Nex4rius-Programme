@@ -128,49 +128,56 @@ function neueZeile(b)
   zeile = zeile + b
 end
 
+function getAddress(A)
+  if A == "" or A == nil then
+    return ""
+  else
+    return string.sub(A, 1, 4) .. "-" .. string.sub(A, 5, 7) .. "-" .. string.sub(A, 8, 9)
+  end
+end
+
 function showState()
   gpu.setBackground(0x333333)
-  locAddr = sg.localAddress()
-  remAddr = sg.remoteAddress()
+  remAddr = getAddress(sg.remoteAddress())
   state, chevrons, direction = sg.stargateState()
   iris = sg.irisState()
   iriscontroller()
   energy = sg.energyAvailable()*energymultiplicator
   zeile = 1
-  showAt(40, zeile,  "Local Addr:   " .. locAddr)
+  showAt(40, zeile,  "Local Address:    " .. getAddress(sg.localAddress()))
   neueZeile(1)
-  showAt(40, zeile,  "Remote Addr:  " .. remAddr)
+  showAt(40, zeile,  "Destination Addr: " .. remAddr)
   neueZeile(1)
-  showAt(40, zeile,  "Remote Name:  " .. remoteName)
+  showAt(40, zeile,  "Destination Name: " .. remoteName)
   neueZeile(1)
-  showAt(40, zeile,  "State:        " .. state)
+  showAt(40, zeile,  "State:            " .. state)
   neueZeile(1)
   showenergy()
   neueZeile(1)
-  showAt(40, zeile,  "Iris:         " .. iris)
+  showAt(40, zeile,  "Iris:             " .. iris)
   neueZeile(1)
   if iris == "Offline" then
   else
-    showAt(40, zeile,  "Iris Control: " .. control)
+    showAt(40, zeile,  "Iris Control:     " .. control)
     neueZeile(1)
   end
   if IDCyes == true then
-    showAt(40, zeile, "IDC:          Accepted")
+    showAt(40, zeile, "IDC:              Accepted")
     neueZeile(1)
   else
-    showAt(40, zeile, "IDC:          " .. incode)
+    showAt(40, zeile, "IDC:              " .. incode)
     neueZeile(1)
   end
-  showAt(40, zeile,  "Engaged:      " .. chevrons)
+  showAt(40, zeile,  "Engaged:          " .. chevrons)
   neueZeile(1)
-  showAt(40, zeile,  "Direction:    " .. direction)
+  showAt(40, zeile,  "Direction:        " .. direction)
   neueZeile(1)
   activetime()
   neueZeile(1)
   autoclose()
   neueZeile(1)
   if debug == true then
-    showAt(40, zeile, "Version:      1.3.6")
+    showAt(40, zeile, "Version:          1.3.7")
     neueZeile(1)
   end
   showControls()
@@ -209,9 +216,9 @@ end
 
 function autoclose()
   if autoclosetime == false then
-    showAt(40, zeile, "Autoclose:    Off")
+    showAt(40, zeile, "Autoclose:        Off")
   else
-    showAt(40, zeile, "Autoclose:    " .. autoclosetime .. "s")
+    showAt(40, zeile, "Autoclose:        " .. autoclosetime .. "s")
     if (activationtime - os.time()) / sectime > autoclosetime and state == "Connected" then
       sg.disconnect()
     end
@@ -220,9 +227,9 @@ end
 
 function showenergy()
   if energy < 10000000 then
-    showAt(40, zeile, "Energy "..energytype..":    " .. string.format("%.1f", energy/1000) .. " k")
+    showAt(40, zeile, "Energy "..energytype..":        " .. string.format("%.1f", energy/1000) .. " k")
   else
-    showAt(40, zeile, "Energy "..energytype..":    " .. string.format("%.1f", energy/1000000) .. " M")
+    showAt(40, zeile, "Energy "..energytype..":        " .. string.format("%.1f", energy/1000000) .. " M")
   end
 end
 
@@ -233,7 +240,7 @@ function activetime()
     end
     time = (activationtime - os.time())/sectime
     if time > 0 then
-      showAt(40, zeile, "Time:         " .. string.format("%.1f", time) .. "s")
+      showAt(40, zeile, "Time:             " .. string.format("%.1f", time) .. "s")
     end
   else
     showAt(40, zeile, "Time:")
