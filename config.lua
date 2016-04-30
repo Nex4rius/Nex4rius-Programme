@@ -28,6 +28,7 @@ maxseiten = 0
 zeile = 1
 remoteName = ""
 checkEnergy = 0
+AddNewAddress = true
 
 if RF == true then
   energytpye = "RF"
