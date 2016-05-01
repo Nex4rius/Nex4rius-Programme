@@ -3,7 +3,6 @@
 --
 component = require("component")
 sg = component.getPrimary("stargate")
-r = component.getPrimary("redstone")
 time = "-"
 incode = "-"
 wormhole = "in"
@@ -28,22 +27,27 @@ zeile = 1
 remoteName = ""
 checkEnergy = 0
 AddNewAddress = true
-white = 0
-orange = 1
-magenta = 2
-lightblue = 3
-yellow = 4
-lime = 5
-pink = 6
-gray = 7
-silver = 8
-cyan = 9
-purple = 10
-blue = 11
-brown = 12
-green = 13
-red = 14
-black = 15
+if component.isAvailable("redstone") then
+  r = component.getPrimary("redstone")
+  white = 0
+  orange = 1
+  magenta = 2
+  lightblue = 3
+  yellow = 4
+  lime = 5
+  pink = 6
+  gray = 7
+  silver = 8
+  cyan = 9
+  purple = 10
+  blue = 11
+  brown = 12
+  green = 13
+  red = 14
+  black = 15
+else
+  r = nil
+end
 
 if RF == true then
   energytpye = "RF"
