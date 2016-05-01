@@ -45,6 +45,9 @@ if component.isAvailable("redstone") then
   green = 13
   red = 14
   black = 15
+  for farbe = 0, 15 do
+    redstoneControl(farbe, false)
+  end
 else
   r = nil
 end
