@@ -51,6 +51,7 @@ if component.isAvailable("redstone") then
 else
   r = nil
 end
+redstoneReset = true
 
 if RF == true then
   energytpye = "RF"
