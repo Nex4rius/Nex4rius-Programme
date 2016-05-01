@@ -93,7 +93,7 @@ function iriscontroller()
     entercode = false
     showidc = ""
     AddNewAddress = false
-    redstoneReset == true
+    redstoneReset = true
   end
   if state == "Idle" and control == "On" then
     iriscontrol = "on"
