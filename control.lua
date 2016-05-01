@@ -204,7 +204,8 @@ end
 
 function changeRedstone()
   if r == nil then
-  elseif state == "Idle" then
+  else
+    if state == "Idle" then
     else
       redstoneControl(white, true)
       if direction == "Incoming" then
