@@ -14,5 +14,4 @@ IDC = ""
 
 addresses = {
 --{"Name", "Address", "Iris Code"},
-  {"Test", "ABCD-EFG-HI", ""},
 }
