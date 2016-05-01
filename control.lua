@@ -37,6 +37,17 @@ function showMenu()
   iris = sg.irisState()
 end
 
+function redstoneControl(farbe, zustand)
+  if r == nil then
+  else
+    if zustand == true then
+      r.setBundledOutput(0, farbe, 255)
+    elseif zustand == false then
+      r.setBundledOutput(0, farbe, 0)
+    end
+  end
+end
+
 function getIrisState()
   ok, result = pcall(sg.irisState)
   return result
@@ -82,6 +93,7 @@ function iriscontroller()
     entercode = false
     showidc = ""
     AddNewAddress = false
+    redstoneReset = true
   end
   if state == "Idle" and control == "On" then
     iriscontrol = "on"
@@ -131,8 +143,17 @@ end
 
 function newAddress(g)
   if AddNewAddress == true then
+    f = io.open ("addresses.lua", "r")
+    readAddresses = f:read(10000)
+    AdressesLength = string.len(readAddresses)
+    if string.sub(readAddresses, AdressesLength, AdressesLength) == " " then
+      zurueck = -2
+    else
+      zurueck = -1
+    end
+    f:close ()
     f = io.open ("addresses.lua", "a")
-    f:seek ("end", -1)
+    f:seek ("end", zurueck)
     f:write('  {"' .. g .. '", "' .. g .. '", ""},\n}')
     f:close ()
     AddNewAddress = false
@@ -167,12 +188,59 @@ function getAddress(A)
   end
 end
 
+function wormholeDirection()
+  if direction == "Outgoing" then
+    wormhole = "out"
+  end
+  if wormhole == "out" and state == "Closing" then
+    direction = "Outgoing"
+  end
+end
+
+function changeRedstone()
+  if r == nil then
+  else
+    if state == "Idle" and redstoneReset == true then
+      redstoneControl(white, false)
+      redstoneControl(red, false)
+      redstoneControl(yellow, false)
+      redstoneControl(black, false)
+      redstonereset = false
+    else
+      redstoneControl(white, true)
+      if direction == "Incoming" then
+        redstoneControl(red, true)
+      end
+      if iris == "Closed" then
+        redstoneControl(yellow, true)
+      else
+        redstoneControl(yellow, false)
+      end
+      if IDCyes == true then
+        redstoneControl(black, true)
+      end
+    end
+  end
+end
+
+function displayRedstone()
+  term.clear()
+  print("white -> state not Idle")
+  print("red -> incoming")
+  print("yellow -> iris = closed")
+  print("black -> idc accepted")
+  os.sleep(15)
+  term.clear()
+  showMenu()
+end
+
 function showState()
   gpu.setBackground(0x333333)
   locAddr = getAddress(sg.localAddress())
   remAddr = getAddress(sg.remoteAddress())
   destinationName()
   state, chevrons, direction = sg.stargateState()
+  wormholeDirection()
   iris = sg.irisState()
   iriscontroller()
   energy = sg.energyAvailable()*energymultiplicator
@@ -210,10 +278,11 @@ function showState()
   autoclose()
   neueZeile(1)
   if debug == true then
-    showAt(40, zeile, "Version:          1.3.8")
+    showAt(40, zeile, "Version:          1.4.0")
     neueZeile(1)
   end
   showControls()
+  changeRedstone()
 end 
 
 function showControls()
@@ -393,6 +462,8 @@ handlers[key_event_name] = function(e)
       showState()
       showMenu()
     end
+  elseif c == "r" then
+    displayRedstone()  
   end
 end
 

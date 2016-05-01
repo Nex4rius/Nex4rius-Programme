@@ -1,5 +1,5 @@
 --
---   Configuration file
+--   don't change anything
 --
 component = require("component")
 sg = component.getPrimary("stargate")
@@ -27,6 +27,31 @@ zeile = 1
 remoteName = ""
 checkEnergy = 0
 AddNewAddress = true
+if component.isAvailable("redstone") then
+  r = component.getPrimary("redstone")
+  white = 0
+  orange = 1
+  magenta = 2
+  lightblue = 3
+  yellow = 4
+  lime = 5
+  pink = 6
+  gray = 7
+  silver = 8
+  cyan = 9
+  purple = 10
+  blue = 11
+  brown = 12
+  green = 13
+  red = 14
+  black = 15
+  for farbe = 0, 15 do
+    r.setBundledOutput(0, farbe, 0)
+  end
+else
+  r = nil
+end
+redstoneReset = true
 
 if RF == true then
   energytpye = "RF"
