@@ -95,9 +95,22 @@ function iriscontroller()
     AddNewAddress = false
     if r == nil then
     else
-      for farbe = 0, 15 do
-        redstoneControl(farbe, false)
-      end
+      redstoneControl(0, false)
+      redstoneControl(1, false)
+      redstoneControl(2, false)
+      redstoneControl(3, false)
+      redstoneControl(4, false)
+      redstoneControl(5, false)
+      redstoneControl(6, false)
+      redstoneControl(7, false)
+      redstoneControl(8, false)
+      redstoneControl(9, false)
+      redstoneControl(10, false)
+      redstoneControl(11, false)
+      redstoneControl(12, false)
+      redstoneControl(13, false)
+      redstoneControl(14, false)
+      redstoneControl(15, false)
     end
   end
   if state == "Idle" and control == "On" then
