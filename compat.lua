@@ -43,7 +43,7 @@ function pull_event()
     return event.pull()
   else
     checkEnergy = energy
-    return event.pull(0.1)
+    return event.pull(0.5)
   end
 end
 
