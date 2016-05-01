@@ -167,12 +167,19 @@ function getAddress(A)
   end
 end
 
+function wormholeDirection()
+  if wormhole == "in" then
+    return "Incoming"
+  end
+end
+
 function showState()
   gpu.setBackground(0x333333)
   locAddr = getAddress(sg.localAddress())
   remAddr = getAddress(sg.remoteAddress())
   destinationName()
   state, chevrons, direction = sg.stargateState()
+  direction = wormholeDirection()
   iris = sg.irisState()
   iriscontroller()
   energy = sg.energyAvailable()*energymultiplicator
