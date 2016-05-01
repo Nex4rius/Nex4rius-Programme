@@ -3,8 +3,12 @@
 
 How to install:
 
-1) Make an OpenComputer Computer with an internet card.
+1) Make an OpenComputer computer with an internet card.
 
-2) type "wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/autorun.lua' autorun.lua" (without "")
+2) copy / paste commands
+
+wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/autorun.lua' autorun.lua
+
+reboot
 
 3) Profit
