@@ -13,5 +13,5 @@ autoclosetime = 60 -- in seconds -- false for no autoclose
 IDC = ""
 
 addresses = {
---"Name", "Address", "Iris Code"},
+  {"Name", "Address", "Iris Code"},
 }
