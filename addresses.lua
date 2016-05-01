@@ -1,6 +1,5 @@
 --
 --  Put your own stargate addresses here
---  {"Name", "Address", "Iris Code"},
 --  "" for no Iris Code
 --
 --  Iris will open if correct code is received
@@ -8,8 +7,12 @@
 --  for no IDC set it to "" (Iris will never open automatically)
 --
 
+RF = false -- show energy in RF instead of EU
+autoclosetime = 60 -- in seconds -- false for no autoclose
+
 IDC = ""
 
 addresses = {
+--{"Name", "Address", "Iris Code"},
   {"Test", "ABCD-EFG-HI", ""},
 }
