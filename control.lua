@@ -204,22 +204,20 @@ end
 
 function changeRedstone()
   if r == nil then
-  else
-    if state == "Idle" then
-      redstoneControl(white, false)
+  elseif state == "Idle" then
     else
       redstoneControl(white, true)
-    end
-    if direction == "Incoming" then
-      redstoneControl(red, true)
-    end
-    if iris == "Closed" then
-      redstoneControl(yellow, true)
-    else
-      redstoneControl(yellow, false)
-    end
-    if IDCyes == true then
-      redstoneControl(black, true)
+      if direction == "Incoming" then
+        redstoneControl(red, true)
+      end
+      if iris == "Closed" then
+        redstoneControl(yellow, true)
+      else
+        redstoneControl(yellow, false)
+      end
+      if IDCyes == true then
+        redstoneControl(black, true)
+      end
     end
   end
 end
