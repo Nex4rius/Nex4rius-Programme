@@ -3,6 +3,7 @@
 --
 component = require("component")
 sg = component.getPrimary("stargate")
+r = component.getPrimary("redstone")
 time = "-"
 incode = "-"
 wormhole = "in"
