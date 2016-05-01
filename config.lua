@@ -46,7 +46,7 @@ if component.isAvailable("redstone") then
   red = 14
   black = 15
   for farbe = 0, 15 do
-    redstoneControl(farbe, false)
+    r.setBundledOutput(0, farbe, 0)
   end
 else
   r = nil
