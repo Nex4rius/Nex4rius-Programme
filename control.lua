@@ -231,6 +231,7 @@ function displayRedstone()
   print("yellow -> iris = closed")
   print("black -> idc accepted")
   os.sleep(15)
+  showMenu()
 end
 
 function showState()
