@@ -1,5 +1,4 @@
-# Stargate-Programm for 
-# SGCraft and OpenComputers
+# Stargate-Programm for SGCraft and OpenComputers
 
 How to install:
 
