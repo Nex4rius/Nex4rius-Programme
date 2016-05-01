@@ -169,7 +169,7 @@ end
 
 function wormholeDirection()
   if wormhole == "in" and state == "Closing" then
-    return "Incoming"
+    direction = "Incoming"
   end
 end
 
@@ -179,7 +179,7 @@ function showState()
   remAddr = getAddress(sg.remoteAddress())
   destinationName()
   state, chevrons, direction = sg.stargateState()
-  direction = wormholeDirection()
+  wormholeDirection()
   iris = sg.irisState()
   iriscontroller()
   energy = sg.energyAvailable()*energymultiplicator
