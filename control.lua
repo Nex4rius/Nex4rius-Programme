@@ -168,8 +168,11 @@ function getAddress(A)
 end
 
 function wormholeDirection()
-  if wormhole == "in" and state == "Closing" then
-    direction = "Incoming"
+  if direction == "Outgoing" then
+    wormhole = "out"
+  end
+  if wormhole == "out" and state == "Closing" then
+    direction = "Outgoing"
   end
 end
 
