@@ -18,7 +18,6 @@ codeaccepted = "-"
 energytype = "EU"
 energymultiplicator = 20
 energy = 0
-control = "On"
 send = true
 IDCyes = false
 seite = 0
