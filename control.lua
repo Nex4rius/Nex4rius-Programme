@@ -9,6 +9,7 @@
 dofile("config.lua")
 dofile("compat.lua")
 dofile("addresses.lua")
+dofile("saveAfterReboot.lua")
 
 debug = false
 
@@ -16,6 +17,12 @@ gpu.setBackground(0x333333)
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
+end
+
+function writeSaveFile()
+  f = io.open ("saveAfterReboot.lua", "w")
+  f:write('control = "' .. control .. '"')
+  f:close ()
 end
 
 function showMenu()
@@ -443,8 +450,10 @@ handlers[key_event_name] = function(e)
       send = true
       if control == "On" then
         control = "Off"
+        writeSaveFile()
       else
         control = "On"
+        writeSaveFile()
       end
     end
   elseif e[3] == 0 and e[4] == 203 then
