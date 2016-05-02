@@ -3,4 +3,5 @@ os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-P
 os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/compat.lua' compat.lua")
 os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/config.lua' config.lua")
 os.execute("wget 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/addresses.lua' addresses.lua")
+os.execute("wget 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/saveAfterReboot.lua' saveAfterReboot.lua")
 dofile("control.lua")
