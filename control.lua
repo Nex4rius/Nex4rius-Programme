@@ -5,10 +5,13 @@
 --  with automated Iris control
 --  by DarknessShadow
 --
+-- install by typing this
+-- wget -f "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/autorun.lua" autorun.lua
+--
 
+dofile("addresses.lua")
 dofile("config.lua")
 dofile("compat.lua")
-dofile("addresses.lua")
 dofile("saveAfterReboot.lua")
 
 debug = false
@@ -21,7 +24,8 @@ end
 
 function writeSaveFile()
   f = io.open ("saveAfterReboot.lua", "w")
-  f:write('control = "' .. control .. '"')
+  f:write('control = "' .. control .. '"\n')
+  f:write('firstrun = "' .. firstrun .. '"\n')
   f:close ()
 end
 
@@ -44,20 +48,39 @@ function showMenu()
   iris = sg.irisState()
 end
 
-function redstoneControl(farbe, zustand)
-  if r == nil then
-  else
-    if zustand == true then
-      r.setBundledOutput(0, farbe, 255)
-    elseif zustand == false then
-      r.setBundledOutput(0, farbe, 0)
-    end
-  end
-end
-
 function getIrisState()
   ok, result = pcall(sg.irisState)
   return result
+end
+
+function irisClose()
+  sg.closeIris()
+  if redst == true then
+    r.setBundledOutput(sideNum, yellow, 255)
+  end
+end
+
+function irisOpen()
+  sg.openIris()
+  if redst == true then
+    r.setBundledOutput(sideNum, yellow, 0)
+  end
+end
+
+function sides()
+  if side == "bottom" then
+    sideNum = 0
+  elseif side == "top" then
+    sideNum = 1
+  elseif side == "back" then
+    sideNum = 2
+  elseif side == "front" then
+    sideNum = 3
+  elseif side == "right" then
+    sideNum = 4
+  elseif side == "left" then
+    sideNum = 5
+  end
 end
 
 function iriscontroller()
@@ -71,7 +94,7 @@ function iriscontroller()
     if iris == "Offline" then
       sg.sendMessage("IDC Accepted Iris: Offline")
     else
-      sg.openIris()
+      irisOpen()
       os.sleep(2)
       sg.sendMessage("IDC Accepted Iris: Open")
     end
@@ -83,7 +106,9 @@ function iriscontroller()
   end
   if wormhole == "in" and state == "Dialling" and iriscontrol == "on" and control == "On" then
     if iris == "Offline" then else
-      sg.closeIris()
+      irisClose()
+      r.setBundledOutput(sideNum, red, 255)
+      redstoneIncoming = false
     end
     k = "close"
   end
@@ -91,7 +116,7 @@ function iriscontroller()
   if state == "Idle" and k == "close" and control == "On" then
     outcode = nil
     if iris == "Offline" then else
-      sg.openIris()
+      irisOpen()
     end
     iriscontrol = "on"
     wormhole = "in"
@@ -99,8 +124,6 @@ function iriscontroller()
     activationtime = 0
     entercode = false
     showidc = ""
-    AddNewAddress = false
-    redstoneReset = true
   end
   if state == "Idle" and control == "On" then
     iriscontrol = "on"
@@ -110,6 +133,7 @@ function iriscontroller()
     incode = "-"
     showMessage("")
     IDCyes = false
+    AddNewAddress = true
   end
   if state == "Idle" then
     incode = "-"
@@ -150,21 +174,15 @@ end
 
 function newAddress(g)
   if AddNewAddress == true then
-    f = io.open ("addresses.lua", "r")
-    readAddresses = f:read(10000)
-    AdressesLength = string.len(readAddresses)
-    if string.sub(readAddresses, AdressesLength, AdressesLength) == " " then
-      zurueck = -2
-    else
-      zurueck = -1
-    end
-    f:close ()
     f = io.open ("addresses.lua", "a")
-    f:seek ("end", zurueck)
+    f:seek ("end", firstrun)
     f:write('  {"' .. g .. '", "' .. g .. '", ""},\n}')
     f:close ()
     AddNewAddress = false
+    firstrun = -1
+    writeSaveFile()
     dofile("addresses.lua")
+    sides()
     showMenu()
   end
 end
@@ -204,38 +222,13 @@ function wormholeDirection()
   end
 end
 
-function changeRedstone()
-  if r == nil then
-  else
-    if state == "Idle" and redstoneReset == true then
-      redstoneControl(white, false)
-      redstoneControl(red, false)
-      redstoneControl(yellow, false)
-      redstoneControl(black, false)
-      redstonereset = false
-    else
-      redstoneControl(white, true)
-      if direction == "Incoming" then
-        redstoneControl(red, true)
-      end
-      if iris == "Closed" then
-        redstoneControl(yellow, true)
-      else
-        redstoneControl(yellow, false)
-      end
-      if IDCyes == true then
-        redstoneControl(black, true)
-      end
-    end
-  end
-end
-
 function displayRedstone()
   term.clear()
-  print("white -> state not Idle")
-  print("red -> incoming")
+  print("Redstone Signals")
+  print("white  -> state not Idle")
+  print("red    -> incoming")
   print("yellow -> iris = closed")
-  print("black -> idc accepted")
+  print("black  -> idc accepted")
   os.sleep(15)
   term.clear()
   showMenu()
@@ -289,11 +282,46 @@ function showState()
     neueZeile(1)
   end
   showControls()
-  changeRedstone()
-end 
+  if redst == true then
+    RedstoneControl()
+  end
+end
+
+function RedstoneControl()
+  if sideNum == nil then
+    sides()
+  end
+  if direction == "Incoming" then
+    if redstoneIncoming == true then
+      r.setBundledOutput(sideNum, red, 255)
+      redstoneIncoming = false
+    end
+  elseif redstoneIncoming == false and state == "Idle" then
+    r.setBundledOutput(sideNum, red, 0)
+    redstoneIncoming = true
+  end
+  if state == "Idle" then
+    if redstoneState == true then
+      r.setBundledOutput(sideNum, white, 0)
+      redstoneState = false
+    end
+  elseif redstoneState == false then
+    r.setBundledOutput(sideNum, white, 255)
+    redstoneState = true
+  end
+  if IDCyes == true then
+    if redstoneIDC == true then
+      r.setBundledOutput(sideNum, black, 255)
+      redstoneIDC = false
+    end
+  elseif redstoneIDC == false then
+    r.setBundledOutput(sideNum, black, 0)
+    redstoneIDC = true
+  end
+end
 
 function showControls()
-  neueZeile(3)
+  neueZeile(2)
   showAt(40, zeile, "Controls")
   neueZeile(1)
   showAt(40, zeile, "D Disconnect")
@@ -319,6 +347,8 @@ function showControls()
     neueZeile(1)
   end
   if debug == true then
+    showAt(40, zeile, "Z Edit Addresses")
+    neueZeile(1)
     showAt(40, zeile, "Q Quit")
   end
 end
@@ -411,7 +441,7 @@ handlers[key_event_name] = function(e)
     end
   elseif c == "o" then
     if iris == "Offline" then else
-      sg.openIris()
+      irisOpen()
       if wormhole == "in" then
         if iris == "Offline" then
         else
@@ -426,7 +456,7 @@ handlers[key_event_name] = function(e)
     end
   elseif c == "c" then
     if iris == "Offline" then else
-      sg.closeIris()
+      irisClose()
       iriscontrol = "off"
       if wormhole == "in" then
         sg.sendMessage("Manual Override: Iris Closed")
@@ -456,6 +486,11 @@ handlers[key_event_name] = function(e)
         writeSaveFile()
       end
     end
+  elseif c == "z" then
+    os.execute("edit addresses.lua")
+    dofile("addresses.lua")
+    sides()
+    showMenu()
   elseif e[3] == 0 and e[4] == 203 then
     if seite == 0 then
     else
@@ -521,10 +556,11 @@ function main()
 end
 
 if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
-  sg.openIris()
+  irisOpen()
 end
 
 messageshow = true
 
 running = true
+
 main()
