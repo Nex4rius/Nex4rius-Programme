@@ -28,6 +28,7 @@ checkEnergy = 0
 AddNewAddress = true
 if component.isAvailable("redstone") then
   r = component.getPrimary("redstone")
+  redst = true
   white = 0
   orange = 1
   magenta = 2
@@ -49,6 +50,7 @@ if component.isAvailable("redstone") then
   end
 else
   r = nil
+  redst = false
 end
 redstoneReset = true
 
