@@ -1,5 +1,3 @@
---  to save press "Ctrl + S"
---  to close press "Ctrl + W"
 --
 --  Put your own stargate addresses here
 --  "" for no Iris Code
@@ -11,7 +9,6 @@
 
 RF = false -- show energy in RF instead of EU
 autoclosetime = 60 -- in seconds -- false for no autoclose
-side = "bottom" -- bottom, top, back, front, right or left
 
 IDC = ""
 
