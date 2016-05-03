@@ -56,6 +56,7 @@ end
 redstoneIncoming = false
 redstoneState = false
 redstoneIDC = false
+sideNum = 0
 
 if RF == true then
   energytpye = "RF"
