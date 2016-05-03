@@ -72,6 +72,7 @@ end
 function iriscontroller()
   if state == "Dialing" then
     messageshow = true
+    redstoneReset = true
   end
   if direction == "Incoming" and incode == IDC and control == "Off" then
     IDCyes = true
