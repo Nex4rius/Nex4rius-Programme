@@ -57,6 +57,20 @@ redstoneIncoming = false
 redstoneState = false
 redstoneIDC = false
 
+if side == "bottom" then
+  side = 0
+elseif side == "top" then
+  side = 1
+elseif side == "back" then
+  side = 2
+elseif side == "front" then
+  side = 3
+elseif side == "right" then
+  side = 4
+elseif side == "left" then
+  side = 5
+end
+
 if RF == true then
   energytpye = "RF"
   energymultiplicator = 80
