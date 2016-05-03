@@ -6,9 +6,9 @@
 --  by DarknessShadow
 --
 
+dofile("addresses.lua")
 dofile("config.lua")
 dofile("compat.lua")
-dofile("addresses.lua")
 dofile("saveAfterReboot.lua")
 
 debug = false
@@ -45,16 +45,6 @@ function showMenu()
   iris = sg.irisState()
 end
 
-function redstoneControl(farbe, zustand)
-  if redst == true then
-    if zustand == true then
-      r.setBundledOutput(0, farbe, 255)
-    elseif zustand == false then
-      r.setBundledOutput(0, farbe, 0)
-    end
-  end
-end
-
 function getIrisState()
   ok, result = pcall(sg.irisState)
   return result
@@ -62,18 +52,17 @@ end
 
 function irisClose()
   sg.closeIris()
-  redstoneControl(yellow, true)
+  r.setBundledOutput(side, yellow, 255)
 end
 
 function irisOpen()
   sg.openIris()
-  redstoneControl(yellow, false)
+  r.setBundledOutput(side, yellow, 0)
 end
 
 function iriscontroller()
   if state == "Dialing" then
     messageshow = true
-    redstoneReset = true
   end
   if direction == "Incoming" and incode == IDC and control == "Off" then
     IDCyes = true
@@ -119,7 +108,6 @@ function iriscontroller()
     incode = "-"
     showMessage("")
     IDCyes = false
-    redstoneReset = true
     AddNewAddress = true
   end
   if state == "Idle" then
@@ -208,25 +196,33 @@ function wormholeDirection()
   end
 end
 
-function changeRedstone()
-  if redst == true then
-    if state == "Idle" and redstoneReset == true then
-      redstoneControl(white, false)
-      redstoneControl(red, false)
-      redstoneControl(black, false)
-      redstoneReset = false
-    else
-      if state == "Idle" then
-      else
-        redstoneControl(white, true)
-      end
-      if direction == "Incoming" then
-        redstoneControl(red, true)
-      end
-      if IDCyes == true then
-        redstoneControl(black, true)
-      end
+function RedstoneControl()
+  if direction == "Incoming" then
+    if redstoneIncoming == true then
+      r.setBundledOutput(side, red, 255)
+      redstoneIncoming = false
     end
+  elseif redstoneIncoming = false then
+    r.setBundledOutput(side, red, 0)
+    redstoneIncoming = true
+  end
+  if state == "Idle" then
+    if redstoneState == true then
+      r.setBundledOutput(side, white, 255)
+      redstoneState = false
+    end
+  elseif redstoneState == false then
+    r.setBundledOutput(side, white, 0)
+    redstoneState = true
+  end
+  if IDCyes == true then
+    if redstoneIDC == true then
+      r.setBundledOutput(side, black, 255)
+      redstoneIDC = false
+    end
+  elseif redstoneIDC == false then
+    r.setBundledOutput(side, black, 0)
+    redstoneIDC = true
   end
 end
 
@@ -290,7 +286,7 @@ function showState()
     neueZeile(1)
   end
   showControls()
-  changeRedstone()
+  RedstoneControl()
 end 
 
 function showControls()
@@ -415,7 +411,6 @@ handlers[key_event_name] = function(e)
   elseif c == "o" then
     if iris == "Offline" then else
       irisOpen()
-      redstoneControl(yellow, false)
       if wormhole == "in" then
         if iris == "Offline" then
         else
