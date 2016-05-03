@@ -12,6 +12,7 @@ os.execute("wget 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Prog
 f = io.open ("addresses.lua", "r")
 readAddresses = f:read(10000)
 AdressesLength = string.len(readAddresses)
+f:close ()
 if string.sub(readAddresses, AdressesLength, AdressesLength) == " " then
   f = io.open ("addresses.lua", "a")
   f:seek ("end", -1)
