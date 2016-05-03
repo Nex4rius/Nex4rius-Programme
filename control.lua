@@ -21,7 +21,8 @@ end
 
 function writeSaveFile()
   f = io.open ("saveAfterReboot.lua", "w")
-  f:write('control = "' .. control .. '"')
+  f:write('control = "' .. control .. '"\n')
+  f:write('firstrun = "' .. firstrun .. '"\n')
   f:close ()
 end
 
@@ -161,10 +162,11 @@ end
 function newAddress(g)
   if AddNewAddress == true then
     f = io.open ("addresses.lua", "a")
-    f:seek ("end", -1)
+    f:seek ("end", firstrun)
     f:write('  {"' .. g .. '", "' .. g .. '", ""},\n}')
     f:close ()
     AddNewAddress = false
+    firstrun = -1
     dofile("addresses.lua")
     showMenu()
   end
