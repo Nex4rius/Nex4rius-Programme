@@ -52,7 +52,9 @@ else
   r = nil
   redst = false
 end
-redstoneReset = true
+redstoneIncoming = false
+redstoneState = false
+redstoneIDC = false
 
 if RF == true then
   energytpye = "RF"
