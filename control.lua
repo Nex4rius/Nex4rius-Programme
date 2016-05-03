@@ -60,6 +60,22 @@ function irisClose()
   end
 end
 
+function sides()
+  if side == "bottom" then
+    side = 0
+  elseif side == "top" then
+    side = 1
+  elseif side == "back" then
+    side = 2
+  elseif side == "front" then
+    side = 3
+  elseif side == "right" then
+    side = 4
+  elseif side == "left" then
+    side = 5
+  end
+end
+
 function irisOpen()
   sg.openIris()
   if redst == true then
@@ -164,6 +180,7 @@ function newAddress(g)
     firstrun = -1
     writeSaveFile()
     dofile("addresses.lua")
+    sides()
     showMenu()
   end
 end
@@ -537,5 +554,8 @@ end
 
 messageshow = true
 
+sides()
+
 running = true
+
 main()
