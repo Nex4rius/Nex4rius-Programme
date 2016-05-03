@@ -224,7 +224,7 @@ end
 
 function displayRedstone()
   term.clear()
-  print("Redstone Signlas")
+  print("Redstone Signals")
   print("white  -> state not Idle")
   print("red    -> incoming")
   print("yellow -> iris = closed")
