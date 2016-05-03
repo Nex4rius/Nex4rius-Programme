@@ -98,7 +98,6 @@ function iriscontroller()
     activationtime = 0
     entercode = false
     showidc = ""
-    AddNewAddress = false
   end
   if state == "Idle" and control == "On" then
     iriscontrol = "on"
@@ -109,6 +108,7 @@ function iriscontroller()
     showMessage("")
     IDCyes = false
     redstoneReset = true
+    AddNewAddress = true
   end
   if state == "Idle" then
     incode = "-"
