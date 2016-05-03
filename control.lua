@@ -59,6 +59,16 @@ function getIrisState()
   return result
 end
 
+function irisClose()
+  sg.closeIris()
+  redstoneControl(yellow, true)
+end
+
+function irisOpen()
+  sg.openIris()
+  redstoneControl(yellow, false)
+end
+
 function iriscontroller()
   if state == "Dialing" then
     messageshow = true
@@ -70,7 +80,7 @@ function iriscontroller()
     if iris == "Offline" then
       sg.sendMessage("IDC Accepted Iris: Offline")
     else
-      sg.openIris()
+      irisOpen()
       os.sleep(2)
       sg.sendMessage("IDC Accepted Iris: Open")
     end
@@ -82,7 +92,7 @@ function iriscontroller()
   end
   if wormhole == "in" and state == "Dialling" and iriscontrol == "on" and control == "On" then
     if iris == "Offline" then else
-      sg.closeIris()
+      irisClose()
     end
     k = "close"
   end
@@ -90,7 +100,7 @@ function iriscontroller()
   if state == "Idle" and k == "close" and control == "On" then
     outcode = nil
     if iris == "Offline" then else
-      sg.openIris()
+      irisOpen()
     end
     iriscontrol = "on"
     wormhole = "in"
@@ -212,11 +222,6 @@ function changeRedstone()
       if IDCyes == true then
         redstoneControl(black, true)
       end
-    end
-    if iris == "Closed" or iris == "Closing" then
-      redstoneControl(yellow, true)
-    else
-      redstoneControl(yellow, false)
     end
   end
 end
@@ -403,7 +408,7 @@ handlers[key_event_name] = function(e)
     end
   elseif c == "o" then
     if iris == "Offline" then else
-      sg.openIris()
+      irisOpen()
       redstoneControl(yellow, false)
       if wormhole == "in" then
         if iris == "Offline" then
@@ -419,8 +424,7 @@ handlers[key_event_name] = function(e)
     end
   elseif c == "c" then
     if iris == "Offline" then else
-      sg.closeIris()
-      redstoneControl(yellow, true)
+      irisClose()
       iriscontrol = "off"
       if wormhole == "in" then
         sg.sendMessage("Manual Override: Iris Closed")
@@ -515,7 +519,7 @@ function main()
 end
 
 if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
-  sg.openIris()
+  irisOpen()
 end
 
 messageshow = true
