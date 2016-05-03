@@ -76,6 +76,8 @@ function sides()
   end
 end
 
+sides()
+
 function irisOpen()
   sg.openIris()
   if redst == true then
@@ -553,8 +555,6 @@ if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
 end
 
 messageshow = true
-
-sides()
 
 running = true
 
