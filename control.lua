@@ -263,7 +263,7 @@ function showState()
     neueZeile(1)
   end
   showControls()
-  if redst = true then
+  if redst == true then
     RedstoneControl()
   end
 end
