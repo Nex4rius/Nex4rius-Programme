@@ -278,7 +278,7 @@ function showState()
   autoclose()
   neueZeile(1)
   if debug == true then
-    showAt(40, zeile, "Version:          1.4.0")
+    showAt(40, zeile, "Version:          1.4.1")
     neueZeile(1)
   end
   showControls()
