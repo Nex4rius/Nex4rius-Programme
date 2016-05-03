@@ -3,6 +3,7 @@
 --
 component = require("component")
 sg = component.getPrimary("stargate")
+sides = require("sides")
 time = "-"
 incode = "-"
 wormhole = "in"
@@ -52,7 +53,10 @@ else
   r = nil
   redst = false
 end
-redstoneReset = true
+redstoneIncoming = false
+redstoneState = false
+redstoneIDC = false
+sideNum = 0
 
 if RF == true then
   energytpye = "RF"

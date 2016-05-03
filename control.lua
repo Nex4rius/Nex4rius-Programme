@@ -5,10 +5,13 @@
 --  with automated Iris control
 --  by DarknessShadow
 --
+-- install by typing this
+-- wget -f "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/autorun.lua" autorun.lua
+--
 
+dofile("addresses.lua")
 dofile("config.lua")
 dofile("compat.lua")
-dofile("addresses.lua")
 dofile("saveAfterReboot.lua")
 
 debug = false
@@ -45,16 +48,6 @@ function showMenu()
   iris = sg.irisState()
 end
 
-function redstoneControl(farbe, zustand)
-  if redst == true then
-    if zustand == true then
-      r.setBundledOutput(0, farbe, 255)
-    elseif zustand == false then
-      r.setBundledOutput(0, farbe, 0)
-    end
-  end
-end
-
 function getIrisState()
   ok, result = pcall(sg.irisState)
   return result
@@ -62,18 +55,37 @@ end
 
 function irisClose()
   sg.closeIris()
-  redstoneControl(yellow, true)
+  if redst == true then
+    r.setBundledOutput(sideNum, yellow, 255)
+  end
 end
 
 function irisOpen()
   sg.openIris()
-  redstoneControl(yellow, false)
+  if redst == true then
+    r.setBundledOutput(sideNum, yellow, 0)
+  end
+end
+
+function sides()
+  if side == "bottom" then
+    sideNum = 0
+  elseif side == "top" then
+    sideNum = 1
+  elseif side == "back" then
+    sideNum = 2
+  elseif side == "front" then
+    sideNum = 3
+  elseif side == "right" then
+    sideNum = 4
+  elseif side == "left" then
+    sideNum = 5
+  end
 end
 
 function iriscontroller()
   if state == "Dialing" then
     messageshow = true
-    redstoneReset = true
   end
   if direction == "Incoming" and incode == IDC and control == "Off" then
     IDCyes = true
@@ -119,7 +131,6 @@ function iriscontroller()
     incode = "-"
     showMessage("")
     IDCyes = false
-    redstoneReset = true
     AddNewAddress = true
   end
   if state == "Idle" then
@@ -169,6 +180,7 @@ function newAddress(g)
     firstrun = -1
     writeSaveFile()
     dofile("addresses.lua")
+    sides()
     showMenu()
   end
 end
@@ -205,28 +217,6 @@ function wormholeDirection()
   end
   if wormhole == "out" and state == "Closing" then
     direction = "Outgoing"
-  end
-end
-
-function changeRedstone()
-  if redst == true then
-    if state == "Idle" and redstoneReset == true then
-      redstoneControl(white, false)
-      redstoneControl(red, false)
-      redstoneControl(black, false)
-      redstoneReset = false
-    else
-      if state == "Idle" then
-      else
-        redstoneControl(white, true)
-      end
-      if direction == "Incoming" then
-        redstoneControl(red, true)
-      end
-      if IDCyes == true then
-        redstoneControl(black, true)
-      end
-    end
   end
 end
 
@@ -290,11 +280,46 @@ function showState()
     neueZeile(1)
   end
   showControls()
-  changeRedstone()
-end 
+  if redst == true then
+    RedstoneControl()
+  end
+end
+
+function RedstoneControl()
+  if sideNum == nil then
+    sides()
+  end
+  if direction == "Incoming" then
+    if redstoneIncoming == true then
+      r.setBundledOutput(sideNum, red, 255)
+      redstoneIncoming = false
+    end
+  elseif redstoneIncoming == false then
+    r.setBundledOutput(sideNum, red, 0)
+    redstoneIncoming = true
+  end
+  if state == "Idle" then
+    if redstoneState == true then
+      r.setBundledOutput(sideNum, white, 0)
+      redstoneState = false
+    end
+  elseif redstoneState == false then
+    r.setBundledOutput(sideNum, white, 255)
+    redstoneState = true
+  end
+  if IDCyes == true then
+    if redstoneIDC == true then
+      r.setBundledOutput(sideNum, black, 255)
+      redstoneIDC = false
+    end
+  elseif redstoneIDC == false then
+    r.setBundledOutput(sideNum, black, 0)
+    redstoneIDC = true
+  end
+end
 
 function showControls()
-  neueZeile(3)
+  neueZeile(2)
   showAt(40, zeile, "Controls")
   neueZeile(1)
   showAt(40, zeile, "D Disconnect")
@@ -310,6 +335,8 @@ function showControls()
     neueZeile(1)
   end
   showAt(40, zeile, "E Enter IDC")
+  neueZeile(1)
+  showAt(40, zeile, "Z Edit Addresses")
   neueZeile(1)
   if maxseiten > seite + 1 then
     showAt(40, zeile, "→ Next Page")
@@ -413,7 +440,6 @@ handlers[key_event_name] = function(e)
   elseif c == "o" then
     if iris == "Offline" then else
       irisOpen()
-      redstoneControl(yellow, false)
       if wormhole == "in" then
         if iris == "Offline" then
         else
@@ -458,6 +484,9 @@ handlers[key_event_name] = function(e)
         writeSaveFile()
       end
     end
+  elseif c == "z" then
+    os.execute("edit addresses.lua")
+    showMenu()
   elseif e[3] == 0 and e[4] == 203 then
     if seite == 0 then
     else
@@ -529,4 +558,5 @@ end
 messageshow = true
 
 running = true
+
 main()
