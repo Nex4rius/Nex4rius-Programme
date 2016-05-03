@@ -45,8 +45,7 @@ function showMenu()
 end
 
 function redstoneControl(farbe, zustand)
-  if r == nil then
-  else
+  if redst == true then
     if zustand == true then
       r.setBundledOutput(0, farbe, 255)
     elseif zustand == false then
@@ -205,8 +204,7 @@ function wormholeDirection()
 end
 
 function changeRedstone()
-  if r == nil then
-  else
+  if redst == true then
     if state == "Idle" and redstoneReset == true then
       redstoneControl(white, false)
       redstoneControl(red, false)
@@ -232,10 +230,11 @@ end
 
 function displayRedstone()
   term.clear()
-  print("white -> state not Idle")
-  print("red -> incoming")
+  print("Redstone Signlas")
+  print("white  -> state not Idle")
+  print("red    -> incoming")
   print("yellow -> iris = closed")
-  print("black -> idc accepted")
+  print("black  -> idc accepted")
   os.sleep(15)
   term.clear()
   showMenu()
