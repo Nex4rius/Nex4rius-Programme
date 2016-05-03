@@ -167,6 +167,7 @@ function newAddress(g)
     f:close ()
     AddNewAddress = false
     firstrun = -1
+    writeSaveFile()
     dofile("addresses.lua")
     showMenu()
   end
