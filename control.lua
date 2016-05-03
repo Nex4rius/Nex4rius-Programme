@@ -294,7 +294,7 @@ function showState()
 end 
 
 function showControls()
-  neueZeile(3)
+  neueZeile(2)
   showAt(40, zeile, "Controls")
   neueZeile(1)
   showAt(40, zeile, "D Disconnect")
@@ -310,6 +310,8 @@ function showControls()
     neueZeile(1)
   end
   showAt(40, zeile, "E Enter IDC")
+  neueZeile(1)
+  showAt(40, zeile, "Z Edit Addresses")
   neueZeile(1)
   if maxseiten > seite + 1 then
     showAt(40, zeile, "→ Next Page")
@@ -458,6 +460,9 @@ handlers[key_event_name] = function(e)
         writeSaveFile()
       end
     end
+  elseif c == "z" then
+    os.execute("edit addresses.lua")
+    showMenu()
   elseif e[3] == 0 and e[4] == 203 then
     if seite == 0 then
     else
