@@ -1,5 +1,4 @@
-link = https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/
-os.execute("wget -f link .. 'autorun.lua' autorun.lua")
+os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/autorun.lua' autorun.lua")
 print("\n")
 os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/control.lua' control.lua")
 print("\n")
