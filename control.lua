@@ -5,6 +5,9 @@
 --  with automated Iris control
 --  by DarknessShadow
 --
+-- install by typing this
+-- wget -f "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/autorun.lua" autorun.lua
+--
 
 dofile("addresses.lua")
 dofile("config.lua")
