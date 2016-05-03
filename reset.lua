@@ -1,3 +1,4 @@
+os.execute("del -v addresses.lua")
 os.execute("del -v config.lua")
 os.execute("del -v control.lua")
 os.execute("del -v autorun.lua")
