@@ -403,6 +403,7 @@ handlers[key_event_name] = function(e)
   elseif c == "o" then
     if iris == "Offline" then else
       sg.openIris()
+      redstoneControl(yellow, false)
       if wormhole == "in" then
         if iris == "Offline" then
         else
@@ -418,6 +419,7 @@ handlers[key_event_name] = function(e)
   elseif c == "c" then
     if iris == "Offline" then else
       sg.closeIris()
+      redstoneControl(yellow, true)
       iriscontrol = "off"
       if wormhole == "in" then
         sg.sendMessage("Manual Override: Iris Closed")
