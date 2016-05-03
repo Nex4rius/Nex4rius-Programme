@@ -204,7 +204,10 @@ function changeRedstone()
       redstoneControl(black, false)
       redstoneReset = false
     else
-      redstoneControl(white, true)
+      if state == "Idle" then
+      else
+        redstoneControl(white, true)
+      end
       if direction == "Incoming" then
         redstoneControl(red, true)
       end
