@@ -202,7 +202,7 @@ function RedstoneControl()
       r.setBundledOutput(side, red, 255)
       redstoneIncoming = false
     end
-  elseif redstoneIncoming = false then
+  elseif redstoneIncoming == false then
     r.setBundledOutput(side, red, 0)
     redstoneIncoming = true
   end
