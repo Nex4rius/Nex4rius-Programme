@@ -55,14 +55,14 @@ end
 
 function irisClose()
   sg.closeIris()
-  if redst = true then
+  if redst == true then
     r.setBundledOutput(side, yellow, 255)
   end
 end
 
 function irisOpen()
   sg.openIris()
-  if redst = true then
+  if redst == true then
     r.setBundledOutput(side, yellow, 0)
   end
 end
