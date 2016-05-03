@@ -52,12 +52,16 @@ end
 
 function irisClose()
   sg.closeIris()
-  r.setBundledOutput(side, yellow, 255)
+  if redst = true then
+    r.setBundledOutput(side, yellow, 255)
+  end
 end
 
 function irisOpen()
   sg.openIris()
-  r.setBundledOutput(side, yellow, 0)
+  if redst = true then
+    r.setBundledOutput(side, yellow, 0)
+  end
 end
 
 function iriscontroller()
@@ -286,7 +290,9 @@ function showState()
     neueZeile(1)
   end
   showControls()
-  RedstoneControl()
+  if redst = true then
+    RedstoneControl()
+  end
 end 
 
 function showControls()
