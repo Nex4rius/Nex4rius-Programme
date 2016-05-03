@@ -149,17 +149,9 @@ end
 
 function newAddress(g)
   if AddNewAddress == true then
-    f = io.open ("addresses.lua", "r")
-    readAddresses = f:read(10000)
-    AdressesLength = string.len(readAddresses)
-    if string.sub(readAddresses, AdressesLength, AdressesLength) == " " then
-      zurueck = -2
-    else
-      zurueck = -1
-    end
     f:close ()
     f = io.open ("addresses.lua", "a")
-    f:seek ("end", zurueck)
+    f:seek ("end", -1)
     f:write('  {"' .. g .. '", "' .. g .. '", ""},\n}')
     f:close ()
     AddNewAddress = false
