@@ -211,7 +211,7 @@ function changeRedstone()
       if direction == "Incoming" then
         redstoneControl(red, true)
       end
-      if iris == "Closed" then
+      if iris == "Closed" or iris == "Closing" then
         redstoneControl(yellow, true)
       else
         redstoneControl(yellow, false)
