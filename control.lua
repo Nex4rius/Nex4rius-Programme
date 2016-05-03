@@ -200,7 +200,6 @@ function changeRedstone()
     if state == "Idle" and redstoneReset == true then
       redstoneControl(white, false)
       redstoneControl(red, false)
-      redstoneControl(yellow, false)
       redstoneControl(black, false)
       redstoneReset = false
     else
@@ -211,14 +210,14 @@ function changeRedstone()
       if direction == "Incoming" then
         redstoneControl(red, true)
       end
-      if iris == "Closed" or iris == "Closing" then
-        redstoneControl(yellow, true)
-      else
-        redstoneControl(yellow, false)
-      end
       if IDCyes == true then
         redstoneControl(black, true)
       end
+    end
+    if iris == "Closed" or iris == "Closing" then
+      redstoneControl(yellow, true)
+    else
+      redstoneControl(yellow, false)
     end
   end
 end
