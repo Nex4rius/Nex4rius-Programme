@@ -149,7 +149,6 @@ end
 
 function newAddress(g)
   if AddNewAddress == true then
-    f:close ()
     f = io.open ("addresses.lua", "a")
     f:seek ("end", -1)
     f:write('  {"' .. g .. '", "' .. g .. '", ""},\n}')
