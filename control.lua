@@ -300,11 +300,11 @@ function RedstoneControl()
   end
   if state == "Idle" then
     if redstoneState == true then
-      r.setBundledOutput(sideNum, white, 255)
+      r.setBundledOutput(sideNum, white, 0)
       redstoneState = false
     end
   elseif redstoneState == false then
-    r.setBundledOutput(sideNum, white, 0)
+    r.setBundledOutput(sideNum, white, 255)
     redstoneState = true
   end
   if IDCyes == true then
