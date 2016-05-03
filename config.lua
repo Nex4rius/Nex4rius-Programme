@@ -3,6 +3,7 @@
 --
 component = require("component")
 sg = component.getPrimary("stargate")
+sides = require("sides")
 time = "-"
 incode = "-"
 wormhole = "in"
