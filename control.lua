@@ -202,7 +202,7 @@ function changeRedstone()
       redstoneControl(red, false)
       redstoneControl(yellow, false)
       redstoneControl(black, false)
-      redstonereset = false
+      redstoneReset = false
     else
       redstoneControl(white, true)
       if direction == "Incoming" then
