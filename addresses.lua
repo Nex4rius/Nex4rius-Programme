@@ -1,3 +1,5 @@
+--  save  "Ctrl + S"
+--  close "Ctrl + W"
 --
 --  Put your own stargate addresses here
 --  "" for no Iris Code
