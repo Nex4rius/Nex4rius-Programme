@@ -1,4 +1,3 @@
-os.execute("del -v autorun.lua")
 os.execute("del -v config.lua")
 os.execute("del -v control.lua")
 os.execute("del -v autorun.lua")
