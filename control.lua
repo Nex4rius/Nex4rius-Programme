@@ -107,7 +107,9 @@ function iriscontroller()
   if wormhole == "in" and state == "Dialling" and iriscontrol == "on" and control == "On" then
     if iris == "Offline" then else
       irisClose()
-      r.setBundledOutput(sideNum, red, 255)
+      if redst == true then
+        r.setBundledOutput(sideNum, red, 255)
+      end
       redstoneIncoming = false
     end
     k = "close"
@@ -278,7 +280,7 @@ function showState()
   autoclose()
   neueZeile(1)
   if debug == true then
-    showAt(40, zeile, "Version:          1.4.2")
+    showAt(40, zeile, "Version:          1.4.3")
     neueZeile(1)
   end
   showControls()
