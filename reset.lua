@@ -6,4 +6,3 @@ os.execute("del -v compat.lua")
 os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/reset.lua' reset.lua")
 os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/autorun.lua' autorun.lua")
 os.execute("reboot")
-dfgdfg
