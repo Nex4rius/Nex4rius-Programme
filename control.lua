@@ -29,6 +29,23 @@ function writeSaveFile()
   f:close ()
 end
 
+function checkReset()
+  if activationtime > 500 then
+    showMessage("")
+    messageshow = true
+    IDCyes = false
+    send = true
+    incode = "-"
+    AddNewAddress = true
+    entercode = false
+    showidc = ""
+    wormhole = "in"
+    codeaccepted = "-"
+    k = "open"
+    iriscontrol = "on"
+  end
+end
+
 function showMenu()
   setCursor(1, 1)
   print("Address Page " .. seite + 1)
@@ -114,7 +131,9 @@ function iriscontroller()
     end
     k = "close"
   end
-  if iris == "Closing" and control == "On" then k = "open" end
+  if iris == "Closing" and control == "On" then
+    k = "open"
+  end
   if state == "Idle" and k == "close" and control == "On" then
     outcode = nil
     if iris == "Offline" then else
@@ -521,6 +540,7 @@ end
 
 function eventLoop()
   while running do
+    checkReset()
     showState()
     e = {pull_event()}
     if e[1] == nil then
