@@ -278,7 +278,7 @@ function showState()
   autoclose()
   neueZeile(1)
   if debug == true then
-    showAt(40, zeile, "Version:          1.4.1")
+    showAt(40, zeile, "Version:          1.4.2")
     neueZeile(1)
   end
   showControls()
@@ -338,6 +338,8 @@ function showControls()
   end
   showAt(40, zeile, "E Enter IDC")
   neueZeile(1)
+  showAt(40, zeile, "Z Edit Addresses")
+  neueZeile(1)
   if maxseiten > seite + 1 then
     showAt(40, zeile, "→ Next Page")
     neueZeile(1)
@@ -347,8 +349,6 @@ function showControls()
     neueZeile(1)
   end
   if debug == true then
-    showAt(40, zeile, "Z Edit Addresses")
-    neueZeile(1)
     showAt(40, zeile, "Q Quit")
   end
 end
