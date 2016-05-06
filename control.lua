@@ -25,7 +25,7 @@ end
 function writeSaveFile()
   f = io.open ("saveAfterReboot.lua", "w")
   f:write('control = "' .. control .. '"\n')
-  f:write('firstrun = "' .. firstrun .. '"\n')
+  f:write('firstrun = ' .. firstrun .. '\n')
   f:close ()
 end
 
@@ -46,6 +46,7 @@ function checkReset()
       k = "open"
       iriscontrol = "on"
       remoteName = ""
+      activationtime = 0
     end
   end
 end
@@ -213,19 +214,21 @@ function newAddress(g)
 end
 
 function destinationName()
-  if remoteName == "" and state == "Dialling" and wormhole == "in" then
-    for j, na in pairs(addresses) do
-      if remAddr == na[2] then
-        if na[1] == na[2] then
-          remoteName = "Unknown"
-        else
-          remoteName = na[1]
-          break
+  if state == "Dialling" or state == "Connected" then
+    if remoteName == "" and state == "Dialling" and wormhole == "in" then
+      for j, na in pairs(addresses) do
+        if remAddr == na[2] then
+          if na[1] == na[2] then
+            remoteName = "Unknown"
+          else
+            remoteName = na[1]
+            break
+          end
         end
       end
-    end
-    if remoteName == "" then
-      newAddress(remAddr)
+      if remoteName == "" then
+        newAddress(remAddr)
+      end
     end
   end
 end
