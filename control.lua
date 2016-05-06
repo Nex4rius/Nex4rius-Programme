@@ -43,6 +43,7 @@ function checkReset()
     codeaccepted = "-"
     k = "open"
     iriscontrol = "on"
+    remoteName = ""
   end
 end
 
