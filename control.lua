@@ -30,21 +30,24 @@ function writeSaveFile()
 end
 
 function checkReset()
-  if time > 500 then
-    showMessage("")
-    messageshow = true
-    IDCyes = false
-    send = true
-    incode = "-"
-    AddNewAddress = true
-    entercode = false
-    showidc = ""
-    wormhole = "in"
-    codeaccepted = "-"
-    k = "open"
-    iriscontrol = "on"
-    remoteName = ""
-    print(time .. "reset")
+  if time == "-" then
+  else
+    if time > 500 then
+      showMessage("")
+      messageshow = true
+      IDCyes = false
+      send = true
+      incode = "-"
+      AddNewAddress = true
+      entercode = false
+      showidc = ""
+      wormhole = "in"
+      codeaccepted = "-"
+      k = "open"
+      iriscontrol = "on"
+      remoteName = ""
+      print(time .. "reset")
+    end
   end
 end
 
