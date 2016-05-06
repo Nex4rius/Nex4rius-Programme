@@ -44,6 +44,7 @@ function checkReset()
     k = "open"
     iriscontrol = "on"
     remoteName = ""
+    print("reset")
   end
 end
 
