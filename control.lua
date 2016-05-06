@@ -30,7 +30,7 @@ function writeSaveFile()
 end
 
 function checkReset()
-  if activationtime > 500 then
+  if time > 500 then
     showMessage("")
     messageshow = true
     IDCyes = false
@@ -44,7 +44,7 @@ function checkReset()
     k = "open"
     iriscontrol = "on"
     remoteName = ""
-    print("reset")
+    print(time .. "reset")
   end
 end
 
@@ -542,8 +542,8 @@ end
 
 function eventLoop()
   while running do
-    checkReset()
     showState()
+    checkReset()
     e = {pull_event()}
     if e[1] == nil then
     else
