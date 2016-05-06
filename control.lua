@@ -25,8 +25,30 @@ end
 function writeSaveFile()
   f = io.open ("saveAfterReboot.lua", "w")
   f:write('control = "' .. control .. '"\n')
-  f:write('firstrun = "' .. firstrun .. '"\n')
+  f:write('firstrun = ' .. firstrun .. '\n')
   f:close ()
+end
+
+function checkReset()
+  if time == "-" then
+  else
+    if time > 500 then
+      showMessage("")
+      messageshow = true
+      IDCyes = false
+      send = true
+      incode = "-"
+      AddNewAddress = true
+      entercode = false
+      showidc = ""
+      wormhole = "in"
+      codeaccepted = "-"
+      k = "open"
+      iriscontrol = "on"
+      remoteName = ""
+      activationtime = 0
+    end
+  end
 end
 
 function showMenu()
@@ -114,7 +136,9 @@ function iriscontroller()
     end
     k = "close"
   end
-  if iris == "Closing" and control == "On" then k = "open" end
+  if iris == "Closing" and control == "On" then
+    k = "open"
+  end
   if state == "Idle" and k == "close" and control == "On" then
     outcode = nil
     if iris == "Offline" then else
@@ -190,19 +214,21 @@ function newAddress(g)
 end
 
 function destinationName()
-  if remoteName == "" and state == "Dialling" and wormhole == "in" then
-    for j, na in pairs(addresses) do
-      if remAddr == na[2] then
-        if na[1] == na[2] then
-          remoteName = "Unknown"
-        else
-          remoteName = na[1]
-          break
+  if state == "Dialling" or state == "Connected" then
+    if remoteName == "" and state == "Dialling" and wormhole == "in" then
+      for j, na in pairs(addresses) do
+        if remAddr == na[2] then
+          if na[1] == na[2] then
+            remoteName = "Unknown"
+          else
+            remoteName = na[1]
+            break
+          end
         end
       end
-    end
-    if remoteName == "" then
-      newAddress(remAddr)
+      if remoteName == "" then
+        newAddress(remAddr)
+      end
     end
   end
 end
@@ -280,7 +306,7 @@ function showState()
   autoclose()
   neueZeile(1)
   if debug == true then
-    showAt(40, zeile, "Version:          1.4.3")
+    showAt(40, zeile, "Version:          1.4.4")
     neueZeile(1)
   end
   showControls()
@@ -522,6 +548,7 @@ end
 function eventLoop()
   while running do
     showState()
+    checkReset()
     e = {pull_event()}
     if e[1] == nil then
     else
