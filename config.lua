@@ -50,9 +50,9 @@ if component.isAvailable("redstone") then
   for farbe = 0, 15 do
     r.setBundledOutput(0, farbe, 0)
   end
-  print("- Redstone             ok (optional)")
+  print("- Redstone Card        ok (optional)")
 else
-  print("- Redstone             Missing (optional)")
+  print("- Redstone Card        Missing (optional)")
   r = nil
   redst = false
 end
