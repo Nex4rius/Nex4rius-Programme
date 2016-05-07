@@ -2,8 +2,8 @@
 --   don't change anything
 --
 component = require("component")
-sg = component.getPrimary("stargate")
 sides = require("sides")
+
 time = "-"
 incode = "-"
 wormhole = "in"
@@ -27,6 +27,7 @@ zeile = 1
 remoteName = ""
 checkEnergy = 0
 AddNewAddress = true
+
 if component.isAvailable("redstone") then
   r = component.getPrimary("redstone")
   redst = true
@@ -49,10 +50,20 @@ if component.isAvailable("redstone") then
   for farbe = 0, 15 do
     r.setBundledOutput(0, farbe, 0)
   end
+  print("- Redstone             ok (optional)")
 else
+  print("- Redstone             Missing (optional)")
   r = nil
   redst = false
 end
+
+if component.isAvailable("stargate") then
+  print("- Stargate             ok")
+else
+  print("- Stargate             Missing")
+end
+
+sg = component.getPrimary("stargate")
 redstoneIncoming = false
 redstoneState = false
 redstoneIDC = false
