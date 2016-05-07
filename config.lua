@@ -3,6 +3,7 @@
 --
 component = require("component")
 sides = require("sides")
+  gpu = component.getPrimary("gpu")
 
 time = "-"
 incode = "-"
@@ -61,6 +62,12 @@ if component.isAvailable("stargate") then
   print("- Stargate             ok")
 else
   print("- Stargate             Missing")
+end
+
+if gpu.maxResolution() > 50 then
+  print("- GPU Tier2+           ok")
+else
+  print("- GPU Tier2+           Missing")
 end
 
 sg = component.getPrimary("stargate")
