@@ -80,3 +80,5 @@ if RF == true then
   energytpye = "RF"
   energymultiplicator = 80
 end
+
+os.sleep(2)
