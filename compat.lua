@@ -1,13 +1,5 @@
---
---   Library code
---
-
 term = require("term")
 event = require("event")
-gpu = component.getPrimary("gpu")
-
---   Utility for calling a function and printing the
---   error message if it throws an exception
 
 function try(func, ...)
   ok, result = pcall(func, ...)
@@ -24,8 +16,6 @@ function check(...)
   return ...
 end
 
---   Terminal API compatibility functions
-
 screen_width, screen_height = gpu.getResolution()
 
 function setCursor(col, row)
@@ -35,8 +25,6 @@ end
 function write(s)
   term.write(s)
 end
-
---   Event API compatibility functions
 
 function pull_event()
   if state == "Idle" and checkEnergy == energy then
