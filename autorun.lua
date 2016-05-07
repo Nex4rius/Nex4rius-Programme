@@ -15,6 +15,7 @@ if component.isAvailable("internet") then
   os.execute("wget 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/addresses.lua' addresses.lua")
   print("")
   os.execute("wget 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/saveAfterReboot.lua' saveAfterReboot.lua")
+  print("")
   f = io.open ("addresses.lua", "r")
   readAddresses = f:read(10000)
   AdressesLength = string.len(readAddresses)
