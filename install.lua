@@ -1,3 +1,4 @@
+fs = require("filesystem")
 fs.makeDirectory("/stargate")
 os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/stargate/check.lua' stargate/check.lua")
 os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/autorun.lua' autorun.lua")
