@@ -30,11 +30,11 @@ function checkComponents()
     internet = false
   end
   if component.isAvailable("stargate") then
-    print("- Stargate             ok")
+    print("- Stargate             ok\n")
     sg = component.getPrimary("stargate")
     return true
   else
-    print("- Stargate             Missing")
+    print("- Stargate             Missing\n")
     return false
   end
 end
@@ -69,20 +69,19 @@ function update()
 end
 
 function checkServerVersion()
-  os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/stargate/version.lua' version.lua")
-  dofile("version.txt")
+  os.execute("wget -fQ 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/stargate/version.lua' version.lua")
+  dofile("version.lua")
   os.execute("del -v version.lua")
-  return serverVersion
 end
 
 if checkComponents() == true then
   if internet == true then
-    if version == checkServerVersion() then
+    if version == serverVersion then
     elseif install == nil then
       print("\nCurrect Version:       " .. version .. "\nAvailable Version:     " .. serverVersion .. "\n\nUpdate? yes/no\n")
       askUpdate = io.read()
       print("\nUpdate: " .. askUpdate)
-      if askUpdate == "yes" or askUpdate == "y" then
+      if askUpdate == "yes" or askUpdate == "ye" or askUpdate == "y" then
         update()
       end
     end
