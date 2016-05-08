@@ -77,6 +77,6 @@ if checkComponents() == true then
       update()
     end
   end
-  print("\nLoading...")
+  print("Loading...")
   dofile("stargate/control.lua")
 end
