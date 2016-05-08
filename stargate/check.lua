@@ -32,11 +32,11 @@ function checkComponents()
   if component.isAvailable("stargate") then
     print("- Stargate             ok")
     sg = component.getPrimary("stargate")
+    return true
   else
     print("- Stargate             Missing")
     return false
   end
-  os.sleep(2)
 end
 
 function update()
