@@ -75,11 +75,11 @@ end
 
 if checkComponents() == true then
   if internet == true then
-    if serverVersion == nil then
-      serverVersion = "Unavailable"
-    end
+--    if serverVersion == nil then
+--      serverVersion = "Unavailable"
+--    end
     if version == serverVersion then
-    elseif install == nil then
+    elseif install == nil and not serverVersion == nil then
       print("\nCurrect Version:       " .. version .. "\nAvailable Version:     " .. serverVersion .. "\n\nUpdate? yes/no\n")
       askUpdate = io.read()
       print("\nUpdate: " .. askUpdate)
