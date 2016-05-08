@@ -1,10 +1,3 @@
---
---   don't change anything
---
-component = require("component")
-sides = require("sides")
-gpu = component.getPrimary("gpu")
-
 time = "-"
 incode = "-"
 wormhole = "in"
@@ -29,9 +22,7 @@ remoteName = ""
 checkEnergy = 0
 AddNewAddress = true
 
-if component.isAvailable("redstone") then
-  r = component.getPrimary("redstone")
-  redst = true
+if redst == true then
   white = 0
   orange = 1
   magenta = 2
@@ -51,26 +42,8 @@ if component.isAvailable("redstone") then
   for farbe = 0, 15 do
     r.setBundledOutput(0, farbe, 0)
   end
-  print("- Redstone Card        ok (optional)")
-else
-  print("- Redstone Card        Missing (optional)")
-  r = nil
-  redst = false
 end
 
-if component.isAvailable("stargate") then
-  print("- Stargate             ok")
-else
-  print("- Stargate             Missing")
-end
-
-if gpu.maxResolution() > 50 then
-  print("- GPU Tier2+           ok")
-else
-  print("- GPU Tier2+           Missing")
-end
-
-sg = component.getPrimary("stargate")
 redstoneIncoming = false
 redstoneState = false
 redstoneIDC = false
