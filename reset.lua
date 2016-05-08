@@ -1,8 +1,0 @@
-os.execute("del -v stargate/addresses.lua")
-os.execute("del -v stargate/config.lua")
-os.execute("del -v stargate/control.lua")
-os.execute("del -v stargate/saveAfterReboot.lua")
-os.execute("del -v stargate/compat.lua")
-os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/reset.lua' stargate/reset.lua")
-os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/autorun.lua' stargate/autorun.lua")
-os.execute("reboot")
