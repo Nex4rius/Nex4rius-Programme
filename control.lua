@@ -9,10 +9,10 @@
 -- wget -f "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/autorun.lua" autorun.lua
 --
 
-dofile("addresses.lua")
-dofile("config.lua")
-dofile("compat.lua")
-dofile("saveAfterReboot.lua")
+dofile("stargate/addresses.lua")
+dofile("stargate/config.lua")
+dofile("stargate/compat.lua")
+dofile("stargate/saveAfterReboot.lua")
 
 debug = false
 
