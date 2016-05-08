@@ -84,6 +84,7 @@ if checkComponents() == true then
       askUpdate = io.read()
       print("\nUpdate: " .. askUpdate)
       if askUpdate == "yes" or askUpdate == "ye" or askUpdate == "y" then
+        print("")
         update()
       end
     end
