@@ -3,7 +3,7 @@
 --
 component = require("component")
 sides = require("sides")
-  gpu = component.getPrimary("gpu")
+gpu = component.getPrimary("gpu")
 
 time = "-"
 incode = "-"
