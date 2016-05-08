@@ -75,9 +75,8 @@ if checkComponents() == true then
     print("\nUpdate: " .. askUpdate"\n")
     if askUpdate == "yes" or askUpdate == "y" then
       update()
-    else
-      print("Loading...")
     end
   end
+  print("Loading...")
   dofile("stargate/control.lua")
 end
