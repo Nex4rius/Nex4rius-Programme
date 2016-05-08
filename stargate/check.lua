@@ -4,6 +4,7 @@ sides = require("sides")
 term = require("term")
 event = require("event")
 fs = require("filesystem")
+gpu = component.getPrimary("gpu")
 
 function checkComponents()
   if component.isAvailable("redstone") then
@@ -17,7 +18,6 @@ function checkComponents()
   end
   if gpu.maxResolution() > 50 then
     print("- GPU Tier2+           ok")
-    gpu = component.getPrimary("gpu")
   else
     print("- GPU Tier2+           Missing")
   end
