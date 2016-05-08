@@ -88,7 +88,7 @@ if checkComponents() == true then
         update()
       end
     end
-    os.execute("del version.lua")
+--    os.execute("del version.lua")
   end
   print("\nLoading...")
   dofile("stargate/control.lua")
