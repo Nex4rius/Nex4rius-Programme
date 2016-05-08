@@ -15,6 +15,6 @@ print("")
 os.execute("wget 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/stargate/saveAfterReboot.lua' stargate/saveAfterReboot.lua")
 print("")
 os.execute("del -v this.lua")
-print("")
+print("\n")
 install = true
 os.execute("autorun.lua")
