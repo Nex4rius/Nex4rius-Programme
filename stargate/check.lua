@@ -65,7 +65,7 @@ function update()
     f:write("")
     f:close ()
   end
---  os.execute("reboot")
+  os.execute("reboot")
 end
 
 if checkComponents() == true then
@@ -77,6 +77,6 @@ if checkComponents() == true then
       update()
     end
   end
-  print("Loading...")
+  print("\nLoading...")
   dofile("stargate/control.lua")
 end
