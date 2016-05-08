@@ -7,9 +7,9 @@ How to install:
 2) copy / paste commands
 
 ```lua
-wget -f "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/installieren.lua" installieren
+wget -f "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/this.lua" this
 
-installieren
+instalthislieren
 ```
 
 3) Profit
