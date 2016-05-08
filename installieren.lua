@@ -1,5 +1,5 @@
 fs.makeDirectory("/stargate")
 os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/stargate/check.lua' stargate/check.lua")
 os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/autorun.lua' autorun.lua")
-os.execute("del install.lua")
+os.execute("del installieren.lua")
 os.execute("reboot")
