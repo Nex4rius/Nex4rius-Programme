@@ -1,0 +1,1 @@
+dofile("stargate/check.lua")
