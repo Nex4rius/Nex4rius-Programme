@@ -1,4 +1,4 @@
-version = 1.4.4
+version = "1.4.4"
 component = require("component")
 fs = require("filesystem")
 if component.isAvailable("internet") then
