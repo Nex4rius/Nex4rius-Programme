@@ -71,7 +71,6 @@ end
 function checkServerVersion()
   os.execute("wget -fQ 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/stargate/version.lua' version.lua")
   dofile("version.lua")
-  os.execute("del -v version.lua")
 end
 
 if checkComponents() == true then
@@ -85,6 +84,7 @@ if checkComponents() == true then
         update()
       end
     end
+    os.execute("del version.lua")
   end
   print("\nLoading...")
   dofile("stargate/control.lua")
