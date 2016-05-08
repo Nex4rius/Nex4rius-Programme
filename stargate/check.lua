@@ -68,13 +68,23 @@ function update()
   os.execute("reboot")
 end
 
+function checkServerVersion()
+  os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/version.lua' version.lua")
+  dofile("version.txt")
+  os.execute("del -v version.lua")
+  return serverVersion
+end
+
 if checkComponents() == true then
   if internet == true and install == nil then
-    print("\nCurrect Version:       " .. version .. "\nAvailable Version:     " .. "serverversionhere" .. "\n\nUpdate? yes/no\n")
-    askUpdate = io.read()
-    print("\nUpdate: " .. askUpdate .. "\n")
-    if askUpdate == "yes" or askUpdate == "y" then
-      update()
+    if version == checkServerVersion() then
+    else
+      print("\nCurrect Version:       " .. version .. "\nAvailable Version:     " .. serverVersion .. "\n\nUpdate? yes/no\n")
+      askUpdate = io.read()
+      print("\nUpdate: " .. askUpdate .. "\n")
+      if askUpdate == "yes" or askUpdate == "y" then
+        update()
+      end
     end
   end
   print("Loading...")
