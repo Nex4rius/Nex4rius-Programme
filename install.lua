@@ -9,4 +9,4 @@ os.execute("wget 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Prog
 os.execute("wget 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/stargate/saveAfterReboot.lua' stargate/saveAfterReboot.lua")
 print("")
 os.execute("del this.lua")
-os.execute("reboot")
+os.execute("autorun.lua")
