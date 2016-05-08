@@ -69,10 +69,11 @@ function update()
 end
 
 if checkComponents() == true then
-  if internet == true then
-    print("Update? yes/no")
+  if internet == true and install == nil then
+    print("\nUpdate? yes/no\n")
     askUpdate = io.read()
     if askUpdate == "yes" then
+      print("Update: " .. askUpdate)
       update()
     end
   end
