@@ -70,11 +70,13 @@ end
 
 if checkComponents() == true then
   if internet == true and install == nil then
-    print("\n\n\nUpdate? yes/no\n")
+    print("\nUpdate? yes/no\n")
     askUpdate = io.read()
+    print("\nUpdate: " .. askUpdate"\n")
     if askUpdate == "yes" or askUpdate == "y" then
-      print("\nUpdate: " .. askUpdate)
       update()
+    else
+      print("Loading...")
     end
   end
   dofile("stargate/control.lua")
