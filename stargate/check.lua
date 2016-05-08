@@ -75,6 +75,9 @@ end
 
 if checkComponents() == true then
   if internet == true then
+    if serverVersion == nil then
+      serverVersion = "Unavailable"
+    end
     if version == serverVersion then
     elseif install == nil then
       print("\nCurrect Version:       " .. version .. "\nAvailable Version:     " .. serverVersion .. "\n\nUpdate? yes/no\n")
