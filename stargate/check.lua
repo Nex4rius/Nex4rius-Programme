@@ -67,7 +67,7 @@ function update()
 end
 
 if checkComponents() == true then
-  if internet = true then
+  if internet == true then
     print("Update? yes/no")
     askUpdate = io.read()
     if askUpdate == "yes" then
