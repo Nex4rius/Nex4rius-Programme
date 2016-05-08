@@ -81,12 +81,12 @@ if checkComponents() == true then
     else
       print("\nCurrect Version:       " .. version .. "\nAvailable Version:     " .. serverVersion .. "\n\nUpdate? yes/no\n")
       askUpdate = io.read()
-      print("\nUpdate: " .. askUpdate .. "\n")
+      print("\nUpdate: " .. askUpdate)
       if askUpdate == "yes" or askUpdate == "y" then
         update()
       end
     end
   end
-  print("Loading...")
+  print("\nLoading...")
   dofile("stargate/control.lua")
 end
