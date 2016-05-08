@@ -5,7 +5,7 @@ if component.isAvailable("internet") then
   fs.makeDirectory("/stargate")
   print("- Internet Card        ok (optional)")
   print("")
-  os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/stargate/autorun.lua' autorun.lua")
+  os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/autorun.lua' autorun.lua")
   print("")
   os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/stargate/control.lua' stargate/control.lua")
   print("")
