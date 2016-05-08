@@ -23,7 +23,7 @@ function pad(s, n)
 end
 
 function writeSaveFile()
-  f = io.open ("saveAfterReboot.lua", "w")
+  f = io.open ("stargate/saveAfterReboot.lua", "w")
   f:write('control = "' .. control .. '"\n')
   f:write('firstrun = ' .. firstrun .. '\n')
   f:close ()
@@ -200,14 +200,14 @@ end
 
 function newAddress(g)
   if AddNewAddress == true then
-    f = io.open ("addresses.lua", "a")
+    f = io.open ("stargate/addresses.lua", "a")
     f:seek ("end", firstrun)
     f:write('  {"' .. g .. '", "' .. g .. '", ""},\n}')
     f:close ()
     AddNewAddress = false
     firstrun = -1
     writeSaveFile()
-    dofile("addresses.lua")
+    dofile("stargate/addresses.lua")
     sides()
     showMenu()
   end
@@ -516,8 +516,8 @@ handlers[key_event_name] = function(e)
       end
     end
   elseif c == "z" then
-    os.execute("edit addresses.lua")
-    dofile("addresses.lua")
+    os.execute("edit stargate/addresses.lua")
+    dofile("stargate/addresses.lua")
     sides()
     showMenu()
   elseif e[3] == 0 and e[4] == 203 then
