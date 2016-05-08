@@ -7,6 +7,7 @@ fs = require("filesystem")
 gpu = component.getPrimary("gpu")
 
 function checkComponents()
+  print("Checking Components\n")
   if component.isAvailable("redstone") then
     print("- Redstone Card        ok (optional)")
     r = component.getPrimary("redstone")
@@ -35,6 +36,7 @@ function checkComponents()
     print("- Stargate             Missing")
     return false
   end
+  os.sleep(2)
 end
 
 function update()
