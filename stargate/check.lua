@@ -69,7 +69,7 @@ function update()
 end
 
 function checkServerVersion()
-  os.execute("wget -fQ 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/stargate/version.lua' version.lua")
+  os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/stargate/version.lua' version.lua")
   dofile("version.lua")
 end
 
