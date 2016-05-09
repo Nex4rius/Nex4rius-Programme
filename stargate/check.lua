@@ -69,12 +69,17 @@ function update()
 end
 
 function checkServerVersion()
-  os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/stargate/version.lua' version.lua")
-  dofile("version.lua")
+  os.execute("del -v version.txt")
+  os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/stargate/version.txt' version.txt")
+  f = io.open ("version.txt", "r")
+  serverVersion = f:read(5)
+  f:close ()
+  print(serverVersion)
 end
 
 if checkComponents() == true then
   if internet == true then
+    checkServerVersion()
 --    if serverVersion == nil then
 --      serverVersion = "Unavailable"
 --    end
