@@ -74,6 +74,7 @@ function checkServerVersion()
   f = io.open ("version.txt", "r")
   serverVersion = f:read(5)
   f:close ()
+  os.execute("del version.txt")
   return serverVersion
 end
 
