@@ -1,4 +1,4 @@
-version = "1.5.7"
+version = "1.5.8"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -91,7 +91,7 @@ if checkComponents() == true then
     print("\nCurrect Version:       " .. version .. "\nAvailable Version:     " .. checkServerVersion() .. "\n")
     if version == checkServerVersion() then
     elseif install == nil then
-      print("\nCurrect Version:       " .. version .. "\nAvailable Version:     " .. checkServerVersion() .. "\n\nUpdate? yes/no\n")
+      print("Update? yes/no\n")
       askUpdate = io.read()
       if askUpdate == "yes" or askUpdate == "y" then
         print("\nUpdate: yes\n")
