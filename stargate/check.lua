@@ -89,7 +89,7 @@ if checkComponents() == true then
         update()
         print("\nUpdate: yes")
       else
-        print("\nUpdate: " .. askUpdate)
+        print("\nAnswer: " .. askUpdate)
       end
     end
   end
