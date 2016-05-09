@@ -93,9 +93,8 @@ if checkComponents() == true then
       print("\nCurrect Version:       " .. version .. "\nAvailable Version:     " .. serverVersion .. "\n\nUpdate? yes/no\n")
       askUpdate = io.read()
       if askUpdate == "yes" or askUpdate == "y" then
-        print("")
+        print("\nUpdate: yes\n")
         update()
-        print("\nUpdate: yes")
       else
         print("\nAnswer: " .. askUpdate)
       end
