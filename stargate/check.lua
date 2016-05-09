@@ -88,10 +88,10 @@ end
 
 if checkComponents() == true then
   if internet == true then
-    print("\nCurrect Version:       " .. version .. "\nAvailable Version:     " .. checkServerVersion() .. "\n")
+    print("\nCurrect Version:       " .. version .. "\nAvailable Version:     " .. checkServerVersion())
     if version == checkServerVersion() then
     elseif install == nil then
-      print("Update? yes/no\n")
+      print("\nUpdate? yes/no\n")
       askUpdate = io.read()
       if askUpdate == "yes" or askUpdate == "y" then
         print("\nUpdate: yes\n")
