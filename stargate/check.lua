@@ -1,4 +1,4 @@
-version = "1.5.1"
+version = "1.5.2"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -56,8 +56,19 @@ function update()
   os.execute("wget 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/stargate/saveAfterReboot.lua' stargate/saveAfterReboot.lua")
   print("")
   f = io.open ("stargate/addresses.lua", "r")
-  readAddresses = f:read(10000)
-  AdressesLength = string.len(readAddresses)
+  addressRead = true
+  leseLaenge = 1000
+  while addressRead == true do
+    readAddresses = f:read(leseLaenge)
+    AdressesLength = string.len(readAddresses)
+    if AdressesLength == leseLaenge then
+      leseLaenge = leseLaenge * 2
+    else
+      addressRead = false
+    end
+  end
+--  readAddresses = f:read(1000)
+--  AdressesLength = string.len(readAddresses)
   f:close ()
   if string.sub(readAddresses, AdressesLength, AdressesLength) == " " then
     f = io.open ("stargate/addresses.lua", "a")
