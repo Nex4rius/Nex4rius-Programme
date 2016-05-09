@@ -74,6 +74,7 @@ function checkServerVersion()
 end
 
 if checkComponents() == true then
+  checkServerVersion()
   if internet == true then
 --    if serverVersion == nil then
 --      serverVersion = "Unavailable"
