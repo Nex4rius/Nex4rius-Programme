@@ -1,4 +1,4 @@
-version = "1.5.2"
+version = "1.5.3"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -67,8 +67,6 @@ function update()
       addressRead = false
     end
   end
---  readAddresses = f:read(1000)
---  AdressesLength = string.len(readAddresses)
   f:close ()
   if string.sub(readAddresses, AdressesLength, AdressesLength) == " " then
     f = io.open ("stargate/addresses.lua", "a")
@@ -80,7 +78,6 @@ function update()
 end
 
 function checkServerVersion()
-  os.execute("del version.txt")
   os.execute("wget -fQ 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/stargate/version.txt' version.txt")
   f = io.open ("version.txt", "r")
   serverVersion = f:read(5)
