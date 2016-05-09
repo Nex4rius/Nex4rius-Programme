@@ -75,16 +75,16 @@ function checkServerVersion()
   serverVersion = f:read(5)
   f:close ()
   print(serverVersion)
+  return serverVersion
 end
 
 if checkComponents() == true then
   if internet == true then
-    checkServerVersion()
 --    if serverVersion == nil then
 --      serverVersion = "Unavailable"
 --    end
-    if version == serverVersion then
-    elseif install == nil and not serverVersion == nil then
+    if version == checkServerVersion() then
+    elseif install == nil then
       print("\nCurrect Version:       " .. version .. "\nAvailable Version:     " .. serverVersion .. "\n\nUpdate? yes/no\n")
       askUpdate = io.read()
       print("\nUpdate: " .. askUpdate)
