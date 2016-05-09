@@ -1,4 +1,4 @@
-version = "1.4.6"
+version = "1.4.7"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -69,20 +69,16 @@ function update()
 end
 
 function checkServerVersion()
-  os.execute("del -v version.txt")
-  os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/stargate/version.txt' version.txt")
+  os.execute("del version.txt")
+  os.execute("wget -fQ 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/stargate/version.txt' version.txt")
   f = io.open ("version.txt", "r")
   serverVersion = f:read(5)
   f:close ()
-  print(serverVersion)
   return serverVersion
 end
 
 if checkComponents() == true then
   if internet == true then
---    if serverVersion == nil then
---      serverVersion = "Unavailable"
---    end
     if version == checkServerVersion() then
     elseif install == nil then
       print("\nCurrect Version:       " .. version .. "\nAvailable Version:     " .. serverVersion .. "\n\nUpdate? yes/no\n")
