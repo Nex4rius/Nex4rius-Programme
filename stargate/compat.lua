@@ -1,6 +1,3 @@
-term = require("term")
-event = require("event")
-
 function try(func, ...)
   ok, result = pcall(func, ...)
   if not ok then
