@@ -1,4 +1,4 @@
-version = "1.4.7"
+version = "1.5.0"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -83,13 +83,14 @@ if checkComponents() == true then
     elseif install == nil then
       print("\nCurrect Version:       " .. version .. "\nAvailable Version:     " .. serverVersion .. "\n\nUpdate? yes/no\n")
       askUpdate = io.read()
-      print("\nUpdate: " .. askUpdate)
-      if askUpdate == "yes" or askUpdate == "ye" or askUpdate == "y" then
+      if askUpdate == "yes" or askUpdate == "y" then
         print("")
         update()
+        print("\nUpdate: yes")
+      else
+        print("\nUpdate: " .. askUpdate)
       end
     end
---    os.execute("del version.lua")
   end
   print("\nLoading...")
   dofile("stargate/control.lua")
