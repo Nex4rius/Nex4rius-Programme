@@ -7,9 +7,10 @@ How to install:
 2) copy / paste commands
 
 ```lua
-wget -f "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/autorun.lua" autorun.lua
+wget -f "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/test/install.lua" this.lua
 
-reboot
+this
 ```
 
 3) Profit
+
