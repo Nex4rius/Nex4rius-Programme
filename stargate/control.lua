@@ -9,10 +9,10 @@
 -- wget -f "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/autorun.lua" autorun.lua
 --
 
-dofile("stargate/addresses.lua")
+dofile("stargate/addressen.lua")
 dofile("stargate/config.lua")
 dofile("stargate/compat.lua")
-dofile("stargate/saveAfterReboot.lua")
+dofile("stargate/sicherNachNeustart.lua")
 
 debug = false
 
@@ -20,13 +20,6 @@ gpu.setBackground(0x333333)
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
-end
-
-function writeSaveFile()
-  f = io.open ("stargate/saveAfterReboot.lua", "w")
-  f:write('control = "' .. control .. '"\n')
-  f:write('firstrun = ' .. firstrun .. '\n')
-  f:close ()
 end
 
 function checkReset()
@@ -54,7 +47,7 @@ end
 function showMenu()
   setCursor(1, 1)
   print("Address Page " .. seite + 1)
-  for i, na in pairs(addresses) do
+  for i, na in pairs(addressen) do
     if i >= 1 + seite * 9 and i <= 9 + seite * 9 then
       print(i - seite * 9 .. " " .. na[1])
       if sg.energyToDial(na[2]) == nil then
@@ -200,14 +193,14 @@ end
 
 function newAddress(g)
   if AddNewAddress == true then
-    f = io.open ("stargate/addresses.lua", "a")
+    f = io.open ("stargate/addressen.lua", "a")
     f:seek ("end", firstrun)
     f:write('  {"' .. g .. '", "' .. g .. '", ""},\n}')
     f:close ()
     AddNewAddress = false
     firstrun = -1
-    writeSaveFile()
-    dofile("stargate/addresses.lua")
+    schreibSicherungsdatei()
+    dofile("stargate/addressen.lua")
     sides()
     showMenu()
   end
@@ -216,7 +209,7 @@ end
 function destinationName()
   if state == "Dialling" or state == "Connected" then
     if remoteName == "" and state == "Dialling" and wormhole == "in" then
-      for j, na in pairs(addresses) do
+      for j, na in pairs(addressen) do
         if remAddr == na[2] then
           if na[1] == na[2] then
             remoteName = "Unknown"
@@ -495,7 +488,7 @@ handlers[key_event_name] = function(e)
     running = false
   elseif c >= "1" and c <= "9" then
     c = c + seite * 9
-    na = addresses[tonumber(c)]
+    na = addressen[tonumber(c)]
     iriscontrol = "off"
     wormhole = "out"
     if na then
@@ -509,15 +502,15 @@ handlers[key_event_name] = function(e)
       send = true
       if control == "On" then
         control = "Off"
-        writeSaveFile()
+        schreibSicherungsdatei()
       else
         control = "On"
-        writeSaveFile()
+        schreibSicherungsdatei()
       end
     end
   elseif c == "z" then
-    os.execute("edit stargate/addresses.lua")
-    dofile("stargate/addresses.lua")
+    os.execute("edit stargate/addressen.lua")
+    dofile("stargate/addressen.lua")
     sides()
     showMenu()
   elseif e[3] == 0 and e[4] == 203 then
