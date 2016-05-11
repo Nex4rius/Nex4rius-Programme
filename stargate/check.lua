@@ -1,61 +1,89 @@
-version = "1.5.8"
+version = "1.6.0"
 component = require("component")
 sides = require("sides")
 term = require("term")
 event = require("event")
 fs = require("filesystem")
 gpu = component.getPrimary("gpu")
+serverAddresse = "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/"
+versionTyp = "master/"
 
-function checkComponents()
-  print("Checking Components\n")
+dofile("stargate/sicherNachNeustart.lua")
+
+function schreibSicherungsdatei()
+  f = io.open ("stargate/saveAfterReboot.lua", "w")
+  f:write('control = "' .. control .. '"\n')
+  f:write('firstrun = ' .. firstrun .. '\n')
+  f:write('Sprache = "' .. Sprache .. '" -- Deutsch / English\n')
+  f:close ()
+end
+
+if Sprache == "" or Sprache == nil then
+  print("Sprache? / Language? Deutsch / English\n")
+  antwortFrageSprache = io.read()
+  if antwortFrageSprache == "deutsch" or antwortFrageSprache == "Deutsch" or antwortFrageSprache == "english" or antwortFrageSprache == "English" then
+    Sprache = antwortFrageSprache
+  else
+    print("\nUnbekannte Eingabe\nStandardeinstellung = Deutsch")
+    Sprache = "Deutsch"
+  end
+  schreibSicherungsdatei()
+  print("")
+end
+
+dofile("stargate/sprache.lua")
+
+function checkKomponenten()
+  print(pruefeKomponenten)
   if component.isAvailable("redstone") then
-    print("- Redstone Card        ok (optional)")
+    print(redstoneOK)
     r = component.getPrimary("redstone")
     redst = true
   else
-    print("- Redstone Card        Missing (optional)")
+    print(redstoneFehlt)
     r = nil
     redst = false
   end
   if gpu.maxResolution() > 50 then
-    print("- GPU Tier2+           ok")
+    print(gpuOK)
   else
-    print("- GPU Tier2+           Missing")
+    print(gpuFehlt)
   end
   if component.isAvailable("internet") then
-    print("- Internet             ok (optional)")
+    print(InternetOK)
     internet = true
   else
-    print("- Internet             Missing (optional)")
+    print(InternetFehlt)
     internet = false
   end
   if component.isAvailable("stargate") then
-    print("- Stargate             ok\n")
+    print(StargateOK)
     sg = component.getPrimary("stargate")
     return true
   else
-    print("- Stargate             Missing\n")
+    print(StargateOK)
     return false
   end
 end
 
 function update()
   fs.makeDirectory("/stargate")
-  os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/autorun.lua' autorun.lua")
+  Pfad = serverAddresse .. versionTyp
+  os.execute("wget -f " .. Pfad .. "autorun.lua autorun.lua")
   print("")
-  os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/stargate/control.lua' stargate/control.lua")
+  os.execute("wget -f " .. Pfad .. "stargate/Kontrollprogramm.lua stargate/Kontrollprogramm.lua")
   print("")
-  os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/stargate/compat.lua' stargate/compat.lua")
+  os.execute("wget -f " .. Pfad .. "stargate/compat.lua stargate/compat.lua")
   print("")
-  os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/stargate/config.lua' stargate/config.lua")
+  os.execute("wget -f " .. Pfad .. "stargate/config.lua stargate/config.lua")
   print("")
-  os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/stargate/check.lua' stargate/check.lua")
+  os.execute("wget -f " .. Pfad .. "stargate/check.lua stargate/check.lua")
   print("")
-  os.execute("wget 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/stargate/addresses.lua' stargate/addresses.lua")
+  os.execute("wget " .. Pfad .. "stargate/addressen.lua stargate/addressen.lua")
   print("")
-  os.execute("wget 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/stargate/saveAfterReboot.lua' stargate/saveAfterReboot.lua")
+  os.execute("wget " .. Pfad .. "sicherNachNeustart.lua stargate/sicherNachNeustart.lua")
   print("")
-  f = io.open ("stargate/addresses.lua", "r")
+  f = io.open ("stargate/addressen.lua", "r")
   addressRead = true
   leseLaenge = 1000
   while addressRead == true do
@@ -69,7 +97,7 @@ function update()
   end
   f:close ()
   if string.sub(readAddresses, AdressesLength, AdressesLength) == " " then
-    f = io.open ("stargate/addresses.lua", "a")
+    f = io.open ("stargate/addressen.lua", "a")
     f:seek ("end", -1)
     f:write("")
     f:close ()
@@ -78,29 +106,54 @@ function update()
 end
 
 function checkServerVersion()
-  os.execute("wget -fQ 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/stargate/version.txt' version.txt")
+  Pfad = serverAddresse .. versionTyp
+  os.execute("wget -fQ " .. Pfad .. "stargate/version.txt version.txt")
   f = io.open ("version.txt", "r")
   serverVersion = f:read(5)
   f:close ()
   os.execute("del version.txt")
+  if serverVersion == nil then
+    serverVersion = "<ERROR>"
+  end
   return serverVersion
 end
 
-if checkComponents() == true then
+function checkBetaServerVersion()
+  Pfad = serverAddresse .. "beta/"
+  os.execute("wget -fQ " .. Pfad .. "stargate/version.txt betaVersion.txt")
+  f = io.open ("betaVersion.txt", "r")
+  betaServerVersion = f:read(5)
+  f:close ()
+  os.execute("del betaVersion.txt")
+  if betaServerVersion == nil then
+    betaServerVersion = "<ERROR>"
+  end
+  return betaServerVersion
+end
+
+if checkKomponenten() == true then
   if internet == true then
-    print("\nCurrect Version:       " .. version .. "\nAvailable Version:     " .. checkServerVersion())
-    if version == checkServerVersion() then
-    elseif install == nil then
-      print("\nUpdate? yes/no\n")
-      askUpdate = io.read()
-      if askUpdate == "yes" or askUpdate == "y" then
-        print("\nUpdate: yes\n")
+    print(derzeitigeVersion .. version .. verfuegbareVersion .. checkServerVersion())
+    if checkServerVersion() == checkBetaServerVersion() then
+    else
+      print(betaVersion .. checkBetaServerVersion())
+    end
+    if version == checkServerVersion() and version == checkBetaServerVersion() then
+    elseif installieren == nil then
+      print(aktualisierenFrage)
+      antwortFrage = io.read()
+      if antwortFrage == "ja" or antwortFrage == "j" or antwortFrage == "yes" or antwortFrage == "y" then
+        print(aktualisierenJa)
+        update()
+      elseif antwortFrage == "test" or antwortFrage == "beta" then
+        versionTyp = "beta/"
+        print(aktualisierenBeta)
         update()
       else
-        print("\nAnswer: " .. askUpdate)
+        print(aktualisierenNein .. antwortFrage)
       end
     end
   end
-  print("\nLoading...")
-  dofile("stargate/control.lua")
+  print(laden)
+  dofile("stargate/Kontrollprogramm.lua")
 end
