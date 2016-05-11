@@ -18,18 +18,18 @@ function schreibSicherungsdatei()
   f:close ()
 end
 
-if Sprache == "" or Sprache == nil then
-  print("Sprache? / Language? Deutsch / English\n")
-  antwortFrageSprache = io.read()
-  if antwortFrageSprache == "deutsch" or antwortFrageSprache == "Deutsch" or antwortFrageSprache == "english" or antwortFrageSprache == "English" then
-    Sprache = antwortFrageSprache
-  else
-    print("\nUnbekannte Eingabe\nStandardeinstellung = Deutsch")
-    Sprache = "Deutsch"
-  end
-  schreibSicherungsdatei()
-  print("")
-end
+--if Sprache == "" or Sprache == nil then
+--  print("Sprache? / Language? Deutsch / English\n")
+--  antwortFrageSprache = io.read()
+--  if antwortFrageSprache == "deutsch" or antwortFrageSprache == "Deutsch" or antwortFrageSprache == "english" or antwortFrageSprache == "English" then
+--    Sprache = antwortFrageSprache
+--  else
+--    print("\nUnbekannte Eingabe\nStandardeinstellung = Deutsch")
+    Sprache = "english"
+--  end
+--  schreibSicherungsdatei()
+--  print("")
+--end
 
 dofile("stargate/sprache.lua")
 
