@@ -38,7 +38,7 @@ function loop()
       c.setActive(false)
     end
     os.sleep(10)
-    if c.isActive() = true then
+    if c.isActive() == true then
       print("Chunkloader An")
     else
       print("Chunkloader Aus")
