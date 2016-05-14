@@ -31,7 +31,11 @@ function loop()
   while aktiv == true do
     if r.getInput(1) == 0 then
       os.sleep(1)
-      c.setActive(false)
+      if r.getInput(1) == 0 then
+        c.setActive(false)
+      else
+        c.setActive(true)
+      end
     else
       c.setActive(true)
     end
