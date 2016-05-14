@@ -27,17 +27,14 @@ function main()
 end
 
 function loop()
-  chunk = true
   aktiv = true
   while aktiv == true do
     print(r.getInput(1))
-    if r.getInput(1) > 0 and chunk == true then
+    if r.getInput(1) > 0 then
       c.setActive(true)
-      chunk = false
       print("an")
-    elseif r.getInput(1) == 0 and chunk == false then
+    elseif r.getInput(1) == 0 then
       os.sleep(10)
-      chunk = true
       c.setActive(false)
       print("aus")
     end
