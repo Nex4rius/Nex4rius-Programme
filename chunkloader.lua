@@ -30,7 +30,7 @@ function loop()
   aktiv = true
   while aktiv == true do
     if r.getInput(1) == 0 then
-      os.sleep(10)
+      os.sleep(1)
       c.setActive(false)
     else
       c.setActive(true)
@@ -41,7 +41,7 @@ function loop()
     elseif c.isActive() == false then
       print("Chunkloader Aus")
     end
-    os.sleep(10)
+    os.sleep(1)
   end
 end
 
