@@ -29,14 +29,17 @@ end
 function loop()
   aktiv = true
   while aktiv == true do
-    print("\nredstone input: " .. r.getInput(1))
+    print("\nredstone input: " .. r.getInput(1)) --test
     if r.getInput(1) > 0 then
       c.setActive(true)
-      print("Chunkloader" .. c.isActive())
     elseif r.getInput(1) == 0 then
       os.sleep(10)
       c.setActive(false)
-      print("Chunkloader" .. c.isActive())
+    end
+    if c.isActive() == true then
+      print("Chunkloader An")
+    elseif c.isActive() == false then
+      print("Chunkloader Aus")
     end
     os.sleep(10)
   end
