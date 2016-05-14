@@ -33,10 +33,12 @@ function loop()
     if r.getInput(1) > 0 and chunk == true then
       c.setActive(true)
       chunk = false
+      print("an")
     elseif r.getInput(1) == 0 and chunk == false then
       os.sleep(10)
       chunk = true
       c.setActive(false)
+      print("aus")
     end
     if c.isActive() == true then
       print("Chunkloader An")
