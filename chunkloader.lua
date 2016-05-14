@@ -39,6 +39,7 @@ function loop()
       chunk = true
       c.setActive(false)
     end
+    os.sleep(10)
   end
 end
 
