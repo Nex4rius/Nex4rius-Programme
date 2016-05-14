@@ -4,7 +4,7 @@ component = require("component")
 os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/chunkloader.lua' autorun.lua")
 
 function main()
-  print("\nPruefe Komponenten\n")
+  print("\nPruefe KomponentenTEST\n")
   if component.isAvailable("chunkloader") then
     c = component.chunkloader
     chunkloaderstatus = true
