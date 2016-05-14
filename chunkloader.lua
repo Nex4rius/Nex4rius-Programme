@@ -4,7 +4,7 @@ component = require("component")
 os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/chunkloader.lua' autorun.lua")
 
 function main()
-  print("Pruefe Komponenten\n")
+  print("\nPruefe Komponenten\n")
   if component.isAvailable("chunkloader") then
     c = component.chunkloader
     chunkloaderstatus = true
@@ -20,6 +20,7 @@ function main()
   else
     print("- Redstone Card        fehlt")
   end
+  print("")
   if chunkloaderstatus == true and redstonestatus == true then
     loop()
   end
