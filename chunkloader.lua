@@ -31,11 +31,11 @@ function loop()
   while aktiv == true do
     if r.getInput(1) > 0 and chunk == true then
       c.setActive(true)
-      print("Chunkloader An")
+      print("Chunkloader " .. isActive())
       chunk = false
     elseif r.getInput(1) == 0 and chunk == false then
       os.sleep(10)
-      print("Chunkloader Aus")
+      print("Chunkloader " .. isActive())
       chunk = true
       c.setActive(false)
     end
