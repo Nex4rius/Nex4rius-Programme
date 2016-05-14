@@ -29,7 +29,7 @@ end
 function loop()
   aktiv = true
   while aktiv == true do
-    print(r.getInput(1))
+    print("redstone input: " .. r.getInput(1))
     if r.getInput(1) > 0 then
       c.setActive(true)
       print("an")
