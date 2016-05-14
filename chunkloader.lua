@@ -37,12 +37,12 @@ function loop()
       chunk = true
       c.setActive(false)
     end
-    os.sleep(10)
     if c.isActive() == true then
       print("Chunkloader An")
     else
       print("Chunkloader Aus")
     end
+    os.sleep(10)
   end
 end
 
