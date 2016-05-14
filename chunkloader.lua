@@ -1,11 +1,7 @@
 -- Robot programm to load the chunk on active redstone signal (eg. white signal from stargate programm)
 
 component = require("component")
-serverAddresse = "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/"
-versionTyp = "master/"
-
-Pfad = serverAddresse .. versionTyp
-os.execute("wget -f " .. Pfad .. "chunkloader.lua autorun.lua")
+os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/chunkloader.lua' autorun.lua")
 
 function main()
   print("Pruefe Komponenten\n")
