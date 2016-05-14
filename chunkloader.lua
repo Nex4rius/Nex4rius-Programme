@@ -30,6 +30,7 @@ function loop()
   chunk = true
   aktiv = true
   while aktiv == true do
+    print(r.getInput(1))
     if r.getInput(1) > 0 and chunk == true then
       c.setActive(true)
       chunk = false
