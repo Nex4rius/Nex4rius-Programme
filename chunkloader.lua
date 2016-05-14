@@ -29,11 +29,11 @@ function loop()
   chunk = true
   aktiv = true
   while aktiv == true do
-    if r.getBundledInput(1, 0) > 0 and chunk == true then
+    if r.getInput(1) > 0 and chunk == true then
       c.setActive(true)
       print("Chunkloader An")
       chunk = false
-    elseif r.getBundledInput(1, 0) == 0 and chunk == false then
+    elseif r.getInput(1) == 0 and chunk == false then
       os.sleep(10)
       print("Chunkloader Aus")
       chunk = true
