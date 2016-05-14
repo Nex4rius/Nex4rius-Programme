@@ -4,20 +4,16 @@ serverAddresse = "https://raw.githubusercontent.com/DarknessShadow/Stargate-Prog
 versionTyp = "master/"
 
 Pfad = serverAddresse .. versionTyp
-os.execute("wget -f " .. Pfad .. "chunkloader.lua chunkloader.lua")
-os.execute("wget -f " .. Pfad .. "stargate/sprache.lua sprache.lua")
+os.execute("wget -f " .. Pfad .. "chunkloader.lua autorun.lua")
 
-Sprache = "deutsch"
-dofile("sprache.lua")
-
-print(pruefeKomponenten)
+print("Pruefe Komponenten\n")
 if component.isAvailable("redstone") then
-  print(redstoneOK)
+  print("- Redstone Card        ok")
   r = component.getPrimary("redstone")
   aktiv = true
 --  while aktiv true do
     
 --  end
 else
-  print(redstoneFehlt)
+  print("- Redstone Card        fehlt")
 end
