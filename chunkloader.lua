@@ -32,16 +32,11 @@ function loop()
     print("redstone input: " .. r.getInput(1))
     if r.getInput(1) > 0 then
       c.setActive(true)
-      print("an")
+      print("Chunkloader" .. c.isActive())
     elseif r.getInput(1) == 0 then
       os.sleep(10)
       c.setActive(false)
-      print("aus")
-    end
-    if c.isActive() == true then
-      print("Chunkloader An")
-    else
-      print("Chunkloader Aus")
+      print("Chunkloader" .. c.isActive())
     end
     os.sleep(10)
   end
