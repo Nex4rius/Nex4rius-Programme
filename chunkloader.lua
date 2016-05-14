@@ -19,7 +19,7 @@ function main()
   end
   if component.isAvailable("redstone") then
     r = component.getPrimary("redstone")
-    redstonestatus == true
+    redstonestatus = true
     print("- Redstone Card        ok")
   else
     print("- Redstone Card        fehlt")
