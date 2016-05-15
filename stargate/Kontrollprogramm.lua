@@ -10,7 +10,7 @@
 -- installieren
 --
 
-dofile("stargate/addressen.lua")
+dofile("stargate/adressen.lua")
 dofile("stargate/config.lua")
 dofile("stargate/compat.lua")
 dofile("stargate/sicherNachNeustart.lua")
@@ -47,13 +47,13 @@ function zeigeMenu()
   if seite == -1 then
     print(Steuerung)
     print("I " .. IrisSteuerung .. an_aus)
-    print("Z " .. addressenBearbeiten)
+    print("Z " .. AdressenBearbeiten)
     print("Q " .. beenden)
     print(RedstoneSignale)
     print(versionName .. version)
   else
-    print(addressSeite .. seite + 1)
-    for i, na in pairs(addressen) do
+    print(Adressseite .. seite + 1)
+    for i, na in pairs(adressen) do
       if i >= 1 + seite * 9 and i <= 9 + seite * 9 then
         print(i - seite * 9 .. " " .. na[1])
         if sg.energyToDial(na[2]) == nil then
@@ -176,7 +176,7 @@ function iriscontroller()
   if codeaccepted == "-" or codeaccepted == nil then
   elseif messageshow == true then
     gpu.setForeground(0xFF0000)
-    zeigeNachricht("Message received: "..codeaccepted)
+    zeigeNachricht(nachrichtAngekommen .. codeaccepted)
     gpu.setForeground(0xFFFFFF)
     if codeaccepted == "Request: Disconnect Stargate" then
       os.sleep(1)
@@ -200,14 +200,14 @@ end
 
 function newAddress(g)
   if AddNewAddress == true then
-    f = io.open ("stargate/addressen.lua", "a")
+    f = io.open ("stargate/adressen.lua", "a")
     f:seek ("end", firstrun)
     f:write('  {"' .. g .. '", "' .. g .. '", ""},\n}')
     f:close ()
     AddNewAddress = false
     firstrun = -1
     schreibSicherungsdatei()
-    dofile("stargate/addressen.lua")
+    dofile("stargate/adressen.lua")
     sides()
     zeigeMenu()
   end
@@ -216,7 +216,7 @@ end
 function destinationName()
   if state == "Dialling" or state == "Connected" then
     if remoteName == "" and state == "Dialling" and wormhole == "in" then
-      for j, na in pairs(addressen) do
+      for j, na in pairs(adressen) do
         if remAddr == na[2] then
           if na[1] == na[2] then
             remoteName = Unbekannt
@@ -261,22 +261,22 @@ function zeigeStatus()
   iriscontroller()
   energy = sg.energyAvailable()*energymultiplicator
   zeile = 1
-  zeigeHier(40, zeile,  "Local Address:    " .. locAddr) neueZeile(1)
-  zeigeHier(40, zeile,  "Destination Addr: " .. remAddr) neueZeile(1)
-  zeigeHier(40, zeile,  "Destination Name: " .. remoteName) neueZeile(1)
-  zeigeHier(40, zeile,  "State:            " .. state) neueZeile(1)
+  zeigeHier(40, zeile, lokaleAdresse .. locAddr) neueZeile(1)
+  zeigeHier(40, zeile, zielAdresse .. remAddr) neueZeile(1)
+  zeigeHier(40, zeile, zielName .. remoteName) neueZeile(1)
+  zeigeHier(40, zeile, statusName .. state) neueZeile(1)
   zeigeEnergie() neueZeile(1)
-  zeigeHier(40, zeile,  "Iris:             " .. iris) neueZeile(1)
+  zeigeHier(40, zeile, IrisName .. iris) neueZeile(1)
   if iris == "Offline" then else
-    zeigeHier(40, zeile,  "Iris Control:     " .. control) neueZeile(1)
+    zeigeHier(40, zeile, IrisSteuerung .. control) neueZeile(1)
   end
   if IDCyes == true then
-    zeigeHier(40, zeile, "IDC:              Accepted") neueZeile(1)
+    zeigeHier(40, zeile, IDCakzeptiert) neueZeile(1)
   else
-    zeigeHier(40, zeile, "IDC:              " .. incode) neueZeile(1)
+    zeigeHier(40, zeile, IDCname .. incode) neueZeile(1)
   end
-  zeigeHier(40, zeile,  "Engaged:          " .. chevrons) neueZeile(1)
-  zeigeHier(40, zeile,  "Direction:        " .. direction) neueZeile(1)
+  zeigeHier(40, zeile, chevronName .. chevrons) neueZeile(1)
+  zeigeHier(40, zeile, richtung .. direction) neueZeile(1)
   activetime() neueZeile(1)
   autoclose() neueZeile(1)
   zeigeSteuerung()
@@ -320,21 +320,23 @@ end
 
 function zeigeSteuerung()
   neueZeile(2)
-  zeigeHier(40, zeile, "Controls") neueZeile(1)
-  zeigeHier(40, zeile, "D Disconnect") neueZeile(1)
+  zeigeHier(40, zeile, Steuerung) neueZeile(1)
+  zeigeHier(40, zeile, "D " .. abschalten) neueZeile(1)
   if iris == "Offline" then
     control = "Off"
   else
-    zeigeHier(40, zeile, "O Open Iris") neueZeile(1)
-    zeigeHier(40, zeile, "C Close Iris") neueZeile(1)
+    zeigeHier(40, zeile, "O " .. oeffneIris) neueZeile(1)
+    zeigeHier(40, zeile, "C " .. schliesseIris) neueZeile(1)
   end
-  zeigeHier(40, zeile, "E Enter IDC") neueZeile(1)
-  if maxseiten > seite + 1 then
-    zeigeHier(40, zeile, "→ Next Page") neueZeile(1)
+  zeigeHier(40, zeile, "E " .. IDCeingabe) neueZeile(1)
+  if seite == -1 then
+    zeigeHier(40, zeile, "→ " .. zeigeAdressen) neueZeile(1)
+  elseif maxseiten > seite + 1 then
+    zeigeHier(40, zeile, "→ " .. naechsteSeite) neueZeile(1)
   end
   if seite >= 0 then
     if seite >= 1 then
-      zeigeHier(40, zeile, "← Previous Page")
+      zeigeHier(40, zeile, "← " .. vorherigeSeite)
     else
       zeigeHier(40, zeile, "← " .. SteuerungName)
     end
@@ -344,9 +346,9 @@ end
 
 function autoclose()
   if autoclosetime == false then
-    zeigeHier(40, zeile, "Autoclose:        Off")
+    zeigeHier(40, zeile, autoSchliessungAus)
   else
-    zeigeHier(40, zeile, "Autoclose:        " .. autoclosetime .. "s")
+    zeigeHier(40, zeile, autoSchliessungAn .. autoclosetime .. "s")
     if (activationtime - os.time()) / sectime > autoclosetime and state == "Connected" then
       sg.disconnect()
     end
@@ -425,7 +427,7 @@ handlers[key_event_name] = function(e)
   elseif c == "d" then
     if state == "Connected" and direction == "Incoming" then
         sg.sendMessage("Request: Disconnect Stargate")
-        zeigeNachricht("Sending: Request: Disconnect Stargate")
+        zeigeNachricht(aufforderung)
     else
         sg.disconnect()
     end
@@ -456,7 +458,7 @@ handlers[key_event_name] = function(e)
     running = false
   elseif c >= "1" and c <= "9" then
     c = c + seite * 9
-    na = addressen[tonumber(c)]
+    na = adressen[tonumber(c)]
     iriscontrol = "off"
     wormhole = "out"
     if na then
@@ -477,8 +479,8 @@ handlers[key_event_name] = function(e)
       end
     end
   elseif c == "z" then
-    os.execute("edit stargate/addressen.lua")
-    dofile("stargate/addressen.lua")
+    os.execute("edit stargate/adressen.lua")
+    dofile("stargate/adressen.lua")
     sides()
     zeigeMenu()
   elseif e[3] == 0 and e[4] == 203 then
@@ -501,7 +503,7 @@ end
 function handlers.sgChevronEngaged(e)
   chevron = e[3]
   symbol = e[4]
-  zeigeNachricht(string.format("Chevron %s engaged! (%s)", chevron, symbol))
+  zeigeNachricht(string.format("Chevron %s %s! (%s)", chevron, aktiviert, symbol))
 end
 
 function eventLoop()

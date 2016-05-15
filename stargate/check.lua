@@ -1,4 +1,4 @@
-version = "1.6.9"
+version = "1.7.6"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -77,9 +77,9 @@ function update()
   os.execute("wget -f " .. Pfad .. "stargate/check.lua stargate/check.lua") print("")
   os.execute("wget -f " .. Pfad .. "stargate/sprache/deutsch.lua stargate/sprache/deutsch.lua") print("")
   os.execute("wget -f " .. Pfad .. "stargate/sprache/english.lua stargate/sprache/english.lua") print("")
-  os.execute("wget " .. Pfad .. "stargate/addressen.lua stargate/addressen.lua") print("")
+  os.execute("wget " .. Pfad .. "stargate/adressen.lua stargate/adressen.lua") print("")
   os.execute("wget " .. Pfad .. "sicherNachNeustart.lua stargate/sicherNachNeustart.lua") print("")
-  f = io.open ("stargate/addressen.lua", "r")
+  f = io.open ("stargate/adressen.lua", "r")
   addressRead = true
   leseLaenge = 1000
   while addressRead == true do
@@ -93,12 +93,13 @@ function update()
   end
   f:close ()
   if string.sub(readAddresses, AdressesLength, AdressesLength) == " " then
-    f = io.open ("stargate/addressen.lua", "a")
+    f = io.open ("stargate/adressen.lua", "a")
     f:seek ("end", -1)
     f:write("")
     f:close ()
   end
-  os.execute("reboot")
+  print(laden)
+  dofile("stargate/Kontrollprogramm.lua")
 end
 
 function checkServerVersion()
@@ -144,10 +145,12 @@ if checkKomponenten() == true then
       if string.lower(antwortFrage) == ja then
         print(aktualisierenJa)
         update()
+        return
       elseif antwortFrage == "beta" then
         versionTyp = "beta/"
         print(aktualisierenBeta)
         update()
+        return
       else
         print(aktualisierenNein .. antwortFrage)
       end
