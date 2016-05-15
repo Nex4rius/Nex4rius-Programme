@@ -1,4 +1,4 @@
-version = "1.6.6"
+version = "1.6.9"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -12,7 +12,7 @@ Sprache = ""
 dofile("stargate/sicherNachNeustart.lua")
 
 function schreibSicherungsdatei()
-  f = io.open ("stargate/saveAfterReboot.lua", "w")
+  f = io.open ("stargate/sicherNachNeustart.lua", "w")
   f:write('control = "' .. control .. '"\n')
   f:write('firstrun = ' .. firstrun .. '\n')
   f:write('Sprache = "' .. Sprache .. '" -- deutsch / english\n')
