@@ -1,4 +1,4 @@
-version = "1.6.1"
+version = "1.6.2"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -15,12 +15,12 @@ function schreibSicherungsdatei()
   f = io.open ("stargate/saveAfterReboot.lua", "w")
   f:write('control = "' .. control .. '"\n')
   f:write('firstrun = ' .. firstrun .. '\n')
-  f:write('Sprache = "' .. string.lower(Sprache) .. '" -- deutsch / english\n')
+  f:write('Sprache = "' .. Sprache .. '" -- deutsch / english\n')
   f:close ()
 end
 
 if Sprache == "" then
-  print("Sprache? / Language? Deutsch / English\n")
+  print("Sprache? / Language? deutsch / english\n")
   antwortFrageSprache = io.read()
   if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
     Sprache = string.lower(antwortFrageSprache)
