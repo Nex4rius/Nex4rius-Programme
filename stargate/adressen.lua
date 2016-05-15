@@ -15,6 +15,6 @@ side = "bottom" -- bottom, top, back, front, right or left
 
 IDC = ""
 
-addressen = {
+adressen = {
   {"Name", "Addresse", "Iris Code"},
 }
