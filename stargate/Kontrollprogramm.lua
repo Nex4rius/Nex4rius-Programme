@@ -6,15 +6,14 @@
 --  by DarknessShadow
 --
 -- install by typing this
--- wget -f "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/autorun.lua" autorun.lua
+-- wget -f "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/installieren.lua" installieren.lua
+-- installieren
 --
 
 dofile("stargate/addressen.lua")
 dofile("stargate/config.lua")
 dofile("stargate/compat.lua")
 dofile("stargate/sicherNachNeustart.lua")
-
-debug = false
 
 gpu.setBackground(0x333333)
 
@@ -23,10 +22,9 @@ function pad(s, n)
 end
 
 function checkReset()
-  if time == "-" then
-  else
+  if time == "-" then else
     if time > 500 then
-      showMessage("")
+      zeigeNachricht("")
       messageshow = true
       IDCyes = false
       send = true
@@ -44,23 +42,32 @@ function checkReset()
   end
 end
 
-function showMenu()
+function zeigeMenu()
   setCursor(1, 1)
-  print("Address Page " .. seite + 1)
-  for i, na in pairs(addressen) do
-    if i >= 1 + seite * 9 and i <= 9 + seite * 9 then
-      print(i - seite * 9 .. " " .. na[1])
-      if sg.energyToDial(na[2]) == nil then
-        gpu.setForeground(0xFF0000)
-        print("   <Error>")
-        gpu.setForeground(0xFFFFFF)
-      else
-        print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
+  if seite == -1 then
+    print(Steuerung)
+    print("I " .. IrisSteuerung .. an_aus)
+    print("Z " .. addressenBearbeiten)
+    print("Q " .. beenden)
+    print(RedstoneSignale)
+    print(versionName .. version)
+  else
+    print(addressSeite .. seite + 1)
+    for i, na in pairs(addressen) do
+      if i >= 1 + seite * 9 and i <= 9 + seite * 9 then
+        print(i - seite * 9 .. " " .. na[1])
+        if sg.energyToDial(na[2]) == nil then
+          gpu.setForeground(0xFF0000)
+          print(errorName)
+          gpu.setForeground(0xFFFFFF)
+        else
+          print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
+        end
       end
+      maxseiten = i / 9
     end
-    maxseiten = i / 9
+    iris = sg.irisState()
   end
-  iris = sg.irisState()
 end
 
 function getIrisState()
@@ -83,17 +90,17 @@ function irisOpen()
 end
 
 function sides()
-  if side == "bottom" then
+  if side == "unten" or side == "bottom" then
     sideNum = 0
-  elseif side == "top" then
+  elseif side == "oben" or side == "top" then
     sideNum = 1
-  elseif side == "back" then
+  elseif side == "hinten" or side == "back" then
     sideNum = 2
-  elseif side == "front" then
+  elseif side == "vorne" or side == "front" then
     sideNum = 3
-  elseif side == "right" then
+  elseif side == "rechts" or side == "right" then
     sideNum = 4
-  elseif side == "left" then
+  elseif side == "links" or side == "left" then
     sideNum = 5
   end
 end
@@ -150,7 +157,7 @@ function iriscontroller()
   if state == "Closing" then
     send = true
     incode = "-"
-    showMessage("")
+    zeigeNachricht("")
     IDCyes = false
     AddNewAddress = true
   end
@@ -169,7 +176,7 @@ function iriscontroller()
   if codeaccepted == "-" or codeaccepted == nil then
   elseif messageshow == true then
     gpu.setForeground(0xFF0000)
-    showMessage("Message received: "..codeaccepted)
+    zeigeNachricht("Message received: "..codeaccepted)
     gpu.setForeground(0xFFFFFF)
     if codeaccepted == "Request: Disconnect Stargate" then
       os.sleep(1)
@@ -202,7 +209,7 @@ function newAddress(g)
     schreibSicherungsdatei()
     dofile("stargate/addressen.lua")
     sides()
-    showMenu()
+    zeigeMenu()
   end
 end
 
@@ -212,7 +219,7 @@ function destinationName()
       for j, na in pairs(addressen) do
         if remAddr == na[2] then
           if na[1] == na[2] then
-            remoteName = "Unknown"
+            remoteName = Unbekannt
           else
             remoteName = na[1]
             break
@@ -243,19 +250,7 @@ function wormholeDirection()
   end
 end
 
-function displayRedstone()
-  term.clear()
-  print("Redstone Signals")
-  print("white  -> state not Idle")
-  print("red    -> incoming")
-  print("yellow -> iris = closed")
-  print("black  -> idc accepted")
-  os.sleep(15)
-  term.clear()
-  showMenu()
-end
-
-function showState()
+function zeigeStatus()
   gpu.setBackground(0x333333)
   locAddr = getAddress(sg.localAddress())
   remAddr = getAddress(sg.remoteAddress())
@@ -266,49 +261,31 @@ function showState()
   iriscontroller()
   energy = sg.energyAvailable()*energymultiplicator
   zeile = 1
-  showAt(40, zeile,  "Local Address:    " .. locAddr)
-  neueZeile(1)
-  showAt(40, zeile,  "Destination Addr: " .. remAddr)
-  neueZeile(1)
-  showAt(40, zeile,  "Destination Name: " .. remoteName)
-  neueZeile(1)
-  showAt(40, zeile,  "State:            " .. state)
-  neueZeile(1)
-  showenergy()
-  neueZeile(1)
-  showAt(40, zeile,  "Iris:             " .. iris)
-  neueZeile(1)
-  if iris == "Offline" then
-  else
-    showAt(40, zeile,  "Iris Control:     " .. control)
-    neueZeile(1)
+  zeigeHier(40, zeile,  "Local Address:    " .. locAddr) neueZeile(1)
+  zeigeHier(40, zeile,  "Destination Addr: " .. remAddr) neueZeile(1)
+  zeigeHier(40, zeile,  "Destination Name: " .. remoteName) neueZeile(1)
+  zeigeHier(40, zeile,  "State:            " .. state) neueZeile(1)
+  zeigeEnergie() neueZeile(1)
+  zeigeHier(40, zeile,  "Iris:             " .. iris) neueZeile(1)
+  if iris == "Offline" then else
+    zeigeHier(40, zeile,  "Iris Control:     " .. control) neueZeile(1)
   end
   if IDCyes == true then
-    showAt(40, zeile, "IDC:              Accepted")
-    neueZeile(1)
+    zeigeHier(40, zeile, "IDC:              Accepted") neueZeile(1)
   else
-    showAt(40, zeile, "IDC:              " .. incode)
-    neueZeile(1)
+    zeigeHier(40, zeile, "IDC:              " .. incode) neueZeile(1)
   end
-  showAt(40, zeile,  "Engaged:          " .. chevrons)
-  neueZeile(1)
-  showAt(40, zeile,  "Direction:        " .. direction)
-  neueZeile(1)
-  activetime()
-  neueZeile(1)
-  autoclose()
-  neueZeile(1)
-  if debug == true then
-    showAt(40, zeile, "Version:          " .. version)
-    neueZeile(1)
-  end
-  showControls()
+  zeigeHier(40, zeile,  "Engaged:          " .. chevrons) neueZeile(1)
+  zeigeHier(40, zeile,  "Direction:        " .. direction) neueZeile(1)
+  activetime() neueZeile(1)
+  autoclose() neueZeile(1)
+  zeigeSteuerung()
   if redst == true then
-    RedstoneControl()
+    RedstoneKontrolle()
   end
 end
 
-function RedstoneControl()
+function RedstoneKontrolle()
   if sideNum == nil then
     sides()
   end
@@ -341,55 +318,47 @@ function RedstoneControl()
   end
 end
 
-function showControls()
+function zeigeSteuerung()
   neueZeile(2)
-  showAt(40, zeile, "Controls")
-  neueZeile(1)
-  showAt(40, zeile, "D Disconnect")
-  neueZeile(1)
+  zeigeHier(40, zeile, "Controls") neueZeile(1)
+  zeigeHier(40, zeile, "D Disconnect") neueZeile(1)
+  zeigeHier(40, zeile, "R " .. SteuerungName) neueZeile(1)
   if iris == "Offline" then
     control = "Off"
   else
-    showAt(40, zeile, "O Open Iris")
-    neueZeile(1)
-    showAt(40, zeile, "C Close Iris")
-    neueZeile(1)
-    showAt(40, zeile, "I Iris Control On/Off")
-    neueZeile(1)
+    zeigeHier(40, zeile, "O Open Iris") neueZeile(1)
+    zeigeHier(40, zeile, "C Close Iris") neueZeile(1)
   end
-  showAt(40, zeile, "E Enter IDC")
-  neueZeile(1)
-  showAt(40, zeile, "Z Edit Addresses")
-  neueZeile(1)
+  zeigeHier(40, zeile, "E Enter IDC") neueZeile(1)
   if maxseiten > seite + 1 then
-    showAt(40, zeile, "→ Next Page")
-    neueZeile(1)
+    zeigeHier(40, zeile, "→ Next Page") neueZeile(1)
   end
-  if seite >= 1 then
-    showAt(40, zeile, "← Previous Page")
+  if seite >= 0 then
+    if seite >= 1 then
+      zeigeHier(40, zeile, "← Previous Page")
+    else
+      zeigeHier(40, zeile, "← Show all Controls")
+    end
     neueZeile(1)
-  end
-  if debug == true then
-    showAt(40, zeile, "Q Quit")
   end
 end
 
 function autoclose()
   if autoclosetime == false then
-    showAt(40, zeile, "Autoclose:        Off")
+    zeigeHier(40, zeile, "Autoclose:        Off")
   else
-    showAt(40, zeile, "Autoclose:        " .. autoclosetime .. "s")
+    zeigeHier(40, zeile, "Autoclose:        " .. autoclosetime .. "s")
     if (activationtime - os.time()) / sectime > autoclosetime and state == "Connected" then
       sg.disconnect()
     end
   end
 end
 
-function showenergy()
+function zeigeEnergie()
   if energy < 10000000 then
-    showAt(40, zeile, "Energy "..energytype..":        " .. string.format("%.1f", energy/1000) .. " k")
+    zeigeHier(40, zeile, energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000) .. " k")
   else
-    showAt(40, zeile, "Energy "..energytype..":        " .. string.format("%.1f", energy/1000000) .. " M")
+    zeigeHier(40, zeile, energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000000) .. " M")
   end
 end
 
@@ -400,14 +369,14 @@ function activetime()
     end
     time = (activationtime - os.time())/sectime
     if time > 0 then
-      showAt(40, zeile, "Time:             " .. string.format("%.1f", time) .. "s")
+      zeigeHier(40, zeile, zeit1 .. string.format("%.1f", time) .. "s")
     end
   else
-    showAt(40, zeile, "Time:")
+    zeigeHier(40, zeile, zeit2)
   end
 end
 
-function showAt(x, y, s, h)
+function zeigeHier(x, y, s, h)
   setCursor(x, y)
   if h == nil then
     write(pad(s, 50))
@@ -416,22 +385,22 @@ function showAt(x, y, s, h)
   end
 end
 
-function showMessage(mess)
-  showAt(1, screen_height, mess)
+function zeigeNachricht(mess)
+  zeigeHier(1, screen_height, mess)
 end
 
-function showError(mess)
+function zeigeError(mess)
   i = string.find(mess, ": ")
   if i then
     mess = "Error: " .. string.sub(mess, i + 2)
   end
-  showMessage(mess)
+  zeigeNachricht(mess)
 end
 
 handlers = {}
 
 function dial(name, addr)
-  showMessage(string.format("Dialling %s (%s)", name, addr))
+  zeigeNachricht(waehlen .. name .. " (" .. addr .. ")")
   remoteName = name
   check(sg.dial(addr))
 end
@@ -444,20 +413,20 @@ handlers[key_event_name] = function(e)
   elseif entercode == true then
     enteridc = enteridc .. c
     showidc = showidc .. "*"
-    showMessage("Enter IDC: " .. showidc)
+    zeigeNachricht("Enter IDC: " .. showidc)
   elseif c == "e" then
     if state == "Connected" and direction == "Outgoing" then
       enteridc = ""
       showidc = ""
       entercode = true
-      showMessage("Enter IDC:")
+      zeigeNachricht("Enter IDC:")
     else
-      showMessage("Stargate not Connected")
+      zeigeNachricht(keineVerbindung)
     end
   elseif c == "d" then
     if state == "Connected" and direction == "Incoming" then
         sg.sendMessage("Request: Disconnect Stargate")
-        showMessage("Sending: Request: Disconnect Stargate")
+        zeigeNachricht("Sending: Request: Disconnect Stargate")
     else
         sg.disconnect()
     end
@@ -465,15 +434,15 @@ handlers[key_event_name] = function(e)
     if iris == "Offline" then else
       irisOpen()
       if wormhole == "in" then
-        if iris == "Offline" then
-        else
+        if iris == "Offline" then else
           os.sleep(2)
           sg.sendMessage("Manual Override: Iris Open")
         end
       end
       if state == "Idle" then
         iriscontrol = "on"
-      else iriscontrol = "off"
+      else
+        iriscontrol = "off"
       end
     end
   elseif c == "c" then
@@ -512,47 +481,43 @@ handlers[key_event_name] = function(e)
     os.execute("edit stargate/addressen.lua")
     dofile("stargate/addressen.lua")
     sides()
-    showMenu()
+    zeigeMenu()
   elseif e[3] == 0 and e[4] == 203 then
-    if seite == 0 then
-    else
+    if seite <= -1 then else
       seite = seite - 1
       term.clear()
-      showState()
-      showMenu()
+      zeigeStatus()
+      zeigeMenu()
     end
   elseif e[3] == 0 and e[4] == 205 then
     if seite + 1 < maxseiten then
       seite = seite + 1
       term.clear()
-      showState()
-      showMenu()
-    end
-  elseif c == "r" then
-    displayRedstone()  
+      zeigeStatus()
+      zeigeMenu()
+    end 
   end
 end
 
 function handlers.sgChevronEngaged(e)
   chevron = e[3]
   symbol = e[4]
-  showMessage(string.format("Chevron %s engaged! (%s)", chevron, symbol))
+  zeigeNachricht(string.format("Chevron %s engaged! (%s)", chevron, symbol))
 end
 
 function eventLoop()
   while running do
-    showState()
+    zeigeStatus()
     checkReset()
     e = {pull_event()}
-    if e[1] == nil then
-    else
+    if e[1] == nil then else
       name = e[1]
       f = handlers[name]
       if f then
-        showMessage("")
+        zeigeNachricht("")
         ok, result = pcall(f, e)
         if not ok then
-          showError(result)
+          zeigeError(result)
         end
       end
       if string.sub(e[1],1,3) == "sgM" and direction == "Incoming" and wormhole == "in" then
@@ -571,7 +536,7 @@ end
 
 function main()
   term.clear()
-  showMenu()
+  zeigeMenu()
   eventLoop()
   gpu.setBackground(0x00000)
   term.clear()
