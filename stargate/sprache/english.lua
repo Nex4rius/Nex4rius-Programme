@@ -36,7 +36,6 @@ RedstoneSignale           = "\nRedstone Signals on Bundled Cable\nwhite signal -
 versionName               = "Version:          "
 addressSeite              = "Address Page "
 errorName                 = "   <ERROR>"
---IDCakzeptiert             = "IDC Accepted Iris: "
 SteuerungName             = "show all controls"
 nachrichtAngekommen       = "Message received: "
 lokaleAddresse            = "Local Address:    "
