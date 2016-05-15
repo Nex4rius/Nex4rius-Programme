@@ -535,6 +535,7 @@ end
 
 function main()
   term.clear()
+  zeigeStatus()
   zeigeMenu()
   eventLoop()
   gpu.setBackground(0x00000)
