@@ -326,7 +326,7 @@ function zeigeSteuerung()
     control = "Off"
   else
     zeigeHier(40, zeile, "O " .. oeffneIris) neueZeile(1)
-    zeigeHier(40, zeile, "C " .. schließeIris) neueZeile(1)
+    zeigeHier(40, zeile, "C " .. schliesseIris) neueZeile(1)
   end
   zeigeHier(40, zeile, "E " .. IDCeingabe) neueZeile(1)
   if maxseiten > seite + 1 then
@@ -344,9 +344,9 @@ end
 
 function autoclose()
   if autoclosetime == false then
-    zeigeHier(40, zeile, autoSchließungAus)
+    zeigeHier(40, zeile, autoSchliessungAus)
   else
-    zeigeHier(40, zeile, autoSchließungAn .. autoclosetime .. "s")
+    zeigeHier(40, zeile, autoSchliessungAn .. autoclosetime .. "s")
     if (activationtime - os.time()) / sectime > autoclosetime and state == "Connected" then
       sg.disconnect()
     end
