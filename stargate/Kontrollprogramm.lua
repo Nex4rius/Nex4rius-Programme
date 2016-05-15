@@ -176,7 +176,7 @@ function iriscontroller()
   if codeaccepted == "-" or codeaccepted == nil then
   elseif messageshow == true then
     gpu.setForeground(0xFF0000)
-    zeigeNachricht("Message received: "..codeaccepted)
+    zeigeNachricht(nachrichtAngekommen .. codeaccepted)
     gpu.setForeground(0xFFFFFF)
     if codeaccepted == "Request: Disconnect Stargate" then
       os.sleep(1)
@@ -261,22 +261,22 @@ function zeigeStatus()
   iriscontroller()
   energy = sg.energyAvailable()*energymultiplicator
   zeile = 1
-  zeigeHier(40, zeile,  "Local Address:    " .. locAddr) neueZeile(1)
-  zeigeHier(40, zeile,  "Destination Addr: " .. remAddr) neueZeile(1)
-  zeigeHier(40, zeile,  "Destination Name: " .. remoteName) neueZeile(1)
-  zeigeHier(40, zeile,  "State:            " .. state) neueZeile(1)
+  zeigeHier(40, zeile, lokaleAddresse .. locAddr) neueZeile(1)
+  zeigeHier(40, zeile, zielAddresse .. remAddr) neueZeile(1)
+  zeigeHier(40, zeile, zielName .. remoteName) neueZeile(1)
+  zeigeHier(40, zeile, statusName .. state) neueZeile(1)
   zeigeEnergie() neueZeile(1)
-  zeigeHier(40, zeile,  "Iris:             " .. iris) neueZeile(1)
+  zeigeHier(40, zeile, IrisName .. iris) neueZeile(1)
   if iris == "Offline" then else
-    zeigeHier(40, zeile,  "Iris Control:     " .. control) neueZeile(1)
+    zeigeHier(40, zeile, IrisSteuerung .. control) neueZeile(1)
   end
   if IDCyes == true then
-    zeigeHier(40, zeile, "IDC:              Accepted") neueZeile(1)
+    zeigeHier(40, zeile, IDCakzeptiert) neueZeile(1)
   else
-    zeigeHier(40, zeile, "IDC:              " .. incode) neueZeile(1)
+    zeigeHier(40, zeile, IDCname .. incode) neueZeile(1)
   end
-  zeigeHier(40, zeile,  "Engaged:          " .. chevrons) neueZeile(1)
-  zeigeHier(40, zeile,  "Direction:        " .. direction) neueZeile(1)
+  zeigeHier(40, zeile, chevronName .. chevrons) neueZeile(1)
+  zeigeHier(40, zeile, richtung .. direction) neueZeile(1)
   activetime() neueZeile(1)
   autoclose() neueZeile(1)
   zeigeSteuerung()
@@ -320,21 +320,21 @@ end
 
 function zeigeSteuerung()
   neueZeile(2)
-  zeigeHier(40, zeile, "Controls") neueZeile(1)
-  zeigeHier(40, zeile, "D Disconnect") neueZeile(1)
+  zeigeHier(40, zeile, Steuerung) neueZeile(1)
+  zeigeHier(40, zeile, "D " .. abschalten) neueZeile(1)
   if iris == "Offline" then
     control = "Off"
   else
-    zeigeHier(40, zeile, "O Open Iris") neueZeile(1)
-    zeigeHier(40, zeile, "C Close Iris") neueZeile(1)
+    zeigeHier(40, zeile, "O " .. oeffneIris) neueZeile(1)
+    zeigeHier(40, zeile, "C " .. schließeIris) neueZeile(1)
   end
-  zeigeHier(40, zeile, "E Enter IDC") neueZeile(1)
+  zeigeHier(40, zeile, "E " .. IDCeingabe) neueZeile(1)
   if maxseiten > seite + 1 then
-    zeigeHier(40, zeile, "→ Next Page") neueZeile(1)
+    zeigeHier(40, zeile, "→ " .. naechsteSeite) neueZeile(1)
   end
   if seite >= 0 then
     if seite >= 1 then
-      zeigeHier(40, zeile, "← Previous Page")
+      zeigeHier(40, zeile, "← " .. vorherigeSeite)
     else
       zeigeHier(40, zeile, "← " .. SteuerungName)
     end
@@ -344,9 +344,9 @@ end
 
 function autoclose()
   if autoclosetime == false then
-    zeigeHier(40, zeile, "Autoclose:        Off")
+    zeigeHier(40, zeile, autoSchließungAus)
   else
-    zeigeHier(40, zeile, "Autoclose:        " .. autoclosetime .. "s")
+    zeigeHier(40, zeile, autoSchließungAn .. autoclosetime .. "s")
     if (activationtime - os.time()) / sectime > autoclosetime and state == "Connected" then
       sg.disconnect()
     end
@@ -425,7 +425,7 @@ handlers[key_event_name] = function(e)
   elseif c == "d" then
     if state == "Connected" and direction == "Incoming" then
         sg.sendMessage("Request: Disconnect Stargate")
-        zeigeNachricht("Sending: Request: Disconnect Stargate")
+        zeigeNachricht(aufforderung)
     else
         sg.disconnect()
     end
@@ -501,7 +501,7 @@ end
 function handlers.sgChevronEngaged(e)
   chevron = e[3]
   symbol = e[4]
-  zeigeNachricht(string.format("Chevron %s engaged! (%s)", chevron, symbol))
+  zeigeNachricht(string.format("Chevron %s %s! (%s)", chevron, aktiviert, symbol))
 end
 
 function eventLoop()
