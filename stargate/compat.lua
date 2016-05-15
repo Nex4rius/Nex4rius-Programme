@@ -25,7 +25,7 @@ end
 
 function pull_event()
   if state == "Idle" and checkEnergy == energy then
-    zeigeNachricht("                                         ")
+    zeigeNachricht("                                                                                                         ")
     return event.pull()
   else
     checkEnergy = energy
