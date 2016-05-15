@@ -1,4 +1,4 @@
-version = "1.6.2"
+version = "1.6.3"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -129,9 +129,11 @@ end
 
 if checkKomponenten() == true then
   if internet == true then
-    print(derzeitigeVersion .. version .. verfuegbareVersion .. checkServerVersion())
-    if checkServerVersion() == checkBetaServerVersion() then else
-      print(betaVersion .. checkBetaServerVersion())
+    if checkServerVersion() == checkBetaServerVersion() then
+      print(derzeitigeVersion .. version .. verfuegbareVersion .. serverVersion)
+    else
+      print(derzeitigeVersion .. version .. verfuegbareVersion .. serverVersion)
+      print(betaVersion .. betaServerVersion)
     end
     if version == checkServerVersion() and version == checkBetaServerVersion() then
     elseif installieren == nil then
