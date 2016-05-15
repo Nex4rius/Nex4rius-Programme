@@ -329,7 +329,7 @@ function zeigeSteuerung()
     zeigeHier(40, zeile, "C " .. schliesseIris) neueZeile(1)
   end
   zeigeHier(40, zeile, "E " .. IDCeingabe) neueZeile(1)
-  if seite < 1 then
+  if seite == -1 then
     zeigeHier(40, zeile, "→ " .. zeigeAdressen) neueZeile(1)
   elseif maxseiten > seite + 1 then
     zeigeHier(40, zeile, "→ " .. naechsteSeite) neueZeile(1)
