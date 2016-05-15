@@ -1,4 +1,4 @@
-version = "1.7.4"
+version = "1.7.5"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -145,10 +145,12 @@ if checkKomponenten() == true then
       if string.lower(antwortFrage) == ja then
         print(aktualisierenJa)
         update()
+        return
       elseif antwortFrage == "beta" then
         versionTyp = "beta/"
         print(aktualisierenBeta)
         update()
+        return
       else
         print(aktualisierenNein .. antwortFrage)
       end
