@@ -1,4 +1,4 @@
-version = "1.6.0"
+version = "1.6.1"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -7,6 +7,7 @@ fs = require("filesystem")
 gpu = component.getPrimary("gpu")
 serverAddresse = "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/"
 versionTyp = "master/"
+Sprache = ""
 
 dofile("stargate/sicherNachNeustart.lua")
 
@@ -14,24 +15,24 @@ function schreibSicherungsdatei()
   f = io.open ("stargate/saveAfterReboot.lua", "w")
   f:write('control = "' .. control .. '"\n')
   f:write('firstrun = ' .. firstrun .. '\n')
-  f:write('Sprache = "' .. Sprache .. '" -- Deutsch / English\n')
+  f:write('Sprache = "' .. string.lower(Sprache) .. '" -- deutsch / english\n')
   f:close ()
 end
 
---if Sprache == "" or Sprache == nil then
---  print("Sprache? / Language? Deutsch / English\n")
---  antwortFrageSprache = io.read()
---  if antwortFrageSprache == "deutsch" or antwortFrageSprache == "Deutsch" or antwortFrageSprache == "english" or antwortFrageSprache == "English" then
---    Sprache = antwortFrageSprache
---  else
---    print("\nUnbekannte Eingabe\nStandardeinstellung = Deutsch")
+if Sprache == "" then
+  print("Sprache? / Language? Deutsch / English\n")
+  antwortFrageSprache = io.read()
+  if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
+    Sprache = string.lower(antwortFrageSprache)
+  else
+    print("\nUnbekannte Eingabe\nStandardeinstellung = english")
     Sprache = "english"
---  end
---  schreibSicherungsdatei()
---  print("")
---end
+  end
+  schreibSicherungsdatei()
+  print("")
+end
 
-dofile("stargate/sprache.lua")
+dofile("stargate/sprache/" .. Sprache .. ".lua")
 
 function checkKomponenten()
   print(pruefeKomponenten)
@@ -69,20 +70,15 @@ end
 function update()
   fs.makeDirectory("/stargate")
   Pfad = serverAddresse .. versionTyp
-  os.execute("wget -f " .. Pfad .. "autorun.lua autorun.lua")
-  print("")
-  os.execute("wget -f " .. Pfad .. "stargate/Kontrollprogramm.lua stargate/Kontrollprogramm.lua")
-  print("")
-  os.execute("wget -f " .. Pfad .. "stargate/compat.lua stargate/compat.lua")
-  print("")
-  os.execute("wget -f " .. Pfad .. "stargate/config.lua stargate/config.lua")
-  print("")
-  os.execute("wget -f " .. Pfad .. "stargate/check.lua stargate/check.lua")
-  print("")
-  os.execute("wget " .. Pfad .. "stargate/addressen.lua stargate/addressen.lua")
-  print("")
-  os.execute("wget " .. Pfad .. "sicherNachNeustart.lua stargate/sicherNachNeustart.lua")
-  print("")
+  os.execute("wget -f " .. Pfad .. "autorun.lua autorun.lua") print("")
+  os.execute("wget -f " .. Pfad .. "stargate/Kontrollprogramm.lua stargate/Kontrollprogramm.lua") print("")
+  os.execute("wget -f " .. Pfad .. "stargate/compat.lua stargate/compat.lua") print("")
+  os.execute("wget -f " .. Pfad .. "stargate/config.lua stargate/config.lua") print("")
+  os.execute("wget -f " .. Pfad .. "stargate/check.lua stargate/check.lua") print("")
+  os.execute("wget -f " .. Pfad .. "stargate/sprache.lua stargate/sprache/deutsch.lua") print("")
+  os.execute("wget -f " .. Pfad .. "stargate/sprache.lua stargate/sprache/english.lua") print("")
+  os.execute("wget " .. Pfad .. "stargate/addressen.lua stargate/addressen.lua") print("")
+  os.execute("wget " .. Pfad .. "sicherNachNeustart.lua stargate/sicherNachNeustart.lua") print("")
   f = io.open ("stargate/addressen.lua", "r")
   addressRead = true
   leseLaenge = 1000
@@ -134,18 +130,17 @@ end
 if checkKomponenten() == true then
   if internet == true then
     print(derzeitigeVersion .. version .. verfuegbareVersion .. checkServerVersion())
-    if checkServerVersion() == checkBetaServerVersion() then
-    else
+    if checkServerVersion() == checkBetaServerVersion() then else
       print(betaVersion .. checkBetaServerVersion())
     end
     if version == checkServerVersion() and version == checkBetaServerVersion() then
     elseif installieren == nil then
       print(aktualisierenFrage)
       antwortFrage = io.read()
-      if antwortFrage == "ja" or antwortFrage == "j" or antwortFrage == "yes" or antwortFrage == "y" then
+      if string.lower(antwortFrage) == ja then
         print(aktualisierenJa)
         update()
-      elseif antwortFrage == "test" or antwortFrage == "beta" then
+      elseif antwortFrage == "beta" then
         versionTyp = "beta/"
         print(aktualisierenBeta)
         update()
