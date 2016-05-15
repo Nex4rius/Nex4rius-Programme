@@ -322,7 +322,6 @@ function zeigeSteuerung()
   neueZeile(2)
   zeigeHier(40, zeile, "Controls") neueZeile(1)
   zeigeHier(40, zeile, "D Disconnect") neueZeile(1)
-  zeigeHier(40, zeile, "R " .. SteuerungName) neueZeile(1)
   if iris == "Offline" then
     control = "Off"
   else
@@ -337,7 +336,7 @@ function zeigeSteuerung()
     if seite >= 1 then
       zeigeHier(40, zeile, "← Previous Page")
     else
-      zeigeHier(40, zeile, "← Show all Controls")
+      zeigeHier(40, zeile, "← " .. SteuerungName)
     end
     neueZeile(1)
   end

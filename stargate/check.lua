@@ -1,4 +1,4 @@
-version = "1.6.2"
+version = "1.6.5"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -75,8 +75,8 @@ function update()
   os.execute("wget -f " .. Pfad .. "stargate/compat.lua stargate/compat.lua") print("")
   os.execute("wget -f " .. Pfad .. "stargate/config.lua stargate/config.lua") print("")
   os.execute("wget -f " .. Pfad .. "stargate/check.lua stargate/check.lua") print("")
-  os.execute("wget -f " .. Pfad .. "stargate/sprache.lua stargate/sprache/deutsch.lua") print("")
-  os.execute("wget -f " .. Pfad .. "stargate/sprache.lua stargate/sprache/english.lua") print("")
+  os.execute("wget -f " .. Pfad .. "stargate/sprache/deutsch.lua stargate/sprache/deutsch.lua") print("")
+  os.execute("wget -f " .. Pfad .. "stargate/sprache/english.lua stargate/sprache/english.lua") print("")
   os.execute("wget " .. Pfad .. "stargate/addressen.lua stargate/addressen.lua") print("")
   os.execute("wget " .. Pfad .. "sicherNachNeustart.lua stargate/sicherNachNeustart.lua") print("")
   f = io.open ("stargate/addressen.lua", "r")
@@ -129,11 +129,15 @@ end
 
 if checkKomponenten() == true then
   if internet == true then
-    print(derzeitigeVersion .. version .. verfuegbareVersion .. checkServerVersion())
-    if checkServerVersion() == checkBetaServerVersion() then else
-      print(betaVersion .. checkBetaServerVersion())
+    serverVersion = checkServerVersion()
+    betaVersion = betaServerVersion()
+    if serverVersion == betaVersion then
+      print(derzeitigeVersion .. version .. verfuegbareVersion .. serverVersion)
+    else
+      print(derzeitigeVersion .. version .. verfuegbareVersion .. serverVersion)
+      print(betaVersion .. betaServerVersion)
     end
-    if version == checkServerVersion() and version == checkBetaServerVersion() then
+    if version == serverVersion and version == betaVersion then
     elseif installieren == nil then
       print(aktualisierenFrage)
       antwortFrage = io.read()
