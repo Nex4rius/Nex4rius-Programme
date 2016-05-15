@@ -53,7 +53,7 @@ function zeigeMenu()
     print(versionName .. version)
   else
     print(AdressSeite .. seite + 1)
-    for i, na in pairs(addressen) do
+    for i, na in pairs(adressen) do
       if i >= 1 + seite * 9 and i <= 9 + seite * 9 then
         print(i - seite * 9 .. " " .. na[1])
         if sg.energyToDial(na[2]) == nil then
@@ -216,7 +216,7 @@ end
 function destinationName()
   if state == "Dialling" or state == "Connected" then
     if remoteName == "" and state == "Dialling" and wormhole == "in" then
-      for j, na in pairs(addressen) do
+      for j, na in pairs(adressen) do
         if remAddr == na[2] then
           if na[1] == na[2] then
             remoteName = Unbekannt
@@ -456,7 +456,7 @@ handlers[key_event_name] = function(e)
     running = false
   elseif c >= "1" and c <= "9" then
     c = c + seite * 9
-    na = addressen[tonumber(c)]
+    na = adressen[tonumber(c)]
     iriscontrol = "off"
     wormhole = "out"
     if na then
