@@ -10,7 +10,7 @@
 -- installieren
 --
 
-dofile("stargate/addressen.lua")
+dofile("stargate/adressen.lua")
 dofile("stargate/config.lua")
 dofile("stargate/compat.lua")
 dofile("stargate/sicherNachNeustart.lua")
@@ -47,12 +47,12 @@ function zeigeMenu()
   if seite == -1 then
     print(Steuerung)
     print("I " .. IrisSteuerung .. an_aus)
-    print("Z " .. addressenBearbeiten)
+    print("Z " .. adressenBearbeiten)
     print("Q " .. beenden)
     print(RedstoneSignale)
     print(versionName .. version)
   else
-    print(addressSeite .. seite + 1)
+    print(AdressSeite .. seite + 1)
     for i, na in pairs(addressen) do
       if i >= 1 + seite * 9 and i <= 9 + seite * 9 then
         print(i - seite * 9 .. " " .. na[1])
@@ -200,14 +200,14 @@ end
 
 function newAddress(g)
   if AddNewAddress == true then
-    f = io.open ("stargate/addressen.lua", "a")
+    f = io.open ("stargate/adressen.lua", "a")
     f:seek ("end", firstrun)
     f:write('  {"' .. g .. '", "' .. g .. '", ""},\n}')
     f:close ()
     AddNewAddress = false
     firstrun = -1
     schreibSicherungsdatei()
-    dofile("stargate/addressen.lua")
+    dofile("stargate/adressen.lua")
     sides()
     zeigeMenu()
   end
@@ -261,8 +261,8 @@ function zeigeStatus()
   iriscontroller()
   energy = sg.energyAvailable()*energymultiplicator
   zeile = 1
-  zeigeHier(40, zeile, lokaleAddresse .. locAddr) neueZeile(1)
-  zeigeHier(40, zeile, zielAddresse .. remAddr) neueZeile(1)
+  zeigeHier(40, zeile, lokaleAdresse .. locAddr) neueZeile(1)
+  zeigeHier(40, zeile, zielAdresse .. remAddr) neueZeile(1)
   zeigeHier(40, zeile, zielName .. remoteName) neueZeile(1)
   zeigeHier(40, zeile, statusName .. state) neueZeile(1)
   zeigeEnergie() neueZeile(1)
@@ -477,8 +477,8 @@ handlers[key_event_name] = function(e)
       end
     end
   elseif c == "z" then
-    os.execute("edit stargate/addressen.lua")
-    dofile("stargate/addressen.lua")
+    os.execute("edit stargate/adressen.lua")
+    dofile("stargate/adressen.lua")
     sides()
     zeigeMenu()
   elseif e[3] == 0 and e[4] == 203 then
