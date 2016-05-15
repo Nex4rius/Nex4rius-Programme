@@ -1,5 +1,5 @@
 fs = require("filesystem")
-fs.makeDirectory("/stargate")
+fs.makeDirectory("/stargate/sprache")
 serverAddresse = "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/"
 versionTyp = "master/"
 Pfad = serverAddresse .. versionTyp
