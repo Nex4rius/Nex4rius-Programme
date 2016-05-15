@@ -47,7 +47,7 @@ function zeigeMenu()
   if seite == -1 then
     print(Steuerung)
     print("I " .. IrisSteuerung .. an_aus)
-    print("Z " .. adressenBearbeiten)
+    print("Z " .. AdressenBearbeiten)
     print("Q " .. beenden)
     print(RedstoneSignale)
     print(versionName .. version)
