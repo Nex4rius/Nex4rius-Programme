@@ -25,6 +25,9 @@ end
 
 function pull_event()
   if state == "Idle" and checkEnergy == energy then
+    term.clear()
+    zeigeStatus()
+    zeigeMenu()
     return event.pull()
   else
     checkEnergy = energy
