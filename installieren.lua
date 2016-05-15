@@ -10,7 +10,7 @@ os.execute("wget -f " .. Pfad .. "stargate/compat.lua stargate/compat.lua") prin
 os.execute("wget -f " .. Pfad .. "stargate/config.lua stargate/config.lua") print("")
 os.execute("wget -f " .. Pfad .. "stargate/sprache/deutsch.lua stargate/sprache/deutsch.lua") print("")
 os.execute("wget -f " .. Pfad .. "stargate/sprache/english.lua stargate/sprache/english.lua") print("")
-os.execute("wget " .. Pfad .. "stargate/addressen.lua stargate/addressen.lua") print("")
+os.execute("wget " .. Pfad .. "stargate/adressen.lua stargate/adressen.lua") print("")
 os.execute("wget " .. Pfad .. "stargate/sicherNachNeustart.lua stargate/sicherNachNeustart.lua") print("")
 os.execute("del -v installieren.lua")
 print("\n")
