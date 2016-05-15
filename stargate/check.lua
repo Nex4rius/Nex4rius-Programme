@@ -1,4 +1,4 @@
-version = "1.7.3"
+version = "1.7.4"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -98,7 +98,8 @@ function update()
     f:write("")
     f:close ()
   end
-  os.execute("reboot")
+  print(laden)
+  dofile("stargate/Kontrollprogramm.lua")
 end
 
 function checkServerVersion()
