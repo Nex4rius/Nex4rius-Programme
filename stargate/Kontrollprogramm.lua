@@ -49,6 +49,7 @@ function zeigeMenu()
     print("I " .. IrisSteuerung .. an_aus)
     print("Z " .. AdressenBearbeiten)
     print("Q " .. beenden)
+    print("L " .. spracheAendern)
     print(RedstoneSignale)
     print(versionName .. version)
   else
@@ -58,7 +59,7 @@ function zeigeMenu()
         print(i - seite * 9 .. " " .. na[1])
         if sg.energyToDial(na[2]) == nil then
           gpu.setForeground(0xFF0000)
-          print(errorName)
+          print("   " .. errorName)
           gpu.setForeground(0xFFFFFF)
         else
           print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
@@ -80,6 +81,7 @@ function irisClose()
   if redst == true then
     r.setBundledOutput(sideNum, yellow, 255)
   end
+  IrisZustandName = irisNameSchliessend
 end
 
 function irisOpen()
@@ -87,12 +89,11 @@ function irisOpen()
   if redst == true then
     r.setBundledOutput(sideNum, yellow, 0)
   end
+  IrisZustandName = irisNameOeffnend
 end
 
 function sides()
-  if side == "unten" or side == "bottom" then
-    sideNum = 0
-  elseif side == "oben" or side == "top" then
+  if side == "oben" or side == "top" then
     sideNum = 1
   elseif side == "hinten" or side == "back" then
     sideNum = 2
@@ -102,6 +103,8 @@ function sides()
     sideNum = 4
   elseif side == "links" or side == "left" then
     sideNum = 5
+  else
+    sideNum = 0
   end
 end
 
@@ -163,6 +166,7 @@ function iriscontroller()
   end
   if state == "Idle" then
     incode = "-"
+    wormhole = "in"
   end
   if state == "Closing" and control == "On" then
     k = "close"
@@ -176,7 +180,7 @@ function iriscontroller()
   if codeaccepted == "-" or codeaccepted == nil then
   elseif messageshow == true then
     gpu.setForeground(0xFF0000)
-    zeigeNachricht(nachrichtAngekommen .. codeaccepted)
+    zeigeNachricht(nachrichtAngekommen .. codeaccepted .. "                   ")
     gpu.setForeground(0xFFFFFF)
     if codeaccepted == "Request: Disconnect Stargate" then
       os.sleep(1)
@@ -250,7 +254,7 @@ function wormholeDirection()
   end
 end
 
-function zeigeStatus()
+function aktualisiereStatus()
   gpu.setBackground(0x333333)
   locAddr = getAddress(sg.localAddress())
   remAddr = getAddress(sg.remoteAddress())
@@ -259,16 +263,52 @@ function zeigeStatus()
   wormholeDirection()
   iris = sg.irisState()
   iriscontroller()
+  if     iris == "Open" then
+    IrisZustandName = irisNameOffen
+  elseif iris == "Opening" then
+    IrisZustandName = irisNameOeffnend
+  elseif iris == "Closed" then
+    IrisZustandName = irisNameGeschlossen
+  elseif iris == "Closing" then
+    IrisZustandName = irisNameSchliessend
+  end
+  if control == "On" then
+    irisKontrolleName = irisKontrolleNameAn
+  else
+    irisKontrolleName = irisKontrolleNameAus
+  end
+  if direction == "Outgoing" then
+    RichtungName = RichtungNameAus
+  elseif direction == "Incoming" then
+    RichtungName = RichtungNameEin
+  else
+    RichtungName = ""
+  end
+  if state == "Idle" then
+    StatusName = StatusNameUntaetig
+  elseif state == "Dialling" then
+    StatusName = StatusNameWaehlend
+  elseif state == "Connected" then
+    StatusName = StatusNameVerbunden
+  elseif state == "Closing" then
+    StatusName = StatusNameSchliessend
+  else
+    StatusName = StatusNameVerbunden
+  end
   energy = sg.energyAvailable()*energymultiplicator
   zeile = 1
+end
+
+function zeigeStatus()
+  aktualisiereStatus()
   zeigeHier(40, zeile, lokaleAdresse .. locAddr) neueZeile(1)
   zeigeHier(40, zeile, zielAdresse .. remAddr) neueZeile(1)
   zeigeHier(40, zeile, zielName .. remoteName) neueZeile(1)
-  zeigeHier(40, zeile, statusName .. state) neueZeile(1)
+  zeigeHier(40, zeile, statusName .. StatusName) neueZeile(1)
   zeigeEnergie() neueZeile(1)
-  zeigeHier(40, zeile, IrisName .. iris) neueZeile(1)
+  zeigeHier(40, zeile, IrisName .. IrisZustandName) neueZeile(1)
   if iris == "Offline" then else
-    zeigeHier(40, zeile, IrisSteuerung .. control) neueZeile(1)
+    zeigeHier(40, zeile, IrisSteuerung .. irisKontrolleName) neueZeile(1)
   end
   if IDCyes == true then
     zeigeHier(40, zeile, IDCakzeptiert) neueZeile(1)
@@ -276,7 +316,7 @@ function zeigeStatus()
     zeigeHier(40, zeile, IDCname .. incode) neueZeile(1)
   end
   zeigeHier(40, zeile, chevronName .. chevrons) neueZeile(1)
-  zeigeHier(40, zeile, richtung .. direction) neueZeile(1)
+  zeigeHier(40, zeile, richtung .. RichtungName) neueZeile(1)
   activetime() neueZeile(1)
   autoclose() neueZeile(1)
   zeigeSteuerung()
@@ -315,6 +355,15 @@ function RedstoneKontrolle()
   elseif redstoneIDC == false then
     r.setBundledOutput(sideNum, black, 0)
     redstoneIDC = true
+  end
+  if state == "Connected" then
+    if redstoneConnected == true then
+      r.setBundledOutput(sideNum, green, 255)
+      redstoneConnected = false
+    end
+  elseif redstoneConnected == false then
+    r.setBundledOutput(sideNum, green, 0)
+    redstoneConnected = true
   end
 end
 
@@ -482,6 +531,21 @@ handlers[key_event_name] = function(e)
     os.execute("edit stargate/adressen.lua")
     dofile("stargate/adressen.lua")
     sides()
+    zeigeMenu()
+  elseif c == "l" then
+    term.clear()
+    print(spracheAendern .. "\n")
+    antwortFrageSprache = io.read()
+    if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
+      Sprache = string.lower(antwortFrageSprache)
+      dofile("stargate/sprache/" .. Sprache .. ".lua")
+      schreibSicherungsdatei()
+    else
+      print(errorName)
+    end
+    seite = 0
+    term.clear()
+    zeigeStatus()
     zeigeMenu()
   elseif e[3] == 0 and e[4] == 203 then
     if seite <= -1 then else

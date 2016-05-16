@@ -44,10 +44,12 @@ if redst == true then
   end
 end
 
+redstoneConnected = false
 redstoneIncoming = false
 redstoneState = false
 redstoneIDC = false
-sideNum = 0
+
+IrisZustandName = irisNameOffline
 
 if RF == true then
   energytpye = "RF"
