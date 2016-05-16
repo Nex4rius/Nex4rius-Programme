@@ -272,8 +272,6 @@ function aktualisiereStatus()
     IrisZustandName = irisNameGeschlossen
   elseif iris == "Closing" then
     IrisZustandName = irisNameSchliessend
-  else
-    IrisZustandName = irisNameOffline
   end
   if control == "On" then
     irisKontrolleName = irisKontrolleNameAn
@@ -304,11 +302,8 @@ end
 
 function zeigeStatus()
   aktualisiereStatus()
-        zeigeHier(1, 4, "control hier " .. control)
-        zeigeHier(1, 5, "iriscontrol hier " .. iriscontrol)
-        zeigeHier(1, 6, "wormhole hier " .. wormhole)
-        zeigeHier(1, 7, "state hier " .. state)
-        zeigeHier(1, 8, "iris hier " .. iris)
+    zeigeHier(1, 5, "iri             " .. iris)
+    zeigeHier(1, 6, "IrisZustandName " .. IrisZustandName)
   zeigeHier(40, zeile, lokaleAdresse .. locAddr) neueZeile(1)
   zeigeHier(40, zeile, zielAdresse .. remAddr) neueZeile(1)
   zeigeHier(40, zeile, zielName .. remoteName) neueZeile(1)
