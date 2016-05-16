@@ -283,14 +283,14 @@ function aktualisiereStatus()
   else
     RichtungName = ""
   end
-  if state == "Idle" then
-    StatusName = StatusNameUntaetig
-  elseif state == "Dialling" then
+  if state == "Dialling" then
     StatusName = StatusNameWaehlend
   elseif state == "Connected" then
     StatusName = StatusNameVerbunden
   elseif state == "Closing" then
     StatusName = StatusNameSchliessend
+  else
+    StatusName = StatusNameUntaetig
   end
   energy = sg.energyAvailable()*energymultiplicator
   zeile = 1
