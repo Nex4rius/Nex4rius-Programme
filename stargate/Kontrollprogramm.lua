@@ -49,6 +49,7 @@ function zeigeMenu()
     print("I " .. IrisSteuerung .. an_aus)
     print("Z " .. AdressenBearbeiten)
     print("Q " .. beenden)
+    print("L " .. spracheAendern)
     print(RedstoneSignale)
     print(versionName .. version)
   else
@@ -62,7 +63,7 @@ function zeigeMenu()
         print(i - seite * 9 .. " " .. na[1])
         if sg.energyToDial(na[2]) == nil then
           gpu.setForeground(0xFF0000)
-          print(errorName)
+          print("   " .. errorName)
           gpu.setForeground(0xFFFFFF)
         else
           print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
@@ -487,6 +488,16 @@ handlers[key_event_name] = function(e)
     dofile("stargate/adressen.lua")
     sides()
     zeigeMenu()
+  elseif c == "l" then
+    print(spracheAendern .. "\n")
+    antwortFrageSprache = io.read()
+    if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
+      Sprache = string.lower(antwortFrageSprache)
+    else
+      print(errorName)
+    end
+    schreibSicherungsdatei()
+    print("")
   elseif e[3] == 0 and e[4] == 203 then
     if seite <= -1 then else
       seite = seite - 1
