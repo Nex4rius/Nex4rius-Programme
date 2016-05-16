@@ -520,6 +520,8 @@ handlers[key_event_name] = function(e)
       print(errorName)
     end
     term.clear()
+    zeigeStatus()
+    zeigeMenu()
   elseif e[3] == 0 and e[4] == 203 then
     if seite <= -1 then else
       seite = seite - 1
