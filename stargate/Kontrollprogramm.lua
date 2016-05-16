@@ -485,6 +485,7 @@ handlers[key_event_name] = function(e)
     sides()
     zeigeMenu()
   elseif c == "l" then
+    term.clear()
     print(spracheAendern .. "\n")
     antwortFrageSprache = io.read()
     if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
@@ -494,7 +495,7 @@ handlers[key_event_name] = function(e)
     else
       print(errorName)
     end
-    print("")
+    term.clear()
   elseif e[3] == 0 and e[4] == 203 then
     if seite <= -1 then else
       seite = seite - 1
