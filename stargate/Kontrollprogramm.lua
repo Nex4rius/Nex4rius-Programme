@@ -79,7 +79,9 @@ end
 function irisClose()
   sg.closeIris()
   if redst == true then
-    r.setBundledOutput(sideNum, yellow, 255)
+    if sideNum == nil then else
+      r.setBundledOutput(sideNum, yellow, 255)
+    end
   end
   IrisZustandName = irisNameSchliessend
 end
@@ -87,7 +89,9 @@ end
 function irisOpen()
   sg.openIris()
   if redst == true then
-    r.setBundledOutput(sideNum, yellow, 0)
+    if sideNum == nil then else
+      r.setBundledOutput(sideNum, yellow, 0)
+    end
   end
   IrisZustandName = irisNameOeffnend
 end
