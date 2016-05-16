@@ -90,7 +90,6 @@ function irisOpen()
     r.setBundledOutput(sideNum, yellow, 0)
   end
   IrisZustandName = irisNameOeffnend
-  zeigeHier(40, 6, IrisName .. IrisZustandName)
 end
 
 function sides()
@@ -302,8 +301,6 @@ end
 
 function zeigeStatus()
   aktualisiereStatus()
-    zeigeHier(1, 5, "iri             " .. iris)
-    zeigeHier(1, 6, "IrisZustandName " .. IrisZustandName)
   zeigeHier(40, zeile, lokaleAdresse .. locAddr) neueZeile(1)
   zeigeHier(40, zeile, zielAdresse .. remAddr) neueZeile(1)
   zeigeHier(40, zeile, zielName .. remoteName) neueZeile(1)
