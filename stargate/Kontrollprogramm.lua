@@ -489,10 +489,11 @@ handlers[key_event_name] = function(e)
     antwortFrageSprache = io.read()
     if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
       Sprache = string.lower(antwortFrageSprache)
+      dofile("stargate/sprache/" .. Sprache .. ".lua")
+      schreibSicherungsdatei()
     else
       print(errorName)
     end
-    schreibSicherungsdatei()
     print("")
   elseif e[3] == 0 and e[4] == 203 then
     if seite <= -1 then else
