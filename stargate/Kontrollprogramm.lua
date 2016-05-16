@@ -261,15 +261,15 @@ function aktualisiereStatus()
   iris = sg.irisState()
   iriscontroller()
   if     iris == "Open" then
-    iris.name = iris.nameOffen
+    irisName = irisNameOffen
   elseif iris == "Opening" then
-    iris.name = iris.nameOeffnend
+    irisName = irisNameOeffnend
   elseif iris == "Closed" then
-    iris.name = iris.nameGeschlossen
+    irisName = irisNameGeschlossen
   elseif iris == "Closing" then
-    iris.name = iris.nameSchliessend
+    irisName = irisNameSchliessend
   else
-    iris.name = iris.nameOffline
+    irisName = irisNameOffline
   end
   energy = sg.energyAvailable()*energymultiplicator
   zeile = 1
