@@ -81,6 +81,7 @@ function irisClose()
   if redst == true then
     r.setBundledOutput(sideNum, yellow, 255)
   end
+  IrisZustandName = irisNameSchliessend
 end
 
 function irisOpen()
@@ -88,6 +89,7 @@ function irisOpen()
   if redst == true then
     r.setBundledOutput(sideNum, yellow, 0)
   end
+  IrisZustandName = irisNameOeffnend
 end
 
 function sides()
