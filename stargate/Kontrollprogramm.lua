@@ -167,6 +167,7 @@ function iriscontroller()
   end
   if state == "Idle" then
     incode = "-"
+    wormhole = "in"
   end
   if state == "Closing" and control == "On" then
     k = "close"
