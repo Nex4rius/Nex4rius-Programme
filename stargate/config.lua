@@ -44,6 +44,7 @@ if redst == true then
   end
 end
 
+redstoneConnected = false
 redstoneIncoming = false
 redstoneState = false
 redstoneIDC = false
