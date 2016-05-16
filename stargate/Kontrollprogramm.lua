@@ -251,7 +251,7 @@ function wormholeDirection()
   end
 end
 
-function zeigeStatus()
+function aktualisiereStatus()
   gpu.setBackground(0x333333)
   locAddr = getAddress(sg.localAddress())
   remAddr = getAddress(sg.remoteAddress())
@@ -260,14 +260,29 @@ function zeigeStatus()
   wormholeDirection()
   iris = sg.irisState()
   iriscontroller()
+  if     iris == "Open" then
+    iris.name = iris.nameOffen
+  elseif iris == "Opening" then
+    iris.name = iris.nameOeffnend
+  elseif iris == "Closed" then
+    iris.name = iris.nameGeschlossen
+  elseif iris == "Closing" then
+    iris.name = iris.nameSchliessend
+  else
+    iris.name = iris.nameOffline
+  end
   energy = sg.energyAvailable()*energymultiplicator
   zeile = 1
+end
+
+function zeigeStatus()
+  aktualisiereStatus()
   zeigeHier(40, zeile, lokaleAdresse .. locAddr) neueZeile(1)
   zeigeHier(40, zeile, zielAdresse .. remAddr) neueZeile(1)
   zeigeHier(40, zeile, zielName .. remoteName) neueZeile(1)
   zeigeHier(40, zeile, statusName .. state) neueZeile(1)
   zeigeEnergie() neueZeile(1)
-  zeigeHier(40, zeile, IrisName .. iris) neueZeile(1)
+  zeigeHier(40, zeile, IrisName .. iris.name) neueZeile(1)
   if iris == "Offline" then else
     zeigeHier(40, zeile, IrisSteuerung .. control) neueZeile(1)
   end
