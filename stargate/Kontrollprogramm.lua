@@ -53,7 +53,7 @@ function zeigeMenu()
     print(RedstoneSignale)
     print(versionName .. version)
   else
-    if maxseiten == 1 then
+    if maxseiten == 0 then
       print(AdressenName)
     else
       print(Adressseite .. seite + 1)
