@@ -282,7 +282,15 @@ function aktualisiereStatus()
     RichtungName = RichtungNameEin
   else
     RichtungName = ""
-  else
+  end
+  if state == "Idle" then
+    StatusName = StatusNameUntaetig
+  elseif state == "Dialling" then
+    StatusName = StatusNameWaehlend
+  elseif state == "Connected" then
+    StatusName = StatusNameVerbunden
+  elseif state == "Closing" then
+    StatusName = StatusNameSchliessend
   end
   energy = sg.energyAvailable()*energymultiplicator
   zeile = 1
@@ -293,7 +301,7 @@ function zeigeStatus()
   zeigeHier(40, zeile, lokaleAdresse .. locAddr) neueZeile(1)
   zeigeHier(40, zeile, zielAdresse .. remAddr) neueZeile(1)
   zeigeHier(40, zeile, zielName .. remoteName) neueZeile(1)
-  zeigeHier(40, zeile, statusName .. state) neueZeile(1)
+  zeigeHier(40, zeile, statusName .. StatusName) neueZeile(1)
   zeigeEnergie() neueZeile(1)
   zeigeHier(40, zeile, IrisName .. IrisZustandName) neueZeile(1)
   if iris == "Offline" then else
