@@ -64,6 +64,11 @@ function zeigeMenu()
         else
           print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
         end
+        print"control hier " .. control)
+        print("iriscontrol hier " .. iriscontrol)
+        print("wormhole hier " .. wormhole)
+        print("state hier " .. state)
+        print("iris hier " .. iris)
       end
       maxseiten = i / 9
     end
@@ -304,8 +309,6 @@ end
 function zeigeStatus()
   aktualisiereStatus()
   zeigeHier(40, zeile, lokaleAdresse .. locAddr) neueZeile(1)
-  zeigeHier(40, zeile, "control hier " .. control) neueZeile(1)
-  zeigeHier(40, zeile, "iriscontrol hier " .. iriscontrol) neueZeile(1)
   zeigeHier(40, zeile, zielAdresse .. remAddr) neueZeile(1)
   zeigeHier(40, zeile, zielName .. remoteName) neueZeile(1)
   zeigeHier(40, zeile, statusName .. StatusName) neueZeile(1)
