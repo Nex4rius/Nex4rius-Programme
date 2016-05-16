@@ -64,7 +64,7 @@ function zeigeMenu()
         else
           print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
         end
-        print"control hier " .. control)
+        print("control hier " .. control)
         print("iriscontrol hier " .. iriscontrol)
         print("wormhole hier " .. wormhole)
         print("state hier " .. state)
