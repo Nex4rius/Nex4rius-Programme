@@ -276,6 +276,14 @@ function aktualisiereStatus()
   else
     irisKontrolleName = irisKontrolleNameAus
   end
+  if direction == "Outgoing" then
+    RichtungName = RichtungNameAus
+  elseif direction == "Incoming" then
+    RichtungName = RichtungNameEin
+  else
+    RichtungName = ""
+  else
+  end
   energy = sg.energyAvailable()*energymultiplicator
   zeile = 1
 end
@@ -297,7 +305,7 @@ function zeigeStatus()
     zeigeHier(40, zeile, IDCname .. incode) neueZeile(1)
   end
   zeigeHier(40, zeile, chevronName .. chevrons) neueZeile(1)
-  zeigeHier(40, zeile, richtung .. direction) neueZeile(1)
+  zeigeHier(40, zeile, richtung .. RichtungName) neueZeile(1)
   activetime() neueZeile(1)
   autoclose() neueZeile(1)
   zeigeSteuerung()
