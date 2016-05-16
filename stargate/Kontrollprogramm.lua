@@ -177,7 +177,7 @@ function iriscontroller()
   if codeaccepted == "-" or codeaccepted == nil then
   elseif messageshow == true then
     gpu.setForeground(0xFF0000)
-    zeigeNachricht(nachrichtAngekommen .. codeaccepted)
+    zeigeNachricht(nachrichtAngekommen .. codeaccepted .. "                   ")
     gpu.setForeground(0xFFFFFF)
     if codeaccepted == "Request: Disconnect Stargate" then
       os.sleep(1)
@@ -271,6 +271,11 @@ function aktualisiereStatus()
   else
     IrisZustandName = irisNameOffline
   end
+  if control == "On" then
+    irisKontrolleName = irisKontrolleNameAn
+  else
+    irisKontrolleName = irisKontrolleNameAus
+  end
   energy = sg.energyAvailable()*energymultiplicator
   zeile = 1
 end
@@ -284,7 +289,7 @@ function zeigeStatus()
   zeigeEnergie() neueZeile(1)
   zeigeHier(40, zeile, IrisName .. IrisZustandName) neueZeile(1)
   if iris == "Offline" then else
-    zeigeHier(40, zeile, IrisSteuerung .. control) neueZeile(1)
+    zeigeHier(40, zeile, IrisSteuerung .. irisKontrolleName) neueZeile(1)
   end
   if IDCyes == true then
     zeigeHier(40, zeile, IDCakzeptiert) neueZeile(1)
