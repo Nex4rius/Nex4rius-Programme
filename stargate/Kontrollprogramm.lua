@@ -90,7 +90,7 @@ function irisOpen()
     r.setBundledOutput(sideNum, yellow, 0)
   end
   IrisZustandName = irisNameOeffnend
-  zeigeStatus()
+  zeigeHier(40, 6, IrisName .. IrisZustandName)
 end
 
 function sides()
