@@ -519,6 +519,7 @@ handlers[key_event_name] = function(e)
     else
       print(errorName)
     end
+    seite = 0
     term.clear()
     zeigeStatus()
     zeigeMenu()
