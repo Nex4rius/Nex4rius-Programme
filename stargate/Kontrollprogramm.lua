@@ -91,9 +91,7 @@ function irisOpen()
 end
 
 function sides()
-  if side == "unten" or side == "bottom" then
-    sideNum = 0
-  elseif side == "oben" or side == "top" then
+  if side == "oben" or side == "top" then
     sideNum = 1
   elseif side == "hinten" or side == "back" then
     sideNum = 2
@@ -103,6 +101,8 @@ function sides()
     sideNum = 4
   elseif side == "links" or side == "left" then
     sideNum = 5
+  else
+    sideNum = 0
   end
 end
 
