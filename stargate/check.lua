@@ -1,4 +1,4 @@
-version = "1.7.7"
+version = "1.7.8"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -25,8 +25,8 @@ if Sprache == "" then
   if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
     Sprache = string.lower(antwortFrageSprache)
   else
-    print("\nUnbekannte Eingabe\nStandardeinstellung = english")
-    Sprache = "english"
+    print("\nUnbekannte Eingabe\nStandardeinstellung = deutsch")
+    Sprache = "deutsch"
   end
   schreibSicherungsdatei()
   print("")
