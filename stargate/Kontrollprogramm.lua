@@ -332,6 +332,15 @@ function RedstoneKontrolle()
     r.setBundledOutput(sideNum, black, 0)
     redstoneIDC = true
   end
+  if state == "Connected" then
+    if redstoneConnected == true then
+      r.setBundledOutput(sideNum, green, 255)
+      redstoneConnected = false
+    end
+  elseif Connected == false then
+    r.setBundledOutput(sideNum, green, 0)
+    redstoneConnected = true
+  end
 end
 
 function zeigeSteuerung()
