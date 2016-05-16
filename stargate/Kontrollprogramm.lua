@@ -537,6 +537,7 @@ handlers[key_event_name] = function(e)
     os.execute("edit stargate/adressen.lua")
     dofile("stargate/adressen.lua")
     sides()
+    zeigeStatus()
     zeigeMenu()
   elseif c == "l" then
     term.clear()
