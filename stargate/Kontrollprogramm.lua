@@ -337,7 +337,7 @@ function RedstoneKontrolle()
       r.setBundledOutput(sideNum, green, 255)
       redstoneConnected = false
     end
-  elseif Connected == false then
+  elseif redstoneConnected == false then
     r.setBundledOutput(sideNum, green, 0)
     redstoneConnected = true
   end
