@@ -304,6 +304,8 @@ end
 function zeigeStatus()
   aktualisiereStatus()
   zeigeHier(40, zeile, lokaleAdresse .. locAddr) neueZeile(1)
+  zeigeHier(40, zeile, "control hier " .. control) neueZeile(1)
+  zeigeHier(40, zeile, "iriscontrol hier " .. iriscontrol) neueZeile(1)
   zeigeHier(40, zeile, zielAdresse .. remAddr) neueZeile(1)
   zeigeHier(40, zeile, zielName .. remoteName) neueZeile(1)
   zeigeHier(40, zeile, statusName .. StatusName) neueZeile(1)
