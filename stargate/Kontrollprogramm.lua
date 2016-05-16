@@ -282,7 +282,7 @@ function zeigeStatus()
   zeigeHier(40, zeile, zielName .. remoteName) neueZeile(1)
   zeigeHier(40, zeile, statusName .. state) neueZeile(1)
   zeigeEnergie() neueZeile(1)
-  zeigeHier(40, zeile, IrisName .. iris.name) neueZeile(1)
+  zeigeHier(40, zeile, IrisName .. irisName) neueZeile(1)
   if iris == "Offline" then else
     zeigeHier(40, zeile, IrisSteuerung .. control) neueZeile(1)
   end
