@@ -44,10 +44,10 @@ if redst == true then
   end
 end
 
-redstoneConnected = true
-redstoneIncoming = true
-redstoneState = true
-redstoneIDC = true
+redstoneConnected = false
+redstoneIncoming = false
+redstoneState = false
+redstoneIDC = false
 sideNum = 0
 
 if RF == true then
