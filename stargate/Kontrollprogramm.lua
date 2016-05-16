@@ -52,7 +52,11 @@ function zeigeMenu()
     print(RedstoneSignale)
     print(versionName .. version)
   else
-    print(Adressseite .. seite + 1)
+    if maxseiten == 1 then
+      print(AdressenName)
+    else
+      print(Adressseite .. seite + 1)
+    end
     for i, na in pairs(adressen) do
       if i >= 1 + seite * 9 and i <= 9 + seite * 9 then
         print(i - seite * 9 .. " " .. na[1])
