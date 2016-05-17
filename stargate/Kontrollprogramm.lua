@@ -78,6 +78,27 @@ function zeigeMenu()
   end
 end
 
+function FarbenLeer()
+  gpu.setBackground(Adressfarbe)
+  gpu.setForeground(Adresstextfarbe)
+  for P = 1, screen_height - 3 do
+    zeigeHier(1, P, "", 35)
+  end
+  gpu.setBackground(Statusfarbe)
+  gpu.setForeground(Statustextfarbe)
+  for P = 1, screen_height - 11 do
+    zeigeHier(38, P, "")
+  end
+  gpu.setBackground(Steuerungsfarbe)
+  gpu.setForeground(Steuerungstextfarbe)
+  for P = screen_height - 10, screen_height - 3 do
+    zeigeHier(38, P, "")
+  end
+  zeigeFarben()
+  gpu.setBackground(Adressfarbe)
+  gpu.setForeground(Adresstextfarbe)
+end
+
 function zeigeFarben()
   gpu.setBackground(Trennlinienfarbe)
   for P = 1, screen_height - 2 do
@@ -570,6 +591,7 @@ handlers[key_event_name] = function(e)
     zeigeStatus()
     zeigeMenu()
   elseif c == "l" then
+    FarbenLeer()
     term.clear()
     print(spracheAendern .. "\n")
     gpu.setBackground(Adressfarbe)
@@ -583,14 +605,14 @@ handlers[key_event_name] = function(e)
       print(errorName)
     end
     seite = 0
+    FarbenLeer()
     term.clear()
     zeigeStatus()
     zeigeMenu()
   elseif e[3] == 0 and e[4] == 203 then
     if seite <= -1 then else
       seite = seite - 1
-      gpu.setBackground(Adressfarbe)
-      gpu.setForeground(Adresstextfarbe)
+      FarbenLeer()
       term.clear()
       zeigeStatus()
       zeigeMenu()
@@ -598,8 +620,7 @@ handlers[key_event_name] = function(e)
   elseif e[3] == 0 and e[4] == 205 then
     if seite + 1 < maxseiten then
       seite = seite + 1
-      gpu.setBackground(Adressfarbe)
-      gpu.setForeground(Adresstextfarbe)
+      FarbenLeer()
       term.clear()
       zeigeStatus()
       zeigeMenu()
@@ -643,6 +664,7 @@ function eventLoop()
 end
 
 function main()
+  FarbenLeer()
   term.clear()
   zeigeStatus()
   zeigeMenu()
