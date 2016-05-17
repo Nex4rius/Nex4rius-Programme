@@ -596,7 +596,7 @@ handlers[key_event_name] = function(e)
     zeigeStatus()
     zeigeMenu()
   elseif c == "l" then
-    FarbenLeer()
+    term.clear()
     print(spracheAendern .. "\n")
     gpu.setBackground(Adressfarbe)
     gpu.setForeground(Adresstextfarbe)
