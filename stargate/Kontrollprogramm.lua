@@ -16,6 +16,7 @@ dofile("stargate/compat.lua")
 dofile("stargate/sicherNachNeustart.lua")
 
 gpu.setBackground(Hintergrundfarbe)
+gpu.setForeground(Textfarbe)
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
@@ -630,6 +631,7 @@ function main()
   zeigeMenu()
   eventLoop()
   gpu.setBackground(schwarzeFarbe)
+  gpu.setForeground(weisseFarbe)
   term.clear()
   setCursor(1, 1)
 end
