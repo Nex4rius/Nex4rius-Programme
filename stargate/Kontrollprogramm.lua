@@ -84,15 +84,28 @@ function FarbenLeer()
   for P = 1, screen_height - 3 do
     zeigeHier(1, P, "", 35)
   end
-  gpu.setBackground(Statusfarbe)
-  gpu.setForeground(Statustextfarbe)
-  for P = 1, screen_height - 12 do
-    zeigeHier(38, P, "")
-  end
-  gpu.setBackground(Steuerungsfarbe)
-  gpu.setForeground(Steuerungstextfarbe)
-  for P = screen_height - 10, screen_height - 3 do
-    zeigeHier(38, P, "")
+  if iris == "Offline" then
+    gpu.setBackground(Statusfarbe)
+    gpu.setForeground(Statustextfarbe)
+    for P = 1, screen_height - 13 do
+      zeigeHier(38, P, "")
+    end
+    gpu.setBackground(Steuerungsfarbe)
+    gpu.setForeground(Steuerungstextfarbe)
+    for P = screen_height - 11, screen_height - 3 do
+      zeigeHier(38, P, "")
+    end
+  else
+    gpu.setBackground(Statusfarbe)
+    gpu.setForeground(Statustextfarbe)
+    for P = 1, screen_height - 12 do
+      zeigeHier(38, P, "")
+    end
+    gpu.setBackground(Steuerungsfarbe)
+    gpu.setForeground(Steuerungstextfarbe)
+    for P = screen_height - 10, screen_height - 3 do
+      zeigeHier(38, P, "")
+    end
   end
   gpu.setBackground(Nachrichtfarbe)
   gpu.setForeground(Nachrichttextfarbe)
