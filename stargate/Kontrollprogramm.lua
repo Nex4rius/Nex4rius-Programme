@@ -324,7 +324,7 @@ function zeigeStatus()
   aktualisiereStatus()
   zeigeHier(40, zeile, lokaleAdresse .. locAddr) neueZeile(1)
   zeigeHier(40, zeile, zielAdresse .. remAddr) neueZeile(1)
-  zeigeHier(40, zeile, zielName .. remoteName) neueZeile(1)
+  zeigeHier(40, zeile, zielName .. string.sub(remoteName, 1, 22)) neueZeile(1)
   zeigeHier(40, zeile, statusName .. StatusName) neueZeile(1)
   zeigeEnergie() neueZeile(1)
   zeigeHier(40, zeile, IrisName .. IrisZustandName) neueZeile(1)
@@ -334,7 +334,7 @@ function zeigeStatus()
   if IDCyes == true then
     zeigeHier(40, zeile, IDCakzeptiert) neueZeile(1)
   else
-    zeigeHier(40, zeile, IDCname .. incode) neueZeile(1)
+    zeigeHier(40, zeile, IDCname .. string.sub(incode, 1, 22) neueZeile(1)
   end
   zeigeHier(40, zeile, chevronName .. chevrons) neueZeile(1)
   zeigeHier(40, zeile, richtung .. RichtungName) neueZeile(1)
