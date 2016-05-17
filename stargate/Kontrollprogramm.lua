@@ -339,7 +339,7 @@ function zeigeStatus()
   zeigeHier(40, zeile, chevronName .. chevrons) neueZeile(1)
   zeigeHier(40, zeile, richtung .. RichtungName) neueZeile(1)
   activetime() neueZeile(1)
-  autoclose() neueZeile(1)
+  autoclose()
   zeigeSteuerung()
   if redst == true then
     RedstoneKontrolle()
@@ -391,7 +391,7 @@ end
 function zeigeSteuerung()
   zeigeFarben()
   neueZeile(3)
-  zeigeHier(40, zeile, Steuerung .. "\n") neueZeile(1)
+  zeigeHier(40, zeile, Steuerung) neueZeile(2)
   zeigeHier(40, zeile, "D " .. abschalten)
   zeigeHier(58, zeile, "E " .. IDCeingabe) neueZeile(1)
   if iris == "Offline" then
