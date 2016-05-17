@@ -31,6 +31,7 @@ schwarzeFarbe         = 0x00000
 ErrorFarbe            = roteFarbe
 Hintergrundfarbe      = graueFarbe
 Trennlinienfarbe      = blaueFarbe
+
 Textfarbe             = Textfarbe
 Adressfarbe           = Hintergrundfarbe
 Adresstextfarbe       = Textfarbe
