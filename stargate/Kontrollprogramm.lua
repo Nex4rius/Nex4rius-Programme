@@ -94,6 +94,11 @@ function FarbenLeer()
   for P = screen_height - 10, screen_height - 3 do
     zeigeHier(38, P, "")
   end
+  gpu.setBackground(Nachrichtfarbe)
+  gpu.setForeground(Nachrichttextfarbe)
+  for P = screen_height - 1, screen_height do
+    zeigeHier(1, P, "")
+  end
   zeigeFarben()
   gpu.setBackground(Adressfarbe)
   gpu.setForeground(Adresstextfarbe)
@@ -592,7 +597,6 @@ handlers[key_event_name] = function(e)
     zeigeMenu()
   elseif c == "l" then
     FarbenLeer()
-    term.clear()
     print(spracheAendern .. "\n")
     gpu.setBackground(Adressfarbe)
     gpu.setForeground(Adresstextfarbe)
@@ -606,14 +610,12 @@ handlers[key_event_name] = function(e)
     end
     seite = 0
     FarbenLeer()
-    term.clear()
     zeigeStatus()
     zeigeMenu()
   elseif e[3] == 0 and e[4] == 203 then
     if seite <= -1 then else
       seite = seite - 1
       FarbenLeer()
-      term.clear()
       zeigeStatus()
       zeigeMenu()
     end
@@ -621,7 +623,6 @@ handlers[key_event_name] = function(e)
     if seite + 1 < maxseiten then
       seite = seite + 1
       FarbenLeer()
-      term.clear()
       zeigeStatus()
       zeigeMenu()
     end 
@@ -665,7 +666,6 @@ end
 
 function main()
   FarbenLeer()
-  term.clear()
   zeigeStatus()
   zeigeMenu()
   eventLoop()
