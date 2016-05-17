@@ -323,24 +323,25 @@ function zeigeStatus()
   gpu.setBackground(Statusfarbe)
   gpu.setForeground(Statustextfarbe)
   aktualisiereStatus()
-  zeigeHier(40, zeile, lokaleAdresse .. locAddr) neueZeile(1)
-  zeigeHier(40, zeile, zielAdresse .. remAddr) neueZeile(1)
-  zeigeHier(40, zeile, zielName .. string.sub(remoteName, 1, 22)) neueZeile(1)
-  zeigeHier(40, zeile, statusName .. StatusName) neueZeile(1)
+  zeigeHier(38, zeile, "  " .. lokaleAdresse .. locAddr) neueZeile(1)
+  zeigeHier(38, zeile, "  " .. zielAdresse .. remAddr) neueZeile(1)
+  zeigeHier(38, zeile, "  " .. zielName .. string.sub(remoteName, 1, 22)) neueZeile(1)
+  zeigeHier(38, zeile, "  " .. statusName .. StatusName) neueZeile(1)
   zeigeEnergie() neueZeile(1)
-  zeigeHier(40, zeile, IrisName .. IrisZustandName) neueZeile(1)
+  zeigeHier(38, zeile, "  " .. IrisName .. IrisZustandName) neueZeile(1)
   if iris == "Offline" then else
-    zeigeHier(40, zeile, IrisSteuerung .. irisKontrolleName) neueZeile(1)
+    zeigeHier(38, zeile, "  " .. IrisSteuerung .. irisKontrolleName) neueZeile(1)
   end
   if IDCyes == true then
-    zeigeHier(40, zeile, IDCakzeptiert) neueZeile(1)
+    zeigeHier(38, zeile, "  " .. IDCakzeptiert) neueZeile(1)
   else
-    zeigeHier(40, zeile, IDCname .. string.sub(incode, 1, 22)) neueZeile(1)
+    zeigeHier(38, zeile, "  " .. IDCname .. string.sub(incode, 1, 22)) neueZeile(1)
   end
-  zeigeHier(40, zeile, chevronName .. chevrons) neueZeile(1)
-  zeigeHier(40, zeile, richtung .. RichtungName) neueZeile(1)
+  zeigeHier(38, zeile, "  " .. chevronName .. chevrons) neueZeile(1)
+  zeigeHier(38, zeile, "  " .. richtung .. RichtungName) neueZeile(1)
   activetime() neueZeile(1)
   autoclose()
+  zeigeHier(38, zeile + 1, "")
   zeigeSteuerung()
   if redst == true then
     RedstoneKontrolle()
@@ -422,9 +423,9 @@ end
 
 function autoclose()
   if autoclosetime == false then
-    zeigeHier(40, zeile, autoSchliessungAus)
+    zeigeHier(38, "  " .. zeile, autoSchliessungAus)
   else
-    zeigeHier(40, zeile, autoSchliessungAn .. autoclosetime .. "s")
+    zeigeHier(38, "  " .. zeile, autoSchliessungAn .. autoclosetime .. "s")
     if (activationtime - os.time()) / sectime > autoclosetime and state == "Connected" then
       sg.disconnect()
     end
@@ -433,9 +434,9 @@ end
 
 function zeigeEnergie()
   if energy < 10000000 then
-    zeigeHier(40, zeile, energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000) .. " k")
+    zeigeHier(38, "  " .. zeile, energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000) .. " k")
   else
-    zeigeHier(40, zeile, energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000000) .. " M")
+    zeigeHier(38, "  " .. zeile, energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000000) .. " M")
   end
 end
 
@@ -446,10 +447,10 @@ function activetime()
     end
     time = (activationtime - os.time())/sectime
     if time > 0 then
-      zeigeHier(40, zeile, zeit1 .. string.format("%.1f", time) .. "s")
+      zeigeHier(38, "  " .. zeile, zeit1 .. string.format("%.1f", time) .. "s")
     end
   else
-    zeigeHier(40, zeile, zeit2)
+    zeigeHier(38, "  " .. zeile, zeit2)
   end
 end
 
@@ -583,11 +584,6 @@ handlers[key_event_name] = function(e)
     end
     seite = 0
     term.clear()
-    gpu.setBackground(Statusfarbe)
-    gpu.setForeground(Statustextfarbe)
-    for P = 1, 13 do
-      zeigeHier(38, P, "")
-    end
     zeigeStatus()
     zeigeMenu()
   elseif e[3] == 0 and e[4] == 203 then
@@ -596,11 +592,6 @@ handlers[key_event_name] = function(e)
       gpu.setBackground(Adressfarbe)
       gpu.setForeground(Adresstextfarbe)
       term.clear()
-      gpu.setBackground(Statusfarbe)
-      gpu.setForeground(Statustextfarbe)
-      for P = 1, 13 do
-        zeigeHier(38, P, "")
-      end
       zeigeStatus()
       zeigeMenu()
     end
@@ -610,11 +601,6 @@ handlers[key_event_name] = function(e)
       gpu.setBackground(Adressfarbe)
       gpu.setForeground(Adresstextfarbe)
       term.clear()
-      gpu.setBackground(Statusfarbe)
-      gpu.setForeground(Statustextfarbe)
-      for P = 1, 13 do
-        zeigeHier(38, P, "")
-      end
       zeigeStatus()
       zeigeMenu()
     end 
@@ -669,12 +655,6 @@ end
 
 if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
   irisOpen()
-end
-
-gpu.setBackground(Statusfarbe)
-gpu.setForeground(Statustextfarbe)
-for P = 1, 13 do
-  zeigeHier(38, P, "")
 end
 
 messageshow = true
