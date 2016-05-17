@@ -444,9 +444,9 @@ end
 
 function autoclose()
   if autoclosetime == false then
-    zeigeHier(38, "  " .. zeile, autoSchliessungAus)
+    zeigeHier(38, zeile, "  " .. autoSchliessungAus)
   else
-    zeigeHier(38, "  " .. zeile, autoSchliessungAn .. autoclosetime .. "s")
+    zeigeHier(38, zeile, "  " .. autoSchliessungAn .. autoclosetime .. "s")
     if (activationtime - os.time()) / sectime > autoclosetime and state == "Connected" then
       sg.disconnect()
     end
@@ -455,9 +455,9 @@ end
 
 function zeigeEnergie()
   if energy < 10000000 then
-    zeigeHier(38, "  " .. zeile, energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000) .. " k")
+    zeigeHier(38, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000) .. " k")
   else
-    zeigeHier(38, "  " .. zeile, energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000000) .. " M")
+    zeigeHier(38, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000000) .. " M")
   end
 end
 
@@ -468,10 +468,10 @@ function activetime()
     end
     time = (activationtime - os.time())/sectime
     if time > 0 then
-      zeigeHier(38, "  " .. zeile, zeit1 .. string.format("%.1f", time) .. "s")
+      zeigeHier(38, zeile, "  " .. zeit1 .. string.format("%.1f", time) .. "s")
     end
   else
-    zeigeHier(38, "  " .. zeile, zeit2)
+    zeigeHier(38, zeile, "  " .. zeit2)
   end
 end
 
