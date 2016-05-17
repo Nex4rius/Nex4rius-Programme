@@ -1,4 +1,4 @@
-version = "1.8.3"
+version = "1.8.4"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -98,6 +98,7 @@ function update()
     f:write("")
     f:close ()
   end
+  dofile("stargate/sprache/" .. Sprache .. ".lua")
   print(laden)
   dofile("stargate/Kontrollprogramm.lua")
 end
