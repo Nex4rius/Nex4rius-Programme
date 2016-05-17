@@ -28,6 +28,7 @@ weisseFarbe           = 0xFFFFFF
 blaueFarbe            = 0x0000FF
 schwarzeFarbe         = 0x00000
 
+ErrorFarbe            = roteFarbe
 Trennlinienfarbe      = blaueFarbe
 Hintergrundfarbe      = graueFarbe
 Textfarbe             = weisseFarbe
