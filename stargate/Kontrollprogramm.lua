@@ -276,9 +276,6 @@ function wormholeDirection()
 end
 
 function aktualisiereStatus()
-  for P = 1, 13 do
-    zeigeHier(38, P, "")
-  end
   locAddr = getAddress(sg.localAddress())
   remAddr = getAddress(sg.remoteAddress())
   destinationName()
@@ -567,11 +564,15 @@ handlers[key_event_name] = function(e)
     os.execute("edit stargate/adressen.lua")
     dofile("stargate/adressen.lua")
     sides()
+    gpu.setBackground(Adressfarbe)
+    gpu.setForeground(Adresstextfarbe)
     zeigeStatus()
     zeigeMenu()
   elseif c == "l" then
     term.clear()
     print(spracheAendern .. "\n")
+    gpu.setBackground(Adressfarbe)
+    gpu.setForeground(Adresstextfarbe)
     antwortFrageSprache = io.read()
     if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
       Sprache = string.lower(antwortFrageSprache)
@@ -582,19 +583,38 @@ handlers[key_event_name] = function(e)
     end
     seite = 0
     term.clear()
+    gpu.setBackground(Statusfarbe)
+    gpu.setForeground(Statustextfarbe)
+    for P = 1, 13 do
+      zeigeHier(38, P, "")
+    end
     zeigeStatus()
     zeigeMenu()
   elseif e[3] == 0 and e[4] == 203 then
     if seite <= -1 then else
       seite = seite - 1
+      gpu.setBackground(Adressfarbe)
+      gpu.setForeground(Adresstextfarbe)
       term.clear()
+      gpu.setBackground(Statusfarbe)
+      gpu.setForeground(Statustextfarbe)
+      for P = 1, 13 do
+        zeigeHier(38, P, "")
+      end
       zeigeStatus()
       zeigeMenu()
     end
   elseif e[3] == 0 and e[4] == 205 then
     if seite + 1 < maxseiten then
       seite = seite + 1
+      gpu.setBackground(Adressfarbe)
+      gpu.setForeground(Adresstextfarbe)
       term.clear()
+      gpu.setBackground(Statusfarbe)
+      gpu.setForeground(Statustextfarbe)
+      for P = 1, 13 do
+        zeigeHier(38, P, "")
+      end
       zeigeStatus()
       zeigeMenu()
     end 
