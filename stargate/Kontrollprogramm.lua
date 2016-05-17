@@ -441,10 +441,11 @@ function zeigeSteuerung()
     end
   end
   if seite == -1 then
-    zeigeHier(58, zeile, "→ " .. zeigeAdressen) neueZeile(1)
+    zeigeHier(58, zeile, "→ " .. zeigeAdressen)
   elseif maxseiten > seite + 1 then
-    zeigeHier(58, zeile, "→ " .. naechsteSeite) neueZeile(1)
+    zeigeHier(58, zeile, "→ " .. naechsteSeite)
   end
+  neueZeile(1)
 end
 
 function autoclose()
