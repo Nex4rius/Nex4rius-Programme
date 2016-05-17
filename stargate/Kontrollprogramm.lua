@@ -390,21 +390,16 @@ function RedstoneKontrolle()
 end
 
 function zeigeSteuerung()
-  Rahmenlinie = zeile + 2
+  Rahmenlinie = zeile + 1
   neueZeile(3)
-  zeigeHier(40, zeile, Steuerung) neueZeile(1)
+  zeigeHier(40, zeile, Steuerung .. "\n") neueZeile(1)
   zeigeHier(40, zeile, "D " .. abschalten)
-  zeigeHier(57, zeile, "E " .. IDCeingabe) neueZeile(1)
+  zeigeHier(58, zeile, "E " .. IDCeingabe) neueZeile(1)
   if iris == "Offline" then
     control = "Off"
   else
     zeigeHier(40, zeile, "O " .. oeffneIris)
-    zeigeHier(57, zeile, "C " .. schliesseIris) neueZeile(1)
-  end
-  if seite == -1 then
-    zeigeHier(57, zeile, "→ " .. zeigeAdressen) neueZeile(1)
-  elseif maxseiten > seite + 1 then
-    zeigeHier(57, zeile, "→ " .. naechsteSeite) neueZeile(1)
+    zeigeHier(58, zeile, "C " .. schliesseIris) neueZeile(1)
   end
   if seite >= 0 then
     if seite >= 1 then
@@ -412,7 +407,11 @@ function zeigeSteuerung()
     else
       zeigeHier(40, zeile, "← " .. SteuerungName)
     end
-    neueZeile(1)
+  end
+  if seite == -1 then
+    zeigeHier(58, zeile, "→ " .. zeigeAdressen) neueZeile(1)
+  elseif maxseiten > seite + 1 then
+    zeigeHier(58, zeile, "→ " .. naechsteSeite) neueZeile(1)
   end
 end
 
