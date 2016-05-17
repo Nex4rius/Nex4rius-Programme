@@ -393,18 +393,18 @@ function zeigeSteuerung()
   Rahmenlinie = zeile + 2
   neueZeile(3)
   zeigeHier(40, zeile, Steuerung) neueZeile(1)
-  zeigeHier(40, zeile, "D " .. abschalten) neueZeile(1)
+  zeigeHier(40, zeile, "D " .. abschalten)
+  zeigeHier(57, zeile, "E " .. IDCeingabe) neueZeile(1)
   if iris == "Offline" then
     control = "Off"
   else
-    zeigeHier(40, zeile, "O " .. oeffneIris) neueZeile(1)
-    zeigeHier(40, zeile, "C " .. schliesseIris) neueZeile(1)
+    zeigeHier(40, zeile, "O " .. oeffneIris)
+    zeigeHier(57, zeile, "C " .. schliesseIris) neueZeile(1)
   end
-  zeigeHier(40, zeile, "E " .. IDCeingabe) neueZeile(1)
   if seite == -1 then
-    zeigeHier(40, zeile, "→ " .. zeigeAdressen) neueZeile(1)
+    zeigeHier(57, zeile, "→ " .. zeigeAdressen) neueZeile(1)
   elseif maxseiten > seite + 1 then
-    zeigeHier(40, zeile, "→ " .. naechsteSeite) neueZeile(1)
+    zeigeHier(57, zeile, "→ " .. naechsteSeite) neueZeile(1)
   end
   if seite >= 0 then
     if seite >= 1 then
