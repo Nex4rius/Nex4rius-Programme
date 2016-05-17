@@ -79,9 +79,10 @@ end
 function irisClose()
   sg.closeIris()
   if redst == true then
-    if sideNum == nil then else
-      r.setBundledOutput(sideNum, yellow, 255)
+    if sideNum == nil then
+      sides()
     end
+    r.setBundledOutput(sideNum, yellow, 255)
   end
   IrisZustandName = irisNameSchliessend
 end
@@ -89,9 +90,10 @@ end
 function irisOpen()
   sg.openIris()
   if redst == true then
-    if sideNum == nil then else
-      r.setBundledOutput(sideNum, yellow, 0)
+    if sideNum == nil then
+      sides()
     end
+    r.setBundledOutput(sideNum, yellow, 0)
   end
   IrisZustandName = irisNameOeffnend
 end
@@ -535,6 +537,7 @@ handlers[key_event_name] = function(e)
     os.execute("edit stargate/adressen.lua")
     dofile("stargate/adressen.lua")
     sides()
+    zeigeStatus()
     zeigeMenu()
   elseif c == "l" then
     term.clear()
