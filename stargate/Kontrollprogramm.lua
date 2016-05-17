@@ -334,7 +334,7 @@ function zeigeStatus()
   if IDCyes == true then
     zeigeHier(40, zeile, IDCakzeptiert) neueZeile(1)
   else
-    zeigeHier(40, zeile, IDCname .. string.sub(incode, 1, 22) neueZeile(1)
+    zeigeHier(40, zeile, IDCname .. string.sub(incode, 1, 22)) neueZeile(1)
   end
   zeigeHier(40, zeile, chevronName .. chevrons) neueZeile(1)
   zeigeHier(40, zeile, richtung .. RichtungName) neueZeile(1)
