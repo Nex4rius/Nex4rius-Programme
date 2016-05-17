@@ -495,6 +495,7 @@ function zeigeNachricht(mess)
   gpu.setForeground(Nachrichttextfarbe)
   zeigeHier(1, screen_height - 1, "", 80)
   zeigeHier(1, screen_height, mess)
+  gpu.setBackground(Statusfarbe)
 end
 
 function zeigeError(mess)
