@@ -58,7 +58,7 @@ function zeigeMenu()
       if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
         AdressAnzeige = i - seite * 10
         if AdressAnzeige == 10 then
-          AdressAnzeige == 0
+          AdressAnzeige = 0
         end
         print(AdressAnzeige .. " " .. na[1])
         if sg.energyToDial(na[2]) == nil then
