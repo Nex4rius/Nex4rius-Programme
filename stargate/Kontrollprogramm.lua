@@ -287,7 +287,7 @@ function aktualisiereStatus()
   gpu.setBackground(Statusfarbe)
   gpu.setForeground(Statustextfarbe)
   for P = 1, 13 do
-    zeigeHier(1, P, "")
+    zeigeHier(38, P, "")
   end
   locAddr = getAddress(sg.localAddress())
   remAddr = getAddress(sg.remoteAddress())
@@ -407,7 +407,7 @@ function zeigeSteuerung()
   gpu.setBackground(Steuerungstextfarbe)
   gpu.setForeground(Steuerungsfarbe)
   for P = screen_height - 10, screen_height - 3 do
-    zeigeHier(1, P, "")
+    zeigeHier(38, P, "")
   end
   neueZeile(3)
   zeigeHier(40, zeile, Steuerung) neueZeile(2)
