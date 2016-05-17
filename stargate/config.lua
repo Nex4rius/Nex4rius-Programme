@@ -21,7 +21,6 @@ zeile = 1
 remoteName = ""
 checkEnergy = 0
 AddNewAddress = true
-Rahmenlinie = 0
 
 if redst == true then
   white = 0
