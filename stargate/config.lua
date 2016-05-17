@@ -29,17 +29,17 @@ blaueFarbe            = 0x0000FF
 schwarzeFarbe         = 0x00000
 
 ErrorFarbe            = roteFarbe
-Trennlinienfarbe      = blaueFarbe
 Hintergrundfarbe      = graueFarbe
-Textfarbe             = weisseFarbe
-Adressfarbe           = graueFarbe
-Adresstextfarbe       = weisseFarbe
-Nachrichtfarbe        = graueFarbe
-Nachrichttextfarbe    = weisseFarbe
-Steuerungsfarbe       = graueFarbe
-Steuerungstextfarbe   = weisseFarbe
-Statusfarbe           = graueFarbe
-Statustextfarbe       = weisseFarbe
+Trennlinienfarbe      = blaueFarbe
+Textfarbe             = Textfarbe
+Adressfarbe           = Hintergrundfarbe
+Adresstextfarbe       = Textfarbe
+Nachrichtfarbe        = Hintergrundfarbe
+Nachrichttextfarbe    = Textfarbe
+Steuerungsfarbe       = Hintergrundfarbe
+Steuerungstextfarbe   = Textfarbe
+Statusfarbe           = Hintergrundfarbe
+Statustextfarbe       = Textfarbe
 
 if redst == true then
   white               = 0
