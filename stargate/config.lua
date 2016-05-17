@@ -21,6 +21,12 @@ zeile = 1
 remoteName = ""
 checkEnergy = 0
 AddNewAddress = true
+roteFarbe = 0xFF0000
+weisseFarbe = 0xFFFFFF
+blaueFarbe = 0x0000FF
+schwarzeFarbe = 0x00000
+Trennlinienfarbe = blaueFarbe
+Hintergrundfarbe = 0x333333
 
 if redst == true then
   white = 0

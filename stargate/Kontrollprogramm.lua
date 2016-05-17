@@ -15,7 +15,7 @@ dofile("stargate/config.lua")
 dofile("stargate/compat.lua")
 dofile("stargate/sicherNachNeustart.lua")
 
-gpu.setBackground(0x333333)
+gpu.setBackground(Hintergrundfarbe)
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
@@ -55,20 +55,35 @@ function zeigeMenu()
   else
     print(Adressseite .. seite + 1)
     for i, na in pairs(adressen) do
-      if i >= 1 + seite * 9 and i <= 9 + seite * 9 then
-        print(i - seite * 9 .. " " .. na[1])
+      if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
+        AdressAnzeige = i - seite * 10
+        if AdressAnzeige == 10 then
+          AdressAnzeige = 0
+        end
+        print(AdressAnzeige .. " " .. string.sub(na[1], 1, 31))
         if sg.energyToDial(na[2]) == nil then
-          gpu.setForeground(0xFF0000)
+          gpu.setForeground(roteFarbe)
           print("   " .. errorName)
-          gpu.setForeground(0xFFFFFF)
+          gpu.setForeground(weisseFarbe)
         else
           print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
         end
       end
-      maxseiten = i / 9
+      maxseiten = i / 10
     end
     iris = sg.irisState()
   end
+end
+
+function zeigeFarben()
+  gpu.setBackground(Trennlinienfarbe)
+  for P = 1, screen_height - 2 do
+    zeigeHier(36, P, "  ", 1)
+  end
+  zeigeHier(1, screen_height - 2, "", 80)
+  zeigeHier(36, zeile + 2, "")
+  gpu.setBackground(Hintergrundfarbe)
+  neueZeile(1)
 end
 
 function getIrisState()
@@ -185,9 +200,9 @@ function iriscontroller()
   end
   if codeaccepted == "-" or codeaccepted == nil then
   elseif messageshow == true then
-    gpu.setForeground(0xFF0000)
+    gpu.setForeground(roteFarbe)
     zeigeNachricht(nachrichtAngekommen .. codeaccepted .. "                   ")
-    gpu.setForeground(0xFFFFFF)
+    gpu.setForeground(weisseFarbe)
     if codeaccepted == "Request: Disconnect Stargate" then
       os.sleep(1)
       sg.disconnect()
@@ -261,7 +276,7 @@ function wormholeDirection()
 end
 
 function aktualisiereStatus()
-  gpu.setBackground(0x333333)
+  gpu.setBackground(Hintergrundfarbe)
   locAddr = getAddress(sg.localAddress())
   remAddr = getAddress(sg.remoteAddress())
   destinationName()
@@ -309,7 +324,7 @@ function zeigeStatus()
   aktualisiereStatus()
   zeigeHier(40, zeile, lokaleAdresse .. locAddr) neueZeile(1)
   zeigeHier(40, zeile, zielAdresse .. remAddr) neueZeile(1)
-  zeigeHier(40, zeile, zielName .. remoteName) neueZeile(1)
+  zeigeHier(40, zeile, zielName .. string.sub(remoteName, 1, 22)) neueZeile(1)
   zeigeHier(40, zeile, statusName .. StatusName) neueZeile(1)
   zeigeEnergie() neueZeile(1)
   zeigeHier(40, zeile, IrisName .. IrisZustandName) neueZeile(1)
@@ -319,12 +334,12 @@ function zeigeStatus()
   if IDCyes == true then
     zeigeHier(40, zeile, IDCakzeptiert) neueZeile(1)
   else
-    zeigeHier(40, zeile, IDCname .. incode) neueZeile(1)
+    zeigeHier(40, zeile, IDCname .. string.sub(incode, 1, 22)) neueZeile(1)
   end
   zeigeHier(40, zeile, chevronName .. chevrons) neueZeile(1)
   zeigeHier(40, zeile, richtung .. RichtungName) neueZeile(1)
   activetime() neueZeile(1)
-  autoclose() neueZeile(1)
+  autoclose()
   zeigeSteuerung()
   if redst == true then
     RedstoneKontrolle()
@@ -374,20 +389,16 @@ function RedstoneKontrolle()
 end
 
 function zeigeSteuerung()
-  neueZeile(2)
-  zeigeHier(40, zeile, Steuerung) neueZeile(1)
-  zeigeHier(40, zeile, "D " .. abschalten) neueZeile(1)
+  zeigeFarben()
+  neueZeile(3)
+  zeigeHier(40, zeile, Steuerung) neueZeile(2)
+  zeigeHier(40, zeile, "D " .. abschalten)
+  zeigeHier(58, zeile, "E " .. IDCeingabe) neueZeile(1)
   if iris == "Offline" then
     control = "Off"
   else
-    zeigeHier(40, zeile, "O " .. oeffneIris) neueZeile(1)
-    zeigeHier(40, zeile, "C " .. schliesseIris) neueZeile(1)
-  end
-  zeigeHier(40, zeile, "E " .. IDCeingabe) neueZeile(1)
-  if seite == -1 then
-    zeigeHier(40, zeile, "→ " .. zeigeAdressen) neueZeile(1)
-  elseif maxseiten > seite + 1 then
-    zeigeHier(40, zeile, "→ " .. naechsteSeite) neueZeile(1)
+    zeigeHier(40, zeile, "O " .. oeffneIris)
+    zeigeHier(58, zeile, "C " .. schliesseIris) neueZeile(1)
   end
   if seite >= 0 then
     if seite >= 1 then
@@ -395,7 +406,11 @@ function zeigeSteuerung()
     else
       zeigeHier(40, zeile, "← " .. SteuerungName)
     end
-    neueZeile(1)
+  end
+  if seite == -1 then
+    zeigeHier(58, zeile, "→ " .. zeigeAdressen) neueZeile(1)
+  elseif maxseiten > seite + 1 then
+    zeigeHier(58, zeile, "→ " .. naechsteSeite) neueZeile(1)
   end
 end
 
@@ -435,9 +450,9 @@ end
 function zeigeHier(x, y, s, h)
   setCursor(x, y)
   if h == nil then
-    write(pad(s, 50))
+    write(pad(s, 80))
   else
-    write(pad(s, 1))
+    write(pad(s, h))
   end
 end
 
@@ -456,7 +471,7 @@ end
 handlers = {}
 
 function dial(name, addr)
-  zeigeNachricht(waehlen .. name .. " (" .. addr .. ")")
+  zeigeNachricht(waehlen .. string.sub(name, 1, 50) .. " (" .. addr .. ")")
   remoteName = name
   check(sg.dial(addr))
 end
@@ -511,8 +526,11 @@ handlers[key_event_name] = function(e)
     end
   elseif c == "q" then
     running = false
-  elseif c >= "1" and c <= "9" then
-    c = c + seite * 9
+  elseif c >= "0" and c <= "9" then
+    if c == "0" then
+      c = 10
+    end
+    c = c + seite * 10
     na = adressen[tonumber(c)]
     iriscontrol = "off"
     wormhole = "out"
@@ -611,7 +629,7 @@ function main()
   zeigeStatus()
   zeigeMenu()
   eventLoop()
-  gpu.setBackground(0x00000)
+  gpu.setBackground(schwarzeFarbe)
   term.clear()
   setCursor(1, 1)
 end
