@@ -44,6 +44,10 @@ function checkReset()
 end
 
 function zeigeMenu()
+  gpu.setBackground(Adressfarbe)
+  for P = 1, screen_height - 3 do
+    zeigeHier(1, P, "", 35)
+  end
   setCursor(1, 1)
   if seite == -1 then
     print(Steuerung)
@@ -74,6 +78,7 @@ function zeigeMenu()
     end
     iris = sg.irisState()
   end
+  gpu.setBackground(Hintergrundfarbe)
 end
 
 function zeigeFarben()
