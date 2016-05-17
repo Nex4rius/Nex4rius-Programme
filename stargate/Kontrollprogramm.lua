@@ -450,7 +450,7 @@ end
 function zeigeHier(x, y, s, h)
   setCursor(x, y)
   if h == nil then
-    write(pad(s, 60))
+    write(pad(s, 80))
   else
     write(pad(s, h))
   end
