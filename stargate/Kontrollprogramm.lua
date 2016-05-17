@@ -60,7 +60,7 @@ function zeigeMenu()
         if AdressAnzeige == 10 then
           AdressAnzeige = 0
         end
-        print(AdressAnzeige .. " " .. na[1])
+        print(AdressAnzeige .. " " .. string.sub(na[1], 1, 32))
         if sg.energyToDial(na[2]) == nil then
           gpu.setForeground(0xFF0000)
           print("   " .. errorName)
@@ -310,6 +310,12 @@ function aktualisiereStatus()
 end
 
 function zeigeStatus()
+  gpu.setBackground(0x0000FF)
+  for P = 1, screen_height - 3 do
+    zeigeHier(36, P, "  ", 1)
+  end
+  zeigeHier(1, screen_height - 2, "", 80)
+  gpu.setBackground(0x333333)
   aktualisiereStatus()
   zeigeHier(40, zeile, lokaleAdresse .. locAddr) neueZeile(1)
   zeigeHier(40, zeile, zielAdresse .. remAddr) neueZeile(1)
@@ -516,7 +522,7 @@ handlers[key_event_name] = function(e)
   elseif c == "q" then
     running = false
   elseif c >= "0" and c <= "9" then
-    if c == 0 then
+    if c == "0" then
       c = 10
     end
     c = c + seite * 10
