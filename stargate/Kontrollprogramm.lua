@@ -450,14 +450,14 @@ end
 function zeigeHier(x, y, s, h)
   setCursor(x, y)
   if h == nil then
-    write(pad(s, 50))
+    write(pad(s, 60))
   else
     write(pad(s, h))
   end
 end
 
 function zeigeNachricht(mess)
-  zeigeHier(1, screen_height, mess, 100)
+  zeigeHier(1, screen_height, mess)
 end
 
 function zeigeError(mess)
