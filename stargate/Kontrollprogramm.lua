@@ -86,7 +86,7 @@ function FarbenLeer()
   end
   gpu.setBackground(Statusfarbe)
   gpu.setForeground(Statustextfarbe)
-  for P = 1, screen_height - 11 do
+  for P = 1, screen_height - 12 do
     zeigeHier(38, P, "")
   end
   gpu.setBackground(Steuerungsfarbe)
