@@ -471,7 +471,7 @@ end
 handlers = {}
 
 function dial(name, addr)
-  zeigeNachricht(waehlen .. name .. " (" .. addr .. ")")
+  zeigeNachricht(waehlen .. string.sub(name, 1, 60) .. " (" .. addr .. ")")
   remoteName = name
   check(sg.dial(addr))
 end
