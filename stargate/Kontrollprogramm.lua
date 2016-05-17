@@ -75,6 +75,17 @@ function zeigeMenu()
   end
 end
 
+function zeigeFarben()
+  gpu.setBackground(0x0000FF)
+  for P = 1, screen_height - 2 do
+    zeigeHier(36, P, "  ", 1)
+  end
+  zeigeHier(1, screen_height - 2, "", 80)
+  zeigeHier(36, zeile, "")
+  gpu.setBackground(0x333333)
+  neueZeile(1)
+end
+
 function getIrisState()
   ok, result = pcall(sg.irisState)
   return result
@@ -310,12 +321,6 @@ function aktualisiereStatus()
 end
 
 function zeigeStatus()
-  gpu.setBackground(0x0000FF)
-  for P = 1, screen_height - 3 do
-    zeigeHier(36, P, "  ", 1)
-  end
-  zeigeHier(1, screen_height - 2, "", 80)
-  gpu.setBackground(0x333333)
   aktualisiereStatus()
   zeigeHier(40, zeile, lokaleAdresse .. locAddr) neueZeile(1)
   zeigeHier(40, zeile, zielAdresse .. remAddr) neueZeile(1)
@@ -384,7 +389,7 @@ function RedstoneKontrolle()
 end
 
 function zeigeSteuerung()
-  neueZeile(2)
+  neueZeile(1) zeigeFarben() neueZeile(1)
   zeigeHier(40, zeile, Steuerung) neueZeile(1)
   zeigeHier(40, zeile, "D " .. abschalten) neueZeile(1)
   if iris == "Offline" then
