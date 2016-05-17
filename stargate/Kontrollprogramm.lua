@@ -15,7 +15,7 @@ dofile("stargate/config.lua")
 dofile("stargate/compat.lua")
 dofile("stargate/sicherNachNeustart.lua")
 
-gpu.setBackground(0x333333)
+gpu.setBackground(Hintergrundfarbe)
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
@@ -62,9 +62,9 @@ function zeigeMenu()
         end
         print(AdressAnzeige .. " " .. string.sub(na[1], 1, 31))
         if sg.energyToDial(na[2]) == nil then
-          gpu.setForeground(0xFF0000)
+          gpu.setForeground(roteFarbe)
           print("   " .. errorName)
-          gpu.setForeground(0xFFFFFF)
+          gpu.setForeground(weisseFarbe)
         else
           print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
         end
@@ -76,13 +76,13 @@ function zeigeMenu()
 end
 
 function zeigeFarben()
-  gpu.setBackground(0x0000FF)
+  gpu.setBackground(Trennlinienfarbe)
   for P = 1, screen_height - 2 do
     zeigeHier(36, P, "  ", 1)
   end
   zeigeHier(1, screen_height - 2, "", 80)
   zeigeHier(36, zeile + 2, "")
-  gpu.setBackground(0x333333)
+  gpu.setBackground(Hintergrundfarbe)
   neueZeile(1)
 end
 
@@ -200,9 +200,9 @@ function iriscontroller()
   end
   if codeaccepted == "-" or codeaccepted == nil then
   elseif messageshow == true then
-    gpu.setForeground(0xFF0000)
+    gpu.setForeground(roteFarbe)
     zeigeNachricht(nachrichtAngekommen .. codeaccepted .. "                   ")
-    gpu.setForeground(0xFFFFFF)
+    gpu.setForeground(weisseFarbe)
     if codeaccepted == "Request: Disconnect Stargate" then
       os.sleep(1)
       sg.disconnect()
@@ -276,7 +276,7 @@ function wormholeDirection()
 end
 
 function aktualisiereStatus()
-  gpu.setBackground(0x333333)
+  gpu.setBackground(Hintergrundfarbe)
   locAddr = getAddress(sg.localAddress())
   remAddr = getAddress(sg.remoteAddress())
   destinationName()
@@ -629,7 +629,7 @@ function main()
   zeigeStatus()
   zeigeMenu()
   eventLoop()
-  gpu.setBackground(0x00000)
+  gpu.setBackground(schwarzeFarbe)
   term.clear()
   setCursor(1, 1)
 end
