@@ -671,6 +671,12 @@ if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
   irisOpen()
 end
 
+gpu.setBackground(Statusfarbe)
+gpu.setForeground(Statustextfarbe)
+for P = 1, 13 do
+  zeigeHier(38, P, "")
+end
+
 messageshow = true
 
 running = true
