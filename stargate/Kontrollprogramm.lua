@@ -81,7 +81,7 @@ function zeigeFarben()
     zeigeHier(36, P, "  ", 1)
   end
   zeigeHier(1, screen_height - 2, "", 80)
-  zeigeHier(36, zeile + 1, "")
+  zeigeHier(36, zeile + 2, "")
   gpu.setBackground(0x333333)
   neueZeile(1)
 end
