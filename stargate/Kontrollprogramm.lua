@@ -452,7 +452,7 @@ function zeigeHier(x, y, s, h)
 end
 
 function zeigeNachricht(mess)
-  zeigeHier(1, screen_height, mess)
+  zeigeHier(1, screen_height, mess, 100)
 end
 
 function zeigeError(mess)
