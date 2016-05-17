@@ -45,6 +45,7 @@ end
 
 function zeigeMenu()
   gpu.setBackground(Adressfarbe)
+  gpu.setForeground(Adresstextfarbe)
   for P = 1, screen_height - 3 do
     zeigeHier(1, P, "", 35)
   end
@@ -67,9 +68,9 @@ function zeigeMenu()
         end
         print(AdressAnzeige .. " " .. string.sub(na[1], 1, 31))
         if sg.energyToDial(na[2]) == nil then
-          gpu.setForeground(roteFarbe)
+          gpu.setForeground(ErrorFarbe)
           print("   " .. errorName)
-          gpu.setForeground(weisseFarbe)
+          gpu.setForeground(Adresstextfarbe)
         else
           print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
         end
@@ -79,6 +80,7 @@ function zeigeMenu()
     iris = sg.irisState()
   end
   gpu.setBackground(Hintergrundfarbe)
+  gpu.setBackground(Textfarbe)
 end
 
 function zeigeFarben()
@@ -282,7 +284,11 @@ function wormholeDirection()
 end
 
 function aktualisiereStatus()
-  gpu.setBackground(Hintergrundfarbe)
+  gpu.setBackground(Statusfarbe)
+  gpu.setForeground(Statustextfarbe)
+  for P = 1, 13 do
+    zeigeHier(1, P, "")
+  end
   locAddr = getAddress(sg.localAddress())
   remAddr = getAddress(sg.remoteAddress())
   destinationName()
@@ -350,6 +356,8 @@ function zeigeStatus()
   if redst == true then
     RedstoneKontrolle()
   end
+  gpu.setBackground(Hintergrundfarbe)
+  gpu.setForeground(Textfarbe)
 end
 
 function RedstoneKontrolle()
@@ -396,6 +404,11 @@ end
 
 function zeigeSteuerung()
   zeigeFarben()
+  gpu.setBackground(Steuerungstextfarbe)
+  gpu.setForeground(Steuerungsfarbe)
+  for P = screen_height - 10, screen_height - 3 do
+    zeigeHier(1, P, "")
+  end
   neueZeile(3)
   zeigeHier(40, zeile, Steuerung) neueZeile(2)
   zeigeHier(40, zeile, "D " .. abschalten)
@@ -418,6 +431,8 @@ function zeigeSteuerung()
   elseif maxseiten > seite + 1 then
     zeigeHier(58, zeile, "→ " .. naechsteSeite) neueZeile(1)
   end
+  gpu.setBackground(Hintergrundfarbe)
+  gpu.setForeground(Textfarbe)
 end
 
 function autoclose()
@@ -463,7 +478,12 @@ function zeigeHier(x, y, s, h)
 end
 
 function zeigeNachricht(mess)
+  gpu.setBackground(Nachrichttextfarbe)
+  gpu.setForeground(Nachrichtfarbe)
+  zeigeHier(1, screen_height - 1, "", 80)
   zeigeHier(1, screen_height, mess)
+  gpu.setBackground(Hintergrundfarbe)
+  gpu.setForeground(Textfarbe)
 end
 
 function zeigeError(mess)
