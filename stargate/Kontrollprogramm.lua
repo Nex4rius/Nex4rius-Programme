@@ -15,8 +15,8 @@ dofile("stargate/config.lua")
 dofile("stargate/compat.lua")
 dofile("stargate/sicherNachNeustart.lua")
 
-gpu.setBackground(Hintergrundfarbe)
-gpu.setForeground(Textfarbe)
+--gpu.setBackground(Hintergrundfarbe)
+--gpu.setForeground(Textfarbe)
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
@@ -79,8 +79,8 @@ function zeigeMenu()
     end
     iris = sg.irisState()
   end
-  gpu.setBackground(Hintergrundfarbe)
-  gpu.setBackground(Textfarbe)
+  --gpu.setBackground(Hintergrundfarbe)
+  --gpu.setBackground(Textfarbe)
 end
 
 function zeigeFarben()
@@ -90,7 +90,7 @@ function zeigeFarben()
   end
   zeigeHier(1, screen_height - 2, "", 80)
   zeigeHier(36, zeile + 2, "")
-  gpu.setBackground(Hintergrundfarbe)
+  --gpu.setBackground(Hintergrundfarbe)
   neueZeile(1)
 end
 
@@ -208,9 +208,7 @@ function iriscontroller()
   end
   if codeaccepted == "-" or codeaccepted == nil then
   elseif messageshow == true then
-    gpu.setForeground(roteFarbe)
     zeigeNachricht(nachrichtAngekommen .. codeaccepted .. "                   ")
-    gpu.setForeground(weisseFarbe)
     if codeaccepted == "Request: Disconnect Stargate" then
       os.sleep(1)
       sg.disconnect()
@@ -356,8 +354,8 @@ function zeigeStatus()
   if redst == true then
     RedstoneKontrolle()
   end
-  gpu.setBackground(Hintergrundfarbe)
-  gpu.setForeground(Textfarbe)
+  --gpu.setBackground(Hintergrundfarbe)
+  --gpu.setForeground(Textfarbe)
 end
 
 function RedstoneKontrolle()
@@ -431,8 +429,8 @@ function zeigeSteuerung()
   elseif maxseiten > seite + 1 then
     zeigeHier(58, zeile, "→ " .. naechsteSeite) neueZeile(1)
   end
-  gpu.setBackground(Hintergrundfarbe)
-  gpu.setForeground(Textfarbe)
+  --gpu.setBackground(Hintergrundfarbe)
+  --gpu.setForeground(Textfarbe)
 end
 
 function autoclose()
@@ -482,8 +480,8 @@ function zeigeNachricht(mess)
   gpu.setForeground(Nachrichtfarbe)
   zeigeHier(1, screen_height - 1, "", 80)
   zeigeHier(1, screen_height, mess)
-  gpu.setBackground(Hintergrundfarbe)
-  gpu.setForeground(Textfarbe)
+  --gpu.setBackground(Hintergrundfarbe)
+  --gpu.setForeground(Textfarbe)
 end
 
 function zeigeError(mess)
