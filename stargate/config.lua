@@ -33,13 +33,13 @@ Hintergrundfarbe      = graueFarbe
 Trennlinienfarbe      = blaueFarbe
 Textfarbe             = weisseFarbe
 
-Adressfarbe           = Hintergrundfarbe
+Adressfarbe           = 10046464
 Adresstextfarbe       = Textfarbe
-Nachrichtfarbe        = Hintergrundfarbe
+Nachrichtfarbe        = 6684774
 Nachrichttextfarbe    = Textfarbe
-Steuerungsfarbe       = Hintergrundfarbe
+Steuerungsfarbe       = 39168
 Steuerungstextfarbe   = Textfarbe
-Statusfarbe           = Hintergrundfarbe
+Statusfarbe           = 39168
 Statustextfarbe       = Textfarbe
 
 if redst == true then
