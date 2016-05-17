@@ -15,9 +15,6 @@ dofile("stargate/config.lua")
 dofile("stargate/compat.lua")
 dofile("stargate/sicherNachNeustart.lua")
 
---gpu.setBackground(Hintergrundfarbe)
---gpu.setForeground(Textfarbe)
-
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
 end
@@ -79,8 +76,6 @@ function zeigeMenu()
     end
     iris = sg.irisState()
   end
-  --gpu.setBackground(Hintergrundfarbe)
-  --gpu.setBackground(Textfarbe)
 end
 
 function zeigeFarben()
@@ -90,7 +85,6 @@ function zeigeFarben()
   end
   zeigeHier(1, screen_height - 2, "", 80)
   zeigeHier(36, zeile + 2, "")
-  --gpu.setBackground(Hintergrundfarbe)
   neueZeile(1)
 end
 
@@ -354,8 +348,6 @@ function zeigeStatus()
   if redst == true then
     RedstoneKontrolle()
   end
-  --gpu.setBackground(Hintergrundfarbe)
-  --gpu.setForeground(Textfarbe)
 end
 
 function RedstoneKontrolle()
@@ -402,8 +394,8 @@ end
 
 function zeigeSteuerung()
   zeigeFarben()
-  gpu.setBackground(Steuerungstextfarbe)
-  gpu.setForeground(Steuerungsfarbe)
+  gpu.setBackground(Steuerungsfarbe)
+  gpu.setForeground(Steuerungstextfarbe)
   for P = screen_height - 10, screen_height - 3 do
     zeigeHier(38, P, "")
   end
@@ -429,8 +421,6 @@ function zeigeSteuerung()
   elseif maxseiten > seite + 1 then
     zeigeHier(58, zeile, "→ " .. naechsteSeite) neueZeile(1)
   end
-  --gpu.setBackground(Hintergrundfarbe)
-  --gpu.setForeground(Textfarbe)
 end
 
 function autoclose()
@@ -476,12 +466,10 @@ function zeigeHier(x, y, s, h)
 end
 
 function zeigeNachricht(mess)
-  gpu.setBackground(Nachrichttextfarbe)
-  gpu.setForeground(Nachrichtfarbe)
+  gpu.setBackground(Nachrichtfarbe)
+  gpu.setForeground(Nachrichttextfarbe)
   zeigeHier(1, screen_height - 1, "", 80)
   zeigeHier(1, screen_height, mess)
-  --gpu.setBackground(Hintergrundfarbe)
-  --gpu.setForeground(Textfarbe)
 end
 
 function zeigeError(mess)
