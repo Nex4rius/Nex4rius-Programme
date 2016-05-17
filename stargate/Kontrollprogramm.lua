@@ -81,7 +81,7 @@ function zeigeFarben()
     zeigeHier(36, P, "  ", 1)
   end
   zeigeHier(1, screen_height - 2, "", 80)
-  zeigeHier(36, Rahmenlinie, "")
+  zeigeHier(36, zeile + 1, "")
   gpu.setBackground(0x333333)
   neueZeile(1)
 end
@@ -322,7 +322,6 @@ end
 
 function zeigeStatus()
   aktualisiereStatus()
-  zeigeFarben()
   zeigeHier(40, zeile, lokaleAdresse .. locAddr) neueZeile(1)
   zeigeHier(40, zeile, zielAdresse .. remAddr) neueZeile(1)
   zeigeHier(40, zeile, zielName .. remoteName) neueZeile(1)
@@ -390,7 +389,7 @@ function RedstoneKontrolle()
 end
 
 function zeigeSteuerung()
-  Rahmenlinie = zeile + 1
+  zeigeFarben()
   neueZeile(3)
   zeigeHier(40, zeile, Steuerung .. "\n") neueZeile(1)
   zeigeHier(40, zeile, "D " .. abschalten)
