@@ -55,8 +55,12 @@ function zeigeMenu()
   else
     print(Adressseite .. seite + 1)
     for i, na in pairs(adressen) do
-      if i >= 1 + seite * 9 and i <= 9 + seite * 9 then
-        print(i - seite * 9 .. " " .. na[1])
+      if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
+        AdressAnzeige = i - seite * 10
+        if AdressAnzeige == 10 then
+          AdressAnzeige == 0
+        end
+        print(AdressAnzeige .. " " .. na[1])
         if sg.energyToDial(na[2]) == nil then
           gpu.setForeground(0xFF0000)
           print("   " .. errorName)
@@ -65,7 +69,7 @@ function zeigeMenu()
           print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
         end
       end
-      maxseiten = i / 9
+      maxseiten = i / 10
     end
     iris = sg.irisState()
   end
@@ -437,7 +441,7 @@ function zeigeHier(x, y, s, h)
   if h == nil then
     write(pad(s, 50))
   else
-    write(pad(s, 1))
+    write(pad(s, h))
   end
 end
 
@@ -511,8 +515,11 @@ handlers[key_event_name] = function(e)
     end
   elseif c == "q" then
     running = false
-  elseif c >= "1" and c <= "9" then
-    c = c + seite * 9
+  elseif c >= "0" and c <= "9" then
+    if c == 0 then
+      c = 10
+    end
+    c = c + seite * 10
     na = adressen[tonumber(c)]
     iriscontrol = "off"
     wormhole = "out"
