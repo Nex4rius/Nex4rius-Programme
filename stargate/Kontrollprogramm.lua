@@ -276,8 +276,6 @@ function wormholeDirection()
 end
 
 function aktualisiereStatus()
-  gpu.setBackground(Statusfarbe)
-  gpu.setForeground(Statustextfarbe)
   for P = 1, 13 do
     zeigeHier(38, P, "")
   end
@@ -325,6 +323,8 @@ function aktualisiereStatus()
 end
 
 function zeigeStatus()
+  gpu.setBackground(Statusfarbe)
+  gpu.setForeground(Statustextfarbe)
   aktualisiereStatus()
   zeigeHier(40, zeile, lokaleAdresse .. locAddr) neueZeile(1)
   zeigeHier(40, zeile, zielAdresse .. remAddr) neueZeile(1)
