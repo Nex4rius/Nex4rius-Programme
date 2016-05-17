@@ -38,7 +38,7 @@ Adresstextfarbe       = Textfarbe
 Nachrichtfarbe        = 6684774
 Nachrichttextfarbe    = Textfarbe
 Steuerungsfarbe       = 16750899
-Steuerungstextfarbe   = Textfarbe
+Steuerungstextfarbe   = schwarzeFarbe
 Statusfarbe           = 39168
 Statustextfarbe       = Textfarbe
 
