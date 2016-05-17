@@ -27,6 +27,7 @@ blaueFarbe = 0x0000FF
 schwarzeFarbe = 0x00000
 Trennlinienfarbe = blaueFarbe
 Hintergrundfarbe = 0x333333
+Textfarbe = weisseFarbe
 
 if redst == true then
   white = 0
