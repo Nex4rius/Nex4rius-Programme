@@ -95,6 +95,7 @@ function FarbenLeer()
     for P = screen_height - 11, screen_height - 3 do
       zeigeHier(38, P, "")
     end
+    zeigeFarben(1)
   else
     gpu.setBackground(Statusfarbe)
     gpu.setForeground(Statustextfarbe)
@@ -106,24 +107,27 @@ function FarbenLeer()
     for P = screen_height - 10, screen_height - 3 do
       zeigeHier(38, P, "")
     end
+    zeigeFarben()
   end
   gpu.setBackground(Nachrichtfarbe)
   gpu.setForeground(Nachrichttextfarbe)
   for P = screen_height - 1, screen_height do
     zeigeHier(1, P, "")
   end
-  zeigeFarben()
   gpu.setBackground(Adressfarbe)
   gpu.setForeground(Adresstextfarbe)
 end
 
-function zeigeFarben()
+function zeigeFarben(a)
+  if a == nil then
+    a = 2
+  end
   gpu.setBackground(Trennlinienfarbe)
   for P = 1, screen_height - 2 do
     zeigeHier(36, P, "  ", 1)
   end
   zeigeHier(1, screen_height - 2, "", 80)
-  zeigeHier(36, zeile + 2, "")
+  zeigeHier(36, zeile + a, "")
   neueZeile(1)
 end
 
@@ -680,9 +684,10 @@ function eventLoop()
 end
 
 function main()
-  FarbenLeer()
   zeigeStatus()
+  FarbenLeer()
   zeigeMenu()
+  zeigeStatus()
   eventLoop()
   gpu.setBackground(schwarzeFarbe)
   gpu.setForeground(weisseFarbe)
