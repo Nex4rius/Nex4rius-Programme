@@ -1,4 +1,4 @@
-version = "1.8.4"
+version = "1.8.5"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -45,7 +45,11 @@ function checkKomponenten()
     r = nil
     redst = false
   end
-  if gpu.maxResolution() > 50 then
+  if gpu.maxResolution() == 80 then
+    print(gpuOK)
+  elseif gpu.maxResolution() == 160 then
+    graphicT3 = true
+    gpu.setResolution(80, 25)
     print(gpuOK)
   else
     print(gpuFehlt)

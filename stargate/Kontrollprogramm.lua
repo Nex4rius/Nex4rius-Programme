@@ -15,9 +15,6 @@ dofile("stargate/config.lua")
 dofile("stargate/compat.lua")
 dofile("stargate/sicherNachNeustart.lua")
 
-gpu.setBackground(Hintergrundfarbe)
-gpu.setForeground(Textfarbe)
-
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
 end
@@ -44,6 +41,11 @@ function checkReset()
 end
 
 function zeigeMenu()
+  gpu.setBackground(Adressfarbe)
+  gpu.setForeground(Adresstextfarbe)
+  for P = 1, screen_height - 3 do
+    zeigeHier(1, P, "", 35)
+  end
   setCursor(1, 1)
   if seite == -1 then
     print(Steuerung)
@@ -63,9 +65,9 @@ function zeigeMenu()
         end
         print(AdressAnzeige .. " " .. string.sub(na[1], 1, 31))
         if sg.energyToDial(na[2]) == nil then
-          gpu.setForeground(roteFarbe)
+          gpu.setForeground(ErrorFarbe)
           print("   " .. errorName)
-          gpu.setForeground(weisseFarbe)
+          gpu.setForeground(Adresstextfarbe)
         else
           print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
         end
@@ -76,14 +78,52 @@ function zeigeMenu()
   end
 end
 
+function FarbenLeer()
+  gpu.setBackground(Adressfarbe)
+  gpu.setForeground(Adresstextfarbe)
+  for P = 1, screen_height - 3 do
+    zeigeHier(1, P, "", 35)
+  end
+  if iris == "Offline" then
+    gpu.setBackground(Statusfarbe)
+    gpu.setForeground(Statustextfarbe)
+    for P = 1, screen_height - 13 do
+      zeigeHier(38, P, "")
+    end
+    gpu.setBackground(Steuerungsfarbe)
+    gpu.setForeground(Steuerungstextfarbe)
+    for P = screen_height - 11, screen_height - 3 do
+      zeigeHier(38, P, "")
+    end
+  else
+    gpu.setBackground(Statusfarbe)
+    gpu.setForeground(Statustextfarbe)
+    for P = 1, screen_height - 12 do
+      zeigeHier(38, P, "")
+    end
+    gpu.setBackground(Steuerungsfarbe)
+    gpu.setForeground(Steuerungstextfarbe)
+    for P = screen_height - 10, screen_height - 3 do
+      zeigeHier(38, P, "")
+    end
+  end
+  gpu.setBackground(Nachrichtfarbe)
+  gpu.setForeground(Nachrichttextfarbe)
+  for P = screen_height - 1, screen_height do
+    zeigeHier(1, P, "")
+  end
+  gpu.setBackground(Adressfarbe)
+  gpu.setForeground(Adresstextfarbe)
+  zeigeFarben()
+end
+
 function zeigeFarben()
   gpu.setBackground(Trennlinienfarbe)
   for P = 1, screen_height - 2 do
     zeigeHier(36, P, "  ", 1)
   end
   zeigeHier(1, screen_height - 2, "", 80)
-  zeigeHier(36, zeile + 2, "")
-  gpu.setBackground(Hintergrundfarbe)
+  zeigeHier(36, Trennlinienhoehe, "")
   neueZeile(1)
 end
 
@@ -201,9 +241,7 @@ function iriscontroller()
   end
   if codeaccepted == "-" or codeaccepted == nil then
   elseif messageshow == true then
-    gpu.setForeground(roteFarbe)
     zeigeNachricht(nachrichtAngekommen .. codeaccepted .. "                   ")
-    gpu.setForeground(weisseFarbe)
     if codeaccepted == "Request: Disconnect Stargate" then
       os.sleep(1)
       sg.disconnect()
@@ -277,7 +315,6 @@ function wormholeDirection()
 end
 
 function aktualisiereStatus()
-  gpu.setBackground(Hintergrundfarbe)
   locAddr = getAddress(sg.localAddress())
   remAddr = getAddress(sg.remoteAddress())
   destinationName()
@@ -322,25 +359,29 @@ function aktualisiereStatus()
 end
 
 function zeigeStatus()
+  gpu.setBackground(Statusfarbe)
+  gpu.setForeground(Statustextfarbe)
   aktualisiereStatus()
-  zeigeHier(40, zeile, lokaleAdresse .. locAddr) neueZeile(1)
-  zeigeHier(40, zeile, zielAdresse .. remAddr) neueZeile(1)
-  zeigeHier(40, zeile, zielName .. string.sub(remoteName, 1, 22)) neueZeile(1)
-  zeigeHier(40, zeile, statusName .. StatusName) neueZeile(1)
+  zeigeHier(38, zeile, "  " .. lokaleAdresse .. locAddr) neueZeile(1)
+  zeigeHier(38, zeile, "  " .. zielAdresse .. remAddr) neueZeile(1)
+  zeigeHier(38, zeile, "  " .. zielName .. string.sub(remoteName, 1, 22)) neueZeile(1)
+  zeigeHier(38, zeile, "  " .. statusName .. StatusName) neueZeile(1)
   zeigeEnergie() neueZeile(1)
-  zeigeHier(40, zeile, IrisName .. IrisZustandName) neueZeile(1)
+  zeigeHier(38, zeile, "  " .. IrisName .. IrisZustandName) neueZeile(1)
   if iris == "Offline" then else
-    zeigeHier(40, zeile, IrisSteuerung .. irisKontrolleName) neueZeile(1)
+    zeigeHier(38, zeile, "  " .. IrisSteuerung .. irisKontrolleName) neueZeile(1)
   end
   if IDCyes == true then
-    zeigeHier(40, zeile, IDCakzeptiert) neueZeile(1)
+    zeigeHier(38, zeile, "  " .. IDCakzeptiert) neueZeile(1)
   else
-    zeigeHier(40, zeile, IDCname .. string.sub(incode, 1, 22)) neueZeile(1)
+    zeigeHier(38, zeile, "  " .. IDCname .. string.sub(incode, 1, 22)) neueZeile(1)
   end
-  zeigeHier(40, zeile, chevronName .. chevrons) neueZeile(1)
-  zeigeHier(40, zeile, richtung .. RichtungName) neueZeile(1)
+  zeigeHier(38, zeile, "  " .. chevronName .. chevrons) neueZeile(1)
+  zeigeHier(38, zeile, "  " .. richtung .. RichtungName) neueZeile(1)
   activetime() neueZeile(1)
   autoclose()
+  zeigeHier(38, zeile + 1, "")
+  Trennlinienhoehe = zeile + 2
   zeigeSteuerung()
   if redst == true then
     RedstoneKontrolle()
@@ -391,6 +432,11 @@ end
 
 function zeigeSteuerung()
   zeigeFarben()
+  gpu.setBackground(Steuerungsfarbe)
+  gpu.setForeground(Steuerungstextfarbe)
+  for P = screen_height - 10, screen_height - 3 do
+    zeigeHier(38, P, "")
+  end
   neueZeile(3)
   zeigeHier(40, zeile, Steuerung) neueZeile(2)
   zeigeHier(40, zeile, "D " .. abschalten)
@@ -409,17 +455,18 @@ function zeigeSteuerung()
     end
   end
   if seite == -1 then
-    zeigeHier(58, zeile, "→ " .. zeigeAdressen) neueZeile(1)
+    zeigeHier(58, zeile, "→ " .. zeigeAdressen)
   elseif maxseiten > seite + 1 then
-    zeigeHier(58, zeile, "→ " .. naechsteSeite) neueZeile(1)
+    zeigeHier(58, zeile, "→ " .. naechsteSeite)
   end
+  neueZeile(1)
 end
 
 function autoclose()
   if autoclosetime == false then
-    zeigeHier(40, zeile, autoSchliessungAus)
+    zeigeHier(38, zeile, "  " .. autoSchliessungAus)
   else
-    zeigeHier(40, zeile, autoSchliessungAn .. autoclosetime .. "s")
+    zeigeHier(38, zeile, "  " .. autoSchliessungAn .. autoclosetime .. "s")
     if (activationtime - os.time()) / sectime > autoclosetime and state == "Connected" then
       sg.disconnect()
     end
@@ -428,9 +475,9 @@ end
 
 function zeigeEnergie()
   if energy < 10000000 then
-    zeigeHier(40, zeile, energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000) .. " k")
+    zeigeHier(38, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000) .. " k")
   else
-    zeigeHier(40, zeile, energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000000) .. " M")
+    zeigeHier(38, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000000) .. " M")
   end
 end
 
@@ -441,10 +488,10 @@ function activetime()
     end
     time = (activationtime - os.time())/sectime
     if time > 0 then
-      zeigeHier(40, zeile, zeit1 .. string.format("%.1f", time) .. "s")
+      zeigeHier(38, zeile, "  " .. zeit1 .. string.format("%.1f", time) .. "s")
     end
   else
-    zeigeHier(40, zeile, zeit2)
+    zeigeHier(38, zeile, "  " .. zeit2)
   end
 end
 
@@ -458,7 +505,11 @@ function zeigeHier(x, y, s, h)
 end
 
 function zeigeNachricht(mess)
+  gpu.setBackground(Nachrichtfarbe)
+  gpu.setForeground(Nachrichttextfarbe)
+  zeigeHier(1, screen_height - 1, "", 80)
   zeigeHier(1, screen_height, mess)
+  gpu.setBackground(Statusfarbe)
 end
 
 function zeigeError(mess)
@@ -556,11 +607,15 @@ handlers[key_event_name] = function(e)
     os.execute("edit stargate/adressen.lua")
     dofile("stargate/adressen.lua")
     sides()
+    gpu.setBackground(Adressfarbe)
+    gpu.setForeground(Adresstextfarbe)
     zeigeStatus()
     zeigeMenu()
   elseif c == "l" then
     term.clear()
     print(spracheAendern .. "\n")
+    gpu.setBackground(Adressfarbe)
+    gpu.setForeground(Adresstextfarbe)
     antwortFrageSprache = io.read()
     if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
       Sprache = string.lower(antwortFrageSprache)
@@ -570,20 +625,20 @@ handlers[key_event_name] = function(e)
       print(errorName)
     end
     seite = 0
-    term.clear()
+    FarbenLeer()
     zeigeStatus()
     zeigeMenu()
   elseif e[3] == 0 and e[4] == 203 then
     if seite <= -1 then else
       seite = seite - 1
-      term.clear()
+      FarbenLeer()
       zeigeStatus()
       zeigeMenu()
     end
   elseif e[3] == 0 and e[4] == 205 then
     if seite + 1 < maxseiten then
       seite = seite + 1
-      term.clear()
+      FarbenLeer()
       zeigeStatus()
       zeigeMenu()
     end 
@@ -626,12 +681,16 @@ function eventLoop()
 end
 
 function main()
-  term.clear()
   zeigeStatus()
+  FarbenLeer()
   zeigeMenu()
+  zeigeStatus()
   eventLoop()
   gpu.setBackground(schwarzeFarbe)
   gpu.setForeground(weisseFarbe)
+  if graphicT3 == true then
+    gpu.setResolution(160, 50)
+  end
   term.clear()
   setCursor(1, 1)
 end
