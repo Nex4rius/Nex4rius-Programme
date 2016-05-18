@@ -95,7 +95,6 @@ function FarbenLeer()
     for P = screen_height - 11, screen_height - 3 do
       zeigeHier(38, P, "")
     end
-    zeigeFarben(1)
   else
     gpu.setBackground(Statusfarbe)
     gpu.setForeground(Statustextfarbe)
@@ -107,7 +106,6 @@ function FarbenLeer()
     for P = screen_height - 10, screen_height - 3 do
       zeigeHier(38, P, "")
     end
-    zeigeFarben()
   end
   gpu.setBackground(Nachrichtfarbe)
   gpu.setForeground(Nachrichttextfarbe)
@@ -116,18 +114,16 @@ function FarbenLeer()
   end
   gpu.setBackground(Adressfarbe)
   gpu.setForeground(Adresstextfarbe)
+  zeigeFarben()
 end
 
-function zeigeFarben(a)
-  if a == nil then
-    a = 2
-  end
+function zeigeFarben()
   gpu.setBackground(Trennlinienfarbe)
   for P = 1, screen_height - 2 do
     zeigeHier(36, P, "  ", 1)
   end
   zeigeHier(1, screen_height - 2, "", 80)
-  zeigeHier(36, zeile + a, "")
+  zeigeHier(36, Trennlinienhoehe, "")
   neueZeile(1)
 end
 
@@ -385,6 +381,7 @@ function zeigeStatus()
   activetime() neueZeile(1)
   autoclose()
   zeigeHier(38, zeile + 1, "")
+  Trennlinienhoehe = zeile + 2
   zeigeSteuerung()
   if redst == true then
     RedstoneKontrolle()
