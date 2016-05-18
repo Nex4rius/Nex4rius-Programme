@@ -688,6 +688,9 @@ function main()
   eventLoop()
   gpu.setBackground(schwarzeFarbe)
   gpu.setForeground(weisseFarbe)
+  if graphicT3 == true then
+    gpu.setResolution(160, 50)
+  end
   term.clear()
   setCursor(1, 1)
 end
