@@ -23,12 +23,13 @@ for Ai = 1, 36 do
                 zweiteStelle = alleZeichen[Hi]
                 for Ii = 1, 36 do
                   ersteStelle = alleZeichen[Ii]
-                  if sg.energyToDial(ersteStelle .. zweiteStelle .. dritteStelle .. vierteStelle .. fuenfteStelle .. sechsteStelle .. siebteStelle .. achteStelle .. neunteStelle) == nil then
-                    print(ersteStelle .. zweiteStelle .. dritteStelle .. vierteStelle .. "-" .. fuenfteStelle .. sechsteStelle .. siebteStelle .. "-" .. achteStelle .. neunteStelle)
+                  Adresse = ersteStelle .. zweiteStelle .. dritteStelle .. vierteStelle .. "-" .. fuenfteStelle .. sechsteStelle .. siebteStelle .. "-" .. achteStelle .. neunteStelle
+                  if sg.energyToDial(Adresse) == nil then
+                    print()
                   else
                     gpu.setForeground(0xFF0000)
-                    print("\n" .. ersteStelle .. zweiteStelle .. dritteStelle .. vierteStelle .. "-" .. fuenfteStelle .. sechsteStelle .. siebteStelle .. "-" .. achteStelle .. neunteStelle .. " GEFUNDEN\n")
-                    f:write(ersteStelle .. zweiteStelle .. dritteStelle .. vierteStelle .. "-" .. fuenfteStelle .. sechsteStelle .. siebteStelle .. "-" .. achteStelle .. neunteStelle .. "\n")
+                    print("\n" .. Adresse .. " GEFUNDEN\n")
+                    f:write(Adresse .. "\n")
                     gpu.setForeground(0xFFFFFF)
                   end
                 end
