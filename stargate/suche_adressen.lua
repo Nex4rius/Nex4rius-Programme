@@ -39,4 +39,4 @@ function Suche_Adressen(dimensionszahl)
   f:close ()
 end
 
---Suche_Adressen(<<<<<DIMENSIONS Angabe (letzte 2 Buchstaben / Zahlen bei der Stargate Adresse)>>>>>)
+--Suche_Adressen("DIMENSIONS Angabe (letzte 2 Buchstaben / Zahlen bei der Stargate Adresse)")
