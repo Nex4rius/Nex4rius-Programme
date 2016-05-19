@@ -26,7 +26,7 @@ for Ai = 1, 36 do
                     print(ersteStelle .. zweiteStelle .. dritteStelle .. vierteStelle .. "-" .. fuenfteStelle .. sechsteStelle .. siebteStelle .. "-" .. achteStelle .. neunteStelle)
                   else
                     gpu.setForeground(0xFF0000)
-                    print(ersteStelle .. zweiteStelle .. dritteStelle .. vierteStelle .. "-" .. fuenfteStelle .. sechsteStelle .. siebteStelle .. "-" .. achteStelle .. neunteStelle .. " GEFUNDEN")
+                    print("\n" .. ersteStelle .. zweiteStelle .. dritteStelle .. vierteStelle .. "-" .. fuenfteStelle .. sechsteStelle .. siebteStelle .. "-" .. achteStelle .. neunteStelle .. " GEFUNDEN\n")
                     gpu.setForeground(0xFFFFFF)
                   end
                 end
