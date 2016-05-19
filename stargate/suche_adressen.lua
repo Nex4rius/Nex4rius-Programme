@@ -30,7 +30,7 @@ for Ai = 1, 36 do
                     print("")
                     print(ersteStelle .. zweiteStelle .. dritteStelle .. vierteStelle .. "-" .. fuenfteStelle .. sechsteStelle .. siebteStelle .. "-" .. achteStelle .. neunteStelle .. " GEFUNDEN")
                     print("")
-                    f = io.open("4")
+                    f = io.open("ergebnis_suche")
                     f:write(ersteStelle .. zweiteStelle .. dritteStelle .. vierteStelle .. "-" .. fuenfteStelle .. sechsteStelle .. siebteStelle .. "-" .. achteStelle .. neunteStelle .. "\n")
                     gpu.setForeground(0xFFFFFF)
                   end
