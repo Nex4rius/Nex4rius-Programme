@@ -22,9 +22,9 @@ for Ai = 1, 36 do
                 for Ii = 1, 36 do
                   neunteStelle = alleZeichen[Ii]
                   if sg.energyToDial(ersteStelle .. "ZV-L0Y-SA") == nil then
-                    print(ersteStelle .. zweiteStelle .. dritteStelle .. vierteStelle .. fuenfteStelle .. sechsteStelle .. siebteStelle .. achteStelle .. neunteStelle)
+                    print(ersteStelle .. zweiteStelle .. dritteStelle .. vierteStelle .. "-" .. fuenfteStelle .. sechsteStelle .. siebteStelle .. "-" .. achteStelle .. neunteStelle)
                   else
-                    print(ersteStelle .. zweiteStelle .. dritteStelle .. vierteStelle .. fuenfteStelle .. sechsteStelle .. siebteStelle .. achteStelle .. neunteStelle .. " GEFUNDEN")
+                    print(ersteStelle .. zweiteStelle .. dritteStelle .. vierteStelle .. "-" .. fuenfteStelle .. sechsteStelle .. siebteStelle .. "-" .. achteStelle .. neunteStelle .. " GEFUNDEN")
                   end
                 end
               end
