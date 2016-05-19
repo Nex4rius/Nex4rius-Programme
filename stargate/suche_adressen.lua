@@ -34,7 +34,4 @@ for Ai = 1, 36 do
       end
     end
   end
-  
-  
-  
 end
