@@ -21,7 +21,7 @@ function Suche_Adressen(dimensionszahl)
               zweiteStelle = alleZeichen[Hi]
               for Ii = 1, 36 do
                 ersteStelle = alleZeichen[Ii]
-                if sg.energyToDial(ersteStelle .. "ZV-L0Y-SA") == nil then
+                if sg.energyToDial(ersteStelle .. zweiteStelle .. dritteStelle .. vierteStelle .. "-" .. fuenfteStelle .. sechsteStelle .. siebteStelle .. "-" .. achteNeunteStelle) == nil then
                   print(ersteStelle .. zweiteStelle .. dritteStelle .. vierteStelle .. "-" .. fuenfteStelle .. sechsteStelle .. siebteStelle .. "-" .. achteNeunteStelle)
                 else
                   gpu.setForeground(0xFF0000)
