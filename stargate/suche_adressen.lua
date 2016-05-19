@@ -1,10 +1,10 @@
 component = require("component")
 sg = component.getPrimary("stargate")
 gpu = component.getPrimary("gpu")
-fs = require("filesystem")
 
 alleZeichen = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
 
+f = io.open("ergebnis_suche", "w")
 for Ai = 1, 36 do
   neunteStelle = alleZeichen[Ai]
   for Bi = 1, 36 do
@@ -27,10 +27,7 @@ for Ai = 1, 36 do
                     print(ersteStelle .. zweiteStelle .. dritteStelle .. vierteStelle .. "-" .. fuenfteStelle .. sechsteStelle .. siebteStelle .. "-" .. achteStelle .. neunteStelle)
                   else
                     gpu.setForeground(0xFF0000)
-                    print("")
-                    print(ersteStelle .. zweiteStelle .. dritteStelle .. vierteStelle .. "-" .. fuenfteStelle .. sechsteStelle .. siebteStelle .. "-" .. achteStelle .. neunteStelle .. " GEFUNDEN")
-                    print("")
-                    f = io.open("ergebnis_suche", "w")
+                    print("\n" .. ersteStelle .. zweiteStelle .. dritteStelle .. vierteStelle .. "-" .. fuenfteStelle .. sechsteStelle .. siebteStelle .. "-" .. achteStelle .. neunteStelle .. " GEFUNDEN\n")
                     f:write(ersteStelle .. zweiteStelle .. dritteStelle .. vierteStelle .. "-" .. fuenfteStelle .. sechsteStelle .. siebteStelle .. "-" .. achteStelle .. neunteStelle .. "\n")
                     gpu.setForeground(0xFFFFFF)
                   end
