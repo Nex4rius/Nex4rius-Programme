@@ -6,24 +6,24 @@ alleZeichen = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", 
 
 f = io.open("ergebnis_suche", "w")
 for Ai = 1, 36 do
-  neunteStelle = alleZeichen[Ai]
+  A = alleZeichen[Ai]
   for Bi = 1, 36 do
-    achteStelle = alleZeichen[Bi]
+    B = alleZeichen[Bi]
     for Ci = 1, 36 do
-      siebteStelle = alleZeichen[Ci]
+      C = alleZeichen[Ci]
       for Di = 1, 36 do
-        sechsteStelle = alleZeichen[Di]
+        D = alleZeichen[Di]
         for Ei = 1, 36 do
-          fuenfteStelle = alleZeichen[Ei]
+          E = alleZeichen[Ei]
           for Fi = 1, 36 do
-            vierteStelle = alleZeichen[Fi]
+            F = alleZeichen[Fi]
             for Gi = 1, 36 do
-              dritteStelle = alleZeichen[Gi]
+              G = alleZeichen[Gi]
               for Hi = 1, 36 do
-                zweiteStelle = alleZeichen[Hi]
+                H = alleZeichen[Hi]
                 for Ii = 1, 36 do
-                  ersteStelle = alleZeichen[Ii]
-                  Adresse = ersteStelle .. zweiteStelle .. dritteStelle .. vierteStelle .. "-" .. fuenfteStelle .. sechsteStelle .. siebteStelle .. "-" .. achteStelle .. neunteStelle
+                  I = alleZeichen[Ii]
+                  Adresse = I .. H .. G .. F .. "-" .. E .. D .. C .. "-" .. B .. A
                   if sg.energyToDial(Adresse) == nil then
                     print()
                   else
