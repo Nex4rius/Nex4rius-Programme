@@ -27,7 +27,7 @@ for Ai = 1, 36 do
                   I = alleZeichen[Ii]
                   Adresse = I .. H .. G .. F .. "-" .. E .. D .. C .. "-" .. B .. A
                   if sg.energyToDial(Adresse) == nil then
-                    print()
+                    print(Adresse)
                   else
                     gpu.setForeground(0xFF0000)
                     print("\n" .. Adresse .. " GEFUNDEN\n")
