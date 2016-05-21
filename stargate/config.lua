@@ -78,4 +78,10 @@ if RF == true then
   energymultiplicator = 80
 end
 
+if sg.irisState() == "Offline" then
+  Trennlinienhoehe    = 13
+else
+  Trennlinienhoehe    = 14
+end
+
 os.sleep(2)
