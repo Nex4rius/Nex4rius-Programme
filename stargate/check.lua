@@ -54,7 +54,6 @@ function checkKomponenten()
   else
     print(gpuFehlt)
   end
-  gpu.setResolution(70, 25)
   if component.isAvailable("internet") then
     print(InternetOK)
     internet = true
