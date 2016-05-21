@@ -534,7 +534,7 @@ handlers[key_event_name] = function(e)
     entercode = false
     sg.sendMessage(enteridc)
   elseif entercode == true then
-    enteridc = enteridc .. c
+    enteridc = string.format("%q", enteridc .. c)
     showidc = showidc .. "*"
     zeigeNachricht("Enter IDC: " .. showidc)
   elseif c == "e" then
