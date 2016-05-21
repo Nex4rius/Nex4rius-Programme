@@ -44,7 +44,7 @@ function zeigeMenu()
   gpu.setBackground(Adressfarbe)
   gpu.setForeground(Adresstextfarbe)
   for P = 1, screen_height - 3 do
-    zeigeHier(1, P, "", 35)
+    zeigeHier(1, P, "", xVerschiebung - 3)
   end
   setCursor(1, 1)
   if seite == -1 then
@@ -82,7 +82,7 @@ function FarbenLeer()
   gpu.setBackground(Adressfarbe)
   gpu.setForeground(Adresstextfarbe)
   for P = 1, screen_height - 3 do
-    zeigeHier(1, P, "", 35)
+    zeigeHier(1, P, "", xVerschiebung - 3)
   end
   if sg.irisState() == "Offline" then
     gpu.setBackground(Statusfarbe)
@@ -525,7 +525,7 @@ end
 handlers = {}
 
 function dial(name, addr)
-  zeigeNachricht(waehlen .. string.sub(name, 1, 50) .. " (" .. addr .. ")")
+  zeigeNachricht(waehlen .. string.sub(name, 1, xVerschiebung + 12) .. " (" .. addr .. ")")
   remoteName = name
   check(sg.dial(addr))
 end
