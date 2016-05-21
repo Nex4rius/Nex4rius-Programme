@@ -685,7 +685,7 @@ function main()
   eventLoop()
   gpu.setBackground(schwarzeFarbe)
   gpu.setForeground(weisseFarbe)
-  gpu.setResolution(max_Bildschirmhoehe, max_Bildschirmbreite)
+  gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   term.clear()
   setCursor(1, 1)
 end
