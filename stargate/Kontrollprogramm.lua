@@ -84,7 +84,7 @@ function FarbenLeer()
   for P = 1, screen_height - 3 do
     zeigeHier(1, P, "", 35)
   end
-  if iris == "Offline" then
+  if sg.irisState() == "Offline" then
     gpu.setBackground(Statusfarbe)
     gpu.setForeground(Statustextfarbe)
     for P = 1, screen_height - 13 do
@@ -625,22 +625,16 @@ handlers[key_event_name] = function(e)
       print(errorName)
     end
     seite = 0
-    FarbenLeer()
-    zeigeStatus()
-    zeigeMenu()
+    zeigeAnzeige()
   elseif e[3] == 0 and e[4] == 203 then
     if seite <= -1 then else
       seite = seite - 1
-      FarbenLeer()
-      zeigeStatus()
-      zeigeMenu()
+      zeigeAnzeige()
     end
   elseif e[3] == 0 and e[4] == 205 then
     if seite + 1 < maxseiten then
       seite = seite + 1
-      FarbenLeer()
-      zeigeStatus()
-      zeigeMenu()
+      zeigeAnzeige()
     end 
   end
 end
@@ -680,17 +674,18 @@ function eventLoop()
   end
 end
 
-function main()
-  zeigeStatus()
+function zeigeAnzeige()
   FarbenLeer()
   zeigeStatus()
   zeigeMenu()
+end
+
+function main()
+  zeigeAnzeige()
   eventLoop()
   gpu.setBackground(schwarzeFarbe)
   gpu.setForeground(weisseFarbe)
-  if graphicT3 == true then
-    gpu.setResolution(160, 50)
-  end
+  gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   term.clear()
   setCursor(1, 1)
 end
@@ -698,9 +693,5 @@ end
 if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
   irisOpen()
 end
-
-messageshow = true
-
-running = true
 
 main()

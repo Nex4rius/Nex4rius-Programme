@@ -14,6 +14,7 @@ function check(...)
 end
 
 screen_width, screen_height = gpu.getResolution()
+max_Bildschirmbreite, max_Bildschirmhoehe = gpu.maxResolution()
 
 function setCursor(col, row)
   term.setCursor(col, row)

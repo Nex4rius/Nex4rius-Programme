@@ -21,6 +21,8 @@ zeile                 = 1
 remoteName            = ""
 checkEnergy           = 0
 AddNewAddress         = true
+messageshow           = true
+running               = true
 
 graueFarbe            = 0x333333
 roteFarbe             = 0xFF0000
@@ -72,8 +74,14 @@ redstoneIDC           = false
 IrisZustandName       = irisNameOffline
 
 if RF == true then
-  energytpye          = "RF"
+  energytype          = "RF"
   energymultiplicator = 80
+end
+
+if sg.irisState() == "Offline" then
+  Trennlinienhoehe    = 13
+else
+  Trennlinienhoehe    = 14
 end
 
 os.sleep(2)
