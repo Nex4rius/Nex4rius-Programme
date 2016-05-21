@@ -49,7 +49,7 @@ function checkKomponenten()
     print(gpuOK2T)
   elseif gpu.maxResolution() == 160 then
     graphicT3 = true
-    gpu.setResolution(80, 25)
+    gpu.setResolution(80, 29)
     print(gpuOK3T)
   else
     print(gpuFehlt)
