@@ -625,22 +625,16 @@ handlers[key_event_name] = function(e)
       print(errorName)
     end
     seite = 0
-    FarbenLeer()
-    zeigeStatus()
-    zeigeMenu()
+    zeigeAnzeige()
   elseif e[3] == 0 and e[4] == 203 then
     if seite <= -1 then else
       seite = seite - 1
-      FarbenLeer()
-      zeigeStatus()
-      zeigeMenu()
+      zeigeAnzeige()
     end
   elseif e[3] == 0 and e[4] == 205 then
     if seite + 1 < maxseiten then
       seite = seite + 1
-      FarbenLeer()
-      zeigeStatus()
-      zeigeMenu()
+      zeigeAnzeige()
     end 
   end
 end
@@ -680,10 +674,14 @@ function eventLoop()
   end
 end
 
-function main()
+function zeigeAnzeige()
   FarbenLeer()
   zeigeStatus()
   zeigeMenu()
+end
+
+function main()
+  zeigeAnzeige()
   eventLoop()
   gpu.setBackground(schwarzeFarbe)
   gpu.setForeground(weisseFarbe)
