@@ -681,7 +681,6 @@ function eventLoop()
 end
 
 function main()
-  zeigeStatus()
   FarbenLeer()
   zeigeStatus()
   zeigeMenu()
@@ -698,9 +697,5 @@ end
 if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
   irisOpen()
 end
-
-messageshow = true
-
-running = true
 
 main()
