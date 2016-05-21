@@ -85,7 +85,7 @@ function update()
   os.execute("wget -f " .. Pfad .. "stargate/sprache/english.lua stargate/sprache/english.lua") print("")
   os.execute("wget " .. Pfad .. "stargate/adressen.lua stargate/adressen.lua") print("")
   os.execute("wget " .. Pfad .. "sicherNachNeustart.lua stargate/sicherNachNeustart.lua")
-  print("\n" .. Neustart)
+  print("\n\n" .. Neustart)
   f = io.open ("stargate/adressen.lua", "r")
   addressRead = true
   leseLaenge = 1000
