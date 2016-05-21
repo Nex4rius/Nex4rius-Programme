@@ -578,8 +578,6 @@ handlers[key_event_name] = function(e)
         sg.sendMessage("Manual Override: Iris Closed")
       end
     end
-  elseif c == "q" then
-    running = false
   elseif c >= "0" and c <= "9" then
     if c == "0" then
       c = 10
@@ -594,40 +592,6 @@ handlers[key_event_name] = function(e)
         else outcode = na[3]
       end
     end
-  elseif c == "i" then
-    if iris == "Offline" then else
-      send = true
-      if control == "On" then
-        control = "Off"
-        schreibSicherungsdatei()
-      else
-        control = "On"
-        schreibSicherungsdatei()
-      end
-    end
-  elseif c == "z" then
-    os.execute("edit stargate/adressen.lua")
-    dofile("stargate/adressen.lua")
-    sides()
-    gpu.setBackground(schwarzeFarbe)
-    gpu.setForeground(weisseFarbe)
-    zeigeStatus()
-    zeigeMenu()
-  elseif c == "l" then
-    term.clear()
-    print(spracheAendern .. "\n")
-    gpu.setBackground(Adressfarbe)
-    gpu.setForeground(Adresstextfarbe)
-    antwortFrageSprache = io.read()
-    if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
-      Sprache = string.lower(antwortFrageSprache)
-      dofile("stargate/sprache/" .. Sprache .. ".lua")
-      schreibSicherungsdatei()
-    else
-      print(errorName)
-    end
-    seite = 0
-    zeigeAnzeige()
   elseif e[3] == 0 and e[4] == 203 then
     if seite <= -1 then else
       seite = seite - 1
@@ -637,7 +601,45 @@ handlers[key_event_name] = function(e)
     if seite + 1 < maxseiten then
       seite = seite + 1
       zeigeAnzeige()
-    end 
+    end
+  elseif seite == -1 then
+    if c == "q" then
+      running = false
+    elseif c == "i" then
+      if iris == "Offline" then else
+        send = true
+        if control == "On" then
+          control = "Off"
+          schreibSicherungsdatei()
+        else
+          control = "On"
+          schreibSicherungsdatei()
+        end
+      end
+    elseif c == "z" then
+      os.execute("edit stargate/adressen.lua")
+      dofile("stargate/adressen.lua")
+      sides()
+      gpu.setBackground(Hintergrundfarbe)
+      gpu.setForeground(Textfarbe)
+      zeigeStatus()
+      zeigeMenu()
+    elseif c == "l" then
+      term.clear()
+      print(spracheAendern .. "\n")
+      gpu.setBackground(Adressfarbe)
+      gpu.setForeground(Adresstextfarbe)
+      antwortFrageSprache = io.read()
+      if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
+        Sprache = string.lower(antwortFrageSprache)
+        dofile("stargate/sprache/" .. Sprache .. ".lua")
+        schreibSicherungsdatei()
+      else
+        print(errorName)
+      end
+      seite = 0
+      zeigeAnzeige()
+    end
   end
 end
 
