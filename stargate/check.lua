@@ -106,6 +106,7 @@ function update()
     f:close ()
   end
   installieren = true
+  os.sleep(1)
   dofile("stargate/sprache/" .. Sprache .. ".lua")
   dofile("stargate/check.lua")
   weiter = false
