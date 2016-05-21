@@ -63,7 +63,7 @@ function zeigeMenu()
         if AdressAnzeige == 10 then
           AdressAnzeige = 0
         end
-        print(AdressAnzeige .. " " .. string.sub(na[1], 1, 31))
+        print(AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
         if sg.energyToDial(na[2]) == nil then
           gpu.setForeground(ErrorFarbe)
           print("   " .. errorName)
