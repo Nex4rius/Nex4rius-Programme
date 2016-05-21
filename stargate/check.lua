@@ -10,6 +10,8 @@ versionTyp = "master/"
 Sprache = ""
 weiter = true
 
+term.clear()
+
 dofile("stargate/sicherNachNeustart.lua")
 
 function schreibSicherungsdatei()
@@ -82,7 +84,8 @@ function update()
   os.execute("wget -f " .. Pfad .. "stargate/sprache/deutsch.lua stargate/sprache/deutsch.lua") print("")
   os.execute("wget -f " .. Pfad .. "stargate/sprache/english.lua stargate/sprache/english.lua") print("")
   os.execute("wget " .. Pfad .. "stargate/adressen.lua stargate/adressen.lua") print("")
-  os.execute("wget " .. Pfad .. "sicherNachNeustart.lua stargate/sicherNachNeustart.lua") print("")
+  os.execute("wget " .. Pfad .. "sicherNachNeustart.lua stargate/sicherNachNeustart.lua")
+  print("\n" .. Neustart)
   f = io.open ("stargate/adressen.lua", "r")
   addressRead = true
   leseLaenge = 1000
