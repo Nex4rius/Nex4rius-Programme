@@ -1,28 +1,34 @@
-time                  = "-"
-incode                = "-"
-wormhole              = "in"
-a = os.time()
+ZeitBeimEinschalten   = os.time()
 os.sleep(1)
-sectime               = a - os.time()
-activationtime        = 0
-entercode             = false
+sectime               = ZeitBeimEinschalten - os.time()
 enteridc              = ""
 showidc               = ""
-iriscontrol           = "on"
+remoteName            = ""
+time                  = "-"
+incode                = "-"
 codeaccepted          = "-"
+wormhole              = "in"
+iriscontrol           = "on"
 energytype            = "EU"
-energymultiplicator   = 20
+activationtime        = 0
 energy                = 0
-send                  = true
-IDCyes                = false
 seite                 = 0
 maxseiten             = 0
-zeile                 = 1
-remoteName            = ""
 checkEnergy           = 0
+zeile                 = 1
+energymultiplicator   = 20
+xVerschiebung         = 33
 AddNewAddress         = true
 messageshow           = true
 running               = true
+send                  = true
+IDCyes                = false
+entercode             = false
+redstoneConnected     = false
+redstoneIncoming      = false
+redstoneState         = false
+redstoneIDC           = false
+IrisZustandName       = irisNameOffline
 
 graueFarbe            = 0x333333
 roteFarbe             = 0xFF0000
@@ -65,13 +71,6 @@ if redst == true then
     r.setBundledOutput(0, farbe, 0)
   end
 end
-
-redstoneConnected     = false
-redstoneIncoming      = false
-redstoneState         = false
-redstoneIDC           = false
-
-IrisZustandName       = irisNameOffline
 
 if RF == true then
   energytype          = "RF"

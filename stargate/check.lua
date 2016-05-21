@@ -1,4 +1,4 @@
-version = "1.8.8"
+version = "1.8.9"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -8,6 +8,9 @@ gpu = component.getPrimary("gpu")
 serverAddresse = "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/"
 versionTyp = "master/"
 Sprache = ""
+weiter = true
+
+term.clear()
 
 dofile("stargate/sicherNachNeustart.lua")
 
@@ -47,10 +50,8 @@ function checkKomponenten()
   end
   if gpu.maxResolution() == 80 then
     print(gpuOK2T)
-    gpu.setResolution(80, 25)
   elseif gpu.maxResolution() == 160 then
     graphicT3 = true
-    gpu.setResolution(80, 29)
     print(gpuOK3T)
   else
     print(gpuFehlt)
@@ -83,7 +84,8 @@ function update()
   os.execute("wget -f " .. Pfad .. "stargate/sprache/deutsch.lua stargate/sprache/deutsch.lua") print("")
   os.execute("wget -f " .. Pfad .. "stargate/sprache/english.lua stargate/sprache/english.lua") print("")
   os.execute("wget " .. Pfad .. "stargate/adressen.lua stargate/adressen.lua") print("")
-  os.execute("wget " .. Pfad .. "sicherNachNeustart.lua stargate/sicherNachNeustart.lua") print("")
+  os.execute("wget " .. Pfad .. "sicherNachNeustart.lua stargate/sicherNachNeustart.lua")
+  print("\n\n" .. Neustart)
   f = io.open ("stargate/adressen.lua", "r")
   addressRead = true
   leseLaenge = 1000
@@ -103,9 +105,11 @@ function update()
     f:write("")
     f:close ()
   end
+  installieren = true
+  os.sleep(1)
   dofile("stargate/sprache/" .. Sprache .. ".lua")
-  print(laden)
-  dofile("stargate/Kontrollprogramm.lua")
+  dofile("stargate/check.lua")
+  weiter = false
 end
 
 function checkServerVersion()
@@ -162,6 +166,8 @@ if checkKomponenten() == true then
       end
     end
   end
-  print(laden)
-  dofile("stargate/Kontrollprogramm.lua")
+  if weiter == true then
+    print(laden)
+    dofile("stargate/Kontrollprogramm.lua")
+  end
 end
