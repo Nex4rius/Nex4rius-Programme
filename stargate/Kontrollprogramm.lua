@@ -84,7 +84,7 @@ function FarbenLeer()
   for P = 1, screen_height - 3 do
     zeigeHier(1, P, "", 35)
   end
-  if iris == "Offline" then
+  if sg.irisState() == "Offline" then
     gpu.setBackground(Statusfarbe)
     gpu.setForeground(Statustextfarbe)
     for P = 1, screen_height - 13 do
