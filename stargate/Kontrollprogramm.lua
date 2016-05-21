@@ -617,18 +617,18 @@ handlers[key_event_name] = function(e)
         end
       end
     elseif c == "z" then
+      gpu.setBackground(0x333333)
+      gpu.setForeground(Textfarbe)
       os.execute("edit stargate/adressen.lua")
       dofile("stargate/adressen.lua")
       sides()
-      gpu.setBackground(0x333333)
-      gpu.setForeground(Textfarbe)
       zeigeStatus()
       zeigeMenu()
     elseif c == "l" then
-      term.clear()
-      print(spracheAendern .. "\n")
       gpu.setBackground(0x333333)
       gpu.setForeground(Textfarbe)
+      term.clear()
+      print(spracheAendern .. "\n")
       antwortFrageSprache = io.read()
       if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
         Sprache = string.lower(antwortFrageSprache)
