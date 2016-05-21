@@ -1,4 +1,4 @@
-version = "1.8.8"
+version = "1.8.9"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -47,14 +47,14 @@ function checkKomponenten()
   end
   if gpu.maxResolution() == 80 then
     print(gpuOK2T)
-    gpu.setResolution(80, 25)
+    gpu.setResolution(70, 25)
   elseif gpu.maxResolution() == 160 then
     graphicT3 = true
-    gpu.setResolution(80, 29)
     print(gpuOK3T)
   else
     print(gpuFehlt)
   end
+  gpu.setResolution(70, 25)
   if component.isAvailable("internet") then
     print(InternetOK)
     internet = true
