@@ -78,10 +78,4 @@ if RF == true then
   energymultiplicator = 80
 end
 
-if iris == "Offline" then
-  Trennlinienhoehe    = 13
-else
-  Trennlinienhoehe    = 14
-end
-
 os.sleep(2)
