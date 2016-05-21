@@ -46,11 +46,11 @@ function checkKomponenten()
     redst = false
   end
   if gpu.maxResolution() == 80 then
-    print(gpuOK)
+    print(gpuOK2T)
   elseif gpu.maxResolution() == 160 then
     graphicT3 = true
     gpu.setResolution(80, 25)
-    print(gpuOK)
+    print(gpuOK3T)
   else
     print(gpuFehlt)
   end
