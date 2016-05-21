@@ -49,7 +49,9 @@ function zeigeMenu()
   setCursor(1, 1)
   if seite == -1 then
     print(Steuerung)
-    print("I " .. IrisSteuerung .. an_aus)
+    if iris == "Offline" then else
+      print("I " .. IrisSteuerung .. an_aus)
+    end
     print("Z " .. AdressenBearbeiten)
     print("Q " .. beenden)
     print("L " .. spracheAendern .. "\n" .. verfuegbareSprachen)
