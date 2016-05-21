@@ -21,7 +21,6 @@ zeile                 = 1
 remoteName            = ""
 checkEnergy           = 0
 AddNewAddress         = true
-Trennlinienhoehe      = 14
 messageshow           = true
 running               = true
 
@@ -77,6 +76,12 @@ IrisZustandName       = irisNameOffline
 if RF == true then
   energytpye          = "RF"
   energymultiplicator = 80
+end
+
+if iris == "OFfline" then
+  Trennlinienhoehe    = 13
+else
+  Trennlinienhoehe    = 14
 end
 
 os.sleep(2)
