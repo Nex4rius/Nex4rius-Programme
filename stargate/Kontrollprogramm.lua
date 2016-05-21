@@ -88,23 +88,23 @@ function FarbenLeer()
     gpu.setBackground(Statusfarbe)
     gpu.setForeground(Statustextfarbe)
     for P = 1, screen_height - 13 do
-      zeigeHier(38, P, "")
+      zeigeHier(xVerschiebung, P, "")
     end
     gpu.setBackground(Steuerungsfarbe)
     gpu.setForeground(Steuerungstextfarbe)
     for P = screen_height - 11, screen_height - 3 do
-      zeigeHier(38, P, "")
+      zeigeHier(xVerschiebung, P, "")
     end
   else
     gpu.setBackground(Statusfarbe)
     gpu.setForeground(Statustextfarbe)
     for P = 1, screen_height - 12 do
-      zeigeHier(38, P, "")
+      zeigeHier(xVerschiebung, P, "")
     end
     gpu.setBackground(Steuerungsfarbe)
     gpu.setForeground(Steuerungstextfarbe)
     for P = screen_height - 10, screen_height - 3 do
-      zeigeHier(38, P, "")
+      zeigeHier(xVerschiebung, P, "")
     end
   end
   gpu.setBackground(Nachrichtfarbe)
@@ -120,10 +120,10 @@ end
 function zeigeFarben()
   gpu.setBackground(Trennlinienfarbe)
   for P = 1, screen_height - 2 do
-    zeigeHier(36, P, "  ", 1)
+    zeigeHier(xVerschiebung - 2, P, "  ", 1)
   end
   zeigeHier(1, screen_height - 2, "", 80)
-  zeigeHier(36, Trennlinienhoehe, "")
+  zeigeHier(xVerschiebung - 2, Trennlinienhoehe, "")
   neueZeile(1)
 end
 
@@ -363,25 +363,25 @@ function zeigeStatus()
   gpu.setBackground(Statusfarbe)
   gpu.setForeground(Statustextfarbe)
   aktualisiereStatus()
-  zeigeHier(38, zeile, "  " .. lokaleAdresse .. locAddr) neueZeile(1)
-  zeigeHier(38, zeile, "  " .. zielAdresse .. remAddr) neueZeile(1)
-  zeigeHier(38, zeile, "  " .. zielName .. string.sub(remoteName, 1, 22)) neueZeile(1)
-  zeigeHier(38, zeile, "  " .. statusName .. StatusName) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. lokaleAdresse .. locAddr) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. zielAdresse .. remAddr) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. zielName .. string.sub(remoteName, 1, 22)) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. statusName .. StatusName) neueZeile(1)
   zeigeEnergie() neueZeile(1)
-  zeigeHier(38, zeile, "  " .. IrisName .. IrisZustandName) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. IrisName .. IrisZustandName) neueZeile(1)
   if iris == "Offline" then else
-    zeigeHier(38, zeile, "  " .. IrisSteuerung .. irisKontrolleName) neueZeile(1)
+    zeigeHier(xVerschiebung, zeile, "  " .. IrisSteuerung .. irisKontrolleName) neueZeile(1)
   end
   if IDCyes == true then
-    zeigeHier(38, zeile, "  " .. IDCakzeptiert) neueZeile(1)
+    zeigeHier(xVerschiebung, zeile, "  " .. IDCakzeptiert) neueZeile(1)
   else
-    zeigeHier(38, zeile, "  " .. IDCname .. string.sub(incode, 1, 22)) neueZeile(1)
+    zeigeHier(xVerschiebung, zeile, "  " .. IDCname .. string.sub(incode, 1, 22)) neueZeile(1)
   end
-  zeigeHier(38, zeile, "  " .. chevronName .. chevrons) neueZeile(1)
-  zeigeHier(38, zeile, "  " .. richtung .. RichtungName) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. chevronName .. chevrons) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. richtung .. RichtungName) neueZeile(1)
   activetime() neueZeile(1)
   autoclose()
-  zeigeHier(38, zeile + 1, "")
+  zeigeHier(xVerschiebung, zeile + 1, "")
   Trennlinienhoehe = zeile + 2
   zeigeSteuerung()
   if redst == true then
@@ -436,38 +436,38 @@ function zeigeSteuerung()
   gpu.setBackground(Steuerungsfarbe)
   gpu.setForeground(Steuerungstextfarbe)
   for P = screen_height - 10, screen_height - 3 do
-    zeigeHier(38, P, "")
+    zeigeHier(xVerschiebung, P, "")
   end
   neueZeile(3)
-  zeigeHier(40, zeile, Steuerung) neueZeile(2)
-  zeigeHier(40, zeile, "D " .. abschalten)
-  zeigeHier(58, zeile, "E " .. IDCeingabe) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. Steuerung) neueZeile(2)
+  zeigeHier(xVerschiebung, zeile, "  D " .. abschalten)
+  zeigeHier(xVerschiebung + 20, zeile, "E " .. IDCeingabe) neueZeile(1)
   if iris == "Offline" then
     control = "Off"
   else
-    zeigeHier(40, zeile, "O " .. oeffneIris)
-    zeigeHier(58, zeile, "C " .. schliesseIris) neueZeile(1)
+    zeigeHier(xVerschiebung, zeile, "  O " .. oeffneIris)
+    zeigeHier(xVerschiebung + 20, zeile, "C " .. schliesseIris) neueZeile(1)
   end
   if seite >= 0 then
     if seite >= 1 then
-      zeigeHier(40, zeile, "← " .. vorherigeSeite)
+      zeigeHier(xVerschiebung, zeile, "  ← " .. vorherigeSeite)
     else
-      zeigeHier(40, zeile, "← " .. SteuerungName)
+      zeigeHier(xVerschiebung, zeile, "  ← " .. SteuerungName)
     end
   end
   if seite == -1 then
-    zeigeHier(58, zeile, "→ " .. zeigeAdressen)
+    zeigeHier(xVerschiebung + 20, zeile, "→ " .. zeigeAdressen)
   elseif maxseiten > seite + 1 then
-    zeigeHier(58, zeile, "→ " .. naechsteSeite)
+    zeigeHier(xVerschiebung + 20, zeile, "→ " .. naechsteSeite)
   end
   neueZeile(1)
 end
 
 function autoclose()
   if autoclosetime == false then
-    zeigeHier(38, zeile, "  " .. autoSchliessungAus)
+    zeigeHier(xVerschiebung, zeile, "  " .. autoSchliessungAus)
   else
-    zeigeHier(38, zeile, "  " .. autoSchliessungAn .. autoclosetime .. "s")
+    zeigeHier(xVerschiebung, zeile, "  " .. autoSchliessungAn .. autoclosetime .. "s")
     if (activationtime - os.time()) / sectime > autoclosetime and state == "Connected" then
       sg.disconnect()
     end
@@ -476,9 +476,9 @@ end
 
 function zeigeEnergie()
   if energy < 10000000 then
-    zeigeHier(38, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000) .. " k")
+    zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000) .. " k")
   else
-    zeigeHier(38, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000000) .. " M")
+    zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000000) .. " M")
   end
 end
 
@@ -489,10 +489,10 @@ function activetime()
     end
     time = (activationtime - os.time())/sectime
     if time > 0 then
-      zeigeHier(38, zeile, "  " .. zeit1 .. string.format("%.1f", time) .. "s")
+      zeigeHier(xVerschiebung, zeile, "  " .. zeit1 .. string.format("%.1f", time) .. "s")
     end
   else
-    zeigeHier(38, zeile, "  " .. zeit2)
+    zeigeHier(xVerschiebung, zeile, "  " .. zeit2)
   end
 end
 
