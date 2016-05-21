@@ -627,8 +627,8 @@ handlers[key_event_name] = function(e)
     elseif c == "l" then
       term.clear()
       print(spracheAendern .. "\n")
-      gpu.setBackground(Adressfarbe)
-      gpu.setForeground(Adresstextfarbe)
+      gpu.setBackground(0x333333)
+      gpu.setForeground(Textfarbe)
       antwortFrageSprache = io.read()
       if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
         Sprache = string.lower(antwortFrageSprache)
