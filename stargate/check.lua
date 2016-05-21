@@ -8,6 +8,7 @@ gpu = component.getPrimary("gpu")
 serverAddresse = "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/"
 versionTyp = "master/"
 Sprache = ""
+weiter = true
 
 dofile("stargate/sicherNachNeustart.lua")
 
@@ -103,8 +104,8 @@ function update()
     f:close ()
   end
   dofile("stargate/sprache/" .. Sprache .. ".lua")
-  print(laden)
-  dofile("stargate/Kontrollprogramm.lua")
+  dofile("stargate/check.lua")
+  weiter = false
 end
 
 function checkServerVersion()
@@ -161,6 +162,8 @@ if checkKomponenten() == true then
       end
     end
   end
-  print(laden)
-  dofile("stargate/Kontrollprogramm.lua")
+  if weiter == true then
+    print(laden)
+    dofile("stargate/Kontrollprogramm.lua")
+  end
 end
