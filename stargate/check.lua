@@ -103,6 +103,7 @@ function update()
     f:write("")
     f:close ()
   end
+  installieren = true
   dofile("stargate/sprache/" .. Sprache .. ".lua")
   dofile("stargate/check.lua")
   weiter = false
