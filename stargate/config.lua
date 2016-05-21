@@ -74,7 +74,7 @@ redstoneIDC           = false
 IrisZustandName       = irisNameOffline
 
 if RF == true then
-  energytpye          = "RF"
+  energytype          = "RF"
   energymultiplicator = 80
 end
 
