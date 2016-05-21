@@ -78,7 +78,7 @@ if RF == true then
   energymultiplicator = 80
 end
 
-if iris == "OFfline" then
+if iris == "Offline" then
   Trennlinienhoehe    = 13
 else
   Trennlinienhoehe    = 14
