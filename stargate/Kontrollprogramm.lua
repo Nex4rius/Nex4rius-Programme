@@ -176,6 +176,7 @@ function iriscontroller()
   end
   if direction == "Incoming" and incode == IDC and control == "Off" then
     IDCyes = true
+    r.setBundledOutput(sideNum, black, 255)
   end
   if direction == "Incoming" and incode == IDC and iriscontrol == "on" and control == "On" then
     if iris == "Offline" then
