@@ -21,6 +21,9 @@ zeile                 = 1
 remoteName            = ""
 checkEnergy           = 0
 AddNewAddress         = true
+Trennlinienhoehe      = 14
+messageshow           = true
+running               = true
 
 graueFarbe            = 0x333333
 roteFarbe             = 0xFF0000
