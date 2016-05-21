@@ -668,12 +668,12 @@ function eventLoop()
       end
       if string.sub(e[1],1,3) == "sgM" and direction == "Incoming" and wormhole == "in" then
         if e[3] == "" then else
-          incode = e[3]
+          incode = string.format("%q", e[3])
           messageshow = true
         end
       end
       if string.sub(e[1],1,3) == "sgM" and direction == "Outgoing" then
-        codeaccepted = e[3]
+        codeaccepted = string.format("%q", e[3])
         messageshow = true
       end
     end
