@@ -681,6 +681,9 @@ function eventLoop()
 end
 
 function main()
+  if iris == "Offline" then
+    zeigeStatus()
+  end
   FarbenLeer()
   zeigeStatus()
   zeigeMenu()
