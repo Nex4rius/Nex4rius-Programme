@@ -638,8 +638,8 @@ handlers[key_event_name] = function(e)
       os.execute("edit stargate/adressen.lua")
       dofile("stargate/adressen.lua")
       sides()
-      zeigeStatus()
-      zeigeMenu()
+      seite = 0
+      zeigeAnzeige()
     elseif c == "l" then
       gpu.setBackground(0x333333)
       gpu.setForeground(Textfarbe)
