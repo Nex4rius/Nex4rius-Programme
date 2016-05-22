@@ -32,7 +32,7 @@ ersetzen = {
 }
 
 function zeichenErsetzen(eingabeErsetzung)
-  Ersetzung = string.gsub(eingabeErsetzung, "%a+", function (str) return replacements [str] end)
+  Ersetzung = string.gsub(eingabeErsetzung, "%a+", function (str) return ersetzen [str] end)
   return Ersetzung
 end
 
