@@ -1,21 +1,27 @@
-version = "1.8.9"
+version = "1.9.0"
 component = require("component")
 sides = require("sides")
 term = require("term")
 event = require("event")
 fs = require("filesystem")
+c = require("computer")
 gpu = component.getPrimary("gpu")
 serverAddresse = "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/"
 versionTyp = "master/"
 Sprache = ""
 weiter = true
+Festplattenadresse = c.getBootAddress()
+
+dofile("/stargate/sicherNachNeustart.lua")
+
+os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/beta/stargate/sprache/ersetzen.lua' /stargate/sprache/ersetzen.lua")
+
+os.execute("label -a " .. Festplattenadresse .. " StargateOS")
 
 term.clear()
 
-dofile("stargate/sicherNachNeustart.lua")
-
 function schreibSicherungsdatei()
-  f = io.open ("stargate/sicherNachNeustart.lua", "w")
+  f = io.open ("/stargate/sicherNachNeustart.lua", "w")
   f:write('control = "' .. control .. '"\n')
   f:write('firstrun = ' .. firstrun .. '\n')
   f:write('Sprache = "' .. Sprache .. '" -- deutsch / english\n')
@@ -35,7 +41,7 @@ if Sprache == "" then
   print("")
 end
 
-dofile("stargate/sprache/" .. Sprache .. ".lua")
+dofile("/stargate/sprache/" .. Sprache .. ".lua")
 
 function checkKomponenten()
   print(pruefeKomponenten)
@@ -77,16 +83,17 @@ function update()
   fs.makeDirectory("/stargate")
   Pfad = serverAddresse .. versionTyp
   os.execute("wget -f " .. Pfad .. "autorun.lua autorun.lua") print("")
-  os.execute("wget -f " .. Pfad .. "stargate/Kontrollprogramm.lua stargate/Kontrollprogramm.lua") print("")
-  os.execute("wget -f " .. Pfad .. "stargate/compat.lua stargate/compat.lua") print("")
-  os.execute("wget -f " .. Pfad .. "stargate/config.lua stargate/config.lua") print("")
-  os.execute("wget -f " .. Pfad .. "stargate/check.lua stargate/check.lua") print("")
-  os.execute("wget -f " .. Pfad .. "stargate/sprache/deutsch.lua stargate/sprache/deutsch.lua") print("")
-  os.execute("wget -f " .. Pfad .. "stargate/sprache/english.lua stargate/sprache/english.lua") print("")
-  os.execute("wget " .. Pfad .. "stargate/adressen.lua stargate/adressen.lua") print("")
-  os.execute("wget " .. Pfad .. "sicherNachNeustart.lua stargate/sicherNachNeustart.lua")
+  os.execute("wget -f " .. Pfad .. "stargate/Kontrollprogramm.lua /stargate/Kontrollprogramm.lua") print("")
+  os.execute("wget -f " .. Pfad .. "stargate/compat.lua /stargate/compat.lua") print("")
+  os.execute("wget -f " .. Pfad .. "stargate/config.lua /stargate/config.lua") print("")
+  os.execute("wget -f " .. Pfad .. "stargate/check.lua /stargate/check.lua") print("")
+  os.execute("wget -f " .. Pfad .. "stargate/sprache/deutsch.lua /stargate/sprache/deutsch.lua") print("")
+  os.execute("wget -f " .. Pfad .. "stargate/sprache/english.lua /stargate/sprache/english.lua") print("")
+  os.execute("wget -f " .. Pfad .. "stargate/sprache/english.lua /stargate/sprache/ersetzen.lua") print("")
+  os.execute("wget " .. Pfad .. "stargate/adressen.lua /stargate/adressen.lua") print("")
+  os.execute("wget " .. Pfad .. "sicherNachNeustart.lua /stargate/sicherNachNeustart.lua")
   print("\n\n" .. Neustart)
-  f = io.open ("stargate/adressen.lua", "r")
+  f = io.open ("/stargate/adressen.lua", "r")
   addressRead = true
   leseLaenge = 1000
   while addressRead == true do
@@ -100,22 +107,22 @@ function update()
   end
   f:close ()
   if string.sub(readAddresses, AdressesLength, AdressesLength) == " " then
-    f = io.open ("stargate/adressen.lua", "a")
+    f = io.open ("/stargate/adressen.lua", "a")
     f:seek ("end", -1)
     f:write("")
     f:close ()
   end
   installieren = true
   os.sleep(1)
-  dofile("stargate/sprache/" .. Sprache .. ".lua")
-  dofile("stargate/check.lua")
+  dofile("/stargate/sprache/" .. Sprache .. ".lua")
+  dofile("/stargate/check.lua")
   weiter = false
 end
 
 function checkServerVersion()
   Pfad = serverAddresse .. versionTyp
   os.execute("wget -fQ " .. Pfad .. "stargate/version.txt version.txt")
-  f = io.open ("version.txt", "r")
+  f = io.open ("/version.txt", "r")
   serverVersion = f:read(5)
   f:close ()
   os.execute("del version.txt")
@@ -128,10 +135,10 @@ end
 function checkBetaServerVersion()
   Pfad = serverAddresse .. "beta/"
   os.execute("wget -fQ " .. Pfad .. "stargate/version.txt betaVersion.txt")
-  f = io.open ("betaVersion.txt", "r")
+  f = io.open ("/betaVersion.txt", "r")
   betaServerVersion = f:read(5)
   f:close ()
-  os.execute("del betaVersion.txt")
+  os.execute("del /betaVersion.txt")
   if betaServerVersion == nil then
     betaServerVersion = "<ERROR>"
   end
@@ -168,6 +175,6 @@ if checkKomponenten() == true then
   end
   if weiter == true then
     print(laden)
-    dofile("stargate/Kontrollprogramm.lua")
+    dofile("/stargate/Kontrollprogramm.lua")
   end
 end

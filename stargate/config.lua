@@ -30,24 +30,27 @@ redstoneState         = false
 redstoneIDC           = false
 IrisZustandName       = irisNameOffline
 
-graueFarbe            = 0x333333
+graueFarbe            = 6684774
 roteFarbe             = 0xFF0000
 weisseFarbe           = 0xFFFFFF
 blaueFarbe            = 0x0000FF
 schwarzeFarbe         = 0x00000
+gelbeFarbe            = 16750899
+brauenFarbe           = 10046464
+grueneFarbe           = 39168
 
 ErrorFarbe            = roteFarbe
 Hintergrundfarbe      = graueFarbe
 Trennlinienfarbe      = blaueFarbe
 Textfarbe             = weisseFarbe
 
-Adressfarbe           = 10046464
+Adressfarbe           = brauenFarbe
 Adresstextfarbe       = Textfarbe
-Nachrichtfarbe        = 6684774
+Nachrichtfarbe        = graueFarbe
 Nachrichttextfarbe    = Textfarbe
-Steuerungsfarbe       = 16750899
+Steuerungsfarbe       = gelbeFarbe
 Steuerungstextfarbe   = schwarzeFarbe
-Statusfarbe           = 39168
+Statusfarbe           = grueneFarbe
 Statustextfarbe       = Textfarbe
 
 if redst == true then

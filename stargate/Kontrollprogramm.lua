@@ -10,13 +10,19 @@
 -- installieren
 --
 
-dofile("stargate/adressen.lua")
-dofile("stargate/config.lua")
-dofile("stargate/compat.lua")
-dofile("stargate/sicherNachNeustart.lua")
+dofile("/stargate/adressen.lua")
+dofile("/stargate/config.lua")
+dofile("/stargate/compat.lua")
+dofile("/stargate/sicherNachNeustart.lua")
+dofile("/stargate/sprache/ersetzen.lua")
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
+end
+
+function zeichenErsetzen(eingabeErsetzung)
+  Ersetzung = string.gsub(eingabeErsetzung, "%a+", function (str) return ersetzen [str] end)
+  return Ersetzung
 end
 
 function checkReset()
@@ -49,11 +55,27 @@ function zeigeMenu()
   setCursor(1, 1)
   if seite == -1 then
     print(Steuerung)
-    print("I " .. IrisSteuerung .. an_aus)
+    if iris == "Offline" then else
+      print("I " .. IrisSteuerung .. an_aus)
+    end
     print("Z " .. AdressenBearbeiten)
     print("Q " .. beenden)
-    print("L " .. spracheAendern)
+    print("L " .. spracheAendern .. "\n" .. verfuegbareSprachen)
     print(RedstoneSignale)
+    gpu.setBackground(weisseFarbe)
+    gpu.setForeground(schwarzeFarbe)
+    print(RedstoneWeiss)
+    gpu.setBackground(roteFarbe)
+    print(RedstoneRot)
+    gpu.setBackground(gelbeFarbe)
+    print(RedstoneGelb)
+    gpu.setBackground(schwarzeFarbe)
+    gpu.setForeground(weisseFarbe)
+    print(RedstoneSchwarz)
+    gpu.setBackground(grueneFarbe)
+    print(RedstoneGruen)
+    gpu.setBackground(Adressfarbe)
+    gpu.setForeground(Adresstextfarbe)
     print(versionName .. version)
   else
     print(Adressseite .. seite + 1)
@@ -272,7 +294,7 @@ function newAddress(g)
     AddNewAddress = false
     firstrun = -1
     schreibSicherungsdatei()
-    dofile("stargate/adressen.lua")
+    dofile("/stargate/adressen.lua")
     sides()
     zeigeMenu()
   end
@@ -538,20 +560,20 @@ handlers[key_event_name] = function(e)
   elseif entercode == true then
     enteridc = enteridc .. c
     showidc = showidc .. "*"
-    zeigeNachricht("Enter IDC: " .. showidc)
+    zeigeNachricht(IDCeingabe .. ": " .. showidc)
   elseif c == "e" then
     if state == "Connected" and direction == "Outgoing" then
       enteridc = ""
       showidc = ""
       entercode = true
-      zeigeNachricht("Enter IDC:")
+      zeigeNachricht(IDCeingabe .. ":")
     else
       zeigeNachricht(keineVerbindung)
     end
   elseif c == "d" then
     if state == "Connected" and direction == "Incoming" then
         sg.sendMessage("Request: Disconnect Stargate")
-        zeigeNachricht(aufforderung)
+        zeigeNachricht(senden .. aufforderung)
     else
         sg.disconnect()
     end
@@ -561,7 +583,7 @@ handlers[key_event_name] = function(e)
       if wormhole == "in" then
         if iris == "Offline" then else
           os.sleep(2)
-          sg.sendMessage("Manual Override: Iris Open")
+          sg.sendMessage("Manual Override: Iris: Open")
         end
       end
       if state == "Idle" then
@@ -575,11 +597,9 @@ handlers[key_event_name] = function(e)
       irisClose()
       iriscontrol = "off"
       if wormhole == "in" then
-        sg.sendMessage("Manual Override: Iris Closed")
+        sg.sendMessage("Manual Override: Iris: Closed")
       end
     end
-  elseif c == "q" then
-    running = false
   elseif c >= "0" and c <= "9" then
     if c == "0" then
       c = 10
@@ -594,40 +614,6 @@ handlers[key_event_name] = function(e)
         else outcode = na[3]
       end
     end
-  elseif c == "i" then
-    if iris == "Offline" then else
-      send = true
-      if control == "On" then
-        control = "Off"
-        schreibSicherungsdatei()
-      else
-        control = "On"
-        schreibSicherungsdatei()
-      end
-    end
-  elseif c == "z" then
-    os.execute("edit stargate/adressen.lua")
-    dofile("stargate/adressen.lua")
-    sides()
-    gpu.setBackground(schwarzeFarbe)
-    gpu.setForeground(weisseFarbe)
-    zeigeStatus()
-    zeigeMenu()
-  elseif c == "l" then
-    term.clear()
-    print(spracheAendern .. "\n")
-    gpu.setBackground(Adressfarbe)
-    gpu.setForeground(Adresstextfarbe)
-    antwortFrageSprache = io.read()
-    if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
-      Sprache = string.lower(antwortFrageSprache)
-      dofile("stargate/sprache/" .. Sprache .. ".lua")
-      schreibSicherungsdatei()
-    else
-      print(errorName)
-    end
-    seite = 0
-    zeigeAnzeige()
   elseif e[3] == 0 and e[4] == 203 then
     if seite <= -1 then else
       seite = seite - 1
@@ -637,7 +623,46 @@ handlers[key_event_name] = function(e)
     if seite + 1 < maxseiten then
       seite = seite + 1
       zeigeAnzeige()
-    end 
+    end
+  elseif seite == -1 then
+    if c == "q" then
+      running = false
+    elseif c == "i" then
+      if iris == "Offline" then else
+        send = true
+        if control == "On" then
+          control = "Off"
+          schreibSicherungsdatei()
+        else
+          control = "On"
+          schreibSicherungsdatei()
+        end
+      end
+    elseif c == "z" then
+      gpu.setBackground(0x333333)
+      gpu.setForeground(Textfarbe)
+      os.execute("edit stargate/adressen.lua")
+      dofile("/stargate/adressen.lua")
+      sides()
+      seite = 0
+      zeigeAnzeige()
+    elseif c == "l" then
+      gpu.setBackground(0x333333)
+      gpu.setForeground(Textfarbe)
+      term.clear()
+      print(spracheAendern .. "\n" .. verfuegbareSprachen .. "\n")
+      antwortFrageSprache = io.read()
+      if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
+        Sprache = string.lower(antwortFrageSprache)
+        dofile("/stargate/sprache/" .. Sprache .. ".lua")
+        dofile("/stargate/sprache/ersetzen.lua")
+        schreibSicherungsdatei()
+      else
+        print(errorName)
+      end
+      seite = 0
+      zeigeAnzeige()
+    end
   end
 end
 
@@ -664,12 +689,12 @@ function eventLoop()
       end
       if string.sub(e[1],1,3) == "sgM" and direction == "Incoming" and wormhole == "in" then
         if e[3] == "" then else
-          incode = e[3]
+          incode = zeichenErsetzen(e[3])
           messageshow = true
         end
       end
       if string.sub(e[1],1,3) == "sgM" and direction == "Outgoing" then
-        codeaccepted = e[3]
+        codeaccepted = zeichenErsetzen(e[3])
         messageshow = true
       end
     end
