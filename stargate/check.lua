@@ -1,4 +1,4 @@
-version = "1.9.0"
+version = "1.9.1"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -87,7 +87,7 @@ function update()
   os.execute("wget -f " .. Pfad .. "stargate/check.lua /stargate/check.lua") print("")
   os.execute("wget -f " .. Pfad .. "stargate/sprache/deutsch.lua /stargate/sprache/deutsch.lua") print("")
   os.execute("wget -f " .. Pfad .. "stargate/sprache/english.lua /stargate/sprache/english.lua") print("")
-  os.execute("wget -f " .. Pfad .. "stargate/sprache/english.lua /stargate/sprache/ersetzen.lua") print("")
+  os.execute("wget -f " .. Pfad .. "stargate/sprache/ersetzen.lua /stargate/sprache/ersetzen.lua") print("")
   os.execute("wget " .. Pfad .. "stargate/adressen.lua /stargate/adressen.lua") print("")
   os.execute("wget " .. Pfad .. "sicherNachNeustart.lua /stargate/sicherNachNeustart.lua")
   print("\n\n" .. Neustart)
