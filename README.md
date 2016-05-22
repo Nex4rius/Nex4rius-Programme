@@ -15,3 +15,5 @@ installieren
 3) Profit
 
 Screenshots http://imgur.com/a/WnwiV
+
+Make Pull Requests if you want :)
