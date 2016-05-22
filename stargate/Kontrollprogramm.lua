@@ -15,6 +15,7 @@ dofile("/stargate/config.lua")
 dofile("/stargate/compat.lua")
 dofile("/stargate/sicherNachNeustart.lua")
 dofile("/stargate/sprache/ersetzen.lua")
+dofile("/stargate/sprache/" .. Sprache .. ".lua")
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
