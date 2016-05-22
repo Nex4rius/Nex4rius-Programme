@@ -20,15 +20,15 @@ function pad(s, n)
 end
 
 ersetzen = {
-  ["An"] = irisKontrolleNameAn,
-  ["Aus"] = irisKontrolleNameAus,
-  ["Offen"] = irisNameOffen,
-  ["Öffnend"] = irisNameOeffnend,
-  ["Geschlossen"] = irisNameGeschlossen,
-  ["Schließend"] = irisNameSchliessend,
+  ["On"] = irisKontrolleNameAn,
+  ["Off"] = irisKontrolleNameAus,
+  ["Open"] = irisNameOffen,
+  ["Opening"] = irisNameOeffnend,
+  ["Closed"] = irisNameGeschlossen,
+  ["Closing"] = irisNameSchliessend,
   ["Offline"] = irisNameOffline,
-  ["manueller Eingriff"] = manuellerEingriff,
-  ["Aufforderung: Stargate abschalten"] = aufforderung,
+  ["Manual Override:"] = manuellerEingriff,
+  ["Request: Disconnect Stargate"] = aufforderung,
 }
 
 function zeichenErsetzen(eingabeErsetzung)
@@ -583,7 +583,7 @@ handlers[key_event_name] = function(e)
     end
   elseif c == "d" then
     if state == "Connected" and direction == "Incoming" then
-        sg.sendMessage("Aufforderung: Stargate abschalten")
+        sg.sendMessage("Request: Disconnect Stargate")
         zeigeNachricht(senden .. aufforderung)
     else
         sg.disconnect()
@@ -594,7 +594,7 @@ handlers[key_event_name] = function(e)
       if wormhole == "in" then
         if iris == "Offline" then else
           os.sleep(2)
-          sg.sendMessage("manueller Eingriff: Iris: Offen")
+          sg.sendMessage("Manual Override: Iris: Open")
         end
       end
       if state == "Idle" then
@@ -608,7 +608,7 @@ handlers[key_event_name] = function(e)
       irisClose()
       iriscontrol = "off"
       if wormhole == "in" then
-        sg.sendMessage("manueller Eingriff: Iris: Geschlossen")
+        sg.sendMessage("Manual Override: Iris: Closed")
       end
     end
   elseif c >= "0" and c <= "9" then
