@@ -82,4 +82,4 @@ StatusNameVerbunden       = "Connected"
 StatusNameSchliessend     = "Closing"
 Neustart                  = "Restart"
 verfuegbareSprachen       = "deutsch / english"
-dofile("/stargate/sprache/ersetzen.lua")
+dofile("stargate/sprache/ersetzen.lua")
