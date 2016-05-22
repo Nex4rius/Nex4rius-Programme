@@ -19,6 +19,23 @@ function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
 end
 
+ersetzen = {
+  ["An"] = irisKontrolleNameAn,
+  ["Aus"] = irisKontrolleNameAus,
+  ["Offen"] = irisNameOffen,
+  ["Öffnend"] = irisNameOeffnend,
+  ["Geschlossen"] = irisNameGeschlossen,
+  ["Schließend"] = irisNameSchliessend,
+  ["Offline"] = irisNameOffline,
+  ["manueller Eingriff"] = manuellerEingriff,
+  ["Aufforderung: Stargate abschalten"] = aufforderung,
+}
+
+function zeichenErsetzen(eingabeErsetzung)
+  Ersetzung = string.gsub(eingabeErsetzung, "%a+", function (str) return replacements [str] end)
+  return Ersetzung
+end
+
 function checkReset()
   if time == "-" then else
     if time > 500 then
@@ -554,20 +571,20 @@ handlers[key_event_name] = function(e)
   elseif entercode == true then
     enteridc = enteridc .. c
     showidc = showidc .. "*"
-    zeigeNachricht("Enter IDC: " .. showidc)
+    zeigeNachricht(IDCeingabe .. ": " .. showidc)
   elseif c == "e" then
     if state == "Connected" and direction == "Outgoing" then
       enteridc = ""
       showidc = ""
       entercode = true
-      zeigeNachricht("Enter IDC:")
+      zeigeNachricht(IDCeingabe .. ":")
     else
       zeigeNachricht(keineVerbindung)
     end
   elseif c == "d" then
     if state == "Connected" and direction == "Incoming" then
-        sg.sendMessage("Request: Disconnect Stargate")
-        zeigeNachricht(aufforderung)
+        sg.sendMessage("Aufforderung: Stargate abschalten")
+        zeigeNachricht(senden .. aufforderung)
     else
         sg.disconnect()
     end
@@ -577,7 +594,7 @@ handlers[key_event_name] = function(e)
       if wormhole == "in" then
         if iris == "Offline" then else
           os.sleep(2)
-          sg.sendMessage("Manual Override: Iris Open")
+          sg.sendMessage("manueller Eingriff: Iris: Offen")
         end
       end
       if state == "Idle" then
@@ -591,7 +608,7 @@ handlers[key_event_name] = function(e)
       irisClose()
       iriscontrol = "off"
       if wormhole == "in" then
-        sg.sendMessage("Manual Override: Iris Closed")
+        sg.sendMessage("manueller Eingriff: Iris: Geschlossen")
       end
     end
   elseif c >= "0" and c <= "9" then
@@ -682,12 +699,12 @@ function eventLoop()
       end
       if string.sub(e[1],1,3) == "sgM" and direction == "Incoming" and wormhole == "in" then
         if e[3] == "" then else
-          incode = e[3]
+          incode = zeichenErsetzen(e[3])
           messageshow = true
         end
       end
       if string.sub(e[1],1,3) == "sgM" and direction == "Outgoing" then
-        codeaccepted = e[3]
+        codeaccepted = zeichenErsetzen(e[3])
         messageshow = true
       end
     end
