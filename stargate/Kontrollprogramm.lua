@@ -14,6 +14,7 @@ dofile("/stargate/adressen.lua")
 dofile("/stargate/config.lua")
 dofile("/stargate/compat.lua")
 dofile("/stargate/sicherNachNeustart.lua")
+dofile("stargate/sprache/ersetzen.lua")
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
@@ -654,6 +655,7 @@ handlers[key_event_name] = function(e)
       if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
         Sprache = string.lower(antwortFrageSprache)
         dofile("/stargate/sprache/" .. Sprache .. ".lua")
+        dofile("stargate/sprache/ersetzen.lua")
         schreibSicherungsdatei()
       else
         print(errorName)
