@@ -19,18 +19,6 @@ function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
 end
 
-ersetzen = {
-  ["On"] = irisKontrolleNameAn,
-  ["Off"] = irisKontrolleNameAus,
-  ["Open"] = irisNameOffen,
-  ["Opening"] = irisNameOeffnend,
-  ["Closed"] = irisNameGeschlossen,
-  ["Closing"] = irisNameSchliessend,
-  ["Offline"] = irisNameOffline,
-  ["Manual Override:"] = manuellerEingriff,
-  ["Request: Disconnect Stargate"] = aufforderung,
-}
-
 function zeichenErsetzen(eingabeErsetzung)
   Ersetzung = string.gsub(eingabeErsetzung, "%a+", function (str) return ersetzen [str] end)
   return Ersetzung
