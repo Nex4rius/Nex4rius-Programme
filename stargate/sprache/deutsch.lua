@@ -82,3 +82,4 @@ StatusNameVerbunden       = "Verbunden"
 StatusNameSchliessend     = "Schließend"
 Neustart                  = "Neustart"
 verfuegbareSprachen       = "deutsch / english"
+dofile("stargate/ersetzen.lua")
