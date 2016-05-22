@@ -9,5 +9,5 @@ ersetzen = {
   ["Manual Override"]               = manuellerEingriff,
   ["Request"]                       = aufforderung,
   ["Disconnect Stargate"]           = stargateAbschalten,
-  ["Control"]                       = SteuerungName,
+  ["Control"]                       = IrisSteuerungName,
 }
