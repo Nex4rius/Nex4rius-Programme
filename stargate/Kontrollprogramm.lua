@@ -533,7 +533,7 @@ function zeigeNachricht(mess)
   gpu.setBackground(Nachrichtfarbe)
   gpu.setForeground(Nachrichttextfarbe)
   zeigeHier(1, screen_height - 1, "", 80)
-  zeigeHier(1, screen_height, mess)
+  zeigeHier(1, screen_height, zeichenErsetzen(mess))
   gpu.setBackground(Statusfarbe)
 end
 
@@ -690,12 +690,12 @@ function eventLoop()
       end
       if string.sub(e[1],1,3) == "sgM" and direction == "Incoming" and wormhole == "in" then
         if e[3] == "" then else
-          incode = zeichenErsetzen(e[3])
+          incode = e[3]
           messageshow = true
         end
       end
       if string.sub(e[1],1,3) == "sgM" and direction == "Outgoing" then
-        codeaccepted = zeichenErsetzen(e[3])
+        codeaccepted = e[3]
         messageshow = true
       end
     end
