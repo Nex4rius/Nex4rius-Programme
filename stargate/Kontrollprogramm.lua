@@ -10,10 +10,10 @@
 -- installieren
 --
 
-dofile("stargate/adressen.lua")
-dofile("stargate/config.lua")
-dofile("stargate/compat.lua")
-dofile("stargate/sicherNachNeustart.lua")
+dofile("/stargate/adressen.lua")
+dofile("/stargate/config.lua")
+dofile("/stargate/compat.lua")
+dofile("/stargate/sicherNachNeustart.lua")
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
@@ -293,7 +293,7 @@ function newAddress(g)
     AddNewAddress = false
     firstrun = -1
     schreibSicherungsdatei()
-    dofile("stargate/adressen.lua")
+    dofile("/stargate/adressen.lua")
     sides()
     zeigeMenu()
   end
@@ -641,7 +641,7 @@ handlers[key_event_name] = function(e)
       gpu.setBackground(0x333333)
       gpu.setForeground(Textfarbe)
       os.execute("edit stargate/adressen.lua")
-      dofile("stargate/adressen.lua")
+      dofile("/stargate/adressen.lua")
       sides()
       seite = 0
       zeigeAnzeige()
@@ -653,7 +653,7 @@ handlers[key_event_name] = function(e)
       antwortFrageSprache = io.read()
       if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
         Sprache = string.lower(antwortFrageSprache)
-        dofile("stargate/sprache/" .. Sprache .. ".lua")
+        dofile("/stargate/sprache/" .. Sprache .. ".lua")
         schreibSicherungsdatei()
       else
         print(errorName)
