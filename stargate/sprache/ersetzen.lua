@@ -1,4 +1,4 @@
-ersetzen = {
+ersetzenSprache = {
   ["On"]                            = irisKontrolleNameAn,
   ["Off"]                           = irisKontrolleNameAus,
   ["Open"]                          = irisNameOffen,
