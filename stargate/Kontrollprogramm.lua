@@ -22,7 +22,7 @@ function pad(s, n)
 end
 
 function zeichenErsetzen(eingabeErsetzung)
-  Ersetzung = string.gsub(eingabeErsetzung, "%a+", function (str) return ersetzenSprache [str] end)
+  Ersetzung = string.gsub(eingabeErsetzung, "%a+", function (str) return ersetzen [str] end)
   return Ersetzung
 end
 
