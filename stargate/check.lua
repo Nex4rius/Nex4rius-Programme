@@ -14,8 +14,6 @@ Festplattenadresse = c.getBootAddress()
 
 dofile("/stargate/sicherNachNeustart.lua")
 
-os.execute("wget -f 'https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/beta/stargate/sprache/ersetzen.lua' /stargate/sprache/ersetzen.lua")
-
 os.execute("label -a " .. Festplattenadresse .. " StargateOS")
 
 term.clear()
