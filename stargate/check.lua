@@ -4,15 +4,19 @@ sides = require("sides")
 term = require("term")
 event = require("event")
 fs = require("filesystem")
+c = require("computer")
 gpu = component.getPrimary("gpu")
 serverAddresse = "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/"
 versionTyp = "master/"
 Sprache = ""
 weiter = true
-
-term.clear()
+Festplattenadresse = c.getBootAddress()
 
 dofile("stargate/sicherNachNeustart.lua")
+
+os.execute("label -a " .. Festplattenadresse .. " StargateOS")
+
+term.clear()
 
 function schreibSicherungsdatei()
   f = io.open ("stargate/sicherNachNeustart.lua", "w")
