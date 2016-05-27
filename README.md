@@ -23,10 +23,10 @@ Some feature of my programm:
 - autoclose stargate after X seconds
 - show all kinds of stats
 - multiple languages right now german and english (because I don't speak anything else)
-- can display energy in EU or RF
+- displays energy in EU (or RF if you want that)
 - displays up to 10 addresses on 1 page (unlimited pages)
-- allows dialing from an address list
-- checking for updates on start
+- allows dialing from the address list
+- check for updates on start
 - emit redstone signals (right now for: state not idle, incoming, iris closed, idc accepted, wormhole connected)
 - automatically adds new, unkown addresses when there is an incoming wormhole
 - shows the required energy to dial an address (or error if invalid address)
