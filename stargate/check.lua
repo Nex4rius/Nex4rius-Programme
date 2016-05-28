@@ -80,6 +80,7 @@ end
 function update()
   Pfad = serverAddresse .. versionTyp
   os.execute("wget -f " .. Pfad .. "installieren.lua installieren.lua")
+  installieren = true
   schreibSicherungsdatei()
   f = io.open ("autorun.lua", "w")
   f:write('dofile("installieren.lua")')
@@ -124,7 +125,7 @@ function mainCheck()
       print(betaVersion .. betaServerVersion)
     end
     if version == serverVersion and version == betaServerVersion then
-    elseif installieren == nil then
+    elseif installieren == false then
       print(aktualisierenFrage)
       antwortFrage = io.read()
       if string.lower(antwortFrage) == ja then
@@ -142,6 +143,8 @@ function mainCheck()
     end
   end
   print(laden)
+  installieren = false
+  schreibSicherungsdatei()
   dofile("/stargate/Kontrollprogramm.lua")
 end
 
