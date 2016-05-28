@@ -85,6 +85,7 @@ function update()
   schreibSicherungsdatei()
   f = io.open ("autorun.lua", "w")
   f:write('dofile("installieren.lua")')
+  f:write('versionTyp = "' .. versionTyp .. '"')
   f:close ()
   os.execute("reboot")
 end
