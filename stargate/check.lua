@@ -25,7 +25,7 @@ function schreibSicherungsdatei()
   f:write('control = "' .. control .. '"\n')
   f:write('firstrun = ' .. firstrun .. '\n')
   f:write('Sprache = "' .. Sprache .. '" -- deutsch / english\n')
-  f:write('installieren = ' .. installieren .. '\n')
+  f:write('installieren = ' .. tostring(installieren) .. '\n')
   f:close ()
 end
 
