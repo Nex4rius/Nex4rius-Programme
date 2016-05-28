@@ -4,6 +4,7 @@ serverAddresse = "https://raw.githubusercontent.com/DarknessShadow/Stargate-Prog
 if versionTyp == nil then
   versionTyp = "master/"
 end
+print("")
 Pfad = serverAddresse .. versionTyp
 os.execute("wget -f " .. Pfad .. "autorun.lua autorun.lua") print("")
 os.execute("wget -f " .. Pfad .. "stargate/Kontrollprogramm.lua /stargate/Kontrollprogramm.lua") print("")
