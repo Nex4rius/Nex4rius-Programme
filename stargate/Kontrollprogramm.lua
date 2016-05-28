@@ -357,20 +357,6 @@ function aktualisiereStatus()
   wormholeDirection()
   iris = sg.irisState()
   iriscontroller()
-  if     iris == "Open" then
-    IrisZustandName = irisNameOffen
-  elseif iris == "Opening" then
-    IrisZustandName = irisNameOeffnend
-  elseif iris == "Closed" then
-    IrisZustandName = irisNameGeschlossen
-  elseif iris == "Closing" then
-    IrisZustandName = irisNameSchliessend
-  end
-  if control == "On" then
-    irisKontrolleName = irisKontrolleNameAn
-  else
-    irisKontrolleName = irisKontrolleNameAus
-  end
   if direction == "Outgoing" then
     RichtungName = RichtungNameAus
   elseif direction == "Incoming" then
@@ -402,9 +388,9 @@ function zeigeStatus()
   zeigeHier(xVerschiebung, zeile, "  " .. zielName .. string.sub(remoteName, 1, xVerschiebung - 16)) neueZeile(1)
   zeigeHier(xVerschiebung, zeile, "  " .. statusName .. StatusName) neueZeile(1)
   zeigeEnergie() neueZeile(1)
-  zeigeHier(xVerschiebung, zeile, "  " .. IrisName .. IrisZustandName) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. IrisName .. zeichenErsetzen(iris)) neueZeile(1)
   if iris == "Offline" then else
-    zeigeHier(xVerschiebung, zeile, "  " .. IrisSteuerung .. irisKontrolleName) neueZeile(1)
+    zeigeHier(xVerschiebung, zeile, "  " .. IrisSteuerung .. zeichenErsetzen(control)) neueZeile(1)
   end
   if IDCyes == true then
     zeigeHier(xVerschiebung, zeile, "  " .. IDCakzeptiert) neueZeile(1)
