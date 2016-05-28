@@ -22,8 +22,7 @@ function pad(s, n)
 end
 
 function zeichenErsetzen(eingabeErsetzung)
-  Ersetzung = string.gsub(eingabeErsetzung, "%a+", function (str) return ersetzen [str] end)
-  return Ersetzung
+  return string.gsub(eingabeErsetzung, "%a+", function (str) return ersetzen [str] end)
 end
 
 function checkReset()
@@ -533,7 +532,7 @@ function zeigeNachricht(mess)
   gpu.setBackground(Nachrichtfarbe)
   gpu.setForeground(Nachrichttextfarbe)
   zeigeHier(1, screen_height - 1, "", 80)
-  zeigeHier(1, screen_height, zeichenErsetzen(mess))
+  zeigeHier(1, screen_height, zeichenErsetzen(mess), 80)
   gpu.setBackground(Statusfarbe)
 end
 
