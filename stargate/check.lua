@@ -80,8 +80,10 @@ end
 function update()
   Pfad = serverAddresse .. versionTyp
   os.execute("wget -f " .. Pfad .. "installieren.lua installieren.lua")
-  dofile("installieren.lua")
   schreibSicherungsdatei()
+  f = io.open ("autorun.lua", "w")
+  f:write('dofile("installieren.lua")')
+  f:close ()
   os.execute("reboot")
 end
 
