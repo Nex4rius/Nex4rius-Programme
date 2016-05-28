@@ -6,8 +6,10 @@ ersetzen = {
   ["Closed"]              = irisNameGeschlossen,
   ["Closing"]             = irisNameSchliessend,
   ["Offline"]             = irisNameOffline,
-  ["Manual Override"]     = manuellerEingriff,
+  ["Override"]            = Eingriff,
+  ["Manual"]              = manueller,
   ["Request"]             = aufforderung,
-  ["Disconnect Stargate"] = stargateAbschalten,
+  ["Disconnect"]          = stargateAbschalten,
+  ["Stargate"]            = stargateName,
   ["Control"]             = IrisSteuerungName,
 }
