@@ -32,7 +32,6 @@ ersetzen = {
   ["Request"]             = aufforderung,
   ["Disconnect Stargate"] = stargateAbschalten,
   ["Control"]             = IrisSteuerungName,
-  [""]                    = "",
 }
 
 function zeichenErsetzen(eingabeErsetzung)
