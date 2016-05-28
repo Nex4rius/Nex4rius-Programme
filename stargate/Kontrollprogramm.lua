@@ -14,16 +14,28 @@ dofile("/stargate/adressen.lua")
 dofile("/stargate/config.lua")
 dofile("/stargate/compat.lua")
 dofile("/stargate/sicherNachNeustart.lua")
-dofile("/stargate/sprache/ersetzen.lua")
 dofile("/stargate/sprache/" .. Sprache .. ".lua")
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
 end
 
+ersetzen = {
+  ["On"]                  = irisKontrolleNameAn,
+  ["Off"]                 = irisKontrolleNameAus,
+  ["Open"]                = irisNameOffen,
+  ["Opening"]             = irisNameOeffnend,
+  ["Closed"]              = irisNameGeschlossen,
+  ["Closing"]             = irisNameSchliessend,
+  ["Offline"]             = irisNameOffline,
+  ["Manual Override"]     = manuellerEingriff,
+  ["Request"]             = aufforderung,
+  ["Disconnect Stargate"] = stargateAbschalten,
+  ["Control"]             = IrisSteuerungName,
+}
+
 function zeichenErsetzen(eingabeErsetzung)
-  Ersetzung = string.gsub(eingabeErsetzung, "%a+", function (str) return ersetzen [str] end)
-  return Ersetzung
+  return string.gsub(eingabeErsetzung, "%a+", function (str) return ersetzen [str] end)
 end
 
 function checkReset()
@@ -346,20 +358,6 @@ function aktualisiereStatus()
   wormholeDirection()
   iris = sg.irisState()
   iriscontroller()
-  if     iris == "Open" then
-    IrisZustandName = irisNameOffen
-  elseif iris == "Opening" then
-    IrisZustandName = irisNameOeffnend
-  elseif iris == "Closed" then
-    IrisZustandName = irisNameGeschlossen
-  elseif iris == "Closing" then
-    IrisZustandName = irisNameSchliessend
-  end
-  if control == "On" then
-    irisKontrolleName = irisKontrolleNameAn
-  else
-    irisKontrolleName = irisKontrolleNameAus
-  end
   if direction == "Outgoing" then
     RichtungName = RichtungNameAus
   elseif direction == "Incoming" then
@@ -391,9 +389,9 @@ function zeigeStatus()
   zeigeHier(xVerschiebung, zeile, "  " .. zielName .. string.sub(remoteName, 1, xVerschiebung - 16)) neueZeile(1)
   zeigeHier(xVerschiebung, zeile, "  " .. statusName .. StatusName) neueZeile(1)
   zeigeEnergie() neueZeile(1)
-  zeigeHier(xVerschiebung, zeile, "  " .. IrisName .. IrisZustandName) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. IrisName .. zeichenErsetzen(iris)) neueZeile(1)
   if iris == "Offline" then else
-    zeigeHier(xVerschiebung, zeile, "  " .. IrisSteuerung .. irisKontrolleName) neueZeile(1)
+    zeigeHier(xVerschiebung, zeile, "  " .. IrisSteuerung .. zeichenErsetzen(control)) neueZeile(1)
   end
   if IDCyes == true then
     zeigeHier(xVerschiebung, zeile, "  " .. IDCakzeptiert) neueZeile(1)
@@ -533,7 +531,7 @@ function zeigeNachricht(mess)
   gpu.setBackground(Nachrichtfarbe)
   gpu.setForeground(Nachrichttextfarbe)
   zeigeHier(1, screen_height - 1, "", 80)
-  zeigeHier(1, screen_height, zeichenErsetzen(mess))
+  zeigeHier(1, screen_height, zeichenErsetzen(mess), 80)
   gpu.setBackground(Statusfarbe)
 end
 
