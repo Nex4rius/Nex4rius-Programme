@@ -14,8 +14,21 @@ dofile("/stargate/adressen.lua")
 dofile("/stargate/config.lua")
 dofile("/stargate/compat.lua")
 dofile("/stargate/sicherNachNeustart.lua")
-dofile("/stargate/sprache/ersetzen.lua")
 dofile("/stargate/sprache/" .. Sprache .. ".lua")
+
+ersetzen = {
+  ["On"]                  = irisKontrolleNameAn,
+  ["Off"]                 = irisKontrolleNameAus,
+  ["Open"]                = irisNameOffen,
+  ["Opening"]             = irisNameOeffnend,
+  ["Closed"]              = irisNameGeschlossen,
+  ["Closing"]             = irisNameSchliessend,
+  ["Offline"]             = irisNameOffline,
+  ["Manual Override"]     = manuellerEingriff,
+  ["Request"]             = aufforderung,
+  ["Disconnect Stargate"] = stargateAbschalten,
+  ["Control"]             = IrisSteuerungName,
+}
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
