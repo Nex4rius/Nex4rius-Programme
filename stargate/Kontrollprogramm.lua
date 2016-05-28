@@ -32,6 +32,7 @@ ersetzen = {
   ["Request"]             = aufforderung,
   ["Disconnect Stargate"] = stargateAbschalten,
   ["Control"]             = IrisSteuerungName,
+  [""]                    = "",
 }
 
 function zeichenErsetzen(eingabeErsetzung)
@@ -531,11 +532,7 @@ function zeigeNachricht(mess)
   gpu.setBackground(Nachrichtfarbe)
   gpu.setForeground(Nachrichttextfarbe)
   zeigeHier(1, screen_height - 1, "", 80)
-  if mess == "" then
-    zeigeHier(1, screen_height, mess, 80)
-  else
-    zeigeHier(1, screen_height, zeichenErsetzen(mess), 80)
-  end
+  zeigeHier(1, screen_height, zeichenErsetzen(mess), 80)
   gpu.setBackground(Statusfarbe)
 end
 
