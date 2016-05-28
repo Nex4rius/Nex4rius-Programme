@@ -78,7 +78,6 @@ end
 
 function update()
   Pfad = serverAddresse .. versionTyp
-  print("\n\n" .. Neustart)
   os.execute("wget -f " .. Pfad .. "installieren.lua installieren.lua")
   dofile("installieren.lua")
   weiter = false
