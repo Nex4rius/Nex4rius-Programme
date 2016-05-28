@@ -42,8 +42,6 @@ function checkSprache()
   print("")
 end
 
-dofile("/stargate/sprache/" .. Sprache .. ".lua")
-
 function checkKomponenten()
   print(pruefeKomponenten)
   if component.isAvailable("redstone") then
@@ -154,6 +152,8 @@ end
 if Sprache == "" then
   checkSprache()
 end
+
+dofile("/stargate/sprache/" .. Sprache .. ".lua")
 
 if checkKomponenten() == true then
   mainCheck()
