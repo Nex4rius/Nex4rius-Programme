@@ -29,7 +29,7 @@ function schreibSicherungsdatei()
   f:close ()
 end
 
-if Sprache == "" then
+function checkSprache()
   print("Sprache? / Language? deutsch / english\n")
   antwortFrageSprache = io.read()
   if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
@@ -149,6 +149,10 @@ function mainCheck()
   installieren = false
   schreibSicherungsdatei()
   dofile("/stargate/Kontrollprogramm.lua")
+end
+
+if Sprache == "" then
+  checkSprache()
 end
 
 if checkKomponenten() == true then
