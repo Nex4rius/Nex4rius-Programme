@@ -1,3 +1,11 @@
+Sprache = ""
+control = "On"
+firstrun = -2
+Sprache = ""
+installieren = false
+
+dofile("/stargate/sicherNachNeustart.lua")
+
 function Pfad()
   return serverAddresse .. versionTyp
 end
@@ -37,9 +45,19 @@ function installieren()
     f:write("")
     f:close ()
   end
-  installieren = true
   os.execute("del -v installieren.lua")
-  os.execute("autorun.lua")
+  installieren = true
+  schreibSicherungsdatei()
+  os.execute("reboot")
+end
+
+function schreibSicherungsdatei()
+  f = io.open ("/stargate/sicherNachNeustart.lua", "w")
+  f:write('control = "' .. control .. '"\n')
+  f:write('firstrun = ' .. firstrun .. '\n')
+  f:write('Sprache = "' .. Sprache .. '" -- deutsch / english\n')
+  f:write('installieren = ' .. tostring(installieren) .. '\n')
+  f:close ()
 end
 
 installieren()
