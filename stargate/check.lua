@@ -78,9 +78,12 @@ function checkKomponenten()
   end
 end
 
+function Pfad()
+  return serverAddresse .. versionTyp
+end
+
 function update()
-  Pfad = serverAddresse .. versionTyp
-  os.execute("wget -f " .. Pfad .. "installieren.lua installieren.lua")
+  os.execute("wget -f " .. Pfad() .. "installieren.lua installieren.lua")
   installieren = true
   schreibSicherungsdatei()
   f = io.open ("autorun.lua", "w")
@@ -91,8 +94,7 @@ function update()
 end
 
 function checkServerVersion()
-  Pfad = serverAddresse .. versionTyp
-  os.execute("wget -fQ " .. Pfad .. "stargate/version.txt version.txt")
+  os.execute("wget -fQ " .. Pfad() .. "stargate/version.txt version.txt")
   f = io.open ("/version.txt", "r")
   serverVersion = f:read(5)
   f:close ()
@@ -104,8 +106,8 @@ function checkServerVersion()
 end
 
 function checkBetaServerVersion()
-  Pfad = serverAddresse .. "beta/"
-  os.execute("wget -fQ " .. Pfad .. "stargate/version.txt betaVersion.txt")
+  versionTyp = "beta/"
+  os.execute("wget -fQ " .. Pfad() .. "stargate/version.txt betaVersion.txt")
   f = io.open ("/betaVersion.txt", "r")
   betaServerVersion = f:read(5)
   f:close ()
