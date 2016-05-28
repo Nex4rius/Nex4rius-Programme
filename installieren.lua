@@ -37,5 +37,4 @@ if string.sub(readAddresses, AdressesLength, AdressesLength) == " " then
 end
 installieren = true
 os.execute("del -v installieren.lua")
-print("\n\n" .. Neustart)
 os.execute("autorun.lua")
