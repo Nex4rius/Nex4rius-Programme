@@ -16,25 +16,24 @@ dofile("/stargate/compat.lua")
 dofile("/stargate/sicherNachNeustart.lua")
 dofile("/stargate/sprache/" .. Sprache .. ".lua")
 
-ersetzen = {
-  ["On"]                  = irisKontrolleNameAn,
-  ["Off"]                 = irisKontrolleNameAus,
-  ["Open"]                = irisNameOffen,
-  ["Opening"]             = irisNameOeffnend,
-  ["Closed"]              = irisNameGeschlossen,
-  ["Closing"]             = irisNameSchliessend,
-  ["Offline"]             = irisNameOffline,
-  ["Manual Override"]     = manuellerEingriff,
-  ["Request"]             = aufforderung,
-  ["Disconnect Stargate"] = stargateAbschalten,
-  ["Control"]             = IrisSteuerungName,
-}
-
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
 end
 
 function zeichenErsetzen(eingabeErsetzung)
+  ersetzen = {
+    ["On"]                  = irisKontrolleNameAn,
+    ["Off"]                 = irisKontrolleNameAus,
+    ["Open"]                = irisNameOffen,
+    ["Opening"]             = irisNameOeffnend,
+    ["Closed"]              = irisNameGeschlossen,
+    ["Closing"]             = irisNameSchliessend,
+    ["Offline"]             = irisNameOffline,
+    ["Manual Override"]     = manuellerEingriff,
+    ["Request"]             = aufforderung,
+    ["Disconnect Stargate"] = stargateAbschalten,
+    ["Control"]             = IrisSteuerungName,
+  }
   return string.gsub(eingabeErsetzung, "%a+", function (str) return ersetzen [str] end)
 end
 
