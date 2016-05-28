@@ -9,7 +9,7 @@ gpu = component.getPrimary("gpu")
 serverAddresse = "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/"
 versionTyp = "master/"
 Sprache = ""
-weiter = true
+installieren = false
 
 dofile("/stargate/sicherNachNeustart.lua")
 
