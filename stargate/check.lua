@@ -22,6 +22,7 @@ function schreibSicherungsdatei()
   f:write('control = "' .. control .. '"\n')
   f:write('firstrun = ' .. firstrun .. '\n')
   f:write('Sprache = "' .. Sprache .. '" -- deutsch / english\n')
+  f:write('installieren = ' .. installieren .. '\n')
   f:close ()
 end
 
@@ -80,7 +81,8 @@ function update()
   Pfad = serverAddresse .. versionTyp
   os.execute("wget -f " .. Pfad .. "installieren.lua installieren.lua")
   dofile("installieren.lua")
-  weiter = false
+  schreibSicherungsdatei()
+  os.execute("reboot")
 end
 
 function checkServerVersion()
@@ -109,7 +111,7 @@ function checkBetaServerVersion()
   return betaServerVersion
 end
 
-if checkKomponenten() == true then
+function mainCheck()
   if internet == true then
     serverVersion = checkServerVersion()
     betaServerVersion = checkBetaServerVersion()
@@ -137,8 +139,10 @@ if checkKomponenten() == true then
       end
     end
   end
-  if weiter == true then
-    print(laden)
-    dofile("/stargate/Kontrollprogramm.lua")
-  end
+  print(laden)
+  dofile("/stargate/Kontrollprogramm.lua")
+end
+
+if checkKomponenten() == true then
+  mainCheck()
 end
