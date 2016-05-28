@@ -10,11 +10,10 @@ serverAddresse = "https://raw.githubusercontent.com/DarknessShadow/Stargate-Prog
 versionTyp = "master/"
 Sprache = ""
 weiter = true
-Festplattenadresse = c.getBootAddress()
 
 dofile("/stargate/sicherNachNeustart.lua")
 
-os.execute("label -a " .. Festplattenadresse .. " StargateOS")
+os.execute("label -a " .. c.getBootAddress() .. " StargateOS")
 
 term.clear()
 
