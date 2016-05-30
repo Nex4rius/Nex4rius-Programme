@@ -2,15 +2,15 @@ component = require("component")
 sg = component.getPrimary("stargate")
 gpu = component.getPrimary("gpu")
 
-Local A = "0"
-Local B = "0"
-Local C = "0"
-Local D = "0"
-Local E = "0"
-Local F = "0"
-Local G = "0"
-Local H = "0"
-Local I = "0"
+local A = "0"
+local B = "0"
+local C = "0"
+local D = "0"
+local E = "0"
+local F = "0"
+local G = "0"
+local H = "0"
+local I = "0"
 
 alleZeichen = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
                "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
