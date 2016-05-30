@@ -10,6 +10,5 @@ ersetzen = {
   ["Manual"]              = manueller,
   ["Request"]             = aufforderung,
   ["Disconnect"]          = stargateAbschalten,
-  ["Stargate"]            = stargateName,
   ["Control"]             = IrisSteuerungName,
 }
