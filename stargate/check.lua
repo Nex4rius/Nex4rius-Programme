@@ -1,4 +1,4 @@
-version = "1.9.9"
+version = "1.9.10"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -96,7 +96,7 @@ end
 function checkServerVersion()
   os.execute("wget -fQ " .. Pfad() .. "stargate/version.txt version.txt")
   f = io.open ("/version.txt", "r")
-  serverVersion = f:read(5)
+  serverVersion = f:read(string.len(version))
   f:close ()
   os.execute("del version.txt")
   if serverVersion == nil then
@@ -109,7 +109,7 @@ function checkBetaServerVersion()
   versionTyp = "beta/"
   os.execute("wget -fQ " .. Pfad() .. "stargate/version.txt betaVersion.txt")
   f = io.open ("/betaVersion.txt", "r")
-  betaServerVersion = f:read(5)
+  betaServerVersion = f:read(string.len(version))
   f:close ()
   os.execute("del /betaVersion.txt")
   if betaServerVersion == nil then
