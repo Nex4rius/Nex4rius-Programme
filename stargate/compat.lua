@@ -28,6 +28,7 @@ function pull_event()
   if state == "Idle" and checkEnergy == energy then
     zeigeNachricht("                                                                                                         ")
     return event.pull(60)
+    gpu.setResolution(70, 25)
   else
     checkEnergy = energy
     return event.pull(0.5)
