@@ -690,13 +690,13 @@ function eventLoop()
 end
 
 function zeigeAnzeige()
+  gpu.setResolution(70, 25)
   FarbenLeer()
   zeigeStatus()
   zeigeMenu()
 end
 
 function main()
-  gpu.setResolution(70, 25)
   zeigeAnzeige()
   eventLoop()
   gpu.setBackground(schwarzeFarbe)
