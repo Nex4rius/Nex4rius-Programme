@@ -696,7 +696,6 @@ function zeigeAnzeige()
 end
 
 function main()
-  gpu.setResolution(70, 25)
   zeigeAnzeige()
   eventLoop()
   gpu.setBackground(schwarzeFarbe)
