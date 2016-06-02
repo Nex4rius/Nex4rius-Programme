@@ -1,4 +1,4 @@
-version = "1.9.10"
+version = "1.9.11"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -13,6 +13,7 @@ control = "On"
 firstrun = -2
 Sprache = ""
 installieren = false
+colorfulLamp = false
 
 dofile("/stargate/sicherNachNeustart.lua")
 
