@@ -4,7 +4,7 @@ r = component.getPrimary("redstone")
 AusgangRichtung = 1
 EingangRichtung = 0
 
-a = true
+run = true
 
 function rot()
   print("rot")
@@ -71,7 +71,7 @@ end
 
 function redstone()
   if r.getBundledInput(AusgangRichtung, 15) > 0 then
-    a = false
+    run = false
     schwarz()
     return
   elseif r.getBundledInput(EingangRichtung, 4) > 0 then
@@ -89,7 +89,7 @@ function redstone()
   end
 end
 
-while a do
+while run do
   redstone()
-  event.pull()
+  a, b, c = event.pull("redstone_changed", r, 0)
 end
