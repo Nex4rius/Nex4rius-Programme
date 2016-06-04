@@ -174,7 +174,6 @@ function irisOpen()
     end
     r.setBundledOutput(sideNum, yellow, 0)
   end
-  Colorful_Lamp_Farben(31744)
   IrisZustandName = irisNameOeffnend
 end
 
