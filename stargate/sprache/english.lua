@@ -2,6 +2,7 @@
 pruefeKomponenten         = "Checking Components\n"
 redstoneOK                = "- Redstone Card        ok - optional"
 redstoneFehlt             = "- Redstone Card        missing - optional"
+netzwerkOK                = "- Network Card         ok - optional"
 gpuOK2T                   = "- GPU Tier2            ok"
 gpuOK3T                   = "- GPU Tier3            ok - WARNING optimized for T2 screens"
 gpuFehlt                  = "- GPU Tier2            missing"

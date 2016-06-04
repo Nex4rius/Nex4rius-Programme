@@ -162,6 +162,9 @@ function irisClose()
     end
     r.setBundledOutput(sideNum, yellow, 255)
   end
+  if component.isAvailable("modem") == true and redstoneOverNetwork == true then
+    m.broadcast(port, "iris", true)
+  end
   IrisZustandName = irisNameSchliessend
 end
 
@@ -172,6 +175,9 @@ function irisOpen()
       sides()
     end
     r.setBundledOutput(sideNum, yellow, 0)
+  end
+  if component.isAvailable("modem") == true and redstoneOverNetwork == true then
+    m.broadcast(port, "iris", false)
   end
   IrisZustandName = irisNameOeffnend
 end
@@ -201,6 +207,9 @@ function iriscontroller()
     if redst == true then
       r.setBundledOutput(sideNum, black, 255)
     end
+    if component.isAvailable("modem") == true and redstoneOverNetwork == true then
+      m.broadcast(port, "idc", true)
+    end
   end
   if direction == "Incoming" and incode == IDC and iriscontrol == "on" and control == "On" then
     if iris == "Offline" then
@@ -221,6 +230,9 @@ function iriscontroller()
       irisClose()
       if redst == true then
         r.setBundledOutput(sideNum, red, 255)
+      end
+      if component.isAvailable("modem") == true and redstoneOverNetwork == true then
+        m.broadcast(port, "eingehend", true)
       end
       redstoneIncoming = false
     end
@@ -394,9 +406,7 @@ function zeigeStatus()
   zeigeHier(xVerschiebung, zeile + 1, "")
   Trennlinienhoehe = zeile + 2
   zeigeSteuerung()
-  if redst == true then
-    RedstoneKontrolle()
-  end
+  RedstoneKontrolle()
 end
 
 function RedstoneKontrolle()
@@ -405,39 +415,79 @@ function RedstoneKontrolle()
   end
   if direction == "Incoming" then
     if redstoneIncoming == true then
-      r.setBundledOutput(sideNum, red, 255)
-      redstoneIncoming = false
+      if redst == true then
+        r.setBundledOutput(sideNum, red, 255)
+        redstoneIncoming = false
+      end
+      if component.isAvailable("modem") == true and redstoneOverNetwork == true then
+        m.broadcast(port, "eingehend", true)
+      end
     end
   elseif redstoneIncoming == false and state == "Idle" then
-    r.setBundledOutput(sideNum, red, 0)
-    redstoneIncoming = true
+    if redst == true then
+      r.setBundledOutput(sideNum, red, 0)
+      redstoneIncoming = true
+    end
+    if component.isAvailable("modem") == true and redstoneOverNetwork == true then
+      m.broadcast(port, "eingehend", false)
+    end
   end
   if state == "Idle" then
     if redstoneState == true then
-      r.setBundledOutput(sideNum, white, 0)
-      redstoneState = false
+      if redst == true then
+        r.setBundledOutput(sideNum, white, 0)
+        redstoneState = false
+      end
+      if component.isAvailable("modem") == true and redstoneOverNetwork == true then
+        m.broadcast(port, "notIdle", false)
+      end
     end
   elseif redstoneState == false then
-    r.setBundledOutput(sideNum, white, 255)
-    redstoneState = true
+    if redst == true then
+      r.setBundledOutput(sideNum, white, 255)
+      redstoneState = true
+    end
+    if component.isAvailable("modem") == true and redstoneOverNetwork == true then
+      m.broadcast(port, "notIdle", true)
+    end
   end
   if IDCyes == true then
     if redstoneIDC == true then
-      r.setBundledOutput(sideNum, black, 255)
-      redstoneIDC = false
+      if redst == true then
+        r.setBundledOutput(sideNum, black, 255)
+        redstoneIDC = false
+      end
+      if component.isAvailable("modem") == true and redstoneOverNetwork == true then
+        m.broadcast(port, "idc", true)
+      end
     end
   elseif redstoneIDC == false then
-    r.setBundledOutput(sideNum, black, 0)
-    redstoneIDC = true
+    if redst == true then
+      r.setBundledOutput(sideNum, black, 0)
+      redstoneIDC = true
+    end
+    if component.isAvailable("modem") == true and redstoneOverNetwork == true then
+      m.broadcast(port, "idc", false)
+    end
   end
   if state == "Connected" then
     if redstoneConnected == true then
-      r.setBundledOutput(sideNum, green, 255)
-      redstoneConnected = false
+      if redst == true then
+        r.setBundledOutput(sideNum, green, 255)
+        redstoneConnected = false
+      end
+      if component.isAvailable("modem") == true and redstoneOverNetwork == true then
+        m.broadcast(port, "verbunden", true)
+      end
     end
   elseif redstoneConnected == false then
-    r.setBundledOutput(sideNum, green, 0)
-    redstoneConnected = true
+    if redst == true then
+      r.setBundledOutput(sideNum, green, 0)
+      redstoneConnected = true
+    end
+    if component.isAvailable("modem") == true and redstoneOverNetwork == true then
+      m.broadcast(port, "verbunden", false)
+    end
   end
 end
 
@@ -696,14 +746,30 @@ function zeigeAnzeige()
   zeigeMenu()
 end
 
-function main()
-  zeigeAnzeige()
-  eventLoop()
+function beendeAlles()
   gpu.setBackground(schwarzeFarbe)
   gpu.setForeground(weisseFarbe)
   gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   term.clear()
   setCursor(1, 1)
+  if redst == true then
+    for farbe = 0, 15 do
+      r.setBundledOutput(0, farbe, 0)
+    end
+  end
+  if component.isAvailable("modem") == true and redstoneOverNetwork == true then
+    m.broadcast(port, "notIdle", false)
+    m.broadcast(port, "eingehend", false)
+    m.broadcast(port, "iris", false)
+    m.broadcast(port, "idc", false)
+    m.broadcast(port, "verbunden", false)
+  end
+end
+
+function main()
+  zeigeAnzeige()
+  eventLoop()
+  beendeAlles()
 end
 
 if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
