@@ -37,7 +37,7 @@ function orange()
 end
 
 function gruen()
-  print("grüen")
+  print("grün")
   for i = 9, 5, -1 do
     r.setBundledOutput(AusgangRichtung, i, 255)
   end
@@ -91,5 +91,5 @@ end
 
 while a do
   redstone()
-  event.pull(300)
+  event.pull()
 end
