@@ -735,6 +735,7 @@ function zeigeAnzeige()
   FarbenLeer()
   zeigeStatus()
   zeigeMenu()
+  Colorful_Lamp_Farben(32767)
 end
 
 function beendeAlles()
@@ -748,6 +749,7 @@ function beendeAlles()
       r.setBundledOutput(0, farbe, 0)
     end
   end
+  Colorful_Lamp_Farben(0)
 end
 
 function main()
