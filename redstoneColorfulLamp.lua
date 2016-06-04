@@ -1,6 +1,5 @@
 component = require("component")
 event = require("event")
---serialization = require("serialization")
 r = component.getPrimary("redstone")
 AusgangRichtung = 1
 EingangRichtung = 0
@@ -96,5 +95,11 @@ end
 
 while run do
   redstone()
-  a, b, c = event.pull("redstone_changed", r, 0)
+
+  print(r.getBundledInput(EingangRichtung, 0) ) --weiß: Status nicht Inaktiv
+  print(r.getBundledInput(EingangRichtung, 14)) --rot: eingehende Verbindung
+  print(r.getBundledInput(EingangRichtung, 4) ) --gelb: Iris geschlossen
+  print(r.getBundledInput(EingangRichtung, 15)) --schwarz: IDC akzeptiert
+  print(r.getBundledInput(EingangRichtung, 13)) --grün: verbunden
+  a, b, c = event.pull("redstone_changed")
 end
