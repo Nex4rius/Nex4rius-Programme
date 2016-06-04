@@ -64,7 +64,9 @@ end
 --getBundledInput(EingangRichtung, 13) --grün: verbunden
 
 function redstone()
-  if getBundledInput(EingangRichtung, 4) > 0 then
+  if getBundledInput(EingangRichtung, 15) > 0 then
+    a = false
+  elseif getBundledInput(EingangRichtung, 4) > 0 then
     rot()
   elseif getBundledInput(EingangRichtung, 15) > 0 then
     gruen()
@@ -79,8 +81,7 @@ function redstone()
   end
 end
 
---while a do
-for a = 0, 20 do
+while a do
   redstone()
   event.pull(300)
 end
