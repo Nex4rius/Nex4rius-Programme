@@ -6,25 +6,7 @@ Richtung = 0
 a = true
 
 function rot()
-  for i = 15, 11, -1 do
-    r.setBundledOutput(Richtung, i, 255)
-  end
-  for i = 10, 0, -1 do
-    r.setBundledOutput(Richtung, i, 0)
-  end
-end
-
-function gelb()
-  for i = 15, 6, -1 do
-    r.setBundledOutput(Richtung, i, 255)
-  end
-  for i = 5, 0, -1 do
-    r.setBundledOutput(Richtung, i, 0)
-  end
-end
-
-function orange()
-  for i = 10, 15 do
+  for i = 14, 10, -1 do
     r.setBundledOutput(Richtung, i, 255)
   end
   for i = 9, 0, -1 do
@@ -32,20 +14,38 @@ function orange()
   end
 end
 
-function gruen()
-  for i = 10, 6, -1 do
+function gelb()
+  for i = 14, 4, -1 do
     r.setBundledOutput(Richtung, i, 255)
   end
-  for i = 5, 0, -1 do
+  for i = 4, 0, -1 do
     r.setBundledOutput(Richtung, i, 0)
   end
-  for i = 15, 11, -1 do
+end
+
+function orange()
+  for i = 9, 14 do
+    r.setBundledOutput(Richtung, i, 255)
+  end
+  for i = 8, 0, -1 do
+    r.setBundledOutput(Richtung, i, 0)
+  end
+end
+
+function gruen()
+  for i = 9, 5, -1 do
+    r.setBundledOutput(Richtung, i, 255)
+  end
+  for i = 4, 0, -1 do
+    r.setBundledOutput(Richtung, i, 0)
+  end
+  for i = 14, 10, -1 do
     r.setBundledOutput(Richtung, i, 0)
   end
 end
 
 function weiss()
-  for i = 15, 0, -1 do
+  for i = 14, 0, -1 do
     r.setBundledOutput(Richtung, i, 255)
   end
 end
