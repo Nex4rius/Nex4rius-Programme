@@ -63,7 +63,7 @@ function schwarz()
 end
 
 function redstone()
-  if r.getBundledInput(AusgangRichtung, 15) > 0 then
+  if r.getBundledInput(Richtung, 15) > 0 then
     run = false
     schwarz()
     return
