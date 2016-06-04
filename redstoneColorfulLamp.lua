@@ -8,9 +8,9 @@ function rot(k)
   
 end
 
-function weiss(k)
+function weiss()
   for i = 0, 15 do
-    r.setBundledOutput(0, i, k)
+    r.setBundledOutput(0, i, 255)
   end
 end
 
