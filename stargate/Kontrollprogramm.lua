@@ -710,9 +710,6 @@ function Colorful_Lamp_Steuerung()
   if iris == "Closed" or iris == "Closing" then
     Colorful_Lamp_Farben(31744)
     zeigeHier(1, screen_height - 1, "1", 80)
-  elseif redstoneConnected == true then
-    Colorful_Lamp_Farben(32767)
-    zeigeHier(1, screen_height - 1, "2", 80)
   elseif redstoneIDC == false then
     Colorful_Lamp_Farben(992)
     zeigeHier(1, screen_height - 1, "3", 80)
