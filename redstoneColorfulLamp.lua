@@ -50,6 +50,12 @@ function weiss()
   end
 end
 
+function schwarz()
+  for i = 14, 0, -1 do
+    r.setBundledOutput(Richtung, i, 0)
+  end
+end
+
 function redstone()
 end
 
@@ -76,5 +82,5 @@ os.sleep(2)
 print("gruen")
 gruen()
 os.sleep(2)
-print("weiss")
-weiss()
+print("schwarz")
+schwarz()
