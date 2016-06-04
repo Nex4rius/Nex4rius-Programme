@@ -400,60 +400,50 @@ function zeigeStatus()
   Colorful_Lamp_Steuerung()
 end
 
+function RedstoneAenderung(a, b)
+  if redst == true then
+    r.setBundledOutput(sideNum, a, b)
+  end
+end
+
 function RedstoneKontrolle()
   if sideNum == nil then
     sides()
   end
   if direction == "Incoming" then
     if redstoneIncoming == true then
-      if redst == true then
-        r.setBundledOutput(sideNum, red, 255)
-      end
+      RedstoneAenderung(red, 255)
       redstoneIncoming = false
     end
   elseif redstoneIncoming == false and state == "Idle" then
-    if redst == true then
-      r.setBundledOutput(sideNum, red, 0)
-    end
+    RedstoneAenderung(red, 0)
     redstoneIncoming = true
   end
   if state == "Idle" then
     if redstoneState == true then
-      if redst == true then
-        r.setBundledOutput(sideNum, white, 0)
-      end
+      RedstoneAenderung(white, 0)
       redstoneState = false
     end
   elseif redstoneState == false then
-    if redst == true then
-      r.setBundledOutput(sideNum, white, 255)
-    end
+    RedstoneAenderung(white, 255)
     redstoneState = true
   end
   if IDCyes == true then
     if redstoneIDC == true then
-      if redst == true then
-        r.setBundledOutput(sideNum, black, 255)
-      end
+      RedstoneAenderung(black, 255)
       redstoneIDC = false
     end
   elseif redstoneIDC == false then
-    if redst == true then
-      r.setBundledOutput(sideNum, black, 0)
-    end
+    RedstoneAenderung(black, 0)
     redstoneIDC = true
   end
   if state == "Connected" then
     if redstoneConnected == true then
-      if redst == true then
-        r.setBundledOutput(sideNum, green, 255)
-      end
+      RedstoneAenderung(green, 255)
       redstoneConnected = false
     end
   elseif redstoneConnected == false then
-    if redst == true then
-      r.setBundledOutput(sideNum, green, 0)
-    end
+    RedstoneAenderung(green, 0)
     redstoneConnected = true
   end
 end
