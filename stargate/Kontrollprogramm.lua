@@ -709,15 +709,15 @@ end
 function Colorful_Lamp_Steuerung()
   if iris ~= "Open" or iris ~= "Offline" then
     Colorful_Lamp_Farben(31744)
-  elseif redstoneConnected == false then
-    Colorful_Lamp_Farben(32767)
-  elseif redstoneIDC == true then
-    Colorful_Lamp_Farben(992)
-  elseif redstoneIncoming == true then
-    Colorful_Lamp_Farben(32256)
   elseif redstoneConnected == true then
+    Colorful_Lamp_Farben(32767)
+  elseif redstoneIDC == false then
     Colorful_Lamp_Farben(992)
-  elseif redstoneState == true then
+  elseif redstoneIncoming == false then
+    Colorful_Lamp_Farben(32256)
+  elseif redstoneConnected == false then
+    Colorful_Lamp_Farben(992)
+  elseif redstoneState == false then
     Colorful_Lamp_Farben(32736)
   else
     Colorful_Lamp_Farben(32767)
