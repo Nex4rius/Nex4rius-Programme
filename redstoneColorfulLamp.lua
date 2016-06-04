@@ -57,24 +57,24 @@ function schwarz()
   end
 end
 
---getBundledInput(EingangRichtung, 0)  --weiß: Status nicht Inaktiv
---getBundledInput(EingangRichtung, 14) --rot: eingehende Verbindung
---getBundledInput(EingangRichtung, 4)  --gelb: Iris geschlossen
---getBundledInput(EingangRichtung, 15) --schwarz: IDC akzeptiert
---getBundledInput(EingangRichtung, 13) --grün: verbunden
+--r.getBundledInput(EingangRichtung, 0)  --weiß: Status nicht Inaktiv
+--r.getBundledInput(EingangRichtung, 14) --rot: eingehende Verbindung
+--r.getBundledInput(EingangRichtung, 4)  --gelb: Iris geschlossen
+--r.getBundledInput(EingangRichtung, 15) --schwarz: IDC akzeptiert
+--r.getBundledInput(EingangRichtung, 13) --grün: verbunden
 
 function redstone()
-  if getBundledInput(AusgangRichtung, 15) > 0 then
+  if r.getBundledInput(AusgangRichtung, 15) > 0 then
     a = false
-  elseif getBundledInput(EingangRichtung, 4) > 0 then
+  elseif r.getBundledInput(EingangRichtung, 4) > 0 then
     rot()
-  elseif getBundledInput(EingangRichtung, 15) > 0 then
+  elseif r.getBundledInput(EingangRichtung, 15) > 0 then
     gruen()
-  elseif getBundledInput(EingangRichtung, 14) > 0 then
+  elseif r.getBundledInput(EingangRichtung, 14) > 0 then
     orange()
-  elseif getBundledInput(EingangRichtung, 13) > 0 then
+  elseif r.getBundledInput(EingangRichtung, 13) > 0 then
     gruen()
-  elseif getBundledInput(EingangRichtung, 0) > 0 then
+  elseif r.getBundledInput(EingangRichtung, 0) > 0 then
     gelb()
   else
     weiss()
