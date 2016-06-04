@@ -719,7 +719,7 @@ function Colorful_Lamp_Steuerung()
   elseif redstoneConnected == false then
     Colorful_Lamp_Farben(992)
     zeigeHier(1, screen_height - 1, "5", 80)
-  elseif redstoneState == false then
+  elseif redstoneState == true then
     Colorful_Lamp_Farben(32736)
     zeigeHier(1, screen_height - 1, "6", 80)
   else
