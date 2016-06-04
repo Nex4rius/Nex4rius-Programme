@@ -13,7 +13,7 @@ end
 
 function gelb()
   for i = 15, 6, -1 do
-    r.setBundledOutput(0Richtung, i, 255)
+    r.setBundledOutput(Richtung, i, 255)
   end
 end
 
@@ -41,7 +41,19 @@ end
 weiss()
 
 --while a do
-for a = 0, 20 do
-  redstone()
-  event.pull(300)
-end
+--for a = 0, 20 do
+  --redstone()
+  --event.pull(300)
+--end
+
+weiss()
+os.sleep(5)
+rot()
+os.sleep(5)
+gelb()
+os.sleep(5)
+orange()
+os.sleep(5)
+gruen()
+os.sleep(5)
+weiss()
