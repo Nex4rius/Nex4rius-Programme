@@ -1,5 +1,6 @@
 component = require("component")
 event = require("event")
+--serialization = require("serialization")
 r = component.getPrimary("redstone")
 AusgangRichtung = 1
 EingangRichtung = 0
@@ -83,7 +84,11 @@ function redstone()
   elseif r.getBundledInput(EingangRichtung, 13) > 0 then
     gruen()
   elseif r.getBundledInput(EingangRichtung, 0) > 0 then
-    gelb()
+    if r.getBundledInput(EingangRichtung, 14) == 0 then
+      gruen()
+    else
+      gelb()
+    end
   else
     weiss()
   end
