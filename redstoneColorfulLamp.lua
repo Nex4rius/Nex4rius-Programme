@@ -68,6 +68,8 @@ function redstone()
     run = false
     schwarz()
     return
+  elseif verbunden == false then
+    weiss()
   elseif iris == true then
     rot()
   elseif idc == true then
@@ -101,6 +103,6 @@ m.open(port)
 
 while run do
   redstone()
-  local _, _, _, _, _, farbe, zustand = event.pull("modem_message")
+  _, _, _, _, _, farbe, zustand = event.pull(60, "modem_message")
   dekodieren()
 end
