@@ -1,4 +1,4 @@
-version = "1.9.11"
+version = "1.9.12"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -53,10 +53,10 @@ function checkKomponenten()
     r = nil
     redst = false
   end
-  if component.isAvailable("modem") then
-    print(netzwerkOK)
-    m = component.modem
-  end
+--  if component.isAvailable("modem") then
+--    print(netzwerkOK)
+--    m = component.modem
+--  end
   if gpu.maxResolution() == 80 then
     print(gpuOK2T)
   elseif gpu.maxResolution() == 160 then
