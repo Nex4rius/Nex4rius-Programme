@@ -7,6 +7,7 @@ EingangRichtung = 0
 a = true
 
 function rot()
+  print("rot")
   for i = 14, 10, -1 do
     r.setBundledOutput(AusgangRichtung, i, 255)
   end
@@ -16,6 +17,7 @@ function rot()
 end
 
 function gelb()
+  print("gelb")
   for i = 14, 4, -1 do
     r.setBundledOutput(AusgangRichtung, i, 255)
   end
@@ -25,6 +27,7 @@ function gelb()
 end
 
 function orange()
+  print("orange")
   for i = 9, 14 do
     r.setBundledOutput(AusgangRichtung, i, 255)
   end
@@ -34,6 +37,7 @@ function orange()
 end
 
 function gruen()
+  print("grüen")
   for i = 9, 5, -1 do
     r.setBundledOutput(AusgangRichtung, i, 255)
   end
@@ -46,12 +50,14 @@ function gruen()
 end
 
 function weiss()
+  print("weiß")
   for i = 14, 0, -1 do
     r.setBundledOutput(AusgangRichtung, i, 255)
   end
 end
 
 function schwarz()
+  print("schwarz")
   for i = 14, 0, -1 do
     r.setBundledOutput(AusgangRichtung, i, 0)
   end
