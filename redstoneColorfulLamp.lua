@@ -76,29 +76,32 @@ function redstone()
     return
   elseif r.getBundledInput(EingangRichtung, 4) > 0 then
     rot()
+    aendern = true
   elseif r.getBundledInput(EingangRichtung, 15) > 0 then
     gruen()
+    aendern = true
   elseif r.getBundledInput(EingangRichtung, 14) > 0 then
     orange()
+    aendern = true
   elseif r.getBundledInput(EingangRichtung, 13) > 0 then
     gruen()
+    aendern = true
   elseif r.getBundledInput(EingangRichtung, 0) > 0 then
     if r.getBundledInput(EingangRichtung, 14) == 0 then
       gruen()
     else
       gelb()
     end
+    aendern = true
   else
     weiss()
   end
 end
 
 while run do
-  print("weiß " .. r.getBundledInput(EingangRichtung, 0)) --weiß: Status nicht Inaktiv
-  print("rot " .. r.getBundledInput(EingangRichtung, 14)) --rot: eingehende Verbindung
-  print("gelb " .. r.getBundledInput(EingangRichtung, 4)) --gelb: Iris geschlossen
-  print("schwarz " .. r.getBundledInput(EingangRichtung, 15)) --schwarz: IDC akzeptiert
-  print("schwarz " .. r.getBundledInput(EingangRichtung, 13)) --grün: verbunden
   redstone()
-  event.pull("redstone_changed")
+  if aendern == false then
+    os.sleep(5)
+  end
+  aendern = false
 end
