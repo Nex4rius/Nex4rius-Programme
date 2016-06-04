@@ -704,6 +704,11 @@ function main()
   gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   term.clear()
   setCursor(1, 1)
+  if redst == true then
+    for farbe = 0, 15 do
+      r.setBundledOutput(0, farbe, 0)
+    end
+  end
 end
 
 if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
