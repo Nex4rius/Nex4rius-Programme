@@ -64,7 +64,7 @@ end
 --getBundledInput(EingangRichtung, 13) --grün: verbunden
 
 function redstone()
-  if getBundledInput(EingangRichtung, 15) > 0 then
+  if getBundledInput(AusgangRichtung, 15) > 0 then
     a = false
   elseif getBundledInput(EingangRichtung, 4) > 0 then
     rot()
