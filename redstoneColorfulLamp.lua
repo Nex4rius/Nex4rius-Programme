@@ -3,6 +3,7 @@ local r = component.getPrimary("redstone")
 local m = component.modem
 local Richtung = 1
 local run = true
+local port = 1
 
 function rot()
   print("rot")
@@ -84,6 +85,8 @@ function redstone()
     weiss()
   end
 end
+
+m.open(port)
 
 while run do
   redstone()
