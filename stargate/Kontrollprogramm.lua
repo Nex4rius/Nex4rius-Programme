@@ -707,7 +707,7 @@ function eventLoop()
 end
 
 function Colorful_Lamp_Steuerung()
-  if iris ~= "Open" or iris ~= "Offline" then
+  if iris == "Closed" or iris == "Closing" then
     Colorful_Lamp_Farben(31744)
     zeigeHier(1, screen_height - 1, "1", 80)
   elseif redstoneConnected == true then
