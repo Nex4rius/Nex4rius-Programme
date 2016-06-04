@@ -1,4 +1,5 @@
 local component = require("component")
+local event = require("event")
 local r = component.getPrimary("redstone")
 local m = component.modem
 local Richtung = 1
