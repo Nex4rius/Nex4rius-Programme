@@ -30,5 +30,6 @@ Some feature of my programm:
 - emit redstone signals (right now for: state not idle, incoming, iris closed, idc accepted, wormhole connected)
 - automatically adds new, unkown addresses when there is an incoming wormhole
 - shows the required energy to dial an address (or error if invalid address)
+- works with computronics ColorfulLamps
 
 Make Pull Requests if you want :)
