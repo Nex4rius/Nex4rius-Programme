@@ -162,7 +162,7 @@ function irisClose()
     end
     r.setBundledOutput(sideNum, yellow, 255)
   end
-  Colorful_Lamp_Farben(32736)
+  Colorful_Lamp_Farben(31744)
   IrisZustandName = irisNameSchliessend
 end
 
@@ -174,7 +174,7 @@ function irisOpen()
     end
     r.setBundledOutput(sideNum, yellow, 0)
   end
-  Colorful_Lamp_Farben(32767)
+  Colorful_Lamp_Farben(31744)
   IrisZustandName = irisNameOeffnend
 end
 
@@ -397,9 +397,8 @@ function zeigeStatus()
   zeigeHier(xVerschiebung, zeile + 1, "")
   Trennlinienhoehe = zeile + 2
   zeigeSteuerung()
-  if redst == true then
-    RedstoneKontrolle()
-  end
+  RedstoneKontrolle()
+  Colorful_Lamp_Steuerung()
 end
 
 function RedstoneKontrolle()
@@ -408,38 +407,54 @@ function RedstoneKontrolle()
   end
   if direction == "Incoming" then
     if redstoneIncoming == true then
-      r.setBundledOutput(sideNum, red, 255)
+      if redst == true then
+        r.setBundledOutput(sideNum, red, 255)
+      end
       redstoneIncoming = false
     end
   elseif redstoneIncoming == false and state == "Idle" then
-    r.setBundledOutput(sideNum, red, 0)
+    if redst == true then
+      r.setBundledOutput(sideNum, red, 0)
+    end
     redstoneIncoming = true
   end
   if state == "Idle" then
     if redstoneState == true then
-      r.setBundledOutput(sideNum, white, 0)
+      if redst == true then
+        r.setBundledOutput(sideNum, white, 0)
+      end
       redstoneState = false
     end
   elseif redstoneState == false then
-    r.setBundledOutput(sideNum, white, 255)
+    if redst == true then
+      r.setBundledOutput(sideNum, white, 255)
+    end
     redstoneState = true
   end
   if IDCyes == true then
     if redstoneIDC == true then
-      r.setBundledOutput(sideNum, black, 255)
+      if redst == true then
+        r.setBundledOutput(sideNum, black, 255)
+      end
       redstoneIDC = false
     end
   elseif redstoneIDC == false then
-    r.setBundledOutput(sideNum, black, 0)
+    if redst == true then
+      r.setBundledOutput(sideNum, black, 0)
+    end
     redstoneIDC = true
   end
   if state == "Connected" then
     if redstoneConnected == true then
-      r.setBundledOutput(sideNum, green, 255)
+      if redst == true then
+        r.setBundledOutput(sideNum, green, 255)
+      end
       redstoneConnected = false
     end
   elseif redstoneConnected == false then
-    r.setBundledOutput(sideNum, green, 0)
+    if redst == true then
+      r.setBundledOutput(sideNum, green, 0)
+    end
     redstoneConnected = true
   end
 end
