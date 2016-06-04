@@ -106,6 +106,6 @@ m.open(port)
 
 while run do
   redstone()
-  _, _, _, _, _, farbe, zustand = event.pull(60, "modem_message")
+  _, _, _, _, _, farbe, zustand = event.pull("modem_message")
   dekodieren()
 end
