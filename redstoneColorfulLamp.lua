@@ -67,22 +67,32 @@ function redstone()
     run = false
     schwarz()
     return
-  elseif nachricht == 4 then
+  elseif iris == true then
     rot()
-  elseif nachricht == 15 then
+  elseif idc == true then
     gruen()
-  elseif nachricht == 14 then
+  elseif eingehend == true then
     orange()
-  elseif nachricht == 13 then
+  elseif verbunden == true then
     gruen()
-  elseif nachricht == 0 then
-    if nachricht == 14 then
-      gruen()
-    else
-      gelb()
-    end
+  elseif notIdle == true
+    gelb()
   else
     weiss()
+  end
+end
+
+function dekodieren()
+  if farbe == 0 then
+    notIdle = zustand
+  elseif farbe == 14 then
+    eingehend = zustand
+  elseif farbe == 4 then
+    iris = zustand
+  elseif farbe == 15 then
+    idc = zustand
+  elseif farbe == 13 then
+    verbunden = zustand
   end
 end
 
@@ -90,5 +100,6 @@ m.open(port)
 
 while run do
   redstone()
-  local _, _, _, _, _, nachricht = event.pull("modem_message")
+  local _, _, _, _, _, farbe, zustand = event.pull("modem_message")
+  dekodieren()
 end
