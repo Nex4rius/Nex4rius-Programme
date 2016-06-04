@@ -75,7 +75,7 @@ function redstone()
     orange()
   elseif verbunden == true then
     gruen()
-  elseif notIdle == true
+  elseif notIdle == true then
     gelb()
   else
     weiss()
