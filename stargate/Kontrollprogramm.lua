@@ -417,8 +417,8 @@ function RedstoneKontrolle()
     if redstoneIncoming == true then
       if redst == true then
         r.setBundledOutput(sideNum, red, 255)
-        redstoneIncoming = false
       end
+      redstoneIncoming = false
       if component.isAvailable("modem") == true and redstoneOverNetwork == true then
         m.broadcast(port, "eingehend", true)
       end
@@ -426,8 +426,8 @@ function RedstoneKontrolle()
   elseif redstoneIncoming == false and state == "Idle" then
     if redst == true then
       r.setBundledOutput(sideNum, red, 0)
-      redstoneIncoming = true
     end
+    redstoneIncoming = true
     if component.isAvailable("modem") == true and redstoneOverNetwork == true then
       m.broadcast(port, "eingehend", false)
     end
@@ -436,8 +436,8 @@ function RedstoneKontrolle()
     if redstoneState == true then
       if redst == true then
         r.setBundledOutput(sideNum, white, 0)
-        redstoneState = false
       end
+      redstoneState = false
       if component.isAvailable("modem") == true and redstoneOverNetwork == true then
         m.broadcast(port, "notIdle", false)
       end
@@ -445,8 +445,8 @@ function RedstoneKontrolle()
   elseif redstoneState == false then
     if redst == true then
       r.setBundledOutput(sideNum, white, 255)
-      redstoneState = true
     end
+    redstoneState = true
     if component.isAvailable("modem") == true and redstoneOverNetwork == true then
       m.broadcast(port, "notIdle", true)
     end
@@ -455,8 +455,8 @@ function RedstoneKontrolle()
     if redstoneIDC == true then
       if redst == true then
         r.setBundledOutput(sideNum, black, 255)
-        redstoneIDC = false
       end
+      redstoneIDC = false
       if component.isAvailable("modem") == true and redstoneOverNetwork == true then
         m.broadcast(port, "idc", true)
       end
@@ -464,8 +464,8 @@ function RedstoneKontrolle()
   elseif redstoneIDC == false then
     if redst == true then
       r.setBundledOutput(sideNum, black, 0)
-      redstoneIDC = true
     end
+    redstoneIDC = true
     if component.isAvailable("modem") == true and redstoneOverNetwork == true then
       m.broadcast(port, "idc", false)
     end
@@ -474,8 +474,8 @@ function RedstoneKontrolle()
     if redstoneConnected == true then
       if redst == true then
         r.setBundledOutput(sideNum, green, 255)
-        redstoneConnected = false
       end
+      redstoneConnected = false
       if component.isAvailable("modem") == true and redstoneOverNetwork == true then
         m.broadcast(port, "verbunden", true)
       end
@@ -483,8 +483,8 @@ function RedstoneKontrolle()
   elseif redstoneConnected == false then
     if redst == true then
       r.setBundledOutput(sideNum, green, 0)
-      redstoneConnected = true
     end
+    redstoneConnected = true
     if component.isAvailable("modem") == true and redstoneOverNetwork == true then
       m.broadcast(port, "verbunden", false)
     end
