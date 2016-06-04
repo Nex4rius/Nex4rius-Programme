@@ -54,7 +54,7 @@ function checkKomponenten()
     redst = false
   end
   if component.isAvailable("modem") then
-    print(netzwerk)
+    print(netzwerkOK)
   end
   if gpu.maxResolution() == 80 then
     print(gpuOK2T)
