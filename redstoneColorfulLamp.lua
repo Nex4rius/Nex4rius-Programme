@@ -83,15 +83,15 @@ function redstone()
 end
 
 function dekodieren()
-  if farbe == 0 then
+  if farbe == "notIdle" then
     notIdle = zustand
-  elseif farbe == 14 then
+  elseif farbe == "eingehend" then
     eingehend = zustand
-  elseif farbe == 4 then
+  elseif farbe == "iris" then
     iris = zustand
-  elseif farbe == 15 then
+  elseif farbe == "idc" then
     idc = zustand
-  elseif farbe == 13 then
+  elseif farbe == "verbunden" then
     verbunden = zustand
   end
 end
