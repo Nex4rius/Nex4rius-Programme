@@ -66,6 +66,8 @@ end
 function redstone()
   if r.getBundledInput(AusgangRichtung, 15) > 0 then
     a = false
+    schwarz()
+    return
   elseif r.getBundledInput(EingangRichtung, 4) > 0 then
     rot()
   elseif r.getBundledInput(EingangRichtung, 15) > 0 then
