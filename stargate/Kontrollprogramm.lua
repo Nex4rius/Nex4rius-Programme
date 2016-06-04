@@ -746,7 +746,7 @@ function zeigeAnzeige()
   zeigeMenu()
 end
 
-function beenden()
+function beendeAlles()
   gpu.setBackground(schwarzeFarbe)
   gpu.setForeground(weisseFarbe)
   gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
@@ -769,7 +769,7 @@ end
 function main()
   zeigeAnzeige()
   eventLoop()
-  beenden()
+  beendeAlles()
 end
 
 if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
