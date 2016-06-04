@@ -68,10 +68,13 @@ function redstone()
     run = false
     schwarz()
     return
-  elseif verbunden == false then
-    weiss()
   elseif iris == true then
     rot()
+  elseif verbunden == false then
+    weiss()
+    idc = false
+    eingehend = false
+    notIdle = false
   elseif idc == true then
     gruen()
   elseif eingehend == true then
