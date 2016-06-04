@@ -733,7 +733,6 @@ function zeigeAnzeige()
   FarbenLeer()
   zeigeStatus()
   zeigeMenu()
-  Colorful_Lamp_Farben(32767)
 end
 
 function beendeAlles()
