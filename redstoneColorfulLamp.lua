@@ -9,13 +9,16 @@ function rot()
   for i = 15, 11, -1 do
     r.setBundledOutput(Richtung, i, 255)
   end
+  for i = 10, 0, -1 do
+    r.setBundledOutput(Richtung, i, 0)
+  end
 end
 
 function gelb()
   for i = 15, 6, -1 do
     r.setBundledOutput(Richtung, i, 255)
   end
-  for i = 0, 5 do
+  for i = 5, 0, -1 do
     r.setBundledOutput(Richtung, i, 0)
   end
 end
@@ -24,7 +27,7 @@ function orange()
   for i = 10, 15 do
     r.setBundledOutput(Richtung, i, 255)
   end
-  for i = 0, 9 do
+  for i = 9, 0, -1 do
     r.setBundledOutput(Richtung, i, 0)
   end
 end
@@ -33,10 +36,10 @@ function gruen()
   for i = 10, 6, -1 do
     r.setBundledOutput(Richtung, i, 255)
   end
-  for i = 0, 5 do
+  for i = 5, 0, -1 do
     r.setBundledOutput(Richtung, i, 0)
   end
-  for i = 11, 15 do
+  for i = 15, 11, -1 do
     r.setBundledOutput(Richtung, i, 0)
   end
 end
