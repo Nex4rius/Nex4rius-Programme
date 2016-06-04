@@ -1,5 +1,4 @@
 component = require("component")
-event = require("event")
 r = component.getPrimary("redstone")
 AusgangRichtung = 1
 EingangRichtung = 0
@@ -101,7 +100,7 @@ end
 while run do
   redstone()
   if aendern == false then
-    os.sleep(5)
+    os.sleep(10)
   end
   aendern = false
 end
