@@ -541,9 +541,9 @@ function zeigeError(mess)
       else
         f = io.open("error", "w")
       end
-      f.write(mess)
-      f.write("\n" .. string.rep("-",max_Bildschirmbreite) .. "\n")
-      f.close()
+      f:write(mess)
+      f:write("\n\n" .. string.rep("-",max_Bildschirmbreite) .. "\n\n")
+      f:close()
     end
   end
   mess_old = mess
