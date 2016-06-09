@@ -13,6 +13,7 @@ control = "On"
 firstrun = -2
 Sprache = ""
 installieren = false
+betaVersionName = ""
 
 dofile("/stargate/sicherNachNeustart.lua")
 
@@ -133,10 +134,11 @@ function mainCheck()
     else
       print(derzeitigeVersion .. version .. verfuegbareVersion .. serverVersion)
       print(betaVersion .. betaServerVersion)
+      betaVersionName = "/beta"
     end
     if version == serverVersion and version == betaServerVersion then
     elseif installieren == false then
-      print(aktualisierenFrage)
+      print(aktualisierenFrage .. betaVersionName)
       antwortFrage = io.read()
       if string.lower(antwortFrage) == ja then
         print(aktualisierenJa)
