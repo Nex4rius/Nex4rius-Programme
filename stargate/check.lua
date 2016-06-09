@@ -134,7 +134,9 @@ function mainCheck()
     else
       print(derzeitigeVersion .. version .. verfuegbareVersion .. serverVersion)
       print(betaVersion .. betaServerVersion)
-      betaVersionName = "/beta"
+      if betaServerVersion == "<ERROR>" then else
+        betaVersionName = "/beta"
+      end
     end
     if version == serverVersion and version == betaServerVersion then
     elseif installieren == false then
