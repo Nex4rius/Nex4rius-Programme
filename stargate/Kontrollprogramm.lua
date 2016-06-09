@@ -387,7 +387,7 @@ function zeigeStatus()
   if IDCyes == true then
     zeigeHier(xVerschiebung, zeile, "  " .. IDCakzeptiert) neueZeile(1)
   else
-    zeigeHier(xVerschiebung, zeile, "  " .. IDCname .. string.sub(incode, 1, 22)) neueZeile(1)
+    zeigeHier(xVerschiebung, zeile, "  " .. IDCname .. incode) neueZeile(1)
   end
   zeigeHier(xVerschiebung, zeile, "  " .. chevronName .. chevrons) neueZeile(1)
   zeigeHier(xVerschiebung, zeile, "  " .. richtung .. RichtungName) neueZeile(1)
