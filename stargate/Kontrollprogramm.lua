@@ -536,7 +536,7 @@ function zeigeError(mess)
   if i then
     mess = "Error: " .. string.sub(mess, i + 2)
     if mess_old == mess then else
-      if filesystem.exists("/error") then
+      if fs.exists("/error") then
         f = io.open("error", "a")
       else
         f = io.open("error", "w")
