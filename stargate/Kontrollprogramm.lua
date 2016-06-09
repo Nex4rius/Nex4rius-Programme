@@ -680,8 +680,8 @@ end
 
 function eventLoop()
   while running do
-    checken(zeigeStatus())
-    checken(checkReset())
+    checken(zeigeStatus)
+    checken(checkReset)
     e = {pull_event()}
     if e[1] == nil then else
       name = e[1]
@@ -764,4 +764,4 @@ if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
   irisOpen()
 end
 
-main()
+checken(main)
