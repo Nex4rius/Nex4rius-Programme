@@ -3,15 +3,17 @@ control = "On"
 firstrun = -2
 Sprache = ""
 installieren = false
+fs = require("filesystem")
 
-dofile("/stargate/sicherNachNeustart.lua")
+if fs.exists("/stargate/sicherNachNeustart.lua") then
+  dofile("/stargate/sicherNachNeustart.lua")
+end
 
 function Pfad()
   return serverAddresse .. versionTyp
 end
 
 function installieren()
-  fs = require("filesystem")
   fs.makeDirectory("/stargate/sprache")
   serverAddresse = "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/"
   if versionTyp == nil then

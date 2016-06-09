@@ -1,4 +1,4 @@
-version = "1.9.12"
+version = "1.9.13"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -13,6 +13,7 @@ control = "On"
 firstrun = -2
 Sprache = ""
 installieren = false
+betaVersionName = ""
 
 dofile("/stargate/sicherNachNeustart.lua")
 
@@ -99,11 +100,12 @@ end
 
 function checkServerVersion()
   os.execute("wget -fQ " .. Pfad() .. "stargate/version.txt version.txt")
-  f = io.open ("/version.txt", "r")
-  serverVersion = f:read(string.len(version))
-  f:close ()
-  os.execute("del version.txt")
-  if serverVersion == nil then
+  if fs.exists("/version.txt") then
+    f = io.open ("/version.txt", "r")
+    serverVersion = f:read(string.len(version))
+    f:close ()
+    os.execute("del version.txt")
+  else
     serverVersion = "<ERROR>"
   end
   return serverVersion
@@ -112,11 +114,12 @@ end
 function checkBetaServerVersion()
   versionTyp = "beta/"
   os.execute("wget -fQ " .. Pfad() .. "stargate/version.txt betaVersion.txt")
-  f = io.open ("/betaVersion.txt", "r")
-  betaServerVersion = f:read(string.len(version))
-  f:close ()
-  os.execute("del /betaVersion.txt")
-  if betaServerVersion == nil then
+  if fs.exists("/betaVersion.txt") then
+    f = io.open ("/betaVersion.txt", "r")
+    betaServerVersion = f:read(string.len(version))
+    f:close ()
+    os.execute("del /betaVersion.txt")
+  else
     betaServerVersion = "<ERROR>"
   end
   return betaServerVersion
@@ -131,10 +134,13 @@ function mainCheck()
     else
       print(derzeitigeVersion .. version .. verfuegbareVersion .. serverVersion)
       print(betaVersion .. betaServerVersion)
+      if betaServerVersion == "<ERROR>" then else
+        betaVersionName = "/beta"
+      end
     end
     if version == serverVersion and version == betaServerVersion then
     elseif installieren == false then
-      print(aktualisierenFrage)
+      print(aktualisierenFrage .. betaVersionName .. "\n")
       antwortFrage = io.read()
       if string.lower(antwortFrage) == ja then
         print(aktualisierenJa)
