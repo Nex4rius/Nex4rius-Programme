@@ -10,14 +10,12 @@
 -- installieren
 --
 
-function alleDateien()
-  dofile("/stargate/adressen.lua")
-  dofile("/stargate/config.lua")
-  dofile("/stargate/compat.lua")
-  dofile("/stargate/sicherNachNeustart.lua")
-  dofile("/stargate/sprache/" .. Sprache .. ".lua")
-  dofile("/stargate/sprache/ersetzen.lua")
-end
+dofile("/stargate/adressen.lua")
+dofile("/stargate/config.lua")
+dofile("/stargate/compat.lua")
+dofile("/stargate/sicherNachNeustart.lua")
+dofile("/stargate/sprache/" .. Sprache .. ".lua")
+dofile("/stargate/sprache/ersetzen.lua")
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
@@ -760,7 +758,6 @@ function main()
   if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
     irisOpen()
   end
-  alleDateien()
   zeigeAnzeige()
   eventLoop()
   beendeAlles()
