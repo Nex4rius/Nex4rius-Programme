@@ -1,4 +1,4 @@
-version = "1.9.12"
+version = "1.9.13"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -99,11 +99,12 @@ end
 
 function checkServerVersion()
   os.execute("wget -fQ " .. Pfad() .. "stargate/version.txt version.txt")
-  f = io.open ("/version.txt", "r")
-  serverVersion = f:read(string.len(version))
-  f:close ()
-  os.execute("del version.txt")
-  if serverVersion == nil then
+  if fs.exists("/version.txt") then
+    f = io.open ("/version.txt", "r")
+    serverVersion = f:read(string.len(version))
+    f:close ()
+    os.execute("del version.txt")
+  else
     serverVersion = "<ERROR>"
   end
   return serverVersion
@@ -112,11 +113,12 @@ end
 function checkBetaServerVersion()
   versionTyp = "beta/"
   os.execute("wget -fQ " .. Pfad() .. "stargate/version.txt betaVersion.txt")
-  f = io.open ("/betaVersion.txt", "r")
-  betaServerVersion = f:read(string.len(version))
-  f:close ()
-  os.execute("del /betaVersion.txt")
-  if betaServerVersion == nil then
+  if fs.exists("/betaVersion.txt") then
+    f = io.open ("/betaVersion.txt", "r")
+    betaServerVersion = f:read(string.len(version))
+    f:close ()
+    os.execute("del /betaVersion.txt")
+  else
     betaServerVersion = "<ERROR>"
   end
   return betaServerVersion
