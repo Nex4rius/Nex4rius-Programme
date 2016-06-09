@@ -535,7 +535,18 @@ function zeigeError(mess)
   i = string.find(mess, ": ")
   if i then
     mess = "Error: " .. string.sub(mess, i + 2)
+    if mess_old == mess then else
+      if filesystem.exists("/error") then
+        f = io.open("error", "a")
+      else
+        f = io.open("error", "w")
+      end
+      f.write(mess)
+      f.write("\n" .. string.rep("-",max_Bildschirmbreite) .. "\n")
+      f.close()
+    end
   end
+  mess_old = mess
   zeigeNachricht(mess)
 end
 
@@ -669,18 +680,15 @@ end
 
 function eventLoop()
   while running do
-    zeigeStatus()
-    checkReset()
+    checken(zeigeStatus())
+    checken(checkReset())
     e = {pull_event()}
     if e[1] == nil then else
       name = e[1]
       f = handlers[name]
       if f then
         zeigeNachricht("")
-        ok, result = pcall(f, e)
-        if not ok then
-          zeigeError(result)
-        end
+        checken(f, e)
       end
       if string.sub(e[1],1,3) == "sgM" and direction == "Incoming" and wormhole == "in" then
         if e[3] == "" then else
@@ -693,6 +701,13 @@ function eventLoop()
         messageshow = true
       end
     end
+  end
+end
+
+function checken(...)
+  ok, result = pcall(...)
+  if not ok then
+    zeigeError(result)
   end
 end
 
