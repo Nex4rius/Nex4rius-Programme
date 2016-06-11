@@ -143,6 +143,7 @@ function mainCheck()
       print(aktualisierenFrage .. betaVersionName .. "\n")
       antwortFrage = io.read()
       if string.lower(antwortFrage) == ja then
+        versionTyp = "master/"
         print(aktualisierenJa)
         update()
         return
