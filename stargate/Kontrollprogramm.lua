@@ -552,7 +552,7 @@ function schreibErrorLog()
       f = io.open("errorlog", "w")
     end
     f:write(mess)
-    f:write("\n\n" .. string.rep("-",max_Bildschirmbreite) .. "\n\n")
+    f:write("\n\n" .. c.uptime() .. string.rep("-",max_Bildschirmbreite - string.len(c.uptime())) .. "\n\n")
     f:close()
   end
   mess_old = mess
