@@ -529,7 +529,7 @@ function zeigeNachricht(mess)
   zeigeHier(1, screen_height - 1, "", 80)
   zeigeHier(1, screen_height, zeichenErsetzen(mess), 80)
   gpu.setBackground(Statusfarbe)
-  if state == "Idle then
+  if state == "Idle" then
     os.sleep(0.25)
     zeigeHier(1, screen_height, "", 80)
   end
