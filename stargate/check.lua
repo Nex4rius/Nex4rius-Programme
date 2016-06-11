@@ -1,4 +1,4 @@
-version = "1.9.13"
+version = "1.9.14"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -78,7 +78,7 @@ function checkKomponenten()
     sg = component.getPrimary("stargate")
     return true
   else
-    print(StargateOK)
+    print(StargateFehlt)
     return false
   end
 end
@@ -143,6 +143,7 @@ function mainCheck()
       print(aktualisierenFrage .. betaVersionName .. "\n")
       antwortFrage = io.read()
       if string.lower(antwortFrage) == ja then
+        versionTyp = "master/"
         print(aktualisierenJa)
         update()
         return

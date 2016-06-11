@@ -528,6 +528,10 @@ function zeigeNachricht(mess)
   gpu.setForeground(Nachrichttextfarbe)
   zeigeHier(1, screen_height - 1, "", 80)
   zeigeHier(1, screen_height, zeichenErsetzen(mess), 80)
+  if state == "Idle" then
+    os.sleep(0.25)
+    zeigeHier(1, screen_height, "", 80)
+  end
   gpu.setBackground(Statusfarbe)
 end
 
@@ -535,19 +539,35 @@ function zeigeError(mess)
   i = string.find(mess, ": ")
   if i then
     mess = "Error: " .. string.sub(mess, i + 2)
-    if mess_old == mess then else
-      if fs.exists("/error") then
-        f = io.open("error", "a")
-      else
-        f = io.open("error", "w")
-      end
-      f:write(mess)
-      f:write("\n\n" .. string.rep("-",max_Bildschirmbreite) .. "\n\n")
-      f:close()
+  end
+  zeigeNachricht(mess)
+  schreibErrorLog()
+end
+
+function schreibErrorLog()
+  if mess_old == mess then else
+    if fs.exists("/errorlog") then
+      f = io.open("errorlog", "a")
+    else
+      f = io.open("errorlog", "w")
     end
+    f:write(mess)
+    f:write("\n\n" .. c.uptime() .. string.rep("-",max_Bildschirmbreite - string.len(c.uptime())) .. "\n\n")
+    f:close()
   end
   mess_old = mess
-  zeigeNachricht(mess)
+  if mess == "no such component" then
+    checkKomponenten()
+  end
+end
+
+function checkKomponenten()
+  if component.isAvailable("redstone") then
+    r = component.getPrimary("redstone")
+  end
+  if component.isAvailable("stargate") then
+    sg = component.getPrimary("stargate")
+  end
 end
 
 handlers = {}
@@ -555,7 +575,7 @@ handlers = {}
 function dial(name, addr)
   zeigeNachricht(waehlen .. string.sub(name, 1, xVerschiebung + 12) .. " (" .. addr .. ")")
   remoteName = name
-  check(sg.dial(addr))
+  checken(sg.dial, addr)
 end
 
 handlers[key_event_name] = function(e)
