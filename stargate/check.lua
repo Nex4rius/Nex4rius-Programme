@@ -78,7 +78,7 @@ function checkKomponenten()
     sg = component.getPrimary("stargate")
     return true
   else
-    print(StargateOK)
+    print(StargateFehlt)
     return false
   end
 end
