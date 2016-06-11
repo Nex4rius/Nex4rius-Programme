@@ -556,7 +556,7 @@ function schreibErrorLog()
     f:close()
   end
   mess_old = mess
-  if mess = "no such component" then
+  if mess == "no such component" then
     checkKomponenten()
   end
 end
