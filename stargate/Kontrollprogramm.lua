@@ -529,6 +529,7 @@ function zeigeNachricht(mess)
   zeigeHier(1, screen_height - 1, "", 80)
   zeigeHier(1, screen_height, zeichenErsetzen(mess), 80)
   gpu.setBackground(Statusfarbe)
+  os.sleep(0.25)
 end
 
 function zeigeError(mess)
