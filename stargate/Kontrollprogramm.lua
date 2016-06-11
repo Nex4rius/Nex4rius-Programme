@@ -539,19 +539,23 @@ function zeigeError(mess)
   i = string.find(mess, ": ")
   if i then
     mess = "Error: " .. string.sub(mess, i + 2)
-    if mess_old == mess then else
-      if fs.exists("/error") then
-        f = io.open("error", "a")
-      else
-        f = io.open("error", "w")
-      end
-      f:write(mess)
-      f:write("\n\n" .. string.rep("-",max_Bildschirmbreite) .. "\n\n")
-      f:close()
+  end
+  zeigeNachricht(mess)
+  schreibErrorLog()
+end
+
+function schreibErrorLog()
+  if mess_old == mess then else
+    if fs.exists("/log") then
+      f = io.open("log", "a")
+    else
+      f = io.open("log", "w")
     end
+    f:write(mess)
+    f:write("\n\n" .. string.rep("-",max_Bildschirmbreite) .. "\n\n")
+    f:close()
   end
   mess_old = mess
-  zeigeNachricht(mess)
 end
 
 handlers = {}
