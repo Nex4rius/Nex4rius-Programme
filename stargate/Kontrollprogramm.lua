@@ -546,16 +546,28 @@ end
 
 function schreibErrorLog()
   if mess_old == mess then else
-    if fs.exists("/log") then
-      f = io.open("log", "a")
+    if fs.exists("/errorlog") then
+      f = io.open("errorlog", "a")
     else
-      f = io.open("log", "w")
+      f = io.open("errorlog", "w")
     end
     f:write(mess)
     f:write("\n\n" .. string.rep("-",max_Bildschirmbreite) .. "\n\n")
     f:close()
   end
   mess_old = mess
+  if mess = "no such component" then
+    checkKomponenten()
+  end
+end
+
+function checkKomponenten()
+  if component.isAvailable("redstone") then
+    r = component.getPrimary("redstone")
+  end
+  if component.isAvailable("stargate") then
+    sg = component.getPrimary("stargate")
+  end
 end
 
 handlers = {}
@@ -563,10 +575,7 @@ handlers = {}
 function dial(name, addr)
   zeigeNachricht(waehlen .. string.sub(name, 1, xVerschiebung + 12) .. " (" .. addr .. ")")
   remoteName = name
-  if component.isAvailable("stargate") then
-    sg = component.getPrimary("stargate")
-    check(sg.dial(addr))
-  end
+  checken(sg.dial, addr)
 end
 
 handlers[key_event_name] = function(e)
