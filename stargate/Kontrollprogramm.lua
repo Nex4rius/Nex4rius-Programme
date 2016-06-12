@@ -579,10 +579,10 @@ end
 handlers = {}
 
 function dial(name, addr)
-  zeigeNachricht(waehlen .. string.sub(name, 1, xVerschiebung + 12) .. " (" .. addr .. ")")
   remoteName = name
   state = "Dialling"
   checken(sg.dial, addr)
+  zeigeNachricht(waehlen .. string.sub(name, 1, xVerschiebung + 12) .. " (" .. addr .. ")")
 end
 
 handlers[key_event_name] = function(e)
