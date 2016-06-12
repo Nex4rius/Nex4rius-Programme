@@ -12,8 +12,6 @@
 RF = false -- show energy in RF instead of EU
 autoclosetime = 60 -- in seconds -- false for no autoclose
 side = "bottom" -- bottom, top, back, front, right or left
-redstoneOverNetwork = false -- also send the redstone signals over network signals
-port = 1
 
 IDC = ""
 
