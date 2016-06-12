@@ -1,6 +1,7 @@
 ZeitBeimEinschalten   = os.time()
 os.sleep(1)
 sectime               = ZeitBeimEinschalten - os.time()
+letzteNachricht       = os.uptime()
 enteridc              = ""
 showidc               = ""
 remoteName            = ""
