@@ -542,8 +542,10 @@ function zeigeError(mess)
   if i then
     mess = "Error: " .. string.sub(mess, i + 2)
   end
-  zeigeNachricht(mess)
-  schreibErrorLog()
+  if mess == "" then else
+    zeigeNachricht(mess)
+    schreibErrorLog()
+  end
 end
 
 function schreibErrorLog()
