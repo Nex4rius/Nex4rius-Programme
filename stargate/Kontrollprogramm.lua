@@ -54,50 +54,58 @@ function zeigeMenu()
   end
   setCursor(1, 1)
   if seite == -1 then
-    print(Steuerung)
-    if iris == "Offline" then else
-      print("I " .. IrisSteuerung .. an_aus)
-    end
-    print("Z " .. AdressenBearbeiten)
-    print("Q " .. beenden)
-    print("L " .. spracheAendern .. "\n" .. verfuegbareSprachen)
-    print(RedstoneSignale)
-    gpu.setBackground(weisseFarbe)
-    gpu.setForeground(schwarzeFarbe)
-    print(RedstoneWeiss)
-    gpu.setBackground(roteFarbe)
-    print(RedstoneRot)
-    gpu.setBackground(gelbeFarbe)
-    print(RedstoneGelb)
-    gpu.setBackground(schwarzeFarbe)
-    gpu.setForeground(weisseFarbe)
-    print(RedstoneSchwarz)
-    gpu.setBackground(grueneFarbe)
-    print(RedstoneGruen)
-    gpu.setBackground(Adressfarbe)
-    gpu.setForeground(Adresstextfarbe)
-    print(versionName .. version)
+    Infoseite()
   else
     print(Adressseite .. seite + 1)
-    for i, na in pairs(adressen) do
-      if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
-        AdressAnzeige = i - seite * 10
-        if AdressAnzeige == 10 then
-          AdressAnzeige = 0
-        end
-        print(AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
-        if sg.energyToDial(na[2]) == nil then
-          gpu.setForeground(ErrorFarbe)
-          print("   " .. errorName)
-          gpu.setForeground(Adresstextfarbe)
-        else
-          print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
-        end
-      end
-      maxseiten = i / 10
-    end
+    AdressenLesen()
     iris = sg.irisState()
   end
+end
+
+function AdressenLesen()
+  for i, na in pairs(adressen) do
+    if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
+      AdressAnzeige = i - seite * 10
+      if AdressAnzeige == 10 then
+        AdressAnzeige = 0
+      end
+      print(AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
+      if sg.energyToDial(na[2]) == nil then
+        gpu.setForeground(ErrorFarbe)
+        print("   " .. errorName)
+        gpu.setForeground(Adresstextfarbe)
+      else
+        print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
+      end
+    end
+    maxseiten = i / 10
+  end
+end
+
+function Infoseite()
+  print(Steuerung)
+  if iris == "Offline" then else
+    print("I " .. IrisSteuerung .. an_aus)
+  end
+  print("Z " .. AdressenBearbeiten)
+  print("Q " .. beenden)
+  print("L " .. spracheAendern .. "\n" .. verfuegbareSprachen)
+  print(RedstoneSignale)
+  gpu.setBackground(weisseFarbe)
+  gpu.setForeground(schwarzeFarbe)
+  print(RedstoneWeiss)
+  gpu.setBackground(roteFarbe)
+  print(RedstoneRot)
+  gpu.setBackground(gelbeFarbe)
+  print(RedstoneGelb)
+  gpu.setBackground(schwarzeFarbe)
+  gpu.setForeground(weisseFarbe)
+  print(RedstoneSchwarz)
+  gpu.setBackground(grueneFarbe)
+  print(RedstoneGruen)
+  gpu.setBackground(Adressfarbe)
+  gpu.setForeground(Adresstextfarbe)
+  print(versionName .. version)
 end
 
 function FarbenLeer()
@@ -175,6 +183,8 @@ function irisOpen()
     r.setBundledOutput(sideNum, yellow, 0)
   end
   IrisZustandName = irisNameOeffnend
+  iris = "Opening"
+  Colorful_Lamp_Steuerung()
 end
 
 function sides()
@@ -367,8 +377,11 @@ function aktualisiereStatus()
   else
     StatusName = StatusNameVerbunden
   end
-  energy = sg.energyAvailable()*energymultiplicator
+  energy = sg.energyAvailable() * energymultiplicator
   zeile = 1
+  if (letzteNachricht - os.time()) / sectime > 45 then
+    zeigeNachricht("                                                                                                        ")
+  end
 end
 
 function zeigeStatus()
@@ -493,10 +506,12 @@ function autoclose()
 end
 
 function zeigeEnergie()
-  if energy < 10000000 then
+  if energy > 10000000 then
+    zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000000) .. " M")
+  elseif energy > 10000 then
     zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000) .. " k")
   else
-    zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000000) .. " M")
+    zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.f", energy))
   end
 end
 
@@ -505,7 +520,7 @@ function activetime()
     if activationtime == 0 then
       activationtime = os.time()
     end
-    time = (activationtime - os.time())/sectime
+    time = (activationtime - os.time()) / sectime
     if time > 0 then
       zeigeHier(xVerschiebung, zeile, "  " .. zeit1 .. string.format("%.1f", time) .. "s")
     end
@@ -524,14 +539,11 @@ function zeigeHier(x, y, s, h)
 end
 
 function zeigeNachricht(mess)
+  letzteNachricht = os.time()
   gpu.setBackground(Nachrichtfarbe)
   gpu.setForeground(Nachrichttextfarbe)
   zeigeHier(1, screen_height - 1, "", 80)
   zeigeHier(1, screen_height, zeichenErsetzen(mess), 80)
-  if state == "Idle" then
-    os.sleep(0.25)
-    zeigeHier(1, screen_height, "", 80)
-  end
   gpu.setBackground(Statusfarbe)
 end
 
@@ -540,8 +552,10 @@ function zeigeError(mess)
   if i then
     mess = "Error: " .. string.sub(mess, i + 2)
   end
-  zeigeNachricht(mess)
-  schreibErrorLog()
+  if mess == "" then else
+    zeigeNachricht(mess)
+    schreibErrorLog()
+  end
 end
 
 function schreibErrorLog()
@@ -552,7 +566,7 @@ function schreibErrorLog()
       f = io.open("errorlog", "w")
     end
     f:write(mess)
-    f:write("\n\n" .. c.uptime() .. string.rep("-",max_Bildschirmbreite - string.len(c.uptime())) .. "\n\n")
+    f:write("\n\n" .. os.time() .. string.rep("-",max_Bildschirmbreite - string.len(os.time())) .. "\n\n")
     f:close()
   end
   mess_old = mess
@@ -575,6 +589,7 @@ handlers = {}
 function dial(name, addr)
   zeigeNachricht(waehlen .. string.sub(name, 1, xVerschiebung + 12) .. " (" .. addr .. ")")
   remoteName = name
+  state = "Dialling"
   checken(sg.dial, addr)
 end
 
@@ -765,6 +780,7 @@ function beendeAlles()
   gpu.setForeground(weisseFarbe)
   gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   term.clear()
+  print(ausschaltenName)
   setCursor(1, 1)
   if redst == true then
     for farbe = 0, 15 do
@@ -772,6 +788,7 @@ function beendeAlles()
     end
   end
   Colorful_Lamp_Farben(0)
+  term.clear()
 end
 
 function main()
