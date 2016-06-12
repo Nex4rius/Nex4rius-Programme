@@ -581,7 +581,6 @@ function dial(name, addr)
   remoteName = name
   state = "Dialling"
   checken(sg.dial, addr)
-  os.sleep(0.25)
 end
 
 handlers[key_event_name] = function(e)
