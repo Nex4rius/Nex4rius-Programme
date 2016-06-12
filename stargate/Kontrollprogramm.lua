@@ -108,6 +108,27 @@ function Infoseite()
   print(versionName .. version)
 end
 
+--function AdressenSpeichern()
+--  gespeicherteAdressen = {}
+--  for i, na in pairs(adressen) do
+--    if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
+--      AdressAnzeige = i - seite * 10
+--      if AdressAnzeige == 10 then
+--        AdressAnzeige = 0
+--      end
+--      print(AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
+--      if sg.energyToDial(na[2]) == nil then
+--        gpu.setForeground(ErrorFarbe)
+--        print("   " .. errorName)
+--        gpu.setForeground(Adresstextfarbe)
+--      else
+--        print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
+--      end
+--    end
+--    maxseiten = i / 10
+--  end
+--end
+
 function FarbenLeer()
   gpu.setBackground(Adressfarbe)
   gpu.setForeground(Adresstextfarbe)
