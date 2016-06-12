@@ -91,11 +91,13 @@ function Pfad()
 end
 
 function update(versionTyp)
+  print(versionTyp)
   os.execute("wget -f " .. Pfad() .. "/installieren.lua installieren.lua")
   installieren = true
   schreibSicherungsdatei()
   f = io.open ("autorun.lua", "w")
   f:write('versionTyp = "' .. versionTyp .. '"\n')
+  f:write("print(versionTyp)")
   f:write('dofile("installieren.lua")')
   f:close()
   os.execute("reboot")
