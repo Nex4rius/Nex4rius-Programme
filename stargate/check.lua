@@ -6,7 +6,7 @@ fs = require("filesystem")
 c = require("computer")
 gpu = component.getPrimary("gpu")
 serverAddresse = "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/"
-versionTyp = "master/"
+versionTyp = "master"
 Sprache = ""
 control = "On"
 firstrun = -2
@@ -138,7 +138,7 @@ function mainCheck()
       print(derzeitigeVersion .. version .. verfuegbareVersion .. serverVersion)
     else
       print(derzeitigeVersion .. version .. verfuegbareVersion .. serverVersion)
-      print(betaVersion .. betaServerVersion)
+      print(betaVersion .. betaServerVersion .. " Beta")
       if betaServerVersion == "<ERROR>" then else
         betaVersionName = "/beta"
       end
