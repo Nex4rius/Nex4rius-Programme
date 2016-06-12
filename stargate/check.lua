@@ -138,7 +138,7 @@ function mainCheck()
       print(derzeitigeVersion .. version .. verfuegbareVersion .. serverVersion)
     else
       print(derzeitigeVersion .. version .. verfuegbareVersion .. serverVersion)
-      print(betaVersion .. betaServerVersion .. " Beta")
+      print(betaVersion .. betaServerVersion .. " BETA")
       if betaServerVersion == "<ERROR>" then else
         betaVersionName = "/beta"
       end
