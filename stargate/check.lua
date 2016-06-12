@@ -17,7 +17,7 @@ betaVersionName = ""
 if fs.exists("/version.txt") then
   f = io.open ("/version.txt", "r")
   version = f:read()
-  f:close ()
+  f:close()
 else
   version = "<ERROR>"
 end
@@ -34,7 +34,7 @@ function schreibSicherungsdatei()
   f:write('firstrun = ' .. firstrun .. '\n')
   f:write('Sprache = "' .. Sprache .. '" -- deutsch / english\n')
   f:write('installieren = ' .. tostring(installieren) .. '\n')
-  f:close ()
+  f:close()
 end
 
 function checkSprache()
@@ -97,7 +97,7 @@ function update(versionTyp)
   f = io.open ("autorun.lua", "w")
   f:write('versionTyp = "' .. versionTyp .. '"\n')
   f:write('dofile("installieren.lua")')
-  f:close ()
+  f:close()
   os.execute("reboot")
 end
 
@@ -106,7 +106,7 @@ function checkServerVersion()
   if fs.exists("/serverVersion.txt") then
     f = io.open ("/serverVersion.txt", "r")
     serverVersion = f:read()
-    f:close ()
+    f:close()
     os.execute("del serverVersion.txt")
   else
     serverVersion = "<ERROR>"
@@ -120,7 +120,7 @@ function checkBetaServerVersion()
   if fs.exists("/betaVersion.txt") then
     f = io.open ("/betaVersion.txt", "r")
     betaServerVersion = f:read()
-    f:close ()
+    f:close()
     os.execute("del /betaVersion.txt")
   else
     betaServerVersion = "<ERROR>"
