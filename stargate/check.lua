@@ -1,4 +1,3 @@
-version = "1.9.14"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -7,13 +6,21 @@ fs = require("filesystem")
 c = require("computer")
 gpu = component.getPrimary("gpu")
 serverAddresse = "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/"
-versionTyp = "master/"
+versionTyp = "master"
 Sprache = ""
 control = "On"
 firstrun = -2
 Sprache = ""
 installieren = false
 betaVersionName = ""
+
+if fs.exists("/stargate/version.txt") then
+  f = io.open ("/stargate/version.txt", "r")
+  version = f:read()
+  f:close()
+else
+  version = "<ERROR>"
+end
 
 dofile("/stargate/sicherNachNeustart.lua")
 
@@ -27,7 +34,7 @@ function schreibSicherungsdatei()
   f:write('firstrun = ' .. firstrun .. '\n')
   f:write('Sprache = "' .. Sprache .. '" -- deutsch / english\n')
   f:write('installieren = ' .. tostring(installieren) .. '\n')
-  f:close ()
+  f:close()
 end
 
 function checkSprache()
@@ -54,10 +61,6 @@ function checkKomponenten()
     r = nil
     redst = false
   end
---  if component.isAvailable("modem") then
---    print(netzwerkOK)
---    m = component.modem
---  end
   if gpu.maxResolution() == 80 then
     print(gpuOK2T)
   elseif gpu.maxResolution() == 160 then
@@ -87,24 +90,26 @@ function Pfad()
   return serverAddresse .. versionTyp
 end
 
-function update()
-  os.execute("wget -f " .. Pfad() .. "installieren.lua installieren.lua")
+function update(versionTyp)
+  print(versionTyp)
+  os.execute("wget -f " .. Pfad() .. "/installieren.lua installieren.lua")
   installieren = true
   schreibSicherungsdatei()
   f = io.open ("autorun.lua", "w")
   f:write('versionTyp = "' .. versionTyp .. '"\n')
   f:write('dofile("installieren.lua")')
-  f:close ()
+  f:close()
   os.execute("reboot")
 end
 
 function checkServerVersion()
-  os.execute("wget -fQ " .. Pfad() .. "stargate/version.txt version.txt")
-  if fs.exists("/version.txt") then
-    f = io.open ("/version.txt", "r")
-    serverVersion = f:read(string.len(version))
-    f:close ()
-    os.execute("del version.txt")
+  versionTyp = "master"
+  os.execute("wget -fQ " .. Pfad() .. "/stargate/version.txt serverVersion.txt")
+  if fs.exists("/serverVersion.txt") then
+    f = io.open ("/serverVersion.txt", "r")
+    serverVersion = f:read()
+    f:close()
+    os.execute("del serverVersion.txt")
   else
     serverVersion = "<ERROR>"
   end
@@ -112,12 +117,12 @@ function checkServerVersion()
 end
 
 function checkBetaServerVersion()
-  versionTyp = "beta/"
-  os.execute("wget -fQ " .. Pfad() .. "stargate/version.txt betaVersion.txt")
+  versionTyp = "beta"
+  os.execute("wget -fQ " .. Pfad() .. "/stargate/version.txt betaVersion.txt")
   if fs.exists("/betaVersion.txt") then
     f = io.open ("/betaVersion.txt", "r")
-    betaServerVersion = f:read(string.len(version))
-    f:close ()
+    betaServerVersion = f:read()
+    f:close()
     os.execute("del /betaVersion.txt")
   else
     betaServerVersion = "<ERROR>"
@@ -133,7 +138,7 @@ function mainCheck()
       print(derzeitigeVersion .. version .. verfuegbareVersion .. serverVersion)
     else
       print(derzeitigeVersion .. version .. verfuegbareVersion .. serverVersion)
-      print(betaVersion .. betaServerVersion)
+      print(betaVersion .. betaServerVersion .. " BETA")
       if betaServerVersion == "<ERROR>" then else
         betaVersionName = "/beta"
       end
@@ -143,14 +148,12 @@ function mainCheck()
       print(aktualisierenFrage .. betaVersionName .. "\n")
       antwortFrage = io.read()
       if string.lower(antwortFrage) == ja then
-        versionTyp = "master/"
         print(aktualisierenJa)
-        update()
+        update("master")
         return
       elseif antwortFrage == "beta" then
-        versionTyp = "beta/"
         print(aktualisierenBeta)
-        update()
+        update("beta")
         return
       else
         print(aktualisierenNein .. antwortFrage)
