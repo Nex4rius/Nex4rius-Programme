@@ -493,10 +493,12 @@ function autoclose()
 end
 
 function zeigeEnergie()
-  if energy < 10000000 then
+  if energy > 10000000 then
+    zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000000) .. " M")
+  elseif energy > 10000 then
     zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000) .. " k")
   else
-    zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000000) .. " M")
+    zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.f", energy))
   end
 end
 
@@ -540,8 +542,10 @@ function zeigeError(mess)
   if i then
     mess = "Error: " .. string.sub(mess, i + 2)
   end
-  zeigeNachricht(mess)
-  schreibErrorLog()
+  if mess == "" then else
+    zeigeNachricht(mess)
+    schreibErrorLog()
+  end
 end
 
 function schreibErrorLog()
@@ -575,6 +579,7 @@ handlers = {}
 function dial(name, addr)
   zeigeNachricht(waehlen .. string.sub(name, 1, xVerschiebung + 12) .. " (" .. addr .. ")")
   remoteName = name
+  state = "Dialling"
   checken(sg.dial, addr)
 end
 
