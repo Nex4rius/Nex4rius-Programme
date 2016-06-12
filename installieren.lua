@@ -2,6 +2,7 @@ Sprache = ""
 control = "On"
 firstrun = -2
 Sprache = ""
+installieren = false
 fs = require("filesystem")
 
 if fs.exists("/stargate/sicherNachNeustart.lua") then
