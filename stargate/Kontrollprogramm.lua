@@ -780,6 +780,7 @@ function beendeAlles()
   gpu.setForeground(weisseFarbe)
   gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   term.clear()
+  print(ausschaltenName)
   setCursor(1, 1)
   if redst == true then
     for farbe = 0, 15 do
@@ -787,6 +788,7 @@ function beendeAlles()
     end
   end
   Colorful_Lamp_Farben(0)
+  term.clear()
 end
 
 function main()
