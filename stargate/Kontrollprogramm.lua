@@ -498,7 +498,7 @@ function zeigeEnergie()
   elseif energy > 10000 then
     zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000) .. " k")
   else
-    zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.1f", energy))
+    zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.f", energy))
   end
 end
 
