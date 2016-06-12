@@ -379,7 +379,7 @@ function aktualisiereStatus()
   end
   energy = sg.energyAvailable() * energymultiplicator
   zeile = 1
-  if os.uptime() - letzteNachricht > 15 then
+  if c.uptime() - letzteNachricht > 15 then
     zeigeNachricht("                                                                                                        ")
   end
 end
@@ -539,7 +539,7 @@ function zeigeHier(x, y, s, h)
 end
 
 function zeigeNachricht(mess)
-  letzteNachricht = os.uptime()
+  letzteNachricht = c.uptime()
   gpu.setBackground(Nachrichtfarbe)
   gpu.setForeground(Nachrichttextfarbe)
   zeigeHier(1, screen_height - 1, "", 80)
