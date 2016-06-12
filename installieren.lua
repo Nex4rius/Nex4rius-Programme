@@ -42,12 +42,20 @@ function installieren()
       addressRead = false
     end
   end
-  f:close ()
+  f:close()
   if string.sub(readAddresses, AdressesLength, AdressesLength) == " " then
     f = io.open ("/stargate/adressen.lua", "a")
     f:seek ("end", -1)
     f:write("")
-    f:close ()
+    f:close()
+  end
+  if versionTyp == "beta" then
+    f = io.open ("/version.txt", "r")
+    version = f:read()
+    f:close()
+    f = io.open ("/version.txt", "w")
+    f:write(version .. " Beta")
+    f:close()
   end
   os.execute("del -v installieren.lua")
   installieren = true
@@ -61,7 +69,7 @@ function schreibSicherungsdatei()
   f:write('firstrun = ' .. firstrun .. '\n')
   f:write('Sprache = "' .. Sprache .. '" -- deutsch / english\n')
   f:write('installieren = ' .. tostring(installieren) .. '\n')
-  f:close ()
+  f:close()
 end
 
 installieren()
