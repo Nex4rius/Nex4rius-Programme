@@ -377,8 +377,11 @@ function aktualisiereStatus()
   else
     StatusName = StatusNameVerbunden
   end
-  energy = sg.energyAvailable()*energymultiplicator
+  energy = sg.energyAvailable() * energymultiplicator
   zeile = 1
+  if os.uptime() - letzteNachricht > 15 then
+    zeigeNachricht("                                                                                                        ")
+  end
 end
 
 function zeigeStatus()
@@ -536,6 +539,7 @@ function zeigeHier(x, y, s, h)
 end
 
 function zeigeNachricht(mess)
+  letzteNachricht = os.uptime()
   gpu.setBackground(Nachrichtfarbe)
   gpu.setForeground(Nachrichttextfarbe)
   zeigeHier(1, screen_height - 1, "", 80)
@@ -587,10 +591,10 @@ end
 handlers = {}
 
 function dial(name, addr)
+  zeigeNachricht(waehlen .. string.sub(name, 1, xVerschiebung + 12) .. " (" .. addr .. ")")
   remoteName = name
   state = "Dialling"
   checken(sg.dial, addr)
-  zeigeNachricht(waehlen .. string.sub(name, 1, xVerschiebung + 12) .. " (" .. addr .. ")")
 end
 
 handlers[key_event_name] = function(e)
