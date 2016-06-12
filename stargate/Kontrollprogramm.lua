@@ -379,7 +379,7 @@ function aktualisiereStatus()
   end
   energy = sg.energyAvailable() * energymultiplicator
   zeile = 1
-  if (os.time() - letzteNachricht) / sectime > 15 then
+  if (letzteNachricht - os.time()) / sectime > 15 then
     zeigeNachricht("                                                                                                        ")
   end
 end
