@@ -8,7 +8,5 @@ ersetzen = {
   ["Offline"]             = irisNameOffline,
   ["Override"]            = Eingriff,
   ["Manual"]              = manueller,
-  ["Request"]             = aufforderung,
-  ["Disconnect"]          = stargateAbschalten,
   ["Control"]             = IrisSteuerungName,
 }
