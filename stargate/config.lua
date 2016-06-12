@@ -2,6 +2,7 @@ ZeitBeimEinschalten   = os.time()
 os.sleep(1)
 sectime               = ZeitBeimEinschalten - os.time()
 letzteNachricht       = os.time()
+gespeicherteAdressen  = {}
 enteridc              = ""
 showidc               = ""
 remoteName            = ""
@@ -30,7 +31,6 @@ redstoneIncoming      = false
 redstoneState         = false
 redstoneIDC           = false
 IrisZustandName       = irisNameOffline
-gespeicherteAdressen[seite] = {}
 
 graueFarbe            = 6684774
 roteFarbe             = 0xFF0000
