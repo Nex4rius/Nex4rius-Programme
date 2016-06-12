@@ -1,4 +1,3 @@
-version = "1.10.0"
 component = require("component")
 sides = require("sides")
 term = require("term")
@@ -14,6 +13,14 @@ firstrun = -2
 Sprache = ""
 installieren = false
 betaVersionName = ""
+
+if fs.exists("/version.txt") then
+  f = io.open ("/version.txt", "r")
+  version = f:read()
+  f:close ()
+else
+  version = "<ERROR>"
+end
 
 dofile("/stargate/sicherNachNeustart.lua")
 
@@ -54,10 +61,6 @@ function checkKomponenten()
     r = nil
     redst = false
   end
---  if component.isAvailable("modem") then
---    print(netzwerkOK)
---    m = component.modem
---  end
   if gpu.maxResolution() == 80 then
     print(gpuOK2T)
   elseif gpu.maxResolution() == 160 then
@@ -87,8 +90,8 @@ function Pfad()
   return serverAddresse .. versionTyp
 end
 
-function update()
-  os.execute("wget -f " .. Pfad() .. "installieren.lua installieren.lua")
+function update(versionTyp)
+  os.execute("wget -f " .. Pfad() .. "/installieren.lua installieren.lua")
   installieren = true
   schreibSicherungsdatei()
   f = io.open ("autorun.lua", "w")
@@ -99,12 +102,12 @@ function update()
 end
 
 function checkServerVersion()
-  os.execute("wget -fQ " .. Pfad() .. "stargate/version.txt version.txt")
-  if fs.exists("/version.txt") then
-    f = io.open ("/version.txt", "r")
-    serverVersion = f:read(string.len(version))
+  os.execute("wget -fQ " .. Pfad() .. "/stargate/version.txt serverVersion.txt")
+  if fs.exists("/serverVersion.txt") then
+    f = io.open ("/serverVersion.txt", "r")
+    serverVersion = f:read()
     f:close ()
-    os.execute("del version.txt")
+    os.execute("del serverVersion.txt")
   else
     serverVersion = "<ERROR>"
   end
@@ -113,10 +116,10 @@ end
 
 function checkBetaServerVersion()
   versionTyp = "beta/"
-  os.execute("wget -fQ " .. Pfad() .. "stargate/version.txt betaVersion.txt")
+  os.execute("wget -fQ " .. Pfad() .. "/stargate/version.txt betaVersion.txt")
   if fs.exists("/betaVersion.txt") then
     f = io.open ("/betaVersion.txt", "r")
-    betaServerVersion = f:read(string.len(version))
+    betaServerVersion = f:read()
     f:close ()
     os.execute("del /betaVersion.txt")
   else
@@ -143,14 +146,12 @@ function mainCheck()
       print(aktualisierenFrage .. betaVersionName .. "\n")
       antwortFrage = io.read()
       if string.lower(antwortFrage) == ja then
-        versionTyp = "master/"
         print(aktualisierenJa)
-        update()
+        update("master")
         return
       elseif antwortFrage == "beta" then
-        versionTyp = "beta/"
         print(aktualisierenBeta)
-        update()
+        update("beta")
         return
       else
         print(aktualisierenNein .. antwortFrage)
