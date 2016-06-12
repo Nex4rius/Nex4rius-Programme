@@ -54,50 +54,58 @@ function zeigeMenu()
   end
   setCursor(1, 1)
   if seite == -1 then
-    print(Steuerung)
-    if iris == "Offline" then else
-      print("I " .. IrisSteuerung .. an_aus)
-    end
-    print("Z " .. AdressenBearbeiten)
-    print("Q " .. beenden)
-    print("L " .. spracheAendern .. "\n" .. verfuegbareSprachen)
-    print(RedstoneSignale)
-    gpu.setBackground(weisseFarbe)
-    gpu.setForeground(schwarzeFarbe)
-    print(RedstoneWeiss)
-    gpu.setBackground(roteFarbe)
-    print(RedstoneRot)
-    gpu.setBackground(gelbeFarbe)
-    print(RedstoneGelb)
-    gpu.setBackground(schwarzeFarbe)
-    gpu.setForeground(weisseFarbe)
-    print(RedstoneSchwarz)
-    gpu.setBackground(grueneFarbe)
-    print(RedstoneGruen)
-    gpu.setBackground(Adressfarbe)
-    gpu.setForeground(Adresstextfarbe)
-    print(versionName .. version)
+    Infoseite()
   else
     print(Adressseite .. seite + 1)
-    for i, na in pairs(adressen) do
-      if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
-        AdressAnzeige = i - seite * 10
-        if AdressAnzeige == 10 then
-          AdressAnzeige = 0
-        end
-        print(AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
-        if sg.energyToDial(na[2]) == nil then
-          gpu.setForeground(ErrorFarbe)
-          print("   " .. errorName)
-          gpu.setForeground(Adresstextfarbe)
-        else
-          print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
-        end
-      end
-      maxseiten = i / 10
-    end
+    AdressenLesen()
     iris = sg.irisState()
   end
+end
+
+function AdressenLesen()
+  for i, na in pairs(adressen) do
+    if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
+      AdressAnzeige = i - seite * 10
+      if AdressAnzeige == 10 then
+        AdressAnzeige = 0
+      end
+      print(AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
+      if sg.energyToDial(na[2]) == nil then
+        gpu.setForeground(ErrorFarbe)
+        print("   " .. errorName)
+        gpu.setForeground(Adresstextfarbe)
+      else
+        print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
+      end
+    end
+    maxseiten = i / 10
+  end
+end
+
+function Infoseite()
+  print(Steuerung)
+  if iris == "Offline" then else
+    print("I " .. IrisSteuerung .. an_aus)
+  end
+  print("Z " .. AdressenBearbeiten)
+  print("Q " .. beenden)
+  print("L " .. spracheAendern .. "\n" .. verfuegbareSprachen)
+  print(RedstoneSignale)
+  gpu.setBackground(weisseFarbe)
+  gpu.setForeground(schwarzeFarbe)
+  print(RedstoneWeiss)
+  gpu.setBackground(roteFarbe)
+  print(RedstoneRot)
+  gpu.setBackground(gelbeFarbe)
+  print(RedstoneGelb)
+  gpu.setBackground(schwarzeFarbe)
+  gpu.setForeground(weisseFarbe)
+  print(RedstoneSchwarz)
+  gpu.setBackground(grueneFarbe)
+  print(RedstoneGruen)
+  gpu.setBackground(Adressfarbe)
+  gpu.setForeground(Adresstextfarbe)
+  print(versionName .. version)
 end
 
 function FarbenLeer()
