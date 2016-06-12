@@ -97,13 +97,13 @@ function update(versionTyp)
   schreibSicherungsdatei()
   f = io.open ("autorun.lua", "w")
   f:write('versionTyp = "' .. versionTyp .. '"\n')
-  f:write("print(versionTyp)")
   f:write('dofile("installieren.lua")')
   f:close()
   os.execute("reboot")
 end
 
 function checkServerVersion()
+  versionTyp = "master"
   os.execute("wget -fQ " .. Pfad() .. "/stargate/version.txt serverVersion.txt")
   if fs.exists("/serverVersion.txt") then
     f = io.open ("/serverVersion.txt", "r")
@@ -117,7 +117,7 @@ function checkServerVersion()
 end
 
 function checkBetaServerVersion()
-  versionTyp = "beta/"
+  versionTyp = "beta"
   os.execute("wget -fQ " .. Pfad() .. "/stargate/version.txt betaVersion.txt")
   if fs.exists("/betaVersion.txt") then
     f = io.open ("/betaVersion.txt", "r")
