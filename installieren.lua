@@ -50,7 +50,6 @@ function installieren()
     f:close()
   end
   if versionTyp == "beta" then
-    print("jap")
     f = io.open ("/stargate/version.txt", "r")
     version = f:read()
     f:close()
