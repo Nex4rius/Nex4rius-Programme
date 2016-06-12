@@ -54,7 +54,7 @@ function installieren()
     version = f:read()
     f:close()
     f = io.open ("/stargate/version.txt", "w")
-    f:write(version .. " Beta")
+    f:write(version .. " BETA")
     f:close()
   end
   os.execute("del -v installieren.lua")
