@@ -32,4 +32,4 @@ Some feature of my programm:
 - shows the required energy to dial an address (or error if invalid address)
 - works with Computronics ColorfulLamps
 
-Make Pull Requests if you want :)
+Make pull requests if you want :)
