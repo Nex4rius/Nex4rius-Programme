@@ -14,8 +14,8 @@ Sprache = ""
 installieren = false
 betaVersionName = ""
 
-if fs.exists("/version.txt") then
-  f = io.open ("/version.txt", "r")
+if fs.exists("/stargate/version.txt") then
+  f = io.open ("/stargate/version.txt", "r")
   version = f:read()
   f:close()
 else
