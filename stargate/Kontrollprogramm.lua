@@ -379,7 +379,7 @@ function aktualisiereStatus()
   end
   energy = sg.energyAvailable() * energymultiplicator
   zeile = 1
-  if c.uptime() - letzteNachricht > 15 then
+  if (os.time() - letzteNachricht) / sectime > 15 then
     zeigeNachricht("                                                                                                        ")
   end
 end
@@ -520,7 +520,7 @@ function activetime()
     if activationtime == 0 then
       activationtime = os.time()
     end
-    time = (activationtime - os.time())/sectime
+    time = (activationtime - os.time()) / sectime
     if time > 0 then
       zeigeHier(xVerschiebung, zeile, "  " .. zeit1 .. string.format("%.1f", time) .. "s")
     end
@@ -539,7 +539,7 @@ function zeigeHier(x, y, s, h)
 end
 
 function zeigeNachricht(mess)
-  letzteNachricht = c.uptime()
+  letzteNachricht = os.time()
   gpu.setBackground(Nachrichtfarbe)
   gpu.setForeground(Nachrichttextfarbe)
   zeigeHier(1, screen_height - 1, "", 80)
@@ -566,7 +566,7 @@ function schreibErrorLog()
       f = io.open("errorlog", "w")
     end
     f:write(mess)
-    f:write("\n\n" .. c.uptime() .. string.rep("-",max_Bildschirmbreite - string.len(c.uptime())) .. "\n\n")
+    f:write("\n\n" .. os.time() .. string.rep("-",max_Bildschirmbreite - string.len(os.time())) .. "\n\n")
     f:close()
   end
   mess_old = mess
