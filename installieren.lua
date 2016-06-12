@@ -49,7 +49,10 @@ function installieren()
     f:write("")
     f:close()
   end
+  print(versionTyp)
+  os.sleep(2)
   if versionTyp == "beta" then
+    print("jap")
     f = io.open ("/version.txt", "r")
     version = f:read()
     f:close()
