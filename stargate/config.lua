@@ -30,6 +30,7 @@ redstoneIncoming      = false
 redstoneState         = false
 redstoneIDC           = false
 IrisZustandName       = irisNameOffline
+gespeicherteAdressen[seite] = {}
 
 graueFarbe            = 6684774
 roteFarbe             = 0xFF0000
