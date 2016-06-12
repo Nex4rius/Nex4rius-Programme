@@ -373,6 +373,7 @@ function wormholeDirection()
 end
 
 function aktualisiereStatus()
+  sg = component.getPrimary("stargate")
   locAddr = getAddress(sg.localAddress())
   remAddr = getAddress(sg.remoteAddress())
   destinationName()
@@ -441,6 +442,9 @@ function RedstoneAenderung(a, b)
 end
 
 function RedstoneKontrolle()
+  if component.isAvailable("redstone") then
+    r = component.getPrimary("redstone")
+  end
   if sideNum == nil then
     sides()
   end
@@ -591,18 +595,6 @@ function schreibErrorLog()
     f:close()
   end
   mess_old = mess
-  if mess == "no such component" then
-    checkKomponenten()
-  end
-end
-
-function checkKomponenten()
-  if component.isAvailable("redstone") then
-    r = component.getPrimary("redstone")
-  end
-  if component.isAvailable("stargate") then
-    sg = component.getPrimary("stargate")
-  end
 end
 
 handlers = {}
