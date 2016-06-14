@@ -108,6 +108,27 @@ function Infoseite()
   print(versionName .. version)
 end
 
+--function AdressenSpeichern()
+--  gespeicherteAdressen = {}
+--  for i, na in pairs(adressen) do
+--    if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
+--      AdressAnzeige = i - seite * 10
+--      if AdressAnzeige == 10 then
+--        AdressAnzeige = 0
+--      end
+--      print(AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
+--      if sg.energyToDial(na[2]) == nil then
+--        gpu.setForeground(ErrorFarbe)
+--        print("   " .. errorName)
+--        gpu.setForeground(Adresstextfarbe)
+--      else
+--        print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
+--      end
+--    end
+--    maxseiten = i / 10
+--  end
+--end
+
 function FarbenLeer()
   gpu.setBackground(Adressfarbe)
   gpu.setForeground(Adresstextfarbe)
@@ -352,6 +373,7 @@ function wormholeDirection()
 end
 
 function aktualisiereStatus()
+  sg = component.getPrimary("stargate")
   locAddr = getAddress(sg.localAddress())
   remAddr = getAddress(sg.remoteAddress())
   destinationName()
@@ -420,6 +442,9 @@ function RedstoneAenderung(a, b)
 end
 
 function RedstoneKontrolle()
+  if component.isAvailable("redstone") then
+    r = component.getPrimary("redstone")
+  end
   if sideNum == nil then
     sides()
   end
@@ -570,18 +595,6 @@ function schreibErrorLog()
     f:close()
   end
   mess_old = mess
-  if mess == "no such component" then
-    checkKomponenten()
-  end
-end
-
-function checkKomponenten()
-  if component.isAvailable("redstone") then
-    r = component.getPrimary("redstone")
-  end
-  if component.isAvailable("stargate") then
-    sg = component.getPrimary("stargate")
-  end
 end
 
 handlers = {}

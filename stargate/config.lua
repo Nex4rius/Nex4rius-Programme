@@ -2,6 +2,7 @@ ZeitBeimEinschalten   = os.time()
 os.sleep(1)
 sectime               = ZeitBeimEinschalten - os.time()
 letzteNachricht       = os.time()
+gespeicherteAdressen  = {}
 enteridc              = ""
 showidc               = ""
 remoteName            = ""
