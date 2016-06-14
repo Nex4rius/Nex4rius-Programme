@@ -41,7 +41,7 @@ gelbeFarbe            = 16750899
 brauenFarbe           = 10046464
 grueneFarbe           = 39168
 
-ErrorFarbe            = roteFarbe
+FehlerFarbe            = roteFarbe
 Hintergrundfarbe      = graueFarbe
 Trennlinienfarbe      = blaueFarbe
 Textfarbe             = weisseFarbe
