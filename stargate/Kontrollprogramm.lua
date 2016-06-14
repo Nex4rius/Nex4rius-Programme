@@ -795,7 +795,7 @@ function beendeAlles()
   gpu.setBackground(schwarzeFarbe)
   gpu.setForeground(weisseFarbe)
   term.clear()
-  print(ausschaltenName)
+  print(ausschaltenName .. "\n")
   Colorful_Lamp_Farben(0, true)
   if redst == true then
     r.setBundledOutput(0, white, 0) print(redstoneAusschalten .. "white")
