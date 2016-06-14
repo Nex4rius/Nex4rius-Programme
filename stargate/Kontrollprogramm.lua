@@ -794,7 +794,6 @@ end
 function beendeAlles()
   gpu.setBackground(schwarzeFarbe)
   gpu.setForeground(weisseFarbe)
-  gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   term.clear()
   print(ausschaltenName)
   Colorful_Lamp_Farben(0, true)
@@ -816,6 +815,7 @@ function beendeAlles()
     r.setBundledOutput(0, red, 0) print(redstoneAusschalten .. "red")
     r.setBundledOutput(0, black, 0) print(redstoneAusschalten .. "black")
   end
+  gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   setCursor(1, 1)
   term.clear()
 end
