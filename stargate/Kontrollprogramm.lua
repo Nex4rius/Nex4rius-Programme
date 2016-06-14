@@ -775,9 +775,12 @@ function Colorful_Lamp_Steuerung()
   end
 end
 
-function Colorful_Lamp_Farben(eingabe)
+function Colorful_Lamp_Farben(eingabe, ausgabe)
   for k in component.list("colorful_lamp") do
     component.proxy(k).setLampColor(eingabe)
+    if ausgabe then
+      print(colorfulLampAusschalten .. k)
+    end
   end
 end
 
@@ -813,7 +816,7 @@ function beendeAlles()
     r.setBundledOutput(0, red, 0) print(redstoneAusschalten .. "red\n")
     r.setBundledOutput(0, black, 0) print(redstoneAusschalten .. "black\n")
   end
-  Colorful_Lamp_Farben(0)
+  Colorful_Lamp_Farben(0, true)
   term.clear()
 end
 
