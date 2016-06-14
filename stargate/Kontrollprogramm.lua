@@ -71,8 +71,8 @@ function AdressenLesen()
       end
       print(AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
       if sg.energyToDial(na[2]) == nil then
-        gpu.setForeground(ErrorFarbe)
-        print("   " .. errorName)
+        gpu.setForeground(FehlerFarbe)
+        print("   " .. fehlerName)
         gpu.setForeground(Adresstextfarbe)
       else
         print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
@@ -118,8 +118,8 @@ end
 --      end
 --      print(AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
 --      if sg.energyToDial(na[2]) == nil then
---        gpu.setForeground(ErrorFarbe)
---        print("   " .. errorName)
+--        gpu.setForeground(FehlerFarbe)
+--        print("   " .. fehlerName)
 --        gpu.setForeground(Adresstextfarbe)
 --      else
 --        print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
@@ -572,23 +572,23 @@ function zeigeNachricht(mess)
   gpu.setBackground(Statusfarbe)
 end
 
-function zeigeError(mess)
+function zeigeFehler(mess)
   i = string.find(mess, ": ")
   if i then
-    mess = "Error: " .. string.sub(mess, i + 2)
+    mess = fehlerName .. " " .. string.sub(mess, i + 2)
   end
   if mess == "" then else
     zeigeNachricht(mess)
-    schreibErrorLog()
+    schreibFehlerLog()
   end
 end
 
-function schreibErrorLog()
+function schreibFehlerLog()
   if mess_old == mess then else
-    if fs.exists("/errorlog") then
-      f = io.open("errorlog", "a")
+    if fs.exists("/log") then
+      f = io.open("log", "a")
     else
-      f = io.open("errorlog", "w")
+      f = io.open("log", "w")
     end
     f:write(mess)
     f:write("\n\n" .. os.time() .. string.rep("-",max_Bildschirmbreite - string.len(os.time())) .. "\n\n")
@@ -712,7 +712,7 @@ handlers[key_event_name] = function(e)
         dofile("/stargate/sprache/ersetzen.lua")
         schreibSicherungsdatei()
       else
-        print(errorName)
+        print(fehlerName)
       end
       seite = 0
       zeigeAnzeige()
@@ -755,7 +755,7 @@ end
 function checken(...)
   ok, result = pcall(...)
   if not ok then
-    zeigeError(result)
+    zeigeFehler(result)
   end
 end
 
