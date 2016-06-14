@@ -301,9 +301,7 @@ function iriscontroller()
   elseif messageshow == true then
     zeigeNachricht(nachrichtAngekommen .. codeaccepted .. "                   ")
     if codeaccepted == "Request: Disconnect Stargate" then
-      os.sleep(1)
       sg.disconnect()
-      os.sleep(1)
     end
     messageshow = false
     incode = "-"
