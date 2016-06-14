@@ -100,5 +100,3 @@ if sg.irisState() == "Offline" then
 else
   Trennlinienhoehe    = 14
 end
-
-os.sleep(2)
