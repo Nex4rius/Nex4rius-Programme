@@ -19,7 +19,7 @@ if fs.exists("/stargate/version.txt") then
   version = f:read()
   f:close()
 else
-  version = "<ERROR>"
+  version = fehlerName
 end
 
 dofile("/stargate/sicherNachNeustart.lua")
@@ -110,7 +110,7 @@ function checkServerVersion()
     f:close()
     os.execute("del serverVersion.txt")
   else
-    serverVersion = "<ERROR>"
+    serverVersion = fehlerName
   end
   return serverVersion
 end
@@ -124,7 +124,7 @@ function checkBetaServerVersion()
     f:close()
     os.execute("del /betaVersion.txt")
   else
-    betaServerVersion = "<ERROR>"
+    betaServerVersion = fehlerName
   end
   return betaServerVersion
 end
@@ -138,7 +138,7 @@ function mainCheck()
     else
       print(derzeitigeVersion .. version .. verfuegbareVersion .. serverVersion)
       print(betaVersion .. betaServerVersion .. " BETA")
-      if betaServerVersion == "<ERROR>" then else
+      if betaServerVersion == fehlerName then else
         betaVersionName = "/beta"
       end
     end
