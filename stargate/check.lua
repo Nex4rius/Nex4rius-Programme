@@ -91,7 +91,6 @@ function Pfad()
 end
 
 function update(versionTyp)
-  print(versionTyp)
   os.execute("wget -f " .. Pfad() .. "/installieren.lua installieren.lua")
   installieren = true
   schreibSicherungsdatei()
