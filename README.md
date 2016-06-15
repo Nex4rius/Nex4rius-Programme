@@ -4,7 +4,7 @@ How to install:
 
 1) Make an OpenComputer computer with an internet card.
 
-2) copy / paste commands
+2) copy / paste command
 
 ```lua
 pastebin run -f ySJv3YyT
