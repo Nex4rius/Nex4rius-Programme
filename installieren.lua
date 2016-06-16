@@ -1,9 +1,11 @@
+fs = require("filesystem")
+wget = loadfile("/bin/wget.lua")
 Sprache = ""
 control = "On"
 firstrun = -2
 Sprache = ""
 installieren = false
-fs = require("filesystem")
+serverAddresse = "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/"
 
 if fs.exists("/stargate/sicherNachNeustart.lua") then
   dofile("/stargate/sicherNachNeustart.lua")
@@ -15,21 +17,24 @@ end
 
 function installieren()
   fs.makeDirectory("/stargate/sprache")
-  serverAddresse = "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/"
   if versionTyp == nil then
     versionTyp = "master"
   end
-  os.execute("wget -f " .. Pfad() .. "/autorun.lua autorun.lua") print("")
-  os.execute("wget -f " .. Pfad() .. "/stargate/Kontrollprogramm.lua /stargate/Kontrollprogramm.lua") print("")
-  os.execute("wget -f " .. Pfad() .. "/stargate/compat.lua /stargate/compat.lua") print("")
-  os.execute("wget -f " .. Pfad() .. "/stargate/config.lua /stargate/config.lua") print("")
-  os.execute("wget -f " .. Pfad() .. "/stargate/check.lua /stargate/check.lua") print("")
-  os.execute("wget -f " .. Pfad() .. "/stargate/version.txt /stargate/version.txt") print("")
-  os.execute("wget -f " .. Pfad() .. "/stargate/sprache/deutsch.lua /stargate/sprache/deutsch.lua") print("")
-  os.execute("wget -f " .. Pfad() .. "/stargate/sprache/english.lua /stargate/sprache/english.lua") print("")
-  os.execute("wget -f " .. Pfad() .. "/stargate/sprache/ersetzen.lua /stargate/sprache/ersetzen.lua") print("")
-  os.execute("wget    " .. Pfad() .. "/stargate/adressen.lua /stargate/adressen.lua") print("")
-  os.execute("wget    " .. Pfad() .. "/stargate/sicherNachNeustart.lua /stargate/sicherNachNeustart.lua") print("")
+  wget("-f", Pfad() .. "/autorun.lua", "autorun.lua")
+  wget("-f", Pfad() .. "/stargate/Kontrollprogramm.lua", "/stargate/Kontrollprogramm.lua")
+  wget("-f", Pfad() .. "/stargate/compat.lua", "/stargate/compat.lua")
+  wget("-f", Pfad() .. "/stargate/config.lua", "/stargate/config.lua")
+  wget("-f", Pfad() .. "/stargate/check.lua", "/stargate/check.lua")
+  wget("-f", Pfad() .. "/stargate/version.txt", "/stargate/version.txt")
+  wget("-f", Pfad() .. "/stargate/sprache/deutsch.lua", "/stargate/sprache/deutsch.lua")
+  wget("-f", Pfad() .. "/stargate/sprache/english.lua", "/stargate/sprache/english.lua")
+  wget("-f", Pfad() .. "/stargate/sprache/ersetzen.lua", "/stargate/sprache/ersetzen.lua")
+  if not fs.exists("/stargate/adressen.lua") then
+    wget(Pfad() .. "/stargate/adressen.lua", "/stargate/adressen.lua")
+  end
+  if not fs.exists("/stargate/sicherNachNeustart.lua") then
+    wget(Pfad() .. "/stargate/sicherNachNeustart.lua", "/stargate/sicherNachNeustart.lua")
+  end
   f = io.open ("/stargate/adressen.lua", "r")
   addressRead = true
   leseLaenge = 1000

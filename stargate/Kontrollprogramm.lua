@@ -71,8 +71,8 @@ function AdressenLesen()
       end
       print(AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
       if sg.energyToDial(na[2]) == nil then
-        gpu.setForeground(ErrorFarbe)
-        print("   " .. errorName)
+        gpu.setForeground(FehlerFarbe)
+        print("   " .. fehlerName)
         gpu.setForeground(Adresstextfarbe)
       else
         print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
@@ -118,8 +118,8 @@ end
 --      end
 --      print(AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
 --      if sg.energyToDial(na[2]) == nil then
---        gpu.setForeground(ErrorFarbe)
---        print("   " .. errorName)
+--        gpu.setForeground(FehlerFarbe)
+--        print("   " .. fehlerName)
 --        gpu.setForeground(Adresstextfarbe)
 --      else
 --        print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
@@ -301,9 +301,7 @@ function iriscontroller()
   elseif messageshow == true then
     zeigeNachricht(nachrichtAngekommen .. codeaccepted .. "                   ")
     if codeaccepted == "Request: Disconnect Stargate" then
-      os.sleep(1)
       sg.disconnect()
-      os.sleep(1)
     end
     messageshow = false
     incode = "-"
@@ -572,23 +570,23 @@ function zeigeNachricht(mess)
   gpu.setBackground(Statusfarbe)
 end
 
-function zeigeError(mess)
+function zeigeFehler(mess)
   i = string.find(mess, ": ")
   if i then
-    mess = "Error: " .. string.sub(mess, i + 2)
+    mess = fehlerName .. " " .. string.sub(mess, i + 2)
   end
   if mess == "" then else
     zeigeNachricht(mess)
-    schreibErrorLog()
+    schreibFehlerLog()
   end
 end
 
-function schreibErrorLog()
+function schreibFehlerLog()
   if mess_old == mess then else
-    if fs.exists("/errorlog") then
-      f = io.open("errorlog", "a")
+    if fs.exists("/log") then
+      f = io.open("log", "a")
     else
-      f = io.open("errorlog", "w")
+      f = io.open("log", "w")
     end
     f:write(mess)
     f:write("\n\n" .. os.time() .. string.rep("-",max_Bildschirmbreite - string.len(os.time())) .. "\n\n")
@@ -712,7 +710,7 @@ handlers[key_event_name] = function(e)
         dofile("/stargate/sprache/ersetzen.lua")
         schreibSicherungsdatei()
       else
-        print(errorName)
+        print(fehlerName)
       end
       seite = 0
       zeigeAnzeige()
@@ -755,7 +753,7 @@ end
 function checken(...)
   ok, result = pcall(...)
   if not ok then
-    zeigeError(result)
+    zeigeFehler(result)
   end
 end
 
@@ -775,9 +773,12 @@ function Colorful_Lamp_Steuerung()
   end
 end
 
-function Colorful_Lamp_Farben(eingabe)
+function Colorful_Lamp_Farben(eingabe, ausgabe)
   for k in component.list("colorful_lamp") do
     component.proxy(k).setLampColor(eingabe)
+    if ausgabe then
+      print(colorfulLampAusschalten .. k)
+    end
   end
 end
 
@@ -791,16 +792,29 @@ end
 function beendeAlles()
   gpu.setBackground(schwarzeFarbe)
   gpu.setForeground(weisseFarbe)
-  gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   term.clear()
-  print(ausschaltenName)
-  setCursor(1, 1)
+  print(ausschaltenName .. "\n")
+  Colorful_Lamp_Farben(0, true)
   if redst == true then
-    for farbe = 0, 15 do
-      r.setBundledOutput(0, farbe, 0)
-    end
+    r.setBundledOutput(0, white, 0) print(redstoneAusschalten .. "white")
+--    r.setBundledOutput(0, orange, 0) print(redstoneAusschalten .. "orange")
+--    r.setBundledOutput(0, magenta, 0) print(redstoneAusschalten .. "magenta")
+--    r.setBundledOutput(0, lightblue, 0) print(redstoneAusschalten .. "lightblue")
+    r.setBundledOutput(0, yellow, 0) print(redstoneAusschalten .. "yellow")
+--    r.setBundledOutput(0, lime, 0) print(redstoneAusschalten .. "lime")
+--    r.setBundledOutput(0, pink, 0) print(redstoneAusschalten .. "pink")
+--    r.setBundledOutput(0, gray, 0) print(redstoneAusschalten .. "gray")
+--    r.setBundledOutput(0, silver, 0) print(redstoneAusschalten .. "silver")
+--    r.setBundledOutput(0, cyan, 0) print(redstoneAusschalten .. "cyan")
+--    r.setBundledOutput(0, purple, 0) print(redstoneAusschalten .. "purple")
+--    r.setBundledOutput(0, blue, 0) print(redstoneAusschalten .. "blue")
+--    r.setBundledOutput(0, brown, 0) print(redstoneAusschalten .. "brown")
+    r.setBundledOutput(0, green, 0) print(redstoneAusschalten .. "green")
+    r.setBundledOutput(0, red, 0) print(redstoneAusschalten .. "red")
+    r.setBundledOutput(0, black, 0) print(redstoneAusschalten .. "black")
   end
-  Colorful_Lamp_Farben(0)
+  gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
+  setCursor(1, 1)
   term.clear()
 end
 

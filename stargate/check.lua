@@ -4,6 +4,7 @@ term = require("term")
 event = require("event")
 fs = require("filesystem")
 c = require("computer")
+wget = loadfile("/bin/wget.lua")
 gpu = component.getPrimary("gpu")
 serverAddresse = "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/"
 versionTyp = "master"
@@ -19,7 +20,7 @@ if fs.exists("/stargate/version.txt") then
   version = f:read()
   f:close()
 else
-  version = "<ERROR>"
+  version = fehlerName
 end
 
 dofile("/stargate/sicherNachNeustart.lua")
@@ -91,8 +92,7 @@ function Pfad()
 end
 
 function update(versionTyp)
-  print(versionTyp)
-  os.execute("wget -f " .. Pfad() .. "/installieren.lua installieren.lua")
+  wget("-f", Pfad() .. "/installieren.lua", "/installieren.lua")
   installieren = true
   schreibSicherungsdatei()
   f = io.open ("autorun.lua", "w")
@@ -104,28 +104,28 @@ end
 
 function checkServerVersion()
   versionTyp = "master"
-  os.execute("wget -fQ " .. Pfad() .. "/stargate/version.txt serverVersion.txt")
+  wget("-fQ", Pfad() .. "/stargate/version.txt", "/serverVersion.txt")
   if fs.exists("/serverVersion.txt") then
     f = io.open ("/serverVersion.txt", "r")
     serverVersion = f:read()
     f:close()
     os.execute("del serverVersion.txt")
   else
-    serverVersion = "<ERROR>"
+    serverVersion = fehlerName
   end
   return serverVersion
 end
 
 function checkBetaServerVersion()
   versionTyp = "beta"
-  os.execute("wget -fQ " .. Pfad() .. "/stargate/version.txt betaVersion.txt")
+  wget("-fQ", Pfad() .. "/stargate/version.txt", "/betaVersion.txt")
   if fs.exists("/betaVersion.txt") then
     f = io.open ("/betaVersion.txt", "r")
     betaServerVersion = f:read()
     f:close()
     os.execute("del /betaVersion.txt")
   else
-    betaServerVersion = "<ERROR>"
+    betaServerVersion = fehlerName
   end
   return betaServerVersion
 end
@@ -139,7 +139,7 @@ function mainCheck()
     else
       print(derzeitigeVersion .. version .. verfuegbareVersion .. serverVersion)
       print(betaVersion .. betaServerVersion .. " BETA")
-      if betaServerVersion == "<ERROR>" then else
+      if betaServerVersion == fehlerName then else
         betaVersionName = "/beta"
       end
     end

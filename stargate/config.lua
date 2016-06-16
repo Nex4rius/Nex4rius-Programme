@@ -41,7 +41,7 @@ gelbeFarbe            = 16750899
 brauenFarbe           = 10046464
 grueneFarbe           = 39168
 
-ErrorFarbe            = roteFarbe
+FehlerFarbe           = roteFarbe
 Hintergrundfarbe      = graueFarbe
 Trennlinienfarbe      = blaueFarbe
 Textfarbe             = weisseFarbe
@@ -57,24 +57,37 @@ Statustextfarbe       = Textfarbe
 
 if redst == true then
   white               = 0
-  orange              = 1
-  magenta             = 2
-  lightblue           = 3
+  r.setBundledOutput(0, white, 0)
+--  orange              = 1
+--  r.setBundledOutput(0, orange, 0)
+--  magenta             = 2
+--  r.setBundledOutput(0, magenta, 0)
+--  lightblue           = 3
+--  r.setBundledOutput(0, lightblue, 0)
   yellow              = 4
-  lime                = 5
-  pink                = 6
-  gray                = 7
-  silver              = 8
-  cyan                = 9
-  purple              = 10
-  blue                = 11
-  brown               = 12
+  r.setBundledOutput(0, yellow, 0)
+--  lime                = 5
+--  r.setBundledOutput(0, lime, 0)
+--  pink                = 6
+--  r.setBundledOutput(0, pink, 0)
+--  gray                = 7
+--  r.setBundledOutput(0, gray, 0)
+--  silver              = 8
+--  r.setBundledOutput(0, silver, 0)
+--  cyan                = 9
+--  r.setBundledOutput(0, cyan, 0)
+--  purple              = 10
+--  r.setBundledOutput(0, purple, 0)
+--  blue                = 11
+--  r.setBundledOutput(0, blue, 0)
+--  brown               = 12
+--  r.setBundledOutput(0, brown, 0)
   green               = 13
+  r.setBundledOutput(0, green, 0)
   red                 = 14
+  r.setBundledOutput(0, red, 0)
   black               = 15
-  for farbe = 0, 15 do
-    r.setBundledOutput(0, farbe, 0)
-  end
+  r.setBundledOutput(0, black, 0)
 end
 
 if RF == true then
@@ -87,5 +100,3 @@ if sg.irisState() == "Offline" then
 else
   Trennlinienhoehe    = 14
 end
-
-os.sleep(2)
