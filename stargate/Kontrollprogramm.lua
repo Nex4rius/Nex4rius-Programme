@@ -803,8 +803,11 @@ function main()
     irisOpen()
   end
   term.clear()
+  gpu.setResolution(70, 25)
+  zeigeFarben()
+  zeigeStatus()
   seite = -1
-  zeigeAnzeige()
+  zeigeMenu()
   AdressenSpeichern()
   seite = 0
   zeigeMenu()
