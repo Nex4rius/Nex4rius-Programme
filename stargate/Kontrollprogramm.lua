@@ -481,6 +481,8 @@ function zeigeSteuerung()
     else
       zeigeHier(xVerschiebung, zeile, "  ← " .. SteuerungName)
     end
+  else
+    zeigeHier(xVerschiebung, zeile, "")
   end
   if seite == -1 then
     zeigeHier(xVerschiebung + 20, zeile, "→ " .. zeigeAdressen)
