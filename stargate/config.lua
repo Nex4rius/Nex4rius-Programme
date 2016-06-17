@@ -55,6 +55,8 @@ Steuerungstextfarbe   = schwarzeFarbe
 Statusfarbe           = grueneFarbe
 Statustextfarbe       = Textfarbe
 
+ZeitBeimEinschalten   = nil
+
 if redst == true then
   white               = 0
   r.setBundledOutput(0, white, 0)
