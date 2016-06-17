@@ -139,6 +139,7 @@ function AdressenSpeichern()
     zeigeNachricht(verarbeiteAdressen .. na[1] .. " " .. na[2])
     maxseiten = (i + lokaleAdresse) / 10
   end
+  zeigeNachricht("")
 end
 
 function zeigeFarben()
@@ -804,13 +805,7 @@ function main()
   term.clear()
   seite = -1
   zeigeAnzeige()
-  gpu.setBackground(Adressfarbe)
-  gpu.setForeground(Adresstextfarbe)
-  for P = 1, screen_height - 3 do
-    zeigeHier(1, P, "", xVerschiebung - 3)
-  end
   AdressenSpeichern()
-  zeigeNachricht("")
   seite = 0
   zeigeMenu()
   eventLoop()
