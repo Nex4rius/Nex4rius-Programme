@@ -74,12 +74,12 @@ function AdressenLesen()
         AdressAnzeige = 0
       end
       print(AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
-      if string.sub(na[2], 1, 1) == "<" then
+      if string.sub(na[4], 1, 1) == "<" then
         gpu.setForeground(FehlerFarbe)
-        print("   " .. na[2])
+        print("   " .. na[4])
         gpu.setForeground(Adresstextfarbe)
       else
-        print("   " .. na[2])
+        print("   " .. na[4])
       end
     end
   end
@@ -121,18 +121,19 @@ function AdressenSpeichern()
       k = -1
     else
       gespeicherteAdressen[i + k][1] = na[1]
+      gespeicherteAdressen[i + k][2] = na[2]
+      gespeicherteAdressen[i + k][3] = na[3]
       if sg.energyToDial(na[2]) == nil then
-        gespeicherteAdressen[i + k][2] = fehlerName
+        gespeicherteAdressen[i + k][4] = fehlerName
       else
         if anwahlEnergie > 10000000 then
-          gespeicherteAdressen[i + k][2] = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000) .. " M"
+          gespeicherteAdressen[i + k][4] = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000) .. " M"
         elseif anwahlEnergie > 10000 then
-          gespeicherteAdressen[i + k][2] = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000) .. " k"
+          gespeicherteAdressen[i + k][4] = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000) .. " k"
         else
-          gespeicherteAdressen[i + k][2] = string.format("%.f" , (sg.energyToDial(na[2]) * energymultiplicator))
+          gespeicherteAdressen[i + k][4] = string.format("%.f" , (sg.energyToDial(na[2]) * energymultiplicator))
         end
       end
-      gespeicherteAdressen[i + k][3] = na[3]
     end
     zeigeNachricht(verarbeiteAdressen .. na[1] .. " " .. na[2])
     maxseiten = (i + k) / 10
@@ -673,6 +674,7 @@ handlers[key_event_name] = function(e)
       sides()
       seite = 0
       zeigeAnzeige()
+      AdressenSpeichern()
     elseif c == "l" then
       gpu.setBackground(0x333333)
       gpu.setForeground(Textfarbe)
