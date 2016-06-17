@@ -820,6 +820,12 @@ function main()
       zeigeHier(xVerschiebung, P, "")
     end
   end
+  gpu.setBackground(Adressfarbe)
+  gpu.setForeground(Adresstextfarbe)
+  for P = 1, screen_height - 3 do
+    zeigeHier(1, P, "", xVerschiebung - 3)
+  end
+  zeigeNachricht("")
   zeigeAnzeige()
   eventLoop()
   beendeAlles()
