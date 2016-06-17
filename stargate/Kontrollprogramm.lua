@@ -808,6 +808,7 @@ function main()
     zeigeHier(1, P, "", xVerschiebung - 3)
   end
   AdressenSpeichern()
+  zeigeNachricht("")
   zeigeAnzeige()
   eventLoop()
   beendeAlles()
