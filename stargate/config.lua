@@ -2,7 +2,6 @@ ZeitBeimEinschalten   = os.time()
 os.sleep(1)
 sectime               = ZeitBeimEinschalten - os.time()
 letzteNachricht       = os.time()
-gespeicherteAdressen  = {}
 enteridc              = ""
 showidc               = ""
 remoteName            = ""
@@ -54,6 +53,8 @@ Steuerungsfarbe       = gelbeFarbe
 Steuerungstextfarbe   = schwarzeFarbe
 Statusfarbe           = grueneFarbe
 Statustextfarbe       = Textfarbe
+
+ZeitBeimEinschalten   = nil
 
 if redst == true then
   white               = 0

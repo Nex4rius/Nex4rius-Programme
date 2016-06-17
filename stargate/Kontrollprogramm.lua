@@ -75,7 +75,14 @@ function AdressenLesen()
         print("   " .. fehlerName)
         gpu.setForeground(Adresstextfarbe)
       else
-        print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
+        anwahlEnergie = sg.energyToDial(na[2]) * energymultiplicator
+        if anwahlEnergie > 10000000 then
+          print("   ".. string.format("%.1f", (anwahlEnergie) / 1000000) .. " M")
+        elseif anwahlEnergie > 10000 then
+          print("   ".. string.format("%.1f", (anwahlEnergie) / 1000) .. " k")
+        else
+          print("   ".. string.format("%.f", (anwahlEnergie)))
+        end
       end
     end
     maxseiten = i / 10
@@ -108,64 +115,31 @@ function Infoseite()
   print(versionName .. version)
 end
 
---function AdressenSpeichern()
---  gespeicherteAdressen = {}
---  for i, na in pairs(adressen) do
---    if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
---      AdressAnzeige = i - seite * 10
---      if AdressAnzeige == 10 then
---        AdressAnzeige = 0
---      end
---      print(AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
---      if sg.energyToDial(na[2]) == nil then
---        gpu.setForeground(FehlerFarbe)
---        print("   " .. fehlerName)
---        gpu.setForeground(Adresstextfarbe)
---      else
---        print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
---      end
---    end
---    maxseiten = i / 10
---  end
---end
-
-function FarbenLeer()
-  gpu.setBackground(Adressfarbe)
-  gpu.setForeground(Adresstextfarbe)
-  for P = 1, screen_height - 3 do
-    zeigeHier(1, P, "", xVerschiebung - 3)
+function AdressenSpeichern()
+  gespeicherteAdressen = {}
+  local k = 1
+  local lokaleAdresse = 0
+  for i, na in pairs(adressen) do
+    gespeicherteAdressen[k] = na[1]
+    k = k + 1
+    local anwahlEnergie = sg.energyToDial(na[2])
+    if anwahlEnergie == nil then
+      gespeicherteAdressen[k] = fehlerName
+    else
+      anwahlEnergie = anwahlEnergie * energymultiplicator
+      if anwahlEnergie > 10000000 then
+        gespeicherteAdressen[k] = string.format("%.1f", (anwahlEnergie) / 1000000) .. " M"
+      elseif anwahlEnergie > 10000 then
+        gespeicherteAdressen[k] = string.format("%.1f", (anwahlEnergie) / 1000) .. " k"
+      else
+        gespeicherteAdressen[k] = string.format("%.f", (anwahlEnergie))
+      end
+      k = k + 1
+    end
+    zeigeNachricht(verarbeiteAdressen .. na[1] .. " " .. na[2])
+    maxseiten = (i + lokaleAdresse) / 10
   end
-  if sg.irisState() == "Offline" then
-    gpu.setBackground(Statusfarbe)
-    gpu.setForeground(Statustextfarbe)
-    for P = 1, screen_height - 13 do
-      zeigeHier(xVerschiebung, P, "")
-    end
-    gpu.setBackground(Steuerungsfarbe)
-    gpu.setForeground(Steuerungstextfarbe)
-    for P = screen_height - 11, screen_height - 3 do
-      zeigeHier(xVerschiebung, P, "")
-    end
-  else
-    gpu.setBackground(Statusfarbe)
-    gpu.setForeground(Statustextfarbe)
-    for P = 1, screen_height - 12 do
-      zeigeHier(xVerschiebung, P, "")
-    end
-    gpu.setBackground(Steuerungsfarbe)
-    gpu.setForeground(Steuerungstextfarbe)
-    for P = screen_height - 10, screen_height - 3 do
-      zeigeHier(xVerschiebung, P, "")
-    end
-  end
-  gpu.setBackground(Nachrichtfarbe)
-  gpu.setForeground(Nachrichttextfarbe)
-  for P = screen_height - 1, screen_height do
-    zeigeHier(1, P, "")
-  end
-  gpu.setBackground(Adressfarbe)
-  gpu.setForeground(Adresstextfarbe)
-  zeigeFarben()
+  zeigeNachricht("")
 end
 
 function zeigeFarben()
@@ -488,12 +462,13 @@ function zeigeSteuerung()
   zeigeFarben()
   gpu.setBackground(Steuerungsfarbe)
   gpu.setForeground(Steuerungstextfarbe)
-  for P = screen_height - 10, screen_height - 3 do
-    zeigeHier(xVerschiebung, P, "")
-  end
+--  for P = screen_height - 10, screen_height - 3 do
+--    zeigeHier(xVerschiebung, P, "")
+--  end
   neueZeile(3)
   zeigeHier(xVerschiebung, zeile - 1, "")
-  zeigeHier(xVerschiebung, zeile, "  " .. Steuerung) neueZeile(2)
+  zeigeHier(xVerschiebung, zeile, "  " .. Steuerung) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "") neueZeile(1)
   zeigeHier(xVerschiebung, zeile, "  D " .. abschalten)
   zeigeHier(xVerschiebung + 20, zeile, "E " .. IDCeingabe) neueZeile(1)
   if iris == "Offline" then
@@ -508,6 +483,8 @@ function zeigeSteuerung()
     else
       zeigeHier(xVerschiebung, zeile, "  ← " .. SteuerungName)
     end
+  else
+    zeigeHier(xVerschiebung, zeile, "")
   end
   if seite == -1 then
     zeigeHier(xVerschiebung + 20, zeile, "→ " .. zeigeAdressen)
@@ -515,6 +492,9 @@ function zeigeSteuerung()
     zeigeHier(xVerschiebung + 20, zeile, "→ " .. naechsteSeite)
   end
   neueZeile(1)
+  for i = zeile, screen_height - 3 do
+    zeigeHier(xVerschiebung, i, "")
+  end
 end
 
 function autoclose()
@@ -784,7 +764,7 @@ end
 
 function zeigeAnzeige()
   gpu.setResolution(70, 25)
-  FarbenLeer()
+  zeigeFarben()
   zeigeStatus()
   zeigeMenu()
 end
@@ -822,7 +802,15 @@ function main()
   if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
     irisOpen()
   end
-  zeigeAnzeige()
+  term.clear()
+  gpu.setResolution(70, 25)
+  zeigeFarben()
+  zeigeStatus()
+  seite = -1
+  zeigeMenu()
+  AdressenSpeichern()
+  seite = 0
+  zeigeMenu()
   eventLoop()
   beendeAlles()
 end
