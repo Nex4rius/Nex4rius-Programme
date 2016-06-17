@@ -802,6 +802,7 @@ function main()
     irisOpen()
   end
   term.clear()
+  zeigeAnzeige()
   gpu.setBackground(Adressfarbe)
   gpu.setForeground(Adresstextfarbe)
   for P = 1, screen_height - 3 do
@@ -809,7 +810,6 @@ function main()
   end
   AdressenSpeichern()
   zeigeNachricht("")
-  zeigeAnzeige()
   eventLoop()
   beendeAlles()
 end
