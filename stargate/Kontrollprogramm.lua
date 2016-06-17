@@ -121,16 +121,15 @@ function AdressenSpeichern()
       k = -1
     else
       gespeicherteAdressen[i + k][1] = na[1]
-      if anwahlEnergie == nil then
+      if sg.energyToDial(na[2]) == nil then
         gespeicherteAdressen[i + k][2] = fehlerName
       else
-        anwahlEnergie = sg.energyToDial(na[2]) * energymultiplicator
         if anwahlEnergie > 10000000 then
-          gespeicherteAdressen[i + k][2] = string.format("%.1f", (anwahlEnergie) / 1000000) .. " M"
+          gespeicherteAdressen[i + k][2] = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000) .. " M"
         elseif anwahlEnergie > 10000 then
-          gespeicherteAdressen[i + k][2] = string.format("%.1f", (anwahlEnergie) / 1000) .. " k"
+          gespeicherteAdressen[i + k][2] = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000) .. " k"
         else
-          gespeicherteAdressen[i + k][2] = string.format("%.f" , (anwahlEnergie))
+          gespeicherteAdressen[i + k][2] = string.format("%.f" , (sg.energyToDial(na[2]) * energymultiplicator))
         end
       end
       gespeicherteAdressen[i + k][3] = na[3]
