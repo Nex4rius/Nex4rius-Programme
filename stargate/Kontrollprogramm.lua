@@ -6,8 +6,7 @@
 --  by DarknessShadow
 --
 -- install by typing this
--- wget -f "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/installieren.lua" installieren.lua
--- installieren
+-- pastebin run -f ySJv3YyT
 --
 
 dofile("/stargate/adressen.lua")
@@ -56,6 +55,10 @@ function zeigeMenu()
   if seite == -1 then
     Infoseite()
   else
+    if (os.time() / sectime) - letzterAdressCheck > 21600 then
+      AdressenSpeichern()
+      letzterAdressCheck = os.time() / sectime
+    end
     print(Adressseite .. seite + 1)
     AdressenLesen()
     iris = sg.irisState()
@@ -63,29 +66,21 @@ function zeigeMenu()
 end
 
 function AdressenLesen()
-  for i, na in pairs(adressen) do
+  for i, na in pairs(gespeicherteAdressen) do
     if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
       AdressAnzeige = i - seite * 10
       if AdressAnzeige == 10 then
         AdressAnzeige = 0
       end
       print(AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
-      if sg.energyToDial(na[2]) == nil then
+      if string.sub(na[4], 1, 1) == "<" then
         gpu.setForeground(FehlerFarbe)
-        print("   " .. fehlerName)
+        print("   " .. na[4])
         gpu.setForeground(Adresstextfarbe)
       else
-        anwahlEnergie = sg.energyToDial(na[2]) * energymultiplicator
-        if anwahlEnergie > 10000000 then
-          print("   ".. string.format("%.1f", (anwahlEnergie) / 1000000) .. " M")
-        elseif anwahlEnergie > 10000 then
-          print("   ".. string.format("%.1f", (anwahlEnergie) / 1000) .. " k")
-        else
-          print("   ".. string.format("%.f", (anwahlEnergie)))
-        end
+        print("   " .. na[4])
       end
     end
-    maxseiten = i / 10
   end
 end
 
@@ -116,28 +111,32 @@ function Infoseite()
 end
 
 function AdressenSpeichern()
+  dofile("/stargate/adressen.lua")
   gespeicherteAdressen = {}
-  local k = 1
-  local lokaleAdresse = 0
+  local k = 0
   for i, na in pairs(adressen) do
-    gespeicherteAdressen[k] = na[1]
-    k = k + 1
-    local anwahlEnergie = sg.energyToDial(na[2])
-    if anwahlEnergie == nil then
-      gespeicherteAdressen[k] = fehlerName
+    gespeicherteAdressen[i + k] = {}
+    if na[2] == getAddress(sg.localAddress()) then
+      k = -1
     else
-      anwahlEnergie = anwahlEnergie * energymultiplicator
-      if anwahlEnergie > 10000000 then
-        gespeicherteAdressen[k] = string.format("%.1f", (anwahlEnergie) / 1000000) .. " M"
-      elseif anwahlEnergie > 10000 then
-        gespeicherteAdressen[k] = string.format("%.1f", (anwahlEnergie) / 1000) .. " k"
+      gespeicherteAdressen[i + k][1] = na[1]
+      gespeicherteAdressen[i + k][2] = na[2]
+      gespeicherteAdressen[i + k][3] = na[3]
+      local anwahlEnergie = sg.energyToDial(na[2])
+      if not anwahlEnergie then
+        gespeicherteAdressen[i + k][4] = fehlerName
       else
-        gespeicherteAdressen[k] = string.format("%.f", (anwahlEnergie))
+        if anwahlEnergie > 10000000 then
+          gespeicherteAdressen[i + k][4] = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000) .. " M"
+        elseif anwahlEnergie > 10000 then
+          gespeicherteAdressen[i + k][4] = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000) .. " k"
+        else
+          gespeicherteAdressen[i + k][4] = string.format("%.f" , (sg.energyToDial(na[2]) * energymultiplicator))
+        end
       end
-      k = k + 1
     end
     zeigeNachricht(verarbeiteAdressen .. na[1] .. " " .. na[2])
-    maxseiten = (i + lokaleAdresse) / 10
+    maxseiten = (i + k) / 10
   end
   zeigeNachricht("")
 end
@@ -462,9 +461,6 @@ function zeigeSteuerung()
   zeigeFarben()
   gpu.setBackground(Steuerungsfarbe)
   gpu.setForeground(Steuerungstextfarbe)
---  for P = screen_height - 10, screen_height - 3 do
---    zeigeHier(xVerschiebung, P, "")
---  end
   neueZeile(3)
   zeigeHier(xVerschiebung, zeile - 1, "")
   zeigeHier(xVerschiebung, zeile, "  " .. Steuerung) neueZeile(1)
@@ -637,7 +633,7 @@ handlers[key_event_name] = function(e)
       c = 10
     end
     c = c + seite * 10
-    na = adressen[tonumber(c)]
+    na = gespeicherteAdressen[tonumber(c)]
     iriscontrol = "off"
     wormhole = "out"
     if na then
@@ -678,6 +674,7 @@ handlers[key_event_name] = function(e)
       sides()
       seite = 0
       zeigeAnzeige()
+      AdressenSpeichern()
     elseif c == "l" then
       gpu.setBackground(0x333333)
       gpu.setForeground(Textfarbe)
