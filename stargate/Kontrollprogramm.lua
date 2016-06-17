@@ -487,6 +487,7 @@ function zeigeSteuerung()
   elseif maxseiten > seite + 1 then
     zeigeHier(xVerschiebung + 20, zeile, "→ " .. naechsteSeite)
   end
+  neueZeile(1)
   for i = zeile, screen_height - 3 do
     zeigeHier(xVerschiebung, i, "")
   end
