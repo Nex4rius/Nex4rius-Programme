@@ -75,7 +75,14 @@ function AdressenLesen()
         print("   " .. fehlerName)
         gpu.setForeground(Adresstextfarbe)
       else
-        print("   ".. string.format("%.1f", (sg.energyToDial(na[2])*energymultiplicator)/1000).." k")
+        anwahlEnergie = sg.energyToDial(na[2]) * energymultiplicator
+        if anwahlEnergie > 10000000 then
+          print("   ".. string.format("%.1f", (anwahlEnergie) / 1000000) .. " M")
+        elseif anwahlEnergie > 10000 then
+          print("   ".. string.format("%.1f", (anwahlEnergie) / 1000) .. " k")
+        else
+          print("   ".. string.format("%.f", (anwahlEnergie)))
+        end
       end
     end
     maxseiten = i / 10
@@ -125,7 +132,7 @@ function AdressenSpeichern()
       elseif anwahlEnergie > 10000 then
         gespeicherteAdressen[k] = string.format("%.1f", (anwahlEnergie) / 1000) .. " k"
       else
-        gespeicherteAdressen[k] = string.format("%.1f", (anwahlEnergie))
+        gespeicherteAdressen[k] = string.format("%.f", (anwahlEnergie))
       end
       k = k + 1
     end
