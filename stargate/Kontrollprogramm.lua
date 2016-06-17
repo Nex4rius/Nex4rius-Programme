@@ -136,6 +136,7 @@ function AdressenSpeichern()
       end
       k = k + 1
     end
+    zeigeNachricht(verarbeiteAdressen .. na[1] .. " " .. na[2])
     maxseiten = (i + lokaleAdresse) / 10
   end
 end
@@ -806,7 +807,7 @@ function main()
   for P = 1, screen_height - 3 do
     zeigeHier(1, P, "", xVerschiebung - 3)
   end
-  zeigeNachricht("")
+  AdressenSpeichern()
   zeigeAnzeige()
   eventLoop()
   beendeAlles()
