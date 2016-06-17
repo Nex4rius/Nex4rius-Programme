@@ -113,23 +113,19 @@ function AdressenSpeichern()
   local k = 1
   local lokaleAdresse = 0
   for i, na in pairs(adressen) do
-    if na[2] == getAddress(sg.localAddress()) then
-      lokaleAdresse = -1
+    gespeicherteAdressen[k] = na[1]
+    k = k + 1
+    local anwahlEnergie = sg.energyToDial(na[2])
+    if anwahlEnergie == nil then
+      gespeicherteAdressen[k] = fehlerName
     else
-      gespeicherteAdressen[k] = na[1]
-      k = k + 1
-      local anwahlEnergie = sg.energyToDial(na[2])
-      if anwahlEnergie == nil then
-        gespeicherteAdressen[k] = fehlerName
+      anwahlEnergie = anwahlEnergie * energymultiplicator
+      if anwahlEnergie > 10000000 then
+        gespeicherteAdressen[k] = string.format("%.1f", (anwahlEnergie) / 1000000) .. " M"
+      elseif anwahlEnergie > 10000 then
+        gespeicherteAdressen[k] = string.format("%.1f", (anwahlEnergie) / 1000) .. " k"
       else
-        anwahlEnergie = anwahlEnergie * energymultiplicator
-        if anwahlEnergie > 10000000 then
-          gespeicherteAdressen[k] = string.format("%.1f", (anwahlEnergie) / 1000000) .. " M"
-        elseif anwahlEnergie > 10000 then
-          gespeicherteAdressen[k] = string.format("%.1f", (anwahlEnergie) / 1000) .. " k"
-        else
-          gespeicherteAdressen[k] = string.format("%.1f", (anwahlEnergie))
-        end
+        gespeicherteAdressen[k] = string.format("%.1f", (anwahlEnergie))
       end
       k = k + 1
     end
