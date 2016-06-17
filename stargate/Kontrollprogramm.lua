@@ -465,7 +465,8 @@ function zeigeSteuerung()
 --  end
   neueZeile(3)
   zeigeHier(xVerschiebung, zeile - 1, "")
-  zeigeHier(xVerschiebung, zeile, "  " .. Steuerung) neueZeile(2)
+  zeigeHier(xVerschiebung, zeile, "  " .. Steuerung) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "") neueZeile(1)
   zeigeHier(xVerschiebung, zeile, "  D " .. abschalten)
   zeigeHier(xVerschiebung + 20, zeile, "E " .. IDCeingabe) neueZeile(1)
   if iris == "Offline" then
@@ -486,7 +487,9 @@ function zeigeSteuerung()
   elseif maxseiten > seite + 1 then
     zeigeHier(xVerschiebung + 20, zeile, "→ " .. naechsteSeite)
   end
-  neueZeile(1)
+  for i = zeile, screen_height - 3 do
+    zeigeHier(xVerschiebung, i, "")
+  end
 end
 
 function autoclose()
