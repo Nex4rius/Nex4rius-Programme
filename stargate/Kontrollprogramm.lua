@@ -140,45 +140,6 @@ function AdressenSpeichern()
   end
 end
 
-function FarbenLeer()
-  gpu.setBackground(Adressfarbe)
-  gpu.setForeground(Adresstextfarbe)
-  for P = 1, screen_height - 3 do
-    zeigeHier(1, P, "", xVerschiebung - 3)
-  end
-  if sg.irisState() == "Offline" then
-    gpu.setBackground(Statusfarbe)
-    gpu.setForeground(Statustextfarbe)
-    for P = 1, screen_height - 13 do
-      zeigeHier(xVerschiebung, P, "")
-    end
-    gpu.setBackground(Steuerungsfarbe)
-    gpu.setForeground(Steuerungstextfarbe)
-    for P = screen_height - 11, screen_height - 3 do
-      zeigeHier(xVerschiebung, P, "")
-    end
-  else
-    gpu.setBackground(Statusfarbe)
-    gpu.setForeground(Statustextfarbe)
-    for P = 1, screen_height - 12 do
-      zeigeHier(xVerschiebung, P, "")
-    end
-    gpu.setBackground(Steuerungsfarbe)
-    gpu.setForeground(Steuerungstextfarbe)
-    for P = screen_height - 10, screen_height - 3 do
-      zeigeHier(xVerschiebung, P, "")
-    end
-  end
-  gpu.setBackground(Nachrichtfarbe)
-  gpu.setForeground(Nachrichttextfarbe)
-  for P = screen_height - 1, screen_height do
-    zeigeHier(1, P, "")
-  end
-  gpu.setBackground(Adressfarbe)
-  gpu.setForeground(Adresstextfarbe)
-  zeigeFarben()
-end
-
 function zeigeFarben()
   gpu.setBackground(Trennlinienfarbe)
   for P = 1, screen_height - 2 do
@@ -499,9 +460,9 @@ function zeigeSteuerung()
   zeigeFarben()
   gpu.setBackground(Steuerungsfarbe)
   gpu.setForeground(Steuerungstextfarbe)
-  for P = screen_height - 10, screen_height - 3 do
-    zeigeHier(xVerschiebung, P, "")
-  end
+--  for P = screen_height - 10, screen_height - 3 do
+--    zeigeHier(xVerschiebung, P, "")
+--  end
   neueZeile(3)
   zeigeHier(xVerschiebung, zeile - 1, "")
   zeigeHier(xVerschiebung, zeile, "  " .. Steuerung) neueZeile(2)
@@ -795,7 +756,7 @@ end
 
 function zeigeAnzeige()
   gpu.setResolution(70, 25)
-  FarbenLeer()
+  zeigeFarben()
   zeigeStatus()
   zeigeMenu()
 end
@@ -832,6 +793,29 @@ end
 function main()
   if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
     irisOpen()
+  end
+  if sg.irisState() == "Offline" then
+    gpu.setBackground(Statusfarbe)
+    gpu.setForeground(Statustextfarbe)
+    for P = 1, screen_height - 13 do
+      zeigeHier(xVerschiebung, P, "")
+    end
+    gpu.setBackground(Steuerungsfarbe)
+    gpu.setForeground(Steuerungstextfarbe)
+    for P = screen_height - 11, screen_height - 3 do
+      zeigeHier(xVerschiebung, P, "")
+    end
+  else
+    gpu.setBackground(Statusfarbe)
+    gpu.setForeground(Statustextfarbe)
+    for P = 1, screen_height - 12 do
+      zeigeHier(xVerschiebung, P, "")
+    end
+    gpu.setBackground(Steuerungsfarbe)
+    gpu.setForeground(Steuerungstextfarbe)
+    for P = screen_height - 10, screen_height - 3 do
+      zeigeHier(xVerschiebung, P, "")
+    end
   end
   zeigeAnzeige()
   eventLoop()
