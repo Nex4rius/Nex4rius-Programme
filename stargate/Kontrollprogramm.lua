@@ -797,29 +797,6 @@ function main()
   if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
     irisOpen()
   end
-  if sg.irisState() == "Offline" then
-    gpu.setBackground(Statusfarbe)
-    gpu.setForeground(Statustextfarbe)
-    for P = 1, screen_height - 13 do
-      zeigeHier(xVerschiebung, P, "")
-    end
-    gpu.setBackground(Steuerungsfarbe)
-    gpu.setForeground(Steuerungstextfarbe)
-    for P = screen_height - 11, screen_height - 3 do
-      zeigeHier(xVerschiebung, P, "")
-    end
-  else
-    gpu.setBackground(Statusfarbe)
-    gpu.setForeground(Statustextfarbe)
-    for P = 1, screen_height - 12 do
-      zeigeHier(xVerschiebung, P, "")
-    end
-    gpu.setBackground(Steuerungsfarbe)
-    gpu.setForeground(Steuerungstextfarbe)
-    for P = screen_height - 10, screen_height - 3 do
-      zeigeHier(xVerschiebung, P, "")
-    end
-  end
   gpu.setBackground(Adressfarbe)
   gpu.setForeground(Adresstextfarbe)
   for P = 1, screen_height - 3 do
