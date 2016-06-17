@@ -797,6 +797,7 @@ function main()
   if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
     irisOpen()
   end
+  term.clear()
   gpu.setBackground(Adressfarbe)
   gpu.setForeground(Adresstextfarbe)
   for P = 1, screen_height - 3 do
