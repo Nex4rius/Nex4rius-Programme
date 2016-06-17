@@ -6,8 +6,7 @@
 --  by DarknessShadow
 --
 -- install by typing this
--- wget -f "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/master/installieren.lua" installieren.lua
--- installieren
+-- pastebin run -f ySJv3YyT
 --
 
 dofile("/stargate/adressen.lua")
