@@ -278,7 +278,7 @@ function iriscontroller()
     zeigeNachricht(nachrichtAngekommen .. codeaccepted .. "                   ")
     if codeaccepted == "Request: Disconnect Stargate" then
       sg.disconnect()
-    elseif string.match(codeaccepted, "Iris: Open") then
+    elseif string.match(codeaccepted, "Iris: Open") or string.match(codeaccepted, "Iris: Offline") then
       LampenGruen = true
     end
     messageshow = false
