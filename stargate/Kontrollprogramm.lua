@@ -41,6 +41,7 @@ function checkReset()
       iriscontrol = "on"
       remoteName = ""
       activationtime = 0
+      LampenGruen = false
     end
   end
 end
@@ -256,10 +257,12 @@ function iriscontroller()
     zeigeNachricht("")
     IDCyes = false
     AddNewAddress = true
+    LampenGruen = false
   end
   if state == "Idle" then
     incode = "-"
     wormhole = "in"
+    LampenGruen = false
   end
   if state == "Closing" and control == "On" then
     k = "close"
@@ -275,6 +278,8 @@ function iriscontroller()
     zeigeNachricht(nachrichtAngekommen .. codeaccepted .. "                   ")
     if codeaccepted == "Request: Disconnect Stargate" then
       sg.disconnect()
+    elseif string.match(codeaccepted, "Iris: Open") then
+      LampenGruen = true
     end
     messageshow = false
     incode = "-"
@@ -751,7 +756,7 @@ function Colorful_Lamp_Steuerung()
     Colorful_Lamp_Farben(992)
   elseif redstoneIncoming == false then
     Colorful_Lamp_Farben(32256)
-  elseif redstoneConnected == false then
+  elseif LampenGruen == true then
     Colorful_Lamp_Farben(992)
   elseif redstoneState == true then
     Colorful_Lamp_Farben(32736)
