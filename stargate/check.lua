@@ -1,3 +1,4 @@
+-- pastebin run -f ySJv3YyT
 component = require("component")
 sides = require("sides")
 term = require("term")
