@@ -645,11 +645,21 @@ handlers[key_event_name] = function(e)
   elseif e[3] == 0 and e[4] == 203 then
     if seite <= -1 then else
       seite = seite - 1
+      gpu.setBackground(Adressfarbe)
+      gpu.setForeground(Adresstextfarbe)
+      for P = 1, screen_height - 3 do
+        zeigeHier(1, P, "", xVerschiebung - 3)
+      end
       zeigeAnzeige()
     end
   elseif e[3] == 0 and e[4] == 205 then
     if seite + 1 < maxseiten then
       seite = seite + 1
+      gpu.setBackground(Adressfarbe)
+      gpu.setForeground(Adresstextfarbe)
+      for P = 1, screen_height - 3 do
+        zeigeHier(1, P, "", xVerschiebung - 3)
+      end
       zeigeAnzeige()
     end
   elseif seite == -1 then
