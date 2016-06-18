@@ -1,3 +1,4 @@
+-- pastebin run -f ySJv3YyT
 fs = require("filesystem")
 wget = loadfile("/bin/wget.lua")
 Sprache = ""
