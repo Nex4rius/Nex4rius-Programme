@@ -1,3 +1,4 @@
+-- pastebin run -f ySJv3YyT
 ersetzen = {
   ["On"]                  = irisKontrolleNameAn,
   ["Off"]                 = irisKontrolleNameAus,
