@@ -611,6 +611,7 @@ handlers[key_event_name] = function(e)
     end
   elseif c == "d" then
     if state == "Connected" and direction == "Incoming" then
+        sg.disconnect()
         sg.sendMessage("Request: Disconnect Stargate")
         zeigeNachricht(senden .. aufforderung .. ": " .. stargateAbschalten .. " " .. stargateName)
     else
