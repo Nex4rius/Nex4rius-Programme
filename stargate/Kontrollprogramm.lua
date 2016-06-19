@@ -136,7 +136,7 @@ function AdressenSpeichern()
         end
       end
     end
-    zeigeNachricht(verarbeiteAdressen .. "<" .. string.sub(na[1], 1, 40) .. ">" .. string.rep("",45 - string.len(na[1])) .. "<" .. na[2] .. ">")
+    zeigeNachricht(verarbeiteAdressen .. "<" .. string.sub(na[1], 1, 40) .. ">" .. string.rep(" ",45 - string.len(na[1])) .. "<" .. na[2] .. ">")
     maxseiten = (i + k) / 10
   end
   gpu.setBackground(Adressfarbe)
