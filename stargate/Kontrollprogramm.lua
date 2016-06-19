@@ -144,6 +144,7 @@ function AdressenSpeichern()
   for P = 1, screen_height - 3 do
     zeigeHier(1, P, "", xVerschiebung - 3)
   end
+  zeigeMenu()
   zeigeNachricht("")
 end
 
