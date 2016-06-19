@@ -136,7 +136,7 @@ function AdressenSpeichern()
         end
       end
     end
-    zeigeNachricht(verarbeiteAdressen .. na[1] .. " " .. na[2])
+    zeigeNachricht(verarbeiteAdressen .. "<" .. na[1] .. ">\t<" .. na[2] .. ">")
     maxseiten = (i + k) / 10
   end
   zeigeNachricht("")
