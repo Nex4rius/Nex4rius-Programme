@@ -136,7 +136,7 @@ function AdressenSpeichern()
         end
       end
     end
-    zeigeNachricht(verarbeiteAdressen .. "<" .. na[1] .. ">" .. string.rep("",25 - string.len(na[1]) .. "<" .. na[2] .. ">")
+    zeigeNachricht(verarbeiteAdressen .. "<" .. string.sub(na[1], 1, 40) .. ">" .. string.rep("",45 - string.len(na[1]) .. "<" .. na[2] .. ">")
     maxseiten = (i + k) / 10
   end
   zeigeNachricht("")
