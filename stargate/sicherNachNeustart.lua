@@ -1,4 +1,4 @@
--- pastebin run -f ySJv3YyT
+-- pastebin run -f fa9gu1GJ
 -- von Nex4rius
 
 control = "On"
