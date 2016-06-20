@@ -1,4 +1,4 @@
--- von DarknessShadow
+-- von Nexarius aka DarknessShadow
 -- pastebin run -f ySJv3YyT
 pruefeKomponenten         = "Prüfe Komponenten\n"
 redstoneOK                = "- Redstone Card        ok - optional"
@@ -14,8 +14,8 @@ inventory_controllerOK    = "- Inventory Controller ok\n"
 inventory_controllerFehlt = "- Inventory Controller fehlt\n"
 derzeitigeVersion         = "\nDerzeitige Version:    "
 verfuegbareVersion        = "\nVerfügbare Version:    "
-betaVersion               = "Betaversion:           "
-aktualisierenBeta         = "\nAktualisieren: Betaversion\n"
+betaVersion               = "Beta-Version:           "
+aktualisierenBeta         = "\nAktualisieren: Beta-Version\n"
 aktualisierenFrage        = "\nAktualisieren? ja/nein"
 aktualisierenJa           = "\nAktualisieren: Ja\n"
 aktualisierenNein         = "\nAntwort: "
@@ -91,3 +91,4 @@ ausschaltenName           = "Herunterfahren..."
 redstoneAusschalten       = "Redstone ausschalten: "
 colorfulLampAusschalten   = "ColorfulLamp ausschalten: "
 verarbeiteAdressen        = "Verarbeite Adressen: "
+Hilfe                     = "Verwendung: autorun [...]\nja\t-> aktualisiere zur stabilen Version\nnein\t-> keine Aktualisierung\nbeta\t-> aktualisiere zur Beta-Version\nhilfe\t-> zeige diese Nachricht nochmal"
