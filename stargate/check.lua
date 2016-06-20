@@ -150,15 +150,15 @@ function mainCheck()
     end
     if version == serverVersion and version == betaServerVersion then
     elseif installieren == false then
-      if not args[1] then
-        print(aktualisierenFrage .. betaVersionName .. "\n")
-        antwortFrage = io.read()
-      elseif args[1] == ja then
+      if args[1] == ja then
         antwortFrage = ja
       elseif args[1] == nein then
         antwortFrage = nein
       elseif args[1] == "beta" then
         antwortFrage = "beta"
+      else
+        print(aktualisierenFrage .. betaVersionName .. "\n")
+        antwortFrage = io.read()
       end
       if string.lower(antwortFrage) == ja then
         print(aktualisierenJa)
