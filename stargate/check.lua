@@ -139,37 +139,36 @@ function mainCheck()
   if internet == true then
     serverVersion = checkServerVersion()
     betaServerVersion = checkBetaServerVersion()
-    if serverVersion == betaServerVersion then
-      print(derzeitigeVersion .. version .. verfuegbareVersion .. serverVersion)
-    else
-      print(derzeitigeVersion .. version .. verfuegbareVersion .. serverVersion)
+    print(derzeitigeVersion .. version .. verfuegbareVersion .. serverVersion)
+    if serverVersion == betaServerVersion then else
       print(betaVersion .. betaServerVersion .. " BETA")
       if betaServerVersion == fehlerName then else
         betaVersionName = "/beta"
       end
     end
-    if version == serverVersion and version == betaServerVersion then
-    elseif installieren == false then
-      if args[1] == ja then
-        antwortFrage = ja
-      elseif args[1] == nein then
-        antwortFrage = nein
-      elseif args[1] == "beta" then
-        antwortFrage = "beta"
-      else
+    if args[1] == ja then
+      print()
+      update("master")
+    elseif args[1] == nein then
+      -- nichts
+    elseif args[1] == "beta" then
+      print()
+      update("beta")
+    elseif version == serverVersion and version == betaServerVersion then else
+      if installieren == false then
         print(aktualisierenFrage .. betaVersionName .. "\n")
         antwortFrage = io.read()
-      end
-      if string.lower(antwortFrage) == ja then
-        print(aktualisierenJa)
-        update("master")
-        return
-      elseif antwortFrage == "beta" then
-        print(aktualisierenBeta)
-        update("beta")
-        return
-      else
-        print(aktualisierenNein .. antwortFrage)
+        if string.lower(antwortFrage) == ja then
+          print(aktualisierenJa)
+          update("master")
+          return
+        elseif antwortFrage == "beta" then
+          print(aktualisierenBeta)
+          update("beta")
+          return
+        else
+          print(aktualisierenNein .. antwortFrage)
+        end
       end
     end
   end
