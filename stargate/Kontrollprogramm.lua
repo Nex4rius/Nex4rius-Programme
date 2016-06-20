@@ -813,8 +813,6 @@ function beendeAlles()
     r.setBundledOutput(0, black, 0) print(redstoneAusschalten .. "black")
   end
   gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
-  setCursor(1, 1)
-  term.clear()
 end
 
 function main()
