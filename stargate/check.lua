@@ -154,8 +154,7 @@ function mainCheck()
       -- nichts
     elseif args[1] == "beta" then
       update("beta")
-    else
-      if version == serverVersion and version == betaServerVersion then
+    elseif version == serverVersion and version == betaServerVersion then
       elseif installieren == false then
         print(aktualisierenFrage .. betaVersionName .. "\n")
         antwortFrage = io.read()
