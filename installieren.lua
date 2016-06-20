@@ -1,4 +1,6 @@
--- pastebin run -f ySJv3YyT
+-- pastebin run -f fa9gu1GJ
+-- von Nex4rius
+
 fs = require("filesystem")
 wget = loadfile("/bin/wget.lua")
 Sprache = ""
@@ -6,7 +8,7 @@ control = "On"
 firstrun = -2
 Sprache = ""
 installieren = false
-serverAddresse = "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/"
+serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
 
 if fs.exists("/stargate/sicherNachNeustart.lua") then
   dofile("/stargate/sicherNachNeustart.lua")

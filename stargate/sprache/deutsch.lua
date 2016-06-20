@@ -1,5 +1,6 @@
--- von DarknessShadow
--- pastebin run -f ySJv3YyT
+-- pastebin run -f fa9gu1GJ
+-- von Nex4rius
+
 pruefeKomponenten         = "Prüfe Komponenten\n"
 redstoneOK                = "- Redstone Card        ok - optional"
 redstoneFehlt             = "- Redstone Card        fehlt - optional"
@@ -14,13 +15,15 @@ inventory_controllerOK    = "- Inventory Controller ok\n"
 inventory_controllerFehlt = "- Inventory Controller fehlt\n"
 derzeitigeVersion         = "\nDerzeitige Version:    "
 verfuegbareVersion        = "\nVerfügbare Version:    "
-betaVersion               = "Betaversion:           "
-aktualisierenBeta         = "\nAktualisieren: Betaversion\n"
+betaVersion               = "Beta-Version:          "
+aktualisierenBeta         = "\nAktualisieren: Beta-Version\n"
 aktualisierenFrage        = "\nAktualisieren? ja/nein"
 aktualisierenJa           = "\nAktualisieren: Ja\n"
 aktualisierenNein         = "\nAntwort: "
 laden                     = "\nLaden..."
 ja                        = "ja"
+nein                      = "nein"
+hilfe                     = "hilfe"
 Adressseite               = "Adressseite "
 Unbekannt                 = "Unbekannt"
 waehlen                   = "Wähle "
@@ -91,3 +94,4 @@ ausschaltenName           = "Herunterfahren..."
 redstoneAusschalten       = "Redstone ausschalten: "
 colorfulLampAusschalten   = "ColorfulLamp ausschalten: "
 verarbeiteAdressen        = "Verarbeite Adressen: "
+Hilfetext                 = "Verwendung: autorun [...]\nja\t-> aktualisiere zur stabilen Version\nnein\t-> keine Aktualisierung\nbeta\t-> aktualisiere zur Beta-Version\nhilfe\t-> zeige diese Nachricht nochmal"

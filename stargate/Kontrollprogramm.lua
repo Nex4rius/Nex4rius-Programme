@@ -3,11 +3,10 @@
 --  Shows stargate state and allows dialling
 --  addresses selected from a list
 --  with automated Iris control
---  by DarknessShadow
 --
--- install by typing this
--- pastebin run -f ySJv3YyT
---
+--  install by typing this
+--  pastebin run -f fa9gu1GJ
+--  von Nex4rius
 
 dofile("/stargate/adressen.lua")
 dofile("/stargate/config.lua")
@@ -789,6 +788,7 @@ function zeigeAnzeige()
 end
 
 function beendeAlles()
+  gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   gpu.setBackground(schwarzeFarbe)
   gpu.setForeground(weisseFarbe)
   term.clear()
@@ -812,7 +812,6 @@ function beendeAlles()
     r.setBundledOutput(0, red, 0) print(redstoneAusschalten .. "red")
     r.setBundledOutput(0, black, 0) print(redstoneAusschalten .. "black")
   end
-  gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
 end
 
 function main()

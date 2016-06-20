@@ -1,5 +1,6 @@
--- von DarknessShadow
--- pastebin run -f ySJv3YyT
+-- pastebin run -f fa9gu1GJ
+-- von Nex4rius
+
 pruefeKomponenten         = "Checking Components\n"
 redstoneOK                = "- Redstone Card        ok - optional"
 redstoneFehlt             = "- Redstone Card        missing - optional"
@@ -21,6 +22,8 @@ aktualisierenJa           = "\nUpdate: yes\n"
 aktualisierenNein         = "\nAnswer: "
 laden                     = "\nLoading..."
 ja                        = "yes"
+nein                      = "no"
+hilfe                     = "help"
 Adressseite               = "Address Page "
 Unbekannt                 = "Unknown"
 waehlen                   = "Dialling "
@@ -91,3 +94,4 @@ ausschaltenName           = "Shutting Down..."
 redstoneAusschalten       = "Turn Off Redstone: "
 colorfulLampAusschalten   = "Turn Off ColorfulLamp: "
 verarbeiteAdressen        = "Processing addresses: "
+Hilfetext                 = "Usage: autorun [...]\nyes\t-> update to stable version\nno\t-> no update\nbeta\t-> update to beta version\nhelp\t-> show this message again"

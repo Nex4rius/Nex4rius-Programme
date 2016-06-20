@@ -8,7 +8,8 @@
 --  change it to whatever you want
 --  for no IDC set it to "" (Iris will never open automatically)
 --
--- pastebin run -f ySJv3YyT
+-- pastebin run -f fa9gu1GJ
+-- von Nex4rius
 
 RF = false -- show energy in RF instead of EU
 autoclosetime = 60 -- in seconds -- false for no autoclose

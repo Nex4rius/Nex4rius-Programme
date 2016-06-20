@@ -7,7 +7,7 @@ How to install:
 2) copy / paste command
 
 ```lua
-pastebin run -f ySJv3YyT
+pastebin run -f fa9gu1GJ
 ```
 
 3) Profit
