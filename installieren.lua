@@ -1,4 +1,6 @@
 -- pastebin run -f ySJv3YyT
+-- von Nexarius
+
 fs = require("filesystem")
 wget = loadfile("/bin/wget.lua")
 Sprache = ""
