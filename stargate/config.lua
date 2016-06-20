@@ -1,4 +1,6 @@
 -- pastebin run -f ySJv3YyT
+-- von Nex4rius
+
 ZeitBeimEinschalten   = os.time()
 os.sleep(1)
 sectime               = ZeitBeimEinschalten - os.time()
