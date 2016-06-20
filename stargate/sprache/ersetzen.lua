@@ -1,4 +1,6 @@
 -- pastebin run -f ySJv3YyT
+-- von Nex4rius
+
 ersetzen = {
   ["On"]                  = irisKontrolleNameAn,
   ["Off"]                 = irisKontrolleNameAus,
