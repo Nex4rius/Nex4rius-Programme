@@ -789,6 +789,7 @@ function zeigeAnzeige()
 end
 
 function beendeAlles()
+  gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   gpu.setBackground(schwarzeFarbe)
   gpu.setForeground(weisseFarbe)
   term.clear()
@@ -812,7 +813,6 @@ function beendeAlles()
     r.setBundledOutput(0, red, 0) print(redstoneAusschalten .. "red")
     r.setBundledOutput(0, black, 0) print(redstoneAusschalten .. "black")
   end
-  gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
 end
 
 function main()
