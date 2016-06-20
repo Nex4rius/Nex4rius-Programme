@@ -5,8 +5,10 @@ term = require("term")
 event = require("event")
 fs = require("filesystem")
 c = require("computer")
+shell = require("shell")
 wget = loadfile("/bin/wget.lua")
 gpu = component.getPrimary("gpu")
+args = shell.parse(...)
 serverAddresse = "https://raw.githubusercontent.com/DarknessShadow/Stargate-Programm/"
 versionTyp = "master"
 Sprache = ""
@@ -147,7 +149,15 @@ function mainCheck()
     if version == serverVersion and version == betaServerVersion then
     elseif installieren == false then
       print(aktualisierenFrage .. betaVersionName .. "\n")
-      antwortFrage = io.read()
+      if not args[1] then
+        antwortFrage = io.read()
+      elseif args[1] == ja then
+        antwortFrage = ja
+      elseif args[1] == nein then
+        antwortFrage = nein
+      elseif args[1] == "beta" then
+        antwortFrage = "beta"
+      end
       if string.lower(antwortFrage) == ja then
         print(aktualisierenJa)
         update("master")
@@ -173,6 +183,10 @@ end
 
 dofile("/stargate/sprache/" .. Sprache .. ".lua")
 
-if checkKomponenten() == true then
-  mainCheck()
+if args[1] == hilfe then
+  print(Hilfetext)
+else
+  if checkKomponenten() == true then
+    mainCheck()
+  end
 end
