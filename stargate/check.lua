@@ -1,4 +1,6 @@
 -- pastebin run -f ySJv3YyT
+-- von Nex4rius
+
 component = require("component")
 sides = require("sides")
 term = require("term")
