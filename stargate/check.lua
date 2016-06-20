@@ -139,10 +139,8 @@ function mainCheck()
   if internet == true then
     serverVersion = checkServerVersion()
     betaServerVersion = checkBetaServerVersion()
-    if serverVersion == betaServerVersion then
-      print(derzeitigeVersion .. version .. verfuegbareVersion .. serverVersion)
-    else
-      print(derzeitigeVersion .. version .. verfuegbareVersion .. serverVersion)
+    print(derzeitigeVersion .. version .. verfuegbareVersion .. serverVersion)
+    if serverVersion == betaServerVersion then else
       print(betaVersion .. betaServerVersion .. " BETA")
       if betaServerVersion == fehlerName then else
         betaVersionName = "/beta"
