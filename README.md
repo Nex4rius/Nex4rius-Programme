@@ -29,6 +29,7 @@ Some feature of my programm:
 - automatically adds new, unkown addresses when there is an open wormhole
 - shows the required energy to dial an address (or error if invalid address)
 - works with Computronics ColorfulLamps
+- allows closing of incoming wormholes if its disabled in config AND there is a computer at either end
 
 Make pull requests if you want :)
 

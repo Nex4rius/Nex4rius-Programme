@@ -136,7 +136,7 @@ function AdressenSpeichern()
         end
       end
     end
-    zeigeNachricht(verarbeiteAdressen .. "<" .. string.sub(na[1], 1, 28) .. ">" .. string.rep(" ",33 - string.len(na[1])) .. "<" .. na[2] .. ">")
+    zeigeNachricht(verarbeiteAdressen .. "<" .. na[2] .. "> <" .. na[1] .. ">")
     maxseiten = (i + k) / 10
   end
   gpu.setBackground(Adressfarbe)
@@ -611,6 +611,7 @@ handlers[key_event_name] = function(e)
     end
   elseif c == "d" then
     if state == "Connected" and direction == "Incoming" then
+        sg.disconnect()
         sg.sendMessage("Request: Disconnect Stargate")
         zeigeNachricht(senden .. aufforderung .. ": " .. stargateAbschalten .. " " .. stargateName)
     else
@@ -812,8 +813,6 @@ function beendeAlles()
     r.setBundledOutput(0, black, 0) print(redstoneAusschalten .. "black")
   end
   gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
-  setCursor(1, 1)
-  term.clear()
 end
 
 function main()
