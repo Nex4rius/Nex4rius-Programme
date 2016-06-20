@@ -1,5 +1,5 @@
 -- pastebin run -f ySJv3YyT
--- von Nexarius
+-- von Nex4rius
 
 local shell = require("shell")
 local args = shell.parse(...)
