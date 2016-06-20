@@ -1,4 +1,4 @@
--- von DarknessShadow
+-- von Nexarius aka DarknessShadow
 -- pastebin run -f ySJv3YyT
 pruefeKomponenten         = "Checking Components\n"
 redstoneOK                = "- Redstone Card        ok - optional"
