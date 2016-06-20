@@ -1,4 +1,6 @@
 -- pastebin run -f ySJv3YyT
+-- von Nex4rius
+
 function try(func, ...)
   ok, result = pcall(func, ...)
   if not ok then
