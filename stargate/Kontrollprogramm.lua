@@ -3,7 +3,7 @@
 --  Shows stargate state and allows dialling
 --  addresses selected from a list
 --  with automated Iris control
---  by DarknessShadow
+--  by Nex4rius aka DarknessShadow
 --
 -- install by typing this
 -- pastebin run -f ySJv3YyT
