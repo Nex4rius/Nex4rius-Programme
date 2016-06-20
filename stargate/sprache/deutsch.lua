@@ -1,5 +1,6 @@
--- von Nexarius aka DarknessShadow
 -- pastebin run -f ySJv3YyT
+-- von Nex4rius
+
 pruefeKomponenten         = "Prüfe Komponenten\n"
 redstoneOK                = "- Redstone Card        ok - optional"
 redstoneFehlt             = "- Redstone Card        fehlt - optional"
