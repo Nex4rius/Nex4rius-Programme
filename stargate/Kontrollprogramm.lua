@@ -9,9 +9,9 @@
 
 dofile("/stargate/adressen.lua")
 
-local ZeitBeimEinschalten   = os.time()
+local sectime               = os.time()
 os.sleep(1)
-local sectime               = ZeitBeimEinschalten - os.time()
+local sectime               = sectime - os.time()
 local letzteNachricht       = os.time()
 local letzterAdressCheck    = os.time() / sectime
 local enteridc              = ""
@@ -65,8 +65,6 @@ local Steuerungsfarbe       = gelbeFarbe
 local Steuerungstextfarbe   = schwarzeFarbe
 local Statusfarbe           = grueneFarbe
 local Statustextfarbe       = Textfarbe
-
-local ZeitBeimEinschalten   = nil
 
 if redst == true then
   local white               = 0
