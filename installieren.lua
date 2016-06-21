@@ -1,14 +1,14 @@
 -- pastebin run -f fa9gu1GJ
 -- von Nex4rius
 
-fs = require("filesystem")
-wget = loadfile("/bin/wget.lua")
-Sprache = ""
-control = "On"
-firstrun = -2
-Sprache = ""
-installieren = false
-serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
+local fs = require("filesystem")
+local wget = loadfile("/bin/wget.lua")
+local Sprache = ""
+local control = "On"
+local firstrun = -2
+local Sprache = ""
+local installieren = false
+local serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
 
 if fs.exists("/stargate/sicherNachNeustart.lua") then
   dofile("/stargate/sicherNachNeustart.lua")
@@ -21,7 +21,7 @@ end
 function installieren()
   fs.makeDirectory("/stargate/sprache")
   if versionTyp == nil then
-    versionTyp = "master"
+    local versionTyp = "master"
   end
   wget("-f", Pfad() .. "/autorun.lua", "autorun.lua")
   wget("-f", Pfad() .. "/stargate/Kontrollprogramm.lua", "/stargate/Kontrollprogramm.lua")
