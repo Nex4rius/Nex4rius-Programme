@@ -8,6 +8,7 @@
 --  von Nex4rius
 
 dofile("/stargate/compat.lua")
+dofile("/stargate/adressen.lua")
 dofile("/stargate/config.lua")
 dofile("/stargate/sicherNachNeustart.lua")
 dofile("/stargate/sprache/" .. Sprache .. ".lua")
