@@ -1,5 +1,5 @@
---  pastebin run -f fa9gu1GJ
---  von Nex4rius
+-- pastebin run -f fa9gu1GJ
+-- von Nex4rius
 
 sectime               = os.time()
 os.sleep(1)
