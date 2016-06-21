@@ -1,7 +1,6 @@
 --  pastebin run -f fa9gu1GJ
 --  von Nex4rius
 
-dofile("/stargate/sprache/ersetzen.lua")
 local sectime               = os.time()
 os.sleep(1)
 local sectime               = sectime - os.time()
