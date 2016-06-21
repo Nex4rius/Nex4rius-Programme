@@ -1,9 +1,9 @@
 -- pastebin run -f fa9gu1GJ
 -- von Nex4rius
 
-sectime               = os.time()
+ZeitBeimEinschalten   = os.time()
 os.sleep(1)
-sectime               = sectime - os.time()
+sectime               = ZeitBeimEinschalten - os.time()
 letzteNachricht       = os.time()
 letzterAdressCheck    = os.time() / sectime
 enteridc              = ""
@@ -58,6 +58,8 @@ Steuerungstextfarbe   = schwarzeFarbe
 Statusfarbe           = grueneFarbe
 Statustextfarbe       = Textfarbe
 
+ZeitBeimEinschalten   = nil
+
 if redst == true then
   white               = 0
   r.setBundledOutput(0, white, 0)
@@ -103,8 +105,3 @@ if sg.irisState() == "Offline" then
 else
   Trennlinienhoehe    = 14
 end
-
-screen_width, screen_height = gpu.getResolution()
-max_Bildschirmbreite, max_Bildschirmhoehe = gpu.maxResolution()
-
-dofile("/stargate/Kontrollprogramm.lua")

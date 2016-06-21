@@ -777,14 +777,11 @@ function Colorful_Lamp_Steuerung()
 end
 
 function Colorful_Lamp_Farben(eingabe, ausgabe)
-  if not alte_eingabe == eingabe then
-    for k in component.list("colorful_lamp") do
-      component.proxy(k).setLampColor(eingabe)
-      if ausgabe then
-        print(colorfulLampAusschalten .. k)
-      end
+  for k in component.list("colorful_lamp") do
+    component.proxy(k).setLampColor(eingabe)
+    if ausgabe then
+      print(colorfulLampAusschalten .. k)
     end
-    alte_eingabe = eingabe
   end
 end
 
