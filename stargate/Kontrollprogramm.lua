@@ -659,7 +659,7 @@ handlers[key_event_name] = function(e)
       end
     end
   elseif e[3] == 0 and e[4] == 203 then
-    if not seite <= -1 then
+    if seite <= -1 then else
       seite = seite - 1
       gpu.setBackground(Adressfarbe)
       gpu.setForeground(Adresstextfarbe)
@@ -732,7 +732,7 @@ function eventLoop()
     checken(zeigeStatus)
     checken(checkReset)
     e = {pull_event()}
-    if e[1] then
+    if e[1] == nil then else
       name = e[1]
       f = handlers[name]
       if f then
