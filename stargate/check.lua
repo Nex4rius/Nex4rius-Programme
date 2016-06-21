@@ -13,12 +13,11 @@ local gpu = component.getPrimary("gpu")
 local args = shell.parse(...)
 local serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
 local versionTyp = "master"
-local Sprache = ""
-local control = "On"
-local firstrun = -2
-local Sprache = ""
-local installieren = false
 local betaVersionName = ""
+control = "On"
+firstrun = -2
+installieren = false
+Sprache = ""
 
 if fs.exists("/stargate/version.txt") then
   f = io.open ("/stargate/version.txt", "r")
