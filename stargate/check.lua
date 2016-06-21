@@ -13,12 +13,11 @@ gpu = component.getPrimary("gpu")
 args = shell.parse(...)
 serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
 versionTyp = "master"
-Sprache = ""
+betaVersionName = ""
 control = "On"
 firstrun = -2
-Sprache = ""
 installieren = false
-betaVersionName = ""
+Sprache = ""
 
 if fs.exists("/stargate/version.txt") then
   f = io.open ("/stargate/version.txt", "r")
@@ -137,8 +136,8 @@ end
 
 function mainCheck()
   if internet == true then
-    serverVersion = checkServerVersion()
-    betaServerVersion = checkBetaServerVersion()
+    local serverVersion = checkServerVersion()
+    local betaServerVersion = checkBetaServerVersion()
     print(derzeitigeVersion .. version .. verfuegbareVersion .. serverVersion)
     if serverVersion == betaServerVersion then else
       print(betaVersion .. betaServerVersion .. " BETA")
