@@ -104,4 +104,7 @@ else
   local Trennlinienhoehe    = 14
 end
 
+local screen_width, screen_height = gpu.getResolution()
+local max_Bildschirmbreite, max_Bildschirmhoehe = gpu.maxResolution()
+
 dofile("/stargate/Kontrollprogramm.lua")
