@@ -23,7 +23,7 @@ function zeichenErsetzen(eingabeErsetzung)
 end
 
 function checkReset()
-  if time == "-" then else
+  if not time == "-" then
     if time > 500 then
       zeigeNachricht("")
       messageshow = true
@@ -85,7 +85,7 @@ end
 
 function Infoseite()
   print(Steuerung)
-  if iris == "Offline" then else
+  if not iris == "Offline" then
     print("I " .. IrisSteuerung .. an_aus)
   end
   print("Z " .. AdressenBearbeiten)
@@ -164,7 +164,7 @@ end
 function irisClose()
   sg.closeIris()
   if redst then
-    if sideNum == nil then
+    if not sideNum then
       sides()
     end
     r.setBundledOutput(sideNum, yellow, 255)
@@ -176,7 +176,7 @@ end
 function irisOpen()
   sg.openIris()
   if redst then
-    if sideNum == nil then
+    if not sideNum then
       sides()
     end
     r.setBundledOutput(sideNum, yellow, 0)
@@ -228,7 +228,7 @@ function iriscontroller()
     send = false
   end
   if wormhole == "in" and state == "Dialling" and iriscontrol == "on" and control == "On" then
-    if iris == "Offline" then else
+    if not iris == "Offline" then
       irisClose()
       if redst then
         r.setBundledOutput(sideNum, red, 255)
@@ -242,7 +242,7 @@ function iriscontroller()
   end
   if state == "Idle" and k == "close" and control == "On" then
     outcode = nil
-    if iris == "Offline" then else
+    if not iris == "Offline" then
       irisOpen()
     end
     iriscontrol = "on"
@@ -274,12 +274,12 @@ function iriscontroller()
     k = "close"
   end
   if state == "Connected" and direction == "Outgoing" and send then
-    if outcode == "-" or outcode == nil then else
+    if outcode == "-" or not outcode then else
       sg.sendMessage(outcode)
       send = false
     end
   end
-  if codeaccepted == "-" or codeaccepted == nil then
+  if codeaccepted == "-" or not codeaccepted then
   elseif messageshow then
     zeigeNachricht(nachrichtAngekommen .. codeaccepted .. "                   ")
     if codeaccepted == "Request: Disconnect Stargate" then
@@ -342,7 +342,7 @@ function destinationName()
 end
 
 function getAddress(A)
-  if A == "" or A == nil then
+  if A == "" or not A then
     return ""
   else
     return string.sub(A, 1, 4) .. "-" .. string.sub(A, 5, 7) .. "-" .. string.sub(A, 8, 9)
@@ -402,7 +402,7 @@ function zeigeStatus()
   zeigeHier(xVerschiebung, zeile, "  " .. statusName .. StatusName) neueZeile(1)
   zeigeEnergie() neueZeile(1)
   zeigeHier(xVerschiebung, zeile, "  " .. IrisName .. zeichenErsetzen(iris)) neueZeile(1)
-  if iris == "Offline" then else
+  if not iris == "Offline" then
     zeigeHier(xVerschiebung, zeile, "  " .. IrisSteuerung .. zeichenErsetzen(control)) neueZeile(1)
   end
   if IDCyes then
@@ -431,7 +431,7 @@ function RedstoneKontrolle()
   if component.isAvailable("redstone") then
     r = component.getPrimary("redstone")
   end
-  if sideNum == nil then
+  if not sideNum then
     sides()
   end
   if direction == "Incoming" then
@@ -439,7 +439,7 @@ function RedstoneKontrolle()
       RedstoneAenderung(red, 255)
       redstoneIncoming = false
     end
-  elseif redstoneIncoming == false and state == "Idle" then
+  elseif not redstoneIncoming and state == "Idle" then
     RedstoneAenderung(red, 0)
     redstoneIncoming = true
   end
@@ -448,7 +448,7 @@ function RedstoneKontrolle()
       RedstoneAenderung(white, 0)
       redstoneState = false
     end
-  elseif redstoneState == false then
+  elseif not redstoneState then
     RedstoneAenderung(white, 255)
     redstoneState = true
   end
@@ -457,7 +457,7 @@ function RedstoneKontrolle()
       RedstoneAenderung(black, 255)
       redstoneIDC = false
     end
-  elseif redstoneIDC == false then
+  elseif not redstoneIDC then
     RedstoneAenderung(black, 0)
     redstoneIDC = true
   end
@@ -466,7 +466,7 @@ function RedstoneKontrolle()
       RedstoneAenderung(green, 255)
       redstoneConnected = false
     end
-  elseif redstoneConnected == false then
+  elseif not redstoneConnected then
     RedstoneAenderung(green, 0)
     redstoneConnected = true
   end
@@ -509,7 +509,7 @@ function zeigeSteuerung()
 end
 
 function autoclose()
-  if autoclosetime == false then
+  if not autoclosetime then
     zeigeHier(xVerschiebung, zeile, "  " .. autoSchliessungAus)
   else
     zeigeHier(xVerschiebung, zeile, "  " .. autoSchliessungAn .. autoclosetime .. "s")
@@ -545,7 +545,7 @@ end
 
 function zeigeHier(x, y, s, h)
   setCursor(x, y)
-  if h == nil then
+  if not h then
     write(pad(s, 80))
   else
     write(pad(s, h))
@@ -566,14 +566,14 @@ function zeigeFehler(mess)
   if i then
     mess = fehlerName .. " " .. string.sub(mess, i + 2)
   end
-  if mess == "" then else
+  if not mess == "" then
     zeigeNachricht(mess)
     schreibFehlerLog()
   end
 end
 
 function schreibFehlerLog()
-  if mess_old == mess then else
+  if not mess_old == mess then
     if fs.exists("/log") then
       f = io.open("log", "a")
     else
@@ -622,10 +622,10 @@ handlers[key_event_name] = function(e)
         sg.disconnect()
     end
   elseif c == "o" then
-    if iris == "Offline" then else
+    if not iris == "Offline" then
       irisOpen()
       if wormhole == "in" then
-        if iris == "Offline" then else
+        if not iris == "Offline" then
           os.sleep(2)
           sg.sendMessage("Manual Override: Iris: Open")
         end
@@ -637,7 +637,7 @@ handlers[key_event_name] = function(e)
       end
     end
   elseif c == "c" then
-    if iris == "Offline" then else
+    if not iris == "Offline" then
       irisClose()
       iriscontrol = "off"
       if wormhole == "in" then
@@ -659,7 +659,7 @@ handlers[key_event_name] = function(e)
       end
     end
   elseif e[3] == 0 and e[4] == 203 then
-    if seite <= -1 then else
+    if not seite <= -1 then
       seite = seite - 1
       gpu.setBackground(Adressfarbe)
       gpu.setForeground(Adresstextfarbe)
@@ -682,7 +682,7 @@ handlers[key_event_name] = function(e)
     if c == "q" then
       running = false
     elseif c == "i" then
-      if iris == "Offline" then else
+      if not iris == "Offline" then
         send = true
         if control == "On" then
           control = "Off"
@@ -732,7 +732,7 @@ function eventLoop()
     checken(zeigeStatus)
     checken(checkReset)
     e = {pull_event()}
-    if e[1] == nil then else
+    if e[1] then
       name = e[1]
       f = handlers[name]
       if f then
@@ -740,7 +740,7 @@ function eventLoop()
         checken(f, e)
       end
       if string.sub(e[1],1,3) == "sgM" and direction == "Incoming" and wormhole == "in" then
-        if e[3] == "" then else
+        if not e[3] == "" then
           incode = e[3]
           messageshow = true
         end
