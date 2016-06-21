@@ -163,7 +163,7 @@ end
 
 function irisClose()
   sg.closeIris()
-  if redst == true then
+  if redst then
     if sideNum == nil then
       sides()
     end
@@ -175,7 +175,7 @@ end
 
 function irisOpen()
   sg.openIris()
-  if redst == true then
+  if redst then
     if sideNum == nil then
       sides()
     end
@@ -208,7 +208,7 @@ function iriscontroller()
   end
   if direction == "Incoming" and incode == IDC and control == "Off" then
     IDCyes = true
-    if redst == true then
+    if redst then
       r.setBundledOutput(sideNum, black, 255)
     end
     Colorful_Lamp_Farben(992)
@@ -223,14 +223,14 @@ function iriscontroller()
     end
     iriscontrol = "off"
     IDCyes = true
-  elseif direction == "Incoming" and send == true then
+  elseif direction == "Incoming" and send then
     sg.sendMessage("Iris Control: "..control.." Iris: "..iris)
     send = false
   end
   if wormhole == "in" and state == "Dialling" and iriscontrol == "on" and control == "On" then
     if iris == "Offline" then else
       irisClose()
-      if redst == true then
+      if redst then
         r.setBundledOutput(sideNum, red, 255)
       end
       redstoneIncoming = false
@@ -273,14 +273,14 @@ function iriscontroller()
   if state == "Closing" and control == "On" then
     k = "close"
   end
-  if state == "Connected" and direction == "Outgoing" and send == true then
+  if state == "Connected" and direction == "Outgoing" and send then
     if outcode == "-" or outcode == nil then else
       sg.sendMessage(outcode)
       send = false
     end
   end
   if codeaccepted == "-" or codeaccepted == nil then
-  elseif messageshow == true then
+  elseif messageshow then
     zeigeNachricht(nachrichtAngekommen .. codeaccepted .. "                   ")
     if codeaccepted == "Request: Disconnect Stargate" then
       sg.disconnect()
@@ -307,7 +307,7 @@ function neueZeile(b)
 end
 
 function newAddress(g)
-  if AddNewAddress == true then
+  if AddNewAddress then
     f = io.open ("stargate/adressen.lua", "a")
     f:seek ("end", firstrun)
     f:write('  {"' .. g .. '", "' .. g .. '", ""},\n}')
@@ -405,7 +405,7 @@ function zeigeStatus()
   if iris == "Offline" then else
     zeigeHier(xVerschiebung, zeile, "  " .. IrisSteuerung .. zeichenErsetzen(control)) neueZeile(1)
   end
-  if IDCyes == true then
+  if IDCyes then
     zeigeHier(xVerschiebung, zeile, "  " .. IDCakzeptiert) neueZeile(1)
   else
     zeigeHier(xVerschiebung, zeile, "  " .. IDCname .. incode) neueZeile(1)
@@ -422,7 +422,7 @@ function zeigeStatus()
 end
 
 function RedstoneAenderung(a, b)
-  if redst == true then
+  if redst then
     r.setBundledOutput(sideNum, a, b)
   end
 end
@@ -435,7 +435,7 @@ function RedstoneKontrolle()
     sides()
   end
   if direction == "Incoming" then
-    if redstoneIncoming == true then
+    if redstoneIncoming then
       RedstoneAenderung(red, 255)
       redstoneIncoming = false
     end
@@ -444,7 +444,7 @@ function RedstoneKontrolle()
     redstoneIncoming = true
   end
   if state == "Idle" then
-    if redstoneState == true then
+    if redstoneState then
       RedstoneAenderung(white, 0)
       redstoneState = false
     end
@@ -452,8 +452,8 @@ function RedstoneKontrolle()
     RedstoneAenderung(white, 255)
     redstoneState = true
   end
-  if IDCyes == true then
-    if redstoneIDC == true then
+  if IDCyes then
+    if redstoneIDC then
       RedstoneAenderung(black, 255)
       redstoneIDC = false
     end
@@ -462,7 +462,7 @@ function RedstoneKontrolle()
     redstoneIDC = true
   end
   if state == "Connected" then
-    if redstoneConnected == true then
+    if redstoneConnected then
       RedstoneAenderung(green, 255)
       redstoneConnected = false
     end
@@ -600,7 +600,7 @@ handlers[key_event_name] = function(e)
   if e[3] == 13 then
     entercode = false
     sg.sendMessage(enteridc)
-  elseif entercode == true then
+  elseif entercode then
     enteridc = enteridc .. c
     showidc = showidc .. "*"
     zeigeNachricht(IDCeingabe .. ": " .. showidc)
@@ -799,7 +799,7 @@ function beendeAlles()
   term.clear()
   print(ausschaltenName .. "\n")
   Colorful_Lamp_Farben(0, true)
-  if redst == true then
+  if redst then
     r.setBundledOutput(0, white, 0) print(redstoneAusschalten .. "white")
 --    r.setBundledOutput(0, orange, 0) print(redstoneAusschalten .. "orange")
 --    r.setBundledOutput(0, magenta, 0) print(redstoneAusschalten .. "magenta")
