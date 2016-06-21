@@ -4,7 +4,6 @@
 --  addresses selected from a list
 --  with automated Iris control
 --
---  install by typing this
 --  pastebin run -f fa9gu1GJ
 --  von Nex4rius
 
@@ -263,11 +262,13 @@ function iriscontroller()
     IDCyes = false
     AddNewAddress = true
     LampenGruen = false
+    LampenRot = false
   end
   if state == "Idle" then
     incode = "-"
     wormhole = "in"
     LampenGruen = false
+    LampenRot = false
   end
   if state == "Closing" and control == "On" then
     k = "close"
@@ -285,6 +286,8 @@ function iriscontroller()
       sg.disconnect()
     elseif string.match(codeaccepted, "Iris: Open") or string.match(codeaccepted, "Iris: Offline") then
       LampenGruen = true
+    elseif string.match(codeaccepted, "Iris: Closed") then
+      LampenRot = true
     end
     messageshow = false
     incode = "-"
@@ -756,15 +759,15 @@ function checken(...)
 end
 
 function Colorful_Lamp_Steuerung()
-  if iris == "Closed" or iris == "Closing" then
+  if iris == "Closed" or iris == "Closing" or LampenRot then
     Colorful_Lamp_Farben(31744)
-  elseif redstoneIDC == false then
+  elseif not redstoneIDC then
     Colorful_Lamp_Farben(992)
-  elseif redstoneIncoming == false then
+  elseif not redstoneIncoming then
     Colorful_Lamp_Farben(32256)
-  elseif LampenGruen == true then
+  elseif LampenGruen then
     Colorful_Lamp_Farben(992)
-  elseif redstoneState == true then
+  elseif redstoneState then
     Colorful_Lamp_Farben(32736)
   else
     Colorful_Lamp_Farben(32767)
