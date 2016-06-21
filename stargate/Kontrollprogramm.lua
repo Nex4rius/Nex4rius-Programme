@@ -740,7 +740,7 @@ function eventLoop()
         checken(f, e)
       end
       if string.sub(e[1],1,3) == "sgM" and direction == "Incoming" and wormhole == "in" then
-        if not e[3] == "" then
+        if e[3] == "" then else
           incode = e[3]
           messageshow = true
         end
