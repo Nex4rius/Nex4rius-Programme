@@ -1,31 +1,31 @@
 -- pastebin run -f fa9gu1GJ
 -- von Nex4rius
 
-component = require("component")
-sides = require("sides")
-term = require("term")
-event = require("event")
-fs = require("filesystem")
-c = require("computer")
-shell = require("shell")
-wget = loadfile("/bin/wget.lua")
-gpu = component.getPrimary("gpu")
-args = shell.parse(...)
-serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
-versionTyp = "master"
-Sprache = ""
-control = "On"
-firstrun = -2
-Sprache = ""
-installieren = false
-betaVersionName = ""
+local component = require("component")
+local sides = require("sides")
+local term = require("term")
+local event = require("event")
+local fs = require("filesystem")
+local c = require("computer")
+local shell = require("shell")
+local wget = loadfile("/bin/wget.lua")
+local gpu = component.getPrimary("gpu")
+local args = shell.parse(...)
+local serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
+local versionTyp = "master"
+local Sprache = ""
+local control = "On"
+local firstrun = -2
+local Sprache = ""
+local installieren = false
+local betaVersionName = ""
 
 if fs.exists("/stargate/version.txt") then
   f = io.open ("/stargate/version.txt", "r")
-  version = f:read()
+  local version = f:read()
   f:close()
 else
-  version = fehlerName
+  local version = fehlerName
 end
 
 dofile("/stargate/sicherNachNeustart.lua")
@@ -60,31 +60,31 @@ function checkKomponenten()
   print(pruefeKomponenten)
   if component.isAvailable("redstone") then
     print(redstoneOK)
-    r = component.getPrimary("redstone")
-    redst = true
+    local r = component.getPrimary("redstone")
+    local redst = true
   else
     print(redstoneFehlt)
-    r = nil
-    redst = false
+    local r = nil
+    local redst = false
   end
   if gpu.maxResolution() == 80 then
     print(gpuOK2T)
   elseif gpu.maxResolution() == 160 then
-    graphicT3 = true
+    local graphicT3 = true
     print(gpuOK3T)
   else
     print(gpuFehlt)
   end
   if component.isAvailable("internet") then
     print(InternetOK)
-    internet = true
+    local internet = true
   else
     print(InternetFehlt)
-    internet = false
+    local internet = false
   end
   if component.isAvailable("stargate") then
     print(StargateOK)
-    sg = component.getPrimary("stargate")
+    local sg = component.getPrimary("stargate")
     return true
   else
     print(StargateFehlt)
@@ -137,8 +137,8 @@ end
 
 function mainCheck()
   if internet == true then
-    serverVersion = checkServerVersion()
-    betaServerVersion = checkBetaServerVersion()
+    local serverVersion = checkServerVersion()
+    local betaServerVersion = checkBetaServerVersion()
     print(derzeitigeVersion .. version .. verfuegbareVersion .. serverVersion)
     if serverVersion == betaServerVersion then else
       print(betaVersion .. betaServerVersion .. " BETA")
@@ -175,7 +175,8 @@ function mainCheck()
   print(laden)
   installieren = false
   schreibSicherungsdatei()
-  dofile("/stargate/Kontrollprogramm.lua")
+  dofile("/stargate/adressen.lua")
+  dofile("/stargate/config.lua")
 end
 
 if Sprache == "" then
