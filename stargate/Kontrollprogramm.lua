@@ -286,7 +286,9 @@ function iriscontroller()
       sg.disconnect()
     elseif string.match(codeaccepted, "Iris: Open") or string.match(codeaccepted, "Iris: Offline") then
       LampenGruen = true
+      LampenRot = false
     elseif string.match(codeaccepted, "Iris: Closed") then
+      LampenGruen = false
       LampenRot = true
     end
     messageshow = false
