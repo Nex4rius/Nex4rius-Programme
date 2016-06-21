@@ -147,12 +147,12 @@ function mainCheck()
       end
     end
     if args[1] == ja then
-      print(aktualisierenJa)
+      print()
       update("master")
     elseif args[1] == nein then
       -- nichts
     elseif args[1] == "beta" then
-      print(aktualisierenBeta)
+      print()
       update("beta")
     elseif version == serverVersion and version == betaServerVersion then else
       if installieren == false then
