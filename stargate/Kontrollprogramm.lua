@@ -211,7 +211,9 @@ function iriscontroller()
     if redst == true then
       r.setBundledOutput(sideNum, black, 255)
     end
-    Colorful_Lamp_Farben(992)
+    if iris == "Closed" or iris == "Closing" or LampenRot == true then else
+      Colorful_Lamp_Farben(992)
+    end
   end
   if direction == "Incoming" and incode == IDC and iriscontrol == "on" and control == "On" then
     if iris == "Offline" then
@@ -777,7 +779,7 @@ function Colorful_Lamp_Steuerung()
 end
 
 function Colorful_Lamp_Farben(eingabe, ausgabe)
-  if not alte_eingabe == eingabe then
+  if alte_eingabe == eingabe then else
     for k in component.list("colorful_lamp") do
       component.proxy(k).setLampColor(eingabe)
       if ausgabe then
