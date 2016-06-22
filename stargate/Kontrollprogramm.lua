@@ -55,8 +55,8 @@ function zeigeMenu()
     Infoseite()
   else
     if (os.time() / sectime) - letzterAdressCheck > 21600 then
-      AdressenSpeichern()
       letzterAdressCheck = os.time() / sectime
+      AdressenSpeichern()
     end
     print(Adressseite .. seite + 1)
     AdressenLesen()
