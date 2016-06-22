@@ -4,7 +4,6 @@
 --  addresses selected from a list
 --  with automated Iris control
 --
---  install by typing this
 --  pastebin run -f fa9gu1GJ
 --  von Nex4rius
 
@@ -212,7 +211,9 @@ function iriscontroller()
     if redst == true then
       r.setBundledOutput(sideNum, black, 255)
     end
-    Colorful_Lamp_Farben(992)
+    if iris == "Closed" or iris == "Closing" or LampenRot == true then else
+      Colorful_Lamp_Farben(992)
+    end
   end
   if direction == "Incoming" and incode == IDC and iriscontrol == "on" and control == "On" then
     if iris == "Offline" then
@@ -263,11 +264,13 @@ function iriscontroller()
     IDCyes = false
     AddNewAddress = true
     LampenGruen = false
+    LampenRot = false
   end
   if state == "Idle" then
     incode = "-"
     wormhole = "in"
     LampenGruen = false
+    LampenRot = false
   end
   if state == "Closing" and control == "On" then
     k = "close"
@@ -285,6 +288,10 @@ function iriscontroller()
       sg.disconnect()
     elseif string.match(codeaccepted, "Iris: Open") or string.match(codeaccepted, "Iris: Offline") then
       LampenGruen = true
+      LampenRot = false
+    elseif string.match(codeaccepted, "Iris: Closed") then
+      LampenGruen = false
+      LampenRot = true
     end
     messageshow = false
     incode = "-"
@@ -756,27 +763,30 @@ function checken(...)
 end
 
 function Colorful_Lamp_Steuerung()
-  if iris == "Closed" or iris == "Closing" then
-    Colorful_Lamp_Farben(31744)
+  if iris == "Closed" or iris == "Closing" or LampenRot == true then
+    Colorful_Lamp_Farben(31744) -- rot
   elseif redstoneIDC == false then
-    Colorful_Lamp_Farben(992)
+    Colorful_Lamp_Farben(992)   -- grün
   elseif redstoneIncoming == false then
-    Colorful_Lamp_Farben(32256)
+    Colorful_Lamp_Farben(32256) -- orange
   elseif LampenGruen == true then
-    Colorful_Lamp_Farben(992)
+    Colorful_Lamp_Farben(992)   -- grün
   elseif redstoneState == true then
-    Colorful_Lamp_Farben(32736)
+    Colorful_Lamp_Farben(32736) -- gelb
   else
-    Colorful_Lamp_Farben(32767)
+    Colorful_Lamp_Farben(32767) -- weiß
   end
 end
 
 function Colorful_Lamp_Farben(eingabe, ausgabe)
-  for k in component.list("colorful_lamp") do
-    component.proxy(k).setLampColor(eingabe)
-    if ausgabe then
-      print(colorfulLampAusschalten .. k)
+  if alte_eingabe == eingabe then else
+    for k in component.list("colorful_lamp") do
+      component.proxy(k).setLampColor(eingabe)
+      if ausgabe then
+        print(colorfulLampAusschalten .. k)
+      end
     end
+    alte_eingabe = eingabe
   end
 end
 
