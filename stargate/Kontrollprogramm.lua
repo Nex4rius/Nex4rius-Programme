@@ -4,7 +4,6 @@
 --  addresses selected from a list
 --  with automated Iris control
 --
---  install by typing this
 --  pastebin run -f fa9gu1GJ
 --  von Nex4rius
 
@@ -24,7 +23,7 @@ function zeichenErsetzen(eingabeErsetzung)
 end
 
 function checkReset()
-  if time == "-" then else
+  if not time == "-" then
     if time > 500 then
       zeigeNachricht("")
       messageshow = true
@@ -86,7 +85,7 @@ end
 
 function Infoseite()
   print(Steuerung)
-  if iris == "Offline" then else
+  if not iris == "Offline" then
     print("I " .. IrisSteuerung .. an_aus)
   end
   print("Z " .. AdressenBearbeiten)
@@ -229,7 +228,7 @@ function iriscontroller()
     send = false
   end
   if wormhole == "in" and state == "Dialling" and iriscontrol == "on" and control == "On" then
-    if iris == "Offline" then else
+    if not iris == "Offline" then
       irisClose()
       if redst == true then
         r.setBundledOutput(sideNum, red, 255)
@@ -243,7 +242,7 @@ function iriscontroller()
   end
   if state == "Idle" and k == "close" and control == "On" then
     outcode = nil
-    if iris == "Offline" then else
+    if not iris == "Offline" then
       irisOpen()
     end
     iriscontrol = "on"
@@ -263,11 +262,13 @@ function iriscontroller()
     IDCyes = false
     AddNewAddress = true
     LampenGruen = false
+    LampenRot = false
   end
   if state == "Idle" then
     incode = "-"
     wormhole = "in"
     LampenGruen = false
+    LampenRot = false
   end
   if state == "Closing" and control == "On" then
     k = "close"
@@ -285,6 +286,10 @@ function iriscontroller()
       sg.disconnect()
     elseif string.match(codeaccepted, "Iris: Open") or string.match(codeaccepted, "Iris: Offline") then
       LampenGruen = true
+      LampenRot = false
+    elseif string.match(codeaccepted, "Iris: Closed") then
+      LampenGruen = false
+      LampenRot = true
     end
     messageshow = false
     incode = "-"
@@ -337,7 +342,7 @@ function destinationName()
 end
 
 function getAddress(A)
-  if A == "" or A == nil then
+  if A == "" or not A then
     return ""
   else
     return string.sub(A, 1, 4) .. "-" .. string.sub(A, 5, 7) .. "-" .. string.sub(A, 8, 9)
@@ -397,7 +402,7 @@ function zeigeStatus()
   zeigeHier(xVerschiebung, zeile, "  " .. statusName .. StatusName) neueZeile(1)
   zeigeEnergie() neueZeile(1)
   zeigeHier(xVerschiebung, zeile, "  " .. IrisName .. zeichenErsetzen(iris)) neueZeile(1)
-  if iris == "Offline" then else
+  if not iris == "Offline" then
     zeigeHier(xVerschiebung, zeile, "  " .. IrisSteuerung .. zeichenErsetzen(control)) neueZeile(1)
   end
   if IDCyes == true then
@@ -426,7 +431,7 @@ function RedstoneKontrolle()
   if component.isAvailable("redstone") then
     r = component.getPrimary("redstone")
   end
-  if sideNum == nil then
+  if not sideNum then
     sides()
   end
   if direction == "Incoming" then
@@ -443,7 +448,7 @@ function RedstoneKontrolle()
       RedstoneAenderung(white, 0)
       redstoneState = false
     end
-  elseif redstoneState == false then
+  elseif not redstoneState then
     RedstoneAenderung(white, 255)
     redstoneState = true
   end
@@ -452,16 +457,16 @@ function RedstoneKontrolle()
       RedstoneAenderung(black, 255)
       redstoneIDC = false
     end
-  elseif redstoneIDC == false then
+  elseif not redstoneIDC then
     RedstoneAenderung(black, 0)
     redstoneIDC = true
   end
   if state == "Connected" then
-    if redstoneConnected == true then
+    if redstoneConnected then
       RedstoneAenderung(green, 255)
       redstoneConnected = false
     end
-  elseif redstoneConnected == false then
+  elseif not redstoneConnected then
     RedstoneAenderung(green, 0)
     redstoneConnected = true
   end
@@ -504,7 +509,7 @@ function zeigeSteuerung()
 end
 
 function autoclose()
-  if autoclosetime == false then
+  if not autoclosetime then
     zeigeHier(xVerschiebung, zeile, "  " .. autoSchliessungAus)
   else
     zeigeHier(xVerschiebung, zeile, "  " .. autoSchliessungAn .. autoclosetime .. "s")
@@ -540,7 +545,7 @@ end
 
 function zeigeHier(x, y, s, h)
   setCursor(x, y)
-  if h == nil then
+  if not h then
     write(pad(s, 80))
   else
     write(pad(s, h))
@@ -561,14 +566,14 @@ function zeigeFehler(mess)
   if i then
     mess = fehlerName .. " " .. string.sub(mess, i + 2)
   end
-  if mess == "" then else
+  if not mess == "" then
     zeigeNachricht(mess)
     schreibFehlerLog()
   end
 end
 
 function schreibFehlerLog()
-  if mess_old == mess then else
+  if not mess_old == mess then
     if fs.exists("/log") then
       f = io.open("log", "a")
     else
@@ -617,10 +622,10 @@ handlers[key_event_name] = function(e)
         sg.disconnect()
     end
   elseif c == "o" then
-    if iris == "Offline" then else
+    if not iris == "Offline" then
       irisOpen()
       if wormhole == "in" then
-        if iris == "Offline" then else
+        if not iris == "Offline" then
           os.sleep(2)
           sg.sendMessage("Manual Override: Iris: Open")
         end
@@ -632,7 +637,7 @@ handlers[key_event_name] = function(e)
       end
     end
   elseif c == "c" then
-    if iris == "Offline" then else
+    if not iris == "Offline" then
       irisClose()
       iriscontrol = "off"
       if wormhole == "in" then
@@ -677,7 +682,7 @@ handlers[key_event_name] = function(e)
     if c == "q" then
       running = false
     elseif c == "i" then
-      if iris == "Offline" then else
+      if not iris == "Offline" then
         send = true
         if control == "On" then
           control = "Off"
@@ -756,11 +761,11 @@ function checken(...)
 end
 
 function Colorful_Lamp_Steuerung()
-  if iris == "Closed" or iris == "Closing" then
+  if iris == "Closed" or iris == "Closing" or LampenRot then
     Colorful_Lamp_Farben(31744)
-  elseif redstoneIDC == false then
+  elseif not redstoneIDC then
     Colorful_Lamp_Farben(992)
-  elseif redstoneIncoming == false then
+  elseif not redstoneIncoming then
     Colorful_Lamp_Farben(32256)
   elseif LampenGruen == true then
     Colorful_Lamp_Farben(992)
@@ -772,11 +777,14 @@ function Colorful_Lamp_Steuerung()
 end
 
 function Colorful_Lamp_Farben(eingabe, ausgabe)
-  for k in component.list("colorful_lamp") do
-    component.proxy(k).setLampColor(eingabe)
-    if ausgabe then
-      print(colorfulLampAusschalten .. k)
+  if not alte_eingabe == eingabe then
+    for k in component.list("colorful_lamp") do
+      component.proxy(k).setLampColor(eingabe)
+      if ausgabe then
+        print(colorfulLampAusschalten .. k)
+      end
     end
+    alte_eingabe = eingabe
   end
 end
 
