@@ -361,6 +361,7 @@ function wormholeDirection()
 end
 
 function aktualisiereStatus()
+  gpu.setResolution(70, 25)
   sg = component.getPrimary("stargate")
   locAddr = getAddress(sg.localAddress())
   remAddr = getAddress(sg.remoteAddress())
@@ -791,7 +792,6 @@ function Colorful_Lamp_Farben(eingabe, ausgabe)
 end
 
 function zeigeAnzeige()
-  gpu.setResolution(70, 25)
   zeigeFarben()
   zeigeStatus()
   zeigeMenu()
