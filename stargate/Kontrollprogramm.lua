@@ -23,7 +23,7 @@ function zeichenErsetzen(eingabeErsetzung)
 end
 
 function checkReset()
-  if not time == "-" then
+  if time == "-" then else
     if time > 500 then
       zeigeNachricht("")
       messageshow = true
@@ -85,7 +85,7 @@ end
 
 function Infoseite()
   print(Steuerung)
-  if not iris == "Offline" then
+  if iris == "Offline" then else
     print("I " .. IrisSteuerung .. an_aus)
   end
   print("Z " .. AdressenBearbeiten)
@@ -228,7 +228,7 @@ function iriscontroller()
     send = false
   end
   if wormhole == "in" and state == "Dialling" and iriscontrol == "on" and control == "On" then
-    if not iris == "Offline" then
+    if iris == "Offline" then else
       irisClose()
       if redst == true then
         r.setBundledOutput(sideNum, red, 255)
@@ -242,7 +242,7 @@ function iriscontroller()
   end
   if state == "Idle" and k == "close" and control == "On" then
     outcode = nil
-    if not iris == "Offline" then
+    if iris == "Offline" then else
       irisOpen()
     end
     iriscontrol = "on"
@@ -342,7 +342,7 @@ function destinationName()
 end
 
 function getAddress(A)
-  if A == "" or not A then
+  if A == "" or A == nil then
     return ""
   else
     return string.sub(A, 1, 4) .. "-" .. string.sub(A, 5, 7) .. "-" .. string.sub(A, 8, 9)
@@ -402,7 +402,7 @@ function zeigeStatus()
   zeigeHier(xVerschiebung, zeile, "  " .. statusName .. StatusName) neueZeile(1)
   zeigeEnergie() neueZeile(1)
   zeigeHier(xVerschiebung, zeile, "  " .. IrisName .. zeichenErsetzen(iris)) neueZeile(1)
-  if not iris == "Offline" then
+  if iris == "Offline" then else
     zeigeHier(xVerschiebung, zeile, "  " .. IrisSteuerung .. zeichenErsetzen(control)) neueZeile(1)
   end
   if IDCyes == true then
@@ -431,7 +431,7 @@ function RedstoneKontrolle()
   if component.isAvailable("redstone") then
     r = component.getPrimary("redstone")
   end
-  if not sideNum then
+  if sideNum == nil then
     sides()
   end
   if direction == "Incoming" then
@@ -448,7 +448,7 @@ function RedstoneKontrolle()
       RedstoneAenderung(white, 0)
       redstoneState = false
     end
-  elseif not redstoneState then
+  elseif redstoneState == false then
     RedstoneAenderung(white, 255)
     redstoneState = true
   end
@@ -457,16 +457,16 @@ function RedstoneKontrolle()
       RedstoneAenderung(black, 255)
       redstoneIDC = false
     end
-  elseif not redstoneIDC then
+  elseif redstoneIDC == false then
     RedstoneAenderung(black, 0)
     redstoneIDC = true
   end
   if state == "Connected" then
-    if redstoneConnected then
+    if redstoneConnected == true then
       RedstoneAenderung(green, 255)
       redstoneConnected = false
     end
-  elseif not redstoneConnected then
+  elseif redstoneConnected == false then
     RedstoneAenderung(green, 0)
     redstoneConnected = true
   end
@@ -509,7 +509,7 @@ function zeigeSteuerung()
 end
 
 function autoclose()
-  if not autoclosetime then
+  if autoclosetime == false then
     zeigeHier(xVerschiebung, zeile, "  " .. autoSchliessungAus)
   else
     zeigeHier(xVerschiebung, zeile, "  " .. autoSchliessungAn .. autoclosetime .. "s")
@@ -545,7 +545,7 @@ end
 
 function zeigeHier(x, y, s, h)
   setCursor(x, y)
-  if not h then
+  if h == nil then
     write(pad(s, 80))
   else
     write(pad(s, h))
@@ -566,14 +566,14 @@ function zeigeFehler(mess)
   if i then
     mess = fehlerName .. " " .. string.sub(mess, i + 2)
   end
-  if not mess == "" then
+  if mess == "" then else
     zeigeNachricht(mess)
     schreibFehlerLog()
   end
 end
 
 function schreibFehlerLog()
-  if not mess_old == mess then
+  if mess_old == mess then else
     if fs.exists("/log") then
       f = io.open("log", "a")
     else
@@ -622,10 +622,10 @@ handlers[key_event_name] = function(e)
         sg.disconnect()
     end
   elseif c == "o" then
-    if not iris == "Offline" then
+    if iris == "Offline" then else
       irisOpen()
       if wormhole == "in" then
-        if not iris == "Offline" then
+        if iris == "Offline" then else
           os.sleep(2)
           sg.sendMessage("Manual Override: Iris: Open")
         end
@@ -637,7 +637,7 @@ handlers[key_event_name] = function(e)
       end
     end
   elseif c == "c" then
-    if not iris == "Offline" then
+    if iris == "Offline" then else
       irisClose()
       iriscontrol = "off"
       if wormhole == "in" then
@@ -682,7 +682,7 @@ handlers[key_event_name] = function(e)
     if c == "q" then
       running = false
     elseif c == "i" then
-      if not iris == "Offline" then
+      if iris == "Offline" then else
         send = true
         if control == "On" then
           control = "Off"
@@ -761,11 +761,11 @@ function checken(...)
 end
 
 function Colorful_Lamp_Steuerung()
-  if iris == "Closed" or iris == "Closing" or LampenRot then
+  if iris == "Closed" or iris == "Closing" or LampenRot == true then
     Colorful_Lamp_Farben(31744)
-  elseif not redstoneIDC then
+  elseif redstoneIDC == false then
     Colorful_Lamp_Farben(992)
-  elseif not redstoneIncoming then
+  elseif redstoneIncoming == false then
     Colorful_Lamp_Farben(32256)
   elseif LampenGruen == true then
     Colorful_Lamp_Farben(992)
