@@ -1,9 +1,9 @@
 -- pastebin run -f fa9gu1GJ
 -- von Nex4rius
 
-ZeitBeimEinschalten   = os.time()
+sectime               = os.time()
 os.sleep(1)
-sectime               = ZeitBeimEinschalten - os.time()
+sectime               = sectime - os.time()
 letzteNachricht       = os.time()
 letzterAdressCheck    = os.time() / sectime
 enteridc              = ""
@@ -57,8 +57,6 @@ Steuerungsfarbe       = gelbeFarbe
 Steuerungstextfarbe   = schwarzeFarbe
 Statusfarbe           = grueneFarbe
 Statustextfarbe       = Textfarbe
-
-ZeitBeimEinschalten   = nil
 
 if redst == true then
   white               = 0
