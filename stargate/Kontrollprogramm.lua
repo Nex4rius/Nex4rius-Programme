@@ -764,17 +764,17 @@ end
 
 function Colorful_Lamp_Steuerung()
   if iris == "Closed" or iris == "Closing" or LampenRot == true then
-    Colorful_Lamp_Farben(31744)
+    Colorful_Lamp_Farben(31744) -- rot
   elseif redstoneIDC == false then
-    Colorful_Lamp_Farben(992)
+    Colorful_Lamp_Farben(992)   -- grün
   elseif redstoneIncoming == false then
-    Colorful_Lamp_Farben(32256)
+    Colorful_Lamp_Farben(32256) -- orange
   elseif LampenGruen == true then
-    Colorful_Lamp_Farben(992)
+    Colorful_Lamp_Farben(992)   -- grün
   elseif redstoneState == true then
-    Colorful_Lamp_Farben(32736)
+    Colorful_Lamp_Farben(32736) -- gelb
   else
-    Colorful_Lamp_Farben(32767)
+    Colorful_Lamp_Farben(32767) -- weiß
   end
 end
 
