@@ -566,16 +566,14 @@ end
 
 function zeigeFehler(mess)
   i = string.find(mess, ": ")
-  if i then
-    mess = fehlerName .. " " .. string.sub(mess, i + 2)
-  end
   if mess == "" then else
+    schreibFehlerLog(mess)
+    mess = string.format("%s %s", fehlerName, mess)
     zeigeNachricht(mess)
-    schreibFehlerLog()
   end
 end
 
-function schreibFehlerLog()
+function schreibFehlerLog(mess)
   if mess_old == mess then else
     if fs.exists("/log") then
       f = io.open("log", "a")
@@ -591,11 +589,16 @@ end
 
 handlers = {}
 
-function dial(name, addr)
-  zeigeNachricht(waehlen .. string.sub(name, 1, xVerschiebung + 12) .. " (" .. addr .. ")")
-  remoteName = name
+function dial(name, adresse)
+  if state == "Idle" then
+    remoteName = name
+    zeigeNachricht(waehlen .. string.sub(remoteName, 1, xVerschiebung + 12) .. " (" .. adresse .. ")")
+  end
   state = "Dialling"
-  checken(sg.dial, addr)
+  ok, ergebnis = sg.dial(adresse)
+  if ok == nil then
+    zeigeNachricht(ergebnis)
+  end
 end
 
 handlers[key_event_name] = function(e)
