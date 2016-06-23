@@ -148,7 +148,7 @@ function mainCheck()
     if args[1] == ja or args[1] == "ja" or args[1] == "yes" then
       print(aktualisierenJa)
       update("master")
-    elseif args[1] == nein or args[1] == "nein" args[1] == "no" then
+    elseif args[1] == nein or args[1] == "nein" or args[1] == "no" then
       -- nichts
     elseif args[1] == "beta" then
       print(aktualisierenBeta)
