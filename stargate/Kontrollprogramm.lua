@@ -567,13 +567,13 @@ end
 function zeigeFehler(mess)
   i = string.find(mess, ": ")
   if mess == "" then else
+    schreibFehlerLog(mess)
     mess = string.format("%s %s", fehlerName, mess)
-    schreibFehlerLog()
     zeigeNachricht(mess)
   end
 end
 
-function schreibFehlerLog()
+function schreibFehlerLog(mess)
   if mess_old == mess then else
     if fs.exists("/log") then
       f = io.open("log", "a")
