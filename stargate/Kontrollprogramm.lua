@@ -589,8 +589,11 @@ end
 
 handlers = {}
 
-function dial(remoteName, adresse)
-  zeigeNachricht(waehlen .. string.sub(remoteName, 1, xVerschiebung + 12) .. " (" .. addr .. ")")
+function dial(name, adresse)
+  if state == "Idle" then
+    remoteName = name
+    zeigeNachricht(waehlen .. string.sub(remoteName, 1, xVerschiebung + 12) .. " (" .. addr .. ")")
+  end
   state = "Dialling"
   ok, ergebnis = sg.dial(adresse)
   if ok == nil then
