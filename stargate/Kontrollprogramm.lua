@@ -524,12 +524,13 @@ end
 
 function zeigeEnergie()
   if energy > 10000000 then
-    zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000000) .. " M")
+    energieMenge = string.format("%.2f", energy/1000000) .. " M"
   elseif energy > 10000 then
-    zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000) .. " k")
+    energieMenge = string.format("%.1f", energy/1000) .. " k"
   else
-    zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.f", energy))
+    energieMenge = string.format("%.f", energy)
   end
+  zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. energieMenge)
 end
 
 function activetime()
