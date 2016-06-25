@@ -73,6 +73,7 @@ end
 
 function schreibSicherungsdatei()
   f = io.open ("/stargate/sicherNachNeustart.lua", "w")
+  f:write("-- pastebin run -f fa9gu1GJ\n-- von Nex4rius\n-- https://github.com/Nex4rius/Stargate-Programm\n\n")
   f:write('control = "' .. control .. '"\n')
   f:write('firstrun = ' .. firstrun .. '\n')
   f:write('Sprache = "' .. Sprache .. '" -- deutsch / english\n')
