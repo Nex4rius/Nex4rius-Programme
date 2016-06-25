@@ -189,7 +189,7 @@ function sides()
   end
 end
 
-function iriscontroller()
+function iriscontroller(iris)
   if state == "Dialing" then
     messageshow = true
     if wormhole == "in" and iriscontrol == "on" and control == "On" then
@@ -351,8 +351,7 @@ function aktualisiereStatus()
   destinationName()
   state, chevrons, direction = sg.stargateState()
   wormholeDirection()
-  iris = sg.irisState()
-  iriscontroller()
+  iriscontroller(sg.irisState())
   if state == "Idle" then
     RichtungName = ""
   else
@@ -537,7 +536,7 @@ end
 function zeigeHier(x, y, s, h)
   setCursor(x, y)
   if h == nil then
-    h = max_Bildschirmbreite
+    h = screen_width
   end
   write(pad(s, h))
 end
@@ -546,8 +545,8 @@ function zeigeNachricht(mess)
   letzteNachricht = os.time()
   gpu.setBackground(Nachrichtfarbe)
   gpu.setForeground(Nachrichttextfarbe)
-  zeigeHier(1, screen_height - 1, "", max_Bildschirmbreite)
-  zeigeHier(1, screen_height, zeichenErsetzen(mess), max_Bildschirmbreite)
+  zeigeHier(1, screen_height - 1, "", screen_width)
+  zeigeHier(1, screen_height, zeichenErsetzen(mess), screen_width)
   gpu.setBackground(Statusfarbe)
 end
 
