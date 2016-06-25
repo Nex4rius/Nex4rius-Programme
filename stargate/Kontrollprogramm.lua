@@ -239,48 +239,48 @@ function iriscontroller(iris)
       end
     end
   end
-  if direction == "Incoming" then
-    if incode == IDC and control == "Off" then
-      IDCyes = true
-      RedstoneAenderung(black, 255)
-      if iris == "Closed" or iris == "Closing" or LampenRot == true then else
-        Colorful_Lamp_Farben(992)
-      end
-    end
-    if incode == IDC and iriscontrol == "on" and control == "On" then
-      if iris == "Offline" then
-        sg.sendMessage("IDC Accepted Iris: Offline")
-      else
-        irisOpen()
-        os.sleep(2)
-        sg.sendMessage("IDC Accepted Iris: Open")
-      end
-      iriscontrol = "off"
-      IDCyes = true
-    elseif send == true then
-      sg.sendMessage("Iris Control: " .. control .. " Iris: " .. iris)
-      send = false
+  if direction == "Incoming" and incode == IDC and control == "Off" then
+    IDCyes = true
+    RedstoneAenderung(black, 255)
+    if iris == "Closed" or iris == "Closing" or LampenRot == true then else
+      Colorful_Lamp_Farben(992)
     end
   end
+  
+  if direction == "Incoming" and incode == IDC and iriscontrol == "on" and control == "On" then
+    if iris == "Offline" then
+      sg.sendMessage("IDC Accepted Iris: Offline")
+    else
+      irisOpen()
+      os.sleep(2)
+      sg.sendMessage("IDC Accepted Iris: Open")
+    end
+    iriscontrol = "off"
+    IDCyes = true
+  elseif direction == "Incoming" and send == true then
+    sg.sendMessage("Iris Control: "..control.." Iris: "..iris)
+    send = false
+  end
+  
   if iris == "Closing" and control == "On" then
     k = "open"
   end
-  if codeaccepted == "-" or codeaccepted == nil then else
-    if messageshow == true then
-      zeigeNachricht(nachrichtAngekommen .. codeaccepted)
-      if codeaccepted == "Request: Disconnect Stargate" then
-        sg.disconnect()
-      elseif string.match(codeaccepted, "Iris: Open") or string.match(codeaccepted, "Iris: Offline") then
-        LampenGruen = true
-        LampenRot = false
-      elseif string.match(codeaccepted, "Iris: Closed") then
-        LampenGruen = false
-        LampenRot = true
-      end
-      messageshow = false
-      incode = "-"
-      codeaccepted = "-"
+  
+  if codeaccepted == "-" or codeaccepted == nil then
+  elseif messageshow == true then
+    zeigeNachricht(nachrichtAngekommen .. codeaccepted .. "                   ")
+    if codeaccepted == "Request: Disconnect Stargate" then
+      sg.disconnect()
+    elseif string.match(codeaccepted, "Iris: Open") or string.match(codeaccepted, "Iris: Offline") then
+      LampenGruen = true
+      LampenRot = false
+    elseif string.match(codeaccepted, "Iris: Closed") then
+      LampenGruen = false
+      LampenRot = true
     end
+    messageshow = false
+    incode = "-"
+    codeaccepted = "-"
   end
 end
 
