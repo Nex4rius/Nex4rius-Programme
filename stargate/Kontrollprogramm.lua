@@ -189,7 +189,7 @@ function sides()
   end
 end
 
-function iriscontroller(iris)
+function iriscontroller()
   if state == "Dialing" then
     messageshow = true
     if wormhole == "in" and iriscontrol == "on" and control == "On" then
@@ -350,7 +350,8 @@ function aktualisiereStatus()
   destinationName()
   state, chevrons, direction = sg.stargateState()
   wormholeDirection()
-  iriscontroller(sg.irisState())
+  iris = sg.irisState()
+  iriscontroller(iris)
   if state == "Idle" then
     RichtungName = ""
   else
