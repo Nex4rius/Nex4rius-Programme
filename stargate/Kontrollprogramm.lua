@@ -349,7 +349,7 @@ function aktualisiereStatus()
   state, chevrons, direction = sg.stargateState()
   wormholeDirection()
   iris = sg.irisState()
-  iriscontroller(iris)
+  iriscontroller()
   if state == "Idle" then
     RichtungName = ""
   else
