@@ -106,101 +106,6 @@ local eingabe
 local alte_eingabe
 local ausgabe
 
-local pruefeKomponenten
-local redstoneOK
-local redstoneFehlt
-local gpuOK2T
-local gpuOK3T
-local gpuFehlt
-local InternetOK
-local InternetFehlt
-local StargateOK
-local StargateFehlt
-local inventory_controllerOK
-local inventory_controllerFehlt
-local derzeitigeVersion
-local verfuegbareVersion
-local aktualisierenBeta
-local aktualisierenFrage
-local aktualisierenJa
-local aktualisierenNein
-local laden
-local ja
-local nein
-local hilfe
-local Adressseite
-local Unbekannt
-local waehlen
-local energie1
-local energie2
-local keineVerbindung
-local Steuerung
-local IrisSteuerung
-local an_aus
-local AdressenBearbeiten
-local beenden
-local nachrichtAngekommen
-local RedstoneSignale
-local RedstoneWeiss
-local RedstoneRot
-local RedstoneGelb
-local RedstoneSchwarz
-local RedstoneGruen
-local versionName
-local fehlerName
-local SteuerungName
-local lokaleAdresse
-local zielAdresseName
-local zielName
-local statusName
-local IrisName
-local IrisSteuerung
-local IDCakzeptiert
-local IDCname
-local chevronName
-local richtung
-local autoSchliessungAus
-local autoSchliessungAn
-local zeit1
-local zeit2
-local abschalten
-local oeffneIris
-local schliesseIris
-local IDCeingabe
-local naechsteSeite
-local vorherigeSeite
-local senden
-local aufforderung
-local manueller
-local Eingriff
-local stargateName
-local stargateAbschalten
-local aktiviert
-local zeigeAdressen
-local spracheAendern
-local irisNameOffen
-local irisNameOeffnend
-local irisNameGeschlossen
-local irisNameSchliessend
-local irisNameOffline
-local irisKontrolleNameAn
-local irisKontrolleNameAus
-local RichtungNameEin
-local RichtungNameAus
-local StatusNameUntaetig
-local StatusNameWaehlend
-local StatusNameVerbunden
-local StatusNameSchliessend
-local Neustart
-local verfuegbareSprachen
-local IrisSteuerungName
-local ausschaltenName
-local redstoneAusschalten
-local colorfulLampAusschalten
-local verarbeiteAdressen
-local Hilfetext
-local ersetzen
-
 if component.isAvailable("redstone") then
   local white               = 0
   r.setBundledOutput(0, white, 0)
@@ -289,6 +194,79 @@ end
 dofile("/stargate/sicherNachNeustart.lua")
 dofile("/stargate/sprache/" .. Sprache .. ".lua")
 dofile("/stargate/sprache/ersetzen.lua")
+
+local Adressseite = Adressseite
+local Unbekannt = Unbekannt
+local waehlen = waehlen
+local energie1 = energie1
+local energie2 = energie2
+local keineVerbindung = keineVerbindung
+local Steuerung = Steuerung
+local IrisSteuerung = IrisSteuerung
+local an_aus = an_aus
+local AdressenBearbeiten = AdressenBearbeiten
+local beenden = beenden
+local nachrichtAngekommen = nachrichtAngekommen
+local RedstoneSignale = RedstoneSignale
+local RedstoneWeiss = RedstoneWeiss
+local RedstoneRot = RedstoneRot
+local RedstoneGelb = RedstoneGelb
+local RedstoneSchwarz = RedstoneSchwarz
+local RedstoneGruen = RedstoneGruen
+local versionName = versionName
+local fehlerName = fehlerName
+local SteuerungName = SteuerungName
+local lokaleAdresse = lokaleAdresse
+local zielAdresseName = zielAdresseName
+local zielName = zielName
+local statusName = statusName
+local IrisName = IrisName
+local IrisSteuerung = IrisSteuerung
+local IDCakzeptiert = IDCakzeptiert
+local IDCname = IDCname
+local chevronName = chevronName
+local richtung = richtung
+local autoSchliessungAus = autoSchliessungAus
+local autoSchliessungAn = autoSchliessungAn
+local zeit1 = zeit1
+local zeit2 = zeit2
+local abschalten = abschalten
+local oeffneIris = oeffneIris
+local schliesseIris = schliesseIris
+local IDCeingabe = IDCeingabe
+local naechsteSeite = naechsteSeite
+local vorherigeSeite = vorherigeSeite
+local senden = senden
+local aufforderung = aufforderung
+local manueller = manueller
+local Eingriff = Eingriff
+local stargateName              = stargateName
+local stargateAbschalten        = stargateAbschalten
+local aktiviert                 = aktiviert
+local zeigeAdressen             = zeigeAdressen
+local spracheAendern            = spracheAendern
+local irisNameOffen             = irisNameOffen
+local irisNameOeffnend          = irisNameOeffnend
+local irisNameGeschlossen       = irisNameGeschlossen
+local irisNameSchliessend       = irisNameSchliessend
+local irisNameOffline           = irisNameOffline
+local irisKontrolleNameAn       = irisKontrolleNameAn
+local irisKontrolleNameAus      = irisKontrolleNameAus
+local RichtungNameEin           = RichtungNameEin
+local RichtungNameAus           = RichtungNameAus
+local StatusNameUntaetig        = StatusNameUntaetig
+local StatusNameWaehlend        = StatusNameWaehlend
+local StatusNameVerbunden       = StatusNameVerbunden
+local StatusNameSchliessend     = StatusNameSchliessend
+local Neustart                  = Neustart
+local verfuegbareSprachen       = verfuegbareSprachen
+local IrisSteuerungName         = IrisSteuerungName
+local ausschaltenName           = ausschaltenName
+local redstoneAusschalten       = redstoneAusschalten
+local colorfulLampAusschalten   = colorfulLampAusschalten
+local verarbeiteAdressen        = verarbeiteAdressen
+local Hilfetext                 = Hilfetext
+local ersetzen                  = ersetzen
 
 local IrisZustandName = irisNameOffline
 
