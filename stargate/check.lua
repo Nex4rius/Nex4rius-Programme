@@ -20,6 +20,8 @@ firstrun = -2
 installieren = false
 betaVersionName = ""
 
+os.execute("del log")
+
 if fs.exists("/stargate/version.txt") then
   f = io.open ("/stargate/version.txt", "r")
   version = f:read()
