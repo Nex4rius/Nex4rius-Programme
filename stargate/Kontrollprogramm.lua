@@ -4,95 +4,96 @@
 
 dofile("/stargate/adressen.lua")
 
-sectime               = os.time()
+local sectime               = os.time()
 os.sleep(1)
-sectime               = sectime - os.time()
-letzteNachricht       = os.time()
-letzterAdressCheck    = os.time() / sectime
-enteridc              = ""
-showidc               = ""
-remoteName            = ""
-time                  = "-"
-incode                = "-"
-codeaccepted          = "-"
-wormhole              = "in"
-iriscontrol           = "on"
-energytype            = "EU"
-activationtime        = 0
-energy                = 0
-seite                 = 0
-maxseiten             = 0
-checkEnergy           = 0
-zeile                 = 1
-energymultiplicator   = 20
-xVerschiebung         = 33
-AddNewAddress         = true
-messageshow           = true
-running               = true
-send                  = true
-IDCyes                = false
-entercode             = false
-redstoneConnected     = false
-redstoneIncoming      = false
-redstoneState         = false
-redstoneIDC           = false
-IrisZustandName       = irisNameOffline
+sectime                     = sectime - os.time()
+local letzteNachricht       = os.time()
+local letzterAdressCheck    = os.time() / sectime
+local enteridc              = ""
+local showidc               = ""
+local remoteName            = ""
+local time                  = "-"
+local incode                = "-"
+local codeaccepted          = "-"
+local wormhole              = "in"
+local iriscontrol           = "on"
+local energytype            = "EU"
+local activationtime        = 0
+local energy                = 0
+local seite                 = 0
+local maxseiten             = 0
+local checkEnergy           = 0
+local zeile                 = 1
+local Trennlinienhoehe      = 14
+local energymultiplicator   = 20
+local xVerschiebung         = 33
+local AddNewAddress         = true
+local messageshow           = true
+local running               = true
+local send                  = true
+local IDCyes                = false
+local entercode             = false
+local redstoneConnected     = false
+local redstoneIncoming      = false
+local redstoneState         = false
+local redstoneIDC           = false
+local IrisZustandName       = irisNameOffline
 
-graueFarbe            = 6684774
-roteFarbe             = 0xFF0000
-weisseFarbe           = 0xFFFFFF
-blaueFarbe            = 0x0000FF
-schwarzeFarbe         = 0x00000
-gelbeFarbe            = 16750899
-brauenFarbe           = 10046464
-grueneFarbe           = 39168
+local graueFarbe            = 6684774
+local roteFarbe             = 0xFF0000
+local weisseFarbe           = 0xFFFFFF
+local blaueFarbe            = 0x0000FF
+local schwarzeFarbe         = 0x00000
+local gelbeFarbe            = 16750899
+local brauenFarbe           = 10046464
+local grueneFarbe           = 39168
 
-FehlerFarbe           = roteFarbe
-Hintergrundfarbe      = graueFarbe
-Trennlinienfarbe      = blaueFarbe
-Textfarbe             = weisseFarbe
+local FehlerFarbe           = roteFarbe
+local Hintergrundfarbe      = graueFarbe
+local Trennlinienfarbe      = blaueFarbe
+local Textfarbe             = weisseFarbe
 
-Adressfarbe           = brauenFarbe
-Adresstextfarbe       = Textfarbe
-Nachrichtfarbe        = graueFarbe
-Nachrichttextfarbe    = Textfarbe
-Steuerungsfarbe       = gelbeFarbe
-Steuerungstextfarbe   = schwarzeFarbe
-Statusfarbe           = grueneFarbe
-Statustextfarbe       = Textfarbe
+local Adressfarbe           = brauenFarbe
+local Adresstextfarbe       = Textfarbe
+local Nachrichtfarbe        = graueFarbe
+local Nachrichttextfarbe    = Textfarbe
+local Steuerungsfarbe       = gelbeFarbe
+local Steuerungstextfarbe   = schwarzeFarbe
+local Statusfarbe           = grueneFarbe
+local Statustextfarbe       = Textfarbe
 
-if redst == true then
-  white               = 0
+if component.isAvailable("redstone") then
+  local white               = 0
   r.setBundledOutput(0, white, 0)
---  orange              = 1
+--  local orange              = 1
 --  r.setBundledOutput(0, orange, 0)
---  magenta             = 2
+--  local magenta             = 2
 --  r.setBundledOutput(0, magenta, 0)
---  lightblue           = 3
+--  local lightblue           = 3
 --  r.setBundledOutput(0, lightblue, 0)
-  yellow              = 4
+  local yellow              = 4
   r.setBundledOutput(0, yellow, 0)
---  lime                = 5
+--  local lime                = 5
 --  r.setBundledOutput(0, lime, 0)
---  pink                = 6
+--  local pink                = 6
 --  r.setBundledOutput(0, pink, 0)
---  gray                = 7
+--  local gray                = 7
 --  r.setBundledOutput(0, gray, 0)
---  silver              = 8
+--  local silver              = 8
 --  r.setBundledOutput(0, silver, 0)
---  cyan                = 9
+--  local cyan                = 9
 --  r.setBundledOutput(0, cyan, 0)
---  purple              = 10
+--  local purple              = 10
 --  r.setBundledOutput(0, purple, 0)
---  blue                = 11
+--  local blue                = 11
 --  r.setBundledOutput(0, blue, 0)
---  brown               = 12
+--  local brown               = 12
 --  r.setBundledOutput(0, brown, 0)
-  green               = 13
+  local green               = 13
   r.setBundledOutput(0, green, 0)
-  red                 = 14
+  local red                 = 14
   r.setBundledOutput(0, red, 0)
-  black               = 15
+  local black               = 15
   r.setBundledOutput(0, black, 0)
 end
 
@@ -103,8 +104,6 @@ end
 
 if sg.irisState() == "Offline" then
   Trennlinienhoehe    = 13
-else
-  Trennlinienhoehe    = 14
 end
 
 local function try(func, ...)
