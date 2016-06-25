@@ -2,31 +2,23 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Stargate-Programm
 
-local component = require("component")
-local sides = require("sides")
-local term = require("term")
-local event = require("event")
-local fs = require("filesystem")
-local c = require("computer")
-local shell = require("shell")
-local wget = loadfile("/bin/wget.lua")
-local gpu = component.getPrimary("gpu")
-local args = shell.parse(...)
-local serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
-local versionTyp = "master"
-local Sprache = ""
-local control = "On"
-local firstrun = -2
-local installieren = false
-local betaVersionName = ""
-local version
-local antwortFrageSprache
-local r
-local redst
-local graphicT3
-local internet
-local serverVersion
-local betaServerVersion
+component = require("component")
+sides = require("sides")
+term = require("term")
+event = require("event")
+fs = require("filesystem")
+c = require("computer")
+shell = require("shell")
+wget = loadfile("/bin/wget.lua")
+gpu = component.getPrimary("gpu")
+args = shell.parse(...)
+serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
+versionTyp = "master"
+Sprache = ""
+control = "On"
+firstrun = -2
+installieren = false
+betaVersionName = ""
 
 if fs.exists("/stargate/version.txt") then
   f = io.open ("/stargate/version.txt", "r")
@@ -183,6 +175,7 @@ function mainCheck()
   print(laden)
   installieren = false
   schreibSicherungsdatei()
+  zuruecksetzten()
   dofile("/stargate/Kontrollprogramm.lua")
 end
 
@@ -191,6 +184,31 @@ if Sprache == "" then
 end
 
 dofile("/stargate/sprache/" .. Sprache .. ".lua")
+
+function zuruecksetzten()
+  _ENV.component = nil
+  _ENV.sides = nil
+  _ENV.term = nil
+  _ENV.event = nil
+  _ENV.fs = nil
+  _ENV.c = nil
+  _ENV.shell = nil
+  _ENV.wget = nil
+  _ENV.gpu = nil
+  _ENV.args = nil
+  _ENV.serverAddresse = nil
+  _ENV.versionTyp = nil
+  _ENV.firstrun = nil
+  _ENV.installieren = nil
+  _ENV.betaVersionName = nil
+  _ENV.antwortFrageSprache = nil
+  _ENV.r = nil
+  _ENV.redst = nil
+  _ENV.graphicT3 = nil
+  _ENV.internet = nil
+  _ENV.serverVersion = nil
+  _ENV.betaServerVersion = nil
+end
 
 if args[1] == hilfe or args[1] == "hilfe" or args[1] == "help" then
   print(Hilfetext)
