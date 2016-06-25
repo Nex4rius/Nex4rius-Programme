@@ -125,7 +125,9 @@ function AdressenSpeichern()
       if not anwahlEnergie then
         gespeicherteAdressen[i + k][4] = fehlerName
       else
-        if anwahlEnergie > 10000000 then
+        if     anwahlEnergie > 10000000000 then
+          gespeicherteAdressen[i + k][4] = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000) .. " G"
+        elseif anwahlEnergie > 10000000 then
           gespeicherteAdressen[i + k][4] = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000) .. " M"
         elseif anwahlEnergie > 10000 then
           gespeicherteAdressen[i + k][4] = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000) .. " k"
@@ -523,10 +525,12 @@ function autoclose()
 end
 
 function zeigeEnergie()
-  if energy > 10000000 then
-    energieMenge = string.format("%.2f", energy/1000000) .. " M"
+  if     energy > 10000000000 then
+    energieMenge = string.format("%.2f", energy / 1000000000) .. " G"
+  elseif energy > 10000000 then
+    energieMenge = string.format("%.2f", energy / 1000000) .. " M"
   elseif energy > 10000 then
-    energieMenge = string.format("%.1f", energy/1000) .. " k"
+    energieMenge = string.format("%.2f", energy / 1000) .. " k"
   else
     energieMenge = string.format("%.f", energy)
   end
@@ -550,10 +554,9 @@ end
 function zeigeHier(x, y, s, h)
   setCursor(x, y)
   if h == nil then
-    write(pad(s, 80))
-  else
-    write(pad(s, h))
+    h = 80
   end
+  write(pad(s, h))
 end
 
 function zeigeNachricht(mess)
@@ -566,7 +569,6 @@ function zeigeNachricht(mess)
 end
 
 function zeigeFehler(mess)
-  i = string.find(mess, ": ")
   if mess == "" then else
     schreibFehlerLog(mess)
     mess = string.format("%s %s", fehlerName, mess)
@@ -731,7 +733,7 @@ end
 function handlers.sgChevronEngaged(e)
   chevron = e[3]
   symbol = e[4]
-  zeigeNachricht(string.format("Chevron %s %s! (%s)", chevron, aktiviert, symbol))
+  zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, aktiviert, symbol))
 end
 
 function eventLoop()
@@ -781,6 +783,12 @@ function Colorful_Lamp_Steuerung()
   else
     Colorful_Lamp_Farben(32767) -- weiß
   end
+  -- 32767  weiß
+  -- 32736  gelb
+  -- 32256  orange
+  -- 31744  rot
+  -- 992    grün
+  -- 0      schwarz
 end
 
 function Colorful_Lamp_Farben(eingabe, ausgabe)
