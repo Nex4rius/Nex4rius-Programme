@@ -81,6 +81,7 @@ local control
 local firstrun
 local Sprache
 local installieren
+local k
 
 local pruefeKomponenten
 local redstoneOK
