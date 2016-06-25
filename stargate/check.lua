@@ -85,6 +85,7 @@ function checkKomponenten()
   end
   if component.isAvailable("stargate") then
     print(StargateOK)
+    sg = component.getPrimary("stargate")
     return true
   else
     print(StargateFehlt)
@@ -175,7 +176,6 @@ function mainCheck()
   print(laden)
   installieren = false
   schreibSicherungsdatei()
-  zuruecksetzten()
   dofile("/stargate/Kontrollprogramm.lua")
 end
 
@@ -184,31 +184,6 @@ if Sprache == "" then
 end
 
 dofile("/stargate/sprache/" .. Sprache .. ".lua")
-
-function zuruecksetzten()
-  _ENV.component = nil
-  _ENV.sides = nil
-  _ENV.term = nil
-  _ENV.event = nil
-  _ENV.fs = nil
-  _ENV.c = nil
-  _ENV.shell = nil
-  _ENV.wget = nil
-  _ENV.gpu = nil
-  _ENV.args = nil
-  _ENV.serverAddresse = nil
-  _ENV.versionTyp = nil
-  _ENV.firstrun = nil
-  _ENV.installieren = nil
-  _ENV.betaVersionName = nil
-  _ENV.antwortFrageSprache = nil
-  _ENV.r = nil
-  _ENV.redst = nil
-  _ENV.graphicT3 = nil
-  _ENV.internet = nil
-  _ENV.serverVersion = nil
-  _ENV.betaServerVersion = nil
-end
 
 if args[1] == hilfe or args[1] == "hilfe" or args[1] == "help" then
   print(Hilfetext)
