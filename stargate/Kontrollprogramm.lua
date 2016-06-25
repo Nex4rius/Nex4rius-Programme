@@ -240,28 +240,28 @@ function iriscontroller()
       end
     end
   end
-
-
-  if direction == "Incoming" and incode == IDC and control == "Off" then
-    IDCyes = true
-    RedstoneAenderung(black, 255)
-    if iris == "Closed" or iris == "Closing" or LampenRot == true then else
-      Colorful_Lamp_Farben(992)
+  if direction == "Incoming" then
+    if incode == IDC and control == "Off" then
+      IDCyes = true
+      RedstoneAenderung(black, 255)
+      if iris == "Closed" or iris == "Closing" or LampenRot == true then else
+        Colorful_Lamp_Farben(992)
+      end
     end
-  end
-  if direction == "Incoming" and incode == IDC and iriscontrol == "on" and control == "On" then
-    if iris == "Offline" then
-      sg.sendMessage("IDC Accepted Iris: Offline")
-    else
-      irisOpen()
-      os.sleep(2)
-      sg.sendMessage("IDC Accepted Iris: Open")
+    if incode == IDC and iriscontrol == "on" and control == "On" then
+      if iris == "Offline" then
+        sg.sendMessage("IDC Accepted Iris: Offline")
+      else
+        irisOpen()
+        os.sleep(2)
+        sg.sendMessage("IDC Accepted Iris: Open")
+      end
+      iriscontrol = "off"
+      IDCyes = true
+    elseif send == true then
+      sg.sendMessage("Iris Control: " .. control .. " Iris: " .. iris)
+      send = false
     end
-    iriscontrol = "off"
-    IDCyes = true
-  elseif direction == "Incoming" and send == true then
-    sg.sendMessage("Iris Control: "..control.." Iris: "..iris)
-    send = false
   end
   if iris == "Closing" and control == "On" then
     k = "open"
