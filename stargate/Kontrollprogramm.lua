@@ -268,7 +268,7 @@ function iriscontroller()
   end
   if codeaccepted == "-" or codeaccepted == nil then else
     if messageshow == true then
-      zeigeNachricht(nachrichtAngekommen .. codeaccepted .. "                   ")
+      zeigeNachricht(nachrichtAngekommen .. codeaccepted)
       if codeaccepted == "Request: Disconnect Stargate" then
         sg.disconnect()
       elseif string.match(codeaccepted, "Iris: Open") or string.match(codeaccepted, "Iris: Offline") then
@@ -372,7 +372,7 @@ function aktualisiereStatus()
   energy = sg.energyAvailable() * energymultiplicator
   zeile = 1
   if (letzteNachricht - os.time()) / sectime > 45 then
-    zeigeNachricht("                                                                                                        ")
+    zeigeNachricht("")
   end
 end
 
@@ -543,7 +543,7 @@ function zeigeNachricht(mess)
   gpu.setBackground(Nachrichtfarbe)
   gpu.setForeground(Nachrichttextfarbe)
   zeigeHier(1, screen_height - 1, "", 80)
-  zeigeHier(1, screen_height, zeichenErsetzen(mess), 80)
+  zeigeHier(1, screen_height, zeichenErsetzen(mess), max_Bildschirmbreite - string.len(zeichenErsetzen(mess)))
   gpu.setBackground(Statusfarbe)
 end
 
@@ -563,7 +563,7 @@ function schreibFehlerLog(mess)
       f = io.open("log", "w")
     end
     f:write(mess)
-    f:write("\n\n" .. os.time() .. string.rep("-",max_Bildschirmbreite - string.len(os.time())) .. "\n\n")
+    f:write("\n\n" .. os.time() .. string.rep("-", max_Bildschirmbreite - string.len(os.time())) .. "\n\n")
     f:close()
   end
   mess_old = mess
