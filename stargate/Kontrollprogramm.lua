@@ -1,11 +1,6 @@
---
---  Interactive stargate control program
---  Shows stargate state and allows dialling
---  addresses selected from a list
---  with automated Iris control
---
---  pastebin run -f fa9gu1GJ
---  von Nex4rius
+-- pastebin run -f fa9gu1GJ
+-- von Nex4rius
+-- https://github.com/Nex4rius/Stargate-Programm
 
 dofile("/stargate/adressen.lua")
 dofile("/stargate/config.lua")
