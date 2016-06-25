@@ -1,5 +1,6 @@
 -- pastebin run -f fa9gu1GJ
 -- von Nex4rius
+-- https://github.com/Nex4rius/Stargate-Programm
 
 component = require("component")
 sides = require("sides")
