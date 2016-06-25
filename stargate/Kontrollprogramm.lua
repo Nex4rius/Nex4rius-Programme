@@ -2,6 +2,12 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Stargate-Programm
 
+local RF
+local autoclosetime
+local side
+local IDC
+local adressen
+  
 dofile("/stargate/adressen.lua")
 
 local sectime               = os.time()
@@ -37,7 +43,6 @@ local redstoneConnected     = false
 local redstoneIncoming      = false
 local redstoneState         = false
 local redstoneIDC           = false
-local IrisZustandName       = irisNameOffline
 
 local graueFarbe            = 6684774
 local roteFarbe             = 0xFF0000
@@ -61,6 +66,106 @@ local Steuerungsfarbe       = gelbeFarbe
 local Steuerungstextfarbe   = schwarzeFarbe
 local Statusfarbe           = grueneFarbe
 local Statustextfarbe       = Textfarbe
+
+local control
+local firstrun
+local Sprache
+local installieren
+
+local pruefeKomponenten
+local redstoneOK
+local redstoneFehlt
+local gpuOK2T
+local gpuOK3T
+local gpuFehlt
+local InternetOK
+local InternetFehlt
+local StargateOK
+local StargateFehlt
+local inventory_controllerOK
+local inventory_controllerFehlt
+local derzeitigeVersion
+local verfuegbareVersion
+local aktualisierenBeta
+local aktualisierenFrage
+local aktualisierenJa
+local aktualisierenNein
+local laden
+local ja
+local nein
+local hilfe
+local Adressseite
+local Unbekannt
+local waehlen
+local energie1
+local energie2
+local keineVerbindung
+local Steuerung
+local IrisSteuerung
+local an_aus
+local AdressenBearbeiten
+local beenden
+local nachrichtAngekommen
+local RedstoneSignale
+local RedstoneWeiss
+local RedstoneRot
+local RedstoneGelb
+local RedstoneSchwarz
+local RedstoneGruen
+local versionName
+local fehlerName
+local SteuerungName
+local lokaleAdresse
+local zielAdresseName
+local zielName
+local statusName
+local IrisName
+local IrisSteuerung
+local IDCakzeptiert
+local IDCname
+local chevronName
+local richtung
+local autoSchliessungAus
+local autoSchliessungAn
+local zeit1
+local zeit2
+local abschalten
+local oeffneIris
+local schliesseIris
+local IDCeingabe
+local naechsteSeite
+local vorherigeSeite
+local senden
+local aufforderung
+local manueller
+local Eingriff
+local stargateName
+local stargateAbschalten
+local aktiviert
+local zeigeAdressen
+local spracheAendern
+local irisNameOffen
+local irisNameOeffnend
+local irisNameGeschlossen
+local irisNameSchliessend
+local irisNameOffline
+local irisKontrolleNameAn
+local irisKontrolleNameAus
+local RichtungNameEin
+local RichtungNameAus
+local StatusNameUntaetig
+local StatusNameWaehlend
+local StatusNameVerbunden
+local StatusNameSchliessend
+local Neustart
+local verfuegbareSprachen
+local IrisSteuerungName
+local ausschaltenName
+local redstoneAusschalten
+local colorfulLampAusschalten
+local verarbeiteAdressen
+local Hilfetext
+local ersetzen
 
 if component.isAvailable("redstone") then
   local white               = 0
@@ -150,6 +255,8 @@ end
 dofile("/stargate/sicherNachNeustart.lua")
 dofile("/stargate/sprache/" .. Sprache .. ".lua")
 dofile("/stargate/sprache/ersetzen.lua")
+
+local IrisZustandName = irisNameOffline
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
