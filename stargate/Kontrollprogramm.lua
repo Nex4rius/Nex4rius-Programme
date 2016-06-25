@@ -39,6 +39,7 @@ function checkReset()
       remoteName = ""
       activationtime = 0
       LampenGruen = false
+      zielAdresse = ""
     end
   end
 end
@@ -254,6 +255,7 @@ function iriscontroller()
     activationtime = 0
     entercode = false
     showidc = ""
+    zielAdresse = ""
   end
   if state == "Idle" and control == "On" then
     iriscontrol = "on"
@@ -265,12 +267,14 @@ function iriscontroller()
     AddNewAddress = true
     LampenGruen = false
     LampenRot = false
+    zielAdresse = ""
   end
   if state == "Idle" then
     incode = "-"
     wormhole = "in"
     LampenGruen = false
     LampenRot = false
+    zielAdresse = ""
   end
   if state == "Closing" and control == "On" then
     k = "close"
@@ -400,7 +404,7 @@ function zeigeStatus()
   gpu.setForeground(Statustextfarbe)
   aktualisiereStatus()
   zeigeHier(xVerschiebung, zeile, "  " .. lokaleAdresse .. locAddr) neueZeile(1)
-  zeigeHier(xVerschiebung, zeile, "  " .. zielAdresse .. remAddr) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. zielAdresseName .. zielAdresse) neueZeile(1)
   zeigeHier(xVerschiebung, zeile, "  " .. zielName .. remoteName) neueZeile(1)
   zeigeHier(xVerschiebung, zeile, "  " .. statusName .. StatusName) neueZeile(1)
   zeigeEnergie() neueZeile(1)
@@ -734,13 +738,13 @@ end
 function handlers.sgChevronEngaged(e)
   chevron = e[3]
   if chevron == 1 then
-    symbol = e[4]
+    zielAdresse = e[4]
   elseif chevron == 5 or chevron == 8 then
-    symbol = symbol .. "-" .. e[4]
+    zielAdresse = zielAdresse .. "-" .. e[4]
   else
-    symbol = symbol .. e[4]
+    zielAdresse = zielAdresse .. e[4]
   end
-  zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, aktiviert, symbol))
+  zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, aktiviert, zielAdresse))
 end
 
 function eventLoop()
