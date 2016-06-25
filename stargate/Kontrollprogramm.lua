@@ -246,10 +246,10 @@ end
 
 local function pull_event()
   if state == "Idle" and checkEnergy == energy then
-    local checkEnergy = energy
+    checkEnergy = energy
     return event.pull(300)
   else
-    local checkEnergy = energy
+    checkEnergy = energy
     return event.pull(1)
   end
 end
