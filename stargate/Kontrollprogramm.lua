@@ -166,15 +166,15 @@ end
 function irisClose()
   sg.closeIris()
   RedstoneAenderung(yellow, 255)
-  Colorful_Lamp_Farben(31744)
-  IrisZustandName = irisNameSchliessend
+  --IrisZustandName = irisNameSchliessend
+  Colorful_Lamp_Steuerung()
 end
 
 function irisOpen()
   sg.openIris()
   RedstoneAenderung(yellow, 0)
-  IrisZustandName = irisNameOeffnend
-  iris = "Opening"
+  --IrisZustandName = irisNameOeffnend
+  --iris = "Opening"
   Colorful_Lamp_Steuerung()
 end
 
