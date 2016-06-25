@@ -53,6 +53,8 @@ local redstoneConnected     = false
 local redstoneIncoming      = false
 local redstoneState         = false
 local redstoneIDC           = false
+local LampenGruen           = false
+local LampenRot             = false
 
 local graueFarbe            = 6684774
 local roteFarbe             = 0xFF0000
@@ -82,6 +84,7 @@ local firstrun
 local Sprache
 local installieren
 local k
+local zielAdresse
 
 local pruefeKomponenten
 local redstoneOK
