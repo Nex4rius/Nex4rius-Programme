@@ -1,11 +1,6 @@
---
---  Interactive stargate control program
---  Shows stargate state and allows dialling
---  addresses selected from a list
---  with automated Iris control
---
---  pastebin run -f fa9gu1GJ
---  von Nex4rius
+-- pastebin run -f fa9gu1GJ
+-- von Nex4rius
+-- https://github.com/Nex4rius/Stargate-Programm
 
 dofile("/stargate/adressen.lua")
 dofile("/stargate/config.lua")
@@ -165,26 +160,16 @@ end
 
 function irisClose()
   sg.closeIris()
-  if redst == true then
-    if sideNum == nil then
-      sides()
-    end
-    r.setBundledOutput(sideNum, yellow, 255)
-  end
-  Colorful_Lamp_Farben(31744)
-  IrisZustandName = irisNameSchliessend
+  RedstoneAenderung(yellow, 255)
+  --IrisZustandName = irisNameSchliessend
+  Colorful_Lamp_Steuerung()
 end
 
 function irisOpen()
   sg.openIris()
-  if redst == true then
-    if sideNum == nil then
-      sides()
-    end
-    r.setBundledOutput(sideNum, yellow, 0)
-  end
-  IrisZustandName = irisNameOeffnend
-  iris = "Opening"
+  RedstoneAenderung(yellow, 0)
+  --IrisZustandName = irisNameOeffnend
+  --iris = "Opening"
   Colorful_Lamp_Steuerung()
 end
 
@@ -210,9 +195,7 @@ function iriscontroller()
   end
   if direction == "Incoming" and incode == IDC and control == "Off" then
     IDCyes = true
-    if redst == true then
-      r.setBundledOutput(sideNum, black, 255)
-    end
+    RedstoneAenderung(black, 255)
     if iris == "Closed" or iris == "Closing" or LampenRot == true then else
       Colorful_Lamp_Farben(992)
     end
@@ -234,9 +217,7 @@ function iriscontroller()
   if wormhole == "in" and state == "Dialling" and iriscontrol == "on" and control == "On" then
     if iris == "Offline" then else
       irisClose()
-      if redst == true then
-        r.setBundledOutput(sideNum, red, 255)
-      end
+      RedstoneAenderung(red, 255)
       redstoneIncoming = false
     end
     k = "close"
@@ -374,12 +355,14 @@ function aktualisiereStatus()
   wormholeDirection()
   iris = sg.irisState()
   iriscontroller()
-  if direction == "Outgoing" then
-    RichtungName = RichtungNameAus
-  elseif direction == "Incoming" then
-    RichtungName = RichtungNameEin
-  else
+  if state == "Idle" then
     RichtungName = ""
+  else
+    if wormhole == "out" then
+      RichtungName = RichtungNameAus
+    else
+      RichtungName = RichtungNameEin
+    end
   end
   if state == "Idle" then
     StatusName = StatusNameUntaetig
@@ -395,7 +378,7 @@ function aktualisiereStatus()
   energy = sg.energyAvailable() * energymultiplicator
   zeile = 1
   if (letzteNachricht - os.time()) / sectime > 45 then
-    zeigeNachricht("                                                                                                        ")
+    zeigeNachricht("")
   end
 end
 
@@ -429,6 +412,9 @@ function zeigeStatus()
 end
 
 function RedstoneAenderung(a, b)
+  if sideNum == nil then
+    sides()
+  end
   if redst == true then
     r.setBundledOutput(sideNum, a, b)
   end
@@ -437,9 +423,6 @@ end
 function RedstoneKontrolle()
   if component.isAvailable("redstone") then
     r = component.getPrimary("redstone")
-  end
-  if sideNum == nil then
-    sides()
   end
   if direction == "Incoming" then
     if redstoneIncoming == true then
@@ -556,7 +539,7 @@ end
 function zeigeHier(x, y, s, h)
   setCursor(x, y)
   if h == nil then
-    h = 80
+    h = screen_width
   end
   write(pad(s, h))
 end
@@ -565,8 +548,8 @@ function zeigeNachricht(mess)
   letzteNachricht = os.time()
   gpu.setBackground(Nachrichtfarbe)
   gpu.setForeground(Nachrichttextfarbe)
-  zeigeHier(1, screen_height - 1, "", 80)
-  zeigeHier(1, screen_height, zeichenErsetzen(mess), 80)
+  zeigeHier(1, screen_height - 1, "", screen_width)
+  zeigeHier(1, screen_height, zeichenErsetzen(mess), screen_width)
   gpu.setBackground(Statusfarbe)
 end
 
@@ -586,7 +569,7 @@ function schreibFehlerLog(mess)
       f = io.open("log", "w")
     end
     f:write(mess)
-    f:write("\n\n" .. os.time() .. string.rep("-",max_Bildschirmbreite - string.len(os.time())) .. "\n\n")
+    f:write("\n\n" .. os.time() .. string.rep("-", max_Bildschirmbreite - string.len(os.time())) .. "\n\n")
     f:close()
   end
   mess_old = mess
@@ -826,24 +809,22 @@ function beendeAlles()
   term.clear()
   print(ausschaltenName .. "\n")
   Colorful_Lamp_Farben(0, true)
-  if redst == true then
-    r.setBundledOutput(0, white, 0) print(redstoneAusschalten .. "white")
---    r.setBundledOutput(0, orange, 0) print(redstoneAusschalten .. "orange")
---    r.setBundledOutput(0, magenta, 0) print(redstoneAusschalten .. "magenta")
---    r.setBundledOutput(0, lightblue, 0) print(redstoneAusschalten .. "lightblue")
-    r.setBundledOutput(0, yellow, 0) print(redstoneAusschalten .. "yellow")
---    r.setBundledOutput(0, lime, 0) print(redstoneAusschalten .. "lime")
---    r.setBundledOutput(0, pink, 0) print(redstoneAusschalten .. "pink")
---    r.setBundledOutput(0, gray, 0) print(redstoneAusschalten .. "gray")
---    r.setBundledOutput(0, silver, 0) print(redstoneAusschalten .. "silver")
---    r.setBundledOutput(0, cyan, 0) print(redstoneAusschalten .. "cyan")
---    r.setBundledOutput(0, purple, 0) print(redstoneAusschalten .. "purple")
---    r.setBundledOutput(0, blue, 0) print(redstoneAusschalten .. "blue")
---    r.setBundledOutput(0, brown, 0) print(redstoneAusschalten .. "brown")
-    r.setBundledOutput(0, green, 0) print(redstoneAusschalten .. "green")
-    r.setBundledOutput(0, red, 0) print(redstoneAusschalten .. "red")
-    r.setBundledOutput(0, black, 0) print(redstoneAusschalten .. "black")
-  end
+  RedstoneAenderung(white, 0) print(redstoneAusschalten .. "white")
+--  RedstoneAenderung(orange, 0) print(redstoneAusschalten .. "orange")
+--  RedstoneAenderung(magenta, 0) print(redstoneAusschalten .. "magenta")
+--  RedstoneAenderung(lightblue, 0) print(redstoneAusschalten .. "lightblue")
+  RedstoneAenderung(yellow, 0) print(redstoneAusschalten .. "yellow")
+--  RedstoneAenderung(lime, 0) print(redstoneAusschalten .. "lime")
+--  RedstoneAenderung(pink, 0) print(redstoneAusschalten .. "pink")
+--  RedstoneAenderung(gray, 0) print(redstoneAusschalten .. "gray")
+--  RedstoneAenderung(silver, 0) print(redstoneAusschalten .. "silver")
+--  RedstoneAenderung(cyan, 0) print(redstoneAusschalten .. "cyan")
+--  RedstoneAenderung(purple, 0) print(redstoneAusschalten .. "purple")
+--  RedstoneAenderung(blue, 0) print(redstoneAusschalten .. "blue")
+--  RedstoneAenderung(brown, 0) print(redstoneAusschalten .. "brown")
+  RedstoneAenderung(green, 0) print(redstoneAusschalten .. "green")
+  RedstoneAenderung(red, 0) print(redstoneAusschalten .. "red")
+  RedstoneAenderung(black, 0) print(redstoneAusschalten .. "black")
 end
 
 function main()
