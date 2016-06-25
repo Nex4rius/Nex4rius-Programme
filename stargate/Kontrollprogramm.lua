@@ -50,15 +50,15 @@ dofile("/stargate/sicherNachNeustart.lua")
 dofile("/stargate/sprache/" .. Sprache .. ".lua")
 dofile("/stargate/sprache/ersetzen.lua")
 
-function pad(s, n)
+local function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
 end
 
-function zeichenErsetzen(eingabeErsetzung)
+local function zeichenErsetzen(eingabeErsetzung)
   return string.gsub(eingabeErsetzung, "%a+", function (str) return ersetzen [str] end)
 end
 
-function checkReset()
+local function checkReset()
   if time == "-" then else
     if time > 500 then
       messageshow = true
@@ -80,7 +80,7 @@ function checkReset()
   end
 end
 
-function zeigeMenu()
+local function zeigeMenu()
   gpu.setBackground(Adressfarbe)
   gpu.setForeground(Adresstextfarbe)
   for P = 1, screen_height - 3 do
@@ -100,7 +100,7 @@ function zeigeMenu()
   end
 end
 
-function AdressenLesen()
+local function AdressenLesen()
   for i, na in pairs(gespeicherteAdressen) do
     if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
       AdressAnzeige = i - seite * 10
@@ -119,7 +119,7 @@ function AdressenLesen()
   end
 end
 
-function Infoseite()
+local function Infoseite()
   print(Steuerung)
   if iris == "Offline" then else
     print("I " .. IrisSteuerung .. an_aus)
@@ -145,7 +145,7 @@ function Infoseite()
   print(versionName .. version)
 end
 
-function AdressenSpeichern()
+local function AdressenSpeichern()
   dofile("/stargate/adressen.lua")
   gespeicherteAdressen = {}
   local k = 0
@@ -184,7 +184,7 @@ function AdressenSpeichern()
   zeigeNachricht("")
 end
 
-function zeigeFarben()
+local function zeigeFarben()
   gpu.setBackground(Trennlinienfarbe)
   for P = 1, screen_height - 2 do
     zeigeHier(xVerschiebung - 2, P, "  ", 1)
@@ -194,19 +194,19 @@ function zeigeFarben()
   neueZeile(1)
 end
 
-function getIrisState()
+local function getIrisState()
   ok, result = pcall(sg.irisState)
   return result
 end
 
-function irisClose()
+local function irisClose()
   sg.closeIris()
   RedstoneAenderung(yellow, 255)
   --IrisZustandName = irisNameSchliessend
   Colorful_Lamp_Steuerung()
 end
 
-function irisOpen()
+local function irisOpen()
   sg.openIris()
   RedstoneAenderung(yellow, 0)
   --IrisZustandName = irisNameOeffnend
@@ -214,7 +214,7 @@ function irisOpen()
   Colorful_Lamp_Steuerung()
 end
 
-function sides()
+local function sides()
   if side == "oben" or side == "top" then
     sideNum = 1
   elseif side == "hinten" or side == "back" then
@@ -230,7 +230,7 @@ function sides()
   end
 end
 
-function iriscontroller()
+local function iriscontroller()
   if state == "Dialing" then
     messageshow = true
   end
@@ -330,11 +330,11 @@ function iriscontroller()
   end
 end
 
-function neueZeile(b)
+local function neueZeile(b)
   zeile = zeile + b
 end
 
-function newAddress(g)
+local function newAddress(g)
   if AddNewAddress == true then
     f = io.open ("stargate/adressen.lua", "a")
     f:seek ("end", firstrun)
@@ -349,7 +349,7 @@ function newAddress(g)
   end
 end
 
-function destinationName()
+local function destinationName()
   if state == "Dialling" or state == "Connected" then
     if remoteName == "" and state == "Dialling" and wormhole == "in" then
       for j, na in pairs(adressen) do
@@ -369,7 +369,7 @@ function destinationName()
   end
 end
 
-function getAddress(A)
+local function getAddress(A)
   if A == "" or A == nil then
     return ""
   else
@@ -377,7 +377,7 @@ function getAddress(A)
   end
 end
 
-function wormholeDirection()
+local function wormholeDirection()
   if direction == "Outgoing" then
     wormhole = "out"
   end
@@ -386,7 +386,7 @@ function wormholeDirection()
   end
 end
 
-function aktualisiereStatus()
+local function aktualisiereStatus()
   gpu.setResolution(70, 25)
   sg = component.getPrimary("stargate")
   locAddr = getAddress(sg.localAddress())
@@ -423,7 +423,7 @@ function aktualisiereStatus()
   end
 end
 
-function zeigeStatus()
+local function zeigeStatus()
   gpu.setBackground(Statusfarbe)
   gpu.setForeground(Statustextfarbe)
   aktualisiereStatus()
@@ -452,16 +452,16 @@ function zeigeStatus()
   Colorful_Lamp_Steuerung()
 end
 
-function RedstoneAenderung(a, b)
+local function RedstoneAenderung(a, b)
   if sideNum == nil then
     sides()
   end
-  if redst == true then
+  if component.isAvailable("redstone") then
     r.setBundledOutput(sideNum, a, b)
   end
 end
 
-function RedstoneKontrolle()
+local function RedstoneKontrolle()
   if component.isAvailable("redstone") then
     r = component.getPrimary("redstone")
   end
@@ -503,7 +503,7 @@ function RedstoneKontrolle()
   end
 end
 
-function zeigeSteuerung()
+local function zeigeSteuerung()
   zeigeFarben()
   gpu.setBackground(Steuerungsfarbe)
   gpu.setForeground(Steuerungstextfarbe)
@@ -539,7 +539,7 @@ function zeigeSteuerung()
   end
 end
 
-function autoclose()
+local function autoclose()
   if autoclosetime == false then
     zeigeHier(xVerschiebung, zeile, "  " .. autoSchliessungAus)
   else
@@ -550,7 +550,7 @@ function autoclose()
   end
 end
 
-function zeigeEnergie()
+local function zeigeEnergie()
   if     energy > 10000000000 then
     energieMenge = string.format("%.2f", energy / 1000000000) .. " G"
   elseif energy > 10000000 then
@@ -563,7 +563,7 @@ function zeigeEnergie()
   zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. energieMenge)
 end
 
-function activetime()
+local function activetime()
   if state == "Connected" then
     if activationtime == 0 then
       activationtime = os.time()
@@ -577,7 +577,7 @@ function activetime()
   end
 end
 
-function zeigeHier(x, y, s, h)
+local function zeigeHier(x, y, s, h)
   setCursor(x, y)
   if h == nil then
     h = screen_width
@@ -585,7 +585,7 @@ function zeigeHier(x, y, s, h)
   write(pad(s, h))
 end
 
-function zeigeNachricht(mess)
+local function zeigeNachricht(mess)
   letzteNachricht = os.time()
   gpu.setBackground(Nachrichtfarbe)
   gpu.setForeground(Nachrichttextfarbe)
@@ -594,7 +594,7 @@ function zeigeNachricht(mess)
   gpu.setBackground(Statusfarbe)
 end
 
-function zeigeFehler(mess)
+local function zeigeFehler(mess)
   if mess == "" then else
     schreibFehlerLog(mess)
     mess = string.format("%s %s", fehlerName, mess)
@@ -602,7 +602,7 @@ function zeigeFehler(mess)
   end
 end
 
-function schreibFehlerLog(mess)
+local function schreibFehlerLog(mess)
   if mess_old == mess then else
     if fs.exists("/log") then
       f = io.open("log", "a")
@@ -618,7 +618,7 @@ end
 
 handlers = {}
 
-function dial(name, adresse)
+local function dial(name, adresse)
   if state == "Idle" then
     remoteName = name
     zeigeNachricht(waehlen .. "<" .. string.sub(remoteName, 1, xVerschiebung + 12) .. "> <" .. adresse .. ">")
@@ -759,7 +759,7 @@ handlers[key_event_name] = function(e)
   end
 end
 
-function handlers.sgChevronEngaged(e)
+local function handlers.sgChevronEngaged(e)
   chevron = e[3]
   if chevron == 1 then
     zielAdresse = e[4]
@@ -771,7 +771,7 @@ function handlers.sgChevronEngaged(e)
   zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, aktiviert, zielAdresse))
 end
 
-function eventLoop()
+local function eventLoop()
   while running do
     checken(zeigeStatus)
     checken(checkReset)
@@ -796,14 +796,14 @@ function eventLoop()
   end
 end
 
-function checken(...)
+local function checken(...)
   ok, result = pcall(...)
   if not ok then
     zeigeFehler(result)
   end
 end
 
-function Colorful_Lamp_Steuerung()
+local function Colorful_Lamp_Steuerung()
   if iris == "Closed" or iris == "Closing" or LampenRot == true then
     Colorful_Lamp_Farben(31744) -- rot
   elseif redstoneIDC == false then
@@ -825,7 +825,7 @@ function Colorful_Lamp_Steuerung()
   -- 0      schwarz
 end
 
-function Colorful_Lamp_Farben(eingabe, ausgabe)
+local function Colorful_Lamp_Farben(eingabe, ausgabe)
   if alte_eingabe == eingabe then else
     for k in component.list("colorful_lamp") do
       component.proxy(k).setLampColor(eingabe)
@@ -837,13 +837,13 @@ function Colorful_Lamp_Farben(eingabe, ausgabe)
   end
 end
 
-function zeigeAnzeige()
+local function zeigeAnzeige()
   zeigeFarben()
   zeigeStatus()
   zeigeMenu()
 end
 
-function beendeAlles()
+local function beendeAlles()
   gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   gpu.setBackground(schwarzeFarbe)
   gpu.setForeground(weisseFarbe)
@@ -868,7 +868,7 @@ function beendeAlles()
   RedstoneAenderung(black, 0) print(redstoneAusschalten .. "black")
 end
 
-function main()
+local function main()
   if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
     irisOpen()
   end
