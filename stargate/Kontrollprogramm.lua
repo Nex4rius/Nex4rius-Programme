@@ -335,6 +335,8 @@ end
 function wormholeDirection()
   if direction == "Outgoing" then
     wormhole = "out"
+  else
+    wormhole = "in"
   end
   if wormhole == "out" and state == "Closing" then
     direction = "Outgoing"
@@ -351,12 +353,14 @@ function aktualisiereStatus()
   wormholeDirection()
   iris = sg.irisState()
   iriscontroller()
-  if direction == "Outgoing" then
-    RichtungName = RichtungNameAus
-  elseif direction == "Incoming" then
-    RichtungName = RichtungNameEin
-  else
+  if state == "Idle" then
     RichtungName = ""
+  else
+    if wormhole == "out" then
+      RichtungName = RichtungNameAus
+    else
+      RichtungName = RichtungNameEin
+    end
   end
   if state == "Idle" then
     StatusName = StatusNameUntaetig
