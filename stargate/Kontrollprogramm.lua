@@ -2,15 +2,15 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Stargate-Programm
 
-local component = require("component")
-local sides = require("sides")
-local term = require("term")
-local event = require("event")
-local fs = require("filesystem")
-local c = require("computer")
-local gpu = component.getPrimary("gpu")
-local control = "On"
-local sg = component.getPrimary("stargate")
+local component             = require("component")
+local sides                 = require("sides")
+local term                  = require("term")
+local event                 = require("event")
+local fs                    = require("filesystem")
+local c                     = require("computer")
+local gpu                   = component.getPrimary("gpu")
+local sg                    = component.getPrimary("stargate")
+local control               = "On"
 
 local RF
 local autoclosetime
