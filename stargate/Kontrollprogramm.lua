@@ -735,6 +735,8 @@ function handlers.sgChevronEngaged(e)
   chevron = e[3]
   if chevron == 1 then
     symbol = e[4]
+  elseif chevron == 5 or chevron == 8 then
+    symbol = "-" .. symbol .. e[4]
   else
     symbol = symbol .. e[4]
   end
