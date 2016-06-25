@@ -8,9 +8,12 @@ local term                  = require("term")
 local event                 = require("event")
 local fs                    = require("filesystem")
 local c                     = require("computer")
+local shell                 = require("shell")
+local args                  = shell.parse(...)
 local gpu                   = component.getPrimary("gpu")
 local sg                    = component.getPrimary("stargate")
 local control               = "On"
+local Sprache               = args[1]
 
 local RF
 local autoclosetime
@@ -82,7 +85,6 @@ local Statustextfarbe       = Textfarbe
 
 local control
 local firstrun
-local Sprache
 local installieren
 local k
 local zielAdresse
