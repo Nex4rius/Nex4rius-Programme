@@ -593,7 +593,7 @@ handlers = {}
 function dial(name, adresse)
   if state == "Idle" then
     remoteName = name
-    zeigeNachricht(string.format("%s<%s> <%s>", waehlen, string.sub(remoteName, 1, xVerschiebung + 12), adresse)
+    zeigeNachricht(waehlen .. "<" .. string.sub(remoteName, 1, xVerschiebung + 12) .. "> <" .. adresse .. ">")
   end
   state = "Dialling"
   ok, ergebnis = sg.dial(adresse)
@@ -733,7 +733,11 @@ end
 
 function handlers.sgChevronEngaged(e)
   chevron = e[3]
-  symbol = e[4]
+  if chevron == 1 then
+    symbol = e[4]
+  else
+    symbol = symbol .. e[4]
+  end
   zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, aktiviert, symbol))
 end
 
