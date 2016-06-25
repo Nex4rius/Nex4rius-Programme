@@ -15,6 +15,7 @@ local control               = "On"
 local RF
 local autoclosetime
 local side
+local sideNum
 local IDC
 local adressen
   
@@ -86,6 +87,24 @@ local installieren
 local k
 local zielAdresse
 local AdressAnzeige
+local gespeicherteAdressen
+local ok
+local result
+local ergebnis
+local state
+local chevron
+local direction
+local iris
+local locAddr
+local remAddr
+local RichtungName
+local StatusName
+local energieMenge
+local mess
+local mess_old
+local eingabe
+local alte_eingabe
+local ausgabe
 
 local pruefeKomponenten
 local redstoneOK
@@ -803,7 +822,7 @@ end
 function zeigeHier(x, y, s, h)
   setCursor(x, y)
   if h == nil then
-    h = screen_width
+    local h = screen_width
   end
   write(pad(s, h))
 end
