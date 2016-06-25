@@ -205,7 +205,6 @@ function iriscontroller(iris)
     entercode = false
     remoteName = ""
     incode = "-"
-    wormhole = "in"
     LampenGruen = false
     LampenRot = false
     zielAdresse = ""
