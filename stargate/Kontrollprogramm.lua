@@ -334,8 +334,6 @@ end
 function wormholeDirection()
   if direction == "Outgoing" then
     wormhole = "out"
-  else
-    wormhole = "in"
   end
   if wormhole == "out" and state == "Closing" then
     direction = "Outgoing"
