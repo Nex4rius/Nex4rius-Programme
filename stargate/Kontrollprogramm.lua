@@ -422,15 +422,12 @@ end
 function irisClose()
   sg.closeIris()
   RedstoneAenderung(yellow, 255)
-  --IrisZustandName = irisNameSchliessend
   Colorful_Lamp_Steuerung()
 end
 
 function irisOpen()
   sg.openIris()
   RedstoneAenderung(yellow, 0)
-  --IrisZustandName = irisNameOeffnend
-  --iris = "Opening"
   Colorful_Lamp_Steuerung()
 end
 
@@ -800,7 +797,7 @@ end
 function zeigeHier(x, y, s, h)
   setCursor(x, y)
   if h == nil then
-    local h = screen_width
+    h = 70
   end
   write(pad(s, h))
 end
