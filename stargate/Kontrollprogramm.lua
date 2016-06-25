@@ -25,7 +25,6 @@ end
 function checkReset()
   if time == "-" then else
     if time > 500 then
-      zeigeNachricht("")
       messageshow = true
       IDCyes = false
       send = true
@@ -40,6 +39,7 @@ function checkReset()
       remoteName = ""
       activationtime = 0
       LampenGruen = false
+      zielAdresse = ""
     end
   end
 end
@@ -125,7 +125,9 @@ function AdressenSpeichern()
       if not anwahlEnergie then
         gespeicherteAdressen[i + k][4] = fehlerName
       else
-        if anwahlEnergie > 10000000 then
+        if     anwahlEnergie > 10000000000 then
+          gespeicherteAdressen[i + k][4] = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000) .. " G"
+        elseif anwahlEnergie > 10000000 then
           gespeicherteAdressen[i + k][4] = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000) .. " M"
         elseif anwahlEnergie > 10000 then
           gespeicherteAdressen[i + k][4] = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000) .. " k"
@@ -253,6 +255,7 @@ function iriscontroller()
     activationtime = 0
     entercode = false
     showidc = ""
+    zielAdresse = ""
   end
   if state == "Idle" and control == "On" then
     iriscontrol = "on"
@@ -260,17 +263,18 @@ function iriscontroller()
   if state == "Closing" then
     send = true
     incode = "-"
-    zeigeNachricht("")
     IDCyes = false
     AddNewAddress = true
     LampenGruen = false
     LampenRot = false
+    zielAdresse = ""
   end
   if state == "Idle" then
     incode = "-"
     wormhole = "in"
     LampenGruen = false
     LampenRot = false
+    zielAdresse = ""
   end
   if state == "Closing" and control == "On" then
     k = "close"
@@ -400,7 +404,7 @@ function zeigeStatus()
   gpu.setForeground(Statustextfarbe)
   aktualisiereStatus()
   zeigeHier(xVerschiebung, zeile, "  " .. lokaleAdresse .. locAddr) neueZeile(1)
-  zeigeHier(xVerschiebung, zeile, "  " .. zielAdresse .. remAddr) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. zielAdresseName .. zielAdresse) neueZeile(1)
   zeigeHier(xVerschiebung, zeile, "  " .. zielName .. remoteName) neueZeile(1)
   zeigeHier(xVerschiebung, zeile, "  " .. statusName .. StatusName) neueZeile(1)
   zeigeEnergie() neueZeile(1)
@@ -523,13 +527,16 @@ function autoclose()
 end
 
 function zeigeEnergie()
-  if energy > 10000000 then
-    zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000000) .. " M")
+  if     energy > 10000000000 then
+    energieMenge = string.format("%.2f", energy / 1000000000) .. " G"
+  elseif energy > 10000000 then
+    energieMenge = string.format("%.2f", energy / 1000000) .. " M"
   elseif energy > 10000 then
-    zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.1f", energy/1000) .. " k")
+    energieMenge = string.format("%.2f", energy / 1000) .. " k"
   else
-    zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. string.format("%.f", energy))
+    energieMenge = string.format("%.f", energy)
   end
+  zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. energieMenge)
 end
 
 function activetime()
@@ -549,10 +556,9 @@ end
 function zeigeHier(x, y, s, h)
   setCursor(x, y)
   if h == nil then
-    write(pad(s, 80))
-  else
-    write(pad(s, h))
+    h = 80
   end
+  write(pad(s, h))
 end
 
 function zeigeNachricht(mess)
@@ -565,7 +571,6 @@ function zeigeNachricht(mess)
 end
 
 function zeigeFehler(mess)
-  i = string.find(mess, ": ")
   if mess == "" then else
     schreibFehlerLog(mess)
     mess = string.format("%s %s", fehlerName, mess)
@@ -592,7 +597,7 @@ handlers = {}
 function dial(name, adresse)
   if state == "Idle" then
     remoteName = name
-    zeigeNachricht(waehlen .. string.sub(remoteName, 1, xVerschiebung + 12) .. " (" .. adresse .. ")")
+    zeigeNachricht(waehlen .. "<" .. string.sub(remoteName, 1, xVerschiebung + 12) .. "> <" .. adresse .. ">")
   end
   state = "Dialling"
   ok, ergebnis = sg.dial(adresse)
@@ -621,11 +626,14 @@ handlers[key_event_name] = function(e)
     end
   elseif c == "d" then
     if state == "Connected" and direction == "Incoming" then
-        sg.disconnect()
-        sg.sendMessage("Request: Disconnect Stargate")
-        zeigeNachricht(senden .. aufforderung .. ": " .. stargateAbschalten .. " " .. stargateName)
+      sg.disconnect()
+      sg.sendMessage("Request: Disconnect Stargate")
+      zeigeNachricht(senden .. aufforderung .. ": " .. stargateAbschalten .. " " .. stargateName)
     else
-        sg.disconnect()
+      sg.disconnect()
+      if state == "Idle" then else
+        zeigeNachricht(stargateAbschalten .. " " .. stargateName)
+      end
     end
   elseif c == "o" then
     if iris == "Offline" then else
@@ -729,8 +737,14 @@ end
 
 function handlers.sgChevronEngaged(e)
   chevron = e[3]
-  symbol = e[4]
-  zeigeNachricht(string.format("Chevron %s %s! (%s)", chevron, aktiviert, symbol))
+  if chevron == 1 then
+    zielAdresse = e[4]
+  elseif chevron == 5 or chevron == 8 then
+    zielAdresse = zielAdresse .. "-" .. e[4]
+  else
+    zielAdresse = zielAdresse .. e[4]
+  end
+  zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, aktiviert, zielAdresse))
 end
 
 function eventLoop()
@@ -742,7 +756,6 @@ function eventLoop()
       name = e[1]
       f = handlers[name]
       if f then
-        zeigeNachricht("")
         checken(f, e)
       end
       if string.sub(e[1],1,3) == "sgM" and direction == "Incoming" and wormhole == "in" then
@@ -780,6 +793,12 @@ function Colorful_Lamp_Steuerung()
   else
     Colorful_Lamp_Farben(32767) -- weiß
   end
+  -- 32767  weiß
+  -- 32736  gelb
+  -- 32256  orange
+  -- 31744  rot
+  -- 992    grün
+  -- 0      schwarz
 end
 
 function Colorful_Lamp_Farben(eingabe, ausgabe)
