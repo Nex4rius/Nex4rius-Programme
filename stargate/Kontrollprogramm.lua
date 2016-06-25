@@ -25,7 +25,6 @@ end
 function checkReset()
   if time == "-" then else
     if time > 500 then
-      zeigeNachricht("")
       messageshow = true
       IDCyes = false
       send = true
@@ -262,7 +261,6 @@ function iriscontroller()
   if state == "Closing" then
     send = true
     incode = "-"
-    zeigeNachricht("")
     IDCyes = false
     AddNewAddress = true
     LampenGruen = false
@@ -745,7 +743,6 @@ function eventLoop()
       name = e[1]
       f = handlers[name]
       if f then
-        zeigeNachricht("")
         checken(f, e)
       end
       if string.sub(e[1],1,3) == "sgM" and direction == "Incoming" and wormhole == "in" then
