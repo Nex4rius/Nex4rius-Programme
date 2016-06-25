@@ -4,7 +4,48 @@
 
 dofile("/stargate/adressen.lua")
 dofile("/stargate/config.lua")
-dofile("/stargate/compat.lua")
+
+local function try(func, ...)
+  local ok, result = pcall(func, ...)
+  if not ok then
+    print("Error: " .. result)
+  end
+end
+
+local function check(...)
+  local values = {...}
+  if values[1] == nil then
+    error(values[2], 0)
+  end
+  return ...
+end
+
+local function setCursor(col, row)
+  term.setCursor(col, row)
+end
+
+local function write(s)
+  term.write(s)
+end
+
+local function pull_event()
+  if state == "Idle" and checkEnergy == energy then
+    local checkEnergy = energy
+    return event.pull(300)
+  else
+    local checkEnergy = energy
+    return event.pull(1)
+  end
+end
+
+local screen_width, screen_height = gpu.getResolution()
+local max_Bildschirmbreite, max_Bildschirmhoehe = gpu.maxResolution()
+local key_event_name = "key_down"
+
+local function key_event_char(e)
+  return string.char(e[3])
+end
+
 dofile("/stargate/sicherNachNeustart.lua")
 dofile("/stargate/sprache/" .. Sprache .. ".lua")
 dofile("/stargate/sprache/ersetzen.lua")
