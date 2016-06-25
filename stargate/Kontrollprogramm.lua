@@ -207,7 +207,58 @@ end
 function iriscontroller()
   if state == "Dialing" then
     messageshow = true
+    if wormhole == "in" and iriscontrol == "on" and control == "On" then
+      if iris == "Offline" then else
+        irisClose()
+        if redst == true then
+          r.setBundledOutput(sideNum, red, 255)
+        end
+        redstoneIncoming = false
+      end
+      k = "close"
+    end
+  elseif state == "Idle" then
+    activationtime = 0
+    entercode = false
+    remoteName = ""
+    incode = "-"
+    wormhole = "in"
+    LampenGruen = false
+    LampenRot = false
+    zielAdresse = ""
+    if control == "On" then
+      iriscontrol = "on"
+      if k == "close" then
+        outcode = nil
+        if iris == "Offline" then else
+          irisOpen()
+        end
+        iriscontrol = "on"
+        codeaccepted = "-"
+        showidc = ""
+      end
+    end
+  elseif state == "Closing" then
+    send = true
+    incode = "-"
+    IDCyes = false
+    AddNewAddress = true
+    LampenGruen = false
+    LampenRot = false
+    zielAdresse = ""
+    if control == "On" then
+      k = "close"
+    end
+  elseif state == "Connected" then
+    if direction == "Outgoing" and send == true then
+      if outcode == "-" or outcode == nil then else
+        sg.sendMessage(outcode)
+        send = false
+      end
+    end
   end
+
+
   if direction == "Incoming" and incode == IDC and control == "Off" then
     IDCyes = true
     if redst == true then
@@ -231,80 +282,25 @@ function iriscontroller()
     sg.sendMessage("Iris Control: "..control.." Iris: "..iris)
     send = false
   end
-  if wormhole == "in" and state == "Dialling" and iriscontrol == "on" and control == "On" then
-    if iris == "Offline" then else
-      irisClose()
-      if redst == true then
-        r.setBundledOutput(sideNum, red, 255)
-      end
-      redstoneIncoming = false
-    end
-    k = "close"
-  end
   if iris == "Closing" and control == "On" then
     k = "open"
   end
-  if state == "Idle" and k == "close" and control == "On" then
-    outcode = nil
-    if iris == "Offline" then else
-      irisOpen()
+  if codeaccepted == "-" or codeaccepted == nil then else
+    if messageshow == true then
+      zeigeNachricht(nachrichtAngekommen .. codeaccepted .. "                   ")
+      if codeaccepted == "Request: Disconnect Stargate" then
+        sg.disconnect()
+      elseif string.match(codeaccepted, "Iris: Open") or string.match(codeaccepted, "Iris: Offline") then
+        LampenGruen = true
+        LampenRot = false
+      elseif string.match(codeaccepted, "Iris: Closed") then
+        LampenGruen = false
+        LampenRot = true
+      end
+      messageshow = false
+      incode = "-"
+      codeaccepted = "-"
     end
-    iriscontrol = "on"
-    wormhole = "in"
-    codeaccepted = "-"
-    activationtime = 0
-    entercode = false
-    showidc = ""
-    zielAdresse = ""
-  end
-  if state == "Idle" and control == "On" then
-    iriscontrol = "on"
-  end
-  if state == "Closing" then
-    send = true
-    incode = "-"
-    IDCyes = false
-    AddNewAddress = true
-    LampenGruen = false
-    LampenRot = false
-    zielAdresse = ""
-  end
-  if state == "Idle" then
-    incode = "-"
-    wormhole = "in"
-    LampenGruen = false
-    LampenRot = false
-    zielAdresse = ""
-  end
-  if state == "Closing" and control == "On" then
-    k = "close"
-  end
-  if state == "Connected" and direction == "Outgoing" and send == true then
-    if outcode == "-" or outcode == nil then else
-      sg.sendMessage(outcode)
-      send = false
-    end
-  end
-  if codeaccepted == "-" or codeaccepted == nil then
-  elseif messageshow == true then
-    zeigeNachricht(nachrichtAngekommen .. codeaccepted .. "                   ")
-    if codeaccepted == "Request: Disconnect Stargate" then
-      sg.disconnect()
-    elseif string.match(codeaccepted, "Iris: Open") or string.match(codeaccepted, "Iris: Offline") then
-      LampenGruen = true
-      LampenRot = false
-    elseif string.match(codeaccepted, "Iris: Closed") then
-      LampenGruen = false
-      LampenRot = true
-    end
-    messageshow = false
-    incode = "-"
-    codeaccepted = "-"
-  end
-  if state == "Idle" then
-    activationtime = 0
-    entercode = false
-    remoteName = ""
   end
 end
 
