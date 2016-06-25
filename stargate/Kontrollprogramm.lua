@@ -85,6 +85,7 @@ local Sprache
 local installieren
 local k
 local zielAdresse
+local AdressAnzeige
 
 local pruefeKomponenten
 local redstoneOK
