@@ -2,23 +2,31 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Stargate-Programm
 
-component = require("component")
-sides = require("sides")
-term = require("term")
-event = require("event")
-fs = require("filesystem")
-c = require("computer")
-shell = require("shell")
-wget = loadfile("/bin/wget.lua")
-gpu = component.getPrimary("gpu")
-args = shell.parse(...)
-serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
-versionTyp = "master"
-Sprache = ""
-control = "On"
-firstrun = -2
-installieren = false
-betaVersionName = ""
+local component = require("component")
+local sides = require("sides")
+local term = require("term")
+local event = require("event")
+local fs = require("filesystem")
+local c = require("computer")
+local shell = require("shell")
+local wget = loadfile("/bin/wget.lua")
+local gpu = component.getPrimary("gpu")
+local args = shell.parse(...)
+local serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
+local versionTyp = "master"
+local Sprache = ""
+local control = "On"
+local firstrun = -2
+local installieren = false
+local betaVersionName = ""
+local version
+local antwortFrageSprache
+local r
+local redst
+local graphicT3
+local internet
+local serverVersion
+local betaServerVersion
 
 if fs.exists("/stargate/version.txt") then
   f = io.open ("/stargate/version.txt", "r")
@@ -85,7 +93,6 @@ function checkKomponenten()
   end
   if component.isAvailable("stargate") then
     print(StargateOK)
-    sg = component.getPrimary("stargate")
     return true
   else
     print(StargateFehlt)
