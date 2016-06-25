@@ -176,7 +176,7 @@ function mainCheck()
   print(laden)
   installieren = false
   schreibSicherungsdatei()
-  os.execute("/stargate/Kontrollprogramm.lua" .. Sprache)
+  dofile("/stargate/Kontrollprogramm.lua")
 end
 
 if Sprache == "" then
