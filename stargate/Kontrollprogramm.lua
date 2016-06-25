@@ -533,7 +533,7 @@ end
 function zeigeHier(x, y, s, h)
   setCursor(x, y)
   if h == nil then
-    h = 80
+    h = max_Bildschirmbreite
   end
   write(pad(s, h))
 end
@@ -542,8 +542,8 @@ function zeigeNachricht(mess)
   letzteNachricht = os.time()
   gpu.setBackground(Nachrichtfarbe)
   gpu.setForeground(Nachrichttextfarbe)
-  zeigeHier(1, screen_height - 1, "", 80)
-  zeigeHier(1, screen_height, zeichenErsetzen(mess), max_Bildschirmbreite - string.len(zeichenErsetzen(mess)))
+  zeigeHier(1, screen_height - 1, "", max_Bildschirmbreite)
+  zeigeHier(1, screen_height, zeichenErsetzen(mess), max_Bildschirmbreite)
   gpu.setBackground(Statusfarbe)
 end
 
