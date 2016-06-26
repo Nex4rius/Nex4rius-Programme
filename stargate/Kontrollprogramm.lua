@@ -107,38 +107,39 @@ local alte_eingabe
 local ausgabe
 local anwahlEnergie
 
+local white                 = 0
+--local orange                = 1
+--local magenta               = 2
+--local lightblue             = 3
+local yellow                = 4
+--local lime                  = 5
+--local pink                  = 6
+--local gray                  = 7
+--local silver                = 8
+--local cyan                  = 9
+--local purple                = 10
+--local blue                  = 11
+--local brown                 = 12
+local green                 = 13
+local red                   = 14
+local black                 = 15
+  
 if component.isAvailable("redstone") then
-  local white               = 0
   r.setBundledOutput(0, white, 0)
---  local orange              = 1
 --  r.setBundledOutput(0, orange, 0)
---  local magenta             = 2
 --  r.setBundledOutput(0, magenta, 0)
---  local lightblue           = 3
 --  r.setBundledOutput(0, lightblue, 0)
-  local yellow              = 4
   r.setBundledOutput(0, yellow, 0)
---  local lime                = 5
 --  r.setBundledOutput(0, lime, 0)
---  local pink                = 6
 --  r.setBundledOutput(0, pink, 0)
---  local gray                = 7
 --  r.setBundledOutput(0, gray, 0)
---  local silver              = 8
 --  r.setBundledOutput(0, silver, 0)
---  local cyan                = 9
 --  r.setBundledOutput(0, cyan, 0)
---  local purple              = 10
 --  r.setBundledOutput(0, purple, 0)
---  local blue                = 11
 --  r.setBundledOutput(0, blue, 0)
---  local brown               = 12
 --  r.setBundledOutput(0, brown, 0)
-  local green               = 13
   r.setBundledOutput(0, green, 0)
-  local red                 = 14
   r.setBundledOutput(0, red, 0)
-  local black               = 15
   r.setBundledOutput(0, black, 0)
 end
 
@@ -185,8 +186,13 @@ end
 
 local function pull_event()
   if state == "Idle" and checkEnergy == energy then
-    checkEnergy = energy
-    return event.pull(300)
+    if (letzteNachricht - os.time()) / sectime > 45 then
+      checkEnergy = energy
+      return event.pull(300)
+    else
+      checkEnergy = energy
+      return event.pull(50)
+    end
   else
     checkEnergy = energy
     return event.pull(1)
@@ -1078,22 +1084,24 @@ function beendeAlles()
   term.clear()
   print(ausschaltenName .. "\n")
   Colorful_Lamp_Farben(0, true)
-  RedstoneAenderung(white, 0) print(redstoneAusschalten .. "white")
---  RedstoneAenderung(orange, 0) print(redstoneAusschalten .. "orange")
---  RedstoneAenderung(magenta, 0) print(redstoneAusschalten .. "magenta")
---  RedstoneAenderung(lightblue, 0) print(redstoneAusschalten .. "lightblue")
-  RedstoneAenderung(yellow, 0) print(redstoneAusschalten .. "yellow")
---  RedstoneAenderung(lime, 0) print(redstoneAusschalten .. "lime")
---  RedstoneAenderung(pink, 0) print(redstoneAusschalten .. "pink")
---  RedstoneAenderung(gray, 0) print(redstoneAusschalten .. "gray")
---  RedstoneAenderung(silver, 0) print(redstoneAusschalten .. "silver")
---  RedstoneAenderung(cyan, 0) print(redstoneAusschalten .. "cyan")
---  RedstoneAenderung(purple, 0) print(redstoneAusschalten .. "purple")
---  RedstoneAenderung(blue, 0) print(redstoneAusschalten .. "blue")
---  RedstoneAenderung(brown, 0) print(redstoneAusschalten .. "brown")
-  RedstoneAenderung(green, 0) print(redstoneAusschalten .. "green")
-  RedstoneAenderung(red, 0) print(redstoneAusschalten .. "red")
-  RedstoneAenderung(black, 0) print(redstoneAusschalten .. "black")
+  if component.isAvailable("redstone") then
+    r.setBundledOutput(sideNum, white, 0) print(redstoneAusschalten .. "white")
+--    r.setBundledOutput(sideNum, orange, 0) print(redstoneAusschalten .. "orange")
+--    r.setBundledOutput(sideNum, magenta, 0) print(redstoneAusschalten .. "magenta")
+--    r.setBundledOutput(sideNum, lightblue, 0) print(redstoneAusschalten .. "lightblue")
+    r.setBundledOutput(sideNum, yellow, 0) print(redstoneAusschalten .. "yellow")
+--    r.setBundledOutput(sideNum, lime, 0) print(redstoneAusschalten .. "lime")
+--    r.setBundledOutput(sideNum, pink, 0) print(redstoneAusschalten .. "pink")
+--    r.setBundledOutput(sideNum, gray, 0) print(redstoneAusschalten .. "gray")
+--    r.setBundledOutput(sideNum, silver, 0) print(redstoneAusschalten .. "silver")
+--    r.setBundledOutput(sideNum, cyan, 0) print(redstoneAusschalten .. "cyan")
+--    r.setBundledOutput(sideNum, purple, 0) print(redstoneAusschalten .. "purple")
+--    r.setBundledOutput(sideNum, blue, 0) print(redstoneAusschalten .. "blue")
+--    r.setBundledOutput(sideNum, brown, 0) print(redstoneAusschalten .. "brown")
+    r.setBundledOutput(sideNum, green, 0) print(redstoneAusschalten .. "green")
+    r.setBundledOutput(sideNum, red, 0) print(redstoneAusschalten .. "red")
+    r.setBundledOutput(sideNum, black, 0) print(redstoneAusschalten .. "black")
+  end
 end
 
 function main()
