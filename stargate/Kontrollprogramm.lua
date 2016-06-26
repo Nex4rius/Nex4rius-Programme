@@ -295,6 +295,7 @@ local verarbeiteAdressen        = verarbeiteAdressen
 local Hilfetext                 = Hilfetext
 local ersetzen                  = ersetzen
 local IrisZustandName           = irisNameOffline
+local Sprachaenderung           = Sprachaenderung
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
@@ -998,8 +999,7 @@ handlers[key_event_name] = function(e)
         _ENV.installieren = true
         installieren = true
         schreibSicherungsdatei()
-        os.execute("/stargate/check.lua no")
-        running = false
+        zeigeNachricht(Sprachaenderung)
       else
         print(fehlerName)
       end
