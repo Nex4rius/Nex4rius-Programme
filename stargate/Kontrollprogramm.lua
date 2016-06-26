@@ -185,8 +185,13 @@ end
 
 local function pull_event()
   if state == "Idle" and checkEnergy == energy then
-    checkEnergy = energy
-    return event.pull(300)
+    if (letzteNachricht - os.time()) / sectime > 45 then
+      checkEnergy = energy
+      return event.pull(300)
+    else
+      checkEnergy = energy
+      return event.pull(50)
+    end
   else
     checkEnergy = energy
     return event.pull(1)
