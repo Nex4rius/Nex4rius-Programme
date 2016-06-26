@@ -154,6 +154,10 @@ if sg.irisState() == "Offline" then
 end
 
 function schreibSicherungsdatei()
+  _ENV.control      = control
+  _ENV.firstrun     = firstrun
+  _ENV.Sprache      = control
+  _ENV.installieren = installieren
   f = io.open ("/stargate/sicherNachNeustart.lua", "w")
   f:write("-- pastebin run -f fa9gu1GJ\n-- von Nex4rius\n-- https://github.com/Nex4rius/Stargate-Programm\n\n")
   f:write('control = "' .. control .. '"\n')
