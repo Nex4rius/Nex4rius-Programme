@@ -10,7 +10,6 @@ local fs                    = require("filesystem")
 local c                     = require("computer")
 local gpu                   = component.getPrimary("gpu")
 local sg                    = component.getPrimary("stargate")
-local control               = "On"
 local Sprache               = Sprache
 
 
@@ -154,6 +153,10 @@ if sg.irisState() == "Offline" then
 end
 
 function schreibSicherungsdatei()
+  _ENV.control      = control
+  _ENV.firstrun     = firstrun
+  _ENV.Sprache      = control
+  _ENV.installieren = installieren
   f = io.open ("/stargate/sicherNachNeustart.lua", "w")
   f:write("-- pastebin run -f fa9gu1GJ\n-- von Nex4rius\n-- https://github.com/Nex4rius/Stargate-Programm\n\n")
   f:write('control = "' .. control .. '"\n')
@@ -161,6 +164,11 @@ function schreibSicherungsdatei()
   f:write('Sprache = "' .. Sprache .. '" -- deutsch / english\n')
   f:write('installieren = ' .. tostring(installieren) .. '\n')
   f:close()
+  print(control)
+  print(firstrun)
+  print(Sprache)
+  print(installieren)
+  os.sleep(5)
 end
 
 local function Adressvariablen()
@@ -222,6 +230,7 @@ dofile("/stargate/sicherNachNeustart.lua")
 dofile("/stargate/sprache/" .. Sprache .. ".lua")
 dofile("/stargate/sprache/ersetzen.lua")
 
+local control                   = control
 local Adressseite               = Adressseite
 local Unbekannt                 = Unbekannt
 local waehlen                   = waehlen
