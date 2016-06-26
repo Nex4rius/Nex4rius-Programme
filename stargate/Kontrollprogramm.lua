@@ -13,14 +13,15 @@ local sg                    = component.getPrimary("stargate")
 local control               = "On"
 local Sprache               = Sprache
 
-local RF
-local autoclosetime
-local side
-local sideNum
-local IDC
-local adressen
-  
+
 dofile("/stargate/adressen.lua")
+
+local RF                    = RF
+local autoclosetime         = autoclosetime
+local side                  = side
+local sideNum               = sideNum
+local IDC                   = IDC
+local adressen              = adressen
 
 local sectime               = os.time()
 os.sleep(1)
@@ -150,6 +151,15 @@ if sg.irisState() == "Offline" then
   Trennlinienhoehe    = 13
 end
 
+local function Adressvariablen()
+  RF                        = _ENV.RF
+  autoclosetime             = _ENV.autoclosetime
+  side                      = _ENV.side
+  sideNum                   = _ENV.sideNum
+  IDC                       = _ENV.IDC
+  adressen                  = _ENV.adressen
+end
+
 local function try(func, ...)
   local ok, result = pcall(func, ...)
   if not ok then
@@ -195,51 +205,51 @@ dofile("/stargate/sicherNachNeustart.lua")
 dofile("/stargate/sprache/" .. Sprache .. ".lua")
 dofile("/stargate/sprache/ersetzen.lua")
 
-local Adressseite = Adressseite
-local Unbekannt = Unbekannt
-local waehlen = waehlen
-local energie1 = energie1
-local energie2 = energie2
-local keineVerbindung = keineVerbindung
-local Steuerung = Steuerung
-local IrisSteuerung = IrisSteuerung
-local an_aus = an_aus
-local AdressenBearbeiten = AdressenBearbeiten
-local beenden = beenden
-local nachrichtAngekommen = nachrichtAngekommen
-local RedstoneSignale = RedstoneSignale
-local RedstoneWeiss = RedstoneWeiss
-local RedstoneRot = RedstoneRot
-local RedstoneGelb = RedstoneGelb
-local RedstoneSchwarz = RedstoneSchwarz
-local RedstoneGruen = RedstoneGruen
-local versionName = versionName
-local fehlerName = fehlerName
-local SteuerungName = SteuerungName
-local lokaleAdresse = lokaleAdresse
-local zielAdresseName = zielAdresseName
-local zielName = zielName
-local statusName = statusName
-local IrisName = IrisName
-local IrisSteuerung = IrisSteuerung
-local IDCakzeptiert = IDCakzeptiert
-local IDCname = IDCname
-local chevronName = chevronName
-local richtung = richtung
-local autoSchliessungAus = autoSchliessungAus
-local autoSchliessungAn = autoSchliessungAn
-local zeit1 = zeit1
-local zeit2 = zeit2
-local abschalten = abschalten
-local oeffneIris = oeffneIris
-local schliesseIris = schliesseIris
-local IDCeingabe = IDCeingabe
-local naechsteSeite = naechsteSeite
-local vorherigeSeite = vorherigeSeite
-local senden = senden
-local aufforderung = aufforderung
-local manueller = manueller
-local Eingriff = Eingriff
+local Adressseite               = Adressseite
+local Unbekannt                 = Unbekannt
+local waehlen                   = waehlen
+local energie1                  = energie1
+local energie2                  = energie2
+local keineVerbindung           = keineVerbindung
+local Steuerung                 = Steuerung
+local IrisSteuerung             = IrisSteuerung
+local an_aus                    = an_aus
+local AdressenBearbeiten        = AdressenBearbeiten
+local beenden                   = beenden
+local nachrichtAngekommen       = nachrichtAngekommen
+local RedstoneSignale           = RedstoneSignale
+local RedstoneWeiss             = RedstoneWeiss
+local RedstoneRot               = RedstoneRot
+local RedstoneGelb              = RedstoneGelb
+local RedstoneSchwarz           = RedstoneSchwarz
+local RedstoneGruen             = RedstoneGruen
+local versionName               = versionName
+local fehlerName                = fehlerName
+local SteuerungName             = SteuerungName
+local lokaleAdresse             = lokaleAdresse
+local zielAdresseName           = zielAdresseName
+local zielName                  = zielName
+local statusName                = statusName
+local IrisName                  = IrisName
+local IrisSteuerung             = IrisSteuerung
+local IDCakzeptiert             = IDCakzeptiert
+local IDCname                   = IDCname
+local chevronName               = chevronName
+local richtung                  = richtung
+local autoSchliessungAus        = autoSchliessungAus
+local autoSchliessungAn         = autoSchliessungAn
+local zeit1                     = zeit1
+local zeit2                     = zeit2
+local abschalten                = abschalten
+local oeffneIris                = oeffneIris
+local schliesseIris             = schliesseIris
+local IDCeingabe                = IDCeingabe
+local naechsteSeite             = naechsteSeite
+local vorherigeSeite            = vorherigeSeite
+local senden                    = senden
+local aufforderung              = aufforderung
+local manueller                 = manueller
+local Eingriff                  = Eingriff
 local stargateName              = stargateName
 local stargateAbschalten        = stargateAbschalten
 local aktiviert                 = aktiviert
@@ -267,8 +277,7 @@ local colorfulLampAusschalten   = colorfulLampAusschalten
 local verarbeiteAdressen        = verarbeiteAdressen
 local Hilfetext                 = Hilfetext
 local ersetzen                  = ersetzen
-
-local IrisZustandName = irisNameOffline
+local IrisZustandName           = irisNameOffline
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
@@ -561,6 +570,7 @@ function newAddress(g)
     firstrun = -1
     schreibSicherungsdatei()
     dofile("/stargate/adressen.lua")
+    Adressvariablen()
     sides()
     zeigeMenu()
   end
@@ -952,6 +962,7 @@ handlers[key_event_name] = function(e)
       gpu.setForeground(Textfarbe)
       os.execute("edit stargate/adressen.lua")
       dofile("/stargate/adressen.lua")
+      Adressvariablen()
       sides()
       seite = 0
       zeigeAnzeige()
