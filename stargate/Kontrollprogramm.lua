@@ -107,38 +107,39 @@ local alte_eingabe
 local ausgabe
 local anwahlEnergie
 
+local white                 = 0
+--local orange                = 1
+--local magenta               = 2
+--local lightblue             = 3
+local yellow                = 4
+--local lime                  = 5
+--local pink                  = 6
+--local gray                  = 7
+--local silver                = 8
+--local cyan                  = 9
+--local purple                = 10
+--local blue                  = 11
+--local brown                 = 12
+local green                 = 13
+local red                   = 14
+local black                 = 15
+  
 if component.isAvailable("redstone") then
-  local white               = 0
   r.setBundledOutput(0, white, 0)
---  local orange              = 1
 --  r.setBundledOutput(0, orange, 0)
---  local magenta             = 2
 --  r.setBundledOutput(0, magenta, 0)
---  local lightblue           = 3
 --  r.setBundledOutput(0, lightblue, 0)
-  local yellow              = 4
   r.setBundledOutput(0, yellow, 0)
---  local lime                = 5
 --  r.setBundledOutput(0, lime, 0)
---  local pink                = 6
 --  r.setBundledOutput(0, pink, 0)
---  local gray                = 7
 --  r.setBundledOutput(0, gray, 0)
---  local silver              = 8
 --  r.setBundledOutput(0, silver, 0)
---  local cyan                = 9
 --  r.setBundledOutput(0, cyan, 0)
---  local purple              = 10
 --  r.setBundledOutput(0, purple, 0)
---  local blue                = 11
 --  r.setBundledOutput(0, blue, 0)
---  local brown               = 12
 --  r.setBundledOutput(0, brown, 0)
-  local green               = 13
   r.setBundledOutput(0, green, 0)
-  local red                 = 14
   r.setBundledOutput(0, red, 0)
-  local black               = 15
   r.setBundledOutput(0, black, 0)
 end
 
