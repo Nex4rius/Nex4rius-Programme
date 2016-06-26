@@ -107,39 +107,38 @@ local alte_eingabe
 local ausgabe
 local anwahlEnergie
 
-local white                 = 0
---local orange                = 1
---local magenta               = 2
---local lightblue             = 3
-local yellow                = 4
---local lime                  = 5
---local pink                  = 6
---local gray                  = 7
---local silver                = 8
---local cyan                  = 9
---local purple                = 10
---local blue                  = 11
---local brown                 = 12
-local green                 = 13
-local red                   = 14
-local black                 = 15
-  
 if component.isAvailable("redstone") then
+  local white               = 0
   r.setBundledOutput(0, white, 0)
+--  local orange              = 1
 --  r.setBundledOutput(0, orange, 0)
+--  local magenta             = 2
 --  r.setBundledOutput(0, magenta, 0)
+--  local lightblue           = 3
 --  r.setBundledOutput(0, lightblue, 0)
+  local yellow              = 4
   r.setBundledOutput(0, yellow, 0)
+--  local lime                = 5
 --  r.setBundledOutput(0, lime, 0)
+--  local pink                = 6
 --  r.setBundledOutput(0, pink, 0)
+--  local gray                = 7
 --  r.setBundledOutput(0, gray, 0)
+--  local silver              = 8
 --  r.setBundledOutput(0, silver, 0)
+--  local cyan                = 9
 --  r.setBundledOutput(0, cyan, 0)
+--  local purple              = 10
 --  r.setBundledOutput(0, purple, 0)
+--  local blue                = 11
 --  r.setBundledOutput(0, blue, 0)
+--  local brown               = 12
 --  r.setBundledOutput(0, brown, 0)
+  local green               = 13
   r.setBundledOutput(0, green, 0)
+  local red                 = 14
   r.setBundledOutput(0, red, 0)
+  local black               = 15
   r.setBundledOutput(0, black, 0)
 end
 
@@ -186,13 +185,8 @@ end
 
 local function pull_event()
   if state == "Idle" and checkEnergy == energy then
-    if (letzteNachricht - os.time()) / sectime > 45 then
-      checkEnergy = energy
-      return event.pull(300)
-    else
-      checkEnergy = energy
-      return event.pull(50)
-    end
+    checkEnergy = energy
+    return event.pull(300)
   else
     checkEnergy = energy
     return event.pull(1)
@@ -285,11 +279,11 @@ local Hilfetext                 = Hilfetext
 local ersetzen                  = ersetzen
 local IrisZustandName           = irisNameOffline
 
-local function pad(s, n)
+function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
 end
 
-local function zeichenErsetzen(eingabeErsetzung)
+function zeichenErsetzen(eingabeErsetzung)
   return string.gsub(eingabeErsetzung, "%a+", function (str) return ersetzen [str] end)
 end
 
@@ -315,7 +309,7 @@ function checkReset()
   end
 end
 
-local function zeigeMenu()
+function zeigeMenu()
   gpu.setBackground(Adressfarbe)
   gpu.setForeground(Adresstextfarbe)
   for P = 1, screen_height - 3 do
@@ -335,7 +329,7 @@ local function zeigeMenu()
   end
 end
 
-local function AdressenLesen()
+function AdressenLesen()
   for i, na in pairs(gespeicherteAdressen) do
     if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
       AdressAnzeige = i - seite * 10
@@ -354,7 +348,7 @@ local function AdressenLesen()
   end
 end
 
-local function Infoseite()
+function Infoseite()
   print(Steuerung)
   if iris == "Offline" then else
     print("I " .. IrisSteuerung .. an_aus)
@@ -419,7 +413,7 @@ function AdressenSpeichern()
   zeigeNachricht("")
 end
 
-local function zeigeFarben()
+function zeigeFarben()
   gpu.setBackground(Trennlinienfarbe)
   for P = 1, screen_height - 2 do
     zeigeHier(xVerschiebung - 2, P, "  ", 1)
@@ -429,18 +423,18 @@ local function zeigeFarben()
   neueZeile(1)
 end
 
-local function getIrisState()
+function getIrisState()
   ok, result = pcall(sg.irisState)
   return result
 end
 
-local function irisClose()
+function irisClose()
   sg.closeIris()
   RedstoneAenderung(yellow, 255)
   Colorful_Lamp_Steuerung()
 end
 
-local function irisOpen()
+function irisOpen()
   sg.openIris()
   RedstoneAenderung(yellow, 0)
   Colorful_Lamp_Steuerung()
@@ -462,7 +456,7 @@ function sides()
   end
 end
 
-local function iriscontroller()
+function iriscontroller()
   if state == "Dialing" then
     messageshow = true
   end
@@ -562,7 +556,7 @@ local function iriscontroller()
   end
 end
 
-local function neueZeile(b)
+function neueZeile(b)
   zeile = zeile + b
 end
 
@@ -582,7 +576,7 @@ function newAddress(g)
   end
 end
 
-local function destinationName()
+function destinationName()
   if state == "Dialling" or state == "Connected" then
     if remoteName == "" and state == "Dialling" and wormhole == "in" then
       for j, na in pairs(adressen) do
@@ -602,7 +596,7 @@ local function destinationName()
   end
 end
 
-local function getAddress(A)
+function getAddress(A)
   if A == "" or A == nil then
     return ""
   else
@@ -610,7 +604,7 @@ local function getAddress(A)
   end
 end
 
-local function wormholeDirection()
+function wormholeDirection()
   if direction == "Outgoing" then
     wormhole = "out"
   end
@@ -619,7 +613,7 @@ local function wormholeDirection()
   end
 end
 
-local function aktualisiereStatus()
+function aktualisiereStatus()
   gpu.setResolution(70, 25)
   sg = component.getPrimary("stargate")
   locAddr = getAddress(sg.localAddress())
@@ -656,7 +650,7 @@ local function aktualisiereStatus()
   end
 end
 
-local function zeigeStatus()
+function zeigeStatus()
   gpu.setBackground(Statusfarbe)
   gpu.setForeground(Statustextfarbe)
   aktualisiereStatus()
@@ -685,7 +679,7 @@ local function zeigeStatus()
   Colorful_Lamp_Steuerung()
 end
 
-local function RedstoneAenderung(a, b)
+function RedstoneAenderung(a, b)
   if sideNum == nil then
     sides()
   end
@@ -694,7 +688,7 @@ local function RedstoneAenderung(a, b)
   end
 end
 
-local function RedstoneKontrolle()
+function RedstoneKontrolle()
   if component.isAvailable("redstone") then
     r = component.getPrimary("redstone")
   end
@@ -736,7 +730,7 @@ local function RedstoneKontrolle()
   end
 end
 
-local function zeigeSteuerung()
+function zeigeSteuerung()
   zeigeFarben()
   gpu.setBackground(Steuerungsfarbe)
   gpu.setForeground(Steuerungstextfarbe)
@@ -772,7 +766,7 @@ local function zeigeSteuerung()
   end
 end
 
-local function autoclose()
+function autoclose()
   if autoclosetime == false then
     zeigeHier(xVerschiebung, zeile, "  " .. autoSchliessungAus)
   else
@@ -783,7 +777,7 @@ local function autoclose()
   end
 end
 
-local function zeigeEnergie()
+function zeigeEnergie()
   if     energy > 10000000000 then
     energieMenge = string.format("%.2f", energy / 1000000000) .. " G"
   elseif energy > 10000000 then
@@ -796,7 +790,7 @@ local function zeigeEnergie()
   zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. energieMenge)
 end
 
-local function activetime()
+function activetime()
   if state == "Connected" then
     if activationtime == 0 then
       activationtime = os.time()
@@ -810,7 +804,7 @@ local function activetime()
   end
 end
 
-local function zeigeHier(x, y, s, h)
+function zeigeHier(x, y, s, h)
   setCursor(x, y)
   if h == nil then
     h = 70
@@ -818,7 +812,7 @@ local function zeigeHier(x, y, s, h)
   write(pad(s, h))
 end
 
-local function zeigeNachricht(mess)
+function zeigeNachricht(mess)
   letzteNachricht = os.time()
   gpu.setBackground(Nachrichtfarbe)
   gpu.setForeground(Nachrichttextfarbe)
@@ -851,7 +845,7 @@ end
 
 handlers = {}
 
-local function dial(name, adresse)
+function dial(name, adresse)
   if state == "Idle" then
     remoteName = name
     zeigeNachricht(waehlen .. "<" .. string.sub(remoteName, 1, xVerschiebung + 12) .. "> <" .. adresse .. ">")
@@ -863,7 +857,7 @@ local function dial(name, adresse)
   end
 end
 
-local handlers[key_event_name] = function(e)
+handlers[key_event_name] = function(e)
   c = key_event_char(e)
   if e[3] == 13 then
     entercode = false
@@ -993,7 +987,7 @@ local handlers[key_event_name] = function(e)
   end
 end
 
-local function handlers.sgChevronEngaged(e)
+function handlers.sgChevronEngaged(e)
   chevron = e[3]
   if chevron == 1 then
     zielAdresse = e[4]
@@ -1005,7 +999,7 @@ local function handlers.sgChevronEngaged(e)
   zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, aktiviert, zielAdresse))
 end
 
-local function eventLoop()
+function eventLoop()
   while running do
     checken(zeigeStatus)
     checken(checkReset)
@@ -1030,14 +1024,14 @@ local function eventLoop()
   end
 end
 
-local function checken(...)
+function checken(...)
   ok, result = pcall(...)
   if not ok then
     zeigeFehler(result)
   end
 end
 
-local function Colorful_Lamp_Steuerung()
+function Colorful_Lamp_Steuerung()
   if iris == "Closed" or iris == "Closing" or LampenRot == true then
     Colorful_Lamp_Farben(31744) -- rot
   elseif redstoneIDC == false then
@@ -1059,7 +1053,7 @@ local function Colorful_Lamp_Steuerung()
   -- 0      schwarz
 end
 
-local function Colorful_Lamp_Farben(eingabe, ausgabe)
+function Colorful_Lamp_Farben(eingabe, ausgabe)
   if alte_eingabe == eingabe then else
     for k in component.list("colorful_lamp") do
       component.proxy(k).setLampColor(eingabe)
@@ -1071,7 +1065,7 @@ local function Colorful_Lamp_Farben(eingabe, ausgabe)
   end
 end
 
-local function zeigeAnzeige()
+function zeigeAnzeige()
   zeigeFarben()
   zeigeStatus()
   zeigeMenu()
@@ -1084,24 +1078,22 @@ function beendeAlles()
   term.clear()
   print(ausschaltenName .. "\n")
   Colorful_Lamp_Farben(0, true)
-  if component.isAvailable("redstone") then
-    r.setBundledOutput(sideNum, white, 0) print(redstoneAusschalten .. "white")
---    r.setBundledOutput(sideNum, orange, 0) print(redstoneAusschalten .. "orange")
---    r.setBundledOutput(sideNum, magenta, 0) print(redstoneAusschalten .. "magenta")
---    r.setBundledOutput(sideNum, lightblue, 0) print(redstoneAusschalten .. "lightblue")
-    r.setBundledOutput(sideNum, yellow, 0) print(redstoneAusschalten .. "yellow")
---    r.setBundledOutput(sideNum, lime, 0) print(redstoneAusschalten .. "lime")
---    r.setBundledOutput(sideNum, pink, 0) print(redstoneAusschalten .. "pink")
---    r.setBundledOutput(sideNum, gray, 0) print(redstoneAusschalten .. "gray")
---    r.setBundledOutput(sideNum, silver, 0) print(redstoneAusschalten .. "silver")
---    r.setBundledOutput(sideNum, cyan, 0) print(redstoneAusschalten .. "cyan")
---    r.setBundledOutput(sideNum, purple, 0) print(redstoneAusschalten .. "purple")
---    r.setBundledOutput(sideNum, blue, 0) print(redstoneAusschalten .. "blue")
---    r.setBundledOutput(sideNum, brown, 0) print(redstoneAusschalten .. "brown")
-    r.setBundledOutput(sideNum, green, 0) print(redstoneAusschalten .. "green")
-    r.setBundledOutput(sideNum, red, 0) print(redstoneAusschalten .. "red")
-    r.setBundledOutput(sideNum, black, 0) print(redstoneAusschalten .. "black")
-  end
+  RedstoneAenderung(white, 0) print(redstoneAusschalten .. "white")
+--  RedstoneAenderung(orange, 0) print(redstoneAusschalten .. "orange")
+--  RedstoneAenderung(magenta, 0) print(redstoneAusschalten .. "magenta")
+--  RedstoneAenderung(lightblue, 0) print(redstoneAusschalten .. "lightblue")
+  RedstoneAenderung(yellow, 0) print(redstoneAusschalten .. "yellow")
+--  RedstoneAenderung(lime, 0) print(redstoneAusschalten .. "lime")
+--  RedstoneAenderung(pink, 0) print(redstoneAusschalten .. "pink")
+--  RedstoneAenderung(gray, 0) print(redstoneAusschalten .. "gray")
+--  RedstoneAenderung(silver, 0) print(redstoneAusschalten .. "silver")
+--  RedstoneAenderung(cyan, 0) print(redstoneAusschalten .. "cyan")
+--  RedstoneAenderung(purple, 0) print(redstoneAusschalten .. "purple")
+--  RedstoneAenderung(blue, 0) print(redstoneAusschalten .. "blue")
+--  RedstoneAenderung(brown, 0) print(redstoneAusschalten .. "brown")
+  RedstoneAenderung(green, 0) print(redstoneAusschalten .. "green")
+  RedstoneAenderung(red, 0) print(redstoneAusschalten .. "red")
+  RedstoneAenderung(black, 0) print(redstoneAusschalten .. "black")
 end
 
 function main()
