@@ -31,5 +31,11 @@ Some feature of my programm:
 - works with Computronics ColorfulLamps
 - allows closing of incoming wormholes if its disabled in config AND there is a computer at either end
 
+Usage: autorun [...]<br>
+yes   -> update to stable version<br>
+no    -> no update<br>
+beta  -> update to beta version<br>
+help  -> show this message again
+
 Make pull requests if you want :)
 
