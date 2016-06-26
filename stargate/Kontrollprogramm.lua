@@ -165,6 +165,11 @@ function schreibSicherungsdatei()
   f:write('Sprache = "' .. Sprache .. '" -- deutsch / english\n')
   f:write('installieren = ' .. tostring(installieren) .. '\n')
   f:close()
+  print(control)
+  print(firstrun)
+  print(Sprache)
+  print(installieren)
+  os.sleep(5)
 end
 
 local function Adressvariablen()
