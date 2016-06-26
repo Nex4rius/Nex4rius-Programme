@@ -991,6 +991,10 @@ handlers[key_event_name] = function(e)
       antwortFrageSprache = io.read()
       if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
         Sprache = string.lower(antwortFrageSprache)
+        _ENV.control = control
+        _ENV.firstrun = firstrun
+        _ENV.Sprache = Sprache
+        _ENV.installieren = true
         installieren = true
         schreibSicherungsdatei()
         os.execute("/stargate/check.lua no")
