@@ -82,10 +82,11 @@ local Steuerungstextfarbe   = schwarzeFarbe
 local Statusfarbe           = grueneFarbe
 local Statustextfarbe       = Textfarbe
 
-local firstrun
-local installieren
+local firstrun              = firstrun
+local installieren          = installieren
+local zielAdresse           = ""
+
 local k
-local zielAdresse
 local AdressAnzeige
 local gespeicherteAdressen
 local ok
