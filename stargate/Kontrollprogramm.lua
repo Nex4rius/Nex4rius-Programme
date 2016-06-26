@@ -81,7 +81,6 @@ local Steuerungstextfarbe   = schwarzeFarbe
 local Statusfarbe           = grueneFarbe
 local Statustextfarbe       = Textfarbe
 
-local control
 local firstrun
 local installieren
 local k
