@@ -10,7 +10,6 @@ local fs                    = require("filesystem")
 local c                     = require("computer")
 local gpu                   = component.getPrimary("gpu")
 local sg                    = component.getPrimary("stargate")
-local control               = "On"
 local Sprache               = Sprache
 
 
@@ -231,6 +230,7 @@ dofile("/stargate/sicherNachNeustart.lua")
 dofile("/stargate/sprache/" .. Sprache .. ".lua")
 dofile("/stargate/sprache/ersetzen.lua")
 
+local control                   = control
 local Adressseite               = Adressseite
 local Unbekannt                 = Unbekannt
 local waehlen                   = waehlen
