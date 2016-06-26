@@ -406,10 +406,10 @@ function AdressenSpeichern()
   gespeicherteAdressen = {}
   local k = 0
   for i, na in pairs(adressen) do
-    gespeicherteAdressen[i + k] = {}
     if na[2] == getAddress(sg.localAddress()) then
       k = -1
     else
+      gespeicherteAdressen[i + k] = {}
       gespeicherteAdressen[i + k][1] = na[1]
       gespeicherteAdressen[i + k][2] = na[2]
       gespeicherteAdressen[i + k][3] = na[3]
