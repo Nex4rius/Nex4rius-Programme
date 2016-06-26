@@ -2,12 +2,300 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Stargate-Programm
 
+local component             = require("component")
+local sides                 = require("sides")
+local term                  = require("term")
+local event                 = require("event")
+local fs                    = require("filesystem")
+local c                     = require("computer")
+local gpu                   = component.getPrimary("gpu")
+local sg                    = component.getPrimary("stargate")
+local control               = "On"
+local Sprache               = Sprache
+
+
 dofile("/stargate/adressen.lua")
-dofile("/stargate/config.lua")
-dofile("/stargate/compat.lua")
+
+local RF                    = RF
+local autoclosetime         = autoclosetime
+local side                  = side
+local sideNum               = sideNum
+local IDC                   = IDC
+local adressen              = adressen
+
+local sectime               = os.time()
+os.sleep(1)
+sectime                     = sectime - os.time()
+local letzteNachricht       = os.time()
+local letzterAdressCheck    = os.time() / sectime
+local enteridc              = ""
+local showidc               = ""
+local remoteName            = ""
+local time                  = "-"
+local incode                = "-"
+local codeaccepted          = "-"
+local wormhole              = "in"
+local iriscontrol           = "on"
+local energytype            = "EU"
+local activationtime        = 0
+local energy                = 0
+local seite                 = 0
+local maxseiten             = 0
+local checkEnergy           = 0
+local zeile                 = 1
+local Trennlinienhoehe      = 14
+local energymultiplicator   = 20
+local xVerschiebung         = 33
+local AddNewAddress         = true
+local messageshow           = true
+local running               = true
+local send                  = true
+local IDCyes                = false
+local entercode             = false
+local redstoneConnected     = false
+local redstoneIncoming      = false
+local redstoneState         = false
+local redstoneIDC           = false
+local LampenGruen           = false
+local LampenRot             = false
+
+local graueFarbe            = 6684774
+local roteFarbe             = 0xFF0000
+local weisseFarbe           = 0xFFFFFF
+local blaueFarbe            = 0x0000FF
+local schwarzeFarbe         = 0x00000
+local gelbeFarbe            = 16750899
+local brauenFarbe           = 10046464
+local grueneFarbe           = 39168
+
+local FehlerFarbe           = roteFarbe
+local Hintergrundfarbe      = graueFarbe
+local Trennlinienfarbe      = blaueFarbe
+local Textfarbe             = weisseFarbe
+
+local Adressfarbe           = brauenFarbe
+local Adresstextfarbe       = Textfarbe
+local Nachrichtfarbe        = graueFarbe
+local Nachrichttextfarbe    = Textfarbe
+local Steuerungsfarbe       = gelbeFarbe
+local Steuerungstextfarbe   = schwarzeFarbe
+local Statusfarbe           = grueneFarbe
+local Statustextfarbe       = Textfarbe
+
+local firstrun              = firstrun
+local installieren          = installieren
+local zielAdresse           = ""
+
+local k
+local AdressAnzeige
+local gespeicherteAdressen
+local ok
+local result
+local ergebnis
+local state
+local chevron
+local direction
+local iris
+local locAddr
+local remAddr
+local RichtungName
+local StatusName
+local energieMenge
+local mess
+local mess_old
+local eingabe
+local alte_eingabe
+local ausgabe
+local anwahlEnergie
+
+local white                 = 0
+--local orange                = 1
+--local magenta               = 2
+--local lightblue             = 3
+local yellow                = 4
+--local lime                  = 5
+--local pink                  = 6
+--local gray                  = 7
+--local silver                = 8
+--local cyan                  = 9
+--local purple                = 10
+--local blue                  = 11
+--local brown                 = 12
+local green                 = 13
+local red                   = 14
+local black                 = 15
+  
+if component.isAvailable("redstone") then
+  r.setBundledOutput(0, white, 0)
+--  r.setBundledOutput(0, orange, 0)
+--  r.setBundledOutput(0, magenta, 0)
+--  r.setBundledOutput(0, lightblue, 0)
+  r.setBundledOutput(0, yellow, 0)
+--  r.setBundledOutput(0, lime, 0)
+--  r.setBundledOutput(0, pink, 0)
+--  r.setBundledOutput(0, gray, 0)
+--  r.setBundledOutput(0, silver, 0)
+--  r.setBundledOutput(0, cyan, 0)
+--  r.setBundledOutput(0, purple, 0)
+--  r.setBundledOutput(0, blue, 0)
+--  r.setBundledOutput(0, brown, 0)
+  r.setBundledOutput(0, green, 0)
+  r.setBundledOutput(0, red, 0)
+  r.setBundledOutput(0, black, 0)
+end
+
+if RF == true then
+  energytype          = "RF"
+  energymultiplicator = 80
+end
+
+if sg.irisState() == "Offline" then
+  Trennlinienhoehe    = 13
+end
+
+function schreibSicherungsdatei()
+  f = io.open ("/stargate/sicherNachNeustart.lua", "w")
+  f:write("-- pastebin run -f fa9gu1GJ\n-- von Nex4rius\n-- https://github.com/Nex4rius/Stargate-Programm\n\n")
+  f:write('control = "' .. control .. '"\n')
+  f:write('firstrun = ' .. firstrun .. '\n')
+  f:write('Sprache = "' .. Sprache .. '" -- deutsch / english\n')
+  f:write('installieren = ' .. tostring(installieren) .. '\n')
+  f:close()
+end
+
+local function Adressvariablen()
+  RF                        = _ENV.RF
+  autoclosetime             = _ENV.autoclosetime
+  side                      = _ENV.side
+  sideNum                   = _ENV.sideNum
+  IDC                       = _ENV.IDC
+  adressen                  = _ENV.adressen
+end
+
+local function try(func, ...)
+  local ok, result = pcall(func, ...)
+  if not ok then
+    print("Error: " .. result)
+  end
+end
+
+local function check(...)
+  local values = {...}
+  if values[1] == nil then
+    error(values[2], 0)
+  end
+  return ...
+end
+
+local function setCursor(col, row)
+  term.setCursor(col, row)
+end
+
+local function write(s)
+  term.write(s)
+end
+
+local function pull_event()
+  if state == "Idle" and checkEnergy == energy then
+    if (letzteNachricht - os.time()) / sectime > 45 then
+      checkEnergy = energy
+      return event.pull(300)
+    else
+      checkEnergy = energy
+      return event.pull(50)
+    end
+  else
+    checkEnergy = energy
+    return event.pull(1)
+  end
+end
+
+local screen_width, screen_height = gpu.getResolution()
+local max_Bildschirmbreite, max_Bildschirmhoehe = gpu.maxResolution()
+local key_event_name = "key_down"
+
+local function key_event_char(e)
+  return string.char(e[3])
+end
+
 dofile("/stargate/sicherNachNeustart.lua")
 dofile("/stargate/sprache/" .. Sprache .. ".lua")
 dofile("/stargate/sprache/ersetzen.lua")
+
+local Adressseite               = Adressseite
+local Unbekannt                 = Unbekannt
+local waehlen                   = waehlen
+local energie1                  = energie1
+local energie2                  = energie2
+local keineVerbindung           = keineVerbindung
+local Steuerung                 = Steuerung
+local IrisSteuerung             = IrisSteuerung
+local an_aus                    = an_aus
+local AdressenBearbeiten        = AdressenBearbeiten
+local beenden                   = beenden
+local nachrichtAngekommen       = nachrichtAngekommen
+local RedstoneSignale           = RedstoneSignale
+local RedstoneWeiss             = RedstoneWeiss
+local RedstoneRot               = RedstoneRot
+local RedstoneGelb              = RedstoneGelb
+local RedstoneSchwarz           = RedstoneSchwarz
+local RedstoneGruen             = RedstoneGruen
+local versionName               = versionName
+local fehlerName                = fehlerName
+local SteuerungName             = SteuerungName
+local lokaleAdresse             = lokaleAdresse
+local zielAdresseName           = zielAdresseName
+local zielName                  = zielName
+local statusName                = statusName
+local IrisName                  = IrisName
+local IrisSteuerung             = IrisSteuerung
+local IDCakzeptiert             = IDCakzeptiert
+local IDCname                   = IDCname
+local chevronName               = chevronName
+local richtung                  = richtung
+local autoSchliessungAus        = autoSchliessungAus
+local autoSchliessungAn         = autoSchliessungAn
+local zeit1                     = zeit1
+local zeit2                     = zeit2
+local abschalten                = abschalten
+local oeffneIris                = oeffneIris
+local schliesseIris             = schliesseIris
+local IDCeingabe                = IDCeingabe
+local naechsteSeite             = naechsteSeite
+local vorherigeSeite            = vorherigeSeite
+local senden                    = senden
+local aufforderung              = aufforderung
+local manueller                 = manueller
+local Eingriff                  = Eingriff
+local stargateName              = stargateName
+local stargateAbschalten        = stargateAbschalten
+local aktiviert                 = aktiviert
+local zeigeAdressen             = zeigeAdressen
+local spracheAendern            = spracheAendern
+local irisNameOffen             = irisNameOffen
+local irisNameOeffnend          = irisNameOeffnend
+local irisNameGeschlossen       = irisNameGeschlossen
+local irisNameSchliessend       = irisNameSchliessend
+local irisNameOffline           = irisNameOffline
+local irisKontrolleNameAn       = irisKontrolleNameAn
+local irisKontrolleNameAus      = irisKontrolleNameAus
+local RichtungNameEin           = RichtungNameEin
+local RichtungNameAus           = RichtungNameAus
+local StatusNameUntaetig        = StatusNameUntaetig
+local StatusNameWaehlend        = StatusNameWaehlend
+local StatusNameVerbunden       = StatusNameVerbunden
+local StatusNameSchliessend     = StatusNameSchliessend
+local Neustart                  = Neustart
+local verfuegbareSprachen       = verfuegbareSprachen
+local IrisSteuerungName         = IrisSteuerungName
+local ausschaltenName           = ausschaltenName
+local redstoneAusschalten       = redstoneAusschalten
+local colorfulLampAusschalten   = colorfulLampAusschalten
+local verarbeiteAdressen        = verarbeiteAdressen
+local Hilfetext                 = Hilfetext
+local ersetzen                  = ersetzen
+local IrisZustandName           = irisNameOffline
+local Sprachaenderung           = Sprachaenderung
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
@@ -161,15 +449,12 @@ end
 function irisClose()
   sg.closeIris()
   RedstoneAenderung(yellow, 255)
-  --IrisZustandName = irisNameSchliessend
   Colorful_Lamp_Steuerung()
 end
 
 function irisOpen()
   sg.openIris()
   RedstoneAenderung(yellow, 0)
-  --IrisZustandName = irisNameOeffnend
-  --iris = "Opening"
   Colorful_Lamp_Steuerung()
 end
 
@@ -303,6 +588,7 @@ function newAddress(g)
     firstrun = -1
     schreibSicherungsdatei()
     dofile("/stargate/adressen.lua")
+    Adressvariablen()
     sides()
     zeigeMenu()
   end
@@ -415,7 +701,7 @@ function RedstoneAenderung(a, b)
   if sideNum == nil then
     sides()
   end
-  if redst == true then
+  if component.isAvailable("redstone") then
     r.setBundledOutput(sideNum, a, b)
   end
 end
@@ -539,7 +825,7 @@ end
 function zeigeHier(x, y, s, h)
   setCursor(x, y)
   if h == nil then
-    h = screen_width
+    h = 70
   end
   write(pad(s, h))
 end
@@ -694,6 +980,7 @@ handlers[key_event_name] = function(e)
       gpu.setForeground(Textfarbe)
       os.execute("edit stargate/adressen.lua")
       dofile("/stargate/adressen.lua")
+      Adressvariablen()
       sides()
       seite = 0
       zeigeAnzeige()
@@ -706,9 +993,13 @@ handlers[key_event_name] = function(e)
       antwortFrageSprache = io.read()
       if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
         Sprache = string.lower(antwortFrageSprache)
-        dofile("/stargate/sprache/" .. Sprache .. ".lua")
-        dofile("/stargate/sprache/ersetzen.lua")
+        _ENV.control = control
+        _ENV.firstrun = firstrun
+        _ENV.Sprache = Sprache
+        _ENV.installieren = true
+        installieren = true
         schreibSicherungsdatei()
+        zeigeNachricht(Sprachaenderung)
       else
         print(fehlerName)
       end
@@ -809,22 +1100,24 @@ function beendeAlles()
   term.clear()
   print(ausschaltenName .. "\n")
   Colorful_Lamp_Farben(0, true)
-  RedstoneAenderung(white, 0) print(redstoneAusschalten .. "white")
---  RedstoneAenderung(orange, 0) print(redstoneAusschalten .. "orange")
---  RedstoneAenderung(magenta, 0) print(redstoneAusschalten .. "magenta")
---  RedstoneAenderung(lightblue, 0) print(redstoneAusschalten .. "lightblue")
-  RedstoneAenderung(yellow, 0) print(redstoneAusschalten .. "yellow")
---  RedstoneAenderung(lime, 0) print(redstoneAusschalten .. "lime")
---  RedstoneAenderung(pink, 0) print(redstoneAusschalten .. "pink")
---  RedstoneAenderung(gray, 0) print(redstoneAusschalten .. "gray")
---  RedstoneAenderung(silver, 0) print(redstoneAusschalten .. "silver")
---  RedstoneAenderung(cyan, 0) print(redstoneAusschalten .. "cyan")
---  RedstoneAenderung(purple, 0) print(redstoneAusschalten .. "purple")
---  RedstoneAenderung(blue, 0) print(redstoneAusschalten .. "blue")
---  RedstoneAenderung(brown, 0) print(redstoneAusschalten .. "brown")
-  RedstoneAenderung(green, 0) print(redstoneAusschalten .. "green")
-  RedstoneAenderung(red, 0) print(redstoneAusschalten .. "red")
-  RedstoneAenderung(black, 0) print(redstoneAusschalten .. "black")
+  if component.isAvailable("redstone") then
+    r.setBundledOutput(sideNum, white, 0) print(redstoneAusschalten .. "white")
+--    r.setBundledOutput(sideNum, orange, 0) print(redstoneAusschalten .. "orange")
+--    r.setBundledOutput(sideNum, magenta, 0) print(redstoneAusschalten .. "magenta")
+--    r.setBundledOutput(sideNum, lightblue, 0) print(redstoneAusschalten .. "lightblue")
+    r.setBundledOutput(sideNum, yellow, 0) print(redstoneAusschalten .. "yellow")
+--    r.setBundledOutput(sideNum, lime, 0) print(redstoneAusschalten .. "lime")
+--    r.setBundledOutput(sideNum, pink, 0) print(redstoneAusschalten .. "pink")
+--    r.setBundledOutput(sideNum, gray, 0) print(redstoneAusschalten .. "gray")
+--    r.setBundledOutput(sideNum, silver, 0) print(redstoneAusschalten .. "silver")
+--    r.setBundledOutput(sideNum, cyan, 0) print(redstoneAusschalten .. "cyan")
+--    r.setBundledOutput(sideNum, purple, 0) print(redstoneAusschalten .. "purple")
+--    r.setBundledOutput(sideNum, blue, 0) print(redstoneAusschalten .. "blue")
+--    r.setBundledOutput(sideNum, brown, 0) print(redstoneAusschalten .. "brown")
+    r.setBundledOutput(sideNum, green, 0) print(redstoneAusschalten .. "green")
+    r.setBundledOutput(sideNum, red, 0) print(redstoneAusschalten .. "red")
+    r.setBundledOutput(sideNum, black, 0) print(redstoneAusschalten .. "black")
+  end
 end
 
 function main()
