@@ -105,6 +105,7 @@ local mess_old
 local eingabe
 local alte_eingabe
 local ausgabe
+local anwahlEnergie
 
 if component.isAvailable("redstone") then
   local white               = 0
