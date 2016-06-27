@@ -17,8 +17,10 @@ RF = false -- show energy in RF instead of EU
 autoclosetime = 60 -- in seconds -- false for no autoclose
 side = "bottom" -- bottom, top, back, front, right or left
 
-IDC = ""
+IDC = "" -- Iris Deactivation Code
 
 adressen = {
-  {"Name", "Addresse", "Iris Code"},
+--{"<Name>", "<Adress>", "<IDC>"},
+  {"Name 1", "Adress 1", "IDC 1"},
+  {"Name 2", "Adress 2", "IDC 2"},
 }
