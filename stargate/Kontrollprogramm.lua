@@ -402,6 +402,7 @@ end
 
 function AdressenSpeichern()
   dofile("/stargate/adressen.lua")
+  local adressen = adressen
   gespeicherteAdressen = {}
   local k = 0
   for i, na in pairs(adressen) do
