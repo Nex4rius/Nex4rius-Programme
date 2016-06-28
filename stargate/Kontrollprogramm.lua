@@ -164,11 +164,6 @@ function schreibSicherungsdatei()
   f:write('Sprache = "' .. Sprache .. '" -- deutsch / english\n')
   f:write('installieren = ' .. tostring(installieren) .. '\n')
   f:close()
-  print(control)
-  print(firstrun)
-  print(Sprache)
-  print(installieren)
-  os.sleep(5)
 end
 
 local function Adressvariablen()
@@ -204,18 +199,22 @@ local function write(s)
 end
 
 local function pull_event()
+  local Wartezeit = 1
   if state == "Idle" and checkEnergy == energy then
     if (letzteNachricht - os.time()) / sectime > 45 then
-      checkEnergy = energy
-      return event.pull(300)
+      Wartezeit = 300
     else
-      checkEnergy = energy
-      return event.pull(50)
+      Wartezeit = 50
     end
-  else
-    checkEnergy = energy
-    return event.pull(1)
   end
+  checkEnergy = energy
+  local eventErgebnis = {event.pull(Wartezeit)}
+  if type(eventErgebnis) == "table" then
+    if eventErgebnis[1] == "component_removed" or eventErgebnis[1] == "component_added" then
+      schreibFehlerLog(eventErgebnis)
+    end
+  end
+  return eventErgebnis
 end
 
 local screen_width, screen_height = gpu.getResolution()
@@ -305,6 +304,7 @@ local Hilfetext                 = Hilfetext
 local ersetzen                  = ersetzen
 local IrisZustandName           = irisNameOffline
 local Sprachaenderung           = Sprachaenderung
+local entwicklerName            = entwicklerName
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
@@ -399,6 +399,7 @@ function Infoseite()
   gpu.setBackground(Adressfarbe)
   gpu.setForeground(Adresstextfarbe)
   print(versionName .. version)
+  print("\n" .. entwicklerName .. " Nex4rius")
 end
 
 function AdressenSpeichern()
@@ -863,7 +864,11 @@ function schreibFehlerLog(mess)
     else
       f = io.open("log", "w")
     end
-    f:write(mess)
+    if type(mess) == "string" then
+      f:write(mess)
+    elseif type(mess) == "table" then
+      f:write(require("serialization").serialize(mess))
+    end
     f:write("\n\n" .. os.time() .. string.rep("-", max_Bildschirmbreite - string.len(os.time())) .. "\n\n")
     f:close()
   end
@@ -1034,7 +1039,7 @@ function eventLoop()
   while running do
     checken(zeigeStatus)
     checken(checkReset)
-    e = {pull_event()}
+    e = pull_event()
     if e[1] == nil then else
       name = e[1]
       f = handlers[name]
