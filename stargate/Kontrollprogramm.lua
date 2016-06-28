@@ -12,7 +12,6 @@ local gpu                   = component.getPrimary("gpu")
 local sg                    = component.getPrimary("stargate")
 local Sprache               = Sprache
 
-
 dofile("/stargate/adressen.lua")
 
 local RF                    = RF
