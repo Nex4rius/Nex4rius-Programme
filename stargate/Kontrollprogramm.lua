@@ -124,6 +124,7 @@ local red                   = 14
 local black                 = 15
   
 if component.isAvailable("redstone") then
+  r = component.getPrimary("redstone")
   r.setBundledOutput(0, white, 0)
 --  r.setBundledOutput(0, orange, 0)
 --  r.setBundledOutput(0, magenta, 0)
@@ -710,14 +711,11 @@ function RedstoneAenderung(a, b)
     sides()
   end
   if component.isAvailable("redstone") then
-    r.setBundledOutput(sideNum, a, b)
+    component.getPrimary("redstone").setBundledOutput(sideNum, a, b)
   end
 end
 
 function RedstoneKontrolle()
-  if component.isAvailable("redstone") then
-    r = component.getPrimary("redstone")
-  end
   if direction == "Incoming" then
     if redstoneIncoming == true then
       RedstoneAenderung(red, 255)
@@ -1105,6 +1103,11 @@ function zeigeAnzeige()
   zeigeMenu()
 end
 
+function redstoneAbschalten(sideNum, Farbe, printAusgabe)
+  r.setBundledOutput(sideNum, Farbe, 0)
+  print(redstoneAusschalten .. printAusgabe)
+end
+
 function beendeAlles()
   gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   gpu.setBackground(schwarzeFarbe)
@@ -1113,22 +1116,23 @@ function beendeAlles()
   print(ausschaltenName .. "\n")
   Colorful_Lamp_Farben(0, true)
   if component.isAvailable("redstone") then
-    r.setBundledOutput(sideNum, white, 0) print(redstoneAusschalten .. "white")
---    r.setBundledOutput(sideNum, orange, 0) print(redstoneAusschalten .. "orange")
---    r.setBundledOutput(sideNum, magenta, 0) print(redstoneAusschalten .. "magenta")
---    r.setBundledOutput(sideNum, lightblue, 0) print(redstoneAusschalten .. "lightblue")
-    r.setBundledOutput(sideNum, yellow, 0) print(redstoneAusschalten .. "yellow")
---    r.setBundledOutput(sideNum, lime, 0) print(redstoneAusschalten .. "lime")
---    r.setBundledOutput(sideNum, pink, 0) print(redstoneAusschalten .. "pink")
---    r.setBundledOutput(sideNum, gray, 0) print(redstoneAusschalten .. "gray")
---    r.setBundledOutput(sideNum, silver, 0) print(redstoneAusschalten .. "silver")
---    r.setBundledOutput(sideNum, cyan, 0) print(redstoneAusschalten .. "cyan")
---    r.setBundledOutput(sideNum, purple, 0) print(redstoneAusschalten .. "purple")
---    r.setBundledOutput(sideNum, blue, 0) print(redstoneAusschalten .. "blue")
---    r.setBundledOutput(sideNum, brown, 0) print(redstoneAusschalten .. "brown")
-    r.setBundledOutput(sideNum, green, 0) print(redstoneAusschalten .. "green")
-    r.setBundledOutput(sideNum, red, 0) print(redstoneAusschalten .. "red")
-    r.setBundledOutput(sideNum, black, 0) print(redstoneAusschalten .. "black")
+    r = component.getPrimary("redstone")
+    redstoneAbschalten(sideNum, white, "white")
+--    redstoneAbschalten(sideNum, orange, "orange")
+--    redstoneAbschalten(sideNum, magenta, "magenta")
+--    redstoneAbschalten(sideNum, lightblue, "lightblue")
+    redstoneAbschalten(sideNum, yellow, "yellow")
+--    redstoneAbschalten(sideNum, lime, "lime")
+--    redstoneAbschalten(sideNum, pink, "pink")
+--    redstoneAbschalten(sideNum, gray, "gray")
+--    redstoneAbschalten(sideNum, silver, "silver")
+--    redstoneAbschalten(sideNum, cyan, "cyan")
+--    redstoneAbschalten(sideNum, purple, "purple")
+--    redstoneAbschalten(sideNum, blue, "blue")
+--    redstoneAbschalten(sideNum, brown, "brown")
+    redstoneAbschalten(sideNum, green, "green")
+    redstoneAbschalten(sideNum, red, "red")
+    redstoneAbschalten(sideNum, black, "black")
   end
 end
 
