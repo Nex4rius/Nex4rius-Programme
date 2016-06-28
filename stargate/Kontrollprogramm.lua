@@ -199,18 +199,20 @@ local function write(s)
 end
 
 local function pull_event()
+  local Wartezeit = 1
   if state == "Idle" and checkEnergy == energy then
     if (letzteNachricht - os.time()) / sectime > 45 then
-      checkEnergy = energy
-      return event.pull(300)
+      Wartezeit = 300
     else
-      checkEnergy = energy
-      return event.pull(50)
+      Wartezeit = 50
     end
-  else
-    checkEnergy = energy
-    return event.pull(1)
   end
+  checkEnergy = energy
+  local eventErgebnis = event.pull(Wartezeit)
+  if eventErgebnis[1] == "component_removed" or eventErgebnis[1] == "component_added" then
+    schreibFehlerLog(eventErgebnis)
+  end
+  return eventErgebnis
 end
 
 local screen_width, screen_height = gpu.getResolution()
