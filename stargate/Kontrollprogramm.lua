@@ -304,6 +304,7 @@ local Hilfetext                 = Hilfetext
 local ersetzen                  = ersetzen
 local IrisZustandName           = irisNameOffline
 local Sprachaenderung           = Sprachaenderung
+local entwicklerName            = entwicklerName
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
