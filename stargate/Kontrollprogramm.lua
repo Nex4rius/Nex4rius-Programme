@@ -208,9 +208,11 @@ local function pull_event()
     end
   end
   checkEnergy = energy
-  local eventErgebnis = event.pull(Wartezeit)
-  if eventErgebnis[1] == "component_removed" or eventErgebnis[1] == "component_added" then
-    schreibFehlerLog(eventErgebnis)
+  local eventErgebnis = {event.pull(Wartezeit)}
+  if type(eventErgebnis) == "table" then
+    if eventErgebnis[1] == "component_removed" or eventErgebnis[1] == "component_added" then
+      schreibFehlerLog(eventErgebnis)
+    end
   end
   return eventErgebnis
 end
@@ -1035,7 +1037,7 @@ function eventLoop()
   while running do
     checken(zeigeStatus)
     checken(checkReset)
-    e = {pull_event()}
+    e = pull_event()
     if e[1] == nil then else
       name = e[1]
       f = handlers[name]
