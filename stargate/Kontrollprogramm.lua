@@ -858,7 +858,11 @@ function schreibFehlerLog(mess)
     else
       f = io.open("log", "w")
     end
-    f:write(mess)
+    if type(mess) == "string" then
+      f:write(mess)
+    elseif type(mess) == "table" then
+      f:write(require("serialization").serialize(mess))
+    end
     f:write("\n\n" .. os.time() .. string.rep("-", max_Bildschirmbreite - string.len(os.time())) .. "\n\n")
     f:close()
   end
