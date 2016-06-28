@@ -418,14 +418,19 @@ function AdressenSpeichern()
         gespeicherteAdressen[i + k][4] = fehlerName
       else
         if     anwahlEnergie > 10000000000 then
-          gespeicherteAdressen[i + k][4] = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000) .. " G"
+          anwahlEnergie = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000) .. " G"
         elseif anwahlEnergie > 10000000 then
-          gespeicherteAdressen[i + k][4] = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000) .. " M"
+          anwahlEnergie = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000) .. " M"
         elseif anwahlEnergie > 10000 then
-          gespeicherteAdressen[i + k][4] = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000) .. " k"
+          anwahlEnergie = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000) .. " k"
         else
-          gespeicherteAdressen[i + k][4] = string.format("%.f" , (sg.energyToDial(na[2]) * energymultiplicator))
+          anwahlEnergie = string.format("%.f" , (sg.energyToDial(na[2]) * energymultiplicator))
         end
+        if Sprache == "deutsch" then
+          local anwahlEnergiePunkt = string.find(anwahlEnergie, "%.")
+          anwahlEnergie = string.sub(anwahlEnergie, 0, anwahlEnergiePunkt - 1) .. "," .. string.sub(anwahlEnergie, anwahlEnergiePunkt + 1)
+        end
+        gespeicherteAdressen[i + k][4] = anwahlEnergie
       end
     end
     zeigeNachricht(verarbeiteAdressen .. "<" .. na[2] .. "> <" .. na[1] .. ">")
@@ -810,6 +815,10 @@ function zeigeEnergie()
     energieMenge = string.format("%.2f", energy / 1000) .. " k"
   else
     energieMenge = string.format("%.f", energy)
+  end
+  if Sprache == "deutsch" then
+    local energieMengePunkt = string.find(energieMenge, "%.")
+    energieMenge = string.sub(energieMenge, 0, energieMengePunkt - 1) .. "," .. string.sub(energieMenge, energieMengePunkt + 1)
   end
   zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. energieMenge)
 end
