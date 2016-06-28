@@ -209,10 +209,8 @@ local function pull_event()
   end
   checkEnergy = energy
   local eventErgebnis = {event.pull(Wartezeit)}
-  if type(eventErgebnis) == "table" then
-    if eventErgebnis[1] == "component_removed" or eventErgebnis[1] == "component_added" then
-      schreibFehlerLog(eventErgebnis)
-    end
+  if eventErgebnis[1] == "component_removed" or eventErgebnis[1] == "component_added" then
+    schreibFehlerLog(eventErgebnis)
   end
   return eventErgebnis
 end
