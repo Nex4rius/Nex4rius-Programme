@@ -398,6 +398,7 @@ function Infoseite()
   gpu.setBackground(Adressfarbe)
   gpu.setForeground(Adresstextfarbe)
   print(versionName .. version)
+  print(string.format("\n %s Nex4rius", entwicklerName)
 end
 
 function AdressenSpeichern()
