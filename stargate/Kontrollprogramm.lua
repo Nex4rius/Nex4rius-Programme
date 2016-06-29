@@ -830,7 +830,14 @@ function activetime()
     end
     time = (activationtime - os.time()) / sectime
     if time > 0 then
-      zeigeHier(xVerschiebung, zeile, "  " .. zeit1 .. string.format("%.1f", time) .. "s")
+      if Sprache == "deutsch" then
+        local ZeitPunkt = string.find(energieMenge, "%.")
+        local Zeit = string.format("%.1f", time)
+        local ZeitmitKomma = string.sub(Zeit, 0, ZeitPunkt - 1) .. "," .. string.sub(Zeit, ZeitPunkt + 1)
+        zeigeHier(xVerschiebung, zeile, "  " .. zeit1 .. ZeitmitKomma .. "s")
+      else
+        zeigeHier(xVerschiebung, zeile, "  " .. zeit1 .. string.format("%.1f", time) .. "s")
+      end
     end
   else
     zeigeHier(xVerschiebung, zeile, "  " .. zeit2)
