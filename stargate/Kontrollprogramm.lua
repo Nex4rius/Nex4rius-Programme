@@ -418,9 +418,9 @@ function AdressenSpeichern()
         gespeicherteAdressen[i + k][4] = fehlerName
       else
         if     anwahlEnergie > 10000000000 then
-          anwahlEnergie = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000) .. " G"
+          anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000) .. " G"
         elseif anwahlEnergie > 10000000 then
-          anwahlEnergie = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000) .. " M"
+          anwahlEnergie = string.format("%.2f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000) .. " M"
         elseif anwahlEnergie > 10000 then
           anwahlEnergie = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000) .. " k"
         else
@@ -808,11 +808,11 @@ end
 
 function zeigeEnergie()
   if     energy > 10000000000 then
-    energieMenge = string.format("%.2f", energy / 1000000000) .. " G"
+    energieMenge = string.format("%.3f", energy / 1000000000) .. " G"
   elseif energy > 10000000 then
     energieMenge = string.format("%.2f", energy / 1000000) .. " M"
   elseif energy > 10000 then
-    energieMenge = string.format("%.2f", energy / 1000) .. " k"
+    energieMenge = string.format("%.1f", energy / 1000) .. " k"
   else
     energieMenge = string.format("%.f", energy)
   end
@@ -831,8 +831,8 @@ function activetime()
     time = (activationtime - os.time()) / sectime
     if time > 0 then
       if Sprache == "deutsch" then
-        local ZeitPunkt = string.find(energieMenge, "%.")
         local Zeit = string.format("%.1f", time)
+        local ZeitPunkt = string.find(Zeit, "%.")
         local ZeitmitKomma = string.sub(Zeit, 0, ZeitPunkt - 1) .. "," .. string.sub(Zeit, ZeitPunkt + 1)
         zeigeHier(xVerschiebung, zeile, "  " .. zeit1 .. ZeitmitKomma .. "s")
       else
