@@ -12,7 +12,6 @@ local gpu                   = component.getPrimary("gpu")
 local sg                    = component.getPrimary("stargate")
 local Sprache               = Sprache
 
-
 dofile("/stargate/adressen.lua")
 
 local RF                    = RF
@@ -125,6 +124,7 @@ local red                   = 14
 local black                 = 15
   
 if component.isAvailable("redstone") then
+  r = component.getPrimary("redstone")
   r.setBundledOutput(0, white, 0)
 --  r.setBundledOutput(0, orange, 0)
 --  r.setBundledOutput(0, magenta, 0)
@@ -209,10 +209,8 @@ local function pull_event()
   end
   checkEnergy = energy
   local eventErgebnis = {event.pull(Wartezeit)}
-  if type(eventErgebnis) == "table" then
-    if eventErgebnis[1] == "component_removed" or eventErgebnis[1] == "component_added" then
-      schreibFehlerLog(eventErgebnis)
-    end
+  if eventErgebnis[1] == "component_removed" or eventErgebnis[1] == "component_added" then
+    schreibFehlerLog(eventErgebnis)
   end
   return eventErgebnis
 end
@@ -404,6 +402,7 @@ end
 
 function AdressenSpeichern()
   dofile("/stargate/adressen.lua")
+  local adressen = adressen
   gespeicherteAdressen = {}
   local k = 0
   for i, na in pairs(adressen) do
@@ -419,14 +418,15 @@ function AdressenSpeichern()
         gespeicherteAdressen[i + k][4] = fehlerName
       else
         if     anwahlEnergie > 10000000000 then
-          gespeicherteAdressen[i + k][4] = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000) .. " G"
+          anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000) .. " G"
         elseif anwahlEnergie > 10000000 then
-          gespeicherteAdressen[i + k][4] = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000) .. " M"
+          anwahlEnergie = string.format("%.2f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000) .. " M"
         elseif anwahlEnergie > 10000 then
-          gespeicherteAdressen[i + k][4] = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000) .. " k"
+          anwahlEnergie = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000) .. " k"
         else
-          gespeicherteAdressen[i + k][4] = string.format("%.f" , (sg.energyToDial(na[2]) * energymultiplicator))
+          anwahlEnergie = string.format("%.f" , (sg.energyToDial(na[2]) * energymultiplicator))
         end
+        gespeicherteAdressen[i + k][4] = ErsetztePunktMitKomma(anwahlEnergie)
       end
     end
     zeigeNachricht(verarbeiteAdressen .. "<" .. na[2] .. "> <" .. na[1] .. ">")
@@ -439,6 +439,15 @@ function AdressenSpeichern()
   end
   zeigeMenu()
   zeigeNachricht("")
+end
+
+function ErsetztePunktMitKomma(...)
+  if Sprache == "deutsch" then
+    local Punkt = string.find(..., "%.")
+    return string.sub(..., 0, Punkt - 1) .. "," .. string.sub(..., Punkt + 1)
+  else
+    return ...
+  end
 end
 
 function zeigeFarben()
@@ -712,14 +721,11 @@ function RedstoneAenderung(a, b)
     sides()
   end
   if component.isAvailable("redstone") then
-    r.setBundledOutput(sideNum, a, b)
+    component.getPrimary("redstone").setBundledOutput(sideNum, a, b)
   end
 end
 
 function RedstoneKontrolle()
-  if component.isAvailable("redstone") then
-    r = component.getPrimary("redstone")
-  end
   if direction == "Incoming" then
     if redstoneIncoming == true then
       RedstoneAenderung(red, 255)
@@ -807,15 +813,15 @@ end
 
 function zeigeEnergie()
   if     energy > 10000000000 then
-    energieMenge = string.format("%.2f", energy / 1000000000) .. " G"
+    energieMenge = string.format("%.3f", energy / 1000000000) .. " G"
   elseif energy > 10000000 then
     energieMenge = string.format("%.2f", energy / 1000000) .. " M"
   elseif energy > 10000 then
-    energieMenge = string.format("%.2f", energy / 1000) .. " k"
+    energieMenge = string.format("%.1f", energy / 1000) .. " k"
   else
     energieMenge = string.format("%.f", energy)
   end
-  zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. energieMenge)
+  zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. ErsetztePunktMitKomma(energieMenge))
 end
 
 function activetime()
@@ -825,7 +831,7 @@ function activetime()
     end
     time = (activationtime - os.time()) / sectime
     if time > 0 then
-      zeigeHier(xVerschiebung, zeile, "  " .. zeit1 .. string.format("%.1f", time) .. "s")
+      zeigeHier(xVerschiebung, zeile, "  " .. zeit1 .. ErsetztePunktMitKomma(string.format("%.1f", time)) .. "s")
     end
   else
     zeigeHier(xVerschiebung, zeile, "  " .. zeit2)
@@ -1107,6 +1113,11 @@ function zeigeAnzeige()
   zeigeMenu()
 end
 
+function redstoneAbschalten(sideNum, Farbe, printAusgabe)
+  r.setBundledOutput(sideNum, Farbe, 0)
+  print(redstoneAusschalten .. printAusgabe)
+end
+
 function beendeAlles()
   gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   gpu.setBackground(schwarzeFarbe)
@@ -1115,22 +1126,23 @@ function beendeAlles()
   print(ausschaltenName .. "\n")
   Colorful_Lamp_Farben(0, true)
   if component.isAvailable("redstone") then
-    r.setBundledOutput(sideNum, white, 0) print(redstoneAusschalten .. "white")
---    r.setBundledOutput(sideNum, orange, 0) print(redstoneAusschalten .. "orange")
---    r.setBundledOutput(sideNum, magenta, 0) print(redstoneAusschalten .. "magenta")
---    r.setBundledOutput(sideNum, lightblue, 0) print(redstoneAusschalten .. "lightblue")
-    r.setBundledOutput(sideNum, yellow, 0) print(redstoneAusschalten .. "yellow")
---    r.setBundledOutput(sideNum, lime, 0) print(redstoneAusschalten .. "lime")
---    r.setBundledOutput(sideNum, pink, 0) print(redstoneAusschalten .. "pink")
---    r.setBundledOutput(sideNum, gray, 0) print(redstoneAusschalten .. "gray")
---    r.setBundledOutput(sideNum, silver, 0) print(redstoneAusschalten .. "silver")
---    r.setBundledOutput(sideNum, cyan, 0) print(redstoneAusschalten .. "cyan")
---    r.setBundledOutput(sideNum, purple, 0) print(redstoneAusschalten .. "purple")
---    r.setBundledOutput(sideNum, blue, 0) print(redstoneAusschalten .. "blue")
---    r.setBundledOutput(sideNum, brown, 0) print(redstoneAusschalten .. "brown")
-    r.setBundledOutput(sideNum, green, 0) print(redstoneAusschalten .. "green")
-    r.setBundledOutput(sideNum, red, 0) print(redstoneAusschalten .. "red")
-    r.setBundledOutput(sideNum, black, 0) print(redstoneAusschalten .. "black")
+    r = component.getPrimary("redstone")
+    redstoneAbschalten(sideNum, white, "white")
+--    redstoneAbschalten(sideNum, orange, "orange")
+--    redstoneAbschalten(sideNum, magenta, "magenta")
+--    redstoneAbschalten(sideNum, lightblue, "lightblue")
+    redstoneAbschalten(sideNum, yellow, "yellow")
+--    redstoneAbschalten(sideNum, lime, "lime")
+--    redstoneAbschalten(sideNum, pink, "pink")
+--    redstoneAbschalten(sideNum, gray, "gray")
+--    redstoneAbschalten(sideNum, silver, "silver")
+--    redstoneAbschalten(sideNum, cyan, "cyan")
+--    redstoneAbschalten(sideNum, purple, "purple")
+--    redstoneAbschalten(sideNum, blue, "blue")
+--    redstoneAbschalten(sideNum, brown, "brown")
+    redstoneAbschalten(sideNum, green, "green")
+    redstoneAbschalten(sideNum, red, "red")
+    redstoneAbschalten(sideNum, black, "black")
   end
 end
 
