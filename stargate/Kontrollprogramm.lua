@@ -426,11 +426,7 @@ function AdressenSpeichern()
         else
           anwahlEnergie = string.format("%.f" , (sg.energyToDial(na[2]) * energymultiplicator))
         end
-        if Sprache == "deutsch" then
-          local anwahlEnergiePunkt = string.find(anwahlEnergie, "%.")
-          anwahlEnergie = string.sub(anwahlEnergie, 0, anwahlEnergiePunkt - 1) .. "," .. string.sub(anwahlEnergie, anwahlEnergiePunkt + 1)
-        end
-        gespeicherteAdressen[i + k][4] = anwahlEnergie
+        gespeicherteAdressen[i + k][4] = ErsetztePunktMitKomma(anwahlEnergie)
       end
     end
     zeigeNachricht(verarbeiteAdressen .. "<" .. na[2] .. "> <" .. na[1] .. ">")
@@ -443,6 +439,15 @@ function AdressenSpeichern()
   end
   zeigeMenu()
   zeigeNachricht("")
+end
+
+function ErsetztePunktMitKomma(...)
+  if Sprache == "deutsch" then
+    local Punkt = string.find(..., "%.")
+    return string.sub(..., 0, Punkt - 1) .. "," .. string.sub(..., Punkt + 1)
+  else
+    return ...
+  end
 end
 
 function zeigeFarben()
@@ -816,11 +821,7 @@ function zeigeEnergie()
   else
     energieMenge = string.format("%.f", energy)
   end
-  if Sprache == "deutsch" then
-    local energieMengePunkt = string.find(energieMenge, "%.")
-    energieMenge = string.sub(energieMenge, 0, energieMengePunkt - 1) .. "," .. string.sub(energieMenge, energieMengePunkt + 1)
-  end
-  zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. energieMenge)
+  zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. ErsetztePunktMitKomma(energieMenge))
 end
 
 function activetime()
@@ -830,14 +831,7 @@ function activetime()
     end
     time = (activationtime - os.time()) / sectime
     if time > 0 then
-      if Sprache == "deutsch" then
-        local Zeit = string.format("%.1f", time)
-        local ZeitPunkt = string.find(Zeit, "%.")
-        local ZeitmitKomma = string.sub(Zeit, 0, ZeitPunkt - 1) .. "," .. string.sub(Zeit, ZeitPunkt + 1)
-        zeigeHier(xVerschiebung, zeile, "  " .. zeit1 .. ZeitmitKomma .. "s")
-      else
-        zeigeHier(xVerschiebung, zeile, "  " .. zeit1 .. string.format("%.1f", time) .. "s")
-      end
+      zeigeHier(xVerschiebung, zeile, "  " .. zeit1 .. ErsetztePunktMitKomma(string.format("%.1f", time)) .. "s")
     end
   else
     zeigeHier(xVerschiebung, zeile, "  " .. zeit2)
