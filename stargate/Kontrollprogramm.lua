@@ -227,83 +227,82 @@ dofile("/stargate/sicherNachNeustart.lua")
 dofile("/stargate/sprache/" .. Sprache .. ".lua")
 dofile("/stargate/sprache/ersetzen.lua")
 
-local control                   = control;                  _ENV.control                  = nil
-local Adressseite               = Adressseite;              _ENV.Adressseite              = nil
-local Unbekannt                 = Unbekannt;                _ENV.Unbekannt                = nil
-local waehlen                   = waehlen;                  _ENV.waehlen                  = nil
-local energie1                  = energie1;                 _ENV.energie1                 = nil
-local energie2                  = energie2;                 _ENV.energie2                 = nil
-local keineVerbindung           = keineVerbindung;          _ENV.keineVerbindung          = nil
-local Steuerung                 = Steuerung;                _ENV.Steuerung                = nil
-local IrisSteuerung             = IrisSteuerung;            _ENV.IrisSteuerung            = nil
-local an_aus                    = an_aus;                   _ENV.an_aus                   = nil
-local AdressenBearbeiten        = AdressenBearbeiten;       _ENV.AdressenBearbeiten       = nil
-local beenden                   = beenden;                  _ENV.beenden                  = nil
-local nachrichtAngekommen       = nachrichtAngekommen;      _ENV.nachrichtAngekommen      = nil
-local RedstoneSignale           = RedstoneSignale;          _ENV.RedstoneSignale          = nil
-local RedstoneWeiss             = RedstoneWeiss;            _ENV.RedstoneWeiss            = nil
-local RedstoneRot               = RedstoneRot;              _ENV.RedstoneRot              = nil
-local RedstoneGelb              = RedstoneGelb;             _ENV.RedstoneGelb             = nil
-local RedstoneSchwarz           = RedstoneSchwarz;          _ENV.RedstoneSchwarz          = nil
-local RedstoneGruen             = RedstoneGruen;            _ENV.RedstoneGruen            = nil
-local versionName               = versionName;              _ENV.versionName              = nil
-local fehlerName                = fehlerName;               _ENV.fehlerName               = nil
-local SteuerungName             = SteuerungName;            _ENV.SteuerungName            = nil
-local lokaleAdresse             = lokaleAdresse;            _ENV.lokaleAdresse            = nil
-local zielAdresseName           = zielAdresseName;          _ENV.zielAdresseName          = nil
-local zielName                  = zielName;                 _ENV.zielName                 = nil
-local statusName                = statusName;               _ENV.statusName               = nil
-local IrisName                  = IrisName;                 _ENV.IrisName                 = nil
-local IrisSteuerung             = IrisSteuerung;            _ENV.IrisSteuerung            = nil
-local IDCakzeptiert             = IDCakzeptiert;            _ENV.IDCakzeptiert            = nil
-local IDCname                   = IDCname;                  _ENV.IDCname                  = nil
-local chevronName               = chevronName;              _ENV.chevronName              = nil
-local richtung                  = richtung;                 _ENV.richtung                 = nil
-local autoSchliessungAus        = autoSchliessungAus;       _ENV.autoSchliessungAus       = nil
-local autoSchliessungAn         = autoSchliessungAn;        _ENV.autoSchliessungAn        = nil
-local zeit1                     = zeit1;                    _ENV.zeit1                    = nil
-local zeit2                     = zeit2;                    _ENV.zeit2                    = nil
-local abschalten                = abschalten;               _ENV.abschalten               = nil
-local oeffneIris                = oeffneIris;               _ENV.oeffneIris               = nil
-local schliesseIris             = schliesseIris;            _ENV.schliesseIris            = nil
-local IDCeingabe                = IDCeingabe;               _ENV.IDCeingabe               = nil
-local naechsteSeite             = naechsteSeite;            _ENV.naechsteSeite            = nil
-local vorherigeSeite            = vorherigeSeite;           _ENV.vorherigeSeite           = nil
-local senden                    = senden;                   _ENV.senden                   = nil
-local aufforderung              = aufforderung;             _ENV.aufforderung             = nil
-local manueller                 = manueller;                _ENV.manueller                = nil
-local Eingriff                  = Eingriff;                 _ENV.Eingriff                 = nil
-local stargateName              = stargateName;             _ENV.stargateName             = nil
-local stargateAbschalten        = stargateAbschalten;       _ENV.stargateAbschalten       = nil
-local aktiviert                 = aktiviert;                _ENV.aktiviert                = nil
-local zeigeAdressen             = zeigeAdressen;            _ENV.zeigeAdressen            = nil
-local spracheAendern            = spracheAendern;           _ENV.spracheAendern           = nil
-local irisNameOffen             = irisNameOffen;            _ENV.irisNameOffen            = nil
-local irisNameOeffnend          = irisNameOeffnend;         _ENV.irisNameOeffnend         = nil
-local irisNameGeschlossen       = irisNameGeschlossen;      _ENV.irisNameGeschlossen      = nil
-local irisNameSchliessend       = irisNameSchliessend;      _ENV.irisNameSchliessend      = nil
-local irisNameOffline           = irisNameOffline;          _ENV.irisNameOffline          = nil
-local irisKontrolleNameAn       = irisKontrolleNameAn;      _ENV.irisKontrolleNameAn      = nil
-local irisKontrolleNameAus      = irisKontrolleNameAus;     _ENV.irisKontrolleNameAus     = nil
-local RichtungNameEin           = RichtungNameEin;          _ENV.RichtungNameEin          = nil
-local RichtungNameAus           = RichtungNameAus;          _ENV.RichtungNameAus          = nil
-local StatusNameUntaetig        = StatusNameUntaetig;       _ENV.StatusNameUntaetig       = nil
-local StatusNameWaehlend        = StatusNameWaehlend;       _ENV.StatusNameWaehlend       = nil
-local StatusNameVerbunden       = StatusNameVerbunden;      _ENV.StatusNameVerbunden      = nil
-local StatusNameSchliessend     = StatusNameSchliessend;    _ENV.StatusNameSchliessend    = nil
-local Neustart                  = Neustart;                 _ENV.Neustart                 = nil
-local verfuegbareSprachen       = verfuegbareSprachen;      _ENV.verfuegbareSprachen      = nil
-local IrisSteuerungName         = IrisSteuerungName;        _ENV.IrisSteuerungName        = nil
-local ausschaltenName           = ausschaltenName;          _ENV.ausschaltenName          = nil
-local redstoneAusschalten       = redstoneAusschalten;      _ENV.redstoneAusschalten      = nil
-local colorfulLampAusschalten   = colorfulLampAusschalten;  _ENV.colorfulLampAusschalten  = nil
-local verarbeiteAdressen        = verarbeiteAdressen;       _ENV.verarbeiteAdressen       = nil
-local Hilfetext                 = Hilfetext;                _ENV.Hilfetext                = nil
-local ersetzen                  = ersetzen;                 _ENV.ersetzen                 = nil
-local IrisZustandName           = irisNameOffline;          _ENV.irisNameOffline          = nil
-local Sprachaenderung           = Sprachaenderung;          _ENV.Sprachaenderung          = nil
-local entwicklerName            = entwicklerName;           _ENV.entwicklerName           = nil
-local IDCgesendet               = IDCgesendet;              _ENV.IDCgesendet              = nil
+local control                   = control
+local Adressseite               = Adressseite
+local Unbekannt                 = Unbekannt
+local waehlen                   = waehlen
+local energie1                  = energie1
+local energie2                  = energie2
+local keineVerbindung           = keineVerbindung
+local Steuerung                 = Steuerung
+local IrisSteuerung             = IrisSteuerung
+local an_aus                    = an_aus
+local AdressenBearbeiten        = AdressenBearbeiten
+local beenden                   = beenden
+local nachrichtAngekommen       = nachrichtAngekommen
+local RedstoneSignale           = RedstoneSignale
+local RedstoneWeiss             = RedstoneWeiss
+local RedstoneRot               = RedstoneRot
+local RedstoneGelb              = RedstoneGelb
+local RedstoneSchwarz           = RedstoneSchwarz
+local RedstoneGruen             = RedstoneGruen
+local versionName               = versionName
+local fehlerName                = fehlerName
+local SteuerungName             = SteuerungName
+local lokaleAdresse             = lokaleAdresse
+local zielAdresseName           = zielAdresseName
+local zielName                  = zielName
+local statusName                = statusName
+local IrisName                  = IrisName
+local IrisSteuerung             = IrisSteuerung
+local IDCakzeptiert             = IDCakzeptiert
+local IDCname                   = IDCname
+local chevronName               = chevronName
+local richtung                  = richtung
+local autoSchliessungAus        = autoSchliessungAus
+local autoSchliessungAn         = autoSchliessungAn
+local zeit1                     = zeit1
+local zeit2                     = zeit2
+local abschalten                = abschalten
+local oeffneIris                = oeffneIris
+local schliesseIris             = schliesseIris
+local IDCeingabe                = IDCeingabe
+local naechsteSeite             = naechsteSeite
+local vorherigeSeite            = vorherigeSeite
+local senden                    = senden
+local aufforderung              = aufforderung
+local manueller                 = manueller
+local Eingriff                  = Eingriff
+local stargateName              = stargateName
+local stargateAbschalten        = stargateAbschalten
+local aktiviert                 = aktiviert
+local zeigeAdressen             = zeigeAdressen
+local spracheAendern            = spracheAendern
+local irisNameOffen             = irisNameOffen
+local irisNameOeffnend          = irisNameOeffnend
+local irisNameGeschlossen       = irisNameGeschlossen
+local irisNameSchliessend       = irisNameSchliessend
+local irisNameOffline           = irisNameOffline
+local irisKontrolleNameAn       = irisKontrolleNameAn
+local irisKontrolleNameAus      = irisKontrolleNameAus
+local RichtungNameEin           = RichtungNameEin
+local RichtungNameAus           = RichtungNameAus
+local StatusNameUntaetig        = StatusNameUntaetig
+local StatusNameWaehlend        = StatusNameWaehlend
+local StatusNameVerbunden       = StatusNameVerbunden
+local StatusNameSchliessend     = StatusNameSchliessend
+local Neustart                  = Neustart
+local verfuegbareSprachen       = verfuegbareSprachen
+local IrisSteuerungName         = IrisSteuerungName
+local ausschaltenName           = ausschaltenName
+local redstoneAusschalten       = redstoneAusschalten
+local colorfulLampAusschalten   = colorfulLampAusschalten
+local verarbeiteAdressen        = verarbeiteAdressen
+local Hilfetext                 = Hilfetext
+local ersetzen                  = ersetzen
+local IrisZustandName           = irisNameOffline
+local Sprachaenderung           = Sprachaenderung
+local entwicklerName            = entwicklerName
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
@@ -901,7 +900,6 @@ handlers[key_event_name] = function(e)
   if e[3] == 13 then
     entercode = false
     sg.sendMessage(enteridc)
-    zeigeNachricht(IDCgesendet)
   elseif entercode == true then
     enteridc = enteridc .. c
     showidc = showidc .. "*"

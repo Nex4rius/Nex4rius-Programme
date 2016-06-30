@@ -25,6 +25,12 @@ function installieren()
   end
   wget("-f", Pfad() .. "/autorun.lua", "autorun.lua")
   wget("-f", Pfad() .. "/stargate/Kontrollprogramm.lua", "/stargate/Kontrollprogramm.lua")
+  if fs.exists("/stargate/compat.lua") then
+    os.execute("del /stargate/compat.lua")
+  end
+  if fs.exists("/stargate/config.lua") then
+    os.execute("del /stargate/config.lua")
+  end
   wget("-f", Pfad() .. "/stargate/check.lua", "/stargate/check.lua")
   wget("-f", Pfad() .. "/stargate/version.txt", "/stargate/version.txt")
   wget("-f", Pfad() .. "/stargate/sprache/deutsch.lua", "/stargate/sprache/deutsch.lua")
