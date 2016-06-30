@@ -900,6 +900,7 @@ handlers[key_event_name] = function(e)
   if e[3] == 13 then
     entercode = false
     sg.sendMessage(enteridc)
+    zeigeNachricht(IDCgesendet)
   elseif entercode == true then
     enteridc = enteridc .. c
     showidc = showidc .. "*"
