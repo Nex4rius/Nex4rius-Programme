@@ -303,6 +303,7 @@ local ersetzen                  = ersetzen
 local IrisZustandName           = irisNameOffline
 local Sprachaenderung           = Sprachaenderung
 local entwicklerName            = entwicklerName
+local IDCgesendet               = IDCgesendet
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
