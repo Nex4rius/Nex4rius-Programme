@@ -498,37 +498,10 @@ function iriscontroller()
   if state == "Dialing" then
     messageshow = true
   end
-  if direction == "Incoming" and incode == IDC and control == "Off" then
-    IDCyes = true
-    RedstoneAenderung(black, 255)
-    if iris == "Closed" or iris == "Closing" or LampenRot == true then else
-      Colorful_Lamp_Farben(992)
-    end
-  end
-  if direction == "Incoming" and incode == IDC and iriscontrol == "on" and control == "On" then
-    if iris == "Offline" then
-      sg.sendMessage("IDC Accepted Iris: Offline")
-    else
-      irisOpen()
-      os.sleep(2)
-      sg.sendMessage("IDC Accepted Iris: Open")
-    end
-    iriscontrol = "off"
-    IDCyes = true
-  elseif direction == "Incoming" and send == true then
-    sg.sendMessage("Iris Control: "..control.." Iris: "..iris)
-    send = false
-  end
-  if wormhole == "in" and state == "Dialling" and iriscontrol == "on" and control == "On" then
-    if iris == "Offline" then else
-      irisClose()
-      RedstoneAenderung(red, 255)
-      redstoneIncoming = false
-    end
-    k = "close"
-  end
-  if iris == "Closing" and control == "On" then
-    k = "open"
+  if state == "Idle" then
+    activationtime = 0
+    entercode = false
+    remoteName = ""
   end
   if state == "Idle" and k == "close" and control == "On" then
     outcode = nil
@@ -572,6 +545,38 @@ function iriscontroller()
       send = false
     end
   end
+  if wormhole == "in" and state == "Dialling" and iriscontrol == "on" and control == "On" then
+    if iris == "Offline" then else
+      irisClose()
+      RedstoneAenderung(red, 255)
+      redstoneIncoming = false
+    end
+    k = "close"
+  end
+  if direction == "Incoming" and incode == IDC and control == "Off" then
+    IDCyes = true
+    RedstoneAenderung(black, 255)
+    if iris == "Closed" or iris == "Closing" or LampenRot == true then else
+      Colorful_Lamp_Farben(992)
+    end
+  end
+  if direction == "Incoming" and incode == IDC and iriscontrol == "on" and control == "On" then
+    if iris == "Offline" then
+      sg.sendMessage("IDC Accepted Iris: Offline")
+    else
+      irisOpen()
+      os.sleep(2)
+      sg.sendMessage("IDC Accepted Iris: Open")
+    end
+    iriscontrol = "off"
+    IDCyes = true
+  elseif direction == "Incoming" and send == true then
+    sg.sendMessage("Iris Control: "..control.." Iris: "..iris)
+    send = false
+  end
+  if iris == "Closing" and control == "On" then
+    k = "open"
+  end
   if codeaccepted == "-" or codeaccepted == nil then
   elseif messageshow == true then
     zeigeNachricht(nachrichtAngekommen .. codeaccepted .. "                   ")
@@ -587,11 +592,6 @@ function iriscontroller()
     messageshow = false
     incode = "-"
     codeaccepted = "-"
-  end
-  if state == "Idle" then
-    activationtime = 0
-    entercode = false
-    remoteName = ""
   end
 end
 
