@@ -42,7 +42,7 @@ computer requirements
 - GPU T2
 - 12x Screen T2
 - HDD T1
-- 2x Memory T1
+- 2x Memory T1.5
 - (Internet Card)
 - (Redstone Card)
 
