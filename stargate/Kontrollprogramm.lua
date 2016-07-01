@@ -748,7 +748,7 @@ function RedstoneKontrolle()
     RedstoneAenderung(white, 255)
     redstoneState = true
   end
-  if IDCyes == true or (IDC == "" and state == "Connected" and direction == "Incoming") then
+  if IDCyes == true or (IDC == "" and state == "Connected" and direction == "Incoming" and iris == "Offline") then
     if redstoneIDC == true then
       RedstoneAenderung(black, 255)
       redstoneIDC = false
