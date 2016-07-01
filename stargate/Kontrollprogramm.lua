@@ -896,6 +896,7 @@ function dial(name, adresse)
     zeigeNachricht(waehlen .. "<" .. string.sub(remoteName, 1, xVerschiebung + 12) .. "> <" .. adresse .. ">")
   end
   state = "Dialling"
+  wormhole = "out"
   local ok, ergebnis = sg.dial(adresse)
   if ok == nil then
     if string.sub(ergebnis, 0, 20) == "Stargate at address " then
