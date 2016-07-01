@@ -37,5 +37,13 @@ no    -> no update<br>
 beta  -> update to beta version<br>
 help  -> show this message again
 
-Make pull requests if you want :)
+computer requirements
+- CPU T2
+- GPU T2
+- 12x Screen T2
+- HDD T1
+- 2x Memory T1
+- (Internet Card)
+- (Redstone Card)
 
+Make pull requests if you want :)
