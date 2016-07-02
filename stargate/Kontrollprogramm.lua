@@ -1001,25 +1001,18 @@ handlers[key_event_name] = function(e)
       AdressenSpeichern()
       IDC, autoclosetime, RF, Sprache, side = loadfile("/stargate/Sicherungsdatei.lua")()
       sides()
-      seite = 0
+      seite = -1
       zeigeAnzeige()
+      seite = 0
       AdressenSpeichern()
     elseif c == "l" then
       gpu.setBackground(0x333333)
       gpu.setForeground(Textfarbe)
+      os.execute("edit stargate/Sicherungsdatei.lua")
+      schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
       term.clear()
-      print(spracheAendern .. "\n" .. verfuegbareSprachen .. "\n")
-      antwortFrageSprache = io.read()
-      if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
-        Sprache = string.lower(antwortFrageSprache)
-        installieren = true
-        schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
-        zeigeNachricht(Sprachaenderung)
-      else
-        print(fehlerName)
-      end
-      seite = 0
-      zeigeAnzeige()
+      loadfile("/stargate/Kontrollprogramm")()
+      os.exit()
     end
   end
 end
