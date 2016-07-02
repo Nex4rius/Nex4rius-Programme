@@ -3,7 +3,6 @@
 -- https://github.com/Nex4rius/Stargate-Programm
 
 component = require("component")
-sides = require("sides")
 term = require("term")
 event = require("event")
 fs = require("filesystem")
@@ -14,10 +13,6 @@ gpu = component.getPrimary("gpu")
 args = shell.parse(...)
 serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
 versionTyp = "master"
-Sprache = ""
-control = "On"
-firstrun = -2
-installieren = false
 betaVersionName = ""
 IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun, loadfile("/stargate/Sicherungsdatei.lua")()
 
