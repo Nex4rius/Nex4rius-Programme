@@ -16,7 +16,6 @@ local side = "unten" -- bottom, top, back, front, right or left
 
 local installieren = false
 local control = "On"
-local firstrun = -2
 
 ----------------------------------------------------------------------
 
@@ -40,9 +39,6 @@ if type(installieren) ~= "boolean" then
 end
 if type(control) ~= "string" then
   control = "On"
-end
-if type(firstrun) ~= "number" then
-  firstrun = -2
 end
 if type(IDC) ~= "string" then
   IDC = ""
