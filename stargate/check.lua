@@ -14,11 +14,10 @@ args = shell.parse(...)
 serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
 betaVersionName = ""
 if fs.exists("/stargate/Sicherungsdatei.lua") then
-  IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun = loadfile("/stargate/Sicherungsdatei.lua")()
+  IDC, autoclosetime, RF, Sprache, side, installieren, control = loadfile("/stargate/Sicherungsdatei.lua")()
 else
   Sprache = ""
   control = "On"
-  firstrun = -2
   installieren = false
 end
 
@@ -32,7 +31,7 @@ end
 
 term.clear()
 
-function schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun)
+function schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
   f = io.open ("/stargate/Sicherungsdatei.lua", "w")
   f:write('-- pastebin run -f fa9gu1GJ\n')
   f:write('-- von Nex4rius\n')
@@ -46,8 +45,7 @@ function schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installie
   f:write('local side = "' .. tostring(side) .. '" -- bottom, top, back, front, right or left\n\n')
   f:write(string.rep("-", 70) .. '\n\n')
   f:write('local installieren = ' .. tostring(installieren) .. '\n')
-  f:write('local control = "' .. tostring(control) .. '"\n')
-  f:write('local firstrun = ' .. tostring(firstrun) .. '\n\n')
+  f:write('local control = "' .. tostring(control) .. '"\n\n')
   f:write(string.rep("-", 70) .. '\n\n')
   f:write('if type(IDC) ~= "string" then\n  IDC = ""\nend\n')
   f:write('if type(autoclosetime) ~= "number" then\n  autoclosetime = false\nend\n')
@@ -56,9 +54,8 @@ function schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installie
   f:write('if type(side) ~= "string" then\n  side = "unten"\nend\n')
   f:write('if type(installieren) ~= "boolean" then\n  installieren = false\nend\n')
   f:write('if type(control) ~= "string" then\n  control = "On"\nend\n')
-  f:write('if type(firstrun) ~= "number" then\n  firstrun = -2\nend\n')
   f:write('if type(IDC) ~= "string" then\n  IDC = ""\nend\n\n')
-  f:write('return IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun\n')
+  f:write('return IDC, autoclosetime, RF, Sprache, side, installieren, control\n')
   f:close()
 end
 
@@ -71,7 +68,7 @@ function checkSprache()
     print("\nUnbekannte Eingabe\nStandardeinstellung = deutsch")
     Sprache = "deutsch"
   end
-  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun)
+  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
   print("")
 end
 
@@ -116,7 +113,7 @@ end
 function update(versionTyp)
   wget("-f", Pfad(versionTyp) .. "/installieren.lua", "/installieren.lua")
   installieren = true
-  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun)
+  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
   f = io.open ("autorun.lua", "w")
   f:write('versionTyp = "' .. versionTyp .. '"\n')
   f:write('dofile("installieren.lua")')
@@ -189,7 +186,7 @@ function mainCheck()
   end
   print(laden)
   installieren = false
-  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun)
+  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
   if checkDateien() then
     dofile("/stargate/Kontrollprogramm.lua")
   else
