@@ -19,6 +19,7 @@ local letzterAdressCheck    = os.time() / sectime
 local enteridc              = ""
 local showidc               = ""
 local remoteName            = ""
+local zielAdresse           = ""
 local time                  = "-"
 local incode                = "-"
 local codeaccepted          = "-"
@@ -69,10 +70,6 @@ local Steuerungsfarbe       = gelbeFarbe
 local Steuerungstextfarbe   = schwarzeFarbe
 local Statusfarbe           = grueneFarbe
 local Statustextfarbe       = Textfarbe
-
-local firstrun              = firstrun
-local installieren          = installieren
-local zielAdresse           = ""
 
 local adressen
 local sideNum
