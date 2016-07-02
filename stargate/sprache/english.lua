@@ -99,4 +99,4 @@ Hilfetext                 = "Usage: autorun [...]\nyes\t-> update to stable vers
 Sprachaenderung           = "language changes after the next restart"
 entwicklerName            = "Developer:"
 IDCgesendet               = "sending IDC"
-DateienFehlen             = "files are missing\n redownload everything?"
+DateienFehlen             = "files are missing\nredownload everything?"
