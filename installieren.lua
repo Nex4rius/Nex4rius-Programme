@@ -77,7 +77,7 @@ function installieren()
   os.execute("reboot")
 end
 
-function schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun)
+function schreibSicherungsdatei()
   f = io.open ("/stargate/Sicherungsdatei.lua", "w")
   f:write('-- pastebin run -f fa9gu1GJ\n')
   f:write('-- von Nex4rius\n')
