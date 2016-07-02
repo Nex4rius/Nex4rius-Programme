@@ -15,7 +15,7 @@ serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
 versionTyp = "master"
 betaVersionName = ""
 if fs.exists("/stargate/Sicherungsdatei.lua") then
-  IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun, loadfile("/stargate/Sicherungsdatei.lua")()
+  IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun = loadfile("/stargate/Sicherungsdatei.lua")()
 else
   Sprache = ""
   control = "On"
