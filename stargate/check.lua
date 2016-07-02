@@ -11,6 +11,7 @@ shell = require("shell")
 wget = loadfile("/bin/wget.lua")
 gpu = component.getPrimary("gpu")
 args = shell.parse(...)
+schreibSicherungsdatei = loadfile("/stargate/schreibSicherungsdatei.lua")
 serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
 betaVersionName = ""
 if fs.exists("/stargate/Sicherungsdatei.lua") then
