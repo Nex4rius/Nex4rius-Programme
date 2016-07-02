@@ -1,8 +1,18 @@
-shell = require("shell")
-args = shell.parse(...)
-= args[1]
+local args          = require("shell").parse(...)
+local IDC           = args[1]
+local autoclosetime = args[2]
+local RF            = args[3]
+local Sprache       = args[4]
+local side          = args[5]
+local installieren  = args[6]
+local control       = args[7]
 
-= args[1]
+for i = 1, 7 do
+  if args[i] nil then
+    return false
+  end
+end
+
 f = io.open ("/stargate/Sicherungsdatei.lua", "w")
 f:write('-- pastebin run -f fa9gu1GJ\n')
 f:write('-- von Nex4rius\n')
@@ -28,3 +38,5 @@ f:write('if type(control) ~= "string" then\n  control = "On"\nend\n')
 f:write('if type(IDC) ~= "string" then\n  IDC = ""\nend\n\n')
 f:write('return IDC, autoclosetime, RF, Sprache, side, installieren, control\n')
 f:close()
+
+return true
