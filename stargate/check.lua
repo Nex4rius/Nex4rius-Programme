@@ -33,7 +33,7 @@ end
 
 term.clear()
 
-function schreibSicherungsdatei()
+function schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun)
   f = io.open ("/stargate/Sicherungsdatei.lua", "w")
   f:write('-- pastebin run -f fa9gu1GJ\n')
   f:write('-- von Nex4rius\n')
@@ -42,11 +42,11 @@ function schreibSicherungsdatei()
   f:write('-- to close press "Ctrl + W"\n--\n\n')
   f:write('local IDC = "' .. tostring(IDC) .. '" -- Iris Deactivation Code\n')
   f:write('local autoclosetime = ' .. tostring(autoclosetime) .. ' -- in seconds -- false for no autoclose\n')
-  f:write('local RF = ' .. tostring(false) .. ' -- show energy in RF instead of EU\n')
+  f:write('local RF = ' .. tostring(RF) .. ' -- show energy in RF instead of EU\n')
   f:write('local Sprache = "' .. tostring(Sprache) .. '" -- deutsch / english\n')
   f:write('local side = "' .. tostring(side) .. '" -- bottom, top, back, front, right or left\n\n')
   f:write(string.rep("-", 70) .. '\n\n')
-  f:write('local installieren = ' .. tostring(false) .. '\n')
+  f:write('local installieren = ' .. tostring(installieren) .. '\n')
   f:write('local control = "' .. tostring(control) .. '"\n')
   f:write('local firstrun = ' .. tostring(firstrun) .. '\n\n')
   f:write(string.rep("-", 70) .. '\n\n')
@@ -72,7 +72,7 @@ function checkSprache()
     print("\nUnbekannte Eingabe\nStandardeinstellung = deutsch")
     Sprache = "deutsch"
   end
-  schreibSicherungsdatei()
+  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun)
   print("")
 end
 
@@ -119,7 +119,7 @@ end
 function update()
   wget("-f", Pfad() .. "/installieren.lua", "/installieren.lua")
   installieren = true
-  schreibSicherungsdatei()
+  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun)
   f = io.open ("autorun.lua", "w")
   f:write('versionTyp = "' .. versionTyp .. '"\n')
   f:write('dofile("installieren.lua")')
@@ -198,7 +198,7 @@ function mainCheck()
   end
   print(laden)
   installieren = false
-  schreibSicherungsdatei()
+  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun)
   dofile("/stargate/Kontrollprogramm.lua")
 end
 
