@@ -1,5 +1,6 @@
 -- pastebin run -f fa9gu1GJ
 -- von Nex4rius
+-- https://github.com/Nex4rius/Stargate-Programm
 
 fs = require("filesystem")
 wget = loadfile("/bin/wget.lua")
