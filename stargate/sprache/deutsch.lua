@@ -99,4 +99,4 @@ Hilfetext                 = "Verwendung: autorun [...]\nja\t-> Aktualisierung zu
 Sprachaenderung           = "Sprachänderung ab nächstem Neustart"
 entwicklerName            = "Entwickler:"
 IDCgesendet               = "Sende IDC"
-DateienFehlen             = "Dateien fehlen\n Alles neu herunterladen?"
+DateienFehlen             = "Dateien fehlen\nAlles neu herunterladen?"
