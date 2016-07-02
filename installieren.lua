@@ -32,9 +32,9 @@ function installieren()
     versionTyp = "master"
   end
   wget("-f", Pfad(versionTyp) .. "/autorun.lua", "autorun.lua")
-  wget("-f", Pfad(versionTyp) .. "/stargate/Kontrollprogramm.lua", "/stargate/Kontrollprogramm.lua")
   wget("-f", Pfad(versionTyp) .. "/stargate/check.lua", "/stargate/check.lua")
   wget("-f", Pfad(versionTyp) .. "/stargate/version.txt", "/stargate/version.txt")
+  wget("-f", Pfad(versionTyp) .. "/stargate/Kontrollprogramm.lua", "/stargate/Kontrollprogramm.lua")
   wget("-f", Pfad(versionTyp) .. "/stargate/sprache/deutsch.lua", "/stargate/sprache/deutsch.lua")
   wget("-f", Pfad(versionTyp) .. "/stargate/sprache/english.lua", "/stargate/sprache/english.lua")
   wget("-f", Pfad(versionTyp) .. "/stargate/sprache/ersetzen.lua", "/stargate/sprache/ersetzen.lua")
