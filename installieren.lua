@@ -17,6 +17,9 @@ else
   control = "On"
   firstrun = -2
   installieren = false
+  if fs.exists("/stargate/sicherNachNeustart.lua") then
+    dofile("/stargate/sicherNachNeustart.lua")
+  end
 end
 
 function Pfad()
