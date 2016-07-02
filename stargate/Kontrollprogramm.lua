@@ -196,7 +196,6 @@ end
 dofile("/stargate/sprache/" .. Sprache .. ".lua")
 dofile("/stargate/sprache/ersetzen.lua")
 
-local control                   = control
 local Adressseite               = Adressseite;              _ENV.Adressseite              = nil
 local Unbekannt                 = Unbekannt;                _ENV.Unbekannt                = nil
 local waehlen                   = waehlen;                  _ENV.waehlen                  = nil
