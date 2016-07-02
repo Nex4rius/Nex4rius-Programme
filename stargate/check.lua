@@ -14,7 +14,14 @@ args = shell.parse(...)
 serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
 versionTyp = "master"
 betaVersionName = ""
-IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun, loadfile("/stargate/Sicherungsdatei.lua")()
+if fs.exists("/stargate/Sicherungsdatei.lua") then
+  IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun, loadfile("/stargate/Sicherungsdatei.lua")()
+else
+  Sprache = ""
+  control = "On"
+  firstrun = -2
+  installieren = false
+end
 
 if fs.exists("/stargate/version.txt") then
   f = io.open ("/stargate/version.txt", "r")
