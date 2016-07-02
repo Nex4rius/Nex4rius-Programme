@@ -9,16 +9,9 @@ local fs                    = require("filesystem")
 local c                     = require("computer")
 local gpu                   = component.getPrimary("gpu")
 local sg                    = component.getPrimary("stargate")
-local Sprache               = Sprache
 
-dofile("/stargate/adressen.lua")
-
-local RF                    = RF
-local autoclosetime         = autoclosetime
-local side                  = side
-local sideNum               = sideNum
-local IDC                   = IDC
-local adressen              = adressen
+local IDC, autoclosetime, RF, Sprache, side = loadfile("/stargate/Sicherungsdatei.lua")()
+local adressen              = loadfile("/stargate/adressen.lua")()
 
 local sectime               = os.time()
 os.sleep(1)
@@ -83,6 +76,7 @@ local firstrun              = firstrun
 local installieren          = installieren
 local zielAdresse           = ""
 
+local sideNum
 local k
 local AdressAnzeige
 local gespeicherteAdressen
@@ -181,15 +175,6 @@ function schreibSicherungsdatei()
   f:close()
 end
 
-local function Adressvariablen()
-  RF                        = _ENV.RF
-  autoclosetime             = _ENV.autoclosetime
-  side                      = _ENV.side
-  sideNum                   = _ENV.sideNum
-  IDC                       = _ENV.IDC
-  adressen                  = _ENV.adressen
-end
-
 local function try(func, ...)
   local ok, result = pcall(func, ...)
   if not ok then
@@ -238,7 +223,6 @@ local function key_event_char(e)
   return string.char(e[3])
 end
 
-dofile("/stargate/sicherNachNeustart.lua")
 dofile("/stargate/sprache/" .. Sprache .. ".lua")
 dofile("/stargate/sprache/ersetzen.lua")
 
@@ -417,8 +401,7 @@ function Infoseite()
 end
 
 function AdressenSpeichern()
-  dofile("/stargate/adressen.lua")
-  local adressen = adressen
+  adressen = loadfile("/stargate/adressen.lua")()
   gespeicherteAdressen = {}
   local k = 0
   for i, na in pairs(adressen) do
@@ -623,8 +606,7 @@ function newAddress(g)
     AddNewAddress = false
     firstrun = -1
     schreibSicherungsdatei()
-    dofile("/stargate/adressen.lua")
-    Adressvariablen()
+    adressen = loadfile("/stargate/adressen.lua")()
     sides()
     zeigeMenu()
   end
@@ -1029,8 +1011,8 @@ handlers[key_event_name] = function(e)
       gpu.setBackground(0x333333)
       gpu.setForeground(Textfarbe)
       os.execute("edit stargate/adressen.lua")
-      dofile("/stargate/adressen.lua")
-      Adressvariablen()
+      adressen = loadfile("/stargate/adressen.lua")()
+      IDC, autoclosetime, RF, Sprache, side = loadfile("/stargate/Sicherungsdatei.lua")()
       sides()
       seite = 0
       zeigeAnzeige()
