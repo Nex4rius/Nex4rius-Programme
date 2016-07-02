@@ -3,7 +3,6 @@
 -- https://github.com/Nex4rius/Stargate-Programm
 
 local component             = require("component")
-local sides                 = require("sides")
 local term                  = require("term")
 local event                 = require("event")
 local fs                    = require("filesystem")
