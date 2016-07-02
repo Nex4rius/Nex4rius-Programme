@@ -7,7 +7,7 @@ wget = loadfile("/bin/wget.lua")
 serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
 
 if fs.exists("/stargate/Sicherungsdatei.lua") then
-  _, _, _, Sprache, _, installieren, control, firstrun, loadfile("/stargate/Sicherungsdatei.lua")()
+  _, _, _, Sprache, _, installieren, control, firstrun = loadfile("/stargate/Sicherungsdatei.lua")()
   if fs.exists("/stargate/sicherNachNeustart.lua") then
     dofile("/stargate/sicherNachNeustart.lua")
     os.execute("del /stargate/sicherNachNeustart.lua")
