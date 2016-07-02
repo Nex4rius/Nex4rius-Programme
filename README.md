@@ -2,11 +2,18 @@
 
 How to install:
 
-1) Make an OpenComputer computer with an internet card.
+1) Make an OpenComputer computer with:
+- CPU T2
+- GPU T2
+- 12x Screen T2
+- HDD T1 (with OpenOS)
+- 2x Memory T1.5
+- Internet Card - only required for installation and updates
+- Redstone Card T2 - optional
 
 2) copy / paste command
 
-```lua
+```
 pastebin run -f fa9gu1GJ
 ```
 
@@ -36,14 +43,5 @@ yes   -> update to stable version<br>
 no    -> no update<br>
 beta  -> update to beta version<br>
 help  -> show this message again
-
-computer requirements
-- CPU T2
-- GPU T2
-- 12x Screen T2
-- HDD T1
-- 2x Memory T1.5
-- (Internet Card)
-- (Redstone Card)
 
 Make pull requests if you want :)
