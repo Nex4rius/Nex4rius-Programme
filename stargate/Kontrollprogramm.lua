@@ -9,6 +9,7 @@ local fs                    = require("filesystem")
 local gpu                   = component.getPrimary("gpu")
 local sg                    = component.getPrimary("stargate")
 
+local schreibSicherungsdatei = loadfile("/stargate/schreibSicherungsdatei.lua")
 local IDC, autoclosetime, RF, Sprache, side, installieren, control = loadfile("/stargate/Sicherungsdatei.lua")()
 
 local sectime               = os.time()
