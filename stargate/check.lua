@@ -190,7 +190,20 @@ function mainCheck()
   print(laden)
   installieren = false
   schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun)
-  dofile("/stargate/Kontrollprogramm.lua")
+  if checkDateien() then
+    dofile("/stargate/Kontrollprogramm.lua")
+  else
+    print(fehlerName)
+  end
+end
+
+function checkDateien()
+  if fs.exists("/stargate/Sicherungsdatei.lua") then
+    if fs.exists("/stargate/Sicherungsdatei.lua") then
+      if fs.exists("/stargate/Sicherungsdatei.lua") then
+        if fs.exists("/stargate/Sicherungsdatei.lua") then
+          if fs.exists("/stargate/Sicherungsdatei.lua") then
+            if fs.exists("/stargate/Sicherungsdatei.lua") then
 end
 
 if Sprache == "" then
