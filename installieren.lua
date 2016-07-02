@@ -8,10 +8,6 @@ serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
 
 if fs.exists("/stargate/Sicherungsdatei.lua") then
   IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun = loadfile("/stargate/Sicherungsdatei.lua")()
-  if fs.exists("/stargate/sicherNachNeustart.lua") then
-    dofile("/stargate/sicherNachNeustart.lua")
-    os.execute("del /stargate/sicherNachNeustart.lua")
-  end
 else
   Sprache = ""
   control = "On"
@@ -20,6 +16,11 @@ else
   if fs.exists("/stargate/sicherNachNeustart.lua") then
     dofile("/stargate/sicherNachNeustart.lua")
   end
+end
+
+if fs.exists("/stargate/sicherNachNeustart.lua") then
+  dofile("/stargate/sicherNachNeustart.lua")
+  os.execute("del /stargate/sicherNachNeustart.lua")
 end
 
 function Pfad(versionTyp)
