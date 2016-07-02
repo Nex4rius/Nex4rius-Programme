@@ -3,15 +3,28 @@
 
 fs = require("filesystem")
 wget = loadfile("/bin/wget.lua")
-Sprache = ""
-control = "On"
-firstrun = -2
-Sprache = ""
-installieren = false
 serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
 
 if fs.exists("/stargate/sicherNachNeustart.lua") then
-  dofile("/stargate/sicherNachNeustart.lua")
+  _, _, _, Sprache, _, installieren, control, firstrun, loadfile("/stargate/sicherNachNeustart.lua")()
+else
+  Sprache = ""
+  control = "On"
+  firstrun = -2
+  installieren = false
+end
+
+if Sprache == nil then
+  Sprache = ""
+end
+if control == nil then
+  control = "On"
+end
+if firstrun == nil then
+  firstrun = -2
+end
+if installieren == nil then
+  installieren = false
 end
 
 function Pfad()
