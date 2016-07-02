@@ -1177,6 +1177,7 @@ function beendeAlles()
 end
 
 function main()
+  os.execute("label -a " .. c.getBootAddress() .. " StargateOS" .. getAddress(sg.localAddress()))
   if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
     irisOpen()
   end
