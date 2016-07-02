@@ -198,12 +198,26 @@ function mainCheck()
 end
 
 function checkDateien()
-  if fs.exists("/stargate/Sicherungsdatei.lua") then
-    if fs.exists("/stargate/Sicherungsdatei.lua") then
+  if fs.exists("/autorun.lua") then
+    if fs.exists("/stargate/Kontrollprogramm.lua") then
       if fs.exists("/stargate/Sicherungsdatei.lua") then
-        if fs.exists("/stargate/Sicherungsdatei.lua") then
-          if fs.exists("/stargate/Sicherungsdatei.lua") then
-            if fs.exists("/stargate/Sicherungsdatei.lua") then
+        if fs.exists("/stargate/adressen.lua") then
+          if fs.exists("/stargate/check.lua") then
+            if fs.exists("/stargate/version.txt") then
+              if fs.exists("/stargate/sprache/deutsch.lua") then
+                if fs.exists("/stargate/sprache/english.lua") then
+                  if fs.exists("/stargate/sprache/ersetzen.lua") then
+                    return true
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+  return false
 end
 
 if Sprache == "" then
