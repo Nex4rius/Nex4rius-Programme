@@ -45,3 +45,7 @@ beta  -> update to beta version<br>
 help  -> show this message again
 
 Make pull requests if you want :)
+
+tested with:<br>
+OpenComputers-MC1.7.10-1.5.22.46-universal<br>
+SGCraft-1.11.2-mc1.7.10
