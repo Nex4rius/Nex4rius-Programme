@@ -9,7 +9,7 @@ local fs                    = require("filesystem")
 local gpu                   = component.getPrimary("gpu")
 local sg                    = component.getPrimary("stargate")
 
-local IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun = loadfile("/stargate/Sicherungsdatei.lua")()
+local IDC, autoclosetime, RF, Sprache, side, installieren, control = loadfile("/stargate/Sicherungsdatei.lua")()
 
 local sectime               = os.time()
 os.sleep(1)
@@ -130,6 +130,29 @@ if component.isAvailable("redstone") then
   r.setBundledOutput(0, green, 0)
   r.setBundledOutput(0, red, 0)
   r.setBundledOutput(0, black, 0)
+end
+
+local function schreibeAdressen()
+  f = io.open("/stargate/adressen.lua", "w")
+  f:write('-- pastebin run -f fa9gu1GJ\n')
+  f:write('-- von Nex4rius\n')
+  f:write('-- https://github.com/Nex4rius/Stargate-Programm\n--\n')
+  f:write('-- to save press "Ctrl + S"\n')
+  f:write('-- to close press "Ctrl + W"\n--\n')
+  f:write('-- Put your own stargate addresses here\n')
+  f:write('-- "" for no Iris Code\n')
+  f:write('--\n\n')
+  f:write('return {\n')
+  f:write('--{"<Name>", "<Adresse>", "<IDC>"},\n')
+  for k, v in pairs(adressen) do
+    f:write("  " .. require("serialization").serialize(adressen[k]) .. ",\n")
+  end
+  if adressen[1] == nil then
+    f:write('{"Name 1", "Adresse 1", "IDC 1"},\n')
+    f:write('{"Name 2", "Adresse 2", "IDC 2"},\n')
+  end
+  f:write('}')
+  f:close()
 end
 
 if RF == true then
@@ -562,15 +585,12 @@ function neueZeile(b)
   zeile = zeile + b
 end
 
-function newAddress(g)
+function newAddress(neuAdresse)
   if AddNewAddress == true then
-    f = io.open ("stargate/adressen.lua", "a")
-    f:seek ("end", firstrun)
-    f:write('  {"' .. g .. '", "' .. g .. '", ""},\n}')
-    f:close ()
+    table.insert(adressen, '  {">>' .. neuAdresse .. '<<", "' .. neuAdresse .. '", ""},\n}'
+    schreibeAdressen()
     AddNewAddress = false
-    firstrun = -1
-    schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun)
+    schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
     AdressenSpeichern()
     IDC, autoclosetime, RF, Sprache, side = loadfile("/stargate/Sicherungsdatei.lua")()
     sides()
@@ -966,11 +986,11 @@ handlers[key_event_name] = function(e)
         if control == "On" then
           control = "Off"
           _ENV.control = "Off"
-          schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun)
+          schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
         else
           control = "On"
           _ENV.control = "On"
-          schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun)
+          schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
         end
       end
     elseif c == "z" then
@@ -992,7 +1012,7 @@ handlers[key_event_name] = function(e)
       if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
         Sprache = string.lower(antwortFrageSprache)
         installieren = true
-        schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun)
+        schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
         zeigeNachricht(Sprachaenderung)
       else
         print(fehlerName)
