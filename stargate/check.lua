@@ -193,7 +193,11 @@ function mainCheck()
   if checkDateien() then
     dofile("/stargate/Kontrollprogramm.lua")
   else
-    print(fehlerName)
+    print(fehlerName .. "\n" .. DateienFehlen)
+    antwortFrage = io.read()
+    if string.lower(antwortFrage) == ja then
+      os.execute("pastebin run -f fa9gu1GJ")
+    end
   end
 end
 
