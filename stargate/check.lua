@@ -116,7 +116,7 @@ function Pfad()
   return serverAddresse .. versionTyp
 end
 
-function update(versionTyp)
+function update()
   wget("-f", Pfad() .. "/installieren.lua", "/installieren.lua")
   installieren = true
   schreibSicherungsdatei()
@@ -168,23 +168,27 @@ function mainCheck()
     end
     if args[1] == ja or args[1] == "ja" or args[1] == "yes" then
       print(aktualisierenJa)
-      update("master")
+      versionTyp = "master"
+      update()
     elseif args[1] == nein or args[1] == "nein" or args[1] == "no" then
       -- nichts
     elseif args[1] == "beta" then
       print(aktualisierenBeta)
-      update("beta")
+      versionTyp = "beta"
+      update()
     elseif version == serverVersion and version == betaServerVersion then else
       if installieren == false then
         print(aktualisierenFrage .. betaVersionName .. "\n")
         antwortFrage = io.read()
         if string.lower(antwortFrage) == ja then
           print(aktualisierenJa)
-          update("master")
+          versionTyp = "master"
+          update()
           return
         elseif antwortFrage == "beta" then
           print(aktualisierenBeta)
-          update("beta")
+          versionTyp = "beta"
+          update()
           return
         else
           print(aktualisierenNein .. antwortFrage)
