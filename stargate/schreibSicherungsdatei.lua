@@ -8,7 +8,7 @@ local installieren  = args[6]
 local control       = args[7]
 
 for i = 1, 7 do
-  if args[i] nil then
+  if args[i] == nil then
     return false
   end
 end
