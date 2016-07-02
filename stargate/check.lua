@@ -19,6 +19,7 @@ control = "On"
 firstrun = -2
 installieren = false
 betaVersionName = ""
+IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun, loadfile("/stargate/Sicherungsdatei.lua")()
 
 if fs.exists("/stargate/version.txt") then
   f = io.open ("/stargate/version.txt", "r")
@@ -27,8 +28,6 @@ if fs.exists("/stargate/version.txt") then
 else
   version = fehlerName
 end
-
-dofile("/stargate/sicherNachNeustart.lua")
 
 os.execute("label -a " .. c.getBootAddress() .. " StargateOS")
 
