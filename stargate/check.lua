@@ -12,7 +12,6 @@ wget = loadfile("/bin/wget.lua")
 gpu = component.getPrimary("gpu")
 args = shell.parse(...)
 serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
-versionTyp = "master"
 betaVersionName = ""
 if fs.exists("/stargate/Sicherungsdatei.lua") then
   IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun = loadfile("/stargate/Sicherungsdatei.lua")()
@@ -81,11 +80,9 @@ function checkKomponenten()
   if component.isAvailable("redstone") then
     print(redstoneOK)
     r = component.getPrimary("redstone")
-    redst = true
   else
     print(redstoneFehlt)
     r = nil
-    redst = false
   end
   if gpu.maxResolution() == 80 then
     print(gpuOK2T)
@@ -112,12 +109,12 @@ function checkKomponenten()
   end
 end
 
-function Pfad()
+function Pfad(versionTyp)
   return serverAddresse .. versionTyp
 end
 
-function update()
-  wget("-f", Pfad() .. "/installieren.lua", "/installieren.lua")
+function update(versionTyp)
+  wget("-f", Pfad(versionTyp) .. "/installieren.lua", "/installieren.lua")
   installieren = true
   schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun)
   f = io.open ("autorun.lua", "w")
@@ -128,8 +125,7 @@ function update()
 end
 
 function checkServerVersion()
-  versionTyp = "master"
-  wget("-fQ", Pfad() .. "/stargate/version.txt", "/serverVersion.txt")
+  wget("-fQ", Pfad("master") .. "/stargate/version.txt", "/serverVersion.txt")
   if fs.exists("/serverVersion.txt") then
     f = io.open ("/serverVersion.txt", "r")
     serverVersion = f:read()
@@ -142,8 +138,7 @@ function checkServerVersion()
 end
 
 function checkBetaServerVersion()
-  versionTyp = "beta"
-  wget("-fQ", Pfad() .. "/stargate/version.txt", "/betaVersion.txt")
+  wget("-fQ", Pfad("beta") .. "/stargate/version.txt", "/betaVersion.txt")
   if fs.exists("/betaVersion.txt") then
     f = io.open ("/betaVersion.txt", "r")
     betaServerVersion = f:read()
@@ -168,27 +163,23 @@ function mainCheck()
     end
     if args[1] == ja or args[1] == "ja" or args[1] == "yes" then
       print(aktualisierenJa)
-      versionTyp = "master"
-      update()
+      update("master")
     elseif args[1] == nein or args[1] == "nein" or args[1] == "no" then
       -- nichts
     elseif args[1] == "beta" then
       print(aktualisierenBeta)
-      versionTyp = "beta"
-      update()
+      update("beta")
     elseif version == serverVersion and version == betaServerVersion then else
       if installieren == false then
         print(aktualisierenFrage .. betaVersionName .. "\n")
         antwortFrage = io.read()
         if string.lower(antwortFrage) == ja then
           print(aktualisierenJa)
-          versionTyp = "master"
-          update()
+          update("master")
           return
         elseif antwortFrage == "beta" then
           print(aktualisierenBeta)
-          versionTyp = "beta"
-          update()
+          update("beta")
           return
         else
           print(aktualisierenNein .. antwortFrage)
