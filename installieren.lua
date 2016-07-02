@@ -65,25 +65,6 @@ function installieren()
   if not fs.exists("/stargate/Sicherungsdatei.lua") then
     wget(Pfad(versionTyp) .. "/stargate/Sicherungsdatei.lua", "/stargate/Sicherungsdatei.lua")
   end
-  f = io.open ("/stargate/adressen.lua", "r")
-  addressRead = true
-  leseLaenge = 1000
-  while addressRead == true do
-    readAddresses = f:read(leseLaenge)
-    AdressesLength = string.len(readAddresses)
-    if AdressesLength == leseLaenge then
-      leseLaenge = leseLaenge * 2
-    else
-      addressRead = false
-    end
-  end
-  f:close()
-  if string.sub(readAddresses, AdressesLength, AdressesLength) == " " then
-    f = io.open ("/stargate/adressen.lua", "a")
-    f:seek ("end", -1)
-    f:write("")
-    f:close()
-  end
   if versionTyp == "beta" then
     f = io.open ("/stargate/version.txt", "r")
     version = f:read()
