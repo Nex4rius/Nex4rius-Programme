@@ -607,6 +607,7 @@ function newAddress(g)
     firstrun = -1
     schreibSicherungsdatei()
     adressen = loadfile("/stargate/adressen.lua")()
+    IDC, autoclosetime, RF, Sprache, side = loadfile("/stargate/Sicherungsdatei.lua")()
     sides()
     zeigeMenu()
   end
