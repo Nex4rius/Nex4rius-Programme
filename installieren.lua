@@ -5,25 +5,15 @@ fs = require("filesystem")
 wget = loadfile("/bin/wget.lua")
 serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
 
-if fs.exists("/stargate/sicherNachNeustart.lua") then
-  _, _, _, Sprache, _, installieren, control, firstrun, loadfile("/stargate/sicherNachNeustart.lua")()
+if fs.exists("/stargate/Sicherungsdatei.lua") then
+  _, _, _, Sprache, _, installieren, control, firstrun, loadfile("/stargate/Sicherungsdatei.lua")()
+  if fs.exists("/stargate/sicherNachNeustart.lua") then
+    os.execute("del /stargate/sicherNachNeustart.lua")
+  end
 else
   Sprache = ""
   control = "On"
   firstrun = -2
-  installieren = false
-end
-
-if Sprache == nil then
-  Sprache = ""
-end
-if control == nil then
-  control = "On"
-end
-if firstrun == nil then
-  firstrun = -2
-end
-if installieren == nil then
   installieren = false
 end
 
@@ -46,8 +36,8 @@ function installieren()
   if not fs.exists("/stargate/adressen.lua") then
     wget(Pfad() .. "/stargate/adressen.lua", "/stargate/adressen.lua")
   end
-  if not fs.exists("/stargate/sicherNachNeustart.lua") then
-    wget(Pfad() .. "/stargate/sicherNachNeustart.lua", "/stargate/sicherNachNeustart.lua")
+  if not fs.exists("/stargate/Sicherungsdatei.lua") then
+    wget(Pfad() .. "/stargate/Sicherungsdatei.lua", "/stargate/Sicherungsdatei.lua")
   end
   f = io.open ("/stargate/adressen.lua", "r")
   addressRead = true
@@ -83,12 +73,52 @@ function installieren()
 end
 
 function schreibSicherungsdatei()
-  f = io.open ("/stargate/sicherNachNeustart.lua", "w")
-  f:write("-- pastebin run -f fa9gu1GJ\n-- von Nex4rius\n-- https://github.com/Nex4rius/Stargate-Programm\n\n")
-  f:write('control = "' .. control .. '"\n')
-  f:write('firstrun = ' .. firstrun .. '\n')
-  f:write('Sprache = "' .. Sprache .. '" -- deutsch / english\n')
-  f:write('installieren = ' .. tostring(installieren) .. '\n')
+  f = io.open ("/stargate/Sicherungsdatei.lua", "w")
+  f:write('-- pastebin run -f fa9gu1GJ\n')
+  f:write('-- von Nex4rius\n')
+  f:write('-- https://github.com/Nex4rius/Stargate-Programm\n')
+  f:write('--\n')
+  f:write('-- to save press "Ctrl + S"\n')
+  f:write('-- to close press "Ctrl + W"\n')
+  f:write('--\n\n')
+  f:write('local IDC = "' .. tostring(IDC) .. '" -- Iris Deactivation Code\n')
+  f:write('local autoclosetime = ' .. tostring(autoclosetime) .. ' -- in seconds -- false for no autoclose\n')
+  f:write('local RF = ' .. tostring(false) .. ' -- show energy in RF instead of EU\n')
+  f:write('local Sprache = "' .. tostring(Sprache) .. '" -- deutsch / english\n')
+  f:write('local side = "' .. tostring(side) .. '" -- bottom, top, back, front, right or left\n\n')
+  f:write('----------------------------------------------------------------------\n\n')
+  f:write('local installieren = ' .. tostring(false) .. '\n')
+  f:write('local control = "' .. tostring(control) .. '"\n')
+  f:write('local firstrun = ' .. tostring(firstrun) .. '\n\n')
+  f:write('----------------------------------------------------------------------\n\n')
+  f:write('if type(IDC) ~= "string" then\n')
+  f:write('  IDC = ""\n')
+  f:write('end\n')
+  f:write('if type(autoclosetime) ~= "number" then\n')
+  f:write('  autoclosetime = false\n')
+  f:write('end\n')
+  f:write('if type(RF) ~= "boolean" then\n')
+  f:write('  RF = false\n')
+  f:write('end\n')
+  f:write('if type(Sprache) ~= "string" then\n')
+  f:write('  Sprache = ""\n')
+  f:write('end\n')
+  f:write('if type(side) ~= "string" then\n')
+  f:write('  side = "unten"\n')
+  f:write('end\n')
+  f:write('if type(installieren) ~= "boolean" then\n')
+  f:write('  installieren = false\n')
+  f:write('end\n')
+  f:write('if type(control) ~= "string" then\n')
+  f:write('  control = "On"\n')
+  f:write('end\n')
+  f:write('if type(firstrun) ~= "number" then\n')
+  f:write('  firstrun = -2\n')
+  f:write('end\n')
+  f:write('if type(IDC) ~= "string" then\n')
+  f:write('  IDC = ""\n')
+  f:write('end\n\n')
+  f:write('return IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun\n')
   f:close()
 end
 
