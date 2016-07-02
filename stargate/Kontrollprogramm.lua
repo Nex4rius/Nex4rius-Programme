@@ -6,7 +6,6 @@ local component             = require("component")
 local term                  = require("term")
 local event                 = require("event")
 local fs                    = require("filesystem")
-local c                     = require("computer")
 local gpu                   = component.getPrimary("gpu")
 local sg                    = component.getPrimary("stargate")
 
@@ -1125,7 +1124,7 @@ function beendeAlles()
 end
 
 function main()
-  os.execute("label -a " .. c.getBootAddress() .. " StargateOS" .. getAddress(sg.localAddress()))
+  os.execute("label -a " .. require("computer").getBootAddress() .. " StargateOS" .. getAddress(sg.localAddress()))
   if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
     irisOpen()
   end
