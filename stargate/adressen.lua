@@ -13,7 +13,6 @@
 --
 
 return {
---{"<Name>", "<Adresse>", "<IDC>"},
   {"Name 1", "Adresse 1", "IDC 1"},
   {"Name 2", "Adresse 2", "IDC 2"},
 }
