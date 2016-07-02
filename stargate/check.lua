@@ -29,8 +29,6 @@ else
   version = fehlerName
 end
 
-os.execute("label -a " .. c.getBootAddress() .. " StargateOS")
-
 term.clear()
 
 function schreibSicherungsdatei()
