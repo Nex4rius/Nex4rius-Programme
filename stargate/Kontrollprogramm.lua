@@ -862,14 +862,15 @@ function schreibFehlerLog(...)
       f = io.open("log", "w")
     end
     if type(...) == "string" then
-      if string.len(...) > 80 then
+      if string.len(...) > 70 then
         local rest = string.len(...)
-        while rest > 80 do
-          local a = 0
-          f:write(string.sub(..., a, a + 80) .. "\n")
-          rest = string.len(string.sub(..., a + 80))
-          a = a + 81
+        local a = 0
+        while rest > 70 do
+          f:write(string.sub(..., a, a + 70) .. "\n")
+          rest = string.len(string.sub(..., a + 70))
+          a = a + 71
         end
+        f:write(string.sub(..., a) .. "\n")
       else
         f:write(...)
       end
