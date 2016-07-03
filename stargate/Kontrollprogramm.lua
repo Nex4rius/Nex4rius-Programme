@@ -265,7 +265,7 @@ local stargateName              = stargateName;             _ENV.stargateName   
 local stargateAbschalten        = stargateAbschalten;       _ENV.stargateAbschalten       = nil
 local aktiviert                 = aktiviert;                _ENV.aktiviert                = nil
 local zeigeAdressen             = zeigeAdressen;            _ENV.zeigeAdressen            = nil
-local spracheAendern            = spracheAendern;           _ENV.spracheAendern           = nil
+local EinstellungenAendern      = EinstellungenAendern;     _ENV.EinstellungenAendern     = nil
 local irisNameOffen             = irisNameOffen;            _ENV.irisNameOffen            = nil
 local irisNameOeffnend          = irisNameOeffnend;         _ENV.irisNameOeffnend         = nil
 local irisNameGeschlossen       = irisNameGeschlossen;      _ENV.irisNameGeschlossen      = nil
@@ -280,7 +280,6 @@ local StatusNameWaehlend        = StatusNameWaehlend;       _ENV.StatusNameWaehl
 local StatusNameVerbunden       = StatusNameVerbunden;      _ENV.StatusNameVerbunden      = nil
 local StatusNameSchliessend     = StatusNameSchliessend;    _ENV.StatusNameSchliessend    = nil
 local Neustart                  = Neustart;                 _ENV.Neustart                 = nil
-local verfuegbareSprachen       = verfuegbareSprachen;      _ENV.verfuegbareSprachen      = nil
 local IrisSteuerungName         = IrisSteuerungName;        _ENV.IrisSteuerungName        = nil
 local ausschaltenName           = ausschaltenName;          _ENV.ausschaltenName          = nil
 local redstoneAusschalten       = redstoneAusschalten;      _ENV.redstoneAusschalten      = nil
@@ -369,7 +368,7 @@ function Infoseite()
   end
   print("Z " .. AdressenBearbeiten)
   print("Q " .. beenden)
-  print("L " .. spracheAendern .. "\n" .. verfuegbareSprachen)
+  print("L " .. EinstellungenAendern .. "\n")
   print(RedstoneSignale)
   gpu.setBackground(weisseFarbe)
   gpu.setForeground(schwarzeFarbe)
@@ -999,7 +998,6 @@ handlers[key_event_name] = function(e)
       gpu.setForeground(Textfarbe)
       os.execute("edit stargate/adressen.lua")
       AdressenSpeichern()
-      IDC, autoclosetime, RF, Sprache, side = loadfile("/stargate/Sicherungsdatei.lua")()
       sides()
       seite = -1
       zeigeAnzeige()
@@ -1009,9 +1007,9 @@ handlers[key_event_name] = function(e)
       gpu.setBackground(0x333333)
       gpu.setForeground(Textfarbe)
       os.execute("edit stargate/Sicherungsdatei.lua")
-      schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
-      term.clear()
+      IDC, autoclosetime, RF, Sprache, side = loadfile("/stargate/Sicherungsdatei.lua")()
       loadfile("/stargate/Kontrollprogramm")()
+      term.clear()
       os.exit()
     end
   end
