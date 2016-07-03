@@ -904,14 +904,16 @@ end
 
 handlers[key_event_name] = function(e)
   c = key_event_char(e)
-  if e[3] == 13 then
-    entercode = false
-    sg.sendMessage(enteridc)
-    zeigeNachricht(IDCgesendet)
-  elseif entercode == true then
-    enteridc = enteridc .. c
-    showidc = showidc .. "*"
-    zeigeNachricht(IDCeingabe .. ": " .. showidc)
+  if entercode == true then
+    if e[3] == 13 then
+      entercode = false
+      sg.sendMessage(enteridc)
+      zeigeNachricht(IDCgesendet)
+    else
+      enteridc = enteridc .. c
+      showidc = showidc .. "*"
+      zeigeNachricht(IDCeingabe .. ": " .. showidc)
+    end
   elseif c == "e" then
     if state == "Connected" and direction == "Outgoing" then
       enteridc = ""
