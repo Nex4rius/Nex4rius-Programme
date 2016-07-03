@@ -89,7 +89,7 @@ function update(versionTyp)
   schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
   f = io.open ("autorun.lua", "w")
   f:write('versionTyp = "' .. versionTyp .. '"\n')
-  f:write('dofile("installieren.lua")')
+  f:write('loadfile("installieren.lua")()')
   f:close()
   os.execute("reboot")
 end
@@ -161,7 +161,7 @@ function mainCheck()
   installieren = false
   schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
   if checkDateien() then
-    dofile("/stargate/Kontrollprogramm.lua")
+    loadfile("/stargate/Kontrollprogramm.lua")()
   else
     print(fehlerName .. "\n" .. DateienFehlen)
     antwortFrage = io.read()
@@ -200,7 +200,7 @@ if Sprache == "" then
   checkSprache()
 end
 
-dofile("/stargate/sprache/" .. Sprache .. ".lua")
+loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
 
 if args[1] == hilfe or args[1] == "hilfe" or args[1] == "help" then
   print(Hilfetext)
