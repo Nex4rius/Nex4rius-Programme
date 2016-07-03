@@ -32,6 +32,7 @@ local energy                = 0
 local seite                 = 0
 local maxseiten             = 0
 local checkEnergy           = 0
+local AdressenAnzahl        = 0
 local zeile                 = 1
 local Trennlinienhoehe      = 14
 local energymultiplicator   = 20
@@ -96,7 +97,6 @@ local eingabe
 local alte_eingabe
 local ausgabe
 local anwahlEnergie
-local AdressenAnzahl
 
 local white                 = 0
 --local orange                = 1
@@ -151,8 +151,8 @@ local function schreibeAdressen()
     f:write("  " .. require("serialization").serialize(adressen[k]) .. ",\n")
   end
   if adressen[1] == nil then
-    f:write('{"Name 1", "Adresse 1", "IDC 1"},\n')
-    f:write('{"Name 2", "Adresse 2", "IDC 2"},\n')
+    f:write('  {"Name 1", "Adresse 1", "IDC 1"},\n')
+    f:write('  {"Name 2", "Adresse 2", "IDC 2"},\n')
   end
   f:write('}')
   f:close()
@@ -413,14 +413,14 @@ function AdressenSpeichern()
           anwahlEnergie = string.format("%.f" , (sg.energyToDial(na[2]) * energymultiplicator))
         end
       end
+      sendeAdressen[i] = {}
+      sendeAdressen[i][1] = na[1]
+      sendeAdressen[i][2] = na[2]
       gespeicherteAdressen[i + k] = {}
       gespeicherteAdressen[i + k][1] = na[1]
       gespeicherteAdressen[i + k][2] = na[2]
       gespeicherteAdressen[i + k][3] = na[3]
       gespeicherteAdressen[i + k][4] = ErsetzePunktMitKomma(anwahlEnergie)
-      sendeAdressen[i] = {}
-      sendeAdressen[i][1] = na[1]
-      sendeAdressen[i][2] = na[2]
     end
     zeigeNachricht(verarbeiteAdressen .. "<" .. na[2] .. "> <" .. na[1] .. ">")
     maxseiten = (i + k) / 10
