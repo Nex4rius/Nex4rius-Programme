@@ -1016,8 +1016,6 @@ handlers[key_event_name] = function(e)
       gpu.setBackground(0x333333)
       gpu.setForeground(Textfarbe)
       edit("stargate/adressen.lua")
-      AdressenSpeichern()
-      sides()
       seite = -1
       zeigeAnzeige()
       seite = 0
@@ -1027,6 +1025,7 @@ handlers[key_event_name] = function(e)
       gpu.setForeground(Textfarbe)
       edit("stargate/Sicherungsdatei.lua")
       IDC, autoclosetime, RF, Sprache, side, installieren, control = loadfile("/stargate/Sicherungsdatei.lua")()
+      sides()
       term.clear()
       seite = 0
       zeigeAnzeige()
