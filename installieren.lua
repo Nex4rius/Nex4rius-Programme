@@ -4,7 +4,6 @@
 
 fs = require("filesystem")
 wget = loadfile("/bin/wget.lua")
-schreibSicherungsdatei = loadfile("/stargate/schreibSicherungsdatei.lua")
 serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
 
 if fs.exists("/stargate/Sicherungsdatei.lua") then
@@ -41,7 +40,7 @@ if fs.exists("/stargate/sicherNachNeustart.lua") then
   f:write('}')
   f:close()
   dofile("/stargate/sicherNachNeustart.lua")
-  os.execute("del /stargate/sicherNachNeustart.lua")
+  loadfile("/bin/rm.lua")("/stargate/sicherNachNeustart.lua")
 end
 
 function Pfad(versionTyp)
@@ -75,9 +74,9 @@ function installieren()
     f:write(version .. " BETA")
     f:close()
   end
-  os.execute("del -v installieren.lua")
+  loadfile("/bin/rm.lua")("-v", "installieren.lua")
   installieren = true
-  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
+  loadfile("/stargate/schreibSicherungsdatei.lua")(IDC, autoclosetime, RF, Sprache, side, installieren, control)
   os.execute("reboot")
 end
 
