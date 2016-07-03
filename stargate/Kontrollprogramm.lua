@@ -1020,9 +1020,9 @@ handlers[key_event_name] = function(e)
       gpu.setForeground(Textfarbe)
       edit("stargate/Sicherungsdatei.lua")
       IDC, autoclosetime, RF, Sprache, side, installieren, control = loadfile("/stargate/Sicherungsdatei.lua")()
-      loadfile("/stargate/Kontrollprogramm")()
       term.clear()
-      os.exit()
+      seite = 0
+      zeigeAnzeige()
     end
   end
 end
