@@ -863,15 +863,11 @@ function schreibFehlerLog(...)
     end
     if type(...) == "string" then
       if string.len(...) > 80 then
-        f:write("test \n")
-        f:write(string.len(...) .. "\n")
         local rest = string.len(...)
-        f:write(rest .. "\n")
-        while string.len(rest) > 80 do
+        while rest > 80 do
           local a = 0
-          f:write(rest .. "\n" .. a .. "\n")
           f:write(string.sub(..., a, a + 80) .. "\n")
-          rest = string.sub(..., a + 80)
+          rest = string.len(string.sub(..., a + 80))
           a = a + 81
         end
       else
