@@ -213,8 +213,8 @@ local function key_event_char(e)
   return string.char(e[3])
 end
 
-dofile("/stargate/sprache/" .. Sprache .. ".lua")
-dofile("/stargate/sprache/ersetzen.lua")
+loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
+loadfile("/stargate/sprache/ersetzen.lua")()
 
 local Adressseite               = Adressseite;              _ENV.Adressseite              = nil
 local Unbekannt                 = Unbekannt;                _ENV.Unbekannt                = nil
@@ -588,7 +588,7 @@ end
 
 function newAddress(neuAdresse)
   if AddNewAddress == true then
-    table.insert(adressen, '  {">>' .. neuAdresse .. '<<", "' .. neuAdresse .. '", ""},\n}'
+    table.insert(adressen, '  {">>' .. neuAdresse .. '<<", "' .. neuAdresse .. '", ""},\n}')
     schreibeAdressen()
     AddNewAddress = false
     schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
