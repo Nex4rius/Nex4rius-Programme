@@ -405,6 +405,9 @@ function AdressenSpeichern()
       if not anwahlEnergie then
         anwahlEnergie = fehlerName
       else
+        sendeAdressen[i] = {}
+        sendeAdressen[i][1] = na[1]
+        sendeAdressen[i][2] = na[2]
         if     anwahlEnergie > 10000000000 then
           anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000) .. " G"
         elseif anwahlEnergie > 10000000 then
@@ -415,9 +418,6 @@ function AdressenSpeichern()
           anwahlEnergie = string.format("%.f" , (sg.energyToDial(na[2]) * energymultiplicator))
         end
       end
-      sendeAdressen[i] = {}
-      sendeAdressen[i][1] = na[1]
-      sendeAdressen[i][2] = na[2]
       gespeicherteAdressen[i + k] = {}
       gespeicherteAdressen[i + k][1] = na[1]
       gespeicherteAdressen[i + k][2] = na[2]
