@@ -431,7 +431,7 @@ end
 function ErsetzePunktMitKomma(...)
   if Sprache == "deutsch" then
     local Punkt = string.find(..., "%.")
-    if Punkt then
+    if type(Punkt) == "number" then
       return string.sub(..., 0, Punkt - 1) .. "," .. string.sub(..., Punkt + 1)
     end
   end
