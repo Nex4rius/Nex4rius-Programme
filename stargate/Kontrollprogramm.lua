@@ -6,11 +6,11 @@ local component             = require("component")
 local term                  = require("term")
 local event                 = require("event")
 local fs                    = require("filesystem")
+local edit                  = loadfile("/bin/edit.lua")
+local schreibSicherungsdatei= loadfile("/stargate/schreibSicherungsdatei.lua")
+local IDC, autoclosetime, RF, Sprache, side, installieren, control = loadfile("/stargate/Sicherungsdatei.lua")()
 local gpu                   = component.getPrimary("gpu")
 local sg                    = component.getPrimary("stargate")
-
-local schreibSicherungsdatei = loadfile("/stargate/schreibSicherungsdatei.lua")
-local IDC, autoclosetime, RF, Sprache, side, installieren, control = loadfile("/stargate/Sicherungsdatei.lua")()
 
 local sectime               = os.time()
 os.sleep(1)
@@ -996,7 +996,7 @@ handlers[key_event_name] = function(e)
     elseif c == "z" then
       gpu.setBackground(0x333333)
       gpu.setForeground(Textfarbe)
-      os.execute("edit stargate/adressen.lua")
+      edit("stargate/adressen.lua")
       AdressenSpeichern()
       sides()
       seite = -1
@@ -1006,7 +1006,7 @@ handlers[key_event_name] = function(e)
     elseif c == "l" then
       gpu.setBackground(0x333333)
       gpu.setForeground(Textfarbe)
-      os.execute("edit stargate/Sicherungsdatei.lua")
+      edit("stargate/Sicherungsdatei.lua")
       IDC, autoclosetime, RF, Sprache, side = loadfile("/stargate/Sicherungsdatei.lua")()
       loadfile("/stargate/Kontrollprogramm")()
       term.clear()
@@ -1133,7 +1133,7 @@ function beendeAlles()
 end
 
 function main()
-  os.execute("label -a " .. require("computer").getBootAddress() .. " StargateOS" .. getAddress(sg.localAddress()))
+  loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "StargateOS")
   if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
     irisOpen()
   end
