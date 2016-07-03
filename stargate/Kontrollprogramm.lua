@@ -17,6 +17,7 @@ os.sleep(1)
 sectime                     = sectime - os.time()
 local letzteNachricht       = os.time()
 local letzterAdressCheck    = os.time() / sectime
+local angekommeneAdressen   = {}
 local enteridc              = ""
 local showidc               = ""
 local remoteName            = ""
@@ -34,6 +35,7 @@ local maxseiten             = 0
 local checkEnergy           = 0
 local AdressenAnzahl        = 0
 local zeile                 = 1
+local inAdressenAnzahl      = 1
 local Trennlinienhoehe      = 14
 local energymultiplicator   = 20
 local xVerschiebung         = 33
@@ -1065,14 +1067,16 @@ function eventLoop()
       if f then
         checken(f, e)
       end
-      if string.sub(e[1],1,3) == "sgM" and direction == "Incoming" and wormhole == "in" then
-        if e[3] == "" then else
+      if string.sub(e[1],1,3) == "sgM" then
+        if direction == "Outgoing" then
+          codeaccepted = e[3]
+        elseif direction == "Incoming" and wormhole == "in" then
           incode = e[3]
-          messageshow = true
         end
-      end
-      if string.sub(e[1],1,3) == "sgM" and direction == "Outgoing" then
-        codeaccepted = e[3]
+        if e[4] == "Adressliste" then
+          angekommeneAdressen[inAdressenAnzahl] = require("serialization").unserialize(e[5])
+          inAdressenAnzahl = inAdressenAnzahl + 1
+        end
         messageshow = true
       end
     end
