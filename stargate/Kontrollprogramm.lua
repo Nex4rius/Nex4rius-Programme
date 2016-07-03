@@ -95,6 +95,7 @@ local eingabe
 local alte_eingabe
 local ausgabe
 local anwahlEnergie
+local AdressenAnzahl
 
 local white                 = 0
 --local orange                = 1
@@ -418,6 +419,7 @@ function AdressenSpeichern()
     end
     zeigeNachricht(verarbeiteAdressen .. "<" .. na[2] .. "> <" .. na[1] .. ">")
     maxseiten = (i + k) / 10
+    AdressenAnzahl = i
   end
   gpu.setBackground(Adressfarbe)
   gpu.setForeground(Adresstextfarbe)
@@ -586,9 +588,11 @@ function neueZeile(b)
   zeile = zeile + b
 end
 
-function newAddress(neuAdresse)
+function newAddress(neueAdresse)
   if AddNewAddress == true then
-    table.insert(adressen, '  {">>' .. neuAdresse .. '<<", "' .. neuAdresse .. '", ""},\n}')
+    --adressen[AdressenAnzahl + 1] = ">>' .. neueAdresse .. '<<", "' .. neueAdresse .. '", "
+    --table.insert(adressen, '  {">>' .. neueAdresse .. '<<", "' .. neueAdresse .. '", ""},\n}')
+    table.insert(adressen, '  {">>' .. neueAdresse .. '<<", "' .. neueAdresse .. '", "},\n}')
     schreibeAdressen()
     AddNewAddress = false
     schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
