@@ -590,9 +590,8 @@ end
 
 function newAddress(neueAdresse)
   if AddNewAddress == true then
-    --adressen[AdressenAnzahl + 1] = '">>' .. neueAdresse .. '<<", "' .. neueAdresse .. '", ""'
     adressen[AdressenAnzahl + 1] = {}
-    adressen[AdressenAnzahl + 1][1] = ">>" .. neueAdresse .. "<<"
+    adressen[AdressenAnzahl + 1][1] = ">>>" .. neueAdresse .. "<<<"
     adressen[AdressenAnzahl + 1][2] = neueAdresse
     adressen[AdressenAnzahl + 1][3] = ""
     schreibeAdressen()
