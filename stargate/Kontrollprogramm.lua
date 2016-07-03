@@ -77,6 +77,7 @@ local sideNum
 local k
 local AdressAnzeige
 local gespeicherteAdressen
+local sendeAdressen
 local ok
 local result
 local ergebnis
@@ -392,6 +393,7 @@ end
 function AdressenSpeichern()
   adressen = loadfile("/stargate/adressen.lua")()
   gespeicherteAdressen = {}
+  sendeAdressen = {}
   local k = 0
   for i, na in pairs(adressen) do
     if na[2] == getAddress(sg.localAddress()) then
@@ -416,6 +418,9 @@ function AdressenSpeichern()
       gespeicherteAdressen[i + k][2] = na[2]
       gespeicherteAdressen[i + k][3] = na[3]
       gespeicherteAdressen[i + k][4] = ErsetzePunktMitKomma(anwahlEnergie)
+      sendeAdressen[i] = {}
+      sendeAdressen[i][1] = na[1]
+      sendeAdressen[i][2] = na[2]
     end
     zeigeNachricht(verarbeiteAdressen .. "<" .. na[2] .. "> <" .. na[1] .. ">")
     maxseiten = (i + k) / 10
@@ -548,6 +553,7 @@ function iriscontroller()
   if state == "Idle" then
     incode = "-"
     wormhole = "in"
+    AddNewAddress = true
     LampenGruen = false
     LampenRot = false
     zielAdresse = ""
@@ -1094,12 +1100,12 @@ function Colorful_Lamp_Steuerung()
   else
     Colorful_Lamp_Farben(32767) -- weiß
   end
-  -- 32767  weiß
-  -- 32736  gelb
-  -- 32256  orange
-  -- 31744  rot
-  -- 992    grün
-  -- 0      schwarz
+  --32767  weiß
+  --32736  gelb
+  --32256  orange
+  --31744  rot
+  --992    grün
+  --0      schwarz
 end
 
 function Colorful_Lamp_Farben(eingabe, ausgabe)
