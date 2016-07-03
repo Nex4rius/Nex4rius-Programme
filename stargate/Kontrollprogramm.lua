@@ -590,9 +590,7 @@ end
 
 function newAddress(neueAdresse)
   if AddNewAddress == true then
-    --adressen[AdressenAnzahl + 1] = ">>' .. neueAdresse .. '<<", "' .. neueAdresse .. '", "
-    --table.insert(adressen, '  {">>' .. neueAdresse .. '<<", "' .. neueAdresse .. '", ""},\n}')
-    table.insert(adressen, '  {">>' .. neueAdresse .. '<<", "' .. neueAdresse .. '", "},\n}')
+    adressen[AdressenAnzahl + 1] = '">>' .. neueAdresse .. '<<", "' .. neueAdresse .. '", ""'
     schreibeAdressen()
     AddNewAddress = false
     schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
