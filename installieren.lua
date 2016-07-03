@@ -1,20 +1,49 @@
 -- pastebin run -f fa9gu1GJ
 -- von Nex4rius
+-- https://github.com/Nex4rius/Stargate-Programm
 
 fs = require("filesystem")
 wget = loadfile("/bin/wget.lua")
-Sprache = ""
-control = "On"
-firstrun = -2
-Sprache = ""
-installieren = false
 serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
 
-if fs.exists("/stargate/sicherNachNeustart.lua") then
-  dofile("/stargate/sicherNachNeustart.lua")
+if fs.exists("/stargate/Sicherungsdatei.lua") then
+  IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun = loadfile("/stargate/Sicherungsdatei.lua")()
+else
+  Sprache = ""
+  control = "On"
+  firstrun = -2
+  installieren = false
 end
 
-function Pfad()
+if fs.exists("/stargate/sicherNachNeustart.lua") then
+  if fs.exists("/stargate/adressen.lua") then
+    dofile("/stargate/adressen.lua")
+  end
+  f = io.open("/stargate/adressen.lua", "w")
+  f:write('-- pastebin run -f fa9gu1GJ\n')
+  f:write('-- von Nex4rius\n')
+  f:write('-- https://github.com/Nex4rius/Stargate-Programm\n--\n')
+  f:write('-- to save press "Ctrl + S"\n')
+  f:write('-- to close press "Ctrl + W"\n--\n')
+  f:write('-- Put your own stargate addresses here\n')
+  f:write('-- "" for no Iris Code\n')
+  f:write('--\n\n')
+  f:write('return {\n')
+  f:write('--{"<Name>","<Adresse>","<IDC>"},\n')
+  for k, v in pairs(adressen) do
+    f:write("  " .. require("serialization").serialize(adressen[k]) .. ",\n")
+  end
+  if adressen[1] == nil then
+    f:write('{"Name 1", "Adresse 1", "IDC 1"},\n')
+    f:write('{"Name 2", "Adresse 2", "IDC 2"},\n')
+  end
+  f:write('}')
+  f:close()
+  dofile("/stargate/sicherNachNeustart.lua")
+  loadfile("/bin/rm.lua")("/stargate/sicherNachNeustart.lua")
+end
+
+function Pfad(versionTyp)
   return serverAddresse .. versionTyp
 end
 
@@ -23,37 +52,19 @@ function installieren()
   if versionTyp == nil then
     versionTyp = "master"
   end
-  wget("-f", Pfad() .. "/autorun.lua", "autorun.lua")
-  wget("-f", Pfad() .. "/stargate/Kontrollprogramm.lua", "/stargate/Kontrollprogramm.lua")
-  wget("-f", Pfad() .. "/stargate/check.lua", "/stargate/check.lua")
-  wget("-f", Pfad() .. "/stargate/version.txt", "/stargate/version.txt")
-  wget("-f", Pfad() .. "/stargate/sprache/deutsch.lua", "/stargate/sprache/deutsch.lua")
-  wget("-f", Pfad() .. "/stargate/sprache/english.lua", "/stargate/sprache/english.lua")
-  wget("-f", Pfad() .. "/stargate/sprache/ersetzen.lua", "/stargate/sprache/ersetzen.lua")
+  wget("-f", Pfad(versionTyp) .. "/autorun.lua", "autorun.lua")
+  wget("-f", Pfad(versionTyp) .. "/stargate/check.lua", "/stargate/check.lua")
+  wget("-f", Pfad(versionTyp) .. "/stargate/version.txt", "/stargate/version.txt")
+  wget("-f", Pfad(versionTyp) .. "/stargate/Kontrollprogramm.lua", "/stargate/Kontrollprogramm.lua")
+  wget("-f", Pfad(versionTyp) .. "/stargate/schreibSicherungsdatei.lua", "/stargate/schreibSicherungsdatei.lua")
+  wget("-f", Pfad(versionTyp) .. "/stargate/sprache/deutsch.lua", "/stargate/sprache/deutsch.lua")
+  wget("-f", Pfad(versionTyp) .. "/stargate/sprache/english.lua", "/stargate/sprache/english.lua")
+  wget("-f", Pfad(versionTyp) .. "/stargate/sprache/ersetzen.lua", "/stargate/sprache/ersetzen.lua")
   if not fs.exists("/stargate/adressen.lua") then
-    wget(Pfad() .. "/stargate/adressen.lua", "/stargate/adressen.lua")
+    wget(Pfad(versionTyp) .. "/stargate/adressen.lua", "/stargate/adressen.lua")
   end
-  if not fs.exists("/stargate/sicherNachNeustart.lua") then
-    wget(Pfad() .. "/stargate/sicherNachNeustart.lua", "/stargate/sicherNachNeustart.lua")
-  end
-  f = io.open ("/stargate/adressen.lua", "r")
-  addressRead = true
-  leseLaenge = 1000
-  while addressRead == true do
-    readAddresses = f:read(leseLaenge)
-    AdressesLength = string.len(readAddresses)
-    if AdressesLength == leseLaenge then
-      leseLaenge = leseLaenge * 2
-    else
-      addressRead = false
-    end
-  end
-  f:close()
-  if string.sub(readAddresses, AdressesLength, AdressesLength) == " " then
-    f = io.open ("/stargate/adressen.lua", "a")
-    f:seek ("end", -1)
-    f:write("")
-    f:close()
+  if not fs.exists("/stargate/Sicherungsdatei.lua") then
+    wget(Pfad(versionTyp) .. "/stargate/Sicherungsdatei.lua", "/stargate/Sicherungsdatei.lua")
   end
   if versionTyp == "beta" then
     f = io.open ("/stargate/version.txt", "r")
@@ -63,20 +74,10 @@ function installieren()
     f:write(version .. " BETA")
     f:close()
   end
-  os.execute("del -v installieren.lua")
+  loadfile("/bin/rm.lua")("-v", "installieren.lua")
   installieren = true
-  schreibSicherungsdatei()
+  loadfile("/stargate/schreibSicherungsdatei.lua")(IDC, autoclosetime, RF, Sprache, side, installieren, control)
   os.execute("reboot")
-end
-
-function schreibSicherungsdatei()
-  f = io.open ("/stargate/sicherNachNeustart.lua", "w")
-  f:write("-- pastebin run -f fa9gu1GJ\n-- von Nex4rius\n-- https://github.com/Nex4rius/Stargate-Programm\n\n")
-  f:write('control = "' .. control .. '"\n')
-  f:write('firstrun = ' .. firstrun .. '\n')
-  f:write('Sprache = "' .. Sprache .. '" -- deutsch / english\n')
-  f:write('installieren = ' .. tostring(installieren) .. '\n')
-  f:close()
 end
 
 installieren()

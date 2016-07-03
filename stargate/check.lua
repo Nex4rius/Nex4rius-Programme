@@ -3,7 +3,6 @@
 -- https://github.com/Nex4rius/Stargate-Programm
 
 component = require("component")
-sides = require("sides")
 term = require("term")
 event = require("event")
 fs = require("filesystem")
@@ -12,13 +11,16 @@ shell = require("shell")
 wget = loadfile("/bin/wget.lua")
 gpu = component.getPrimary("gpu")
 args = shell.parse(...)
+schreibSicherungsdatei = loadfile("/stargate/schreibSicherungsdatei.lua")
 serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
-versionTyp = "master"
-Sprache = ""
-control = "On"
-firstrun = -2
-installieren = false
 betaVersionName = ""
+if fs.exists("/stargate/Sicherungsdatei.lua") then
+  IDC, autoclosetime, RF, Sprache, side, installieren, control = loadfile("/stargate/Sicherungsdatei.lua")()
+else
+  Sprache = ""
+  control = "On"
+  installieren = false
+end
 
 if fs.exists("/stargate/version.txt") then
   f = io.open ("/stargate/version.txt", "r")
@@ -28,21 +30,7 @@ else
   version = fehlerName
 end
 
-dofile("/stargate/sicherNachNeustart.lua")
-
-os.execute("label -a " .. c.getBootAddress() .. " StargateOS")
-
 term.clear()
-
-function schreibSicherungsdatei()
-  f = io.open ("/stargate/sicherNachNeustart.lua", "w")
-  f:write("-- pastebin run -f fa9gu1GJ\n-- von Nex4rius\n-- https://github.com/Nex4rius/Stargate-Programm\n\n")
-  f:write('control = "' .. control .. '"\n')
-  f:write('firstrun = ' .. firstrun .. '\n')
-  f:write('Sprache = "' .. Sprache .. '" -- deutsch / english\n')
-  f:write('installieren = ' .. tostring(installieren) .. '\n')
-  f:close()
-end
 
 function checkSprache()
   print("Sprache? / Language? deutsch / english\n")
@@ -53,7 +41,7 @@ function checkSprache()
     print("\nUnbekannte Eingabe\nStandardeinstellung = deutsch")
     Sprache = "deutsch"
   end
-  schreibSicherungsdatei()
+  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
   print("")
 end
 
@@ -62,11 +50,9 @@ function checkKomponenten()
   if component.isAvailable("redstone") then
     print(redstoneOK)
     r = component.getPrimary("redstone")
-    redst = true
   else
     print(redstoneFehlt)
     r = nil
-    redst = false
   end
   if gpu.maxResolution() == 80 then
     print(gpuOK2T)
@@ -93,24 +79,23 @@ function checkKomponenten()
   end
 end
 
-function Pfad()
+function Pfad(versionTyp)
   return serverAddresse .. versionTyp
 end
 
 function update(versionTyp)
-  wget("-f", Pfad() .. "/installieren.lua", "/installieren.lua")
+  wget("-f", Pfad(versionTyp) .. "/installieren.lua", "/installieren.lua")
   installieren = true
-  schreibSicherungsdatei()
+  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
   f = io.open ("autorun.lua", "w")
   f:write('versionTyp = "' .. versionTyp .. '"\n')
-  f:write('dofile("installieren.lua")')
+  f:write('loadfile("installieren.lua")()')
   f:close()
   os.execute("reboot")
 end
 
 function checkServerVersion()
-  versionTyp = "master"
-  wget("-fQ", Pfad() .. "/stargate/version.txt", "/serverVersion.txt")
+  wget("-fQ", Pfad("master") .. "/stargate/version.txt", "/serverVersion.txt")
   if fs.exists("/serverVersion.txt") then
     f = io.open ("/serverVersion.txt", "r")
     serverVersion = f:read()
@@ -123,8 +108,7 @@ function checkServerVersion()
 end
 
 function checkBetaServerVersion()
-  versionTyp = "beta"
-  wget("-fQ", Pfad() .. "/stargate/version.txt", "/betaVersion.txt")
+  wget("-fQ", Pfad("beta") .. "/stargate/version.txt", "/betaVersion.txt")
   if fs.exists("/betaVersion.txt") then
     f = io.open ("/betaVersion.txt", "r")
     betaServerVersion = f:read()
@@ -175,15 +159,48 @@ function mainCheck()
   end
   print(laden)
   installieren = false
-  schreibSicherungsdatei()
-  dofile("/stargate/Kontrollprogramm.lua")
+  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
+  if checkDateien() then
+    loadfile("/stargate/Kontrollprogramm.lua")()
+  else
+    print(fehlerName .. "\n" .. DateienFehlen)
+    antwortFrage = io.read()
+    if string.lower(antwortFrage) == ja then
+      os.execute("pastebin run -f fa9gu1GJ")
+    end
+  end
+end
+
+function checkDateien()
+  if fs.exists("/autorun.lua") then
+    if fs.exists("/stargate/Kontrollprogramm.lua") then
+      if fs.exists("/stargate/Sicherungsdatei.lua") then
+        if fs.exists("/stargate/adressen.lua") then
+          if fs.exists("/stargate/check.lua") then
+            if fs.exists("/stargate/version.txt") then
+              if fs.exists("/stargate/sprache/deutsch.lua") then
+                if fs.exists("/stargate/sprache/english.lua") then
+                  if fs.exists("/stargate/sprache/ersetzen.lua") then
+                    if fs.exists("/stargate/schreibSicherungsdatei.lua") then
+                      return true
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+  return false
 end
 
 if Sprache == "" then
   checkSprache()
 end
 
-dofile("/stargate/sprache/" .. Sprache .. ".lua")
+loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
 
 if args[1] == hilfe or args[1] == "hilfe" or args[1] == "help" then
   print(Hilfetext)

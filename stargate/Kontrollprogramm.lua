@@ -3,23 +3,14 @@
 -- https://github.com/Nex4rius/Stargate-Programm
 
 local component             = require("component")
-local sides                 = require("sides")
 local term                  = require("term")
 local event                 = require("event")
 local fs                    = require("filesystem")
-local c                     = require("computer")
+local edit                  = loadfile("/bin/edit.lua")
+local schreibSicherungsdatei= loadfile("/stargate/schreibSicherungsdatei.lua")
+local IDC, autoclosetime, RF, Sprache, side, installieren, control = loadfile("/stargate/Sicherungsdatei.lua")()
 local gpu                   = component.getPrimary("gpu")
 local sg                    = component.getPrimary("stargate")
-local Sprache               = Sprache
-
-dofile("/stargate/adressen.lua")
-
-local RF                    = RF
-local autoclosetime         = autoclosetime
-local side                  = side
-local sideNum               = sideNum
-local IDC                   = IDC
-local adressen              = adressen
 
 local sectime               = os.time()
 os.sleep(1)
@@ -29,6 +20,7 @@ local letzterAdressCheck    = os.time() / sectime
 local enteridc              = ""
 local showidc               = ""
 local remoteName            = ""
+local zielAdresse           = ""
 local time                  = "-"
 local incode                = "-"
 local codeaccepted          = "-"
@@ -80,10 +72,8 @@ local Steuerungstextfarbe   = schwarzeFarbe
 local Statusfarbe           = grueneFarbe
 local Statustextfarbe       = Textfarbe
 
-local firstrun              = firstrun
-local installieren          = installieren
-local zielAdresse           = ""
-
+local adressen
+local sideNum
 local k
 local AdressAnzeige
 local gespeicherteAdressen
@@ -105,6 +95,7 @@ local eingabe
 local alte_eingabe
 local ausgabe
 local anwahlEnergie
+local AdressenAnzahl
 
 local white                 = 0
 --local orange                = 1
@@ -143,6 +134,29 @@ if component.isAvailable("redstone") then
   r.setBundledOutput(0, black, 0)
 end
 
+local function schreibeAdressen()
+  f = io.open("/stargate/adressen.lua", "w")
+  f:write('-- pastebin run -f fa9gu1GJ\n')
+  f:write('-- von Nex4rius\n')
+  f:write('-- https://github.com/Nex4rius/Stargate-Programm\n--\n')
+  f:write('-- to save press "Ctrl + S"\n')
+  f:write('-- to close press "Ctrl + W"\n--\n')
+  f:write('-- Put your own stargate addresses here\n')
+  f:write('-- "" for no Iris Code\n')
+  f:write('--\n\n')
+  f:write('return {\n')
+  f:write('--{"<Name>", "<Adresse>", "<IDC>"},\n')
+  for k, v in pairs(adressen) do
+    f:write("  " .. require("serialization").serialize(adressen[k]) .. ",\n")
+  end
+  if adressen[1] == nil then
+    f:write('{"Name 1", "Adresse 1", "IDC 1"},\n')
+    f:write('{"Name 2", "Adresse 2", "IDC 2"},\n')
+  end
+  f:write('}')
+  f:close()
+end
+
 if RF == true then
   energytype          = "RF"
   energymultiplicator = 80
@@ -150,29 +164,6 @@ end
 
 if sg.irisState() == "Offline" then
   Trennlinienhoehe    = 13
-end
-
-function schreibSicherungsdatei()
-  _ENV.control      = control
-  _ENV.firstrun     = firstrun
-  _ENV.Sprache      = Sprache
-  _ENV.installieren = installieren
-  f = io.open ("/stargate/sicherNachNeustart.lua", "w")
-  f:write("-- pastebin run -f fa9gu1GJ\n-- von Nex4rius\n-- https://github.com/Nex4rius/Stargate-Programm\n\n")
-  f:write('control = "' .. _ENV.control .. '"\n')
-  f:write('firstrun = ' .. _ENV.firstrun .. '\n')
-  f:write('Sprache = "' .. _ENV.Sprache .. '" -- deutsch / english\n')
-  f:write('installieren = ' .. tostring(_ENV.installieren) .. '\n')
-  f:close()
-end
-
-local function Adressvariablen()
-  RF                        = _ENV.RF
-  autoclosetime             = _ENV.autoclosetime
-  side                      = _ENV.side
-  sideNum                   = _ENV.sideNum
-  IDC                       = _ENV.IDC
-  adressen                  = _ENV.adressen
 end
 
 local function try(func, ...)
@@ -223,11 +214,9 @@ local function key_event_char(e)
   return string.char(e[3])
 end
 
-dofile("/stargate/sicherNachNeustart.lua")
-dofile("/stargate/sprache/" .. Sprache .. ".lua")
-dofile("/stargate/sprache/ersetzen.lua")
+loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
+loadfile("/stargate/sprache/ersetzen.lua")()
 
-local control                   = control
 local Adressseite               = Adressseite;              _ENV.Adressseite              = nil
 local Unbekannt                 = Unbekannt;                _ENV.Unbekannt                = nil
 local waehlen                   = waehlen;                  _ENV.waehlen                  = nil
@@ -277,7 +266,7 @@ local stargateName              = stargateName;             _ENV.stargateName   
 local stargateAbschalten        = stargateAbschalten;       _ENV.stargateAbschalten       = nil
 local aktiviert                 = aktiviert;                _ENV.aktiviert                = nil
 local zeigeAdressen             = zeigeAdressen;            _ENV.zeigeAdressen            = nil
-local spracheAendern            = spracheAendern;           _ENV.spracheAendern           = nil
+local EinstellungenAendern      = EinstellungenAendern;     _ENV.EinstellungenAendern     = nil
 local irisNameOffen             = irisNameOffen;            _ENV.irisNameOffen            = nil
 local irisNameOeffnend          = irisNameOeffnend;         _ENV.irisNameOeffnend         = nil
 local irisNameGeschlossen       = irisNameGeschlossen;      _ENV.irisNameGeschlossen      = nil
@@ -292,7 +281,6 @@ local StatusNameWaehlend        = StatusNameWaehlend;       _ENV.StatusNameWaehl
 local StatusNameVerbunden       = StatusNameVerbunden;      _ENV.StatusNameVerbunden      = nil
 local StatusNameSchliessend     = StatusNameSchliessend;    _ENV.StatusNameSchliessend    = nil
 local Neustart                  = Neustart;                 _ENV.Neustart                 = nil
-local verfuegbareSprachen       = verfuegbareSprachen;      _ENV.verfuegbareSprachen      = nil
 local IrisSteuerungName         = IrisSteuerungName;        _ENV.IrisSteuerungName        = nil
 local ausschaltenName           = ausschaltenName;          _ENV.ausschaltenName          = nil
 local redstoneAusschalten       = redstoneAusschalten;      _ENV.redstoneAusschalten      = nil
@@ -381,7 +369,7 @@ function Infoseite()
   end
   print("Z " .. AdressenBearbeiten)
   print("Q " .. beenden)
-  print("L " .. spracheAendern .. "\n" .. verfuegbareSprachen)
+  print("L " .. EinstellungenAendern .. "\n")
   print(RedstoneSignale)
   gpu.setBackground(weisseFarbe)
   gpu.setForeground(schwarzeFarbe)
@@ -402,21 +390,16 @@ function Infoseite()
 end
 
 function AdressenSpeichern()
-  dofile("/stargate/adressen.lua")
-  local adressen = adressen
+  adressen = loadfile("/stargate/adressen.lua")()
   gespeicherteAdressen = {}
   local k = 0
   for i, na in pairs(adressen) do
     if na[2] == getAddress(sg.localAddress()) then
       k = -1
     else
-      gespeicherteAdressen[i + k] = {}
-      gespeicherteAdressen[i + k][1] = na[1]
-      gespeicherteAdressen[i + k][2] = na[2]
-      gespeicherteAdressen[i + k][3] = na[3]
       local anwahlEnergie = sg.energyToDial(na[2])
       if not anwahlEnergie then
-        gespeicherteAdressen[i + k][4] = fehlerName
+        anwahlEnergie = fehlerName
       else
         if     anwahlEnergie > 10000000000 then
           anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000) .. " G"
@@ -427,11 +410,16 @@ function AdressenSpeichern()
         else
           anwahlEnergie = string.format("%.f" , (sg.energyToDial(na[2]) * energymultiplicator))
         end
-        gespeicherteAdressen[i + k][4] = ErsetztePunktMitKomma(anwahlEnergie)
       end
+      gespeicherteAdressen[i + k] = {}
+      gespeicherteAdressen[i + k][1] = na[1]
+      gespeicherteAdressen[i + k][2] = na[2]
+      gespeicherteAdressen[i + k][3] = na[3]
+      gespeicherteAdressen[i + k][4] = ErsetzePunktMitKomma(anwahlEnergie)
     end
     zeigeNachricht(verarbeiteAdressen .. "<" .. na[2] .. "> <" .. na[1] .. ">")
     maxseiten = (i + k) / 10
+    AdressenAnzahl = i
   end
   gpu.setBackground(Adressfarbe)
   gpu.setForeground(Adresstextfarbe)
@@ -442,13 +430,14 @@ function AdressenSpeichern()
   zeigeNachricht()
 end
 
-function ErsetztePunktMitKomma(...)
+function ErsetzePunktMitKomma(...)
   if Sprache == "deutsch" then
     local Punkt = string.find(..., "%.")
-    return string.sub(..., 0, Punkt - 1) .. "," .. string.sub(..., Punkt + 1)
-  else
-    return ...
+    if type(Punkt) == "number" then
+      return string.sub(..., 0, Punkt - 1) .. "," .. string.sub(..., Punkt + 1)
+    end
   end
+  return ...
 end
 
 function zeigeFarben()
@@ -599,17 +588,17 @@ function neueZeile(b)
   zeile = zeile + b
 end
 
-function newAddress(g)
+function newAddress(neueAdresse)
   if AddNewAddress == true then
-    f = io.open ("stargate/adressen.lua", "a")
-    f:seek ("end", firstrun)
-    f:write('  {"' .. g .. '", "' .. g .. '", ""},\n}')
-    f:close ()
+    adressen[AdressenAnzahl + 1] = {}
+    adressen[AdressenAnzahl + 1][1] = ">>>" .. neueAdresse .. "<<<"
+    adressen[AdressenAnzahl + 1][2] = neueAdresse
+    adressen[AdressenAnzahl + 1][3] = ""
+    schreibeAdressen()
     AddNewAddress = false
-    firstrun = -1
-    schreibSicherungsdatei()
-    dofile("/stargate/adressen.lua")
-    Adressvariablen()
+    schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
+    AdressenSpeichern()
+    IDC, autoclosetime, RF, Sprache, side, installieren, control = loadfile("/stargate/Sicherungsdatei.lua")()
     sides()
     zeigeMenu()
   end
@@ -825,7 +814,7 @@ function zeigeEnergie()
   else
     energieMenge = string.format("%.f", energy)
   end
-  zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. ErsetztePunktMitKomma(energieMenge))
+  zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. ErsetzePunktMitKomma(energieMenge))
 end
 
 function activetime()
@@ -835,7 +824,7 @@ function activetime()
     end
     time = (activationtime - os.time()) / sectime
     if time > 0 then
-      zeigeHier(xVerschiebung, zeile, "  " .. zeit1 .. ErsetztePunktMitKomma(string.format("%.1f", time)) .. "s")
+      zeigeHier(xVerschiebung, zeile, "  " .. zeit1 .. ErsetzePunktMitKomma(string.format("%.1f", time)) .. "s")
     end
   else
     zeigeHier(xVerschiebung, zeile, "  " .. zeit2)
@@ -878,7 +867,18 @@ function schreibFehlerLog(...)
       f = io.open("log", "w")
     end
     if type(...) == "string" then
-      f:write(...)
+      if string.len(...) > max_Bildschirmbreite then
+        local rest = string.len(...)
+        local a = 0
+        while rest > max_Bildschirmbreite do
+          f:write(string.sub(..., a, a + max_Bildschirmbreite) .. "\n")
+          rest = string.len(string.sub(..., a + max_Bildschirmbreite))
+          a = a + max_Bildschirmbreite + 1
+        end
+        f:write(string.sub(..., a) .. "\n")
+      else
+        f:write(...)
+      end
     elseif type(...) == "table" then
       f:write(require("serialization").serialize(...))
     end
@@ -909,14 +909,16 @@ end
 
 handlers[key_event_name] = function(e)
   c = key_event_char(e)
-  if e[3] == 13 then
-    entercode = false
-    sg.sendMessage(enteridc)
-    zeigeNachricht(IDCgesendet)
-  elseif entercode == true then
-    enteridc = enteridc .. c
-    showidc = showidc .. "*"
-    zeigeNachricht(IDCeingabe .. ": " .. showidc)
+  if entercode == true then
+    if e[3] == 13 then
+      entercode = false
+      sg.sendMessage(enteridc)
+      zeigeNachricht(IDCgesendet)
+    else
+      enteridc = enteridc .. c
+      showidc = showidc .. "*"
+      zeigeNachricht(IDCeingabe .. ": " .. showidc)
+    end
   elseif c == "e" then
     if state == "Connected" and direction == "Outgoing" then
       enteridc = ""
@@ -1003,41 +1005,28 @@ handlers[key_event_name] = function(e)
         if control == "On" then
           control = "Off"
           _ENV.control = "Off"
-          schreibSicherungsdatei()
+          schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
         else
           control = "On"
           _ENV.control = "On"
-          schreibSicherungsdatei()
+          schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
         end
       end
     elseif c == "z" then
       gpu.setBackground(0x333333)
       gpu.setForeground(Textfarbe)
-      os.execute("edit stargate/adressen.lua")
-      dofile("/stargate/adressen.lua")
-      Adressvariablen()
-      sides()
-      seite = 0
+      edit("stargate/adressen.lua")
+      seite = -1
       zeigeAnzeige()
+      seite = 0
       AdressenSpeichern()
     elseif c == "l" then
       gpu.setBackground(0x333333)
       gpu.setForeground(Textfarbe)
+      edit("stargate/Sicherungsdatei.lua")
+      IDC, autoclosetime, RF, Sprache, side, installieren, control = loadfile("/stargate/Sicherungsdatei.lua")()
+      sides()
       term.clear()
-      print(spracheAendern .. "\n" .. verfuegbareSprachen .. "\n")
-      antwortFrageSprache = io.read()
-      if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
-        Sprache = string.lower(antwortFrageSprache)
-        _ENV.control = control
-        _ENV.firstrun = firstrun
-        _ENV.Sprache = Sprache
-        _ENV.installieren = true
-        installieren = true
-        schreibSicherungsdatei()
-        zeigeNachricht(Sprachaenderung)
-      else
-        print(fehlerName)
-      end
       seite = 0
       zeigeAnzeige()
     end
@@ -1162,6 +1151,7 @@ function beendeAlles()
 end
 
 function main()
+  loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "StargateOS")
   if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
     irisOpen()
   end
