@@ -19,7 +19,7 @@ pastebin run -f fa9gu1GJ
 
 3) Profit
 
-Screenshots http://imgur.com/a/WnwiV
+<a href="http://imgur.com/a/WnwiV">Screenshots</a>
 
 Some feature of my programm:
 
