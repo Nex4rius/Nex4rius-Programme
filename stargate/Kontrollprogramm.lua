@@ -396,13 +396,9 @@ function AdressenSpeichern()
     if na[2] == getAddress(sg.localAddress()) then
       k = -1
     else
-      gespeicherteAdressen[i + k] = {}
-      gespeicherteAdressen[i + k][1] = na[1]
-      gespeicherteAdressen[i + k][2] = na[2]
-      gespeicherteAdressen[i + k][3] = na[3]
       local anwahlEnergie = sg.energyToDial(na[2])
       if not anwahlEnergie then
-        gespeicherteAdressen[i + k][4] = fehlerName
+        anwahlEnergie = fehlerName
       else
         if     anwahlEnergie > 10000000000 then
           anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000) .. " G"
@@ -413,8 +409,12 @@ function AdressenSpeichern()
         else
           anwahlEnergie = string.format("%.f" , (sg.energyToDial(na[2]) * energymultiplicator))
         end
-        gespeicherteAdressen[i + k][4] = ErsetztePunktMitKomma(anwahlEnergie)
       end
+      gespeicherteAdressen[i + k] = {}
+      gespeicherteAdressen[i + k][1] = na[1]
+      gespeicherteAdressen[i + k][2] = na[2]
+      gespeicherteAdressen[i + k][3] = na[3]
+      gespeicherteAdressen[i + k][4] = ErsetztePunktMitKomma(anwahlEnergie)
     end
     zeigeNachricht(verarbeiteAdressen .. "<" .. na[2] .. "> <" .. na[1] .. ">")
     maxseiten = (i + k) / 10
