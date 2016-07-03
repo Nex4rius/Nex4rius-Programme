@@ -414,7 +414,7 @@ function AdressenSpeichern()
       gespeicherteAdressen[i + k][1] = na[1]
       gespeicherteAdressen[i + k][2] = na[2]
       gespeicherteAdressen[i + k][3] = na[3]
-      gespeicherteAdressen[i + k][4] = ErsetztePunktMitKomma(anwahlEnergie)
+      gespeicherteAdressen[i + k][4] = ErsetzePunktMitKomma(anwahlEnergie)
     end
     zeigeNachricht(verarbeiteAdressen .. "<" .. na[2] .. "> <" .. na[1] .. ">")
     maxseiten = (i + k) / 10
@@ -428,13 +428,14 @@ function AdressenSpeichern()
   zeigeNachricht()
 end
 
-function ErsetztePunktMitKomma(...)
+function ErsetzePunktMitKomma(...)
   if Sprache == "deutsch" then
     local Punkt = string.find(..., "%.")
-    return string.sub(..., 0, Punkt - 1) .. "," .. string.sub(..., Punkt + 1)
-  else
-    return ...
+    if Punkt then
+      return string.sub(..., 0, Punkt - 1) .. "," .. string.sub(..., Punkt + 1)
+    end
   end
+  return ...
 end
 
 function zeigeFarben()
@@ -808,7 +809,7 @@ function zeigeEnergie()
   else
     energieMenge = string.format("%.f", energy)
   end
-  zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. ErsetztePunktMitKomma(energieMenge))
+  zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. ErsetzePunktMitKomma(energieMenge))
 end
 
 function activetime()
@@ -818,7 +819,7 @@ function activetime()
     end
     time = (activationtime - os.time()) / sectime
     if time > 0 then
-      zeigeHier(xVerschiebung, zeile, "  " .. zeit1 .. ErsetztePunktMitKomma(string.format("%.1f", time)) .. "s")
+      zeigeHier(xVerschiebung, zeile, "  " .. zeit1 .. ErsetzePunktMitKomma(string.format("%.1f", time)) .. "s")
     end
   else
     zeigeHier(xVerschiebung, zeile, "  " .. zeit2)
