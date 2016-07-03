@@ -862,13 +862,13 @@ function schreibFehlerLog(...)
       f = io.open("log", "w")
     end
     if type(...) == "string" then
-      if string.len(...) > 70 then
+      if string.len(...) > max_Bildschirmbreite then
         local rest = string.len(...)
         local a = 0
-        while rest > 70 do
-          f:write(string.sub(..., a, a + 70) .. "\n")
-          rest = string.len(string.sub(..., a + 70))
-          a = a + 71
+        while rest > max_Bildschirmbreite do
+          f:write(string.sub(..., a, a + max_Bildschirmbreite) .. "\n")
+          rest = string.len(string.sub(..., a + max_Bildschirmbreite))
+          a = a + max_Bildschirmbreite + 1
         end
         f:write(string.sub(..., a) .. "\n")
       else
