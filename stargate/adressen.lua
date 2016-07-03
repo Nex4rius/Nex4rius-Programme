@@ -2,8 +2,8 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Stargate-Programm
 --
---  to save press "Ctrl + S"
---  to close press "Ctrl + W"
+-- to save press "Ctrl + S"
+-- to close press "Ctrl + W"
 --
 -- Put your own stargate addresses here
 -- "" for no Iris Code
