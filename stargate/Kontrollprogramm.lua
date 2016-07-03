@@ -861,7 +861,17 @@ function schreibFehlerLog(...)
       f = io.open("log", "w")
     end
     if type(...) == "string" then
-      f:write(...)
+      if string.len(...) > 80 then
+        local rest = string.len(...)
+        while string.len(rest) > 80 do
+          local a = 0
+          f:write(string.sub(..., a, a + 80) .. "\n")
+          rest = string.sub(..., a + 80)
+          a = a + 81
+        end
+      else
+        f:write(...)
+      end
     elseif type(...) == "table" then
       f:write(require("serialization").serialize(...))
     end
