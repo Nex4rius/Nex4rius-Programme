@@ -1104,8 +1104,13 @@ function eventLoop()
           incode = e[3]
         end
         if e[4] == "Adressliste" then
-          angekommeneAdressen(require("serialization").unserialize(e[5]))
-          angekommeneVersion(e[6])
+          local a = require("serialization").unserialize(e[5])
+          if type(a) == "table" then
+            angekommeneAdressen(a)
+          end
+          if type(e[6]) == "string" then
+            angekommeneVersion(e[6])
+          end
         end
         messageshow = true
       end
