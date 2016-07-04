@@ -8,7 +8,7 @@ local event                 = require("event")
 local fs                    = require("filesystem")
 local edit                  = loadfile("/bin/edit.lua")
 local schreibSicherungsdatei= loadfile("/stargate/schreibSicherungsdatei.lua")
-local IDC, autoclosetime, RF, Sprache, side, installieren, control = loadfile("/stargate/Sicherungsdatei.lua")()
+local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
 local gpu                   = component.getPrimary("gpu")
 local sg                    = component.getPrimary("stargate")
 
@@ -600,9 +600,9 @@ function newAddress(neueAdresse)
     adressen[AdressenAnzahl + 1][3] = ""
     schreibeAdressen()
     AddNewAddress = false
-    schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
+    schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
     AdressenSpeichern()
-    IDC, autoclosetime, RF, Sprache, side, installieren, control = loadfile("/stargate/Sicherungsdatei.lua")()
+    IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
     sides()
     zeigeMenu()
   end
@@ -1009,11 +1009,11 @@ handlers[key_event_name] = function(e)
         if control == "On" then
           control = "Off"
           _ENV.control = "Off"
-          schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
+          schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
         else
           control = "On"
           _ENV.control = "On"
-          schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
+          schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
         end
       end
     elseif c == "z" then
@@ -1028,7 +1028,7 @@ handlers[key_event_name] = function(e)
       gpu.setBackground(0x333333)
       gpu.setForeground(Textfarbe)
       edit("stargate/Sicherungsdatei.lua")
-      IDC, autoclosetime, RF, Sprache, side, installieren, control = loadfile("/stargate/Sicherungsdatei.lua")()
+      IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
       sides()
       term.clear()
       seite = 0
