@@ -1077,6 +1077,9 @@ function eventLoop()
         end
         if e[4] == "Adressliste" then
           angekommeneAdressen[inAdressenAnzahl] = require("serialization").unserialize(e[5])
+          zeigeFehler(e[4])
+          zeigeFehler(angekommeneAdressen[inAdressenAnzahl])
+          zeigeFehler(e[6])
           inAdressenAnzahl = inAdressenAnzahl + 1
           angekommeneVersion = e[6]
         end
