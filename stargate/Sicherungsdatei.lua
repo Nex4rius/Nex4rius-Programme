@@ -41,9 +41,6 @@ end
 if type(control) ~= "string" then
   control = "On"
 end
-if type(IDC) ~= "string" then
-  IDC = ""
-end
 if type(autoUpdate) ~= "boolean" then
   autoUpdate = false
 end
