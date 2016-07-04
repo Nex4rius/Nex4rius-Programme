@@ -849,7 +849,11 @@ function zeigeNachricht(...)
   letzteNachricht = os.time()
   gpu.setBackground(Nachrichtfarbe)
   gpu.setForeground(Nachrichttextfarbe)
-  zeigeHier(1, screen_height - 1, "", screen_width)
+  if fs.exists("/log") then
+    zeigeHier(1, screen_height - 1, fehlerName .. " /log", screen_width)
+  else
+    zeigeHier(1, screen_height - 1, "", screen_width)
+  end
   if ... then
     zeigeHier(1, screen_height, zeichenErsetzen(...), screen_width)
   else
