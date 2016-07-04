@@ -500,8 +500,7 @@ function iriscontroller()
   end
   if direction == "Incoming" then
     if incode == IDC and iriscontrol == "on" and control == "On" then
-      if iris == "Offline" then
-      else
+      if iris ~= "Offline" then
         irisOpen()
       end
       os.sleep(2)
