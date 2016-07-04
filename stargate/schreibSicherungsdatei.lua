@@ -1,7 +1,6 @@
 local args  = require("shell").parse(...)
-local fs    = require("filesystem")
 
-if fs.exists("/stargate/Sicherungsdatei.lua") then
+if require("filesystem").exists("/stargate/Sicherungsdatei.lua") then
   local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
 else
   for i = 1, 8 do
