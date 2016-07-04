@@ -4,7 +4,7 @@
 
 local fs = require("filesystem")
 local wget = loadfile("/bin/wget.lua")
-local serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
+local serverAdresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
 
 if fs.exists("/stargate/Sicherungsdatei.lua") then
   local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
@@ -40,7 +40,7 @@ if fs.exists("/stargate/sicherNachNeustart.lua") then
 end
 
 local function Pfad(versionTyp)
-  return serverAddresse .. versionTyp
+  return serverAdresse .. versionTyp
 end
 
 local function installieren()
