@@ -193,13 +193,13 @@ end
 local function pull_event()
   local Wartezeit = 1
   if state == "Idle" and checkEnergy == energy then
+    if VersionUpdate then
+      zeigeNachricht(aktualisierenJa)
+      os.sleep(1)
+      update("master")
+    end
     if (letzteNachrichtZeit - os.time()) / sectime > 45 then
       Wartezeit = 300
-      if VersionUpdate then
-        zeigeNachricht(aktualisierenJa)
-        os.sleep(1)
-        update("master")
-      end
     else
       Wartezeit = 50
     end
