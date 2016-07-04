@@ -2,27 +2,27 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Stargate-Programm
 
-local fs = require("filesystem")
-local wget = loadfile("/bin/wget.lua")
-local serverAdresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
+fs = require("filesystem")
+wget = loadfile("/bin/wget.lua")
+serverAdresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
 
 if fs.exists("/stargate/Sicherungsdatei.lua") then
-  local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
+  IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
 else
-  local Sprache = ""
-  local control = "On"
-  local autoUpdate = false
-  local installieren = false
+  Sprache = ""
+  control = "On"
+  autoUpdate = false
+  installieren = false
 end
 
-local function Pfad(versionTyp)
+function Pfad(versionTyp)
   return serverAdresse .. versionTyp
 end
 
-local function installieren()
+function installieren()
   fs.makeDirectory("/stargate/sprache")
   if versionTyp == nil then
-    local versionTyp = "master"
+    versionTyp = "master"
   end
   wget("-f", Pfad(versionTyp) .. "/autorun.lua", "autorun.lua")
   wget("-f", Pfad(versionTyp) .. "/stargate/check.lua", "/stargate/check.lua")
