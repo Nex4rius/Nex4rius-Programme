@@ -1112,7 +1112,20 @@ function eventLoop()
 end
 
 function angekommeneAdressen(...)
-  
+  for a, b, in pairs(...) do
+    local neuHinzufuegen = false
+    for c, d in pairs(adressen) do
+      if b[2] ~= d[2] then
+        neuHinzufuegen = true
+      else
+        neuHinzufuegen = false
+        break
+      end
+    end
+    if neuHinzufuegen = true then
+      newAddress(b[2], b[1], true)
+    end
+  end
 end
 
 function angekommeneVersion(...)
