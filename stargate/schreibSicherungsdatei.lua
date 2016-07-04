@@ -15,14 +15,14 @@ local installieren   = args[6]
 local control        = args[7]
 local autoUpdate     = args[8]
 
-if args[1] == nil then IDC            = "" end
-if args[2] == nil then autoclosetime  = 60 end
-if args[3] == nil then RF             = false end
-if args[4] == nil then Sprache        = "" end
-if args[5] == nil then side           = "unten" end
-if args[6] == nil then installieren   = false end
-if args[7] == nil then control        = "On" end
-if args[8] == nil then autoUpdate     = false end
+if args[1] == nil then IDC           = ""      end
+if args[2] == nil then autoclosetime = 60      end
+if args[3] == nil then RF            = false   end
+if args[4] == nil then Sprache       = ""      end
+if args[5] == nil then side          = "unten" end
+if args[6] == nil then installieren  = false   end
+if args[7] == nil then control       = "On"    end
+if args[8] == nil then autoUpdate    = false   end
 
 f = io.open ("/stargate/Sicherungsdatei.lua", "w")
 f:write('-- pastebin run -f fa9gu1GJ\n')
