@@ -1126,13 +1126,15 @@ function angekommeneAdressen(...)
       newAddress(b[2], b[1], true)
     end
   end
-  schreibeAdressen()
-  AddNewAddress = false
-  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
-  AdressenSpeichern()
-  IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
-  sides()
-  zeigeMenu()
+  if AddNewAddress == true then
+    schreibeAdressen()
+    AddNewAddress = false
+    schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
+    AdressenSpeichern()
+    IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
+    sides()
+    zeigeMenu()
+  end
 end
 
 function angekommeneVersion(...)
