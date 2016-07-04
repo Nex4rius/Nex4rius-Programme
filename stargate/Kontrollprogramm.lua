@@ -43,6 +43,7 @@ local AddNewAddress         = true
 local messageshow           = true
 local running               = true
 local send                  = true
+local einmalAdressenSenden  = true
 local IDCyes                = false
 local entercode             = false
 local redstoneConnected     = false
@@ -508,7 +509,7 @@ function iriscontroller()
       iriscontrol = "off"
       IDCyes = true
     elseif send == true then
-      sg.sendMessage("Iris Control: " .. control .. " Iris: " .. iris, "Adressliste", require("serialization").serialize(sendeAdressen), version)
+      sg.sendMessage("Iris Control: " .. control .. " Iris: " .. iris, sendeAdressliste())
       send = false
     end
   end
@@ -562,7 +563,7 @@ function iriscontroller()
   end
   if state == "Connected" and direction == "Outgoing" and send == true then
     if outcode == "-" or outcode == nil then else
-      sg.sendMessage(outcode)
+      sg.sendMessage(outcode, sendeAdressliste())
       send = false
     end
   end
@@ -586,6 +587,16 @@ function iriscontroller()
     activationtime = 0
     entercode = false
     remoteName = ""
+    einmalAdressenSenden = true
+  end
+end
+
+function sendeAdressliste()
+  if einmalAdressenSenden then
+    einmalAdressenSenden = false
+    return "Adressliste", require("serialization").serialize(sendeAdressen), version
+  else
+    return ""
   end
 end
 
