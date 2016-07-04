@@ -610,7 +610,7 @@ function neueZeile(b)
 end
 
 function newAddress(neueAdresse, neuerName, ...)
-  if AddNewAddress == true then
+  if AddNewAddress == true and neueAdresse ~= "" then
     AdressenAnzahl = AdressenAnzahl + 1
     adressen[AdressenAnzahl] = {}
     if neuerName == nil then
