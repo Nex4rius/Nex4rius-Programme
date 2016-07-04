@@ -1111,6 +1111,7 @@ function eventLoop()
 end
 
 function angekommeneAdressen(...)
+  local AddNewAddress = false
   for a, b in pairs(...) do
     local neuHinzufuegen = false
     for c, d in pairs(adressen) do
