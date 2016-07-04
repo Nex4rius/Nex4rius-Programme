@@ -509,8 +509,18 @@ function iriscontroller()
       if iris ~= "Offline" then
         irisOpen()
       end
+  if direction == "Incoming" and incode == IDC and iriscontrol == "on" and control == "On" then
+    if iris == "Offline" then
+      sg.sendMessage("IDC Accepted Iris: Offline")
+    else
+      irisOpen()
+  if direction == "Incoming" then
+    if incode == IDC and iriscontrol == "on" and control == "On" then
+      if iris ~= "Offline" then
+        irisOpen()
+      end
       os.sleep(2)
-      sg.sendMessage("IDC Accepted Iris: " .. iris)
+      sg.sendMessage("IDC Accepted Iris: Open")
       iriscontrol = "off"
       IDCyes = true
     elseif send == true then
