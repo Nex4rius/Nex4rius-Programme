@@ -504,29 +504,19 @@ function iriscontroller()
       Colorful_Lamp_Farben(992)
     end
   end
-  if direction == "Incoming" then
-    if incode == IDC and iriscontrol == "on" and control == "On" then
-      if iris ~= "Offline" then
-        irisOpen()
-      end
   if direction == "Incoming" and incode == IDC and iriscontrol == "on" and control == "On" then
     if iris == "Offline" then
       sg.sendMessage("IDC Accepted Iris: Offline")
     else
       irisOpen()
-  if direction == "Incoming" then
-    if incode == IDC and iriscontrol == "on" and control == "On" then
-      if iris ~= "Offline" then
-        irisOpen()
-      end
       os.sleep(2)
       sg.sendMessage("IDC Accepted Iris: Open")
-      iriscontrol = "off"
-      IDCyes = true
-    elseif send == true then
-      sg.sendMessage("Iris Control: " .. control .. " Iris: " .. iris, sendeAdressliste())
-      send = false
     end
+    iriscontrol = "off"
+    IDCyes = true
+  elseif direction == "Incoming" and send == true then
+    sg.sendMessage("Iris Control: " .. control .. " Iris: " .. iris, sendeAdressliste())
+    send = false
   end
   if wormhole == "in" and state == "Dialling" and iriscontrol == "on" and control == "On" then
     if iris == "Offline" then else
