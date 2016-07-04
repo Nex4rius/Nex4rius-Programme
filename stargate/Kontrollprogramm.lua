@@ -17,7 +17,6 @@ os.sleep(1)
 sectime                     = sectime - os.time()
 local letzteNachrichtZeit   = os.time()
 local letzterAdressCheck    = os.time() / sectime
-local angekommeneAdressen   = ""
 local enteridc              = ""
 local showidc               = ""
 local remoteName            = ""
@@ -51,6 +50,7 @@ local redstoneState         = false
 local redstoneIDC           = false
 local LampenGruen           = false
 local LampenRot             = false
+local VersionUpdate         = false
 
 local graueFarbe            = 6684774
 local roteFarbe             = 0xFF0000
@@ -195,6 +195,11 @@ local function pull_event()
   if state == "Idle" and checkEnergy == energy then
     if (letzteNachrichtZeit - os.time()) / sectime > 45 then
       Wartezeit = 300
+      if VersionUpdate then
+        zeigeNachricht(aktualisierenJa)
+        os.sleep(1)
+        update("master")
+      end
     else
       Wartezeit = 50
     end
@@ -1089,15 +1094,23 @@ function eventLoop()
           incode = e[3]
         end
         if e[4] == "Adressliste" then
-          angekommeneAdressen = require("serialization").unserialize(e[5])
-          zeigeFehler(e[4])
-          zeigeFehler(angekommeneAdressen)
-          zeigeFehler(e[6])
-          angekommeneVersion = e[6]
+          zeigeFehler(type(require("serialization").unserialize(e[5])))
+          angekommeneAdressen(require("serialization").unserialize(e[5]))
+          angekommeneVersion(e[6])
         end
         messageshow = true
       end
     end
+  end
+end
+
+function angekommeneAdressen(...)
+  
+end
+
+function angekommeneVersion(...)
+  if string.find(..., "BETA") ~= nil and version ~= ... and autoUpdate == true then
+    VersionUpdate = true
   end
 end
 
