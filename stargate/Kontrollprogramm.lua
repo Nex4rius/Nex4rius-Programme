@@ -610,7 +610,7 @@ function neueZeile(b)
 end
 
 function newAddress(neueAdresse, neuerName, ...)
-  if AddNewAddress == true and neueAdresse ~= "" then
+  if AddNewAddress == true then
     AdressenAnzahl = AdressenAnzahl + 1
     adressen[AdressenAnzahl] = {}
     if neuerName == nil then
@@ -623,10 +623,7 @@ function newAddress(neueAdresse, neuerName, ...)
     if ... == nil then
       schreibeAdressen()
       AddNewAddress = false
-      schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
       AdressenSpeichern()
-      IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
-      sides()
       zeigeMenu()
     end
   end
@@ -1130,10 +1127,7 @@ function angekommeneAdressen(...)
   if AddNewAddress == true then
     schreibeAdressen()
     AddNewAddress = false
-    schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
     AdressenSpeichern()
-    IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
-    sides()
     zeigeMenu()
   end
 end
