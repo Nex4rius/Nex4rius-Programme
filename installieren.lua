@@ -49,9 +49,9 @@ local function installieren()
   loadfile("/bin/rm.lua")("-v", "installieren.lua")
   installieren = true
   loadfile("/stargate/schreibSicherungsdatei.lua")(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
-  loadfile("/autorun.lua")("no")
-  os.exit()
-  --require("computer").shutdown(true)
+  --loadfile("/autorun.lua")("no")
+  --os.exit()
+  require("computer").shutdown(true)
 end
 
 if fs.exists("/stargate/sicherNachNeustart.lua") then
