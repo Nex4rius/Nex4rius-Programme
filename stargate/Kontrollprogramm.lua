@@ -8,14 +8,14 @@ local event                 = require("event")
 local fs                    = require("filesystem")
 local edit                  = loadfile("/bin/edit.lua")
 local schreibSicherungsdatei= loadfile("/stargate/schreibSicherungsdatei.lua")
-local IDC, autoclosetime, RF, Sprache, side, installieren, control = loadfile("/stargate/Sicherungsdatei.lua")()
+local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
 local gpu                   = component.getPrimary("gpu")
 local sg                    = component.getPrimary("stargate")
 
 local sectime               = os.time()
 os.sleep(1)
 sectime                     = sectime - os.time()
-local letzteNachricht       = os.time()
+local letzteNachrichtZeit   = os.time()
 local letzterAdressCheck    = os.time() / sectime
 local enteridc              = ""
 local showidc               = ""
@@ -32,6 +32,7 @@ local energy                = 0
 local seite                 = 0
 local maxseiten             = 0
 local checkEnergy           = 0
+local AdressenAnzahl        = 0
 local zeile                 = 1
 local Trennlinienhoehe      = 14
 local energymultiplicator   = 20
@@ -40,6 +41,7 @@ local AddNewAddress         = true
 local messageshow           = true
 local running               = true
 local send                  = true
+local einmalAdressenSenden  = true
 local IDCyes                = false
 local entercode             = false
 local redstoneConnected     = false
@@ -48,6 +50,7 @@ local redstoneState         = false
 local redstoneIDC           = false
 local LampenGruen           = false
 local LampenRot             = false
+local VersionUpdate         = false
 
 local graueFarbe            = 6684774
 local roteFarbe             = 0xFF0000
@@ -72,11 +75,13 @@ local Steuerungstextfarbe   = schwarzeFarbe
 local Statusfarbe           = grueneFarbe
 local Statustextfarbe       = Textfarbe
 
+local letzteNachricht
 local adressen
 local sideNum
 local k
 local AdressAnzeige
 local gespeicherteAdressen
+local sendeAdressen
 local ok
 local result
 local ergebnis
@@ -95,7 +100,7 @@ local eingabe
 local alte_eingabe
 local ausgabe
 local anwahlEnergie
-local AdressenAnzahl
+local angekommeneVersion
 
 local white                 = 0
 --local orange                = 1
@@ -145,13 +150,9 @@ local function schreibeAdressen()
   f:write('-- "" for no Iris Code\n')
   f:write('--\n\n')
   f:write('return {\n')
-  f:write('--{"<Name>", "<Adresse>", "<IDC>"},\n')
+  f:write('--{"<Name>","<Adresse>","<IDC>"},\n')
   for k, v in pairs(adressen) do
     f:write("  " .. require("serialization").serialize(adressen[k]) .. ",\n")
-  end
-  if adressen[1] == nil then
-    f:write('{"Name 1", "Adresse 1", "IDC 1"},\n')
-    f:write('{"Name 2", "Adresse 2", "IDC 2"},\n')
   end
   f:write('}')
   f:close()
@@ -192,8 +193,13 @@ end
 local function pull_event()
   local Wartezeit = 1
   if state == "Idle" and checkEnergy == energy then
-    if (letzteNachricht - os.time()) / sectime > 45 then
+    if (letzteNachrichtZeit - os.time()) / sectime > 45 then
       Wartezeit = 300
+      if VersionUpdate then
+        zeigeNachricht(aktualisierenJa)
+        os.sleep(1)
+        update("master")
+      end
     else
       Wartezeit = 50
     end
@@ -392,6 +398,7 @@ end
 function AdressenSpeichern()
   adressen = loadfile("/stargate/adressen.lua")()
   gespeicherteAdressen = {}
+  sendeAdressen = {}
   local k = 0
   for i, na in pairs(adressen) do
     if na[2] == getAddress(sg.localAddress()) then
@@ -401,6 +408,9 @@ function AdressenSpeichern()
       if not anwahlEnergie then
         anwahlEnergie = fehlerName
       else
+        sendeAdressen[i] = {}
+        sendeAdressen[i][1] = na[1]
+        sendeAdressen[i][2] = na[2]
         if     anwahlEnergie > 10000000000 then
           anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000) .. " G"
         elseif anwahlEnergie > 10000000 then
@@ -427,7 +437,7 @@ function AdressenSpeichern()
     zeigeHier(1, P, "", xVerschiebung - 3)
   end
   zeigeMenu()
-  zeigeNachricht()
+  zeigeNachricht("")
 end
 
 function ErsetzePunktMitKomma(...)
@@ -505,7 +515,7 @@ function iriscontroller()
     iriscontrol = "off"
     IDCyes = true
   elseif direction == "Incoming" and send == true then
-    sg.sendMessage("Iris Control: "..control.." Iris: "..iris)
+    sg.sendMessage("Iris Control: " .. control .. " Iris: " .. iris, sendeAdressliste())
     send = false
   end
   if wormhole == "in" and state == "Dialling" and iriscontrol == "on" and control == "On" then
@@ -543,11 +553,12 @@ function iriscontroller()
     LampenGruen = false
     LampenRot = false
     zielAdresse = ""
-    zeigeNachricht()
+    zeigeNachricht("")
   end
   if state == "Idle" then
     incode = "-"
     wormhole = "in"
+    AddNewAddress = true
     LampenGruen = false
     LampenRot = false
     zielAdresse = ""
@@ -557,7 +568,7 @@ function iriscontroller()
   end
   if state == "Connected" and direction == "Outgoing" and send == true then
     if outcode == "-" or outcode == nil then else
-      sg.sendMessage(outcode)
+      sg.sendMessage(outcode, sendeAdressliste())
       send = false
     end
   end
@@ -581,6 +592,16 @@ function iriscontroller()
     activationtime = 0
     entercode = false
     remoteName = ""
+    einmalAdressenSenden = true
+  end
+end
+
+function sendeAdressliste()
+  if einmalAdressenSenden then
+    einmalAdressenSenden = false
+    return "Adressliste", require("serialization").serialize(sendeAdressen), version
+  else
+    return ""
   end
 end
 
@@ -588,19 +609,26 @@ function neueZeile(b)
   zeile = zeile + b
 end
 
-function newAddress(neueAdresse)
+function newAddress(neueAdresse, neuerName, ...)
   if AddNewAddress == true then
-    adressen[AdressenAnzahl + 1] = {}
-    adressen[AdressenAnzahl + 1][1] = ">>>" .. neueAdresse .. "<<<"
-    adressen[AdressenAnzahl + 1][2] = neueAdresse
-    adressen[AdressenAnzahl + 1][3] = ""
-    schreibeAdressen()
-    AddNewAddress = false
-    schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
-    AdressenSpeichern()
-    IDC, autoclosetime, RF, Sprache, side, installieren, control = loadfile("/stargate/Sicherungsdatei.lua")()
-    sides()
-    zeigeMenu()
+    AdressenAnzahl = AdressenAnzahl + 1
+    adressen[AdressenAnzahl] = {}
+    if neuerName == nil then
+      adressen[AdressenAnzahl][1] = ">>>" .. neueAdresse .. "<<<"
+    else
+      adressen[AdressenAnzahl][1] = neuerName
+    end
+    adressen[AdressenAnzahl][2] = neueAdresse
+    adressen[AdressenAnzahl][3] = ""
+    if ... == nil then
+      schreibeAdressen()
+      AddNewAddress = false
+      schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
+      AdressenSpeichern()
+      IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
+      sides()
+      zeigeMenu()
+    end
   end
 end
 
@@ -675,15 +703,17 @@ function aktualisiereStatus()
   end
   energy = sg.energyAvailable() * energymultiplicator
   zeile = 1
-  if (letzteNachricht - os.time()) / sectime > 45 then
-    zeigeNachricht()
+  if (letzteNachrichtZeit - os.time()) / sectime > 45 then
+    if letzteNachricht ~= "" then
+      zeigeNachricht("")
+    end
   end
 end
 
 function zeigeStatus()
+  aktualisiereStatus()
   gpu.setBackground(Statusfarbe)
   gpu.setForeground(Statustextfarbe)
-  aktualisiereStatus()
   zeigeHier(xVerschiebung, zeile, "  " .. lokaleAdresse .. locAddr) neueZeile(1)
   zeigeHier(xVerschiebung, zeile, "  " .. zielAdresseName .. zielAdresse) neueZeile(1)
   zeigeHier(xVerschiebung, zeile, "  " .. zielName .. remoteName) neueZeile(1)
@@ -840,10 +870,15 @@ function zeigeHier(x, y, s, h)
 end
 
 function zeigeNachricht(...)
-  letzteNachricht = os.time()
+  letzteNachricht = ...
+  letzteNachrichtZeit = os.time()
   gpu.setBackground(Nachrichtfarbe)
   gpu.setForeground(Nachrichttextfarbe)
-  zeigeHier(1, screen_height - 1, "", screen_width)
+  if fs.exists("/log") then
+    zeigeHier(1, screen_height - 1, fehlerName .. " /log", screen_width)
+  else
+    zeigeHier(1, screen_height - 1, "", screen_width)
+  end
   if ... then
     zeigeHier(1, screen_height, zeichenErsetzen(...), screen_width)
   else
@@ -1005,11 +1040,11 @@ handlers[key_event_name] = function(e)
         if control == "On" then
           control = "Off"
           _ENV.control = "Off"
-          schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
+          schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
         else
           control = "On"
           _ENV.control = "On"
-          schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
+          schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
         end
       end
     elseif c == "z" then
@@ -1024,7 +1059,7 @@ handlers[key_event_name] = function(e)
       gpu.setBackground(0x333333)
       gpu.setForeground(Textfarbe)
       edit("stargate/Sicherungsdatei.lua")
-      IDC, autoclosetime, RF, Sprache, side, installieren, control = loadfile("/stargate/Sicherungsdatei.lua")()
+      IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
       sides()
       term.clear()
       seite = 0
@@ -1059,17 +1094,52 @@ function eventLoop()
       if f then
         checken(f, e)
       end
-      if string.sub(e[1],1,3) == "sgM" and direction == "Incoming" and wormhole == "in" then
-        if e[3] == "" then else
+      if string.sub(e[1],1,3) == "sgM" then
+        if direction == "Outgoing" then
+          codeaccepted = e[3]
+        elseif direction == "Incoming" and wormhole == "in" then
           incode = e[3]
-          messageshow = true
         end
-      end
-      if string.sub(e[1],1,3) == "sgM" and direction == "Outgoing" then
-        codeaccepted = e[3]
+        if e[4] == "Adressliste" then
+          angekommeneAdressen(require("serialization").unserialize(e[5]))
+          angekommeneVersion(e[6])
+        end
         messageshow = true
       end
     end
+  end
+end
+
+function angekommeneAdressen(...)
+  for a, b in pairs(...) do
+    local neuHinzufuegen = false
+    for c, d in pairs(adressen) do
+      if b[2] ~= d[2] then
+        neuHinzufuegen = true
+      else
+        neuHinzufuegen = false
+        break
+      end
+    end
+    if neuHinzufuegen == true then
+      AddNewAddress = true
+      newAddress(b[2], b[1], true)
+    end
+  end
+  if AddNewAddress == true then
+    schreibeAdressen()
+    AddNewAddress = false
+    schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
+    AdressenSpeichern()
+    IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
+    sides()
+    zeigeMenu()
+  end
+end
+
+function angekommeneVersion(...)
+  if string.find(..., "BETA") ~= nil and version ~= ... and autoUpdate == true then
+    VersionUpdate = true
   end
 end
 
@@ -1094,12 +1164,12 @@ function Colorful_Lamp_Steuerung()
   else
     Colorful_Lamp_Farben(32767) -- weiß
   end
-  -- 32767  weiß
-  -- 32736  gelb
-  -- 32256  orange
-  -- 31744  rot
-  -- 992    grün
-  -- 0      schwarz
+  --32767  weiß
+  --32736  gelb
+  --32256  orange
+  --31744  rot
+  --992    grün
+  --0      schwarz
 end
 
 function Colorful_Lamp_Farben(eingabe, ausgabe)

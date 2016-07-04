@@ -7,15 +7,14 @@ term = require("term")
 event = require("event")
 fs = require("filesystem")
 c = require("computer")
-shell = require("shell")
+args = require("shell").parse(...)
 wget = loadfile("/bin/wget.lua")
 gpu = component.getPrimary("gpu")
-args = shell.parse(...)
 schreibSicherungsdatei = loadfile("/stargate/schreibSicherungsdatei.lua")
-serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
+serverAdresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
 betaVersionName = ""
 if fs.exists("/stargate/Sicherungsdatei.lua") then
-  IDC, autoclosetime, RF, Sprache, side, installieren, control = loadfile("/stargate/Sicherungsdatei.lua")()
+  IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
 else
   Sprache = ""
   control = "On"
@@ -41,7 +40,7 @@ function checkSprache()
     print("\nUnbekannte Eingabe\nStandardeinstellung = deutsch")
     Sprache = "deutsch"
   end
-  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
+  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
   print("")
 end
 
@@ -80,18 +79,22 @@ function checkKomponenten()
 end
 
 function Pfad(versionTyp)
-  return serverAddresse .. versionTyp
+  return serverAdresse .. versionTyp
 end
 
 function update(versionTyp)
+  if versionTyp == nil then
+    versionTyp = "master"
+  end
   wget("-f", Pfad(versionTyp) .. "/installieren.lua", "/installieren.lua")
   installieren = true
-  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
+  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
   f = io.open ("autorun.lua", "w")
   f:write('versionTyp = "' .. versionTyp .. '"\n')
   f:write('loadfile("installieren.lua")()')
   f:close()
-  os.execute("reboot")
+  loadfile("autorun.lua")()
+  os.exit()
 end
 
 function checkServerVersion()
@@ -143,11 +146,11 @@ function mainCheck()
       if installieren == false then
         print(aktualisierenFrage .. betaVersionName .. "\n")
         antwortFrage = io.read()
-        if string.lower(antwortFrage) == ja then
+        if string.lower(antwortFrage) == ja or string.lower(antwortFrage) == "ja" or string.lower(antwortFrage) == "yes" then
           print(aktualisierenJa)
           update("master")
           return
-        elseif antwortFrage == "beta" then
+        elseif string.lower(antwortFrage) == "beta" then
           print(aktualisierenBeta)
           update("beta")
           return
@@ -159,7 +162,7 @@ function mainCheck()
   end
   print(laden)
   installieren = false
-  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
+  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
   if checkDateien() then
     loadfile("/stargate/Kontrollprogramm.lua")()
   else

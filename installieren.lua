@@ -2,55 +2,27 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Stargate-Programm
 
-fs = require("filesystem")
-wget = loadfile("/bin/wget.lua")
-serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
+local fs = require("filesystem")
+local wget = loadfile("/bin/wget.lua")
+local serverAdresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
 
 if fs.exists("/stargate/Sicherungsdatei.lua") then
-  IDC, autoclosetime, RF, Sprache, side, installieren, control, firstrun = loadfile("/stargate/Sicherungsdatei.lua")()
+  local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
 else
-  Sprache = ""
-  control = "On"
-  firstrun = -2
-  installieren = false
+  local Sprache = ""
+  local control = "On"
+  local autoUpdate = false
+  local installieren = false
 end
 
-if fs.exists("/stargate/sicherNachNeustart.lua") then
-  if fs.exists("/stargate/adressen.lua") then
-    dofile("/stargate/adressen.lua")
-  end
-  f = io.open("/stargate/adressen.lua", "w")
-  f:write('-- pastebin run -f fa9gu1GJ\n')
-  f:write('-- von Nex4rius\n')
-  f:write('-- https://github.com/Nex4rius/Stargate-Programm\n--\n')
-  f:write('-- to save press "Ctrl + S"\n')
-  f:write('-- to close press "Ctrl + W"\n--\n')
-  f:write('-- Put your own stargate addresses here\n')
-  f:write('-- "" for no Iris Code\n')
-  f:write('--\n\n')
-  f:write('return {\n')
-  f:write('--{"<Name>","<Adresse>","<IDC>"},\n')
-  for k, v in pairs(adressen) do
-    f:write("  " .. require("serialization").serialize(adressen[k]) .. ",\n")
-  end
-  if adressen[1] == nil then
-    f:write('{"Name 1", "Adresse 1", "IDC 1"},\n')
-    f:write('{"Name 2", "Adresse 2", "IDC 2"},\n')
-  end
-  f:write('}')
-  f:close()
-  dofile("/stargate/sicherNachNeustart.lua")
-  loadfile("/bin/rm.lua")("/stargate/sicherNachNeustart.lua")
+local function Pfad(versionTyp)
+  return serverAdresse .. versionTyp
 end
 
-function Pfad(versionTyp)
-  return serverAddresse .. versionTyp
-end
-
-function installieren()
+local function installieren()
   fs.makeDirectory("/stargate/sprache")
   if versionTyp == nil then
-    versionTyp = "master"
+    local versionTyp = "master"
   end
   wget("-f", Pfad(versionTyp) .. "/autorun.lua", "autorun.lua")
   wget("-f", Pfad(versionTyp) .. "/stargate/check.lua", "/stargate/check.lua")
@@ -76,8 +48,34 @@ function installieren()
   end
   loadfile("/bin/rm.lua")("-v", "installieren.lua")
   installieren = true
-  loadfile("/stargate/schreibSicherungsdatei.lua")(IDC, autoclosetime, RF, Sprache, side, installieren, control)
-  os.execute("reboot")
+  loadfile("/stargate/schreibSicherungsdatei.lua")(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
+  --loadfile("/autorun.lua")("no")
+  --os.exit()
+  require("computer").shutdown(true)
+end
+
+if fs.exists("/stargate/sicherNachNeustart.lua") then
+  if fs.exists("/stargate/adressen.lua") then
+    dofile("/stargate/adressen.lua")
+  end
+  f = io.open("/stargate/adressen.lua", "w")
+  f:write('-- pastebin run -f fa9gu1GJ\n')
+  f:write('-- von Nex4rius\n')
+  f:write('-- https://github.com/Nex4rius/Stargate-Programm\n--\n')
+  f:write('-- to save press "Ctrl + S"\n')
+  f:write('-- to close press "Ctrl + W"\n--\n')
+  f:write('-- Put your own stargate addresses here\n')
+  f:write('-- "" for no Iris Code\n')
+  f:write('--\n\n')
+  f:write('return {\n')
+  f:write('--{"<Name>","<Adresse>","<IDC>"},\n')
+  for k in pairs(adressen) do
+    f:write("  " .. require("serialization").serialize(adressen[k]) .. ",\n")
+  end
+  f:write('}')
+  f:close()
+  dofile("/stargate/sicherNachNeustart.lua")
+  loadfile("/bin/rm.lua")("/stargate/sicherNachNeustart.lua")
 end
 
 installieren()
