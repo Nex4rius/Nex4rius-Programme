@@ -15,30 +15,6 @@ else
   local installieren = false
 end
 
-if fs.exists("/stargate/sicherNachNeustart.lua") then
-  if fs.exists("/stargate/adressen.lua") then
-    dofile("/stargate/adressen.lua")
-  end
-  f = io.open("/stargate/adressen.lua", "w")
-  f:write('-- pastebin run -f fa9gu1GJ\n')
-  f:write('-- von Nex4rius\n')
-  f:write('-- https://github.com/Nex4rius/Stargate-Programm\n--\n')
-  f:write('-- to save press "Ctrl + S"\n')
-  f:write('-- to close press "Ctrl + W"\n--\n')
-  f:write('-- Put your own stargate addresses here\n')
-  f:write('-- "" for no Iris Code\n')
-  f:write('--\n\n')
-  f:write('return {\n')
-  f:write('--{"<Name>","<Adresse>","<IDC>"},\n')
-  for k, v in pairs(adressen) do
-    f:write("  " .. require("serialization").serialize(adressen[k]) .. ",\n")
-  end
-  f:write('}')
-  f:close()
-  dofile("/stargate/sicherNachNeustart.lua")
-  loadfile("/bin/rm.lua")("/stargate/sicherNachNeustart.lua")
-end
-
 local function Pfad(versionTyp)
   return serverAdresse .. versionTyp
 end
@@ -73,8 +49,31 @@ local function installieren()
   loadfile("/bin/rm.lua")("-v", "installieren.lua")
   installieren = true
   loadfile("/stargate/schreibSicherungsdatei.lua")(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
-  loadfile("/autorun.lua")("nein")
-  os.exit()
+  require("computer").shutdown(true)
+end
+
+if fs.exists("/stargate/sicherNachNeustart.lua") then
+  if fs.exists("/stargate/adressen.lua") then
+    dofile("/stargate/adressen.lua")
+  end
+  f = io.open("/stargate/adressen.lua", "w")
+  f:write('-- pastebin run -f fa9gu1GJ\n')
+  f:write('-- von Nex4rius\n')
+  f:write('-- https://github.com/Nex4rius/Stargate-Programm\n--\n')
+  f:write('-- to save press "Ctrl + S"\n')
+  f:write('-- to close press "Ctrl + W"\n--\n')
+  f:write('-- Put your own stargate addresses here\n')
+  f:write('-- "" for no Iris Code\n')
+  f:write('--\n\n')
+  f:write('return {\n')
+  f:write('--{"<Name>","<Adresse>","<IDC>"},\n')
+  for k, v in pairs(adressen) do
+    f:write("  " .. require("serialization").serialize(adressen[k]) .. ",\n")
+  end
+  f:write('}')
+  f:close()
+  dofile("/stargate/sicherNachNeustart.lua")
+  loadfile("/bin/rm.lua")("/stargate/sicherNachNeustart.lua")
 end
 
 installieren()
