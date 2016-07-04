@@ -193,13 +193,13 @@ end
 local function pull_event()
   local Wartezeit = 1
   if state == "Idle" and checkEnergy == energy then
+    if VersionUpdate then
+      zeigeNachricht(aktualisierenJa)
+      os.sleep(1)
+      update("master")
+    end
     if (letzteNachrichtZeit - os.time()) / sectime > 45 then
       Wartezeit = 300
-      if VersionUpdate then
-        zeigeNachricht(aktualisierenJa)
-        os.sleep(1)
-        update("master")
-      end
     else
       Wartezeit = 50
     end
@@ -623,10 +623,7 @@ function newAddress(neueAdresse, neuerName, ...)
     if ... == nil then
       schreibeAdressen()
       AddNewAddress = false
-      schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
       AdressenSpeichern()
-      IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
-      sides()
       zeigeMenu()
     end
   end
@@ -1111,6 +1108,7 @@ function eventLoop()
 end
 
 function angekommeneAdressen(...)
+  local AddNewAddress = false
   for a, b in pairs(...) do
     local neuHinzufuegen = false
     for c, d in pairs(adressen) do
@@ -1129,10 +1127,7 @@ function angekommeneAdressen(...)
   if AddNewAddress == true then
     schreibeAdressen()
     AddNewAddress = false
-    schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
     AdressenSpeichern()
-    IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
-    sides()
     zeigeMenu()
   end
 end

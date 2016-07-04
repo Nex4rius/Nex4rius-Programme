@@ -1,24 +1,18 @@
-local args  = require("shell").parse(...)
+local args = require("shell").parse(...)
 local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate
 
 if require("filesystem").exists("/stargate/Sicherungsdatei.lua") then
   IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
-else
-  for i = 1, 8 do
-    if args[i] == nil then
-      return false
-    end
-  end
 end
 
-if type(args[1]) == "string"  then IDC            = args[1] end
-if type(args[2]) == "number"  then autoclosetime  = args[2] end
-if type(args[3]) == "boolean" then RF             = args[3] end
-if type(args[4]) == "string"  then Sprache        = args[4] end
-if type(args[5]) == "string"  then side           = args[5] end
-if type(args[6]) == "boolean" then installieren   = args[6] end
-if type(args[7]) == "string"  then control        = args[7] end
-if type(args[8]) == "boolean" then autoUpdate     = args[8] end
+if args[1] ~= nil then IDC           = args[1] elseif IDC           == nil then IDC           = ""      end
+if args[2] ~= nil then autoclosetime = args[2] elseif autoclosetime == nil then autoclosetime = 60      end
+if args[3] ~= nil then RF            = args[3] elseif RF            == nil then RF            = false   end
+if args[4] ~= nil then Sprache       = args[4] elseif Sprache       == nil then Sprache       = ""      end
+if args[5] ~= nil then side          = args[5] elseif side          == nil then side          = "unten" end
+if args[6] ~= nil then installieren  = args[6] elseif installieren  == nil then installieren  = false   end
+if args[7] ~= nil then control       = args[7] elseif control       == nil then control       = "On"    end
+if args[8] ~= nil then autoUpdate    = args[8] elseif autoUpdate    == nil then autoUpdate    = false   end
 
 f = io.open ("/stargate/Sicherungsdatei.lua", "w")
 f:write('-- pastebin run -f fa9gu1GJ\n')
@@ -43,7 +37,6 @@ f:write('if type(Sprache) ~= "string" then\n  Sprache = ""\nend\n')
 f:write('if type(side) ~= "string" then\n  side = "unten"\nend\n')
 f:write('if type(installieren) ~= "boolean" then\n  installieren = false\nend\n')
 f:write('if type(control) ~= "string" then\n  control = "On"\nend\n')
-f:write('if type(IDC) ~= "string" then\n  IDC = ""\nend\n')
 f:write('if type(autoUpdate) ~= "boolean" then\n  autoUpdate = false\nend\n\n')
 f:write('return IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate\n')
 f:close()
