@@ -84,14 +84,14 @@ function Pfad(versionTyp)
 end
 
 function update(versionTyp)
+  if versionTyp == nil then
+    versionTyp = "master"
+  end
   wget("-f", Pfad(versionTyp) .. "/installieren.lua", "/installieren.lua")
   installieren = true
   schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
-  f = io.open ("autorun.lua", "w")
-  f:write('versionTyp = "' .. versionTyp .. '"\n')
-  f:write('loadfile("installieren.lua")()')
-  f:close()
-  os.execute("reboot")
+  loadfile("installieren.lua")()
+  os.exit()
 end
 
 function checkServerVersion()
@@ -133,7 +133,7 @@ function mainCheck()
     end
     if args[1] == ja or args[1] == "ja" or args[1] == "yes" then
       print(aktualisierenJa)
-      update("master")
+      update()
     elseif args[1] == nein or args[1] == "nein" or args[1] == "no" then
       -- nichts
     elseif args[1] == "beta" then
@@ -143,11 +143,11 @@ function mainCheck()
       if installieren == false then
         print(aktualisierenFrage .. betaVersionName .. "\n")
         antwortFrage = io.read()
-        if string.lower(antwortFrage) == ja then
+        if string.lower(antwortFrage) == ja or string.lower(antwortFrage) == "ja" or string.lower(antwortFrage) == "yes" then
           print(aktualisierenJa)
-          update("master")
+          update()
           return
-        elseif antwortFrage == "beta" then
+        elseif string.lower(antwortFrage) == "beta" then
           print(aktualisierenBeta)
           update("beta")
           return
