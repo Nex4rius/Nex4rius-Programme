@@ -99,6 +99,7 @@ local eingabe
 local alte_eingabe
 local ausgabe
 local anwahlEnergie
+local angekommeneVersion
 
 local white                 = 0
 --local orange                = 1
@@ -1072,6 +1073,7 @@ function eventLoop()
         if e[4] == "Adressliste" then
           angekommeneAdressen[inAdressenAnzahl] = require("serialization").unserialize(e[5])
           inAdressenAnzahl = inAdressenAnzahl + 1
+          angekommeneVersion = e[6]
         end
         messageshow = true
       end
