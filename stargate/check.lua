@@ -89,7 +89,11 @@ function update(versionTyp)
   wget("-f", Pfad(versionTyp) .. "/installieren.lua", "/installieren.lua")
   installieren = true
   schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
-  loadfile("installieren.lua")()
+  f = io.open ("autorun.lua", "w")
+  f:write('versionTyp = "' .. versionTyp .. '"\n')
+  f:write('loadfile("installieren.lua")()')
+  f:close()
+  loadfile("autorun.lua")()
   os.exit()
 end
 
