@@ -15,7 +15,7 @@ local sg                    = component.getPrimary("stargate")
 local sectime               = os.time()
 os.sleep(1)
 sectime                     = sectime - os.time()
-local letzteNachricht       = os.time()
+local letzteNachrichtZeit   = os.time()
 local letzterAdressCheck    = os.time() / sectime
 local angekommeneAdressen   = ""
 local enteridc              = ""
@@ -75,6 +75,7 @@ local Steuerungstextfarbe   = schwarzeFarbe
 local Statusfarbe           = grueneFarbe
 local Statustextfarbe       = Textfarbe
 
+local letzteNachricht
 local adressen
 local sideNum
 local k
@@ -192,7 +193,7 @@ end
 local function pull_event()
   local Wartezeit = 1
   if state == "Idle" and checkEnergy == energy then
-    if (letzteNachricht - os.time()) / sectime > 45 then
+    if (letzteNachrichtZeit - os.time()) / sectime > 45 then
       Wartezeit = 300
     else
       Wartezeit = 50
@@ -690,8 +691,10 @@ function aktualisiereStatus()
   end
   energy = sg.energyAvailable() * energymultiplicator
   zeile = 1
-  if (letzteNachricht - os.time()) / sectime > 45 then
-    zeigeNachricht()
+  if (letzteNachrichtZeit - os.time()) / sectime > 45 then
+    if letzteNachricht ~= nil then
+      zeigeNachricht()
+    end
   end
 end
 
@@ -855,7 +858,8 @@ function zeigeHier(x, y, s, h)
 end
 
 function zeigeNachricht(...)
-  letzteNachricht = os.time()
+  letzteNachricht = ...
+  letzteNachrichtZeit = os.time()
   gpu.setBackground(Nachrichtfarbe)
   gpu.setForeground(Nachrichttextfarbe)
   if fs.exists("/log") then
