@@ -194,7 +194,6 @@ local function pull_event()
   local Wartezeit = 1
   if state == "Idle" and checkEnergy == energy then
     if (letzteNachrichtZeit - os.time()) / sectime > 45 then
-      zeigeFehler("ja es geht auch zu 300sec")
       Wartezeit = 300
       if VersionUpdate then
         zeigeNachricht(aktualisierenJa)
