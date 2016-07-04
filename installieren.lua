@@ -77,7 +77,8 @@ function installieren()
   loadfile("/bin/rm.lua")("-v", "installieren.lua")
   installieren = true
   loadfile("/stargate/schreibSicherungsdatei.lua")(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
-  os.execute("reboot")
+  loadfile("/autorun.lua")("no")
+  os.exit()
 end
 
 installieren()
