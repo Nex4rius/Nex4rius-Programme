@@ -194,6 +194,7 @@ local function pull_event()
   local Wartezeit = 1
   if state == "Idle" and checkEnergy == energy then
     if (letzteNachrichtZeit - os.time()) / sectime > 45 then
+      zeigeFehler("ja es geht auch zu 300sec")
       Wartezeit = 300
       if VersionUpdate then
         zeigeNachricht(aktualisierenJa)
@@ -437,7 +438,7 @@ function AdressenSpeichern()
     zeigeHier(1, P, "", xVerschiebung - 3)
   end
   zeigeMenu()
-  zeigeNachricht()
+  zeigeNachricht("")
 end
 
 function ErsetzePunktMitKomma(...)
@@ -553,7 +554,7 @@ function iriscontroller()
     LampenGruen = false
     LampenRot = false
     zielAdresse = ""
-    zeigeNachricht()
+    zeigeNachricht("")
   end
   if state == "Idle" then
     incode = "-"
@@ -609,19 +610,26 @@ function neueZeile(b)
   zeile = zeile + b
 end
 
-function newAddress(neueAdresse)
+function newAddress(neueAdresse, neuerName, ...)
   if AddNewAddress == true then
-    adressen[AdressenAnzahl + 1] = {}
-    adressen[AdressenAnzahl + 1][1] = ">>>" .. neueAdresse .. "<<<"
-    adressen[AdressenAnzahl + 1][2] = neueAdresse
-    adressen[AdressenAnzahl + 1][3] = ""
-    schreibeAdressen()
-    AddNewAddress = false
-    schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
-    AdressenSpeichern()
-    IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
-    sides()
-    zeigeMenu()
+    AdressenAnzahl = AdressenAnzahl + 1
+    adressen[AdressenAnzahl] = {}
+    if neuerName == nil then
+      adressen[AdressenAnzahl][1] = ">>>" .. neueAdresse .. "<<<"
+    else
+      adressen[AdressenAnzahl][1] = neuerName
+    end
+    adressen[AdressenAnzahl][2] = neueAdresse
+    adressen[AdressenAnzahl][3] = ""
+    if ... == nil then
+      schreibeAdressen()
+      AddNewAddress = false
+      schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
+      AdressenSpeichern()
+      IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
+      sides()
+      zeigeMenu()
+    end
   end
 end
 
@@ -697,8 +705,8 @@ function aktualisiereStatus()
   energy = sg.energyAvailable() * energymultiplicator
   zeile = 1
   if (letzteNachrichtZeit - os.time()) / sectime > 45 then
-    if letzteNachricht ~= nil then
-      zeigeNachricht()
+    if letzteNachricht ~= "" then
+      zeigeNachricht("")
     end
   end
 end
@@ -1094,7 +1102,6 @@ function eventLoop()
           incode = e[3]
         end
         if e[4] == "Adressliste" then
-          zeigeFehler(type(require("serialization").unserialize(e[5])))
           angekommeneAdressen(require("serialization").unserialize(e[5]))
           angekommeneVersion(e[6])
         end
