@@ -11,7 +11,7 @@ args = require("shell").parse(...)
 wget = loadfile("/bin/wget.lua")
 gpu = component.getPrimary("gpu")
 schreibSicherungsdatei = loadfile("/stargate/schreibSicherungsdatei.lua")
-serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
+serverAdresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
 betaVersionName = ""
 if fs.exists("/stargate/Sicherungsdatei.lua") then
   IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
@@ -79,7 +79,7 @@ function checkKomponenten()
 end
 
 function Pfad(versionTyp)
-  return serverAddresse .. versionTyp
+  return serverAdresse .. versionTyp
 end
 
 function update(versionTyp)
