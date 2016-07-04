@@ -1111,8 +1111,8 @@ function eventLoop()
   end
 end
 
-function angekommeneAdressen(...)
-  for a, b, in pairs(...) do
+function angekommeneAdressen(Adressliste)
+  for a, b, in pairs(Adressliste) do
     local neuHinzufuegen = false
     for c, d in pairs(adressen) do
       if b[2] ~= d[2] then
