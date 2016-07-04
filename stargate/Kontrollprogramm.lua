@@ -1122,7 +1122,7 @@ function angekommeneAdressen(Adressliste)
         break
       end
     end
-    if neuHinzufuegen = true then
+    if neuHinzufuegen == true then
       newAddress(b[2], b[1], true)
     end
   end
