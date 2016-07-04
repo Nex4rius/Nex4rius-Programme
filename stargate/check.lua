@@ -132,7 +132,7 @@ function mainCheck()
     end
     if args[1] == ja or args[1] == "ja" or args[1] == "yes" then
       print(aktualisierenJa)
-      update()
+      update("master")
     elseif args[1] == nein or args[1] == "nein" or args[1] == "no" then
       -- nichts
     elseif args[1] == "beta" then
@@ -144,7 +144,7 @@ function mainCheck()
         antwortFrage = io.read()
         if string.lower(antwortFrage) == ja or string.lower(antwortFrage) == "ja" or string.lower(antwortFrage) == "yes" then
           print(aktualisierenJa)
-          update()
+          update("master")
           return
         elseif string.lower(antwortFrage) == "beta" then
           print(aktualisierenBeta)
