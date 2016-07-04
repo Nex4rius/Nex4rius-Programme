@@ -67,7 +67,7 @@ if fs.exists("/stargate/sicherNachNeustart.lua") then
   f:write('--\n\n')
   f:write('return {\n')
   f:write('--{"<Name>","<Adresse>","<IDC>"},\n')
-  for k, v in pairs(adressen) do
+  for k in pairs(adressen) do
     f:write("  " .. require("serialization").serialize(adressen[k]) .. ",\n")
   end
   f:write('}')
