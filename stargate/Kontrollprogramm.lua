@@ -1111,8 +1111,8 @@ function eventLoop()
   end
 end
 
-function angekommeneAdressen(Adressliste)
-  for a, b in pairs(Adressliste) do
+function angekommeneAdressen(...)
+  for a, b in pairs(...) do
     local neuHinzufuegen = false
     for c, d in pairs(adressen) do
       if b[2] ~= d[2] then
@@ -1123,9 +1123,17 @@ function angekommeneAdressen(Adressliste)
       end
     end
     if neuHinzufuegen == true then
+      AddNewAddress = true
       newAddress(b[2], b[1], true)
     end
   end
+  schreibeAdressen()
+  AddNewAddress = false
+  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
+  AdressenSpeichern()
+  IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
+  sides()
+  zeigeMenu()
 end
 
 function angekommeneVersion(...)
