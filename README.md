@@ -37,6 +37,7 @@ Some feature of my programm:
 - shows the required energy to dial an address (or error if invalid address)
 - works with Computronics ColorfulLamps
 - allows closing of incoming wormholes if its disabled in config AND there is a computer at either end
+- automatically sends and receives entire address list on an open wormhole (without the IDC of course) and automatically adds the new addresses
 
 Usage: autorun [...]<br>
 yes   -> update to stable version<br>
