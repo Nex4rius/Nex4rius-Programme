@@ -1,11 +1,5 @@
 local args = require("shell").parse(...)
 
-for i = 1, 8 do
-  if args[i] == nil then
-    return false
-  end
-end
-
 local IDC            = args[1]
 local autoclosetime  = args[2]
 local RF             = args[3]
