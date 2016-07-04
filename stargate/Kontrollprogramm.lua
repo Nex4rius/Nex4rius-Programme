@@ -711,9 +711,9 @@ function aktualisiereStatus()
 end
 
 function zeigeStatus()
+  aktualisiereStatus()
   gpu.setBackground(Statusfarbe)
   gpu.setForeground(Statustextfarbe)
-  aktualisiereStatus()
   zeigeHier(xVerschiebung, zeile, "  " .. lokaleAdresse .. locAddr) neueZeile(1)
   zeigeHier(xVerschiebung, zeile, "  " .. zielAdresseName .. zielAdresse) neueZeile(1)
   zeigeHier(xVerschiebung, zeile, "  " .. zielName .. remoteName) neueZeile(1)
