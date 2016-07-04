@@ -42,6 +42,7 @@ local messageshow           = true
 local running               = true
 local send                  = true
 local einmalAdressenSenden  = true
+local Nachrichtleer         = true
 local IDCyes                = false
 local entercode             = false
 local redstoneConnected     = false
@@ -193,12 +194,12 @@ end
 local function pull_event()
   local Wartezeit = 1
   if state == "Idle" and checkEnergy == energy then
-    if VersionUpdate then
-      zeigeNachricht(aktualisierenJa)
-      os.sleep(1)
-      update("master")
-    end
-    if (letzteNachrichtZeit - os.time()) / sectime > 45 then
+    if Nachrichtleer == true then
+      if VersionUpdate == true then
+        zeigeNachricht(aktualisierenJa)
+        os.sleep(1)
+        update("master")
+      end
       Wartezeit = 300
     else
       Wartezeit = 50
@@ -867,6 +868,11 @@ function zeigeHier(x, y, s, h)
 end
 
 function zeigeNachricht(...)
+  if ... == "" then
+    Nachrichtleer = true
+  else
+    Nachrichtleer = false
+  end
   letzteNachricht = ...
   letzteNachrichtZeit = os.time()
   gpu.setBackground(Nachrichtfarbe)
