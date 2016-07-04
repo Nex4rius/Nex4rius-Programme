@@ -17,7 +17,7 @@ os.sleep(1)
 sectime                     = sectime - os.time()
 local letzteNachricht       = os.time()
 local letzterAdressCheck    = os.time() / sectime
-local angekommeneAdressen   = {}
+local angekommeneAdressen   = ""
 local enteridc              = ""
 local showidc               = ""
 local remoteName            = ""
@@ -35,7 +35,6 @@ local maxseiten             = 0
 local checkEnergy           = 0
 local AdressenAnzahl        = 0
 local zeile                 = 1
-local inAdressenAnzahl      = 1
 local Trennlinienhoehe      = 14
 local energymultiplicator   = 20
 local xVerschiebung         = 33
@@ -1086,11 +1085,10 @@ function eventLoop()
           incode = e[3]
         end
         if e[4] == "Adressliste" then
-          angekommeneAdressen[inAdressenAnzahl] = require("serialization").unserialize(e[5])
+          angekommeneAdressen = require("serialization").unserialize(e[5])
           zeigeFehler(e[4])
-          zeigeFehler(angekommeneAdressen[inAdressenAnzahl])
+          zeigeFehler(angekommeneAdressen)
           zeigeFehler(e[6])
-          inAdressenAnzahl = inAdressenAnzahl + 1
           angekommeneVersion = e[6]
         end
         messageshow = true
