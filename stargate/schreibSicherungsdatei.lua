@@ -1,22 +1,18 @@
 local args = require("shell").parse(...)
+local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate
 
-local IDC            = args[1]
-local autoclosetime  = args[2]
-local RF             = args[3]
-local Sprache        = args[4]
-local side           = args[5]
-local installieren   = args[6]
-local control        = args[7]
-local autoUpdate     = args[8]
+if require("filesystem").exists("/stargate/Sicherungsdatei.lua") then
+  IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
+end
 
-if args[1] == nil then IDC           = ""      end
-if args[2] == nil then autoclosetime = 60      end
-if args[3] == nil then RF            = false   end
-if args[4] == nil then Sprache       = ""      end
-if args[5] == nil then side          = "unten" end
-if args[6] == nil then installieren  = false   end
-if args[7] == nil then control       = "On"    end
-if args[8] == nil then autoUpdate    = false   end
+if args[1] ~= nil then IDC            = args[1] elseif IDC           == nil then IDC           = ""      end
+if args[2] ~= nil then autoclosetime  = args[2] elseif autoclosetime == nil then autoclosetime = 60      end
+if args[3] ~= nil then RF             = args[3] elseif RF            == nil then RF            = false   end
+if args[4] ~= nil then Sprache        = args[4] elseif Sprache       == nil then Sprache       = ""      end
+if args[5] ~= nil then side           = args[5] elseif side          == nil then side          = "unten" end
+if args[6] ~= nil then installieren   = args[6] elseif installieren  == nil then installieren  = false   end
+if args[7] ~= nil then control        = args[7] elseif control       == nil then control       = "On"    end
+if args[8] ~= nil then autoUpdate     = args[8] elseif autoUpdate    == nil then autoUpdate    = false   end
 
 f = io.open ("/stargate/Sicherungsdatei.lua", "w")
 f:write('-- pastebin run -f fa9gu1GJ\n')
