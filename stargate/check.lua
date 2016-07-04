@@ -15,7 +15,7 @@ schreibSicherungsdatei = loadfile("/stargate/schreibSicherungsdatei.lua")
 serverAddresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
 betaVersionName = ""
 if fs.exists("/stargate/Sicherungsdatei.lua") then
-  IDC, autoclosetime, RF, Sprache, side, installieren, control = loadfile("/stargate/Sicherungsdatei.lua")()
+  IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
 else
   Sprache = ""
   control = "On"
@@ -41,7 +41,7 @@ function checkSprache()
     print("\nUnbekannte Eingabe\nStandardeinstellung = deutsch")
     Sprache = "deutsch"
   end
-  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
+  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
   print("")
 end
 
@@ -86,7 +86,7 @@ end
 function update(versionTyp)
   wget("-f", Pfad(versionTyp) .. "/installieren.lua", "/installieren.lua")
   installieren = true
-  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
+  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
   f = io.open ("autorun.lua", "w")
   f:write('versionTyp = "' .. versionTyp .. '"\n')
   f:write('loadfile("installieren.lua")()')
@@ -159,7 +159,7 @@ function mainCheck()
   end
   print(laden)
   installieren = false
-  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control)
+  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
   if checkDateien() then
     loadfile("/stargate/Kontrollprogramm.lua")()
   else
