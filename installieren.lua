@@ -33,10 +33,6 @@ if fs.exists("/stargate/sicherNachNeustart.lua") then
   for k, v in pairs(adressen) do
     f:write("  " .. require("serialization").serialize(adressen[k]) .. ",\n")
   end
-  if adressen[1] == nil then
-    f:write('{"Name 1", "Adresse 1", "IDC 1"},\n')
-    f:write('{"Name 2", "Adresse 2", "IDC 2"},\n')
-  end
   f:write('}')
   f:close()
   dofile("/stargate/sicherNachNeustart.lua")
