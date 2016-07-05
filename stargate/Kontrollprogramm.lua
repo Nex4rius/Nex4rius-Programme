@@ -1137,10 +1137,6 @@ function angekommeneAdressen(...)
       elseif b[2] == d[2] and d[1] == ">>>" .. d[2] .. "<<<" then
         d[1] = b[1]
         schreibeAdressen()
-        angekommeneAdressen(...)
-        schreibeAdressen()
-        AdressenSpeichern()
-        zeigeMenu()
         return
       else
         neuHinzufuegen = false
