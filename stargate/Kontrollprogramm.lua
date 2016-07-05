@@ -1152,8 +1152,13 @@ end
 
 function angekommeneVersion(...)
   local Endpunkt = string.len(...)
-  if string.sub(..., Endpunkt - 3, Endpunkt) ~= "BETA" and version ~= ... and autoUpdate == true and version ~= checkServerVersion() then
-    VersionUpdate = true
+  local EndpunktVersion = string.len(version)
+  if string.sub(..., Endpunkt - 3, Endpunkt) ~= "BETA" and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" and version ~= ... and autoUpdate == true then
+    if component.isAvailable("internet") then
+      if version ~= checkServerVersion() then
+        VersionUpdate = true
+      end
+    end
   end
 end
 
