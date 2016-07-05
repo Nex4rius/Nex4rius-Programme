@@ -30,13 +30,13 @@ local function installieren()
   update[1] = wget("-f", Pfad(versionTyp) .. "/autorun.lua",                        "/update/autorun.lua")
   update[2] = wget("-f", Pfad(versionTyp) .. "/stargate/check.lua",                 "/update/stargate/check.lua")
   update[3] = wget("-f", Pfad(versionTyp) .. "/stargate/version.txt",               "/update/stargate/version.txt")
+  update[9] = wget("-f", Pfad(versionTyp) .. "/stargate/adressen.lua",              "/update/stargate/adressen.lua")
+  update[10]= wget("-f", Pfad(versionTyp) .. "/stargate/Sicherungsdatei.lua",       "/update/stargate/Sicherungsdatei.lua")
   update[4] = wget("-f", Pfad(versionTyp) .. "/stargate/Kontrollprogramm.lua",      "/update/stargate/Kontrollprogramm.lua")
   update[5] = wget("-f", Pfad(versionTyp) .. "/stargate/schreibSicherungsdatei.lua","/update/stargate/schreibSicherungsdatei.lua")
   update[6] = wget("-f", Pfad(versionTyp) .. "/stargate/sprache/deutsch.lua",       "/update/stargate/sprache/deutsch.lua")
   update[7] = wget("-f", Pfad(versionTyp) .. "/stargate/sprache/english.lua",       "/update/stargate/sprache/english.lua")
   update[8] = wget("-f", Pfad(versionTyp) .. "/stargate/sprache/ersetzen.lua",      "/update/stargate/sprache/ersetzen.lua")
-  update[9] = wget("-f", Pfad(versionTyp) .. "/stargate/adressen.lua",              "/update/stargate/adressen.lua")
-  update[10]= wget("-f", Pfad(versionTyp) .. "/stargate/Sicherungsdatei.lua",       "/update/stargate/Sicherungsdatei.lua")
   for i = 1, 10 do
     if update[i] == true then
       updateKomplett = true
@@ -50,17 +50,17 @@ local function installieren()
     move("-f", "/update/autorun.lua",                         "/autorun.lua")
     move("-f", "/update/stargate/check.lua",                  "/stargate/check.lua")
     move("-f", "/update/stargate/version.txt",                "/stargate/version.txt")
-    move("-f", "/update/stargate/Kontrollprogramm.lua",       "/stargate/Kontrollprogramm.lua")
-    move("-f", "/update/stargate/schreibSicherungsdatei.lua", "/stargate/schreibSicherungsdatei.lua")
-    move("-f", "/update/stargate/sprache/deutsch.lua",        "/stargate/sprache/deutsch.lua")
-    move("-f", "/update/stargate/sprache/english.lua",        "/stargate/sprache/english.lua")
-    move("-f", "/update/stargate/sprache/ersetzen.lua",       "/stargate/sprache/ersetzen.lua")
     if fs.exists("/stargate/adressen.lua") == false then
       move(    "/update/stargate/adressen.lua",               "/stargate/adressen.lua")
     end
     if fs.exists("/stargate/Sicherungsdatei.lua") == false then
       move(    "/update/stargate/Sicherungsdatei.lua",        "/stargate/Sicherungsdatei.lua")
     end
+    move("-f", "/update/stargate/Kontrollprogramm.lua",       "/stargate/Kontrollprogramm.lua")
+    move("-f", "/update/stargate/schreibSicherungsdatei.lua", "/stargate/schreibSicherungsdatei.lua")
+    move("-f", "/update/stargate/sprache/deutsch.lua",        "/stargate/sprache/deutsch.lua")
+    move("-f", "/update/stargate/sprache/english.lua",        "/stargate/sprache/english.lua")
+    move("-f", "/update/stargate/sprache/ersetzen.lua",       "/stargate/sprache/ersetzen.lua")
   end
   print()
   loadfile("/bin/rm.lua")("-v", "/update")
