@@ -25,7 +25,7 @@ f:write('local autoclosetime = '  .. tostring(autoclosetime) .. ' -- in seconds 
 f:write('local RF            = '  .. tostring(RF) .. ' -- show energy in RF instead of EU\n')
 f:write('local Sprache       = "' .. tostring(Sprache) .. '" -- deutsch / english\n')
 f:write('local side          = "' .. tostring(side) .. '" -- bottom, top, back, front, right or left\n')
-f:write('local autoUpdate    = '  .. tostring(autoUpdate) .. ' -- WIP automatically updates the programm\n\n')
+f:write('local autoUpdate    = '  .. tostring(autoUpdate) .. ' -- automatically updates the programm\n\n')
 f:write(string.rep("-", 10) .. "don't change anything below" .. string.rep("-", 33) .. '\n\n')
 f:write('local installieren  = '  .. tostring(installieren) .. '\n')
 f:write('local control       = "' .. tostring(control) .. '"\n\n')
