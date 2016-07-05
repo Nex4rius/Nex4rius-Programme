@@ -16,6 +16,19 @@ else
   local installieren = false
 end
 
+f = io.open ("/autorun.lua", "w")
+f:write('-- pastebin run -f fa9gu1GJ\n')
+f:write('-- von Nex4rius\n')
+f:write('-- https://github.com/Nex4rius/Stargate-Programm\n\n')
+f:write('local args = require("shell").parse(...)\n\n')
+f:write('if type(args[1]) == "string" then\n')
+f:write('  args[1] = string.lower(args[1])\n')
+f:write('else\n')
+f:write('  args[1] = ""\n')
+f:write('end\n\n')
+f:write('os.execute("stargate/check.lua " .. args[1])')
+f:close()
+
 local function Pfad(versionTyp)
   return serverAdresse .. versionTyp
 end
@@ -30,13 +43,13 @@ local function installieren()
   update[1] = wget("-f", Pfad(versionTyp) .. "/autorun.lua",                        "/update/autorun.lua")
   update[2] = wget("-f", Pfad(versionTyp) .. "/stargate/check.lua",                 "/update/stargate/check.lua")
   update[3] = wget("-f", Pfad(versionTyp) .. "/stargate/version.txt",               "/update/stargate/version.txt")
-  update[9] = wget("-f", Pfad(versionTyp) .. "/stargate/adressen.lua",              "/update/stargate/adressen.lua")
-  update[10]= wget("-f", Pfad(versionTyp) .. "/stargate/Sicherungsdatei.lua",       "/update/stargate/Sicherungsdatei.lua")
-  update[4] = wget("-f", Pfad(versionTyp) .. "/stargate/Kontrollprogramm.lua",      "/update/stargate/Kontrollprogramm.lua")
-  update[5] = wget("-f", Pfad(versionTyp) .. "/stargate/schreibSicherungsdatei.lua","/update/stargate/schreibSicherungsdatei.lua")
-  update[6] = wget("-f", Pfad(versionTyp) .. "/stargate/sprache/deutsch.lua",       "/update/stargate/sprache/deutsch.lua")
-  update[7] = wget("-f", Pfad(versionTyp) .. "/stargate/sprache/english.lua",       "/update/stargate/sprache/english.lua")
-  update[8] = wget("-f", Pfad(versionTyp) .. "/stargate/sprache/ersetzen.lua",      "/update/stargate/sprache/ersetzen.lua")
+  update[4] = wget("-f", Pfad(versionTyp) .. "/stargate/adressen.lua",              "/update/stargate/adressen.lua")
+  update[5] = wget("-f", Pfad(versionTyp) .. "/stargate/Sicherungsdatei.lua",       "/update/stargate/Sicherungsdatei.lua")
+  update[6] = wget("-f", Pfad(versionTyp) .. "/stargate/Kontrollprogramm.lua",      "/update/stargate/Kontrollprogramm.lua")
+  update[7] = wget("-f", Pfad(versionTyp) .. "/stargate/schreibSicherungsdatei.lua","/update/stargate/schreibSicherungsdatei.lua")
+  update[8] = wget("-f", Pfad(versionTyp) .. "/stargate/sprache/deutsch.lua",       "/update/stargate/sprache/deutsch.lua")
+  update[9] = wget("-f", Pfad(versionTyp) .. "/stargate/sprache/english.lua",       "/update/stargate/sprache/english.lua")
+  update[10]= wget("-f", Pfad(versionTyp) .. "/stargate/sprache/ersetzen.lua",      "/update/stargate/sprache/ersetzen.lua")
   for i = 1, 10 do
     if update[i] == true then
       updateKomplett = true
