@@ -951,7 +951,7 @@ function dial(name, adresse)
     end
     zeigeNachricht(ergebnis)
   end
-  os.slee(1)
+  os.sleep(1)
 end
 
 handlers[key_event_name] = function(e)
