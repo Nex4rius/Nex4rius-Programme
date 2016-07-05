@@ -199,6 +199,7 @@ local function pull_event()
         gpu.setBackground(schwarzeFarbe)
         gpu.setForeground(weisseFarbe)
         zeigeNachricht(aktualisierenJetzt)
+        os.sleep(5)
         update("master")
       end
       Wartezeit = 300
