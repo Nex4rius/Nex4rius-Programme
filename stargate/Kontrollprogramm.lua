@@ -1144,7 +1144,10 @@ function angekommeneAdressen(...)
 end
 
 function angekommeneVersion(...)
-  if string.find(..., "BETA") == nil and version ~= ... and autoUpdate == true and version ~= checkServerVersion()then
+  local Endpunkt = string.len(...)
+  zeigeFehler(Endpunkt .. "-----------" .. string.sub(..., Endpunkt - 4, Endpunkt))
+  if string.sub(..., Endpunkt - 4, Endpunkt) == nil and version ~= ... and autoUpdate == true and version ~= checkServerVersion() then
+  if string.find(..., "BETA") == nil and version ~= ... and autoUpdate == true and version ~= checkServerVersion() then
     zeigeFehler("jap " .. ...)
     VersionUpdate = true
   end
