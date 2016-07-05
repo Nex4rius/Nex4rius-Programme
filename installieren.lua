@@ -55,8 +55,12 @@ local function installieren()
     move("-f", "/update/stargate/sprache/deutsch.lua",        "/stargate/sprache/deutsch.lua")
     move("-f", "/update/stargate/sprache/english.lua",        "/stargate/sprache/english.lua")
     move("-f", "/update/stargate/sprache/ersetzen.lua",       "/stargate/sprache/ersetzen.lua")
-    move(      "/update/stargate/adressen.lua",               "/stargate/adressen.lua")
-    move(      "/update/stargate/Sicherungsdatei.lua",        "/stargate/Sicherungsdatei.lua")
+    if fs.exists("/stargate/adressen.lua") == false then
+      move(    "/update/stargate/adressen.lua",               "/stargate/adressen.lua")
+    end
+    if fs.exists("/stargate/Sicherungsdatei.lua") == false then
+      move(    "/update/stargate/Sicherungsdatei.lua",        "/stargate/Sicherungsdatei.lua")
+    end
   end
   print()
   loadfile("/bin/rm.lua")("-v", "/update")
