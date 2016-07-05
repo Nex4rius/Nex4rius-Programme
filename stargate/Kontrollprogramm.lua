@@ -151,9 +151,10 @@ local function schreibeAdressen()
   f:write('-- "" for no Iris Code\n')
   f:write('--\n\n')
   f:write('return {\n')
-  f:write('--{"<Name>","<Adresse>","<IDC>"},\n')
+  f:write('--{"<Name>", "<Adresse>", "<IDC>"},\n')
   for k, v in pairs(adressen) do
-    f:write("  " .. require("serialization").serialize(adressen[k]) .. ",\n")
+    --f:write("  " .. require("serialization").serialize(adressen[k]) .. ",\n")
+    f:write(string.format('  {"%s", "%s", "%s"},', adressen[k][1], adressen[k][2], adressen[k][3]))
   end
   f:write('}')
   f:close()
