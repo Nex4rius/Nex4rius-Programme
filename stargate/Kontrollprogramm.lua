@@ -196,8 +196,9 @@ local function pull_event()
   if state == "Idle" and checkEnergy == energy then
     if Nachrichtleer == true then
       if VersionUpdate == true then
-        zeigeNachricht(aktualisierenJa)
-        os.sleep(1)
+        gpu.setBackground(schwarzeFarbe)
+        gpu.setForeground(weisseFarbe)
+        zeigeNachricht(aktualisierenJetzt)
         update("master")
       end
       Wartezeit = 300
@@ -299,6 +300,8 @@ local IrisZustandName           = irisNameOffline;          _ENV.irisNameOffline
 local Sprachaenderung           = Sprachaenderung;          _ENV.Sprachaenderung          = nil
 local entwicklerName            = entwicklerName;           _ENV.entwicklerName           = nil
 local IDCgesendet               = IDCgesendet;              _ENV.IDCgesendet              = nil
+local aktualisierenJetzt        = aktualisierenJetzt;       _ENV.aktualisierenJetzt       = nil
+local aktualisierenGleich       = aktualisierenGleich;      _ENV.aktualisierenGleich      = nil
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
@@ -856,6 +859,7 @@ function activetime()
     end
   else
     zeigeHier(xVerschiebung, zeile, "  " .. zeit2)
+    activationtime = 0
   end
 end
 
@@ -879,6 +883,8 @@ function zeigeNachricht(...)
   gpu.setForeground(Nachrichttextfarbe)
   if fs.exists("/log") then
     zeigeHier(1, screen_height - 1, fehlerName .. " /log", screen_width)
+  elseif VersionUpdate == true then
+    zeigeHier(1, screen_height - 1, aktualisierenGleich, screen_width)
   else
     zeigeHier(1, screen_height - 1, "", screen_width)
   end
@@ -1144,7 +1150,8 @@ function angekommeneAdressen(...)
 end
 
 function angekommeneVersion(...)
-  if string.find(..., "BETA") ~= nil and version ~= ... and autoUpdate == true then
+  local Endpunkt = string.len(...)
+  if string.sub(..., Endpunkt - 3, Endpunkt) ~= "BETA" and version ~= ... and autoUpdate == true and version ~= checkServerVersion() then
     VersionUpdate = true
   end
 end
