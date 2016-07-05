@@ -47,15 +47,11 @@ local function installieren()
   end
   if updateKomplett == true then
     fs.makeDirectory("/stargate/sprache")
-    if not fs.exists("/stargate/adressen.lua") then
-      move("-f", "/update/stargate/adressen.lua",             "/stargate/adressen.lua")
-    end
-    if not fs.exists("/stargate/Sicherungsdatei.lua") then
-      move("-f", "/update/stargate/Sicherungsdatei.lua",      "/stargate/Sicherungsdatei.lua")
-    end
     move("-f", "/update/autorun.lua",                         "/autorun.lua")
     move("-f", "/update/stargate/check.lua",                  "/stargate/check.lua")
     move("-f", "/update/stargate/version.txt",                "/stargate/version.txt")
+    move(      "/update/stargate/adressen.lua",               "/stargate/adressen.lua")
+    move(      "/update/stargate/Sicherungsdatei.lua",        "/stargate/Sicherungsdatei.lua")
     move("-f", "/update/stargate/Kontrollprogramm.lua",       "/stargate/Kontrollprogramm.lua")
     move("-f", "/update/stargate/schreibSicherungsdatei.lua", "/stargate/schreibSicherungsdatei.lua")
     move("-f", "/update/stargate/sprache/deutsch.lua",        "/stargate/sprache/deutsch.lua")
