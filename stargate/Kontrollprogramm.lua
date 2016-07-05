@@ -196,8 +196,9 @@ local function pull_event()
   if state == "Idle" and checkEnergy == energy then
     if Nachrichtleer == true then
       if VersionUpdate == true then
-        zeigeNachricht(aktualisierenJa)
-        os.sleep(1)
+        gpu.setBackground(schwarzeFarbe)
+        gpu.setForeground(weisseFarbe)
+        zeigeNachricht(aktualisierenJetzt)
         update("master")
       end
       Wartezeit = 300
@@ -299,6 +300,7 @@ local IrisZustandName           = irisNameOffline;          _ENV.irisNameOffline
 local Sprachaenderung           = Sprachaenderung;          _ENV.Sprachaenderung          = nil
 local entwicklerName            = entwicklerName;           _ENV.entwicklerName           = nil
 local IDCgesendet               = IDCgesendet;              _ENV.IDCgesendet              = nil
+local aktualisierenJetzt        = aktualisierenJetzt;       _ENV.aktualisierenJetzt       = nil
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
