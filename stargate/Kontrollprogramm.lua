@@ -856,6 +856,7 @@ function activetime()
     end
   else
     zeigeHier(xVerschiebung, zeile, "  " .. zeit2)
+    activationtime = 0
   end
 end
 
