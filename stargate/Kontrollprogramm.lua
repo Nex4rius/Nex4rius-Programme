@@ -615,7 +615,6 @@ function neueZeile(b)
 end
 
 function newAddress(neueAdresse, neuerName, ...)
-  zeigeFehler(string.len(neueAdresse))
   if AddNewAddress == true and string.len(neueAdresse) == 11 then
     AdressenAnzahl = AdressenAnzahl + 1
     adressen[AdressenAnzahl] = {}
