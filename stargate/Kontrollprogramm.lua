@@ -199,6 +199,11 @@ local function pull_event()
         gpu.setBackground(schwarzeFarbe)
         gpu.setForeground(weisseFarbe)
         zeigeNachricht(aktualisierenJetzt)
+        print("5...") os.sleep(1)
+        print("4...") os.sleep(1)
+        print("3...") os.sleep(1)
+        print("2...") os.sleep(1)
+        print("1...") os.sleep(1)
         update("master")
       end
       Wartezeit = 300
@@ -881,10 +886,11 @@ function zeigeNachricht(...)
   letzteNachrichtZeit = os.time()
   gpu.setBackground(Nachrichtfarbe)
   gpu.setForeground(Nachrichttextfarbe)
-  if fs.exists("/log") then
-    zeigeHier(1, screen_height - 1, fehlerName .. " /log", screen_width)
-  elseif VersionUpdate == true then
+  if VersionUpdate == true then
     zeigeHier(1, screen_height - 1, aktualisierenGleich, screen_width)
+    zeigeMenu()
+  elseif fs.exists("/log") then
+    zeigeHier(1, screen_height - 1, fehlerName .. " /log", screen_width)
   else
     zeigeHier(1, screen_height - 1, "", screen_width)
   end
@@ -1151,8 +1157,13 @@ end
 
 function angekommeneVersion(...)
   local Endpunkt = string.len(...)
-  if string.sub(..., Endpunkt - 3, Endpunkt) ~= "BETA" and version ~= ... and autoUpdate == true and version ~= checkServerVersion() then
-    VersionUpdate = true
+  local EndpunktVersion = string.len(version)
+  if string.sub(..., Endpunkt - 3, Endpunkt) ~= "BETA" and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" and version ~= ... and autoUpdate == true then
+    if component.isAvailable("internet") then
+      if version ~= checkServerVersion() then
+        VersionUpdate = true
+      end
+    end
   end
 end
 
