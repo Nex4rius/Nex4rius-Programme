@@ -301,6 +301,7 @@ local Sprachaenderung           = Sprachaenderung;          _ENV.Sprachaenderung
 local entwicklerName            = entwicklerName;           _ENV.entwicklerName           = nil
 local IDCgesendet               = IDCgesendet;              _ENV.IDCgesendet              = nil
 local aktualisierenJetzt        = aktualisierenJetzt;       _ENV.aktualisierenJetzt       = nil
+local aktualisierenGleich       = aktualisierenGleich;      _ENV.aktualisierenGleich      = nil
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
@@ -882,6 +883,8 @@ function zeigeNachricht(...)
   gpu.setForeground(Nachrichttextfarbe)
   if fs.exists("/log") then
     zeigeHier(1, screen_height - 1, fehlerName .. " /log", screen_width)
+  elseif VersionUpdate == true then
+    zeigeHier(1, screen_height - 1, aktualisierenGleich, screen_width)
   else
     zeigeHier(1, screen_height - 1, "", screen_width)
   end
