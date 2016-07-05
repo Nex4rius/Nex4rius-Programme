@@ -1108,6 +1108,7 @@ function eventLoop()
           if type(a) == "table" then
             angekommeneAdressen(a)
           end
+          zeigeFehler(e[6])
           if type(e[6]) == "string" then
             angekommeneVersion(e[6])
           end
@@ -1144,6 +1145,9 @@ function angekommeneAdressen(...)
 end
 
 function angekommeneVersion(...)
+  zeigeFehler(string.find(..., "BETA"))
+  zeigeFehler(version)
+  zeigeFehler(autoUpdate)
   if string.find(..., "BETA") ~= nil and version ~= ... and autoUpdate == true then
     zeigeFehler("jap " .. ...)
     VersionUpdate = true
