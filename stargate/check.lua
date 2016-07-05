@@ -53,6 +53,13 @@ function checkKomponenten()
     print(redstoneFehlt)
     r = nil
   end
+  if component.isAvailable("internet") then
+    print(InternetOK)
+    internet = true
+  else
+    print(InternetFehlt)
+    internet = false
+  end
   if gpu.maxResolution() == 80 then
     print(gpuOK2T)
   elseif gpu.maxResolution() == 160 then
@@ -60,13 +67,6 @@ function checkKomponenten()
     print(gpuOK3T)
   else
     print(gpuFehlt)
-  end
-  if component.isAvailable("internet") then
-    print(InternetOK)
-    internet = true
-  else
-    print(InternetFehlt)
-    internet = false
   end
   if component.isAvailable("stargate") then
     print(StargateOK)
