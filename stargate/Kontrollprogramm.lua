@@ -1134,10 +1134,13 @@ function angekommeneAdressen(...)
       if b[2] ~= d[2] then
         neuHinzufuegen = true
       elseif b[2] == d[2] and d[1] == ">>>" .. d[2] .. "<<<" then
-        AddNewAddress = true
-        zeigeFehler(tostring(d[1]) .. "---" .. tostring(b[1]) .. "---" .. tostring(c))
         d[1] = b[1]
-        break
+        schreibeAdressen()
+        angekommeneAdressen(...)
+        schreibeAdressen()
+        AdressenSpeichern()
+        zeigeMenu()
+        return
       else
         neuHinzufuegen = false
         break
@@ -1150,7 +1153,6 @@ function angekommeneAdressen(...)
   end
   if AddNewAddress == true then
     schreibeAdressen()
-    AddNewAddress = false
     AdressenSpeichern()
     zeigeMenu()
   end
