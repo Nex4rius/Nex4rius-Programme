@@ -12,7 +12,7 @@ if args[4] ~= nil then Sprache       = args[4] elseif Sprache       == nil then 
 if args[5] ~= nil then side          = args[5] elseif side          == nil then side          = "unten" end
 if args[6] ~= nil then installieren  = args[6] elseif installieren  == nil then installieren  = false   end
 if args[7] ~= nil then control       = args[7] elseif control       == nil then control       = "On"    end
-if args[8] ~= nil then autoUpdate    = args[8] elseif autoUpdate    == nil then autoUpdate    = false   end
+if args[8] ~= nil then autoUpdate    = args[8] elseif autoUpdate    == nil then autoUpdate    = true   end
 
 f = io.open ("/stargate/Sicherungsdatei.lua", "w")
 f:write('-- pastebin run -f fa9gu1GJ\n')
@@ -37,7 +37,7 @@ f:write('if type(Sprache) ~= "string" then\n  Sprache = ""\nend\n')
 f:write('if type(side) ~= "string" then\n  side = "unten"\nend\n')
 f:write('if type(installieren) ~= "boolean" then\n  installieren = false\nend\n')
 f:write('if type(control) ~= "string" then\n  control = "On"\nend\n')
-f:write('if type(autoUpdate) ~= "boolean" then\n  autoUpdate = false\nend\n\n')
+f:write('if type(autoUpdate) ~= "boolean" then\n  autoUpdate = true\nend\n\n')
 f:write('return IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate\n')
 f:close()
 
