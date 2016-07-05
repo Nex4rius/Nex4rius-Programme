@@ -164,6 +164,9 @@ function mainCheck()
   installieren = false
   schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
   if checkDateien() then
+    if fs.exists("/log") then
+      loadfile("/bin/rm.lua")("/log")
+    end
     loadfile("/stargate/Kontrollprogramm.lua")()
   else
     print(fehlerName .. "\n" .. DateienFehlen)
