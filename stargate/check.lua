@@ -144,7 +144,7 @@ function mainCheck()
       update("beta")
     elseif version == serverVersion and version == betaServerVersion then else
       if installieren == false then
-        if autoUpdate == true then
+        if autoUpdate == true and version ~= serverVersion then
           print(aktualisierenJa)
           update("master")
           return
