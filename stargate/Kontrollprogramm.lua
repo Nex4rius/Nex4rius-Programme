@@ -1135,6 +1135,7 @@ function angekommeneAdressen(...)
         neuHinzufuegen = true
       elseif b[2] == d[2] and d[1] == ">>>" .. d[2] .. "<<<" then
         AddNewAddress = true
+        zeigeFehler(d[1] .. "---" .. b[1] .. "---" ... c)
         d[1] = b[1]
         break
       else
