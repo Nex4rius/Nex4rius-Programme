@@ -151,9 +151,9 @@ local function schreibeAdressen()
   f:write('-- "" for no Iris Code\n')
   f:write('--\n\n')
   f:write('return {\n')
-  f:write('--{"<Name>","<Adresse>","<IDC>"},\n')
+  f:write('--{"<Name>", "<Adresse>", "<IDC>"},\n')
   for k, v in pairs(adressen) do
-    f:write("  " .. require("serialization").serialize(adressen[k]) .. ",\n")
+    f:write(string.format('  {"%s", "%s", "%s"},\n', adressen[k][1], adressen[k][2], adressen[k][3]))
   end
   f:write('}')
   f:close()
@@ -615,7 +615,7 @@ function neueZeile(b)
 end
 
 function newAddress(neueAdresse, neuerName, ...)
-  if AddNewAddress == true then
+  if AddNewAddress == true and string.len(neueAdresse) == 11 then
     AdressenAnzahl = AdressenAnzahl + 1
     adressen[AdressenAnzahl] = {}
     if neuerName == nil then
@@ -860,7 +860,7 @@ function activetime()
     end
   else
     zeigeHier(xVerschiebung, zeile, "  " .. zeit2)
-    activationtime = 0
+    time = 0
   end
 end
 
@@ -951,6 +951,7 @@ function dial(name, adresse)
     end
     zeigeNachricht(ergebnis)
   end
+  os.sleep(1)
 end
 
 handlers[key_event_name] = function(e)
@@ -1133,6 +1134,12 @@ function angekommeneAdressen(...)
     for c, d in pairs(adressen) do
       if b[2] ~= d[2] then
         neuHinzufuegen = true
+      --elseif b[2] == d[2] and d[1] == ">>>" .. d[2] .. "<<<" then
+      --  adressen[c][1] = b[1]
+      --  schreibeAdressen()
+      --  AdressenSpeichern()
+      --  zeigeMenu()
+      --  break
       else
         neuHinzufuegen = false
         break
@@ -1145,7 +1152,6 @@ function angekommeneAdressen(...)
   end
   if AddNewAddress == true then
     schreibeAdressen()
-    AddNewAddress = false
     AdressenSpeichern()
     zeigeMenu()
   end

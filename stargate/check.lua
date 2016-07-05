@@ -53,6 +53,13 @@ function checkKomponenten()
     print(redstoneFehlt)
     r = nil
   end
+  if component.isAvailable("internet") then
+    print(InternetOK)
+    internet = true
+  else
+    print(InternetFehlt)
+    internet = false
+  end
   if gpu.maxResolution() == 80 then
     print(gpuOK2T)
   elseif gpu.maxResolution() == 160 then
@@ -60,13 +67,6 @@ function checkKomponenten()
     print(gpuOK3T)
   else
     print(gpuFehlt)
-  end
-  if component.isAvailable("internet") then
-    print(InternetOK)
-    internet = true
-  else
-    print(InternetFehlt)
-    internet = false
   end
   if component.isAvailable("stargate") then
     print(StargateOK)
@@ -144,7 +144,8 @@ function mainCheck()
       update("beta")
     elseif version == serverVersion and version == betaServerVersion then else
       if installieren == false then
-        if autoUpdate == true then
+        local EndpunktVersion = string.len(version)
+        if autoUpdate == true and version ~= serverVersion and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" then
           print(aktualisierenJa)
           update("master")
           return
