@@ -58,6 +58,7 @@ local function installieren()
     move(      "/update/stargate/adressen.lua",               "/stargate/adressen.lua")
     move(      "/update/stargate/Sicherungsdatei.lua",        "/stargate/Sicherungsdatei.lua")
   end
+  print()
   loadfile("/bin/rm.lua")("-v", "/update")
   if versionTyp == "beta" then
     f = io.open ("/stargate/version.txt", "r")
