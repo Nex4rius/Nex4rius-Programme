@@ -1145,6 +1145,7 @@ end
 
 function angekommeneVersion(...)
   if string.find(..., "BETA") ~= nil and version ~= ... and autoUpdate == true then
+    zeigeFehler("jap " .. ...)
     VersionUpdate = true
   end
 end
