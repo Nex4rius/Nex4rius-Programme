@@ -24,6 +24,20 @@ end
 
 term.clear()
 
+if Sprache == "" then
+  checkSprache()
+end
+
+if fs.exists("/stargate/version.txt") then
+  f = io.open ("/stargate/version.txt", "r")
+  version = f:read()
+  f:close()
+else
+  version = sprachen.fehlerName
+end
+
+sprachen = loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
+
 function checkSprache()
   print("Sprache? / Language? deutsch / english\n")
   antwortFrageSprache = io.read()
@@ -201,20 +215,6 @@ function checkDateien()
   end
   return false
 end
-
-if Sprache == "" then
-  checkSprache()
-end
-
-if fs.exists("/stargate/version.txt") then
-  f = io.open ("/stargate/version.txt", "r")
-  version = f:read()
-  f:close()
-else
-  version = sprachen.fehlerName
-end
-
-local sprachen = loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
 
 if args[1] == sprachen.hilfe or args[1] == "hilfe" or args[1] == "help" then
   print(Hilfetext)
