@@ -1,3 +1,7 @@
+-- pastebin run -f 1pbsaeCQ
+-- von Nex4rius
+-- https://github.com/Nex4rius/Stargate-Programm
+
 local args = require("shell").parse(...)
 local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate
 
