@@ -1130,11 +1130,13 @@ function angekommeneAdressen(...)
   for a, b in pairs(...) do
     local neuHinzufuegen = false
     for c, d in pairs(adressen) do
+      zeigeFehler("b[2] " .. b[2] .. "\nd[2] " .. d[2] .. "\nd[1] " .. d[1] .. "\n>>>d[2]<<<>>>" .. d[2] .. "<<<")
       if b[2] ~= d[2] then
         neuHinzufuegen = true
       elseif b[2] == d[2] and d[1] == ">>>" .. d[2] .. "<<<" then
+        neuHinzufuegen = true
+        zeigeFehler("jap")
         adressen[c] = nil
-        neuHinzufuegen = false
         break
       else
         neuHinzufuegen = false
