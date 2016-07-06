@@ -1136,8 +1136,10 @@ function angekommeneAdressen(...)
       if b[2] ~= d[2] then
         neuHinzufuegen = true
       elseif b[2] == d[2] and d[1] == ">>>" .. d[2] .. "<<<" then
-        neuHinzufuegen = true
+        zeigeFehler("jap")
         adressen[c] = nil
+        AddNewAddress = true
+        newAddress(b[2], b[1], true)
         break
       else
         neuHinzufuegen = false
