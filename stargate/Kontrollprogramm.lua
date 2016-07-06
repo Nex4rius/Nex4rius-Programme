@@ -793,11 +793,13 @@ function activetime()
 end
 
 function zeigeHier(x, y, s, h)
-  setCursor(x, y)
-  if h == nil then
-    h = 70
+  if x and y and s then
+    setCursor(x, y)
+    if h == nil then
+      h = 70
+    end
+    write(pad(s, h))
   end
-  write(pad(s, h))
 end
 
 function zeigeNachricht(...)
