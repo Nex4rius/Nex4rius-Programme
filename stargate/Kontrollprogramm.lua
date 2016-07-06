@@ -1019,7 +1019,7 @@ function handlers.sgChevronEngaged(e)
   if string.len(zielAdresse) < 7 and state == "Connected" then
     zielAdresse = getAddress(sg.remoteAddress())
   end
-  zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, aktiviert, zielAdresse))
+  zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
 end
 
 function eventLoop()
