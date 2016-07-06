@@ -13,14 +13,14 @@ end
 local sprachen = loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
 
 return {
-  ["On"]                  = sprachen.irisKontrolleNameAn,
-  ["Off"]                 = sprachen.irisKontrolleNameAus,
-  ["Open"]                = sprachen.irisNameOffen,
-  ["Opening"]             = sprachen.irisNameOeffnend,
-  ["Closed"]              = sprachen.irisNameGeschlossen,
-  ["Closing"]             = sprachen.irisNameSchliessend,
-  ["Offline"]             = sprachen.irisNameOffline,
-  ["Override"]            = sprachen.Eingriff,
-  ["Manual"]              = sprachen.manueller,
-  ["Control"]             = sprachen.IrisSteuerungName,
+  ["On"]        = sprachen.irisKontrolleNameAn,
+  ["Off"]       = sprachen.irisKontrolleNameAus,
+  ["Open"]      = sprachen.irisNameOffen,
+  ["Opening"]   = sprachen.irisNameOeffnend,
+  ["Closed"]    = sprachen.irisNameGeschlossen,
+  ["Closing"]   = sprachen.irisNameSchliessend,
+  ["Offline"]   = sprachen.irisNameOffline,
+  ["Override"]  = sprachen.Eingriff,
+  ["Manual"]    = sprachen.manueller,
+  ["Control"]   = sprachen.IrisSteuerungName,
 }
