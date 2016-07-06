@@ -1,4 +1,4 @@
--- pastebin run -f fa9gu1GJ
+-- pastebin run -f 1pbsaeCQ
 -- von Nex4rius
 -- https://github.com/Nex4rius/Stargate-Programm
 
@@ -172,7 +172,7 @@ function mainCheck()
     print(sprachen.fehlerName .. "\n" .. sprachen.DateienFehlen)
     antwortFrage = io.read()
     if string.lower(antwortFrage) == sprachen.ja or string.lower(antwortFrage) == "ja" or string.lower(antwortFrage) == "yes" then
-      os.execute("pastebin run -f fa9gu1GJ")
+      os.execute("pastebin run -f 1pbsaeCQ")
     end
   end
 end
