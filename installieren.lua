@@ -1,4 +1,4 @@
--- pastebin run -f fa9gu1GJ
+-- pastebin run -f 1pbsaeCQ
 -- von Nex4rius
 -- https://github.com/Nex4rius/Stargate-Programm
 
@@ -17,7 +17,7 @@ else
 end
 
 f = io.open ("/autorun.lua", "w")
-f:write('-- pastebin run -f fa9gu1GJ\n')
+f:write('-- pastebin run -f 1pbsaeCQ\n')
 f:write('-- von Nex4rius\n')
 f:write('-- https://github.com/Nex4rius/Stargate-Programm\n\n')
 f:write('local args = require("shell").parse(...)\n\n')
@@ -98,7 +98,7 @@ if fs.exists("/stargate/sicherNachNeustart.lua") then
     dofile("/stargate/adressen.lua")
   end
   f = io.open("/stargate/adressen.lua", "w")
-  f:write('-- pastebin run -f fa9gu1GJ\n')
+  f:write('-- pastebin run -f 1pbsaeCQ\n')
   f:write('-- von Nex4rius\n')
   f:write('-- https://github.com/Nex4rius/Stargate-Programm\n--\n')
   f:write('-- to save press "Ctrl + S"\n')
