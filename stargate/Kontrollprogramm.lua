@@ -866,7 +866,7 @@ handlers = {}
 function dial(name, adresse)
   if state == "Idle" then
     remoteName = name
-    zeigeNachricht(waehlen .. "<" .. string.sub(remoteName, 1, xVerschiebung + 12) .. "> <" .. adresse .. ">")
+    zeigeNachricht(sprachen.waehlen .. "<" .. string.sub(remoteName, 1, xVerschiebung + 12) .. "> <" .. adresse .. ">")
   end
   state = "Dialling"
   wormhole = "out"
