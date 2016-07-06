@@ -10,4 +10,4 @@ else
   args[1] = ""
 end
 
-os.execute("stargate/check.lua " .. args[1])
+loadfile("/stargate/check.lua")(args[1])
