@@ -883,7 +883,6 @@ function zeigeNachricht(...)
   gpu.setForeground(Nachrichttextfarbe)
   if VersionUpdate == true then
     zeigeHier(1, screen_height - 1, aktualisierenGleich, screen_width)
-    zeigeMenu()
   elseif fs.exists("/log") then
     zeigeHier(1, screen_height - 1, fehlerName .. " /log", screen_width)
   else
