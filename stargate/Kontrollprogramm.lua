@@ -223,7 +223,7 @@ local function key_event_char(e)
 end
 
 local sprachen = loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
-local ersetzen = loadfile("/stargate/sprache/ersetzen.lua")(Sprache)
+local ersetzen = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
