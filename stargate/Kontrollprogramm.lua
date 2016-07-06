@@ -1061,9 +1061,9 @@ function angekommeneAdressen(...)
     for c, d in pairs(adressen) do
       if b[2] ~= d[2] then
         neuHinzufuegen = true
-      elseif b[2] == d[2] and d[1] == ">>>" .. d[2] .. "<<<" then
-        zeigeFehler("jap")
+      elseif b[2] == d[2] and d[1] == ">>>" .. d[2] .. "<<<" and d[1] ~= b[1] then
         if newAddress(b[2], b[1], true) then
+          zeigeFehler("jap")
           adressen[c] = nil
         end
         AddNewAddress = true
