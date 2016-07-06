@@ -223,7 +223,7 @@ local function key_event_char(e)
 end
 
 loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
-loadfile("/stargate/sprache/ersetzen.lua")()
+local ersetzen = loadfile("/stargate/sprache/ersetzen.lua")()
 
 local Adressseite               = Adressseite;              _ENV.Adressseite              = nil
 local Unbekannt                 = Unbekannt;                _ENV.Unbekannt                = nil
@@ -295,7 +295,6 @@ local redstoneAusschalten       = redstoneAusschalten;      _ENV.redstoneAusscha
 local colorfulLampAusschalten   = colorfulLampAusschalten;  _ENV.colorfulLampAusschalten  = nil
 local verarbeiteAdressen        = verarbeiteAdressen;       _ENV.verarbeiteAdressen       = nil
 local Hilfetext                 = Hilfetext;                _ENV.Hilfetext                = nil
-local ersetzen                  = ersetzen;                 _ENV.ersetzen                 = nil
 local IrisZustandName           = irisNameOffline;          _ENV.irisNameOffline          = nil
 local Sprachaenderung           = Sprachaenderung;          _ENV.Sprachaenderung          = nil
 local entwicklerName            = entwicklerName;           _ENV.entwicklerName           = nil
