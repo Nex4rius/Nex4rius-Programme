@@ -784,10 +784,10 @@ function activetime()
     end
     time = (activationtime - os.time()) / sectime
     if time > 0 then
-      zeigeHier(xVerschiebung, zeile, "  " .. zeit1 .. ErsetzePunktMitKomma(string.format("%.1f", time)) .. "s")
+      zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit1 .. ErsetzePunktMitKomma(string.format("%.1f", time)) .. "s")
     end
   else
-    zeigeHier(xVerschiebung, zeile, "  " .. zeit2)
+    zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit2)
     time = 0
   end
 end
