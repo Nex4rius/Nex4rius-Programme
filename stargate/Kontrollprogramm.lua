@@ -148,8 +148,7 @@ local function schreibeAdressen()
   f:write('-- to save press "Ctrl + S"\n')
   f:write('-- to close press "Ctrl + W"\n--\n')
   f:write('-- Put your own stargate addresses here\n')
-  f:write('-- "" for no Iris Code\n')
-  f:write('--\n\n')
+  f:write('-- "" for no Iris Code\n--\n\n')
   f:write('return {\n')
   f:write('--{"<Name>", "<Adresse>", "<IDC>"},\n')
   for k, v in pairs(adressen) do
@@ -1134,12 +1133,10 @@ function angekommeneAdressen(...)
     for c, d in pairs(adressen) do
       if b[2] ~= d[2] then
         neuHinzufuegen = true
-      --elseif b[2] == d[2] and d[1] == ">>>" .. d[2] .. "<<<" then
-      --  adressen[c][1] = b[1]
-      --  schreibeAdressen()
-      --  AdressenSpeichern()
-      --  zeigeMenu()
-      --  break
+      elseif b[2] == d[2] and d[1] == ">>>" .. d[2] .. "<<<" then
+        adressen[c] = nil
+        neuHinzufuegen = false
+        break
       else
         neuHinzufuegen = false
         break
