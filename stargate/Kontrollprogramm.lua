@@ -326,6 +326,7 @@ function checkReset()
       iriscontrol = "on"
       remoteName = ""
       activationtime = 0
+      time = 0
       LampenGruen = false
       zielAdresse = ""
     end
