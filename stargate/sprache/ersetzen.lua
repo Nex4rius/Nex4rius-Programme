@@ -2,15 +2,7 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Stargate-Programm
 
-local args = require("shell").parse(...)
-
-if type(args[1]) == "string" then
-  Sprache = string.lower(args[1])
-else
-  return false
-end
-
-local sprachen = loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
+local sprachen = require("shell").parse(...)[1]
 
 return {
   ["On"]        = sprachen.irisKontrolleNameAn,
