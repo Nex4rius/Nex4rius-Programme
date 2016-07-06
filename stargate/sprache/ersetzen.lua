@@ -2,7 +2,7 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Stargate-Programm
 
-local sprachen = require("shell").parse(...)[1]
+local sprachen  = require("shell").parse(...)[1]
 
 return {
   ["On"]        = sprachen.irisKontrolleNameAn,
