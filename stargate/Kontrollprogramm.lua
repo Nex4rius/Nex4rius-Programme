@@ -634,6 +634,7 @@ function newAddress(neueAdresse, neuerName, ...)
       zeigeMenu()
     end
   end
+  return true
 end
 
 function destinationName()
@@ -1137,9 +1138,11 @@ function angekommeneAdressen(...)
         neuHinzufuegen = true
       elseif b[2] == d[2] and d[1] == ">>>" .. d[2] .. "<<<" then
         zeigeFehler("jap")
-        adressen[c] = nil
+        if newAddress(b[2], b[1], true) then
+          adressen[c] = nil
+        end
         AddNewAddress = true
-        newAddress(b[2], b[1], true)
+        neuHinzufuegen = false
         break
       else
         neuHinzufuegen = false
