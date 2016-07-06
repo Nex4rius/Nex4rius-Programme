@@ -633,8 +633,10 @@ function newAddress(neueAdresse, neuerName, ...)
       AdressenSpeichern()
       zeigeMenu()
     end
+    return true
+  else
+    return false
   end
-  return true
 end
 
 function destinationName()
