@@ -174,7 +174,7 @@ function mainCheck()
       end
     end
   end
-  print(laden)
+  print(sprachen.laden)
   installieren = false
   schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
   if checkDateien() then
