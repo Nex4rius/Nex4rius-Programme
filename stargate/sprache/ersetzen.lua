@@ -2,7 +2,7 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Stargate-Programm
 
-ersetzen = {
+return {
   ["On"]                  = irisKontrolleNameAn,
   ["Off"]                 = irisKontrolleNameAus,
   ["Open"]                = irisNameOffen,
