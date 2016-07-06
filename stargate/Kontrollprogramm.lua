@@ -407,6 +407,9 @@ function AdressenSpeichern()
   for i, na in pairs(adressen) do
     if na[2] == getAddress(sg.localAddress()) then
       k = -1
+      sendeAdressen[i] = {}
+      sendeAdressen[i][1] = na[1]
+      sendeAdressen[i][2] = na[2]
     else
       local anwahlEnergie = sg.energyToDial(na[2])
       if not anwahlEnergie then
@@ -1111,9 +1114,9 @@ function eventLoop()
           incode = e[3]
         end
         if e[4] == "Adressliste" then
-          local a = require("serialization").unserialize(e[5])
-          if type(a) == "table" then
-            angekommeneAdressen(a)
+          local inAdressen = require("serialization").unserialize(e[5])
+          if type(inAdressen) == "table" then
+            angekommeneAdressen(inAdressen)
           end
           if type(e[6]) == "string" then
             angekommeneVersion(e[6])
@@ -1130,12 +1133,10 @@ function angekommeneAdressen(...)
   for a, b in pairs(...) do
     local neuHinzufuegen = false
     for c, d in pairs(adressen) do
-      zeigeFehler("b[2] " .. b[2] .. "\nd[2] " .. d[2] .. "\nd[1] " .. d[1] .. "\n>>>d[2]<<<>>>" .. d[2] .. "<<<")
       if b[2] ~= d[2] then
         neuHinzufuegen = true
       elseif b[2] == d[2] and d[1] == ">>>" .. d[2] .. "<<<" then
         neuHinzufuegen = true
-        zeigeFehler("jap")
         adressen[c] = nil
         break
       else
