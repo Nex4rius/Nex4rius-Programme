@@ -793,9 +793,9 @@ function activetime()
 end
 
 function zeigeHier(x, y, s, h)
-  if x and y and s then
+  if type(x) == "number" and type(y) == "number" and type(s) == "string" then
     setCursor(x, y)
-    if h == nil then
+    if not h then
       h = 70
     end
     write(pad(s, h))
@@ -813,7 +813,7 @@ function zeigeNachricht(...)
   gpu.setBackground(Nachrichtfarbe)
   gpu.setForeground(Nachrichttextfarbe)
   if VersionUpdate == true then
-    zeigeHier(1, screen_height - 1, aktualisierenGleich, screen_width)
+    zeigeHier(1, screen_height - 1, sprachen.aktualisierenGleich, screen_width)
   elseif fs.exists("/log") then
     zeigeHier(1, screen_height - 1, sprachen.fehlerName .. " /log", screen_width)
   else
