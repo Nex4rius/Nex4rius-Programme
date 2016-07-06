@@ -195,7 +195,6 @@ local function pull_event()
   if state == "Idle" and checkEnergy == energy then
     if Nachrichtleer == true then
       if VersionUpdate == true then
-        VersionUpdate = false
         zeigeNachricht(aktualisierenJetzt)
         gpu.setBackground(schwarzeFarbe)
         gpu.setForeground(weisseFarbe)
