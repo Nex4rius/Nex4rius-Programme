@@ -283,7 +283,7 @@ function AdressenLesen()
       if AdressAnzeige == 10 then
         AdressAnzeige = 0
       end
-      print(sprachen.AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
+      print(AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
       if string.sub(na[4], 1, 1) == "<" then
         gpu.setForeground(FehlerFarbe)
         print("   " .. na[4])
