@@ -14,7 +14,7 @@ How to install:
 2) copy / paste command
 
 ```
-pastebin run -f fa9gu1GJ
+pastebin run -f 1pbsaeCQ
 ```
 
 3) Profit
