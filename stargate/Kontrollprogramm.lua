@@ -222,85 +222,8 @@ local function key_event_char(e)
   return string.char(e[3])
 end
 
-loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
-local ersetzen = loadfile("/stargate/sprache/ersetzen.lua")()
-
-local Adressseite               = Adressseite;              _ENV.Adressseite              = nil
-local Unbekannt                 = Unbekannt;                _ENV.Unbekannt                = nil
-local waehlen                   = waehlen;                  _ENV.waehlen                  = nil
-local energie1                  = energie1;                 _ENV.energie1                 = nil
-local energie2                  = energie2;                 _ENV.energie2                 = nil
-local keineVerbindung           = keineVerbindung;          _ENV.keineVerbindung          = nil
-local Steuerung                 = Steuerung;                _ENV.Steuerung                = nil
-local IrisSteuerung             = IrisSteuerung;            _ENV.IrisSteuerung            = nil
-local an_aus                    = an_aus;                   _ENV.an_aus                   = nil
-local AdressenBearbeiten        = AdressenBearbeiten;       _ENV.AdressenBearbeiten       = nil
-local beenden                   = beenden;                  _ENV.beenden                  = nil
-local nachrichtAngekommen       = nachrichtAngekommen;      _ENV.nachrichtAngekommen      = nil
-local RedstoneSignale           = RedstoneSignale;          _ENV.RedstoneSignale          = nil
-local RedstoneWeiss             = RedstoneWeiss;            _ENV.RedstoneWeiss            = nil
-local RedstoneRot               = RedstoneRot;              _ENV.RedstoneRot              = nil
-local RedstoneGelb              = RedstoneGelb;             _ENV.RedstoneGelb             = nil
-local RedstoneSchwarz           = RedstoneSchwarz;          _ENV.RedstoneSchwarz          = nil
-local RedstoneGruen             = RedstoneGruen;            _ENV.RedstoneGruen            = nil
-local versionName               = versionName;              _ENV.versionName              = nil
-local fehlerName                = fehlerName;               _ENV.fehlerName               = nil
-local SteuerungName             = SteuerungName;            _ENV.SteuerungName            = nil
-local lokaleAdresse             = lokaleAdresse;            _ENV.lokaleAdresse            = nil
-local zielAdresseName           = zielAdresseName;          _ENV.zielAdresseName          = nil
-local zielName                  = zielName;                 _ENV.zielName                 = nil
-local statusName                = statusName;               _ENV.statusName               = nil
-local IrisName                  = IrisName;                 _ENV.IrisName                 = nil
-local IrisSteuerung             = IrisSteuerung;            _ENV.IrisSteuerung            = nil
-local IDCakzeptiert             = IDCakzeptiert;            _ENV.IDCakzeptiert            = nil
-local IDCname                   = IDCname;                  _ENV.IDCname                  = nil
-local chevronName               = chevronName;              _ENV.chevronName              = nil
-local richtung                  = richtung;                 _ENV.richtung                 = nil
-local autoSchliessungAus        = autoSchliessungAus;       _ENV.autoSchliessungAus       = nil
-local autoSchliessungAn         = autoSchliessungAn;        _ENV.autoSchliessungAn        = nil
-local zeit1                     = zeit1;                    _ENV.zeit1                    = nil
-local zeit2                     = zeit2;                    _ENV.zeit2                    = nil
-local abschalten                = abschalten;               _ENV.abschalten               = nil
-local oeffneIris                = oeffneIris;               _ENV.oeffneIris               = nil
-local schliesseIris             = schliesseIris;            _ENV.schliesseIris            = nil
-local IDCeingabe                = IDCeingabe;               _ENV.IDCeingabe               = nil
-local naechsteSeite             = naechsteSeite;            _ENV.naechsteSeite            = nil
-local vorherigeSeite            = vorherigeSeite;           _ENV.vorherigeSeite           = nil
-local senden                    = senden;                   _ENV.senden                   = nil
-local aufforderung              = aufforderung;             _ENV.aufforderung             = nil
-local manueller                 = manueller;                _ENV.manueller                = nil
-local Eingriff                  = Eingriff;                 _ENV.Eingriff                 = nil
-local stargateName              = stargateName;             _ENV.stargateName             = nil
-local stargateAbschalten        = stargateAbschalten;       _ENV.stargateAbschalten       = nil
-local aktiviert                 = aktiviert;                _ENV.aktiviert                = nil
-local zeigeAdressen             = zeigeAdressen;            _ENV.zeigeAdressen            = nil
-local EinstellungenAendern      = EinstellungenAendern;     _ENV.EinstellungenAendern     = nil
-local irisNameOffen             = irisNameOffen;            _ENV.irisNameOffen            = nil
-local irisNameOeffnend          = irisNameOeffnend;         _ENV.irisNameOeffnend         = nil
-local irisNameGeschlossen       = irisNameGeschlossen;      _ENV.irisNameGeschlossen      = nil
-local irisNameSchliessend       = irisNameSchliessend;      _ENV.irisNameSchliessend      = nil
-local irisNameOffline           = irisNameOffline;          _ENV.irisNameOffline          = nil
-local irisKontrolleNameAn       = irisKontrolleNameAn;      _ENV.irisKontrolleNameAn      = nil
-local irisKontrolleNameAus      = irisKontrolleNameAus;     _ENV.irisKontrolleNameAus     = nil
-local RichtungNameEin           = RichtungNameEin;          _ENV.RichtungNameEin          = nil
-local RichtungNameAus           = RichtungNameAus;          _ENV.RichtungNameAus          = nil
-local StatusNameUntaetig        = StatusNameUntaetig;       _ENV.StatusNameUntaetig       = nil
-local StatusNameWaehlend        = StatusNameWaehlend;       _ENV.StatusNameWaehlend       = nil
-local StatusNameVerbunden       = StatusNameVerbunden;      _ENV.StatusNameVerbunden      = nil
-local StatusNameSchliessend     = StatusNameSchliessend;    _ENV.StatusNameSchliessend    = nil
-local Neustart                  = Neustart;                 _ENV.Neustart                 = nil
-local IrisSteuerungName         = IrisSteuerungName;        _ENV.IrisSteuerungName        = nil
-local ausschaltenName           = ausschaltenName;          _ENV.ausschaltenName          = nil
-local redstoneAusschalten       = redstoneAusschalten;      _ENV.redstoneAusschalten      = nil
-local colorfulLampAusschalten   = colorfulLampAusschalten;  _ENV.colorfulLampAusschalten  = nil
-local verarbeiteAdressen        = verarbeiteAdressen;       _ENV.verarbeiteAdressen       = nil
-local Hilfetext                 = Hilfetext;                _ENV.Hilfetext                = nil
-local IrisZustandName           = irisNameOffline;          _ENV.irisNameOffline          = nil
-local Sprachaenderung           = Sprachaenderung;          _ENV.Sprachaenderung          = nil
-local entwicklerName            = entwicklerName;           _ENV.entwicklerName           = nil
-local IDCgesendet               = IDCgesendet;              _ENV.IDCgesendet              = nil
-local aktualisierenJetzt        = aktualisierenJetzt;       _ENV.aktualisierenJetzt       = nil
-local aktualisierenGleich       = aktualisierenGleich;      _ENV.aktualisierenGleich      = nil
+local sprachen = loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
+local ersetzen = loadfile("/stargate/sprache/ersetzen.lua")(Sprache)
 
 function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
@@ -347,7 +270,7 @@ function zeigeMenu()
       letzterAdressCheck = os.time() / sectime
       AdressenSpeichern()
     end
-    print(Adressseite .. seite + 1)
+    print(sprachen.Adressseite .. seite + 1)
     AdressenLesen()
     iris = sg.irisState()
   end
@@ -360,7 +283,7 @@ function AdressenLesen()
       if AdressAnzeige == 10 then
         AdressAnzeige = 0
       end
-      print(AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
+      print(sprachen.AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
       if string.sub(na[4], 1, 1) == "<" then
         gpu.setForeground(FehlerFarbe)
         print("   " .. na[4])
@@ -373,30 +296,30 @@ function AdressenLesen()
 end
 
 function Infoseite()
-  print(Steuerung)
+  print(sprachen.Steuerung)
   if iris == "Offline" then else
-    print("I " .. IrisSteuerung .. an_aus)
+    print("I " .. sprachen.IrisSteuerung .. sprachen.an_aus)
   end
-  print("Z " .. AdressenBearbeiten)
-  print("Q " .. beenden)
-  print("L " .. EinstellungenAendern .. "\n")
-  print(RedstoneSignale)
+  print("Z " .. sprachen.AdressenBearbeiten)
+  print("Q " .. sprachen.beenden)
+  print("L " .. sprachen.EinstellungenAendern .. "\n")
+  print(sprachen.RedstoneSignale)
   gpu.setBackground(weisseFarbe)
   gpu.setForeground(schwarzeFarbe)
-  print(RedstoneWeiss)
+  print(sprachen.RedstoneWeiss)
   gpu.setBackground(roteFarbe)
-  print(RedstoneRot)
+  print(sprachen.RedstoneRot)
   gpu.setBackground(gelbeFarbe)
-  print(RedstoneGelb)
+  print(sprachen.RedstoneGelb)
   gpu.setBackground(schwarzeFarbe)
   gpu.setForeground(weisseFarbe)
-  print(RedstoneSchwarz)
+  print(sprachen.RedstoneSchwarz)
   gpu.setBackground(grueneFarbe)
-  print(RedstoneGruen)
+  print(sprachen.RedstoneGruen)
   gpu.setBackground(Adressfarbe)
   gpu.setForeground(Adresstextfarbe)
-  print(versionName .. version)
-  print("\n" .. entwicklerName .. " Nex4rius")
+  print(sprachen.versionName .. version)
+  print("\n" .. sprachen.entwicklerName .. " Nex4rius")
 end
 
 function AdressenSpeichern()
@@ -413,7 +336,7 @@ function AdressenSpeichern()
     else
       local anwahlEnergie = sg.energyToDial(na[2])
       if not anwahlEnergie then
-        anwahlEnergie = fehlerName
+        anwahlEnergie = sprachen.fehlerName
       else
         sendeAdressen[i] = {}
         sendeAdressen[i][1] = na[1]
@@ -434,7 +357,7 @@ function AdressenSpeichern()
       gespeicherteAdressen[i + k][3] = na[3]
       gespeicherteAdressen[i + k][4] = ErsetzePunktMitKomma(anwahlEnergie)
     end
-    zeigeNachricht(verarbeiteAdressen .. "<" .. na[2] .. "> <" .. na[1] .. ">")
+    zeigeNachricht(sprachen.verarbeiteAdressen .. "<" .. na[2] .. "> <" .. na[1] .. ">")
     maxseiten = (i + k) / 10
     AdressenAnzahl = i
   end
@@ -581,7 +504,7 @@ function iriscontroller()
   end
   if codeaccepted == "-" or codeaccepted == nil then
   elseif messageshow == true then
-    zeigeNachricht(nachrichtAngekommen .. codeaccepted .. "                   ")
+    zeigeNachricht(sprachen.nachrichtAngekommen .. codeaccepted .. "                   ")
     if codeaccepted == "Request: Disconnect Stargate" then
       sg.disconnect()
     elseif string.match(codeaccepted, "Iris: Open") or string.match(codeaccepted, "Iris: Offline") then
@@ -645,7 +568,7 @@ function destinationName()
       for j, na in pairs(adressen) do
         if remAddr == na[2] then
           if na[1] == na[2] then
-            remoteName = Unbekannt
+            remoteName = sprachen.Unbekannt
           else
             remoteName = na[1]
             break
@@ -692,21 +615,21 @@ function aktualisiereStatus()
     RichtungName = ""
   else
     if wormhole == "out" then
-      RichtungName = RichtungNameAus
+      RichtungName = sprachen.RichtungNameAus
     else
-      RichtungName = RichtungNameEin
+      RichtungName = sprachen.RichtungNameEin
     end
   end
   if state == "Idle" then
-    StatusName = StatusNameUntaetig
+    StatusName = sprachen.StatusNameUntaetig
   elseif state == "Dialling" then
-    StatusName = StatusNameWaehlend
+    StatusName = sprachen.StatusNameWaehlend
   elseif state == "Connected" then
-    StatusName = StatusNameVerbunden
+    StatusName = sprachen.StatusNameVerbunden
   elseif state == "Closing" then
-    StatusName = StatusNameSchliessend
+    StatusName = sprachen.StatusNameSchliessend
   else
-    StatusName = StatusNameVerbunden
+    StatusName = sprachen.StatusNameVerbunden
   end
   energy = sg.energyAvailable() * energymultiplicator
   zeile = 1
@@ -721,22 +644,22 @@ function zeigeStatus()
   aktualisiereStatus()
   gpu.setBackground(Statusfarbe)
   gpu.setForeground(Statustextfarbe)
-  zeigeHier(xVerschiebung, zeile, "  " .. lokaleAdresse .. locAddr) neueZeile(1)
-  zeigeHier(xVerschiebung, zeile, "  " .. zielAdresseName .. zielAdresse) neueZeile(1)
-  zeigeHier(xVerschiebung, zeile, "  " .. zielName .. remoteName) neueZeile(1)
-  zeigeHier(xVerschiebung, zeile, "  " .. statusName .. StatusName) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.lokaleAdresse .. locAddr) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zielAdresseName .. zielAdresse) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zielName .. remoteName) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.statusName .. StatusName) neueZeile(1)
   zeigeEnergie() neueZeile(1)
-  zeigeHier(xVerschiebung, zeile, "  " .. IrisName .. zeichenErsetzen(iris)) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IrisName .. zeichenErsetzen(iris)) neueZeile(1)
   if iris == "Offline" then else
-    zeigeHier(xVerschiebung, zeile, "  " .. IrisSteuerung .. zeichenErsetzen(control)) neueZeile(1)
+    zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IrisSteuerung .. zeichenErsetzen(control)) neueZeile(1)
   end
   if IDCyes == true then
-    zeigeHier(xVerschiebung, zeile, "  " .. IDCakzeptiert) neueZeile(1)
+    zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IDCakzeptiert) neueZeile(1)
   else
-    zeigeHier(xVerschiebung, zeile, "  " .. IDCname .. incode) neueZeile(1)
+    zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IDCname .. incode) neueZeile(1)
   end
-  zeigeHier(xVerschiebung, zeile, "  " .. chevronName .. chevrons) neueZeile(1)
-  zeigeHier(xVerschiebung, zeile, "  " .. richtung .. RichtungName) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.chevronName .. chevrons) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.richtung .. RichtungName) neueZeile(1)
   activetime() neueZeile(1)
   autoclose()
   zeigeHier(xVerschiebung, zeile + 1, "")
@@ -756,7 +679,7 @@ function RedstoneAenderung(a, b)
 end
 
 function RedstoneKontrolle()
-  if RichtungName == RichtungNameEin then
+  if RichtungName == sprachen.RichtungNameEin then
     if redstoneIncoming == true then
       RedstoneAenderung(red, 255)
       redstoneIncoming = false
@@ -800,29 +723,29 @@ function zeigeSteuerung()
   gpu.setForeground(Steuerungstextfarbe)
   neueZeile(3)
   zeigeHier(xVerschiebung, zeile - 1, "")
-  zeigeHier(xVerschiebung, zeile, "  " .. Steuerung) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.Steuerung) neueZeile(1)
   zeigeHier(xVerschiebung, zeile, "") neueZeile(1)
-  zeigeHier(xVerschiebung, zeile, "  D " .. abschalten)
-  zeigeHier(xVerschiebung + 20, zeile, "E " .. IDCeingabe) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  D " .. sprachen.abschalten)
+  zeigeHier(xVerschiebung + 20, zeile, "E " .. sprachen.IDCeingabe) neueZeile(1)
   if iris == "Offline" then
     control = "Off"
   else
-    zeigeHier(xVerschiebung, zeile, "  O " .. oeffneIris)
-    zeigeHier(xVerschiebung + 20, zeile, "C " .. schliesseIris) neueZeile(1)
+    zeigeHier(xVerschiebung, zeile, "  O " .. sprachen.oeffneIris)
+    zeigeHier(xVerschiebung + 20, zeile, "C " .. sprachen.schliesseIris) neueZeile(1)
   end
   if seite >= 0 then
     if seite >= 1 then
-      zeigeHier(xVerschiebung, zeile, "  ← " .. vorherigeSeite)
+      zeigeHier(xVerschiebung, zeile, "  ← " .. sprachen.vorherigeSeite)
     else
-      zeigeHier(xVerschiebung, zeile, "  ← " .. SteuerungName)
+      zeigeHier(xVerschiebung, zeile, "  ← " .. sprachen.SteuerungName)
     end
   else
     zeigeHier(xVerschiebung, zeile, "")
   end
   if seite == -1 then
-    zeigeHier(xVerschiebung + 20, zeile, "→ " .. zeigeAdressen)
+    zeigeHier(xVerschiebung + 20, zeile, "→ " .. sprachen.zeigeAdressen)
   elseif maxseiten > seite + 1 then
-    zeigeHier(xVerschiebung + 20, zeile, "→ " .. naechsteSeite)
+    zeigeHier(xVerschiebung + 20, zeile, "→ " .. sprachen.naechsteSeite)
   end
   neueZeile(1)
   for i = zeile, screen_height - 3 do
@@ -832,9 +755,9 @@ end
 
 function autoclose()
   if autoclosetime == false then
-    zeigeHier(xVerschiebung, zeile, "  " .. autoSchliessungAus)
+    zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAus)
   else
-    zeigeHier(xVerschiebung, zeile, "  " .. autoSchliessungAn .. autoclosetime .. "s")
+    zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAn .. autoclosetime .. "s")
     if (activationtime - os.time()) / sectime > autoclosetime and state == "Connected" then
       sg.disconnect()
     end
@@ -849,9 +772,9 @@ function zeigeEnergie()
   elseif energy > 10000 then
     energieMenge = string.format("%.1f", energy / 1000) .. " k"
   else
-    energieMenge = string.format("%.f", energy)
+    energieMenge = string.format("%.f",  energy)
   end
-  zeigeHier(xVerschiebung, zeile, "  " .. energie1 .. energytype .. energie2 .. ErsetzePunktMitKomma(energieMenge))
+  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2 .. ErsetzePunktMitKomma(energieMenge))
 end
 
 function activetime()
@@ -890,7 +813,7 @@ function zeigeNachricht(...)
   if VersionUpdate == true then
     zeigeHier(1, screen_height - 1, aktualisierenGleich, screen_width)
   elseif fs.exists("/log") then
-    zeigeHier(1, screen_height - 1, fehlerName .. " /log", screen_width)
+    zeigeHier(1, screen_height - 1, sprachen.fehlerName .. " /log", screen_width)
   else
     zeigeHier(1, screen_height - 1, "", screen_width)
   end
@@ -905,7 +828,7 @@ end
 function zeigeFehler(...)
   if ... == "" then else
     schreibFehlerLog(...)
-    zeigeNachricht(string.format("%s %s", fehlerName, ...))
+    zeigeNachricht(string.format("%s %s", sprachen.fehlerName, ...))
   end
 end
 
@@ -964,30 +887,30 @@ handlers[key_event_name] = function(e)
     if e[3] == 13 then
       entercode = false
       sg.sendMessage(enteridc)
-      zeigeNachricht(IDCgesendet)
+      zeigeNachricht(sprachen.IDCgesendet)
     else
       enteridc = enteridc .. c
       showidc = showidc .. "*"
-      zeigeNachricht(IDCeingabe .. ": " .. showidc)
+      zeigeNachricht(sprachen.IDCeingabe .. ": " .. showidc)
     end
   elseif c == "e" then
     if state == "Connected" and direction == "Outgoing" then
       enteridc = ""
       showidc = ""
       entercode = true
-      zeigeNachricht(IDCeingabe .. ":")
+      zeigeNachricht(sprachen.IDCeingabe .. ":")
     else
-      zeigeNachricht(keineVerbindung)
+      zeigeNachricht(sprachen.keineVerbindung)
     end
   elseif c == "d" then
     if state == "Connected" and direction == "Incoming" then
       sg.disconnect()
       sg.sendMessage("Request: Disconnect Stargate")
-      zeigeNachricht(senden .. aufforderung .. ": " .. stargateAbschalten .. " " .. stargateName)
+      zeigeNachricht(sprachen.senden .. sprachen.aufforderung .. ": " .. sprachen.stargateAbschalten .. " " .. sprachen.stargateName)
     else
       sg.disconnect()
       if state == "Idle" then else
-        zeigeNachricht(stargateAbschalten .. " " .. stargateName)
+        zeigeNachricht(sprachen.stargateAbschalten .. " " .. sprachen.stargateName)
       end
     end
   elseif c == "o" then
@@ -1209,7 +1132,7 @@ function Colorful_Lamp_Farben(eingabe, ausgabe)
     for k in component.list("colorful_lamp") do
       component.proxy(k).setLampColor(eingabe)
       if ausgabe then
-        print(colorfulLampAusschalten .. k)
+        print(sprachen.colorfulLampAusschalten .. k)
       end
     end
     alte_eingabe = eingabe
@@ -1224,7 +1147,7 @@ end
 
 function redstoneAbschalten(sideNum, Farbe, printAusgabe)
   r.setBundledOutput(sideNum, Farbe, 0)
-  print(redstoneAusschalten .. printAusgabe)
+  print(sprachen.redstoneAusschalten .. printAusgabe)
 end
 
 function beendeAlles()
@@ -1232,7 +1155,7 @@ function beendeAlles()
   gpu.setBackground(schwarzeFarbe)
   gpu.setForeground(weisseFarbe)
   term.clear()
-  print(ausschaltenName .. "\n")
+  print(sprachen.ausschaltenName .. "\n")
   Colorful_Lamp_Farben(0, true)
   if component.isAvailable("redstone") then
     r = component.getPrimary("redstone")
