@@ -13,20 +13,13 @@ gpu = component.getPrimary("gpu")
 schreibSicherungsdatei = loadfile("/stargate/schreibSicherungsdatei.lua")
 serverAdresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
 betaVersionName = ""
+
 if fs.exists("/stargate/Sicherungsdatei.lua") then
   IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
 else
   Sprache = ""
   control = "On"
   installieren = false
-end
-
-if fs.exists("/stargate/version.txt") then
-  f = io.open ("/stargate/version.txt", "r")
-  version = f:read()
-  f:close()
-else
-  version = fehlerName
 end
 
 term.clear()
@@ -45,35 +38,35 @@ function checkSprache()
 end
 
 function checkKomponenten()
-  print(pruefeKomponenten)
+  print(sprachen.pruefeKomponenten)
   if component.isAvailable("redstone") then
-    print(redstoneOK)
+    print(sprachen.redstoneOK)
     r = component.getPrimary("redstone")
   else
-    print(redstoneFehlt)
+    print(sprachen.redstoneFehlt)
     r = nil
   end
   if component.isAvailable("internet") then
-    print(InternetOK)
+    print(sprachen.InternetOK)
     internet = true
   else
-    print(InternetFehlt)
+    print(sprachen.InternetFehlt)
     internet = false
   end
   if gpu.maxResolution() == 80 then
-    print(gpuOK2T)
+    print(sprachen.gpuOK2T)
   elseif gpu.maxResolution() == 160 then
     graphicT3 = true
-    print(gpuOK3T)
+    print(sprachen.gpuOK3T)
   else
-    print(gpuFehlt)
+    print(sprachen.gpuFehlt)
   end
   if component.isAvailable("stargate") then
-    print(StargateOK)
+    print(sprachen.StargateOK)
     sg = component.getPrimary("stargate")
     return true
   else
-    print(StargateFehlt)
+    print(sprachen.StargateFehlt)
     return false
   end
 end
@@ -127,41 +120,41 @@ function mainCheck()
   if internet == true then
     serverVersion = checkServerVersion()
     betaServerVersion = checkBetaServerVersion()
-    print(derzeitigeVersion .. version .. verfuegbareVersion .. serverVersion)
+    print(sprachen.derzeitigeVersion .. version .. sprachen.verfuegbareVersion .. serverVersion)
     if serverVersion == betaServerVersion then else
-      print(betaVersion .. betaServerVersion .. " BETA")
+      print(sprachen.betaVersion .. betaServerVersion .. " BETA")
       if betaServerVersion == fehlerName then else
         betaVersionName = "/beta"
       end
     end
-    if args[1] == ja or args[1] == "ja" or args[1] == "yes" then
-      print(aktualisierenJa)
+    if args[1] == sprachen.ja or args[1] == "ja" or args[1] == "yes" then
+      print(sprachen.aktualisierenJa)
       update("master")
-    elseif args[1] == nein or args[1] == "nein" or args[1] == "no" then
+    elseif args[1] == sprachen.nein or args[1] == "nein" or args[1] == "no" then
       -- nichts
     elseif args[1] == "beta" then
-      print(aktualisierenBeta)
+      print(sprachen.aktualisierenBeta)
       update("beta")
     elseif version == serverVersion and version == betaServerVersion then else
       if installieren == false then
         local EndpunktVersion = string.len(version)
         if autoUpdate == true and version ~= serverVersion and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" then
-          print(aktualisierenJa)
+          print(sprachen.aktualisierenJa)
           update("master")
           return
         else
-          print(aktualisierenFrage .. betaVersionName .. "\n")
+          print(sprachen.aktualisierenFrage .. betaVersionName .. "\n")
           antwortFrage = io.read()
-          if string.lower(antwortFrage) == ja or string.lower(antwortFrage) == "ja" or string.lower(antwortFrage) == "yes" then
-            print(aktualisierenJa)
+          if string.lower(antwortFrage) == sprachen.ja or string.lower(antwortFrage) == "ja" or string.lower(antwortFrage) == "yes" then
+            print(sprachen.aktualisierenJa)
             update("master")
             return
           elseif string.lower(antwortFrage) == "beta" then
-            print(aktualisierenBeta)
+            print(sprachen.aktualisierenBeta)
             update("beta")
             return
           else
-            print(aktualisierenNein .. antwortFrage)
+            print(sprachen.aktualisierenNein .. antwortFrage)
           end
         end
       end
@@ -176,9 +169,9 @@ function mainCheck()
     end
     loadfile("/stargate/Kontrollprogramm.lua")()
   else
-    print(fehlerName .. "\n" .. DateienFehlen)
+    print(sprachen.fehlerName .. "\n" .. sprachen.DateienFehlen)
     antwortFrage = io.read()
-    if string.lower(antwortFrage) == ja then
+    if string.lower(antwortFrage) == sprachen.ja or string.lower(antwortFrage) == "ja" or string.lower(antwortFrage) == "yes" then
       os.execute("pastebin run -f fa9gu1GJ")
     end
   end
@@ -213,9 +206,17 @@ if Sprache == "" then
   checkSprache()
 end
 
-loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
+if fs.exists("/stargate/version.txt") then
+  f = io.open ("/stargate/version.txt", "r")
+  version = f:read()
+  f:close()
+else
+  version = sprachen.fehlerName
+end
 
-if args[1] == hilfe or args[1] == "hilfe" or args[1] == "help" then
+local sprachen = loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
+
+if args[1] == sprachen.hilfe or args[1] == "hilfe" or args[1] == "help" then
   print(Hilfetext)
 else
   if checkKomponenten() == true then
