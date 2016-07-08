@@ -24,7 +24,7 @@ pastebin run -f 1pbsaeCQ
 Some feature of my program:
 
 - autoclose iris on incoming wormhole (when iriscontrol is turned on)
-- autoopen iris if correct IDC is received
+- autoopen iris if correct IDC is received (**i**ris **d**eactivation **c**ode)
 - autoclose stargate after X seconds
 - show all kinds of stats (local / remote address, state, direction, idc, iris state, energy, ...)
 - multiple languages: right now german and english (because I don't speak anything else)
@@ -79,7 +79,7 @@ pastebin run -f 1pbsaeCQ
 Einige Funktionen meines Programms:
 
 - automatische Schließung der Iris beim eingehenden Wurmloch (wenn Iriskontrolle eingeschaltet ist)
-- automatische Öffnung der Iris beim Erhalt des richtigen IDC (Iris DeaktivierungsCode)
+- automatische Öffnung der Iris beim Erhalt des richtigen IDC (**I**ris **D**eaktivierungs**c**ode)
 - automatische Schließungs des Stargates nach X-Sekunden
 - zeige alle möglichen Eigenschaften des Stargates (Lokale- / Zieladresse, Status, Verbindungsrichtung, IDC, Iris Status, Energie, ...)
 - mehrere Sprache: zur Zeit deutsch und englisch (weil ich nichts anderes spreche)
