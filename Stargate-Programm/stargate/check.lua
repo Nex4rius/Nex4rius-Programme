@@ -97,8 +97,7 @@ function update(versionTyp)
     installieren = true
     schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
     f = io.open ("autorun.lua", "w")
-    f:write('versionTyp = "' .. versionTyp .. '"\n')
-    f:write('loadfile("installieren.lua")()')
+    f:write('loadfile("installieren.lua")(' .. versionTyp .. ')')
     f:close()
     loadfile("autorun.lua")()
   elseif versionTyp == "master" then
