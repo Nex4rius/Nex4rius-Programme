@@ -9,9 +9,9 @@ local versionTyp = require("shell").parse(...)[1]
 
 local function Pfad(versionTyp)
   if versionTyp then
-    return "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/" .. versionTyp .. "/Stargate-Programm/"
+    return "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/" .. versionTyp .. "/Stargate-Programm"
   else
-    return "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/master/Stargate-Programm/"
+    return "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/master/Stargate-Programm"
   end
 end
 
