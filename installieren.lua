@@ -2,11 +2,18 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Stargate-Programm
 
-fs = require("filesystem")
-wget = loadfile("/bin/wget.lua")
-move = loadfile("/bin/mv.lua")
-serverAdresse1 = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
-serverAdresse2 = "/Stargate-Programm/"
+local fs = require("filesystem")
+local wget = loadfile("/bin/wget.lua")
+local move = loadfile("/bin/mv.lua")
+local versionTyp = require("shell").parse(...)[1]
+
+local function Pfad(versionTyp)
+  if versionTyp then
+    return "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/" .. versionTyp .. "/Stargate-Programm/"
+  else
+    return "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/master/Stargate-Programm/"
+  end
+end
 
 if fs.exists("/stargate/Sicherungsdatei.lua") then
   IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
@@ -21,26 +28,17 @@ f = io.open ("/autorun.lua", "w")
 f:write('-- pastebin run -f 1pbsaeCQ\n')
 f:write('-- von Nex4rius\n')
 f:write('-- https://github.com/Nex4rius/Stargate-Programm\n\n')
-f:write('local args = require("shell").parse(...)\n\n')
-f:write('if type(args[1]) == "string" then\n')
-f:write('  args[1] = string.lower(args[1])\n')
+f:write('local args = require("shell").parse(...)[1]\n\n')
+f:write('if type(args) == "string" then\n')
+f:write('  loadfile("/stargate/check.lua")(args)\n')
 f:write('else\n')
-f:write('  args[1] = ""\n')
+f:write('  loadfile("/stargate/check.lua")()\n')
 f:write('end\n\n')
-f:write('os.execute("stargate/check.lua " .. args[1])')
 f:close()
-
-function Pfad(versionTyp)
-  return serverAdresse1 .. versionTyp .. serverAdresse2
-end
 
 function installieren()
   fs.makeDirectory("/update/stargate/sprache")
-  if versionTyp == nil then
-    versionTyp = "master"
-  end
-  update = {}
-  updateKomplett = false
+  local update = {}
   update[1] = wget("-f", Pfad(versionTyp) .. "/autorun.lua",                        "/update/autorun.lua")
   update[2] = wget("-f", Pfad(versionTyp) .. "/stargate/check.lua",                 "/update/stargate/check.lua")
   update[3] = wget("-f", Pfad(versionTyp) .. "/stargate/version.txt",               "/update/stargate/version.txt")
@@ -53,9 +51,9 @@ function installieren()
   update[10]= wget("-f", Pfad(versionTyp) .. "/stargate/sprache/ersetzen.lua",      "/update/stargate/sprache/ersetzen.lua")
   for i = 1, 10 do
     if update[i] == true then
-      updateKomplett = true
+      local updateKomplett = true
     else
-      updateKomplett = false
+      local updateKomplett = false
       break
     end
   end
