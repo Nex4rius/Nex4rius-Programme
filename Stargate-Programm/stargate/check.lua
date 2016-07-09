@@ -94,15 +94,19 @@ function update(versionTyp)
   if versionTyp == nil then
     versionTyp = "master"
   end
-  wget("-f", Pfad(versionTyp) .. "/installieren.lua", "/installieren.lua")
-  installieren = true
-  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
-  f = io.open ("autorun.lua", "w")
-  f:write('versionTyp = "' .. versionTyp .. '"\n')
-  f:write('loadfile("installieren.lua")()')
-  f:close()
-  loadfile("autorun.lua")()
-  os.exit()
+  local runtergeladen = wget("-f", Pfad(versionTyp) .. "/installieren.lua", "/installieren.lua")
+  if runtergeladen then
+    installieren = true
+    schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
+    f = io.open ("autorun.lua", "w")
+    f:write('versionTyp = "' .. versionTyp .. '"\n')
+    f:write('loadfile("installieren.lua")()')
+    f:close()
+    loadfile("autorun.lua")()
+    os.exit()
+  else
+    print(sprachen.fehlerName)
+  end
 end
 
 function checkServerVersion()
@@ -111,7 +115,7 @@ function checkServerVersion()
     f = io.open ("/serverVersion.txt", "r")
     serverVersion = f:read()
     f:close()
-    os.execute("del serverVersion.txt")
+    loadfile("/bin/rm.lua")("/serverVersion.txt")
   else
     serverVersion = sprachen.fehlerName
   end
@@ -124,7 +128,7 @@ function checkBetaServerVersion()
     f = io.open ("/betaVersion.txt", "r")
     betaServerVersion = f:read()
     f:close()
-    os.execute("del /betaVersion.txt")
+    loadfile("/bin/rm.lua")("/betaVersion.txt")
   else
     betaServerVersion = sprachen.fehlerName
   end
@@ -187,7 +191,7 @@ function mainCheck()
     print(sprachen.fehlerName .. "\n" .. sprachen.DateienFehlen)
     antwortFrage = io.read()
     if string.lower(antwortFrage) == sprachen.ja or string.lower(antwortFrage) == "ja" or string.lower(antwortFrage) == "yes" then
-      os.execute("pastebin run -f 1pbsaeCQ")
+      loadfile("/bin/pastebin.lua")("run", "-f", "1pbsaeCQ")
     end
   end
 end
