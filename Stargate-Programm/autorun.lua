@@ -2,10 +2,10 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Stargate-Programm
 
-local a = require("shell").parse(...)[1]
+local args = require("shell").parse(...)[1]
 
-if type(a) == "string" then
-  loadfile("/stargate/check.lua")(a)
+if type(args) == "string" then
+  loadfile("/stargate/check.lua")(args)
 else
   loadfile("/stargate/check.lua")()
 end
