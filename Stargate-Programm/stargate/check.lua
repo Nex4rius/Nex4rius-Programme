@@ -103,10 +103,10 @@ function update(versionTyp)
     f:write('loadfile("installieren.lua")()')
     f:close()
     loadfile("autorun.lua")()
-    os.exit()
-  else
-    print(sprachen.fehlerName)
+  elseif versionTyp == "master" then
+    loadfile("/bin/pastebin.lua")("run", "-f", "1pbsaeCQ")
   end
+  os.exit()
 end
 
 function checkServerVersion()
