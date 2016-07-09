@@ -113,7 +113,7 @@ function checkServerVersion()
     f:close()
     os.execute("del serverVersion.txt")
   else
-    serverVersion = fehlerName
+    serverVersion = sprachen.fehlerName
   end
   return serverVersion
 end
@@ -126,7 +126,7 @@ function checkBetaServerVersion()
     f:close()
     os.execute("del /betaVersion.txt")
   else
-    betaServerVersion = fehlerName
+    betaServerVersion = sprachen.fehlerName
   end
   return betaServerVersion
 end
@@ -138,7 +138,7 @@ function mainCheck()
     print(sprachen.derzeitigeVersion .. version .. sprachen.verfuegbareVersion .. serverVersion)
     if serverVersion == betaServerVersion then else
       print(sprachen.betaVersion .. betaServerVersion .. " BETA")
-      if betaServerVersion == fehlerName then else
+      if betaServerVersion == sprachen.fehlerName then else
         betaVersionName = "/beta"
       end
     end
