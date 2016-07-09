@@ -5,7 +5,8 @@
 fs = require("filesystem")
 wget = loadfile("/bin/wget.lua")
 move = loadfile("/bin/mv.lua")
-serverAdresse = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/Stargate-Programm/"
+serverAdresse1 = "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/"
+serverAdresse2 = "/Stargate-Programm/"
 
 if fs.exists("/stargate/Sicherungsdatei.lua") then
   IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
@@ -30,7 +31,7 @@ f:write('os.execute("stargate/check.lua " .. args[1])')
 f:close()
 
 function Pfad(versionTyp)
-  return serverAdresse .. versionTyp
+  return serverAdresse1 .. versionTyp .. serverAdresse2
 end
 
 function installieren()
