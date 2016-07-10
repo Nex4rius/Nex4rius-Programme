@@ -1,4 +1,4 @@
--- pastebin run -f 1pbsaeCQ
+-- pastebin run -f wLK1gCKt
 -- von Nex4rius
 -- https://github.com/Nex4rius/Stargate-Programm
 
@@ -19,7 +19,7 @@ if args[7] ~= nil then control       = args[7] elseif control       == nil then 
 if args[8] ~= nil then autoUpdate    = args[8] elseif autoUpdate    == nil then autoUpdate    = true   end
 
 f = io.open ("/stargate/Sicherungsdatei.lua", "w")
-f:write('-- pastebin run -f fa9gu1GJ\n')
+f:write('-- pastebin run -f wLK1gCKt\n')
 f:write('-- von Nex4rius\n')
 f:write('-- https://github.com/Nex4rius/Stargate-Programm\n--\n')
 f:write('-- to save press "Ctrl + S"\n')
