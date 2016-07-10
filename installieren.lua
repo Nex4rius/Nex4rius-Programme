@@ -40,6 +40,7 @@ f:close()
 
 function installieren()
   fs.makeDirectory("/update/stargate/sprache")
+  local updateKomplett = false
   local update = {}
   update[1] = wget("-f", Pfad(versionTyp) .. "/autorun.lua",                        "/update/autorun.lua")
   update[2] = wget("-f", Pfad(versionTyp) .. "/stargate/check.lua",                 "/update/stargate/check.lua")
@@ -53,9 +54,9 @@ function installieren()
   update[10]= wget("-f", Pfad(versionTyp) .. "/stargate/sprache/ersetzen.lua",      "/update/stargate/sprache/ersetzen.lua")
   for i = 1, 10 do
     if update[i] == true then
-      local updateKomplett = true
+      updateKomplett = true
     else
-      local updateKomplett = false
+      updateKomplett = false
       print(sprachen.fehlerName .. i)
       os.sleep(5)
       break
