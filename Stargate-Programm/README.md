@@ -14,7 +14,7 @@ How to install:
 2) copy / paste command
 
 ```
-pastebin run -f 1pbsaeCQ
+pastebin run -f wLK1gCKt
 ```
 
 3) Profit
@@ -69,7 +69,7 @@ Installationsanleitung:
 2) kopieren / einfügen von Befehlen
 
 ```
-pastebin run -f 1pbsaeCQ
+pastebin run -f wLK1gCKt
 ```
 
 3) Profit
