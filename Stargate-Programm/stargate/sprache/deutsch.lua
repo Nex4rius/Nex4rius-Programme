@@ -1,6 +1,6 @@
 -- pastebin run -f 1pbsaeCQ
 -- von Nex4rius
--- https://github.com/Nex4rius/Stargate-Programm
+-- https://github.com/Nex4rius/Stargate-Programm/tree/master/Stargate-Programm
 
 return {
   pruefeKomponenten         = "Prüfe Komponenten\n",
