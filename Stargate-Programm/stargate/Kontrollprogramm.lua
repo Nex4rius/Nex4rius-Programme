@@ -1177,7 +1177,7 @@ function beendeAlles()
 end
 
 function main()
-  loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "StargateOS")
+  loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Stargate Computer")
   if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
     irisOpen()
   end
