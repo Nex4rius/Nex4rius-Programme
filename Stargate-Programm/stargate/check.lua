@@ -1,34 +1,19 @@
 -- pastebin run -f wLK1gCKt
 -- von Nex4rius
--- https://github.com/Nex4rius/Stargate-Programm
+-- https://github.com/Nex4rius/Stargate-Programm/tree/master/Stargate-Programm
 
-component = require("component")
-term = require("term")
-event = require("event")
-fs = require("filesystem")
-c = require("computer")
-args = require("shell").parse(...)
-wget = loadfile("/bin/wget.lua")
-gpu = component.getPrimary("gpu")
-schreibSicherungsdatei = loadfile("/stargate/schreibSicherungsdatei.lua")
-betaVersionName = ""
+local component               = require("component")
+local fs                      = require("filesystem")
+local args                    = require("shell").parse(...)
+local gpu                     = component.getPrimary("gpu")
+local wget                    = loadfile("/bin/wget.lua")
+local schreibSicherungsdatei  = loadfile("/stargate/schreibSicherungsdatei.lua")
+local betaVersionName         = ""
+
+require("term").clear()
 
 local function Pfad(versionTyp)
   return "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/" .. versionTyp .. "/Stargate-Programm"
-end
-
-if fs.exists("/stargate/Sicherungsdatei.lua") then
-  IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
-else
-  Sprache = ""
-  control = "On"
-  installieren = false
-end
-
-term.clear()
-
-if Sprache == "" then
-  checkSprache()
 end
 
 if fs.exists("/stargate/version.txt") then
@@ -39,12 +24,10 @@ else
   version = sprachen.fehlerName
 end
 
-sprachen = loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
-
-function checkSprache()
+local function checkSprache()
   print("Sprache? / Language? deutsch / english\n")
   antwortFrageSprache = io.read()
-  if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
+  if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" or wget("-f", Pfad(versionTyp) .. "/stargate/sprache/" .. antwortFrageSprache .. ".lua", "/update/stargate/sprache/" .. antwortFrageSprache .. ".lua") then
     Sprache = string.lower(antwortFrageSprache)
   else
     print("\nUnbekannte Eingabe\nStandardeinstellung = deutsch")
@@ -53,6 +36,16 @@ function checkSprache()
   schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
   print("")
 end
+
+if fs.exists("/stargate/Sicherungsdatei.lua") then
+  local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
+else
+  checkSprache()
+  local installieren = false
+  local control = "On"
+end
+
+sprachen = loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
 
 function checkKomponenten()
   print(sprachen.pruefeKomponenten)
@@ -191,7 +184,7 @@ function mainCheck()
   end
 end
 
-function checkDateien()
+local function checkDateien()
   if fs.exists("/autorun.lua") then
     if fs.exists("/stargate/Kontrollprogramm.lua") then
       if fs.exists("/stargate/Sicherungsdatei.lua") then
@@ -219,7 +212,7 @@ end
 if args[1] == sprachen.hilfe or args[1] == "hilfe" or args[1] == "help" then
   print(Hilfetext)
 else
-  if checkKomponenten() == true then
+  if checkKomponenten() then
     mainCheck()
   end
 end
