@@ -5,7 +5,9 @@
 local fs = require("filesystem")
 local wget = loadfile("/bin/wget.lua")
 local move = loadfile("/bin/mv.lua")
-local versionTyp = require("shell").parse(...)[1]
+if not versionTyp then
+  local versionTyp = require("shell").parse(...)[1]
+end
 
 local function Pfad(versionTyp)
   if versionTyp then
