@@ -121,4 +121,6 @@ if fs.exists("/stargate/sicherNachNeustart.lua") then
   loadfile("/bin/rm.lua")("/stargate/sicherNachNeustart.lua")
 end
 
-installieren()
+if component.isAvailable("internet") then
+  installieren()
+end
