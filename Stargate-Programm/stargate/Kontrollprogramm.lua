@@ -1,4 +1,4 @@
--- pastebin run -f 1pbsaeCQ
+-- pastebin run -f wLK1gCKt
 -- von Nex4rius
 -- https://github.com/Nex4rius/Stargate-Programm
 
@@ -142,7 +142,7 @@ end
 
 local function schreibeAdressen()
   f = io.open("/stargate/adressen.lua", "w")
-  f:write('-- pastebin run -f 1pbsaeCQ\n')
+  f:write('-- pastebin run -f wLK1gCKt\n')
   f:write('-- von Nex4rius\n')
   f:write('-- https://github.com/Nex4rius/Stargate-Programm\n--\n')
   f:write('-- to save press "Ctrl + S"\n')
