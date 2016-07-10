@@ -1,6 +1,6 @@
 -- pastebin run -f wLK1gCKt
 -- von Nex4rius
--- https://github.com/Nex4rius/Stargate-Programm
+-- https://github.com/Nex4rius/Stargate-Programm/tree/master/Stargate-Programm
 
 local component             = require("component")
 local term                  = require("term")
