@@ -78,7 +78,6 @@ function installieren()
     move("-f", "/update/stargate/sprache/english.lua",        "/stargate/sprache/english.lua")
     move("-f", "/update/stargate/sprache/ersetzen.lua",       "/stargate/sprache/ersetzen.lua")
     print()
-    loadfile("/bin/rm.lua")("-v", "/update")
     if versionTyp == "beta" then
       f = io.open ("/stargate/version.txt", "r")
       version = f:read()
@@ -90,7 +89,8 @@ function installieren()
   end
   installieren = true
   loadfile("/stargate/schreibSicherungsdatei.lua")(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
-  loadfile("/bin/rm.lua")("-v", "installieren.lua")
+  loadfile("/bin/rm.lua")("-v", "/update")
+  loadfile("/bin/rm.lua")("-v", "/installieren.lua")
   --loadfile("/autorun.lua")("no")
   --os.exit()
   require("computer").shutdown(true)
