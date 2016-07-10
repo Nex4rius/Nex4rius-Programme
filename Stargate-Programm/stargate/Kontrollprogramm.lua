@@ -1011,15 +1011,12 @@ end
 
 function handlers.sgChevronEngaged(e)
   chevron = e[3]
-  if chevron == 1 then
-    zielAdresse = e[4]
-  elseif chevron == 5 or chevron == 8 then
-    zielAdresse = zielAdresse .. "-" .. e[4]
+  if chevron <= 4 then
+    zielAdresse = string.sub(sg.remoteAddress(), 1, chevron)
+  elseif chevron <= 7 then
+    zielAdresse = string.sub(sg.remoteAddress(), 1, 4) .. "-" .. string.sub(sg.remoteAddress(), 5, chevron)
   else
-    zielAdresse = zielAdresse .. e[4]
-  end
-  if string.len(zielAdresse) < 7 and state == "Connected" then
-    zielAdresse = getAddress(sg.remoteAddress())
+    zielAdresse = string.sub(sg.remoteAddress(), 1, 4) .. "-" .. string.sub(sg.remoteAddress(), 5, 7) .. "-" .. string.sub(sg.remoteAddress(), 8)
   end
   zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
 end
