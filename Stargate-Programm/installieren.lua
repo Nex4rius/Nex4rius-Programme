@@ -1,12 +1,22 @@
 -- pastebin run -f wLK1gCKt
 -- von Nex4rius
--- https://github.com/Nex4rius/Stargate-Programm
+-- https://github.com/Nex4rius/Stargate-Programm/tree/master/Stargate-Programm
 
 local fs = require("filesystem")
 local wget = loadfile("/bin/wget.lua")
 local move = loadfile("/bin/mv.lua")
-if not versionTyp then
-  local versionTyp = require("shell").parse(...)[1]
+
+if fs.exists("/stargate/Sicherungsdatei.lua") then
+  local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
+else
+  local Sprache = ""
+  local installieren = false
+  local control = "On"
+  local autoUpdate = false
+end
+
+if fs.exists("/stargate/sprache/" .. Sprache .. ".lua") then
+  local sprachen = loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
 end
 
 local function Pfad(versionTyp)
@@ -17,28 +27,7 @@ local function Pfad(versionTyp)
   end
 end
 
-if fs.exists("/stargate/Sicherungsdatei.lua") then
-  IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
-else
-  Sprache = ""
-  control = "On"
-  autoUpdate = false
-  installieren = false
-end
-
-f = io.open ("/autorun.lua", "w")
-f:write('-- pastebin run -f wLK1gCKt\n')
-f:write('-- von Nex4rius\n')
-f:write('-- https://github.com/Nex4rius/Stargate-Programm\n\n')
-f:write('local args = require("shell").parse(...)[1]\n\n')
-f:write('if type(args) == "string" then\n')
-f:write('  loadfile("/stargate/check.lua")(args)\n')
-f:write('else\n')
-f:write('  loadfile("/stargate/check.lua")()\n')
-f:write('end\n\n')
-f:close()
-
-function installieren()
+local function installieren(versionTyp)
   fs.makeDirectory("/update/stargate/sprache")
   local updateKomplett = false
   local update = {}
@@ -57,7 +46,20 @@ function installieren()
       updateKomplett = true
     else
       updateKomplett = false
-      print(sprachen.fehlerName .. i)
+      if sprachen then
+        print(sprachen.fehlerName .. i)
+      end
+      f = io.open ("/autorun.lua", "w")
+      f:write('-- pastebin run -f wLK1gCKt\n')
+      f:write('-- von Nex4rius\n')
+      f:write('-- https://github.com/Nex4rius/Stargate-Programm/tree/master/Stargate-Programm\n\n')
+      f:write('local args = require("shell").parse(...)[1]\n\n')
+      f:write('if type(args) == "string" then\n')
+      f:write('  loadfile("/stargate/check.lua")(args)\n')
+      f:write('else\n')
+      f:write('  loadfile("/stargate/check.lua")()\n')
+      f:write('end\n\n')
+      f:close()
       os.sleep(5)
       break
     end
@@ -97,30 +99,4 @@ function installieren()
   require("computer").shutdown(true)
 end
 
-if fs.exists("/stargate/sicherNachNeustart.lua") then
-  if fs.exists("/stargate/adressen.lua") then
-    dofile("/stargate/adressen.lua")
-  end
-  f = io.open("/stargate/adressen.lua", "w")
-  f:write('-- pastebin run -f wLK1gCKt\n')
-  f:write('-- von Nex4rius\n')
-  f:write('-- https://github.com/Nex4rius/Stargate-Programm\n--\n')
-  f:write('-- to save press "Ctrl + S"\n')
-  f:write('-- to close press "Ctrl + W"\n--\n')
-  f:write('-- Put your own stargate addresses here\n')
-  f:write('-- "" for no Iris Code\n')
-  f:write('--\n\n')
-  f:write('return {\n')
-  f:write('--{"<Name>","<Adresse>","<IDC>"},\n')
-  for k in pairs(adressen) do
-    f:write(string.format('  {"%s", "%s", "%s"},\n', adressen[k][1], adressen[k][2], adressen[k][3]))
-  end
-  f:write('}')
-  f:close()
-  dofile("/stargate/sicherNachNeustart.lua")
-  loadfile("/bin/rm.lua")("/stargate/sicherNachNeustart.lua")
-end
-
-if component.isAvailable("internet") then
-  installieren()
-end
+installieren(require("shell").parse(...)[1])
