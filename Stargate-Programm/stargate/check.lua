@@ -14,7 +14,7 @@ schreibSicherungsdatei = loadfile("/stargate/schreibSicherungsdatei.lua")
 betaVersionName = ""
 
 local function Pfad(versionTyp)
-  return "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/" .. versionTyp .. "/Stargate-Programm/"
+  return "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/" .. versionTyp .. "/Stargate-Programm"
 end
 
 if fs.exists("/stargate/Sicherungsdatei.lua") then
