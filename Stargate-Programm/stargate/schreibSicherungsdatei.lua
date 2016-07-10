@@ -1,6 +1,6 @@
 -- pastebin run -f wLK1gCKt
 -- von Nex4rius
--- https://github.com/Nex4rius/Stargate-Programm
+-- https://github.com/Nex4rius/Stargate-Programm/tree/master/Stargate-Programm
 
 local args = require("shell").parse(...)
 local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate
@@ -21,7 +21,7 @@ if args[8] ~= nil then autoUpdate    = args[8] elseif autoUpdate    == nil then 
 f = io.open ("/stargate/Sicherungsdatei.lua", "w")
 f:write('-- pastebin run -f wLK1gCKt\n')
 f:write('-- von Nex4rius\n')
-f:write('-- https://github.com/Nex4rius/Stargate-Programm\n--\n')
+f:write('-- https://github.com/Nex4rius/Stargate-Programm/tree/master/Stargate-Programm\n--\n')
 f:write('-- to save press "Ctrl + S"\n')
 f:write('-- to close press "Ctrl + W"\n--\n\n')
 f:write('local IDC           = "' .. tostring(IDC) .. '" -- Iris Deactivation Code\n')
