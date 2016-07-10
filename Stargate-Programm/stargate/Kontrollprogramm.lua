@@ -268,9 +268,10 @@ function zeigeMenu()
     if (os.time() / sectime) - letzterAdressCheck > 21600 then
       letzterAdressCheck = os.time() / sectime
       AdressenSpeichern()
+    else
+      print(sprachen.Adressseite .. seite + 1)
+      AdressenLesen()
     end
-    print(sprachen.Adressseite .. seite + 1)
-    AdressenLesen()
     iris = sg.irisState()
   end
 end
