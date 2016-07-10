@@ -92,8 +92,7 @@ function update(versionTyp)
   if versionTyp == nil then
     versionTyp = "master"
   end
-  local runtergeladen = wget("-f", Pfad(versionTyp) .. "/installieren.lua", "/installieren.lua")
-  if runtergeladen then
+  if wget("-f", Pfad(versionTyp) .. "/installieren.lua", "/installieren.lua") then
     installieren = true
     schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
     f = io.open ("autorun.lua", "w")
@@ -108,8 +107,7 @@ function update(versionTyp)
 end
 
 function checkServerVersion()
-  wget("-fQ", Pfad("master") .. "/stargate/version.txt", "/serverVersion.txt")
-  if fs.exists("/serverVersion.txt") then
+  if wget("-fQ", Pfad("master") .. "/stargate/version.txt", "/serverVersion.txt") then
     f = io.open ("/serverVersion.txt", "r")
     serverVersion = f:read()
     f:close()
@@ -121,8 +119,7 @@ function checkServerVersion()
 end
 
 function checkBetaServerVersion()
-  wget("-fQ", Pfad("beta") .. "/stargate/version.txt", "/betaVersion.txt")
-  if fs.exists("/betaVersion.txt") then
+  if wget("-fQ", Pfad("beta") .. "/stargate/version.txt", "/betaVersion.txt") then
     f = io.open ("/betaVersion.txt", "r")
     betaServerVersion = f:read()
     f:close()
