@@ -56,7 +56,7 @@ function installieren()
       local updateKomplett = true
     else
       local updateKomplett = false
-      print(sprachen.fehlerName)
+      print(sprachen.fehlerName .. i)
       os.sleep(5)
       break
     end
