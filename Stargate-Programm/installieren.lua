@@ -56,6 +56,8 @@ function installieren()
       local updateKomplett = true
     else
       local updateKomplett = false
+      print(sprachen.fehlerName)
+      os.sleep(5)
       break
     end
   end
@@ -85,9 +87,6 @@ function installieren()
       f:write(version .. " BETA")
       f:close()
     end
-  else
-    print(sprachen.fehlerName)
-    os.sleep(5)
   end
   installieren = true
   loadfile("/stargate/schreibSicherungsdatei.lua")(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
