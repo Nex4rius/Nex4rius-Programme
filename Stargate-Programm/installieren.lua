@@ -62,7 +62,6 @@ local function installieren(versionTyp)
       f:write('  loadfile("/stargate/check.lua")()\n')
       f:write('end\n\n')
       f:close()
-      os.sleep(5)
       break
     end
   end
@@ -98,6 +97,7 @@ local function installieren(versionTyp)
   loadfile("/bin/rm.lua")("-v", "/installieren.lua")
   --loadfile("/autorun.lua")("no")
   --os.exit()
+  os.sleep(5)
   require("computer").shutdown(true)
 end
 
