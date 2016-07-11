@@ -740,6 +740,42 @@ local function activetime()
   end
 end
 
+local function zeigeSteuerung()
+  zeigeFarben()
+  gpu.setBackground(Farben.Steuerungsfarbe)
+  gpu.setForeground(Farben.Steuerungstextfarbe)
+  neueZeile(3)
+  zeigeHier(xVerschiebung, zeile - 1, "")
+  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.Steuerung) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "") neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  D " .. sprachen.abschalten)
+  zeigeHier(xVerschiebung + 20, zeile, "E " .. sprachen.IDCeingabe) neueZeile(1)
+  if iris == "Offline" then
+    control = "Off"
+  else
+    zeigeHier(xVerschiebung, zeile, "  O " .. sprachen.oeffneIris)
+    zeigeHier(xVerschiebung + 20, zeile, "C " .. sprachen.schliesseIris) neueZeile(1)
+  end
+  if seite >= 0 then
+    if seite >= 1 then
+      zeigeHier(xVerschiebung, zeile, "  ← " .. sprachen.vorherigeSeite)
+    else
+      zeigeHier(xVerschiebung, zeile, "  ← " .. sprachen.SteuerungName)
+    end
+  else
+    zeigeHier(xVerschiebung, zeile, "")
+  end
+  if seite == -1 then
+    zeigeHier(xVerschiebung + 20, zeile, "→ " .. sprachen.zeigeAdressen)
+  elseif maxseiten > seite + 1 then
+    zeigeHier(xVerschiebung + 20, zeile, "→ " .. sprachen.naechsteSeite)
+  end
+  neueZeile(1)
+  for i = zeile, screen_height - 3 do
+    zeigeHier(xVerschiebung, i, "")
+  end
+end
+
 local function zeigeStatus()
   aktualisiereStatus()
   gpu.setBackground(Farben.Statusfarbe)
@@ -814,42 +850,6 @@ local function RedstoneKontrolle()
   elseif redstoneConnected == false then
     RedstoneAenderung(green, 0)
     redstoneConnected = true
-  end
-end
-
-local function zeigeSteuerung()
-  zeigeFarben()
-  gpu.setBackground(Farben.Steuerungsfarbe)
-  gpu.setForeground(Farben.Steuerungstextfarbe)
-  neueZeile(3)
-  zeigeHier(xVerschiebung, zeile - 1, "")
-  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.Steuerung) neueZeile(1)
-  zeigeHier(xVerschiebung, zeile, "") neueZeile(1)
-  zeigeHier(xVerschiebung, zeile, "  D " .. sprachen.abschalten)
-  zeigeHier(xVerschiebung + 20, zeile, "E " .. sprachen.IDCeingabe) neueZeile(1)
-  if iris == "Offline" then
-    control = "Off"
-  else
-    zeigeHier(xVerschiebung, zeile, "  O " .. sprachen.oeffneIris)
-    zeigeHier(xVerschiebung + 20, zeile, "C " .. sprachen.schliesseIris) neueZeile(1)
-  end
-  if seite >= 0 then
-    if seite >= 1 then
-      zeigeHier(xVerschiebung, zeile, "  ← " .. sprachen.vorherigeSeite)
-    else
-      zeigeHier(xVerschiebung, zeile, "  ← " .. sprachen.SteuerungName)
-    end
-  else
-    zeigeHier(xVerschiebung, zeile, "")
-  end
-  if seite == -1 then
-    zeigeHier(xVerschiebung + 20, zeile, "→ " .. sprachen.zeigeAdressen)
-  elseif maxseiten > seite + 1 then
-    zeigeHier(xVerschiebung + 20, zeile, "→ " .. sprachen.naechsteSeite)
-  end
-  neueZeile(1)
-  for i = zeile, screen_height - 3 do
-    zeigeHier(xVerschiebung, i, "")
   end
 end
 
