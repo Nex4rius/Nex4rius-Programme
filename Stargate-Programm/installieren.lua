@@ -46,7 +46,6 @@ local function installieren(versionTyp)
   for i = 1, 10 do
     if update[i] == true then
       updateKomplett = true
-      print("Update komplett")
     else
       updateKomplett = false
       if sprachen then
@@ -67,7 +66,8 @@ local function installieren(versionTyp)
       break
     end
   end
-  if updateKomplett == true then
+  if updateKomplett then
+    print("Update komplett")
     fs.makeDirectory("/stargate/sprache")
     move("-f", "/update/autorun.lua",                         "/autorun.lua")
     move("-f", "/update/stargate/check.lua",                  "/stargate/check.lua")
