@@ -76,32 +76,33 @@ local Steuerungstextfarbe   = schwarzeFarbe
 local Statusfarbe           = grueneFarbe
 local Statustextfarbe       = Textfarbe
 
-local letzteNachricht
-local adressen
-local sideNum
-local k
 local AdressAnzeige
-local gespeicherteAdressen
-local sendeAdressen
-local ok
-local result
-local ergebnis
-local state
+local adressen
+local alte_eingabe
+local angekommeneVersion
+local anwahlEnergie
+local ausgabe
 local chevron
 local direction
-local iris
-local locAddr
-local remAddr
-local RichtungName
-local StatusName
+local eingabe
 local energieMenge
+local ergebnis
+local gespeicherteAdressen
+local iris
+local k
+local letzteNachricht
+local locAddr
 local mess
 local mess_old
-local eingabe
-local alte_eingabe
-local ausgabe
-local anwahlEnergie
-local angekommeneVersion
+local ok
+local r
+local remAddr
+local result
+local RichtungName
+local sendeAdressen
+local sideNum
+local state
+local StatusName
 
 local white                 = 0
 --local orange                = 1
@@ -144,7 +145,7 @@ local function schreibeAdressen()
   f = io.open("/stargate/adressen.lua", "w")
   f:write('-- pastebin run -f wLK1gCKt\n')
   f:write('-- von Nex4rius\n')
-  f:write('-- https://github.com/Nex4rius/Stargate-Programm\n--\n')
+  f:write('-- https://github.com/Nex4rius/Stargate-Programm/tree/master/Stargate-Programm\n--\n')
   f:write('-- to save press "Ctrl + S"\n')
   f:write('-- to close press "Ctrl + W"\n--\n')
   f:write('-- Put your own stargate addresses here\n')
@@ -224,15 +225,15 @@ end
 local sprachen = loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
 local ersetzen = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
 
-function pad(s, n)
+local function pad(s, n)
   return s .. string.rep(" ", n - string.len(s))
 end
 
-function zeichenErsetzen(eingabeErsetzung)
-  return string.gsub(eingabeErsetzung, "%a+", function (str) return ersetzen [str] end)
+local function zeichenErsetzen(eingabeErsetzung)
+  return string.gsub(eingabeErsetzung, "%a+", local function (str) return ersetzen [str] end)
 end
 
-function checkReset()
+local function checkReset()
   if time == "-" then else
     if time > 500 then
       zielAdresse     = ""
@@ -255,7 +256,7 @@ function checkReset()
   end
 end
 
-function zeigeMenu()
+local function zeigeMenu()
   gpu.setBackground(Adressfarbe)
   gpu.setForeground(Adresstextfarbe)
   for P = 1, screen_height - 3 do
@@ -276,7 +277,7 @@ function zeigeMenu()
   end
 end
 
-function AdressenLesen()
+local function AdressenLesen()
   for i, na in pairs(gespeicherteAdressen) do
     if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
       AdressAnzeige = i - seite * 10
@@ -295,7 +296,7 @@ function AdressenLesen()
   end
 end
 
-function Infoseite()
+local function Infoseite()
   print(sprachen.Steuerung)
   if iris == "Offline" then else
     print("I " .. sprachen.IrisSteuerung .. sprachen.an_aus)
@@ -322,7 +323,7 @@ function Infoseite()
   print("\n" .. sprachen.entwicklerName .. " Nex4rius")
 end
 
-function AdressenSpeichern()
+local function AdressenSpeichern()
   adressen = loadfile("/stargate/adressen.lua")()
   gespeicherteAdressen = {}
   sendeAdressen = {}
@@ -370,7 +371,7 @@ function AdressenSpeichern()
   zeigeNachricht("")
 end
 
-function ErsetzePunktMitKomma(...)
+local function ErsetzePunktMitKomma(...)
   if Sprache == "deutsch" then
     local Punkt = string.find(..., "%.")
     if type(Punkt) == "number" then
@@ -380,7 +381,7 @@ function ErsetzePunktMitKomma(...)
   return ...
 end
 
-function zeigeFarben()
+local function zeigeFarben()
   gpu.setBackground(Trennlinienfarbe)
   for P = 1, screen_height - 2 do
     zeigeHier(xVerschiebung - 2, P, "  ", 1)
@@ -390,24 +391,24 @@ function zeigeFarben()
   neueZeile(1)
 end
 
-function getIrisState()
+local function getIrisState()
   ok, result = pcall(sg.irisState)
   return result
 end
 
-function irisClose()
+local function irisClose()
   sg.closeIris()
   RedstoneAenderung(yellow, 255)
   Colorful_Lamp_Steuerung()
 end
 
-function irisOpen()
+local function irisOpen()
   sg.openIris()
   RedstoneAenderung(yellow, 0)
   Colorful_Lamp_Steuerung()
 end
 
-function sides()
+local function sides()
   if side == "oben" or side == "top" then
     sideNum = 1
   elseif side == "hinten" or side == "back" then
@@ -423,7 +424,7 @@ function sides()
   end
 end
 
-function iriscontroller()
+local function iriscontroller()
   if state == "Dialing" then
     messageshow = true
   end
@@ -526,7 +527,7 @@ function iriscontroller()
   end
 end
 
-function sendeAdressliste()
+local function sendeAdressliste()
   if einmalAdressenSenden then
     einmalAdressenSenden = false
     return "Adressliste", require("serialization").serialize(sendeAdressen), version
@@ -535,11 +536,11 @@ function sendeAdressliste()
   end
 end
 
-function neueZeile(...)
+local function neueZeile(...)
   zeile = zeile + ...
 end
 
-function newAddress(neueAdresse, neuerName, ...)
+local function newAddress(neueAdresse, neuerName, ...)
   if AddNewAddress == true and string.len(neueAdresse) == 11 then
     AdressenAnzahl = AdressenAnzahl + 1
     adressen[AdressenAnzahl] = {}
@@ -562,7 +563,7 @@ function newAddress(neueAdresse, neuerName, ...)
   end
 end
 
-function destinationName()
+local function destinationName()
   if state == "Dialling" or state == "Connected" then
     if remoteName == "" and state == "Dialling" and wormhole == "in" then
       for j, na in pairs(adressen) do
@@ -582,7 +583,7 @@ function destinationName()
   end
 end
 
-function getAddress(...)
+local function getAddress(...)
   if ... == "" or ... == nil then
     return ""
   elseif string.len(...) == 7 then
@@ -592,7 +593,7 @@ function getAddress(...)
   end
 end
 
-function wormholeDirection()
+local function wormholeDirection()
   if direction == "Outgoing" then
     wormhole = "out"
   end
@@ -601,7 +602,7 @@ function wormholeDirection()
   end
 end
 
-function aktualisiereStatus()
+local function aktualisiereStatus()
   gpu.setResolution(70, 25)
   sg = component.getPrimary("stargate")
   locAddr = getAddress(sg.localAddress())
@@ -640,7 +641,7 @@ function aktualisiereStatus()
   end
 end
 
-function zeigeStatus()
+local function zeigeStatus()
   aktualisiereStatus()
   gpu.setBackground(Statusfarbe)
   gpu.setForeground(Statustextfarbe)
@@ -669,7 +670,7 @@ function zeigeStatus()
   Colorful_Lamp_Steuerung()
 end
 
-function RedstoneAenderung(a, b)
+local function RedstoneAenderung(a, b)
   if sideNum == nil then
     sides()
   end
@@ -678,7 +679,7 @@ function RedstoneAenderung(a, b)
   end
 end
 
-function RedstoneKontrolle()
+local function RedstoneKontrolle()
   if RichtungName == sprachen.RichtungNameEin then
     if redstoneIncoming == true then
       RedstoneAenderung(red, 255)
@@ -717,7 +718,7 @@ function RedstoneKontrolle()
   end
 end
 
-function zeigeSteuerung()
+local function zeigeSteuerung()
   zeigeFarben()
   gpu.setBackground(Steuerungsfarbe)
   gpu.setForeground(Steuerungstextfarbe)
@@ -753,7 +754,7 @@ function zeigeSteuerung()
   end
 end
 
-function autoclose()
+local function autoclose()
   if autoclosetime == false then
     zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAus)
   else
@@ -764,7 +765,7 @@ function autoclose()
   end
 end
 
-function zeigeEnergie()
+local function zeigeEnergie()
   if     energy > 10000000000 then
     energieMenge = string.format("%.3f", energy / 1000000000) .. " G"
   elseif energy > 10000000 then
@@ -777,7 +778,7 @@ function zeigeEnergie()
   zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2 .. ErsetzePunktMitKomma(energieMenge))
 end
 
-function activetime()
+local function activetime()
   if state == "Connected" then
     if activationtime == 0 then
       activationtime = os.time()
@@ -792,17 +793,17 @@ function activetime()
   end
 end
 
-function zeigeHier(x, y, s, h)
+local function zeigeHier(x, y, s, h)
   if type(x) == "number" and type(y) == "number" and type(s) == "string" then
     setCursor(x, y)
     if not h then
-      h = 70
+      h = screen_width
     end
     write(pad(s, h))
   end
 end
 
-function zeigeNachricht(...)
+local function zeigeNachricht(...)
   if ... == "" then
     Nachrichtleer = true
   else
@@ -827,14 +828,14 @@ function zeigeNachricht(...)
   gpu.setBackground(Statusfarbe)
 end
 
-function zeigeFehler(...)
+local function zeigeFehler(...)
   if ... == "" then else
     schreibFehlerLog(...)
     zeigeNachricht(string.format("%s %s", sprachen.fehlerName, ...))
   end
 end
 
-function schreibFehlerLog(...)
+local function schreibFehlerLog(...)
   if letzteEingabe == ... then else
     if fs.exists("/log") then
       f = io.open("log", "a")
@@ -865,7 +866,7 @@ end
 
 handlers = {}
 
-function dial(name, adresse)
+local function dial(name, adresse)
   if state == "Idle" then
     remoteName = name
     zeigeNachricht(sprachen.waehlen .. "<" .. string.sub(remoteName, 1, xVerschiebung + 12) .. "> <" .. adresse .. ">")
@@ -1009,7 +1010,7 @@ handlers[key_event_name] = function(e)
   end
 end
 
-function handlers.sgChevronEngaged(e)
+local function handlers.sgChevronEngaged(e)
   chevron = e[3]
   if chevron <= 4 then
     zielAdresse = string.sub(sg.remoteAddress(), 1, chevron)
@@ -1021,7 +1022,7 @@ function handlers.sgChevronEngaged(e)
   zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
 end
 
-function eventLoop()
+local function eventLoop()
   while running do
     checken(zeigeStatus)
     checken(checkReset)
@@ -1053,7 +1054,7 @@ function eventLoop()
   end
 end
 
-function angekommeneAdressen(...)
+local function angekommeneAdressen(...)
   local AddNewAddress = false
   for a, b in pairs(...) do
     local neuHinzufuegen = false
@@ -1084,7 +1085,7 @@ function angekommeneAdressen(...)
   end
 end
 
-function angekommeneVersion(...)
+local function angekommeneVersion(...)
   local Endpunkt = string.len(...)
   local EndpunktVersion = string.len(version)
   if string.sub(..., Endpunkt - 3, Endpunkt) ~= "BETA" and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" and version ~= ... and autoUpdate == true then
@@ -1096,14 +1097,14 @@ function angekommeneVersion(...)
   end
 end
 
-function checken(...)
+local function checken(...)
   ok, result = pcall(...)
   if not ok then
     zeigeFehler(result)
   end
 end
 
-function Colorful_Lamp_Steuerung()
+local function Colorful_Lamp_Steuerung()
   if iris == "Closed" or iris == "Closing" or LampenRot == true then
     Colorful_Lamp_Farben(31744) -- rot
   elseif redstoneIDC == false then
@@ -1125,7 +1126,7 @@ function Colorful_Lamp_Steuerung()
   --0      schwarz
 end
 
-function Colorful_Lamp_Farben(eingabe, ausgabe)
+local function Colorful_Lamp_Farben(eingabe, ausgabe)
   if alte_eingabe == eingabe then else
     for k in component.list("colorful_lamp") do
       component.proxy(k).setLampColor(eingabe)
@@ -1137,18 +1138,18 @@ function Colorful_Lamp_Farben(eingabe, ausgabe)
   end
 end
 
-function zeigeAnzeige()
+local function zeigeAnzeige()
   zeigeFarben()
   zeigeStatus()
   zeigeMenu()
 end
 
-function redstoneAbschalten(sideNum, Farbe, printAusgabe)
+local function redstoneAbschalten(sideNum, Farbe, printAusgabe)
   r.setBundledOutput(sideNum, Farbe, 0)
   print(sprachen.redstoneAusschalten .. printAusgabe)
 end
 
-function beendeAlles()
+local function beendeAlles()
   gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   gpu.setBackground(schwarzeFarbe)
   gpu.setForeground(weisseFarbe)
@@ -1176,7 +1177,7 @@ function beendeAlles()
   end
 end
 
-function main()
+local function main()
   loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Stargate Computer")
   if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
     irisOpen()
