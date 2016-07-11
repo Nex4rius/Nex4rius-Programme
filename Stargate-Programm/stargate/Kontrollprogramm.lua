@@ -701,6 +701,45 @@ local function aktualisiereStatus()
   end
 end
 
+local function autoclose()
+  if autoclosetime == false then
+    zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAus)
+  else
+    zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAn .. autoclosetime .. "s")
+    if (activationtime - os.time()) / sectime > autoclosetime and state == "Connected" then
+      sg.disconnect()
+    end
+  end
+end
+
+local function zeigeEnergie()
+  if     energy > 10000000000 then
+    energieMenge = string.format("%.3f", energy / 1000000000) .. " G"
+  elseif energy > 10000000 then
+    energieMenge = string.format("%.2f", energy / 1000000) .. " M"
+  elseif energy > 10000 then
+    energieMenge = string.format("%.1f", energy / 1000) .. " k"
+  else
+    energieMenge = string.format("%.f",  energy)
+  end
+  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2 .. ErsetzePunktMitKomma(energieMenge))
+end
+
+local function activetime()
+  if state == "Connected" then
+    if activationtime == 0 then
+      activationtime = os.time()
+    end
+    time = (activationtime - os.time()) / sectime
+    if time > 0 then
+      zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit1 .. ErsetzePunktMitKomma(string.format("%.1f", time)) .. "s")
+    end
+  else
+    zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit2)
+    time = 0
+  end
+end
+
 local function zeigeStatus()
   aktualisiereStatus()
   gpu.setBackground(Farben.Statusfarbe)
@@ -811,45 +850,6 @@ local function zeigeSteuerung()
   neueZeile(1)
   for i = zeile, screen_height - 3 do
     zeigeHier(xVerschiebung, i, "")
-  end
-end
-
-local function autoclose()
-  if autoclosetime == false then
-    zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAus)
-  else
-    zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAn .. autoclosetime .. "s")
-    if (activationtime - os.time()) / sectime > autoclosetime and state == "Connected" then
-      sg.disconnect()
-    end
-  end
-end
-
-local function zeigeEnergie()
-  if     energy > 10000000000 then
-    energieMenge = string.format("%.3f", energy / 1000000000) .. " G"
-  elseif energy > 10000000 then
-    energieMenge = string.format("%.2f", energy / 1000000) .. " M"
-  elseif energy > 10000 then
-    energieMenge = string.format("%.1f", energy / 1000) .. " k"
-  else
-    energieMenge = string.format("%.f",  energy)
-  end
-  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2 .. ErsetzePunktMitKomma(energieMenge))
-end
-
-local function activetime()
-  if state == "Connected" then
-    if activationtime == 0 then
-      activationtime = os.time()
-    end
-    time = (activationtime - os.time()) / sectime
-    if time > 0 then
-      zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit1 .. ErsetzePunktMitKomma(string.format("%.1f", time)) .. "s")
-    end
-  else
-    zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit2)
-    time = 0
   end
 end
 
