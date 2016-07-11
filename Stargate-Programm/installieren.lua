@@ -15,7 +15,6 @@ else
   local autoUpdate = false
 end
 
-print(versionTyp)
 
 if fs.exists("/stargate/sprache/" .. Sprache .. ".lua") then
   local sprachen = loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
@@ -33,6 +32,7 @@ local function installieren(versionTyp)
   fs.makeDirectory("/update/stargate/sprache")
   local updateKomplett = false
   local update = {}
+  print(versionTyp)
   update[1] = wget("-f", Pfad(versionTyp) .. "autorun.lua",                        "/update/autorun.lua")
   update[2] = wget("-f", Pfad(versionTyp) .. "stargate/check.lua",                 "/update/stargate/check.lua")
   update[3] = wget("-f", Pfad(versionTyp) .. "stargate/version.txt",               "/update/stargate/version.txt")
