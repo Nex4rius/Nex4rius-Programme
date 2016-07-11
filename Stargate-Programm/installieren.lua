@@ -33,7 +33,6 @@ local function installieren(versionTyp)
   fs.makeDirectory("/update/stargate/sprache")
   local updateKomplett = false
   local update = {}
-  print(versionTyp)
   update[1] = wget("-f", Pfad(versionTyp) .. "autorun.lua",                        "/update/autorun.lua")
   update[2] = wget("-f", Pfad(versionTyp) .. "stargate/check.lua",                 "/update/stargate/check.lua")
   update[3] = wget("-f", Pfad(versionTyp) .. "stargate/version.txt",               "/update/stargate/version.txt")
@@ -68,7 +67,6 @@ local function installieren(versionTyp)
     end
   end
   if updateKomplett then
-    print("Update komplett")
     fs.makeDirectory("/stargate/sprache")
     move("-f", "/update/autorun.lua",                         "/autorun.lua")
     move("-f", "/update/stargate/check.lua",                  "/stargate/check.lua")
@@ -84,16 +82,15 @@ local function installieren(versionTyp)
     move("-f", "/update/stargate/sprache/deutsch.lua",        "/stargate/sprache/deutsch.lua")
     move("-f", "/update/stargate/sprache/english.lua",        "/stargate/sprache/english.lua")
     move("-f", "/update/stargate/sprache/ersetzen.lua",       "/stargate/sprache/ersetzen.lua")
-    print()
     if versionTyp == "beta" then
       f = io.open ("/stargate/version.txt", "r")
       version = f:read()
-      print(version)
       f:close()
       f = io.open ("/stargate/version.txt", "w")
       f:write(version .. " BETA")
       f:close()
     end
+    print("\nUpdate komplett\n" .. versionTyp .. version .. "\n")
   end
   installieren = true
   loadfile("/stargate/schreibSicherungsdatei.lua")(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
