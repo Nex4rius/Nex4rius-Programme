@@ -868,6 +868,7 @@ local function zeigeNachricht(...)
   elseif fs.exists("/log") then
     zeigeHier(1, screen_height - 1, sprachen.fehlerName .. " /log", screen_width)
     zeigeHier(1, screen_height, "", 0)
+    zeigeMenu()
   else
     zeigeHier(1, screen_height - 1, "", screen_width)
   end
