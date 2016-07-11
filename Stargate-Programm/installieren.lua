@@ -90,7 +90,7 @@ local function installieren(versionTyp)
       f:write(version .. " BETA")
       f:close()
     end
-    print("\nUpdate komplett\n" .. version .. " " .. versionTyp .. "\n")
+    print("\nUpdate komplett\n" .. version .. " " .. string.upper(versionTyp) .. "\n")
   end
   installieren = true
   loadfile("/stargate/schreibSicherungsdatei.lua")(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
