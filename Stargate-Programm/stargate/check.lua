@@ -11,8 +11,8 @@ local schreibSicherungsdatei  = loadfile("/stargate/schreibSicherungsdatei.lua")
 local betaVersionName         = ""
 local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate
 
-gpu.setResolution(gpu.maxResolution())
-gpu.setBackground(0x000000)
+gpu.setResolution(70, 25)
+gpu.setBackground(6684774)
 gpu.setForeground(0xFFFFFF)
 require("term").clear()
 
@@ -207,3 +207,7 @@ else
     mainCheck()
   end
 end
+
+gpu.setBackground(0x000000)
+gpu.setForeground(0xFFFFFF)
+gpu.setResolution(gpu.maxResolution())
