@@ -28,7 +28,8 @@ end
 local function checkSprache()
   print("Sprache? / Language? deutsch / english\n")
   antwortFrageSprache = io.read()
-  if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" or wget("-f", Pfad(versionTyp) .. "stargate/sprache/" .. antwortFrageSprache .. ".lua", "/update/stargate/sprache/" .. antwortFrageSprache .. ".lua") then
+  if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" or 
+  wget("-f", Pfad(versionTyp) .. "stargate/sprache/" .. antwortFrageSprache .. ".lua", "/update/stargate/sprache/" .. antwortFrageSprache .. ".lua") then
     Sprache = string.lower(antwortFrageSprache)
   else
     print("\nUnbekannte Eingabe\nStandardeinstellung = deutsch")
