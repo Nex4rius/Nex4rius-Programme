@@ -824,6 +824,40 @@ local function RedstoneKontrolle()
   end
 end
 
+local function Colorful_Lamp_Steuerung()
+  if iris == "Closed" or iris == "Closing" or LampenRot == true then
+    Colorful_Lamp_Farben(31744) -- rot
+  elseif redstoneIDC == false then
+    Colorful_Lamp_Farben(992)   -- grün
+  elseif redstoneIncoming == false then
+    Colorful_Lamp_Farben(32256) -- orange
+  elseif LampenGruen == true then
+    Colorful_Lamp_Farben(992)   -- grün
+  elseif redstoneState == true then
+    Colorful_Lamp_Farben(32736) -- gelb
+  else
+    Colorful_Lamp_Farben(32767) -- weiß
+  end
+  --32767  weiß
+  --32736  gelb
+  --32256  orange
+  --31744  rot
+  --992    grün
+  --0      schwarz
+end
+
+local function Colorful_Lamp_Farben(eingabe, ausgabe)
+  if alte_eingabe == eingabe then else
+    for k in component.list("colorful_lamp") do
+      component.proxy(k).setLampColor(eingabe)
+      if ausgabe then
+        print(sprachen.colorfulLampAusschalten .. k)
+      end
+    end
+    alte_eingabe = eingabe
+  end
+end
+
 local function zeigeStatus()
   aktualisiereStatus()
   gpu.setBackground(Farben.Statusfarbe)
@@ -1141,40 +1175,6 @@ local function checken(...)
   ok, result = pcall(...)
   if not ok then
     zeigeFehler(result)
-  end
-end
-
-local function Colorful_Lamp_Steuerung()
-  if iris == "Closed" or iris == "Closing" or LampenRot == true then
-    Colorful_Lamp_Farben(31744) -- rot
-  elseif redstoneIDC == false then
-    Colorful_Lamp_Farben(992)   -- grün
-  elseif redstoneIncoming == false then
-    Colorful_Lamp_Farben(32256) -- orange
-  elseif LampenGruen == true then
-    Colorful_Lamp_Farben(992)   -- grün
-  elseif redstoneState == true then
-    Colorful_Lamp_Farben(32736) -- gelb
-  else
-    Colorful_Lamp_Farben(32767) -- weiß
-  end
-  --32767  weiß
-  --32736  gelb
-  --32256  orange
-  --31744  rot
-  --992    grün
-  --0      schwarz
-end
-
-local function Colorful_Lamp_Farben(eingabe, ausgabe)
-  if alte_eingabe == eingabe then else
-    for k in component.list("colorful_lamp") do
-      component.proxy(k).setLampColor(eingabe)
-      if ausgabe then
-        print(sprachen.colorfulLampAusschalten .. k)
-      end
-    end
-    alte_eingabe = eingabe
   end
 end
 
