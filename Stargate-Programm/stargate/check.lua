@@ -13,7 +13,7 @@ local betaVersionName         = ""
 require("term").clear()
 
 local function Pfad(versionTyp)
-  return "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/" .. versionTyp .. "/Stargate-Programm"
+  return "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/" .. versionTyp .. "/Stargate-Programm/"
 end
 
 if fs.exists("/stargate/version.txt") then
@@ -27,7 +27,7 @@ end
 local function checkSprache()
   print("Sprache? / Language? deutsch / english\n")
   antwortFrageSprache = io.read()
-  if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" or wget("-f", Pfad(versionTyp) .. "/stargate/sprache/" .. antwortFrageSprache .. ".lua", "/update/stargate/sprache/" .. antwortFrageSprache .. ".lua") then
+  if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" or wget("-f", Pfad(versionTyp) .. "stargate/sprache/" .. antwortFrageSprache .. ".lua", "/update/stargate/sprache/" .. antwortFrageSprache .. ".lua") then
     Sprache = string.lower(antwortFrageSprache)
   else
     print("\nUnbekannte Eingabe\nStandardeinstellung = deutsch")
@@ -85,7 +85,8 @@ function update(versionTyp)
   if versionTyp == nil then
     versionTyp = "master"
   end
-  if wget("-f", Pfad(versionTyp) .. "/installieren.lua", "/installieren.lua") then
+  print(versionTyp)
+  if wget("-f", Pfad(versionTyp) .. "installieren.lua", "/installieren.lua") then
     installieren = true
     schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
     f = io.open ("autorun.lua", "w")
@@ -100,7 +101,7 @@ function update(versionTyp)
 end
 
 function checkServerVersion()
-  if wget("-fQ", Pfad("master") .. "/stargate/version.txt", "/serverVersion.txt") then
+  if wget("-fQ", Pfad("master") .. "stargate/version.txt", "/serverVersion.txt") then
     f = io.open ("/serverVersion.txt", "r")
     serverVersion = f:read()
     f:close()
@@ -112,7 +113,7 @@ function checkServerVersion()
 end
 
 function checkBetaServerVersion()
-  if wget("-fQ", Pfad("beta") .. "/stargate/version.txt", "/betaVersion.txt") then
+  if wget("-fQ", Pfad("beta") .. "stargate/version.txt", "/betaVersion.txt") then
     f = io.open ("/betaVersion.txt", "r")
     betaServerVersion = f:read()
     f:close()
