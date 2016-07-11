@@ -885,6 +885,7 @@ local function schreibFehlerLog(...)
       f = io.open("log", "a")
     else
       f = io.open("log", "w")
+      f:write("-- "Ctrl + W" to exit\n")
     end
     if type(...) == "string" then
       f:write(...)
