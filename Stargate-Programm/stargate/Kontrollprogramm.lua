@@ -64,19 +64,19 @@ Farben.gelbeFarbe           = 16750899
 Farben.brauenFarbe          = 10046464
 Farben.grueneFarbe          = 39168
 
-Farben.FehlerFarbe          = roteFarbe
-Farben.Hintergrundfarbe     = graueFarbe
-Farben.Trennlinienfarbe     = blaueFarbe
-Farben.Textfarbe            = weisseFarbe
+Farben.FehlerFarbe          = Farben.roteFarbe
+Farben.Hintergrundfarbe     = Farben.graueFarbe
+Farben.Trennlinienfarbe     = Farben.blaueFarbe
+Farben.Textfarbe            = Farben.weisseFarbe
 
-Farben.Adressfarbe          = brauenFarbe
-Farben.Adresstextfarbe      = Textfarbe
-Farben.Nachrichtfarbe       = graueFarbe
-Farben.Nachrichttextfarbe   = Textfarbe
-Farben.Steuerungsfarbe      = gelbeFarbe
-Farben.Steuerungstextfarbe  = schwarzeFarbe
-Farben.Statusfarbe          = grueneFarbe
-Farben.Statustextfarbe      = Textfarbe
+Farben.Adressfarbe          = Farben.brauenFarbe
+Farben.Adresstextfarbe      = Farben.Textfarbe
+Farben.Nachrichtfarbe       = Farben.graueFarbe
+Farben.Nachrichttextfarbe   = Farben.Textfarbe
+Farben.Steuerungsfarbe      = Farben.gelbeFarbe
+Farben.Steuerungstextfarbe  = Farben.schwarzeFarbe
+Farben.Statusfarbe          = Farben.grueneFarbe
+Farben.Statustextfarbe      = Farben.Textfarbe
 
 local activetime
 local AdressAnzeige
