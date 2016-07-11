@@ -316,25 +316,14 @@ local function zeigeHier(x, y, s, h)
   end
 end
 
-local function zeigeMenu()
-  gpu.setBackground(Farben.Adressfarbe)
-  gpu.setForeground(Farben.Adresstextfarbe)
-  for P = 1, screen_height - 3 do
-    zeigeHier(1, P, "", xVerschiebung - 3)
-  end
-  setCursor(1, 1)
-  if seite == -1 then
-    Infoseite()
-  else
-    if (os.time() / sectime) - letzterAdressCheck > 21600 then
-      letzterAdressCheck = os.time() / sectime
-      AdressenSpeichern()
-    else
-      print(sprachen.Adressseite .. seite + 1)
-      AdressenLesen()
+local function ErsetzePunktMitKomma(...)
+  if Sprache == "deutsch" then
+    local Punkt = string.find(..., "%.")
+    if type(Punkt) == "number" then
+      return string.sub(..., 0, Punkt - 1) .. "," .. string.sub(..., Punkt + 1)
     end
-    iris = getIrisState()
   end
+  return ...
 end
 
 local function AdressenLesen()
@@ -431,14 +420,25 @@ local function AdressenSpeichern()
   zeigeNachricht("")
 end
 
-local function ErsetzePunktMitKomma(...)
-  if Sprache == "deutsch" then
-    local Punkt = string.find(..., "%.")
-    if type(Punkt) == "number" then
-      return string.sub(..., 0, Punkt - 1) .. "," .. string.sub(..., Punkt + 1)
-    end
+local function zeigeMenu()
+  gpu.setBackground(Farben.Adressfarbe)
+  gpu.setForeground(Farben.Adresstextfarbe)
+  for P = 1, screen_height - 3 do
+    zeigeHier(1, P, "", xVerschiebung - 3)
   end
-  return ...
+  setCursor(1, 1)
+  if seite == -1 then
+    Infoseite()
+  else
+    if (os.time() / sectime) - letzterAdressCheck > 21600 then
+      letzterAdressCheck = os.time() / sectime
+      AdressenSpeichern()
+    else
+      print(sprachen.Adressseite .. seite + 1)
+      AdressenLesen()
+    end
+    iris = getIrisState()
+  end
 end
 
 local function neueZeile(...)
