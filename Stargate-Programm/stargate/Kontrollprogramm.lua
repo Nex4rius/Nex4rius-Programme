@@ -77,34 +77,81 @@ local Steuerungstextfarbe   = schwarzeFarbe
 local Statusfarbe           = grueneFarbe
 local Statustextfarbe       = Textfarbe
 
+local activetime
 local AdressAnzeige
 local adressen
+local AdressenLesen
+local AdressenSpeichern
+local aktualisiereStatus
 local alte_eingabe
+local angekommeneAdressen
 local angekommeneVersion
 local anwahlEnergie
 local ausgabe
+local autoclose
+local beendeAlles
+local check
+local checken
+local checkReset
 local chevron
+local Colorful_Lamp_Farben
+local Colorful_Lamp_Steuerung
+local destinationName
+local dial
 local direction
 local eingabe
 local energieMenge
 local ergebnis
+local ErsetzePunktMitKomma
+local eventLoop
 local gespeicherteAdressen
+local getAddress
+local Infoseite
 local iris
+local irisClose
+local iriscontroller
+local irisOpen
 local k
+local key_event_char
 local letzteNachricht
 local locAddr
+local main
 local mess
 local mess_old
+local neueZeile
+local newAddress
 local ok
+local pad
+local pull_event
 local r
 local remAddr
 local result
+local redstoneAbschalten
+local RedstoneAenderung
+local RedstoneKontrolle
 local RichtungName
+local setCursor
 local schreibFehlerLog
+local schreibeAdressen
 local sendeAdressen
+local sendeAdressliste
 local sideNum
+local sides
 local state
 local StatusName
+local try
+local wormholeDirection
+local write
+local zeichenErsetzen
+local zeigeAnzeige
+local zeigeEnergie
+local zeigeFarben
+local zeigeFehler
+local zeigeHier
+local zeigeMenu
+local zeigeNachricht
+local zeigeStatus
+local zeigeSteuerung
 
 local white                 = 0
 --local orange                = 1
@@ -275,7 +322,7 @@ local function zeigeMenu()
       print(sprachen.Adressseite .. seite + 1)
       AdressenLesen()
     end
-    iris = sg.irisState()
+    iris = getIrisState()
   end
 end
 
@@ -612,7 +659,7 @@ local function aktualisiereStatus()
   destinationName()
   state, chevrons, direction = sg.stargateState()
   wormholeDirection()
-  iris = sg.irisState()
+  iris = getIrisState()
   iriscontroller()
   if state == "Idle" then
     RichtungName = ""
@@ -819,6 +866,7 @@ local function zeigeNachricht(...)
     zeigeHier(1, screen_height - 1, sprachen.aktualisierenGleich, screen_width)
   elseif fs.exists("/log") then
     zeigeHier(1, screen_height - 1, sprachen.fehlerName .. " /log", screen_width)
+    zeigeHier(1, screen_height, "", 0)
   else
     zeigeHier(1, screen_height - 1, "", screen_width)
   end
@@ -884,7 +932,7 @@ local function dial(name, adresse)
   os.sleep(1)
 end
 
-handlers[key_event_name] = function(e)
+function handlers[key_event_name](e)
   c = key_event_char(e)
   if entercode == true then
     if e[3] == 13 then
@@ -1179,7 +1227,7 @@ end
 
 local function main()
   loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "StargateComputer")
-  if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
+  if sg.stargateState() == "Idle" and getIrisState() == "Closed" then
     irisOpen()
   end
   term.clear()
