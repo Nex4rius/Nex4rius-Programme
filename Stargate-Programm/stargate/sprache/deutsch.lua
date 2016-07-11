@@ -101,7 +101,7 @@ return {
   Hilfetext                 = "Verwendung: autorun [...]\nja\t-> Aktualisierung zur stabilen Version\nnein\t-> keine Aktualisierung\nbeta\t-> Aktualisierung zur Beta-Version\nhilfe\t-> zeige diese Nachricht nochmal",
   Sprachaenderung           = "Sprachänderung ab nächstem Neustart",
   entwicklerName            = "Entwickler:",
-  IDCgesendet               = "Sende IDC",
+  IDCgesendet               = "sende IDC",
   DateienFehlen             = "Dateien fehlen\nAlles neu herunterladen?",
 }
 
