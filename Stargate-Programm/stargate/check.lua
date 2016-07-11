@@ -1,34 +1,20 @@
 -- pastebin run -f wLK1gCKt
 -- von Nex4rius
--- https://github.com/Nex4rius/Stargate-Programm
+-- https://github.com/Nex4rius/Stargate-Programm/tree/master/Stargate-Programm
 
-component = require("component")
-term = require("term")
-event = require("event")
-fs = require("filesystem")
-c = require("computer")
-args = require("shell").parse(...)
-wget = loadfile("/bin/wget.lua")
-gpu = component.getPrimary("gpu")
-schreibSicherungsdatei = loadfile("/stargate/schreibSicherungsdatei.lua")
-betaVersionName = ""
+local component               = require("component")
+local fs                      = require("filesystem")
+local args                    = require("shell").parse(...)
+local gpu                     = component.getPrimary("gpu")
+local wget                    = loadfile("/bin/wget.lua")
+local schreibSicherungsdatei  = loadfile("/stargate/schreibSicherungsdatei.lua")
+local betaVersionName         = ""
+local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate
+
+require("term").clear()
 
 local function Pfad(versionTyp)
-  return "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/" .. versionTyp .. "/Stargate-Programm"
-end
-
-if fs.exists("/stargate/Sicherungsdatei.lua") then
-  IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
-else
-  Sprache = ""
-  control = "On"
-  installieren = false
-end
-
-term.clear()
-
-if Sprache == "" then
-  checkSprache()
+  return "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/" .. versionTyp .. "/Stargate-Programm/"
 end
 
 if fs.exists("/stargate/version.txt") then
@@ -39,12 +25,11 @@ else
   version = sprachen.fehlerName
 end
 
-sprachen = loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
-
-function checkSprache()
+local function checkSprache()
   print("Sprache? / Language? deutsch / english\n")
   antwortFrageSprache = io.read()
-  if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" then
+  if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" or 
+  wget("-f", Pfad(versionTyp) .. "stargate/sprache/" .. antwortFrageSprache .. ".lua", "/update/stargate/sprache/" .. antwortFrageSprache .. ".lua") then
     Sprache = string.lower(antwortFrageSprache)
   else
     print("\nUnbekannte Eingabe\nStandardeinstellung = deutsch")
@@ -54,7 +39,17 @@ function checkSprache()
   print("")
 end
 
-function checkKomponenten()
+if fs.exists("/stargate/Sicherungsdatei.lua") then
+  IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
+else
+  checkSprache()
+  installieren = false
+  control = "On"
+end
+
+sprachen = loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
+
+local function checkKomponenten()
   print(sprachen.pruefeKomponenten)
   if component.isAvailable("redstone") then
     print(sprachen.redstoneOK)
@@ -92,12 +87,11 @@ function update(versionTyp)
   if versionTyp == nil then
     versionTyp = "master"
   end
-  if wget("-f", Pfad(versionTyp) .. "/installieren.lua", "/installieren.lua") then
+  if wget("-f", Pfad(versionTyp) .. "installieren.lua", "/installieren.lua") then
     installieren = true
     schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
     f = io.open ("autorun.lua", "w")
-    f:write('versionTyp = "' .. versionTyp .. '"\n')
-    f:write('loadfile("installieren.lua")(' .. versionTyp .. ')')
+    f:write('loadfile("installieren.lua")("' .. versionTyp .. '")')
     f:close()
     loadfile("autorun.lua")()
   elseif versionTyp == "master" then
@@ -107,7 +101,7 @@ function update(versionTyp)
 end
 
 function checkServerVersion()
-  if wget("-fQ", Pfad("master") .. "/stargate/version.txt", "/serverVersion.txt") then
+  if wget("-fQ", Pfad("master") .. "stargate/version.txt", "/serverVersion.txt") then
     f = io.open ("/serverVersion.txt", "r")
     serverVersion = f:read()
     f:close()
@@ -118,8 +112,8 @@ function checkServerVersion()
   return serverVersion
 end
 
-function checkBetaServerVersion()
-  if wget("-fQ", Pfad("beta") .. "/stargate/version.txt", "/betaVersion.txt") then
+local function checkBetaServerVersion()
+  if wget("-fQ", Pfad("beta") .. "stargate/version.txt", "/betaVersion.txt") then
     f = io.open ("/betaVersion.txt", "r")
     betaServerVersion = f:read()
     f:close()
@@ -130,7 +124,18 @@ function checkBetaServerVersion()
   return betaServerVersion
 end
 
-function mainCheck()
+local function checkDateien()
+  if fs.exists("/autorun.lua") and fs.exists("/stargate/Kontrollprogramm.lua") then
+    if fs.exists("/stargate/Sicherungsdatei.lua") and fs.exists("/stargate/adressen.lua") then
+      if fs.exists("/stargate/check.lua") and fs.exists("/stargate/version.txt") then
+        if fs.exists("/stargate/sprache/deutsch.lua") and fs.exists("/stargate/sprache/english.lua") then
+          if fs.exists("/stargate/sprache/ersetzen.lua") and fs.exists("/stargate/schreibSicherungsdatei.lua") then
+            return true
+  end end end end end
+  return false
+end
+
+local function mainCheck()
   if internet == true then
     serverVersion = checkServerVersion()
     betaServerVersion = checkBetaServerVersion()
@@ -191,35 +196,10 @@ function mainCheck()
   end
 end
 
-function checkDateien()
-  if fs.exists("/autorun.lua") then
-    if fs.exists("/stargate/Kontrollprogramm.lua") then
-      if fs.exists("/stargate/Sicherungsdatei.lua") then
-        if fs.exists("/stargate/adressen.lua") then
-          if fs.exists("/stargate/check.lua") then
-            if fs.exists("/stargate/version.txt") then
-              if fs.exists("/stargate/sprache/deutsch.lua") then
-                if fs.exists("/stargate/sprache/english.lua") then
-                  if fs.exists("/stargate/sprache/ersetzen.lua") then
-                    if fs.exists("/stargate/schreibSicherungsdatei.lua") then
-                      return true
-                    end
-                  end
-                end
-              end
-            end
-          end
-        end
-      end
-    end
-  end
-  return false
-end
-
 if args[1] == sprachen.hilfe or args[1] == "hilfe" or args[1] == "help" then
   print(Hilfetext)
 else
-  if checkKomponenten() == true then
+  if checkKomponenten() then
     mainCheck()
   end
 end

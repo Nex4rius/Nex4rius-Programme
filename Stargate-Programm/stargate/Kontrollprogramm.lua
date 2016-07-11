@@ -1,6 +1,6 @@
 -- pastebin run -f wLK1gCKt
 -- von Nex4rius
--- https://github.com/Nex4rius/Stargate-Programm
+-- https://github.com/Nex4rius/Stargate-Programm/tree/master/Stargate-Programm
 
 local component             = require("component")
 local term                  = require("term")
@@ -195,9 +195,9 @@ local function pull_event()
   if state == "Idle" and checkEnergy == energy then
     if Nachrichtleer == true then
       if VersionUpdate == true then
-        zeigeNachricht(aktualisierenJetzt)
         gpu.setBackground(schwarzeFarbe)
         gpu.setForeground(weisseFarbe)
+        zeigeNachricht(aktualisierenJetzt)
         update("master")
       end
       Wartezeit = 300
@@ -235,22 +235,22 @@ end
 function checkReset()
   if time == "-" then else
     if time > 500 then
-      messageshow = true
-      IDCyes = false
-      send = true
-      incode = "-"
-      AddNewAddress = true
-      entercode = false
-      showidc = ""
-      wormhole = "in"
-      codeaccepted = "-"
-      k = "open"
-      iriscontrol = "on"
-      remoteName = ""
-      activationtime = 0
-      time = 0
-      LampenGruen = false
-      zielAdresse = ""
+      zielAdresse     = ""
+      remoteName      = ""
+      showidc         = ""
+      incode          = "-"
+      codeaccepted    = "-"
+      wormhole        = "in"
+      iriscontrol     = "on"
+      k               = "open"
+      LampenGruen     = false
+      IDCyes          = false
+      entercode       = false
+      messageshow     = true
+      send            = true
+      AddNewAddress   = true
+      activationtime  = 0
+      time            = 0
     end
   end
 end
@@ -535,8 +535,8 @@ function sendeAdressliste()
   end
 end
 
-function neueZeile(b)
-  zeile = zeile + b
+function neueZeile(...)
+  zeile = zeile + ...
 end
 
 function newAddress(neueAdresse, neuerName, ...)
@@ -1016,7 +1016,7 @@ function handlers.sgChevronEngaged(e)
   elseif chevron <= 7 then
     zielAdresse = string.sub(sg.remoteAddress(), 1, 4) .. "-" .. string.sub(sg.remoteAddress(), 5, chevron)
   else
-    zielAdresse = string.sub(sg.remoteAddress(), 1, 4) .. "-" .. string.sub(sg.remoteAddress(), 5, 7) .. "-" .. string.sub(sg.remoteAddress(), 8)
+    zielAdresse = string.sub(sg.remoteAddress(), 1, 4) .. "-" .. string.sub(sg.remoteAddress(), 5, 7) .. "-" .. string.sub(sg.remoteAddress(), 8, chevron)
   end
   zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
 end
