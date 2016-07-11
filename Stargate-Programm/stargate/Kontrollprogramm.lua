@@ -776,35 +776,6 @@ local function zeigeSteuerung()
   end
 end
 
-local function zeigeStatus()
-  aktualisiereStatus()
-  gpu.setBackground(Farben.Statusfarbe)
-  gpu.setForeground(Farben.Statustextfarbe)
-  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.lokaleAdresse .. locAddr) neueZeile(1)
-  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zielAdresseName .. zielAdresse) neueZeile(1)
-  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zielName .. remoteName) neueZeile(1)
-  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.statusName .. StatusName) neueZeile(1)
-  zeigeEnergie() neueZeile(1)
-  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IrisName .. zeichenErsetzen(iris)) neueZeile(1)
-  if iris == "Offline" then else
-    zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IrisSteuerung .. zeichenErsetzen(control)) neueZeile(1)
-  end
-  if IDCyes == true then
-    zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IDCakzeptiert) neueZeile(1)
-  else
-    zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IDCname .. incode) neueZeile(1)
-  end
-  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.chevronName .. chevrons) neueZeile(1)
-  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.richtung .. RichtungName) neueZeile(1)
-  activetime() neueZeile(1)
-  autoclose()
-  zeigeHier(xVerschiebung, zeile + 1, "")
-  Trennlinienhoehe = zeile + 2
-  zeigeSteuerung()
-  RedstoneKontrolle()
-  Colorful_Lamp_Steuerung()
-end
-
 local function RedstoneAenderung(a, b)
   if sideNum == nil then
     sides()
@@ -851,6 +822,35 @@ local function RedstoneKontrolle()
     RedstoneAenderung(green, 0)
     redstoneConnected = true
   end
+end
+
+local function zeigeStatus()
+  aktualisiereStatus()
+  gpu.setBackground(Farben.Statusfarbe)
+  gpu.setForeground(Farben.Statustextfarbe)
+  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.lokaleAdresse .. locAddr) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zielAdresseName .. zielAdresse) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zielName .. remoteName) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.statusName .. StatusName) neueZeile(1)
+  zeigeEnergie() neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IrisName .. zeichenErsetzen(iris)) neueZeile(1)
+  if iris == "Offline" then else
+    zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IrisSteuerung .. zeichenErsetzen(control)) neueZeile(1)
+  end
+  if IDCyes == true then
+    zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IDCakzeptiert) neueZeile(1)
+  else
+    zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IDCname .. incode) neueZeile(1)
+  end
+  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.chevronName .. chevrons) neueZeile(1)
+  zeigeHier(xVerschiebung, zeile, "  " .. sprachen.richtung .. RichtungName) neueZeile(1)
+  activetime() neueZeile(1)
+  autoclose()
+  zeigeHier(xVerschiebung, zeile + 1, "")
+  Trennlinienhoehe = zeile + 2
+  zeigeSteuerung()
+  RedstoneKontrolle()
+  Colorful_Lamp_Steuerung()
 end
 
 local function zeigeNachricht(...)
