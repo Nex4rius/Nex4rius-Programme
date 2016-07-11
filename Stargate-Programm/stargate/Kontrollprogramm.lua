@@ -887,18 +887,7 @@ local function schreibFehlerLog(...)
       f = io.open("log", "w")
     end
     if type(...) == "string" then
-      if string.len(...) > max_Bildschirmbreite then
-        local rest = string.len(...)
-        local a = 0
-        while rest > max_Bildschirmbreite do
-          f:write(string.sub(..., a, a + max_Bildschirmbreite) .. "\n")
-          rest = string.len(string.sub(..., a + max_Bildschirmbreite))
-          a = a + max_Bildschirmbreite + 1
-        end
-        f:write(string.sub(..., a) .. "\n")
-      else
-        f:write(...)
-      end
+      f:write(...)
     elseif type(...) == "table" then
       f:write(require("serialization").serialize(...))
     end
