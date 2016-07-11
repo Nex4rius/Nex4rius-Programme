@@ -124,6 +124,31 @@ local function checkBetaServerVersion()
   return betaServerVersion
 end
 
+local function checkDateien()
+  if fs.exists("/autorun.lua") then
+    if fs.exists("/stargate/Kontrollprogramm.lua") then
+      if fs.exists("/stargate/Sicherungsdatei.lua") then
+        if fs.exists("/stargate/adressen.lua") then
+          if fs.exists("/stargate/check.lua") then
+            if fs.exists("/stargate/version.txt") then
+              if fs.exists("/stargate/sprache/deutsch.lua") then
+                if fs.exists("/stargate/sprache/english.lua") then
+                  if fs.exists("/stargate/sprache/ersetzen.lua") then
+                    if fs.exists("/stargate/schreibSicherungsdatei.lua") then
+                      return true
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+  return false
+end
+
 local function mainCheck()
   if internet == true then
     serverVersion = checkServerVersion()
@@ -183,31 +208,6 @@ local function mainCheck()
       loadfile("/bin/pastebin.lua")("run", "-f", "wLK1gCKt")
     end
   end
-end
-
-local function checkDateien()
-  if fs.exists("/autorun.lua") then
-    if fs.exists("/stargate/Kontrollprogramm.lua") then
-      if fs.exists("/stargate/Sicherungsdatei.lua") then
-        if fs.exists("/stargate/adressen.lua") then
-          if fs.exists("/stargate/check.lua") then
-            if fs.exists("/stargate/version.txt") then
-              if fs.exists("/stargate/sprache/deutsch.lua") then
-                if fs.exists("/stargate/sprache/english.lua") then
-                  if fs.exists("/stargate/sprache/ersetzen.lua") then
-                    if fs.exists("/stargate/schreibSicherungsdatei.lua") then
-                      return true
-                    end
-                  end
-                end
-              end
-            end
-          end
-        end
-      end
-    end
-  end
-  return false
 end
 
 if args[1] == sprachen.hilfe or args[1] == "hilfe" or args[1] == "help" then
