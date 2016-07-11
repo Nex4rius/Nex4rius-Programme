@@ -351,7 +351,7 @@ function Funktionen.AdressenSpeichern()
   for P = 1, screen_height - 3 do
     Funktionen.zeigeHier(1, P, "", xVerschiebung - 3)
   end
-  zeigeMenu()
+  Funktionen.zeigeMenu()
   Funktionen.zeigeNachricht("")
 end
 
