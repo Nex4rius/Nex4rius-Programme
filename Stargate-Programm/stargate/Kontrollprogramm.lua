@@ -100,6 +100,7 @@ local r
 local remAddr
 local result
 local RichtungName
+local schreibFehlerLog
 local sendeAdressen
 local sideNum
 local state
