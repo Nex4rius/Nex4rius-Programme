@@ -101,5 +101,8 @@ local function installieren(versionTyp)
   require("computer").shutdown(true)
 end
 
---installieren(require("shell").parse(...)[1])
-installieren(versionTyp)
+if versionTyp == nil then
+  installieren(require("shell").parse(...)[1])
+else
+  installieren(versionTyp)
+end
