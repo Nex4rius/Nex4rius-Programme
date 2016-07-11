@@ -933,7 +933,7 @@ local function dial(name, adresse)
   os.sleep(1)
 end
 
-function handlers[key_event_name](e)
+function handlers.key_event_name(e)
   c = key_event_char(e)
   if entercode == true then
     if e[3] == 13 then
