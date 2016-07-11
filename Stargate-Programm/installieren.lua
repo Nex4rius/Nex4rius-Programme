@@ -5,19 +5,20 @@
 local fs          = require("filesystem")
 local wget        = loadfile("/bin/wget.lua")
 local move        = loadfile("/bin/mv.lua")
+local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate, sprachen
 
 if fs.exists("/stargate/Sicherungsdatei.lua") then
-  local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
+  IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
 else
-  local Sprache = ""
-  local installieren = false
-  local control = "On"
-  local autoUpdate = false
+  Sprache = ""
+  installieren = false
+  control = "On"
+  autoUpdate = false
 end
 
 if Sprache then
   if fs.exists("/stargate/sprache/" .. Sprache .. ".lua") then
-    local sprachen = loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
+    sprachen = loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
   end
 end
 
