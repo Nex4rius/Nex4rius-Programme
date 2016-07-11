@@ -879,13 +879,6 @@ local function zeigeNachricht(...)
   gpu.setBackground(Farben.Statusfarbe)
 end
 
-local function zeigeFehler(...)
-  if ... == "" then else
-    schreibFehlerLog(...)
-    zeigeNachricht(string.format("%s %s", sprachen.fehlerName, ...))
-  end
-end
-
 local function schreibFehlerLog(...)
   if letzteEingabe == ... then else
     if fs.exists("/log") then
@@ -913,6 +906,13 @@ local function schreibFehlerLog(...)
     f:close()
   end
   letzteEingabe = ...
+end
+
+local function zeigeFehler(...)
+  if ... == "" then else
+    schreibFehlerLog(...)
+    zeigeNachricht(string.format("%s %s", sprachen.fehlerName, ...))
+  end
 end
 
 local function dial(name, adresse)
