@@ -39,16 +39,16 @@ local function checkSprache()
 end
 
 if fs.exists("/stargate/Sicherungsdatei.lua") then
-  local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
+  IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
 else
   checkSprache()
-  local installieren = false
-  local control = "On"
+  installieren = false
+  control = "On"
 end
 
 sprachen = loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
 
-function checkKomponenten()
+local function checkKomponenten()
   print(sprachen.pruefeKomponenten)
   if component.isAvailable("redstone") then
     print(sprachen.redstoneOK)
@@ -112,7 +112,7 @@ function checkServerVersion()
   return serverVersion
 end
 
-function checkBetaServerVersion()
+local function checkBetaServerVersion()
   if wget("-fQ", Pfad("beta") .. "stargate/version.txt", "/betaVersion.txt") then
     f = io.open ("/betaVersion.txt", "r")
     betaServerVersion = f:read()
@@ -124,7 +124,7 @@ function checkBetaServerVersion()
   return betaServerVersion
 end
 
-function mainCheck()
+local function mainCheck()
   if internet == true then
     serverVersion = checkServerVersion()
     betaServerVersion = checkBetaServerVersion()
