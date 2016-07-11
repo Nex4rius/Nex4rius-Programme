@@ -9,6 +9,7 @@ local gpu                     = component.getPrimary("gpu")
 local wget                    = loadfile("/bin/wget.lua")
 local schreibSicherungsdatei  = loadfile("/stargate/schreibSicherungsdatei.lua")
 local betaVersionName         = ""
+local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate
 
 require("term").clear()
 
