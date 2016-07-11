@@ -11,6 +11,9 @@ local schreibSicherungsdatei  = loadfile("/stargate/schreibSicherungsdatei.lua")
 local betaVersionName         = ""
 local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate
 
+gpu.setResolution(gpu.maxResolution())
+gpu.setBackground(0x00000)
+gpu.setForeground(0xFFFFFF)
 require("term").clear()
 
 local function Pfad(versionTyp)
