@@ -326,6 +326,16 @@ local function ErsetzePunktMitKomma(...)
   return ...
 end
 
+local function getAddress(...)
+  if ... == "" or ... == nil then
+    return ""
+  elseif string.len(...) == 7 then
+    return string.sub(..., 1, 4) .. "-" .. string.sub(..., 5, 7)
+  else
+    return string.sub(..., 1, 4) .. "-" .. string.sub(..., 5, 7) .. "-" .. string.sub(..., 8, 9)
+  end
+end
+
 local function AdressenLesen()
   for i, na in pairs(gespeicherteAdressen) do
     if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
@@ -640,16 +650,6 @@ local function destinationName()
         newAddress(remAddr)
       end
     end
-  end
-end
-
-local function getAddress(...)
-  if ... == "" or ... == nil then
-    return ""
-  elseif string.len(...) == 7 then
-    return string.sub(..., 1, 4) .. "-" .. string.sub(..., 5, 7)
-  else
-    return string.sub(..., 1, 4) .. "-" .. string.sub(..., 5, 7) .. "-" .. string.sub(..., 8, 9)
   end
 end
 
