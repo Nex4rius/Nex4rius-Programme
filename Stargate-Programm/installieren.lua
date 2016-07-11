@@ -15,7 +15,6 @@ else
   local autoUpdate = false
 end
 
-
 if fs.exists("/stargate/sprache/" .. Sprache .. ".lua") then
   local sprachen = loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
 end
