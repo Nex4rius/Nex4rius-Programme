@@ -824,6 +824,18 @@ local function RedstoneKontrolle()
   end
 end
 
+local function Colorful_Lamp_Farben(eingabe, ausgabe)
+  if alte_eingabe == eingabe then else
+    for k in component.list("colorful_lamp") do
+      component.proxy(k).setLampColor(eingabe)
+      if ausgabe then
+        print(sprachen.colorfulLampAusschalten .. k)
+      end
+    end
+    alte_eingabe = eingabe
+  end
+end
+
 local function Colorful_Lamp_Steuerung()
   if iris == "Closed" or iris == "Closing" or LampenRot == true then
     Colorful_Lamp_Farben(31744) -- rot
@@ -844,18 +856,6 @@ local function Colorful_Lamp_Steuerung()
   --31744  rot
   --992    grün
   --0      schwarz
-end
-
-local function Colorful_Lamp_Farben(eingabe, ausgabe)
-  if alte_eingabe == eingabe then else
-    for k in component.list("colorful_lamp") do
-      component.proxy(k).setLampColor(eingabe)
-      if ausgabe then
-        print(sprachen.colorfulLampAusschalten .. k)
-      end
-    end
-    alte_eingabe = eingabe
-  end
 end
 
 local function zeigeStatus()
