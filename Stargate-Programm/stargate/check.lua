@@ -131,11 +131,7 @@ local function checkDateien()
         if fs.exists("/stargate/sprache/deutsch.lua") and fs.exists("/stargate/sprache/english.lua") then
           if fs.exists("/stargate/sprache/ersetzen.lua") and fs.exists("/stargate/schreibSicherungsdatei.lua") then
             return true
-          end
-        end
-      end
-    end
-  end
+  end end end end end
   return false
 end
 
