@@ -184,7 +184,7 @@ local function mainCheck()
   schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
   if checkDateien() then
     if fs.exists("/log") then
-      loadfile("/bin/edit.lua")("/log")
+      loadfile("/bin/edit.lua")("-r", "/log")
       loadfile("/bin/rm.lua")("/log")
     end
     loadfile("/stargate/Kontrollprogramm.lua")()
