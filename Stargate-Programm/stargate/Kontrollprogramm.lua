@@ -28,6 +28,7 @@ local wormhole              = "in"
 local iriscontrol           = "on"
 local energytype            = "EU"
 local handlers              = {}
+local Farben                = {}
 local activationtime        = 0
 local energy                = 0
 local seite                 = 0
@@ -54,28 +55,28 @@ local LampenGruen           = false
 local LampenRot             = false
 local VersionUpdate         = false
 
-local graueFarbe            = 6684774
-local roteFarbe             = 0xFF0000
-local weisseFarbe           = 0xFFFFFF
-local blaueFarbe            = 0x0000FF
-local schwarzeFarbe         = 0x00000
-local gelbeFarbe            = 16750899
-local brauenFarbe           = 10046464
-local grueneFarbe           = 39168
+Farben.graueFarbe           = 6684774
+Farben.roteFarbe            = 0xFF0000
+Farben.weisseFarbe          = 0xFFFFFF
+Farben.blaueFarbe           = 0x0000FF
+Farben.schwarzeFarbe        = 0x00000
+Farben.gelbeFarbe           = 16750899
+Farben.brauenFarbe          = 10046464
+Farben.grueneFarbe          = 39168
 
-local FehlerFarbe           = roteFarbe
-local Hintergrundfarbe      = graueFarbe
-local Trennlinienfarbe      = blaueFarbe
-local Textfarbe             = weisseFarbe
+Farben.FehlerFarbe          = roteFarbe
+Farben.Hintergrundfarbe     = graueFarbe
+Farben.Trennlinienfarbe     = blaueFarbe
+Farben.Textfarbe            = weisseFarbe
 
-local Adressfarbe           = brauenFarbe
-local Adresstextfarbe       = Textfarbe
-local Nachrichtfarbe        = graueFarbe
-local Nachrichttextfarbe    = Textfarbe
-local Steuerungsfarbe       = gelbeFarbe
-local Steuerungstextfarbe   = schwarzeFarbe
-local Statusfarbe           = grueneFarbe
-local Statustextfarbe       = Textfarbe
+Farben.Adressfarbe          = brauenFarbe
+Farben.Adresstextfarbe      = Textfarbe
+Farben.Nachrichtfarbe       = graueFarbe
+Farben.Nachrichttextfarbe   = Textfarbe
+Farben.Steuerungsfarbe      = gelbeFarbe
+Farben.Steuerungstextfarbe  = schwarzeFarbe
+Farben.Statusfarbe          = grueneFarbe
+Farben.Statustextfarbe      = Textfarbe
 
 local activetime
 local AdressAnzeige
@@ -245,8 +246,8 @@ local function pull_event()
   if state == "Idle" and checkEnergy == energy then
     if Nachrichtleer == true then
       if VersionUpdate == true then
-        gpu.setBackground(schwarzeFarbe)
-        gpu.setForeground(weisseFarbe)
+        gpu.setBackground(Farben.schwarzeFarbe)
+        gpu.setForeground(Farben.weisseFarbe)
         print(sprachen.aktualisierenJetzt)
         update("master")
       end
@@ -306,8 +307,8 @@ local function checkReset()
 end
 
 local function zeigeMenu()
-  gpu.setBackground(Adressfarbe)
-  gpu.setForeground(Adresstextfarbe)
+  gpu.setBackground(Farben.Adressfarbe)
+  gpu.setForeground(Farben.Adresstextfarbe)
   for P = 1, screen_height - 3 do
     zeigeHier(1, P, "", xVerschiebung - 3)
   end
@@ -335,9 +336,9 @@ local function AdressenLesen()
       end
       print(AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
       if string.sub(na[4], 1, 1) == "<" then
-        gpu.setForeground(FehlerFarbe)
+        gpu.setForeground(Farben.FehlerFarbe)
         print("   " .. na[4])
-        gpu.setForeground(Adresstextfarbe)
+        gpu.setForeground(Farben.Adresstextfarbe)
       else
         print("   " .. na[4])
       end
@@ -354,20 +355,20 @@ local function Infoseite()
   print("Q " .. sprachen.beenden)
   print("L " .. sprachen.EinstellungenAendern .. "\n")
   print(sprachen.RedstoneSignale)
-  gpu.setBackground(weisseFarbe)
-  gpu.setForeground(schwarzeFarbe)
+  gpu.setBackground(Farben.weisseFarbe)
+  gpu.setForeground(Farben.schwarzeFarbe)
   print(sprachen.RedstoneWeiss)
-  gpu.setBackground(roteFarbe)
+  gpu.setBackground(Farben.roteFarbe)
   print(sprachen.RedstoneRot)
-  gpu.setBackground(gelbeFarbe)
+  gpu.setBackground(Farben.gelbeFarbe)
   print(sprachen.RedstoneGelb)
-  gpu.setBackground(schwarzeFarbe)
-  gpu.setForeground(weisseFarbe)
+  gpu.setBackground(Farben.schwarzeFarbe)
+  gpu.setForeground(Farben.weisseFarbe)
   print(sprachen.RedstoneSchwarz)
-  gpu.setBackground(grueneFarbe)
+  gpu.setBackground(Farben.grueneFarbe)
   print(sprachen.RedstoneGruen)
-  gpu.setBackground(Adressfarbe)
-  gpu.setForeground(Adresstextfarbe)
+  gpu.setBackground(Farben.Adressfarbe)
+  gpu.setForeground(Farben.Adresstextfarbe)
   print(sprachen.versionName .. version)
   print("\n" .. sprachen.entwicklerName .. " Nex4rius")
 end
@@ -411,8 +412,8 @@ local function AdressenSpeichern()
     maxseiten = (i + k) / 10
     AdressenAnzahl = i
   end
-  gpu.setBackground(Adressfarbe)
-  gpu.setForeground(Adresstextfarbe)
+  gpu.setBackground(Farben.Adressfarbe)
+  gpu.setForeground(Farben.Adresstextfarbe)
   for P = 1, screen_height - 3 do
     zeigeHier(1, P, "", xVerschiebung - 3)
   end
@@ -431,7 +432,7 @@ local function ErsetzePunktMitKomma(...)
 end
 
 local function zeigeFarben()
-  gpu.setBackground(Trennlinienfarbe)
+  gpu.setBackground(Farben.Trennlinienfarbe)
   for P = 1, screen_height - 2 do
     zeigeHier(xVerschiebung - 2, P, "  ", 1)
   end
@@ -692,8 +693,8 @@ end
 
 local function zeigeStatus()
   aktualisiereStatus()
-  gpu.setBackground(Statusfarbe)
-  gpu.setForeground(Statustextfarbe)
+  gpu.setBackground(Farben.Statusfarbe)
+  gpu.setForeground(Farben.Statustextfarbe)
   zeigeHier(xVerschiebung, zeile, "  " .. sprachen.lokaleAdresse .. locAddr) neueZeile(1)
   zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zielAdresseName .. zielAdresse) neueZeile(1)
   zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zielName .. remoteName) neueZeile(1)
@@ -769,8 +770,8 @@ end
 
 local function zeigeSteuerung()
   zeigeFarben()
-  gpu.setBackground(Steuerungsfarbe)
-  gpu.setForeground(Steuerungstextfarbe)
+  gpu.setBackground(Farben.Steuerungsfarbe)
+  gpu.setForeground(Farben.Steuerungstextfarbe)
   neueZeile(3)
   zeigeHier(xVerschiebung, zeile - 1, "")
   zeigeHier(xVerschiebung, zeile, "  " .. sprachen.Steuerung) neueZeile(1)
@@ -860,8 +861,8 @@ local function zeigeNachricht(...)
   end
   letzteNachricht = ...
   letzteNachrichtZeit = os.time()
-  gpu.setBackground(Nachrichtfarbe)
-  gpu.setForeground(Nachrichttextfarbe)
+  gpu.setBackground(Farben.Nachrichtfarbe)
+  gpu.setForeground(Farben.Nachrichttextfarbe)
   if VersionUpdate == true then
     zeigeHier(1, screen_height - 1, sprachen.aktualisierenGleich, screen_width)
   elseif fs.exists("/log") then
@@ -875,7 +876,7 @@ local function zeigeNachricht(...)
   else
     zeigeHier(1, screen_height, "", screen_width)
   end
-  gpu.setBackground(Statusfarbe)
+  gpu.setBackground(Farben.Statusfarbe)
 end
 
 local function zeigeFehler(...)
@@ -1004,8 +1005,8 @@ function handlers[key_event_name](e)
   elseif e[3] == 0 and e[4] == 203 then
     if seite <= -1 then else
       seite = seite - 1
-      gpu.setBackground(Adressfarbe)
-      gpu.setForeground(Adresstextfarbe)
+      gpu.setBackground(Farben.Adressfarbe)
+      gpu.setForeground(Farben.Adresstextfarbe)
       for P = 1, screen_height - 3 do
         zeigeHier(1, P, "", xVerschiebung - 3)
       end
@@ -1014,8 +1015,8 @@ function handlers[key_event_name](e)
   elseif e[3] == 0 and e[4] == 205 then
     if seite + 1 < maxseiten then
       seite = seite + 1
-      gpu.setBackground(Adressfarbe)
-      gpu.setForeground(Adresstextfarbe)
+      gpu.setBackground(Farben.Adressfarbe)
+      gpu.setForeground(Farben.Adresstextfarbe)
       for P = 1, screen_height - 3 do
         zeigeHier(1, P, "", xVerschiebung - 3)
       end
@@ -1038,16 +1039,16 @@ function handlers[key_event_name](e)
         end
       end
     elseif c == "z" then
-      gpu.setBackground(0x333333)
-      gpu.setForeground(Textfarbe)
+      gpu.setBackground(Farben.schwarzeFarbe)
+      gpu.setForeground(Farben.Textfarbe)
       edit("stargate/adressen.lua")
       seite = -1
       zeigeAnzeige()
       seite = 0
       AdressenSpeichern()
     elseif c == "l" then
-      gpu.setBackground(0x333333)
-      gpu.setForeground(Textfarbe)
+      gpu.setBackground(Farben.schwarzeFarbe)
+      gpu.setForeground(Farben.Textfarbe)
       edit("stargate/Sicherungsdatei.lua")
       IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
       sides()
@@ -1199,8 +1200,8 @@ end
 
 local function beendeAlles()
   gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
-  gpu.setBackground(schwarzeFarbe)
-  gpu.setForeground(weisseFarbe)
+  gpu.setBackground(Farben.schwarzeFarbe)
+  gpu.setForeground(Farben.weisseFarbe)
   term.clear()
   print(sprachen.ausschaltenName .. "\n")
   Colorful_Lamp_Farben(0, true)
