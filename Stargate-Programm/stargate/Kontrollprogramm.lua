@@ -230,7 +230,7 @@ local function pad(s, n)
 end
 
 local function zeichenErsetzen(eingabeErsetzung)
-  return string.gsub(eingabeErsetzung, "%a+", local function (str) return ersetzen [str] end)
+  return string.gsub(eingabeErsetzung, "%a+", function (str) return ersetzen [str] end)
 end
 
 local function checkReset()
@@ -1178,12 +1178,13 @@ local function beendeAlles()
 end
 
 local function main()
-  loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Stargate Computer")
+  loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "StargateComputer")
   if sg.stargateState() == "Idle" and sg.irisState() == "Closed" then
     irisOpen()
   end
   term.clear()
   gpu.setResolution(70, 25)
+  screen_width, screen_height = gpu.getResolution()
   zeigeFarben()
   zeigeStatus()
   seite = -1
