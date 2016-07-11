@@ -2,7 +2,6 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Stargate-Programm/tree/master/Stargate-Programm
 
---local versionTyp  = require("shell").parse(...)[1]
 local fs          = require("filesystem")
 local wget        = loadfile("/bin/wget.lua")
 local move        = loadfile("/bin/mv.lua")
@@ -105,4 +104,5 @@ local function installieren(versionTyp)
   require("computer").shutdown(true)
 end
 
+--installieren(require("shell").parse(...)[1])
 installieren(versionTyp)
