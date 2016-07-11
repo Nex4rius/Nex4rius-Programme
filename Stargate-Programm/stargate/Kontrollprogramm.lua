@@ -431,6 +431,16 @@ local function ErsetzePunktMitKomma(...)
   return ...
 end
 
+local function zeigeHier(x, y, s, h)
+  if type(x) == "number" and type(y) == "number" and type(s) == "string" then
+    setCursor(x, y)
+    if not h then
+      h = screen_width
+    end
+    write(pad(s, h))
+  end
+end
+
 local function zeigeFarben()
   gpu.setBackground(Farben.Trennlinienfarbe)
   for P = 1, screen_height - 2 do
@@ -840,16 +850,6 @@ local function activetime()
   else
     zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit2)
     time = 0
-  end
-end
-
-local function zeigeHier(x, y, s, h)
-  if type(x) == "number" and type(y) == "number" and type(s) == "string" then
-    setCursor(x, y)
-    if not h then
-      h = screen_width
-    end
-    write(pad(s, h))
   end
 end
 
