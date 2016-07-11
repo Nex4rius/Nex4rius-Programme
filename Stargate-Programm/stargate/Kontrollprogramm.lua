@@ -196,9 +196,9 @@ local function pull_event()
   if state == "Idle" and checkEnergy == energy then
     if Nachrichtleer == true then
       if VersionUpdate == true then
-        print(sprachen.aktualisierenJetzt)
         gpu.setBackground(schwarzeFarbe)
         gpu.setForeground(weisseFarbe)
+        print(sprachen.aktualisierenJetzt)
         update("master")
       end
       Wartezeit = 300
