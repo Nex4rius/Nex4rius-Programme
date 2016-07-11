@@ -2,14 +2,10 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Stargate-Programm/tree/master/Stargate-Programm
 
-print(versionTyp)
-
-local versionTyp  = require("shell").parse(...)[1]
+--local versionTyp  = require("shell").parse(...)[1]
 local fs          = require("filesystem")
 local wget        = loadfile("/bin/wget.lua")
 local move        = loadfile("/bin/mv.lua")
-
-print(versionTyp)
 
 if fs.exists("/stargate/Sicherungsdatei.lua") then
   local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
