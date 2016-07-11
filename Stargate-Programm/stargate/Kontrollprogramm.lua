@@ -989,7 +989,7 @@ handlers[key_event_name] = function(e)
         end
       end
     elseif c == "z" then
-      gpu.setBackground(Farben.schwarzeFarbe)
+      gpu.setBackground(Farben.Nachrichtfarbe)
       gpu.setForeground(Farben.Textfarbe)
       edit("stargate/adressen.lua")
       seite = -1
@@ -997,11 +997,12 @@ handlers[key_event_name] = function(e)
       seite = 0
       Funktionen.AdressenSpeichern()
     elseif c == "l" then
-      gpu.setBackground(Farben.schwarzeFarbe)
+      gpu.setBackground(Farben.Nachrichtfarbe)
       gpu.setForeground(Farben.Textfarbe)
       edit("stargate/Sicherungsdatei.lua")
       IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
       Funktionen.sides()
+      gpu.setBackground(Farben.Nachrichtfarbe)
       term.clear()
       seite = 0
       Funktionen.zeigeAnzeige()
