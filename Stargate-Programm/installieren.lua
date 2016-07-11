@@ -48,7 +48,7 @@ local function installieren(versionTyp)
   update[9] = wget("-f", Pfad(versionTyp) .. "stargate/sprache/english.lua",       "/update/stargate/sprache/english.lua")
   update[10]= wget("-f", Pfad(versionTyp) .. "stargate/sprache/ersetzen.lua",      "/update/stargate/sprache/ersetzen.lua")
   for i = 1, 10 do
-    if update[i] == true then
+    if update[i] then
       updateKomplett = true
     else
       updateKomplett = false
