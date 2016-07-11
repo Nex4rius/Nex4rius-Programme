@@ -883,7 +883,7 @@ function Funktionen.dial(name, adresse)
   os.sleep(1)
 end
 
-function handlers.key_event_name(e)
+handlers[key_event_name] = function(e)
   c = string.char(e[3])
   if entercode == true then
     if e[3] == 13 then
