@@ -87,6 +87,7 @@ local function installieren(versionTyp)
     if versionTyp == "beta" then
       f = io.open ("/stargate/version.txt", "r")
       version = f:read()
+      print(version)
       f:close()
       f = io.open ("/stargate/version.txt", "w")
       f:write(version .. " BETA")
