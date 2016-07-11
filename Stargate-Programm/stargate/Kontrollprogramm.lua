@@ -441,6 +441,10 @@ local function zeigeHier(x, y, s, h)
   end
 end
 
+local function neueZeile(...)
+  zeile = zeile + ...
+end
+
 local function zeigeFarben()
   gpu.setBackground(Farben.Trennlinienfarbe)
   for P = 1, screen_height - 2 do
@@ -594,10 +598,6 @@ local function sendeAdressliste()
   else
     return ""
   end
-end
-
-local function neueZeile(...)
-  zeile = zeile + ...
 end
 
 local function newAddress(neueAdresse, neuerName, ...)
