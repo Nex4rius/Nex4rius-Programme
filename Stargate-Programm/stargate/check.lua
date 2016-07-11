@@ -87,7 +87,6 @@ function update(versionTyp)
   if versionTyp == nil then
     versionTyp = "master"
   end
-  print(versionTyp)
   if wget("-f", Pfad(versionTyp) .. "installieren.lua", "/installieren.lua") then
     installieren = true
     schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
