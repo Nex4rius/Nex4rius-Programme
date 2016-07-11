@@ -15,6 +15,8 @@ else
   local autoUpdate = false
 end
 
+print(versionTyp)
+
 if fs.exists("/stargate/sprache/" .. Sprache .. ".lua") then
   local sprachen = loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
 end
@@ -44,6 +46,7 @@ local function installieren(versionTyp)
   for i = 1, 10 do
     if update[i] == true then
       updateKomplett = true
+      print("Update komplett")
     else
       updateKomplett = false
       if sprachen then
