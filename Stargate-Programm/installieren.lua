@@ -103,4 +103,5 @@ local function installieren(versionTyp)
   require("computer").shutdown(true)
 end
 
+print(versionTyp)
 installieren(require("shell").parse(...)[1])
