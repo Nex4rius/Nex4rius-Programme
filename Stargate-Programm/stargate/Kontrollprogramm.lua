@@ -306,6 +306,16 @@ local function checkReset()
   end
 end
 
+local function zeigeHier(x, y, s, h)
+  if type(x) == "number" and type(y) == "number" and type(s) == "string" then
+    setCursor(x, y)
+    if not h then
+      h = screen_width
+    end
+    write(pad(s, h))
+  end
+end
+
 local function zeigeMenu()
   gpu.setBackground(Farben.Adressfarbe)
   gpu.setForeground(Farben.Adresstextfarbe)
@@ -429,16 +439,6 @@ local function ErsetzePunktMitKomma(...)
     end
   end
   return ...
-end
-
-local function zeigeHier(x, y, s, h)
-  if type(x) == "number" and type(y) == "number" and type(s) == "string" then
-    setCursor(x, y)
-    if not h then
-      h = screen_width
-    end
-    write(pad(s, h))
-  end
 end
 
 local function neueZeile(...)
