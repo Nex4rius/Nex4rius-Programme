@@ -27,6 +27,7 @@ local codeaccepted          = "-"
 local wormhole              = "in"
 local iriscontrol           = "on"
 local energytype            = "EU"
+local handlers              = {}
 local activationtime        = 0
 local energy                = 0
 local seite                 = 0
@@ -864,8 +865,6 @@ local function schreibFehlerLog(...)
   letzteEingabe = ...
 end
 
-handlers = {}
-
 local function dial(name, adresse)
   if state == "Idle" then
     remoteName = name
@@ -1010,7 +1009,7 @@ handlers[key_event_name] = function(e)
   end
 end
 
-local function handlers.sgChevronEngaged(e)
+function handlers.sgChevronEngaged(e)
   chevron = e[3]
   if chevron <= 4 then
     zielAdresse = string.sub(sg.remoteAddress(), 1, chevron)
