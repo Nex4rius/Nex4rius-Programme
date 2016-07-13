@@ -8,7 +8,7 @@ local event                 = require("event")
 local fs                    = require("filesystem")
 local edit                  = loadfile("/bin/edit.lua")
 local schreibSicherungsdatei= loadfile("/stargate/schreibSicherungsdatei.lua")
-local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
+local Sicherung             = loadfile("/stargate/Sicherungsdatei.lua")()
 local gpu                   = component.getPrimary("gpu")
 local sg                    = component.getPrimary("stargate")
 
@@ -161,7 +161,7 @@ function Funktionen.schreibeAdressen()
   f:close()
 end
 
-if RF == true then
+if Sicherung.RF == true then
   energytype          = "RF"
   energymultiplicator = 80
 end
@@ -201,7 +201,7 @@ local Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
 local max_Bildschirmbreite, max_Bildschirmhoehe = gpu.maxResolution()
 local key_event_name = "key_down"
 
-local sprachen = loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
+local sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
 local ersetzen = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
 
 function Funktionen.zeichenErsetzen(eingabeErsetzung)
@@ -242,7 +242,7 @@ function Funktionen.zeigeHier(x, y, s, h)
 end
 
 function Funktionen.ErsetzePunktMitKomma(...)
-  if Sprache == "deutsch" then
+  if Sicherung.Sprache == "deutsch" then
     local Punkt = string.find(..., "%.")
     if type(Punkt) == "number" then
       return string.sub(..., 0, Punkt - 1) .. "," .. string.sub(..., Punkt + 1)
@@ -408,15 +408,15 @@ function Funktionen.irisOpen()
 end
 
 function Funktionen.sides()
-  if side == "oben" or side == "top" then
+  if Sicherung.side == "oben" or Sicherung.side == "top" then
     sideNum = 1
-  elseif side == "hinten" or side == "back" then
+  elseif Sicherung.side == "hinten" or Sicherung.side == "back" then
     sideNum = 2
-  elseif side == "vorne" or side == "front" then
+  elseif Sicherung.side == "vorne" or Sicherung.side == "front" then
     sideNum = 3
-  elseif side == "rechts" or side == "right" then
+  elseif Sicherung.side == "rechts" or Sicherung.side == "right" then
     sideNum = 4
-  elseif side == "links" or side == "left" then
+  elseif Sicherung.side == "links" or Sicherung.side == "left" then
     sideNum = 5
   else
     sideNum = 0
@@ -427,14 +427,14 @@ function Funktionen.iriscontroller()
   if state == "Dialing" then
     messageshow = true
   end
-  if direction == "Incoming" and incode == IDC and control == "Off" then
+  if direction == "Incoming" and incode == Sicherung.IDC and Sicherung.control == "Off" then
     IDCyes = true
     Funktionen.RedstoneAenderung(black, 255)
     if iris == "Closed" or iris == "Closing" or LampenRot == true then else
       Funktionen.Colorful_Lamp_Farben(992)
     end
   end
-  if direction == "Incoming" and incode == IDC and iriscontrol == "on" and control == "On" then
+  if direction == "Incoming" and incode == Sicherung.IDC and iriscontrol == "on" and Sicherung.control == "On" then
     if iris == "Offline" then
       sg.sendMessage("IDC Accepted Iris: Offline")
     else
@@ -445,10 +445,10 @@ function Funktionen.iriscontroller()
     iriscontrol = "off"
     IDCyes = true
   elseif direction == "Incoming" and send == true then
-    sg.sendMessage("Iris Control: " .. control .. " Iris: " .. iris, Funktionen.sendeAdressliste())
+    sg.sendMessage("Iris Control: " .. Sicherung.control .. " Iris: " .. iris, Funktionen.sendeAdressliste())
     send = false
   end
-  if wormhole == "in" and state == "Dialling" and iriscontrol == "on" and control == "On" then
+  if wormhole == "in" and state == "Dialling" and iriscontrol == "on" and Sicherung.control == "On" then
     if iris == "Offline" then else
       Funktionen.irisClose()
       Funktionen.RedstoneAenderung(red, 255)
@@ -456,10 +456,10 @@ function Funktionen.iriscontroller()
     end
     k = "close"
   end
-  if iris == "Closing" and control == "On" then
+  if iris == "Closing" and Sicherung.control == "On" then
     k = "open"
   end
-  if state == "Idle" and k == "close" and control == "On" then
+  if state == "Idle" and k == "close" and Sicherung.control == "On" then
     outcode = nil
     if iris == "Offline" then else
       Funktionen.irisOpen()
@@ -472,7 +472,7 @@ function Funktionen.iriscontroller()
     showidc = ""
     zielAdresse = ""
   end
-  if state == "Idle" and control == "On" then
+  if state == "Idle" and Sicherung.control == "On" then
     iriscontrol = "on"
   end
   if state == "Closing" then
@@ -493,7 +493,7 @@ function Funktionen.iriscontroller()
     LampenRot = false
     zielAdresse = ""
   end
-  if state == "Closing" and control == "On" then
+  if state == "Closing" and Sicherung.control == "On" then
     k = "close"
   end
   if state == "Connected" and direction == "Outgoing" and send == true then
@@ -627,11 +627,11 @@ function Funktionen.aktualisiereStatus()
 end
 
 function Funktionen.autoclose()
-  if autoclosetime == false then
+  if Sicherung.autoclosetime == false then
     Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAus)
   else
-    Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAn .. autoclosetime .. "s")
-    if (activationtime - os.time()) / sectime > autoclosetime and state == "Connected" then
+    Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAn .. Sicherung.autoclosetime .. "s")
+    if (activationtime - os.time()) / sectime > Sicherung.autoclosetime and state == "Connected" then
       sg.disconnect()
     end
   end
@@ -676,7 +676,7 @@ function Funktionen.zeigeSteuerung()
   Funktionen.zeigeHier(xVerschiebung, zeile, "  D " .. sprachen.abschalten)
   Funktionen.zeigeHier(xVerschiebung + 20, zeile, "E " .. sprachen.IDCeingabe) Funktionen.neueZeile(1)
   if iris == "Offline" then
-    control = "Off"
+    Sicherung.control = "Off"
   else
     Funktionen.zeigeHier(xVerschiebung, zeile, "  O " .. sprachen.oeffneIris)
     Funktionen.zeigeHier(xVerschiebung + 20, zeile, "C " .. sprachen.schliesseIris) Funktionen.neueZeile(1)
@@ -729,7 +729,7 @@ function Funktionen.RedstoneKontrolle()
     Funktionen.RedstoneAenderung(white, 255)
     redstoneState = true
   end
-  if IDCyes == true or (IDC == "" and state == "Connected" and direction == "Incoming" and iris == "Offline") then
+  if IDCyes == true or (Sicherung.IDC == "" and state == "Connected" and direction == "Incoming" and iris == "Offline") then
     if redstoneIDC == true then
       Funktionen.RedstoneAenderung(black, 255)
       redstoneIDC = false
@@ -794,7 +794,7 @@ function Funktionen.zeigeStatus()
   Funktionen.zeigeEnergie() Funktionen.neueZeile(1)
   Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IrisName .. Funktionen.zeichenErsetzen(iris)) Funktionen.neueZeile(1)
   if iris == "Offline" then else
-    Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IrisSteuerung .. Funktionen.zeichenErsetzen(control)) Funktionen.neueZeile(1)
+    Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IrisSteuerung .. Funktionen.zeichenErsetzen(Sicherung.control)) Funktionen.neueZeile(1)
   end
   if IDCyes == true then
     Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IDCakzeptiert) Funktionen.neueZeile(1)
@@ -978,14 +978,12 @@ handlers[key_event_name] = function(e)
     elseif c == "i" then
       if iris == "Offline" then else
         send = true
-        if control == "On" then
-          control = "Off"
-          _ENV.control = "Off"
-          schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
+        if Sicherung.control == "On" then
+          Sicherung.control = "Off"
+          schreibSicherungsdatei(Sicherung)
         else
-          control = "On"
-          _ENV.control = "On"
-          schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
+          Sicherung.control = "On"
+          schreibSicherungsdatei(Sicherung)
         end
       end
     elseif c == "z" then
@@ -1000,7 +998,7 @@ handlers[key_event_name] = function(e)
       gpu.setBackground(Farben.Nachrichtfarbe)
       gpu.setForeground(Farben.Textfarbe)
       edit("stargate/Sicherungsdatei.lua")
-      IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
+      Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
       Funktionen.sides()
       gpu.setBackground(Farben.Nachrichtfarbe)
       term.clear()
@@ -1088,7 +1086,7 @@ end
 function Funktionen.angekommeneVersion(...)
   local Endpunkt = string.len(...)
   local EndpunktVersion = string.len(version)
-  if string.sub(..., Endpunkt - 3, Endpunkt) ~= "BETA" and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" and version ~= ... and autoUpdate == true then
+  if string.sub(..., Endpunkt - 3, Endpunkt) ~= "BETA" and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" and version ~= ... and Sicherung.autoUpdate == true then
     if component.isAvailable("internet") then
       if version ~= checkServerVersion() then
         VersionUpdate = true
