@@ -543,12 +543,12 @@ function Funktionen.newAddress(neueAdresse, neuerName, ...)
       adressen[AdressenAnzahl][1] = ">>>" .. neueAdresse .. "<<<"
     else
       adressen[AdressenAnzahl][1] = neuerName
+      AddNewAddress = false
     end
     adressen[AdressenAnzahl][2] = neueAdresse
     adressen[AdressenAnzahl][3] = ""
     if ... == nil then
       Funktionen.schreibeAdressen()
-      AddNewAddress = false
       Funktionen.AdressenSpeichern()
       Funktionen.zeigeMenu()
     end
