@@ -22,7 +22,7 @@ return {
   aktualisierenFrage        = "\nupdate? yes/no",
   aktualisierenJa           = "\nupdate: yes\n",
   aktualisierenNein         = "\nanswer: ",
-  aktualisierenJetzt        = "\nupdating...\n",
+  aktualisierenJetzt        = "\n\n\nupdating...\n",
   aktualisierenGleich       = "\nAutomated update when the Stargate is idle.\n",
   laden                     = "\nloading...",
   ja                        = "yes",
