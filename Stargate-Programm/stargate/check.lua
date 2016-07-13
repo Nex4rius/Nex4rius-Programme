@@ -9,7 +9,7 @@ local gpu                     = component.getPrimary("gpu")
 local wget                    = loadfile("/bin/wget.lua")
 local schreibSicherungsdatei  = loadfile("/stargate/schreibSicherungsdatei.lua")
 local betaVersionName         = ""
-local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate
+local Sicherung               = {}
 
 gpu.setResolution(70, 25)
 gpu.setBackground(6684774)
@@ -33,24 +33,23 @@ local function checkSprache()
   antwortFrageSprache = io.read()
   if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" or 
   wget("-f", Pfad(versionTyp) .. "stargate/sprache/" .. antwortFrageSprache .. ".lua", "/update/stargate/sprache/" .. antwortFrageSprache .. ".lua") then
-    Sprache = string.lower(antwortFrageSprache)
+    Sicherung.Sprache = string.lower(antwortFrageSprache)
   else
     print("\nUnbekannte Eingabe\nStandardeinstellung = deutsch")
-    Sprache = "deutsch"
+    Sicherung.Sprache = "deutsch"
   end
-  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
+  schreibSicherungsdatei(Sicherung)
   print("")
 end
 
 if fs.exists("/stargate/Sicherungsdatei.lua") then
-  IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
+  Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
 else
   checkSprache()
-  installieren = false
-  control = "On"
+  Sicherung.installieren = false
 end
 
-sprachen = loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
+sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
 
 local function checkKomponenten()
   print(sprachen.pruefeKomponenten)
@@ -92,7 +91,7 @@ function update(versionTyp)
   end
   if wget("-f", Pfad(versionTyp) .. "installieren.lua", "/installieren.lua") then
     installieren = true
-    schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
+    schreibSicherungsdatei(Sicherung)
     f = io.open ("autorun.lua", "w")
     f:write('loadfile("installieren.lua")("' .. versionTyp .. '")')
     f:close()
@@ -184,7 +183,7 @@ local function mainCheck()
   end
   print(sprachen.laden)
   installieren = false
-  schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
+  schreibSicherungsdatei(Sicherung)
   if checkDateien() then
     if fs.exists("/log") then
       loadfile("/bin/edit.lua")("-r", "/log")

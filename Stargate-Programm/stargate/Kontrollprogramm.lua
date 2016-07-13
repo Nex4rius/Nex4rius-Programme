@@ -8,7 +8,7 @@ local event                 = require("event")
 local fs                    = require("filesystem")
 local edit                  = loadfile("/bin/edit.lua")
 local schreibSicherungsdatei= loadfile("/stargate/schreibSicherungsdatei.lua")
-local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
+local Sicherung             = loadfile("/stargate/Sicherungsdatei.lua")()
 local gpu                   = component.getPrimary("gpu")
 local sg                    = component.getPrimary("stargate")
 
@@ -106,41 +106,41 @@ local sideNum
 local state
 local StatusName
 
-local white                 = 0
---local orange                = 1
---local magenta               = 2
---local lightblue             = 3
-local yellow                = 4
---local lime                  = 5
---local pink                  = 6
---local gray                  = 7
---local silver                = 8
---local cyan                  = 9
---local purple                = 10
---local blue                  = 11
---local brown                 = 12
-local green                 = 13
-local red                   = 14
-local black                 = 15
+Farben.white                 = 0
+--Farben.orange                = 1
+--Farben.magenta               = 2
+--Farben.lightblue             = 3
+Farben.yellow                = 4
+--Farben.lime                  = 5
+--Farben.pink                  = 6
+--Farben.gray                  = 7
+--Farben.silver                = 8
+--Farben.cyan                  = 9
+--Farben.purple                = 10
+--Farben.blue                  = 11
+--Farben.brown                 = 12
+Farben.green                 = 13
+Farben.red                   = 14
+Farben.black                 = 15
   
 if component.isAvailable("redstone") then
   r = component.getPrimary("redstone")
-  r.setBundledOutput(0, white, 0)
---  r.setBundledOutput(0, orange, 0)
---  r.setBundledOutput(0, magenta, 0)
---  r.setBundledOutput(0, lightblue, 0)
-  r.setBundledOutput(0, yellow, 0)
---  r.setBundledOutput(0, lime, 0)
---  r.setBundledOutput(0, pink, 0)
---  r.setBundledOutput(0, gray, 0)
---  r.setBundledOutput(0, silver, 0)
---  r.setBundledOutput(0, cyan, 0)
---  r.setBundledOutput(0, purple, 0)
---  r.setBundledOutput(0, blue, 0)
---  r.setBundledOutput(0, brown, 0)
-  r.setBundledOutput(0, green, 0)
-  r.setBundledOutput(0, red, 0)
-  r.setBundledOutput(0, black, 0)
+  r.setBundledOutput(0, Farben.white, 0)
+--  r.setBundledOutput(0, Farben.orange, 0)
+--  r.setBundledOutput(0, Farben.magenta, 0)
+--  r.setBundledOutput(0, Farben.lightblue, 0)
+  r.setBundledOutput(0, Farben.yellow, 0)
+--  r.setBundledOutput(0, Farben.lime, 0)
+--  r.setBundledOutput(0, Farben.pink, 0)
+--  r.setBundledOutput(0, Farben.gray, 0)
+--  r.setBundledOutput(0, Farben.silver, 0)
+--  r.setBundledOutput(0, Farben.cyan, 0)
+--  r.setBundledOutput(0, Farben.purple, 0)
+--  r.setBundledOutput(0, Farben.blue, 0)
+--  r.setBundledOutput(0, Farben.brown, 0)
+  r.setBundledOutput(0, Farben.green, 0)
+  r.setBundledOutput(0, Farben.red, 0)
+  r.setBundledOutput(0, Farben.black, 0)
 end
 
 function Funktionen.schreibeAdressen()
@@ -161,7 +161,7 @@ function Funktionen.schreibeAdressen()
   f:close()
 end
 
-if RF == true then
+if Sicherung.RF == true then
   energytype          = "RF"
   energymultiplicator = 80
 end
@@ -197,11 +197,11 @@ function Funktionen.pull_event()
   return eventErgebnis
 end
 
-local screen_width, screen_height = gpu.getResolution()
+local Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
 local max_Bildschirmbreite, max_Bildschirmhoehe = gpu.maxResolution()
 local key_event_name = "key_down"
 
-local sprachen = loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
+local sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
 local ersetzen = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
 
 function Funktionen.zeichenErsetzen(eingabeErsetzung)
@@ -235,14 +235,14 @@ function Funktionen.zeigeHier(x, y, s, h)
   if type(x) == "number" and type(y) == "number" and type(s) == "string" then
     Funktionen.setCursor(x, y)
     if not h then
-      h = screen_width
+      h = Bildschirmbreite
     end
     term.write(s .. string.rep(" ", h - string.len(s)))
   end
 end
 
 function Funktionen.ErsetzePunktMitKomma(...)
-  if Sprache == "deutsch" then
+  if Sicherung.Sprache == "deutsch" then
     local Punkt = string.find(..., "%.")
     if type(Punkt) == "number" then
       return string.sub(..., 0, Punkt - 1) .. "," .. string.sub(..., Punkt + 1)
@@ -348,7 +348,7 @@ function Funktionen.AdressenSpeichern()
   end
   gpu.setBackground(Farben.Adressfarbe)
   gpu.setForeground(Farben.Adresstextfarbe)
-  for P = 1, screen_height - 3 do
+  for P = 1, Bildschirmhoehe - 3 do
     Funktionen.zeigeHier(1, P, "", xVerschiebung - 3)
   end
   Funktionen.zeigeMenu()
@@ -358,7 +358,7 @@ end
 function Funktionen.zeigeMenu()
   gpu.setBackground(Farben.Adressfarbe)
   gpu.setForeground(Farben.Adresstextfarbe)
-  for P = 1, screen_height - 3 do
+  for P = 1, Bildschirmhoehe - 3 do
     Funktionen.zeigeHier(1, P, "", xVerschiebung - 3)
   end
   Funktionen.setCursor(1, 1)
@@ -382,10 +382,10 @@ end
 
 function Funktionen.zeigeFarben()
   gpu.setBackground(Farben.Trennlinienfarbe)
-  for P = 1, screen_height - 2 do
+  for P = 1, Bildschirmhoehe - 2 do
     Funktionen.zeigeHier(xVerschiebung - 2, P, "  ", 1)
   end
-  Funktionen.zeigeHier(1, screen_height - 2, "", 80)
+  Funktionen.zeigeHier(1, Bildschirmhoehe - 2, "", 80)
   Funktionen.zeigeHier(xVerschiebung - 2, Trennlinienhoehe, "")
   Funktionen.neueZeile(1)
 end
@@ -397,26 +397,26 @@ end
 
 function Funktionen.irisClose()
   sg.closeIris()
-  Funktionen.RedstoneAenderung(yellow, 255)
+  Funktionen.RedstoneAenderung(Farben.yellow, 255)
   Funktionen.Colorful_Lamp_Steuerung()
 end
 
 function Funktionen.irisOpen()
   sg.openIris()
-  Funktionen.RedstoneAenderung(yellow, 0)
+  Funktionen.RedstoneAenderung(Farben.yellow, 0)
   Funktionen.Colorful_Lamp_Steuerung()
 end
 
 function Funktionen.sides()
-  if side == "oben" or side == "top" then
+  if Sicherung.side == "oben" or Sicherung.side == "top" then
     sideNum = 1
-  elseif side == "hinten" or side == "back" then
+  elseif Sicherung.side == "hinten" or Sicherung.side == "back" then
     sideNum = 2
-  elseif side == "vorne" or side == "front" then
+  elseif Sicherung.side == "vorne" or Sicherung.side == "front" then
     sideNum = 3
-  elseif side == "rechts" or side == "right" then
+  elseif Sicherung.side == "rechts" or Sicherung.side == "right" then
     sideNum = 4
-  elseif side == "links" or side == "left" then
+  elseif Sicherung.side == "links" or Sicherung.side == "left" then
     sideNum = 5
   else
     sideNum = 0
@@ -426,15 +426,16 @@ end
 function Funktionen.iriscontroller()
   if state == "Dialing" then
     messageshow = true
+    AddNewAddress = true
   end
-  if direction == "Incoming" and incode == IDC and control == "Off" then
+  if direction == "Incoming" and incode == Sicherung.IDC and Sicherung.control == "Off" then
     IDCyes = true
-    Funktionen.RedstoneAenderung(black, 255)
+    Funktionen.RedstoneAenderung(Farben.black, 255)
     if iris == "Closed" or iris == "Closing" or LampenRot == true then else
       Funktionen.Colorful_Lamp_Farben(992)
     end
   end
-  if direction == "Incoming" and incode == IDC and iriscontrol == "on" and control == "On" then
+  if direction == "Incoming" and incode == Sicherung.IDC and iriscontrol == "on" and Sicherung.control == "On" then
     if iris == "Offline" then
       sg.sendMessage("IDC Accepted Iris: Offline")
     else
@@ -445,21 +446,21 @@ function Funktionen.iriscontroller()
     iriscontrol = "off"
     IDCyes = true
   elseif direction == "Incoming" and send == true then
-    sg.sendMessage("Iris Control: " .. control .. " Iris: " .. iris, Funktionen.sendeAdressliste())
+    sg.sendMessage("Iris Control: " .. Sicherung.control .. " Iris: " .. iris, Funktionen.sendeAdressliste())
     send = false
   end
-  if wormhole == "in" and state == "Dialling" and iriscontrol == "on" and control == "On" then
+  if wormhole == "in" and state == "Dialling" and iriscontrol == "on" and Sicherung.control == "On" then
     if iris == "Offline" then else
       Funktionen.irisClose()
-      Funktionen.RedstoneAenderung(red, 255)
+      Funktionen.RedstoneAenderung(Farben.red, 255)
       redstoneIncoming = false
     end
     k = "close"
   end
-  if iris == "Closing" and control == "On" then
+  if iris == "Closing" and Sicherung.control == "On" then
     k = "open"
   end
-  if state == "Idle" and k == "close" and control == "On" then
+  if state == "Idle" and k == "close" and Sicherung.control == "On" then
     outcode = nil
     if iris == "Offline" then else
       Funktionen.irisOpen()
@@ -472,7 +473,7 @@ function Funktionen.iriscontroller()
     showidc = ""
     zielAdresse = ""
   end
-  if state == "Idle" and control == "On" then
+  if state == "Idle" and Sicherung.control == "On" then
     iriscontrol = "on"
   end
   if state == "Closing" then
@@ -493,7 +494,7 @@ function Funktionen.iriscontroller()
     LampenRot = false
     zielAdresse = ""
   end
-  if state == "Closing" and control == "On" then
+  if state == "Closing" and Sicherung.control == "On" then
     k = "close"
   end
   if state == "Connected" and direction == "Outgoing" and send == true then
@@ -543,12 +544,12 @@ function Funktionen.newAddress(neueAdresse, neuerName, ...)
       adressen[AdressenAnzahl][1] = ">>>" .. neueAdresse .. "<<<"
     else
       adressen[AdressenAnzahl][1] = neuerName
+      AddNewAddress = false
     end
     adressen[AdressenAnzahl][2] = neueAdresse
     adressen[AdressenAnzahl][3] = ""
     if ... == nil then
       Funktionen.schreibeAdressen()
-      AddNewAddress = false
       Funktionen.AdressenSpeichern()
       Funktionen.zeigeMenu()
     end
@@ -627,11 +628,11 @@ function Funktionen.aktualisiereStatus()
 end
 
 function Funktionen.autoclose()
-  if autoclosetime == false then
+  if Sicherung.autoclosetime == false then
     Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAus)
   else
-    Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAn .. autoclosetime .. "s")
-    if (activationtime - os.time()) / sectime > autoclosetime and state == "Connected" then
+    Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAn .. Sicherung.autoclosetime .. "s")
+    if (activationtime - os.time()) / sectime > Sicherung.autoclosetime and state == "Connected" then
       sg.disconnect()
     end
   end
@@ -676,7 +677,7 @@ function Funktionen.zeigeSteuerung()
   Funktionen.zeigeHier(xVerschiebung, zeile, "  D " .. sprachen.abschalten)
   Funktionen.zeigeHier(xVerschiebung + 20, zeile, "E " .. sprachen.IDCeingabe) Funktionen.neueZeile(1)
   if iris == "Offline" then
-    control = "Off"
+    Sicherung.control = "Off"
   else
     Funktionen.zeigeHier(xVerschiebung, zeile, "  O " .. sprachen.oeffneIris)
     Funktionen.zeigeHier(xVerschiebung + 20, zeile, "C " .. sprachen.schliesseIris) Funktionen.neueZeile(1)
@@ -696,7 +697,7 @@ function Funktionen.zeigeSteuerung()
     Funktionen.zeigeHier(xVerschiebung + 20, zeile, "→ " .. sprachen.naechsteSeite)
   end
   Funktionen.neueZeile(1)
-  for i = zeile, screen_height - 3 do
+  for i = zeile, Bildschirmhoehe - 3 do
     Funktionen.zeigeHier(xVerschiebung, i, "")
   end
 end
@@ -713,38 +714,38 @@ end
 function Funktionen.RedstoneKontrolle()
   if RichtungName == sprachen.RichtungNameEin then
     if redstoneIncoming == true then
-      Funktionen.RedstoneAenderung(red, 255)
+      Funktionen.RedstoneAenderung(Farben.red, 255)
       redstoneIncoming = false
     end
   elseif redstoneIncoming == false and state == "Idle" then
-    Funktionen.RedstoneAenderung(red, 0)
+    Funktionen.RedstoneAenderung(Farben.red, 0)
     redstoneIncoming = true
   end
   if state == "Idle" then
     if redstoneState == true then
-      Funktionen.RedstoneAenderung(white, 0)
+      Funktionen.RedstoneAenderung(Farben.white, 0)
       redstoneState = false
     end
   elseif redstoneState == false then
-    Funktionen.RedstoneAenderung(white, 255)
+    Funktionen.RedstoneAenderung(Farben.white, 255)
     redstoneState = true
   end
-  if IDCyes == true or (IDC == "" and state == "Connected" and direction == "Incoming" and iris == "Offline") then
+  if IDCyes == true or (Sicherung.IDC == "" and state == "Connected" and direction == "Incoming" and iris == "Offline") then
     if redstoneIDC == true then
-      Funktionen.RedstoneAenderung(black, 255)
+      Funktionen.RedstoneAenderung(Farben.black, 255)
       redstoneIDC = false
     end
   elseif redstoneIDC == false then
-    Funktionen.RedstoneAenderung(black, 0)
+    Funktionen.RedstoneAenderung(Farben.black, 0)
     redstoneIDC = true
   end
   if state == "Connected" then
     if redstoneConnected == true then
-      Funktionen.RedstoneAenderung(green, 255)
+      Funktionen.RedstoneAenderung(Farben.green, 255)
       redstoneConnected = false
     end
   elseif redstoneConnected == false then
-    Funktionen.RedstoneAenderung(green, 0)
+    Funktionen.RedstoneAenderung(Farben.green, 0)
     redstoneConnected = true
   end
 end
@@ -794,7 +795,7 @@ function Funktionen.zeigeStatus()
   Funktionen.zeigeEnergie() Funktionen.neueZeile(1)
   Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IrisName .. Funktionen.zeichenErsetzen(iris)) Funktionen.neueZeile(1)
   if iris == "Offline" then else
-    Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IrisSteuerung .. Funktionen.zeichenErsetzen(control)) Funktionen.neueZeile(1)
+    Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IrisSteuerung .. Funktionen.zeichenErsetzen(Sicherung.control)) Funktionen.neueZeile(1)
   end
   if IDCyes == true then
     Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IDCakzeptiert) Funktionen.neueZeile(1)
@@ -823,18 +824,18 @@ function Funktionen.zeigeNachricht(...)
   gpu.setBackground(Farben.Nachrichtfarbe)
   gpu.setForeground(Farben.Nachrichttextfarbe)
   if VersionUpdate == true then
-    Funktionen.zeigeHier(1, screen_height - 1, sprachen.aktualisierenGleich, screen_width)
+    Funktionen.zeigeHier(1, Bildschirmhoehe - 1, sprachen.aktualisierenGleich, Bildschirmbreite)
   elseif fs.exists("/log") then
-    Funktionen.zeigeHier(1, screen_height - 1, sprachen.fehlerName .. " /log", screen_width)
-    Funktionen.zeigeHier(1, screen_height, "", 0)
+    Funktionen.zeigeHier(1, Bildschirmhoehe - 1, sprachen.fehlerName .. " /log", Bildschirmbreite)
+    Funktionen.zeigeHier(1, Bildschirmhoehe, "", 0)
     Funktionen.zeigeMenu()
   else
-    Funktionen.zeigeHier(1, screen_height - 1, "", screen_width)
+    Funktionen.zeigeHier(1, Bildschirmhoehe - 1, "", Bildschirmbreite)
   end
   if ... then
-    Funktionen.zeigeHier(1, screen_height, Funktionen.zeichenErsetzen(...), screen_width)
+    Funktionen.zeigeHier(1, Bildschirmhoehe, Funktionen.zeichenErsetzen(...), Bildschirmbreite)
   else
-    Funktionen.zeigeHier(1, screen_height, "", screen_width)
+    Funktionen.zeigeHier(1, Bildschirmhoehe, "", Bildschirmbreite)
   end
   gpu.setBackground(Farben.Statusfarbe)
 end
@@ -957,7 +958,7 @@ handlers[key_event_name] = function(e)
       seite = seite - 1
       gpu.setBackground(Farben.Adressfarbe)
       gpu.setForeground(Farben.Adresstextfarbe)
-      for P = 1, screen_height - 3 do
+      for P = 1, Bildschirmhoehe - 3 do
         Funktionen.zeigeHier(1, P, "", xVerschiebung - 3)
       end
       Funktionen.zeigeAnzeige()
@@ -967,7 +968,7 @@ handlers[key_event_name] = function(e)
       seite = seite + 1
       gpu.setBackground(Farben.Adressfarbe)
       gpu.setForeground(Farben.Adresstextfarbe)
-      for P = 1, screen_height - 3 do
+      for P = 1, Bildschirmhoehe - 3 do
         Funktionen.zeigeHier(1, P, "", xVerschiebung - 3)
       end
       Funktionen.zeigeAnzeige()
@@ -978,14 +979,12 @@ handlers[key_event_name] = function(e)
     elseif c == "i" then
       if iris == "Offline" then else
         send = true
-        if control == "On" then
-          control = "Off"
-          _ENV.control = "Off"
-          schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
+        if Sicherung.control == "On" then
+          Sicherung.control = "Off"
+          schreibSicherungsdatei(Sicherung)
         else
-          control = "On"
-          _ENV.control = "On"
-          schreibSicherungsdatei(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
+          Sicherung.control = "On"
+          schreibSicherungsdatei(Sicherung)
         end
       end
     elseif c == "z" then
@@ -1000,7 +999,7 @@ handlers[key_event_name] = function(e)
       gpu.setBackground(Farben.Nachrichtfarbe)
       gpu.setForeground(Farben.Textfarbe)
       edit("stargate/Sicherungsdatei.lua")
-      IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
+      Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
       Funktionen.sides()
       gpu.setBackground(Farben.Nachrichtfarbe)
       term.clear()
@@ -1088,7 +1087,7 @@ end
 function Funktionen.angekommeneVersion(...)
   local Endpunkt = string.len(...)
   local EndpunktVersion = string.len(version)
-  if string.sub(..., Endpunkt - 3, Endpunkt) ~= "BETA" and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" and version ~= ... and autoUpdate == true then
+  if string.sub(..., Endpunkt - 3, Endpunkt) ~= "BETA" and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" and version ~= ... and Sicherung.autoUpdate == true then
     if component.isAvailable("internet") then
       if version ~= checkServerVersion() then
         VersionUpdate = true
@@ -1124,22 +1123,22 @@ function Funktionen.beendeAlles()
   Funktionen.Colorful_Lamp_Farben(0, true)
   if component.isAvailable("redstone") then
     r = component.getPrimary("redstone")
-    Funktionen.redstoneAbschalten(sideNum, white, "white")
---    Funktionen.redstoneAbschalten(sideNum, orange, "orange")
---    Funktionen.redstoneAbschalten(sideNum, magenta, "magenta")
---    Funktionen.redstoneAbschalten(sideNum, lightblue, "lightblue")
-    Funktionen.redstoneAbschalten(sideNum, yellow, "yellow")
---    Funktionen.redstoneAbschalten(sideNum, lime, "lime")
---    Funktionen.redstoneAbschalten(sideNum, pink, "pink")
---    Funktionen.redstoneAbschalten(sideNum, gray, "gray")
---    Funktionen.redstoneAbschalten(sideNum, silver, "silver")
---    Funktionen.redstoneAbschalten(sideNum, cyan, "cyan")
---    Funktionen.redstoneAbschalten(sideNum, purple, "purple")
---    Funktionen.redstoneAbschalten(sideNum, blue, "blue")
---    Funktionen.redstoneAbschalten(sideNum, brown, "brown")
-    Funktionen.redstoneAbschalten(sideNum, green, "green")
-    Funktionen.redstoneAbschalten(sideNum, red, "red")
-    Funktionen.redstoneAbschalten(sideNum, black, "black")
+    Funktionen.redstoneAbschalten(sideNum, Farben.white, "white")
+--    Funktionen.redstoneAbschalten(sideNum, Farben.orange, "orange")
+--    Funktionen.redstoneAbschalten(sideNum, Farben.magenta, "magenta")
+--    Funktionen.redstoneAbschalten(sideNum, Farben.lightblue, "lightblue")
+    Funktionen.redstoneAbschalten(sideNum, Farben.yellow, "yellow")
+--    Funktionen.redstoneAbschalten(sideNum, Farben.lime, "lime")
+--    Funktionen.redstoneAbschalten(sideNum, Farben.pink, "pink")
+--    Funktionen.redstoneAbschalten(sideNum, Farben.gray, "gray")
+--    Funktionen.redstoneAbschalten(sideNum, Farben.silver, "silver")
+--    Funktionen.redstoneAbschalten(sideNum, Farben.cyan, "cyan")
+--    Funktionen.redstoneAbschalten(sideNum, Farben.purple, "purple")
+--    Funktionen.redstoneAbschalten(sideNum, Farben.blue, "blue")
+--    Funktionen.redstoneAbschalten(sideNum, Farben.brown, "brown")
+    Funktionen.redstoneAbschalten(sideNum, Farben.green, "green")
+    Funktionen.redstoneAbschalten(sideNum, Farben.red, "red")
+    Funktionen.redstoneAbschalten(sideNum, Farben.black, "black")
   end
 end
 
@@ -1150,7 +1149,7 @@ function Funktionen.main()
   end
   term.clear()
   gpu.setResolution(70, 25)
-  screen_width, screen_height = gpu.getResolution()
+  Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
   Funktionen.zeigeFarben()
   Funktionen.zeigeStatus()
   seite = -1

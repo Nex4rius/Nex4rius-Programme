@@ -3,22 +3,27 @@
 -- https://github.com/Nex4rius/Stargate-Programm/tree/master/Stargate-Programm
 
 local fs          = require("filesystem")
+local arg         = require("shell").parse(...)[1]
 local wget        = loadfile("/bin/wget.lua")
 local move        = loadfile("/bin/mv.lua")
-local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate, sprachen
+local Sicherung   = {}
+local sprachen
+local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate
 
 if fs.exists("/stargate/Sicherungsdatei.lua") then
-  IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
+  Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
+  if type(Sicherung) == "string" then
+    Sicherung = {}
+    Sicherung.IDC, Sicherung.autoclosetime, Sicherung.RF, Sicherung.Sprache, Sicherung.side, Sicherung.installieren, Sicherung.control, Sicherung.autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
+  end
 else
-  Sprache = ""
-  installieren = false
-  control = "On"
-  autoUpdate = false
+  Sicherung.Sprache = ""
+  Sicherung.installieren = false
 end
 
-if Sprache then
-  if fs.exists("/stargate/sprache/" .. Sprache .. ".lua") then
-    sprachen = loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
+if Sicherung.Sprache then
+  if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
+    sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
   end
 end
 
@@ -90,10 +95,10 @@ local function installieren(versionTyp)
       f:write(version .. " BETA")
       f:close()
     end
-    print("\nUpdate komplett\n" .. version .. " " .. string.upper(versionTyp) .. "\n")
+    print("\nUpdate komplett\n" .. version .. " " .. string.upper(tostring(versionTyp)) .. "\n")
   end
-  installieren = true
-  loadfile("/stargate/schreibSicherungsdatei.lua")(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
+  Sicherung.installieren = true
+  loadfile("/stargate/schreibSicherungsdatei.lua")(Sicherung)
   loadfile("/bin/rm.lua")("-v", "/update")
   loadfile("/bin/rm.lua")("-v", "/installieren.lua")
   --loadfile("/autorun.lua")("no")
@@ -103,7 +108,11 @@ local function installieren(versionTyp)
 end
 
 if versionTyp == nil then
-  installieren(require("shell").parse(...)[1])
+  if type(arg) == "string" then
+    installieren(arg)
+  else
+    installieren("master")
+  end
 else
   installieren(versionTyp)
 end
