@@ -197,7 +197,7 @@ function Funktionen.pull_event()
   return eventErgebnis
 end
 
-local screen_width, screen_height = gpu.getResolution()
+local Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
 local max_Bildschirmbreite, max_Bildschirmhoehe = gpu.maxResolution()
 local key_event_name = "key_down"
 
@@ -235,7 +235,7 @@ function Funktionen.zeigeHier(x, y, s, h)
   if type(x) == "number" and type(y) == "number" and type(s) == "string" then
     Funktionen.setCursor(x, y)
     if not h then
-      h = screen_width
+      h = Bildschirmbreite
     end
     term.write(s .. string.rep(" ", h - string.len(s)))
   end
@@ -348,7 +348,7 @@ function Funktionen.AdressenSpeichern()
   end
   gpu.setBackground(Farben.Adressfarbe)
   gpu.setForeground(Farben.Adresstextfarbe)
-  for P = 1, screen_height - 3 do
+  for P = 1, Bildschirmhoehe - 3 do
     Funktionen.zeigeHier(1, P, "", xVerschiebung - 3)
   end
   Funktionen.zeigeMenu()
@@ -358,7 +358,7 @@ end
 function Funktionen.zeigeMenu()
   gpu.setBackground(Farben.Adressfarbe)
   gpu.setForeground(Farben.Adresstextfarbe)
-  for P = 1, screen_height - 3 do
+  for P = 1, Bildschirmhoehe - 3 do
     Funktionen.zeigeHier(1, P, "", xVerschiebung - 3)
   end
   Funktionen.setCursor(1, 1)
@@ -382,10 +382,10 @@ end
 
 function Funktionen.zeigeFarben()
   gpu.setBackground(Farben.Trennlinienfarbe)
-  for P = 1, screen_height - 2 do
+  for P = 1, Bildschirmhoehe - 2 do
     Funktionen.zeigeHier(xVerschiebung - 2, P, "  ", 1)
   end
-  Funktionen.zeigeHier(1, screen_height - 2, "", 80)
+  Funktionen.zeigeHier(1, Bildschirmhoehe - 2, "", 80)
   Funktionen.zeigeHier(xVerschiebung - 2, Trennlinienhoehe, "")
   Funktionen.neueZeile(1)
 end
@@ -696,7 +696,7 @@ function Funktionen.zeigeSteuerung()
     Funktionen.zeigeHier(xVerschiebung + 20, zeile, "→ " .. sprachen.naechsteSeite)
   end
   Funktionen.neueZeile(1)
-  for i = zeile, screen_height - 3 do
+  for i = zeile, Bildschirmhoehe - 3 do
     Funktionen.zeigeHier(xVerschiebung, i, "")
   end
 end
@@ -823,18 +823,18 @@ function Funktionen.zeigeNachricht(...)
   gpu.setBackground(Farben.Nachrichtfarbe)
   gpu.setForeground(Farben.Nachrichttextfarbe)
   if VersionUpdate == true then
-    Funktionen.zeigeHier(1, screen_height - 1, sprachen.aktualisierenGleich, screen_width)
+    Funktionen.zeigeHier(1, Bildschirmhoehe - 1, sprachen.aktualisierenGleich, Bildschirmbreite)
   elseif fs.exists("/log") then
-    Funktionen.zeigeHier(1, screen_height - 1, sprachen.fehlerName .. " /log", screen_width)
-    Funktionen.zeigeHier(1, screen_height, "", 0)
+    Funktionen.zeigeHier(1, Bildschirmhoehe - 1, sprachen.fehlerName .. " /log", Bildschirmbreite)
+    Funktionen.zeigeHier(1, Bildschirmhoehe, "", 0)
     Funktionen.zeigeMenu()
   else
-    Funktionen.zeigeHier(1, screen_height - 1, "", screen_width)
+    Funktionen.zeigeHier(1, Bildschirmhoehe - 1, "", Bildschirmbreite)
   end
   if ... then
-    Funktionen.zeigeHier(1, screen_height, Funktionen.zeichenErsetzen(...), screen_width)
+    Funktionen.zeigeHier(1, Bildschirmhoehe, Funktionen.zeichenErsetzen(...), Bildschirmbreite)
   else
-    Funktionen.zeigeHier(1, screen_height, "", screen_width)
+    Funktionen.zeigeHier(1, Bildschirmhoehe, "", Bildschirmbreite)
   end
   gpu.setBackground(Farben.Statusfarbe)
 end
@@ -957,7 +957,7 @@ handlers[key_event_name] = function(e)
       seite = seite - 1
       gpu.setBackground(Farben.Adressfarbe)
       gpu.setForeground(Farben.Adresstextfarbe)
-      for P = 1, screen_height - 3 do
+      for P = 1, Bildschirmhoehe - 3 do
         Funktionen.zeigeHier(1, P, "", xVerschiebung - 3)
       end
       Funktionen.zeigeAnzeige()
@@ -967,7 +967,7 @@ handlers[key_event_name] = function(e)
       seite = seite + 1
       gpu.setBackground(Farben.Adressfarbe)
       gpu.setForeground(Farben.Adresstextfarbe)
-      for P = 1, screen_height - 3 do
+      for P = 1, Bildschirmhoehe - 3 do
         Funktionen.zeigeHier(1, P, "", xVerschiebung - 3)
       end
       Funktionen.zeigeAnzeige()
@@ -1150,7 +1150,7 @@ function Funktionen.main()
   end
   term.clear()
   gpu.setResolution(70, 25)
-  screen_width, screen_height = gpu.getResolution()
+  Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
   Funktionen.zeigeFarben()
   Funktionen.zeigeStatus()
   seite = -1
