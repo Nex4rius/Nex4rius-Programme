@@ -540,16 +540,20 @@ function Funktionen.newAddress(neueAdresse, neuerName, ...)
   if AddNewAddress == true and string.len(neueAdresse) == 11 then
     AdressenAnzahl = AdressenAnzahl + 1
     adressen[AdressenAnzahl] = {}
+    local nichtmehr
     if neuerName == nil then
       adressen[AdressenAnzahl][1] = ">>>" .. neueAdresse .. "<<<"
     else
       adressen[AdressenAnzahl][1] = neuerName
-      AddNewAddress = false
+      nichtmehr = true
     end
     adressen[AdressenAnzahl][2] = neueAdresse
     adressen[AdressenAnzahl][3] = ""
     if ... == nil then
       Funktionen.schreibeAdressen()
+      if nichtmehr then
+        AddNewAddress = false
+      end
       Funktionen.AdressenSpeichern()
       Funktionen.zeigeMenu()
     end
