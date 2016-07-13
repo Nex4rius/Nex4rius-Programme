@@ -13,8 +13,6 @@ if fs.exists("/stargate/Sicherungsdatei.lua") then
 else
   Sicherung.Sprache = ""
   Sicherung.installieren = false
-  Sicherung.control = "On"
-  Sicherung.autoUpdate = false
 end
 
 if Sicherung.Sprache then
