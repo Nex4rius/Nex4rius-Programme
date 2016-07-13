@@ -159,7 +159,7 @@ local function mainCheck()
     elseif version == serverVersion and version == betaServerVersion then else
       if installieren == false then
         local EndpunktVersion = string.len(version)
-        if autoUpdate == true and version ~= serverVersion and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" then
+        if Sicherung.autoUpdate == true and version ~= serverVersion and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" then
           print(sprachen.aktualisierenJa)
           update("master")
           return

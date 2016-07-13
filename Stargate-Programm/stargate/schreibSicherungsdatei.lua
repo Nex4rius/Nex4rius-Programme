@@ -34,7 +34,7 @@ f:write('  autoclosetime = '  .. tostring(SicherungNEU.autoclosetime) .. ', -- i
 f:write('  RF            = '  .. tostring(SicherungNEU.RF) .. ', -- show energy in RF instead of EU\n')
 f:write('  Sprache       = "' .. tostring(SicherungNEU.Sprache) .. '", -- deutsch / english\n')
 f:write('  side          = "' .. tostring(SicherungNEU.side) .. '", -- bottom, top, back, front, right or left\n')
-f:write('  autoUpdate    = '  .. tostring(SicherungNEU.autoUpdate) .. ', -- automatically updates the programm\n\n')
+f:write('  autoUpdate    = '  .. tostring(SicherungNEU.autoUpdate) .. ', -- automatically updates the programm\n')
 f:write('  control       = "' .. tostring(SicherungNEU.control) .. '",\n\n')
 f:write(string.rep("-", 10) .. "don't change anything below" .. string.rep("-", 33) .. '\n\n')
 f:write('  installieren  = '  .. tostring(SicherungNEU.installieren) .. ',\n')
