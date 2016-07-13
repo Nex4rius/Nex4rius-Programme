@@ -106,41 +106,41 @@ local sideNum
 local state
 local StatusName
 
-local white                 = 0
---local orange                = 1
---local magenta               = 2
---local lightblue             = 3
-local yellow                = 4
---local lime                  = 5
---local pink                  = 6
---local gray                  = 7
---local silver                = 8
---local cyan                  = 9
---local purple                = 10
---local blue                  = 11
---local brown                 = 12
-local green                 = 13
-local red                   = 14
-local black                 = 15
+Farben.white                 = 0
+--Farben.orange                = 1
+--Farben.magenta               = 2
+--Farben.lightblue             = 3
+Farben.yellow                = 4
+--Farben.lime                  = 5
+--Farben.pink                  = 6
+--Farben.gray                  = 7
+--Farben.silver                = 8
+--Farben.cyan                  = 9
+--Farben.purple                = 10
+--Farben.blue                  = 11
+--Farben.brown                 = 12
+Farben.green                 = 13
+Farben.red                   = 14
+Farben.black                 = 15
   
 if component.isAvailable("redstone") then
   r = component.getPrimary("redstone")
-  r.setBundledOutput(0, white, 0)
---  r.setBundledOutput(0, orange, 0)
---  r.setBundledOutput(0, magenta, 0)
---  r.setBundledOutput(0, lightblue, 0)
-  r.setBundledOutput(0, yellow, 0)
---  r.setBundledOutput(0, lime, 0)
---  r.setBundledOutput(0, pink, 0)
---  r.setBundledOutput(0, gray, 0)
---  r.setBundledOutput(0, silver, 0)
---  r.setBundledOutput(0, cyan, 0)
---  r.setBundledOutput(0, purple, 0)
---  r.setBundledOutput(0, blue, 0)
---  r.setBundledOutput(0, brown, 0)
-  r.setBundledOutput(0, green, 0)
-  r.setBundledOutput(0, red, 0)
-  r.setBundledOutput(0, black, 0)
+  r.setBundledOutput(0, Farben.white, 0)
+--  r.setBundledOutput(0, Farben.orange, 0)
+--  r.setBundledOutput(0, Farben.magenta, 0)
+--  r.setBundledOutput(0, Farben.lightblue, 0)
+  r.setBundledOutput(0, Farben.yellow, 0)
+--  r.setBundledOutput(0, Farben.lime, 0)
+--  r.setBundledOutput(0, Farben.pink, 0)
+--  r.setBundledOutput(0, Farben.gray, 0)
+--  r.setBundledOutput(0, Farben.silver, 0)
+--  r.setBundledOutput(0, Farben.cyan, 0)
+--  r.setBundledOutput(0, Farben.purple, 0)
+--  r.setBundledOutput(0, Farben.blue, 0)
+--  r.setBundledOutput(0, Farben.brown, 0)
+  r.setBundledOutput(0, Farben.green, 0)
+  r.setBundledOutput(0, Farben.red, 0)
+  r.setBundledOutput(0, Farben.black, 0)
 end
 
 function Funktionen.schreibeAdressen()
@@ -397,13 +397,13 @@ end
 
 function Funktionen.irisClose()
   sg.closeIris()
-  Funktionen.RedstoneAenderung(yellow, 255)
+  Funktionen.RedstoneAenderung(Farben.yellow, 255)
   Funktionen.Colorful_Lamp_Steuerung()
 end
 
 function Funktionen.irisOpen()
   sg.openIris()
-  Funktionen.RedstoneAenderung(yellow, 0)
+  Funktionen.RedstoneAenderung(Farben.yellow, 0)
   Funktionen.Colorful_Lamp_Steuerung()
 end
 
@@ -429,7 +429,7 @@ function Funktionen.iriscontroller()
   end
   if direction == "Incoming" and incode == Sicherung.IDC and Sicherung.control == "Off" then
     IDCyes = true
-    Funktionen.RedstoneAenderung(black, 255)
+    Funktionen.RedstoneAenderung(Farben.black, 255)
     if iris == "Closed" or iris == "Closing" or LampenRot == true then else
       Funktionen.Colorful_Lamp_Farben(992)
     end
@@ -451,7 +451,7 @@ function Funktionen.iriscontroller()
   if wormhole == "in" and state == "Dialling" and iriscontrol == "on" and Sicherung.control == "On" then
     if iris == "Offline" then else
       Funktionen.irisClose()
-      Funktionen.RedstoneAenderung(red, 255)
+      Funktionen.RedstoneAenderung(Farben.red, 255)
       redstoneIncoming = false
     end
     k = "close"
@@ -713,38 +713,38 @@ end
 function Funktionen.RedstoneKontrolle()
   if RichtungName == sprachen.RichtungNameEin then
     if redstoneIncoming == true then
-      Funktionen.RedstoneAenderung(red, 255)
+      Funktionen.RedstoneAenderung(Farben.red, 255)
       redstoneIncoming = false
     end
   elseif redstoneIncoming == false and state == "Idle" then
-    Funktionen.RedstoneAenderung(red, 0)
+    Funktionen.RedstoneAenderung(Farben.red, 0)
     redstoneIncoming = true
   end
   if state == "Idle" then
     if redstoneState == true then
-      Funktionen.RedstoneAenderung(white, 0)
+      Funktionen.RedstoneAenderung(Farben.white, 0)
       redstoneState = false
     end
   elseif redstoneState == false then
-    Funktionen.RedstoneAenderung(white, 255)
+    Funktionen.RedstoneAenderung(Farben.white, 255)
     redstoneState = true
   end
   if IDCyes == true or (Sicherung.IDC == "" and state == "Connected" and direction == "Incoming" and iris == "Offline") then
     if redstoneIDC == true then
-      Funktionen.RedstoneAenderung(black, 255)
+      Funktionen.RedstoneAenderung(Farben.black, 255)
       redstoneIDC = false
     end
   elseif redstoneIDC == false then
-    Funktionen.RedstoneAenderung(black, 0)
+    Funktionen.RedstoneAenderung(Farben.black, 0)
     redstoneIDC = true
   end
   if state == "Connected" then
     if redstoneConnected == true then
-      Funktionen.RedstoneAenderung(green, 255)
+      Funktionen.RedstoneAenderung(Farben.green, 255)
       redstoneConnected = false
     end
   elseif redstoneConnected == false then
-    Funktionen.RedstoneAenderung(green, 0)
+    Funktionen.RedstoneAenderung(Farben.green, 0)
     redstoneConnected = true
   end
 end
@@ -1122,22 +1122,22 @@ function Funktionen.beendeAlles()
   Funktionen.Colorful_Lamp_Farben(0, true)
   if component.isAvailable("redstone") then
     r = component.getPrimary("redstone")
-    Funktionen.redstoneAbschalten(sideNum, white, "white")
---    Funktionen.redstoneAbschalten(sideNum, orange, "orange")
---    Funktionen.redstoneAbschalten(sideNum, magenta, "magenta")
---    Funktionen.redstoneAbschalten(sideNum, lightblue, "lightblue")
-    Funktionen.redstoneAbschalten(sideNum, yellow, "yellow")
---    Funktionen.redstoneAbschalten(sideNum, lime, "lime")
---    Funktionen.redstoneAbschalten(sideNum, pink, "pink")
---    Funktionen.redstoneAbschalten(sideNum, gray, "gray")
---    Funktionen.redstoneAbschalten(sideNum, silver, "silver")
---    Funktionen.redstoneAbschalten(sideNum, cyan, "cyan")
---    Funktionen.redstoneAbschalten(sideNum, purple, "purple")
---    Funktionen.redstoneAbschalten(sideNum, blue, "blue")
---    Funktionen.redstoneAbschalten(sideNum, brown, "brown")
-    Funktionen.redstoneAbschalten(sideNum, green, "green")
-    Funktionen.redstoneAbschalten(sideNum, red, "red")
-    Funktionen.redstoneAbschalten(sideNum, black, "black")
+    Funktionen.redstoneAbschalten(sideNum, Farben.white, "white")
+--    Funktionen.redstoneAbschalten(sideNum, Farben.orange, "orange")
+--    Funktionen.redstoneAbschalten(sideNum, Farben.magenta, "magenta")
+--    Funktionen.redstoneAbschalten(sideNum, Farben.lightblue, "lightblue")
+    Funktionen.redstoneAbschalten(sideNum, Farben.yellow, "yellow")
+--    Funktionen.redstoneAbschalten(sideNum, Farben.lime, "lime")
+--    Funktionen.redstoneAbschalten(sideNum, Farben.pink, "pink")
+--    Funktionen.redstoneAbschalten(sideNum, Farben.gray, "gray")
+--    Funktionen.redstoneAbschalten(sideNum, Farben.silver, "silver")
+--    Funktionen.redstoneAbschalten(sideNum, Farben.cyan, "cyan")
+--    Funktionen.redstoneAbschalten(sideNum, Farben.purple, "purple")
+--    Funktionen.redstoneAbschalten(sideNum, Farben.blue, "blue")
+--    Funktionen.redstoneAbschalten(sideNum, Farben.brown, "brown")
+    Funktionen.redstoneAbschalten(sideNum, Farben.green, "green")
+    Funktionen.redstoneAbschalten(sideNum, Farben.red, "red")
+    Funktionen.redstoneAbschalten(sideNum, Farben.black, "black")
   end
 end
 
