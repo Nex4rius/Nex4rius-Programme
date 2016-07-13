@@ -829,10 +829,10 @@ function Funktionen.zeigeNachricht(...)
   gpu.setForeground(Farben.Nachrichttextfarbe)
   if VersionUpdate == true then
     Funktionen.zeigeHier(1, Bildschirmhoehe - 1, sprachen.aktualisierenGleich, Bildschirmbreite)
+    Funktionen.zeigeMenu()
   elseif fs.exists("/log") then
     Funktionen.zeigeHier(1, Bildschirmhoehe - 1, sprachen.fehlerName .. " /log", Bildschirmbreite)
     Funktionen.zeigeHier(1, Bildschirmhoehe, "", 0)
-    Funktionen.zeigeMenu()
   else
     Funktionen.zeigeHier(1, Bildschirmhoehe - 1, "", Bildschirmbreite)
   end
