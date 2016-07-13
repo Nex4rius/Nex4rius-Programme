@@ -426,6 +426,7 @@ end
 function Funktionen.iriscontroller()
   if state == "Dialing" then
     messageshow = true
+    AddNewAddress = true
   end
   if direction == "Incoming" and incode == Sicherung.IDC and Sicherung.control == "Off" then
     IDCyes = true
