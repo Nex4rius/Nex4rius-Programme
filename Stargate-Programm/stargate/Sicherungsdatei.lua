@@ -8,11 +8,11 @@
 
 return {
   IDC           = "" -- Iris Deactivation Code
-  autoclosetime = 60 -- in seconds -- false for no autoclose
   RF            = false -- show energy in RF instead of EU
-  Sprache       = "" -- deutsch / english
   side          = "unten" -- bottom, top, back, front, right or left
+  Sprache       = "" -- deutsch / english
   autoUpdate    = true -- automatically updates the programm
+  autoclosetime = 60 -- in seconds -- false for no autoclose
 
 ----------don't change anything below---------------------------------
 
