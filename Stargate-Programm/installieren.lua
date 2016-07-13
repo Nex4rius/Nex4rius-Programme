@@ -5,20 +5,21 @@
 local fs          = require("filesystem")
 local wget        = loadfile("/bin/wget.lua")
 local move        = loadfile("/bin/mv.lua")
-local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate, sprachen
+local Sicherung   = {}
+local sprachen
 
 if fs.exists("/stargate/Sicherungsdatei.lua") then
-  IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
+  Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
 else
-  Sprache = ""
-  installieren = false
-  control = "On"
-  autoUpdate = false
+  Sicherung.Sprache = ""
+  Sicherung.installieren = false
+  Sicherung.control = "On"
+  Sicherung.autoUpdate = false
 end
 
-if Sprache then
-  if fs.exists("/stargate/sprache/" .. Sprache .. ".lua") then
-    sprachen = loadfile("/stargate/sprache/" .. Sprache .. ".lua")()
+if Sicherung.Sprache then
+  if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
+    sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
   end
 end
 
@@ -92,8 +93,8 @@ local function installieren(versionTyp)
     end
     print("\nUpdate komplett\n" .. version .. " " .. string.upper(versionTyp) .. "\n")
   end
-  installieren = true
-  loadfile("/stargate/schreibSicherungsdatei.lua")(IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate)
+  Sicherung.installieren = true
+  loadfile("/stargate/schreibSicherungsdatei.lua")(Sicherung)
   loadfile("/bin/rm.lua")("-v", "/update")
   loadfile("/bin/rm.lua")("-v", "/installieren.lua")
   --loadfile("/autorun.lua")("no")
