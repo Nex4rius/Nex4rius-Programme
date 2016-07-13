@@ -540,16 +540,20 @@ function Funktionen.newAddress(neueAdresse, neuerName, ...)
   if AddNewAddress == true and string.len(neueAdresse) == 11 then
     AdressenAnzahl = AdressenAnzahl + 1
     adressen[AdressenAnzahl] = {}
+    local nichtmehr
     if neuerName == nil then
       adressen[AdressenAnzahl][1] = ">>>" .. neueAdresse .. "<<<"
     else
       adressen[AdressenAnzahl][1] = neuerName
-      AddNewAddress = false
+      nichtmehr = true
     end
     adressen[AdressenAnzahl][2] = neueAdresse
     adressen[AdressenAnzahl][3] = ""
     if ... == nil then
       Funktionen.schreibeAdressen()
+      if nichtmehr then
+        AddNewAddress = false
+      end
       Funktionen.AdressenSpeichern()
       Funktionen.zeigeMenu()
     end
@@ -825,10 +829,10 @@ function Funktionen.zeigeNachricht(...)
   gpu.setForeground(Farben.Nachrichttextfarbe)
   if VersionUpdate == true then
     Funktionen.zeigeHier(1, Bildschirmhoehe - 1, sprachen.aktualisierenGleich, Bildschirmbreite)
+    Funktionen.zeigeMenu()
   elseif fs.exists("/log") then
     Funktionen.zeigeHier(1, Bildschirmhoehe - 1, sprachen.fehlerName .. " /log", Bildschirmbreite)
     Funktionen.zeigeHier(1, Bildschirmhoehe, "", 0)
-    Funktionen.zeigeMenu()
   else
     Funktionen.zeigeHier(1, Bildschirmhoehe - 1, "", Bildschirmbreite)
   end

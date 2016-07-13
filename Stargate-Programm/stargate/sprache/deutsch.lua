@@ -22,7 +22,7 @@ return {
   aktualisierenFrage        = "\nAktualisieren? ja/nein",
   aktualisierenJa           = "\nAktualisieren: Ja\n",
   aktualisierenNein         = "\nAntwort: ",
-  aktualisierenJetzt        = "\nAktualisieren...\n",
+  aktualisierenJetzt        = "\n\n\nAktualisieren...\n",
   aktualisierenGleich       = "\nAutomatische Aktualisierung wenn Stargate untätig ist.\n",
   laden                     = "\nLaden...",
   ja                        = "ja",
