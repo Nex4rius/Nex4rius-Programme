@@ -19,8 +19,8 @@ if SicherungNEU.side         == nil and SicherungALT.side         ~= nil then Si
 if SicherungNEU.Sprache      == nil and SicherungALT.Sprache      ~= nil then SicherungNEU.Sprache      = SicherungALT.Sprache       else SicherungNEU.Sprache       = ""      end
 if SicherungNEU.autoUpdate   == nil and SicherungALT.autoUpdate   ~= nil then SicherungNEU.autoUpdate   = SicherungALT.autoUpdate    else SicherungNEU.autoUpdate    = true    end
 if SicherungNEU.autoclosetime== nil and SicherungALT.autoclosetime~= nil then SicherungNEU.autoclosetime= SicherungALT.autoclosetime else SicherungNEU.autoclosetime = 60      end
-if SicherungNEU.installieren == nil and SicherungALT.installieren ~= nil then SicherungNEU.installieren = SicherungALT.installieren  else SicherungNEU.installieren  = false   end
 if SicherungNEU.control      == nil and SicherungALT.control      ~= nil then SicherungNEU.control      = SicherungALT.control       else SicherungNEU.control       = "On"    end
+if SicherungNEU.installieren == nil and SicherungALT.installieren ~= nil then SicherungNEU.installieren = SicherungALT.installieren  else SicherungNEU.installieren  = false   end
   
 f = io.open ("/stargate/Sicherungsdatei.lua", "w")
 f:write('-- pastebin run -f wLK1gCKt\n')
@@ -35,8 +35,8 @@ f:write('  RF            = '  .. tostring(SicherungNEU.RF) .. ' -- show energy i
 f:write('  Sprache       = "' .. tostring(SicherungNEU.Sprache) .. '" -- deutsch / english\n')
 f:write('  side          = "' .. tostring(SicherungNEU.side) .. '" -- bottom, top, back, front, right or left\n')
 f:write('  autoUpdate    = '  .. tostring(SicherungNEU.autoUpdate) .. ' -- automatically updates the programm\n\n')
+f:write('  control       = "' .. tostring(SicherungNEU.control) .. '"\n\n')
 f:write(string.rep("-", 10) .. "don't change anything below" .. string.rep("-", 33) .. '\n\n')
 f:write('  installieren  = '  .. tostring(SicherungNEU.installieren) .. '\n')
-f:write('  control       = "' .. tostring(SicherungNEU.control) .. '"\n\n')
 f:write('}')
 f:close()
