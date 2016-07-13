@@ -16,7 +16,7 @@ end
 if SicherungNEU.IDC          == nil and SicherungALT.IDC          ~= nil then SicherungNEU.IDC          = SicherungALT.IDC           else SicherungNEU.IDC           = ""       end
 if SicherungNEU.RF           == nil and SicherungALT.RF           ~= nil then SicherungNEU.RF           = SicherungALT.RF            else SicherungNEU.RF            = false    end
 if SicherungNEU.side         == nil and SicherungALT.side         ~= nil then SicherungNEU.side         = SicherungALT.side          else SicherungNEU.side          = "unten"  end
-if SicherungNEU.Sprache      == nil and SicherungALT.Sprache      ~= nil then SicherungNEU.Sprache      = SicherungALT.Sprache       else SicherungNEU.Sprache       = "deutsch"end
+if SicherungNEU.Sprache      == nil and SicherungALT.Sprache      ~= nil then SicherungNEU.Sprache      = SicherungALT.Sprache       else SicherungNEU.Sprache       = "english"end
 if SicherungNEU.autoUpdate   == nil and SicherungALT.autoUpdate   ~= nil then SicherungNEU.autoUpdate   = SicherungALT.autoUpdate    else SicherungNEU.autoUpdate    = true     end
 if SicherungNEU.autoclosetime== nil and SicherungALT.autoclosetime~= nil then SicherungNEU.autoclosetime= SicherungALT.autoclosetime else SicherungNEU.autoclosetime = 60       end
 if SicherungNEU.control      == nil and SicherungALT.control      ~= nil then SicherungNEU.control      = SicherungALT.control       else SicherungNEU.control       = "On"     end
