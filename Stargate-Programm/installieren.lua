@@ -3,6 +3,7 @@
 -- https://github.com/Nex4rius/Stargate-Programm/tree/master/Stargate-Programm
 
 local fs          = require("filesystem")
+local arg         = require("shell").parse(...)[1]
 local wget        = loadfile("/bin/wget.lua")
 local move        = loadfile("/bin/mv.lua")
 local Sicherung   = {}
@@ -107,7 +108,11 @@ local function installieren(versionTyp)
 end
 
 if versionTyp == nil then
-  installieren(require("shell").parse(...)[1])
+  if type(arg) == "string" then
+    installieren(arg)
+  else
+    installieren("master")
+  end
 else
   installieren(versionTyp)
 end
