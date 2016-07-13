@@ -7,9 +7,14 @@ local wget        = loadfile("/bin/wget.lua")
 local move        = loadfile("/bin/mv.lua")
 local Sicherung   = {}
 local sprachen
+local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate
 
 if fs.exists("/stargate/Sicherungsdatei.lua") then
   Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
+  if type(Sicherung) == "string" then
+    Sicherung = {}
+    Sicherung.IDC, Sicherung.autoclosetime, Sicherung.RF, Sicherung.Sprache, Sicherung.side, Sicherung.installieren, Sicherung.control, Sicherung.autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
+  end
 else
   Sicherung.Sprache = ""
   Sicherung.installieren = false
