@@ -1,6 +1,6 @@
--- pastebin run -f wLK1gCKt
+-- pastebin run -f Dkt9dn4S
 -- von Nex4rius
--- https://github.com/Nex4rius/Stargate-Programm/tree/master/Stargate-Programm
+-- https://github.com/Nex4rius/Nex4rius-Programme/blob/beta/Stargate-Programm
 --
 -- to save press "Ctrl + S"
 -- to close press "Ctrl + W"
