@@ -11,7 +11,7 @@ local schreibSicherungsdatei  = loadfile("/stargate/schreibSicherungsdatei.lua")
 local betaVersionName         = ""
 local Sicherung               = {}
 local Funktionen              = {}
-local version                 = sprachen.fehlerName
+local version
 
 function Funktionen.Pfad(versionTyp)
   return "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/" .. versionTyp .. "/Stargate-Programm/"
