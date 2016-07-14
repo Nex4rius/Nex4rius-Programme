@@ -72,11 +72,14 @@ function Funktionen.update(versionTyp)
   end
   if wget("-f", Funktionen.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua") then
     Sicherung.installieren = true
-    schreibSicherungsdatei(Sicherung)
-    local f = io.open ("autorun.lua", "w")
-    f:write('loadfile("installieren.lua")("' .. versionTyp .. '")')
-    f:close()
-    loadfile("autorun.lua")()
+    if schreibSicherungsdatei(Sicherung) then
+      local f = io.open ("autorun.lua", "w")
+      f:write('loadfile("installieren.lua")("' .. versionTyp .. '")')
+      f:close()
+      loadfile("autorun.lua")()
+    else
+      print(sprachen.fehlerName)
+    end
   elseif versionTyp == "master" then
     loadfile("/bin/pastebin.lua")("run", "-f", "wLK1gCKt")
   end
