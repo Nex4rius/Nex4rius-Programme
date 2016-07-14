@@ -11,6 +11,7 @@ local schreibSicherungsdatei  = loadfile("/stargate/schreibSicherungsdatei.lua")
 local betaVersionName         = ""
 local Sicherung               = {}
 local Funktionen              = {}
+local version                 = sprachen.fehlerName
 
 function Funktionen.Pfad(versionTyp)
   return "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/" .. versionTyp .. "/Stargate-Programm/"
@@ -172,7 +173,7 @@ function Funktionen.mainCheck()
       loadfile("/bin/edit.lua")("-r", "/log")
       loadfile("/bin/rm.lua")("/log")
     end
-    loadfile("/stargate/Kontrollprogramm.lua")(Funktionen.update, Funktionen.checkServerVersion)
+    loadfile("/stargate/Kontrollprogramm.lua")(Funktionen.update, Funktionen.checkServerVersion, version)
   else
     print(sprachen.fehlerName .. "\n" .. sprachen.DateienFehlen)
     antwortFrage = io.read()
