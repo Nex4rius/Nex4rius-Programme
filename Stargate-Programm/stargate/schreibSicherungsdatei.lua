@@ -1,6 +1,6 @@
 -- pastebin run -f Dkt9dn4S
 -- von Nex4rius
--- https://github.com/Nex4rius/Nex4rius-Programme/blob/beta/Stargate-Programm
+-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
 local SicherungNEU = require("shell").parse(...)[1]
 local SicherungALT = {}
@@ -25,7 +25,7 @@ if SicherungNEU.installieren == nil and SicherungALT.installieren ~= nil then Si
 f = io.open ("/stargate/Sicherungsdatei.lua", "w")
 f:write('-- pastebin run -f Dkt9dn4S\n')
 f:write('-- von Nex4rius\n')
-f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/blob/beta/Stargate-Programm\n--\n')
+f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n--\n')
 f:write('-- to save press "Ctrl + S"\n')
 f:write('-- to close press "Ctrl + W"\n--\n\n')
 f:write('return {\n')
