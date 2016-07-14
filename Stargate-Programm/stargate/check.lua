@@ -71,7 +71,7 @@ function Funktionen.update(versionTyp)
     versionTyp = "master"
   end
   if wget("-f", Funktionen.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua") then
-    installieren = true
+    Sicherung.installieren = true
     schreibSicherungsdatei(Sicherung)
     f = io.open ("autorun.lua", "w")
     f:write('loadfile("installieren.lua")("' .. versionTyp .. '")')
@@ -138,7 +138,7 @@ function Funktionen.mainCheck()
       print(sprachen.aktualisierenBeta)
       Funktionen.update("beta")
     elseif version ~= serverVersion or version ~= betaServerVersion then
-      if installieren == false then
+      if Sicherung.installieren == false then
         local EndpunktVersion = string.len(version)
         if Sicherung.autoUpdate == true and version ~= serverVersion and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" then
           print(sprachen.aktualisierenJa)
@@ -163,7 +163,7 @@ function Funktionen.mainCheck()
     end
   end
   print(sprachen.laden)
-  installieren = false
+  Sicherung.installieren = false
   schreibSicherungsdatei(Sicherung)
   if Funktionen.checkDateien() then
     if fs.exists("/log") then
