@@ -56,12 +56,6 @@ local LampenGruen               = false
 local LampenRot                 = false
 local VersionUpdate             = false
 
-do
-  local args                    = require("shell").parse(...)
-  Funktionen.update             = args[1]
-  Funktionen.checkServerVersion = args[2]
-end
-
 Farben.graueFarbe               = 6684774
 Farben.roteFarbe                = 0xFF0000
 Farben.weisseFarbe              = 0xFFFFFF
@@ -111,6 +105,14 @@ local sendeAdressen
 local sideNum
 local state
 local StatusName
+local version
+
+do
+  local args                    = require("shell").parse(...)
+  Funktionen.update             = args[1]
+  Funktionen.checkServerVersion = args[2]
+  version                       = args[3]
+end
 
 Farben.white                    = 0
 --Farben.orange                   = 1
