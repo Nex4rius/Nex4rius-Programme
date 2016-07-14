@@ -2,82 +2,88 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Stargate-Programm/tree/master/Stargate-Programm
 
-local component             = require("component")
-local term                  = require("term")
-local event                 = require("event")
-local fs                    = require("filesystem")
-local edit                  = loadfile("/bin/edit.lua")
-local schreibSicherungsdatei= loadfile("/stargate/schreibSicherungsdatei.lua")
-local Sicherung             = loadfile("/stargate/Sicherungsdatei.lua")()
-local gpu                   = component.getPrimary("gpu")
-local sg                    = component.getPrimary("stargate")
+local component                 = require("component")
+local term                      = require("term")
+local event                     = require("event")
+local fs                        = require("filesystem")
+local edit                      = loadfile("/bin/edit.lua")
+local schreibSicherungsdatei    = loadfile("/stargate/schreibSicherungsdatei.lua")
+local Sicherung                 = loadfile("/stargate/Sicherungsdatei.lua")()
+local gpu                       = component.getPrimary("gpu")
+local sg                        = component.getPrimary("stargate")
 
-local sectime               = os.time()
+local sectime                   = os.time()
 os.sleep(1)
-sectime                     = sectime - os.time()
-local letzteNachrichtZeit   = os.time()
-local letzterAdressCheck    = os.time() / sectime
-local enteridc              = ""
-local showidc               = ""
-local remoteName            = ""
-local zielAdresse           = ""
-local time                  = "-"
-local incode                = "-"
-local codeaccepted          = "-"
-local wormhole              = "in"
-local iriscontrol           = "on"
-local energytype            = "EU"
-local handlers              = {}
-local Farben                = {}
-local Funktionen            = {}
-local activationtime        = 0
-local energy                = 0
-local seite                 = 0
-local maxseiten             = 0
-local checkEnergy           = 0
-local AdressenAnzahl        = 0
-local zeile                 = 1
-local Trennlinienhoehe      = 14
-local energymultiplicator   = 20
-local xVerschiebung         = 33
-local AddNewAddress         = true
-local messageshow           = true
-local running               = true
-local send                  = true
-local einmalAdressenSenden  = true
-local Nachrichtleer         = true
-local IDCyes                = false
-local entercode             = false
-local redstoneConnected     = false
-local redstoneIncoming      = false
-local redstoneState         = false
-local redstoneIDC           = false
-local LampenGruen           = false
-local LampenRot             = false
-local VersionUpdate         = false
+sectime                         = sectime - os.time()
+local letzteNachrichtZeit       = os.time()
+local letzterAdressCheck        = os.time() / sectime
+local enteridc                  = ""
+local showidc                   = ""
+local remoteName                = ""
+local zielAdresse               = ""
+local time                      = "-"
+local incode                    = "-"
+local codeaccepted              = "-"
+local wormhole                  = "in"
+local iriscontrol               = "on"
+local energytype                = "EU"
+local handlers                  = {}
+local Farben                    = {}
+local Funktionen                = {}
+local activationtime            = 0
+local energy                    = 0
+local seite                     = 0
+local maxseiten                 = 0
+local checkEnergy               = 0
+local AdressenAnzahl            = 0
+local zeile                     = 1
+local Trennlinienhoehe          = 14
+local energymultiplicator       = 20
+local xVerschiebung             = 33
+local AddNewAddress             = true
+local messageshow               = true
+local running                   = true
+local send                      = true
+local einmalAdressenSenden      = true
+local Nachrichtleer             = true
+local IDCyes                    = false
+local entercode                 = false
+local redstoneConnected         = false
+local redstoneIncoming          = false
+local redstoneState             = false
+local redstoneIDC               = false
+local LampenGruen               = false
+local LampenRot                 = false
+local VersionUpdate             = false
 
-Farben.graueFarbe           = 6684774
-Farben.roteFarbe            = 0xFF0000
-Farben.weisseFarbe          = 0xFFFFFF
-Farben.blaueFarbe           = 0x0000FF
-Farben.schwarzeFarbe        = 0x000000
-Farben.gelbeFarbe           = 16750899
-Farben.brauenFarbe          = 10046464
-Farben.grueneFarbe          = 39168
+do
+  local args                    = require("shell").parse(...)
+  Funktionen.update             = args[1]
+  Funktionen.checkServerVersion = args[2]
+end
 
-Farben.FehlerFarbe          = Farben.roteFarbe
-Farben.Hintergrundfarbe     = Farben.graueFarbe
-Farben.Trennlinienfarbe     = Farben.blaueFarbe
-Farben.Textfarbe            = Farben.weisseFarbe
+Farben.graueFarbe               = 6684774
+Farben.roteFarbe                = 0xFF0000
+Farben.weisseFarbe              = 0xFFFFFF
+Farben.blaueFarbe               = 0x0000FF
+Farben.schwarzeFarbe            = 0x000000
+Farben.gelbeFarbe               = 16750899
+Farben.brauenFarbe              = 10046464
+Farben.grueneFarbe              = 39168
 
-Farben.Adressfarbe          = Farben.brauenFarbe
-Farben.Adresstextfarbe      = Farben.Textfarbe
-Farben.Nachrichtfarbe       = Farben.graueFarbe
-Farben.Nachrichttextfarbe   = Farben.Textfarbe
-Farben.Steuerungsfarbe      = Farben.gelbeFarbe
-Farben.Steuerungstextfarbe  = Farben.schwarzeFarbe
-Farben.Statusfarbe          = Farben.grueneFarbe
-Farben.Statustextfarbe      = Farben.Textfarbe
+Farben.FehlerFarbe              = Farben.roteFarbe
+Farben.Hintergrundfarbe         = Farben.graueFarbe
+Farben.Trennlinienfarbe         = Farben.blaueFarbe
+Farben.Textfarbe                = Farben.weisseFarbe
+
+Farben.Adressfarbe              = Farben.brauenFarbe
+Farben.Adresstextfarbe          = Farben.Textfarbe
+Farben.Nachrichtfarbe           = Farben.graueFarbe
+Farben.Nachrichttextfarbe       = Farben.Textfarbe
+Farben.Steuerungsfarbe          = Farben.gelbeFarbe
+Farben.Steuerungstextfarbe      = Farben.schwarzeFarbe
+Farben.Statusfarbe              = Farben.grueneFarbe
+Farben.Statustextfarbe          = Farben.Textfarbe
 
 local AdressAnzeige
 local adressen
@@ -106,22 +112,22 @@ local sideNum
 local state
 local StatusName
 
-Farben.white                 = 0
---Farben.orange                = 1
---Farben.magenta               = 2
---Farben.lightblue             = 3
-Farben.yellow                = 4
---Farben.lime                  = 5
---Farben.pink                  = 6
---Farben.gray                  = 7
---Farben.silver                = 8
---Farben.cyan                  = 9
---Farben.purple                = 10
---Farben.blue                  = 11
---Farben.brown                 = 12
-Farben.green                 = 13
-Farben.red                   = 14
-Farben.black                 = 15
+Farben.white                    = 0
+--Farben.orange                   = 1
+--Farben.magenta                  = 2
+--Farben.lightblue                = 3
+Farben.yellow                   = 4
+--Farben.lime                     = 5
+--Farben.pink                     = 6
+--Farben.gray                     = 7
+--Farben.silver                   = 8
+--Farben.cyan                     = 9
+--Farben.purple                   = 10
+--Farben.blue                     = 11
+--Farben.brown                    = 12
+Farben.green                    = 13
+Farben.red                      = 14
+Farben.black                    = 15
   
 if component.isAvailable("redstone") then
   r = component.getPrimary("redstone")
@@ -182,7 +188,7 @@ function Funktionen.pull_event()
         gpu.setBackground(Farben.schwarzeFarbe)
         gpu.setForeground(Farben.weisseFarbe)
         print(sprachen.aktualisierenJetzt)
-        update("master")
+        Funktionen.update("master")
       end
       Wartezeit = 300
     else
@@ -1093,7 +1099,7 @@ function Funktionen.angekommeneVersion(...)
   local EndpunktVersion = string.len(version)
   if string.sub(..., Endpunkt - 3, Endpunkt) ~= "BETA" and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" and version ~= ... and Sicherung.autoUpdate == true then
     if component.isAvailable("internet") then
-      if version ~= checkServerVersion() then
+      if version ~= Funktionen.checkServerVersion() then
         VersionUpdate = true
       end
     end
