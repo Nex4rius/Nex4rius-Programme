@@ -4,54 +4,37 @@
 
 local component               = require("component")
 local fs                      = require("filesystem")
-local args                    = require("shell").parse(...)
+local arg                     = require("shell").parse(...)[1]
 local gpu                     = component.getPrimary("gpu")
 local wget                    = loadfile("/bin/wget.lua")
 local schreibSicherungsdatei  = loadfile("/stargate/schreibSicherungsdatei.lua")
 local betaVersionName         = ""
 local Sicherung               = {}
+local Funktionen              = {}
 
-gpu.setResolution(70, 25)
-gpu.setBackground(6684774)
-gpu.setForeground(0xFFFFFF)
-require("term").clear()
-
-local function Pfad(versionTyp)
+function Funktionen.Pfad(versionTyp)
   return "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/" .. versionTyp .. "/Stargate-Programm/"
 end
 
-if fs.exists("/stargate/version.txt") then
-  f = io.open ("/stargate/version.txt", "r")
-  version = f:read()
-  f:close()
-else
-  version = sprachen.fehlerName
-end
-
-local function checkSprache()
-  print("Sprache? / Language? deutsch / english\n")
-  antwortFrageSprache = io.read()
-  if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" or 
-  wget("-f", Pfad(versionTyp) .. "stargate/sprache/" .. antwortFrageSprache .. ".lua", "/update/stargate/sprache/" .. antwortFrageSprache .. ".lua") then
-    Sicherung.Sprache = string.lower(antwortFrageSprache)
+function Funktionen.checkSprache()
+  if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
+    return true
   else
-    print("\nUnbekannte Eingabe\nStandardeinstellung = deutsch")
-    Sicherung.Sprache = "deutsch"
+    print("Sprache? / Language? deutsch / english\n")
+    antwortFrageSprache = io.read()
+    if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" or 
+    wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/sprache/" .. antwortFrageSprache .. ".lua", "/update/stargate/sprache/" .. antwortFrageSprache .. ".lua") then
+      Sicherung.Sprache = string.lower(antwortFrageSprache)
+      schreibSicherungsdatei(Sicherung)
+      print("")
+      return true
+    else
+      return false
+    end
   end
-  schreibSicherungsdatei(Sicherung)
-  print("")
 end
 
-if fs.exists("/stargate/Sicherungsdatei.lua") then
-  Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
-else
-  checkSprache()
-  Sicherung.installieren = false
-end
-
-sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
-
-local function checkKomponenten()
+function Funktionen.checkKomponenten()
   print(sprachen.pruefeKomponenten)
   if component.isAvailable("redstone") then
     print(sprachen.redstoneOK)
@@ -85,11 +68,11 @@ local function checkKomponenten()
   end
 end
 
-function update(versionTyp)
+function Funktionen.update(versionTyp)
   if versionTyp == nil then
     versionTyp = "master"
   end
-  if wget("-f", Pfad(versionTyp) .. "installieren.lua", "/installieren.lua") then
+  if wget("-f", Funktionen.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua") then
     installieren = true
     schreibSicherungsdatei(Sicherung)
     f = io.open ("autorun.lua", "w")
@@ -102,8 +85,8 @@ function update(versionTyp)
   os.exit()
 end
 
-function checkServerVersion()
-  if wget("-fQ", Pfad("master") .. "stargate/version.txt", "/serverVersion.txt") then
+function Funktionen.checkServerVersion()
+  if wget("-fQ", Funktionen.Pfad("master") .. "stargate/version.txt", "/serverVersion.txt") then
     f = io.open ("/serverVersion.txt", "r")
     serverVersion = f:read()
     f:close()
@@ -114,8 +97,8 @@ function checkServerVersion()
   return serverVersion
 end
 
-local function checkBetaServerVersion()
-  if wget("-fQ", Pfad("beta") .. "stargate/version.txt", "/betaVersion.txt") then
+function Funktionen.checkBetaServerVersion()
+  if wget("-fQ", Funktionen.Pfad("beta") .. "stargate/version.txt", "/betaVersion.txt") then
     f = io.open ("/betaVersion.txt", "r")
     betaServerVersion = f:read()
     f:close()
@@ -126,7 +109,7 @@ local function checkBetaServerVersion()
   return betaServerVersion
 end
 
-local function checkDateien()
+function Funktionen.checkDateien()
   if fs.exists("/autorun.lua") and fs.exists("/stargate/Kontrollprogramm.lua") then
     if fs.exists("/stargate/Sicherungsdatei.lua") and fs.exists("/stargate/adressen.lua") then
       if fs.exists("/stargate/check.lua") and fs.exists("/stargate/version.txt") then
@@ -137,10 +120,10 @@ local function checkDateien()
   return false
 end
 
-local function mainCheck()
+function Funktionen.mainCheck()
   if internet == true then
-    serverVersion = checkServerVersion()
-    betaServerVersion = checkBetaServerVersion()
+    serverVersion = Funktionen.checkServerVersion()
+    betaServerVersion = Funktionen.checkBetaServerVersion()
     print(sprachen.derzeitigeVersion .. version .. sprachen.verfuegbareVersion .. serverVersion)
     if serverVersion == betaServerVersion then else
       print(sprachen.betaVersion .. betaServerVersion .. " BETA")
@@ -148,31 +131,31 @@ local function mainCheck()
         betaVersionName = "/beta"
       end
     end
-    if args[1] == sprachen.ja or args[1] == "ja" or args[1] == "yes" then
+    if arg == sprachen.ja or arg == "ja" or arg == "yes" then
       print(sprachen.aktualisierenJa)
-      update("master")
-    elseif args[1] == sprachen.nein or args[1] == "nein" or args[1] == "no" then
+      Funktionen.update("master")
+    elseif arg == sprachen.nein or arg == "nein" or arg == "no" then
       -- nichts
-    elseif args[1] == "beta" then
+    elseif arg == "beta" then
       print(sprachen.aktualisierenBeta)
-      update("beta")
+      Funktionen.update("beta")
     elseif version == serverVersion and version == betaServerVersion then else
       if installieren == false then
         local EndpunktVersion = string.len(version)
         if Sicherung.autoUpdate == true and version ~= serverVersion and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" then
           print(sprachen.aktualisierenJa)
-          update("master")
+          Funktionen.update("master")
           return
         else
           print(sprachen.aktualisierenFrage .. betaVersionName .. "\n")
           antwortFrage = io.read()
           if string.lower(antwortFrage) == sprachen.ja or string.lower(antwortFrage) == "ja" or string.lower(antwortFrage) == "yes" then
             print(sprachen.aktualisierenJa)
-            update("master")
+            Funktionen.update("master")
             return
           elseif string.lower(antwortFrage) == "beta" then
             print(sprachen.aktualisierenBeta)
-            update("beta")
+            Funktionen.update("beta")
             return
           else
             print(sprachen.aktualisierenNein .. antwortFrage)
@@ -184,12 +167,12 @@ local function mainCheck()
   print(sprachen.laden)
   installieren = false
   schreibSicherungsdatei(Sicherung)
-  if checkDateien() then
+  if Funktionen.checkDateien() then
     if fs.exists("/log") then
       loadfile("/bin/edit.lua")("-r", "/log")
       loadfile("/bin/rm.lua")("/log")
     end
-    loadfile("/stargate/Kontrollprogramm.lua")()
+    loadfile("/stargate/Kontrollprogramm.lua")(Funktionen.update, Funktionen.checkServerVersion)
   else
     print(sprachen.fehlerName .. "\n" .. sprachen.DateienFehlen)
     antwortFrage = io.read()
@@ -199,14 +182,39 @@ local function mainCheck()
   end
 end
 
-if args[1] == sprachen.hilfe or args[1] == "hilfe" or args[1] == "help" then
-  print(Hilfetext)
-else
-  if checkKomponenten() then
-    mainCheck()
+function Funktionen.main()
+  gpu.setResolution(70, 25)
+  gpu.setBackground(6684774)
+  gpu.setForeground(0xFFFFFF)
+  require("term").clear()
+  if fs.exists("/stargate/version.txt") then
+    f = io.open ("/stargate/version.txt", "r")
+    version = f:read()
+    f:close()
+  else
+    version = sprachen.fehlerName
   end
+  if fs.exists("/stargate/Sicherungsdatei.lua") then
+    Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
+  else
+    Sicherung.installieren = false
+  end
+  if Funktionen.checkSprache() then
+    sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
+  else
+    print("\nUnbekannte Sprache\nStandardeinstellung = deutsch")
+    sprachen = loadfile("/stargate/sprache/deutsch.lua")()
+  end
+  if arg == sprachen.hilfe or arg == "hilfe" or arg == "help" then
+    print(sprachen.Hilfetext)
+  else
+    if Funktionen.checkKomponenten() then
+      Funktionen.mainCheck()
+    end
+  end
+  gpu.setBackground(0x000000)
+  gpu.setForeground(0xFFFFFF)
+  gpu.setResolution(gpu.maxResolution())
 end
 
-gpu.setBackground(0x000000)
-gpu.setForeground(0xFFFFFF)
-gpu.setResolution(gpu.maxResolution())
+Funktionen.main()
