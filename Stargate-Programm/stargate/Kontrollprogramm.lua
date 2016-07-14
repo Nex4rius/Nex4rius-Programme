@@ -111,7 +111,7 @@ do
   local args                    = require("shell").parse(...)
   Funktionen.update             = args[1]
   Funktionen.checkServerVersion = args[2]
-  version                       = args[3]
+  version                       = tostring(args[3])
 end
 
 Farben.white                    = 0
