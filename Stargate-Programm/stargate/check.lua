@@ -72,11 +72,14 @@ function Funktionen.update(versionTyp)
   end
   if wget("-f", Funktionen.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua") then
     Sicherung.installieren = true
-    schreibSicherungsdatei(Sicherung)
-    f = io.open ("autorun.lua", "w")
-    f:write('loadfile("installieren.lua")("' .. versionTyp .. '")')
-    f:close()
-    loadfile("autorun.lua")()
+    if schreibSicherungsdatei(Sicherung) then
+      local f = io.open ("autorun.lua", "w")
+      f:write('loadfile("installieren.lua")("' .. versionTyp .. '")')
+      f:close()
+      loadfile("autorun.lua")()
+    else
+      print(sprachen.fehlerName)
+    end
   elseif versionTyp == "master" then
     loadfile("/bin/pastebin.lua")("run", "-f", "wLK1gCKt")
   end
@@ -85,7 +88,7 @@ end
 
 function Funktionen.checkServerVersion()
   if wget("-fQ", Funktionen.Pfad("master") .. "stargate/version.txt", "/serverVersion.txt") then
-    f = io.open ("/serverVersion.txt", "r")
+    local f = io.open ("/serverVersion.txt", "r")
     serverVersion = f:read()
     f:close()
     loadfile("/bin/rm.lua")("/serverVersion.txt")
@@ -97,7 +100,7 @@ end
 
 function Funktionen.checkBetaServerVersion()
   if wget("-fQ", Funktionen.Pfad("beta") .. "stargate/version.txt", "/betaVersion.txt") then
-    f = io.open ("/betaVersion.txt", "r")
+    local f = io.open ("/betaVersion.txt", "r")
     betaServerVersion = f:read()
     f:close()
     loadfile("/bin/rm.lua")("/betaVersion.txt")
@@ -186,7 +189,7 @@ function Funktionen.main()
   gpu.setForeground(0xFFFFFF)
   require("term").clear()
   if fs.exists("/stargate/version.txt") then
-    f = io.open ("/stargate/version.txt", "r")
+    local f = io.open ("/stargate/version.txt", "r")
     version = f:read()
     f:close()
   else

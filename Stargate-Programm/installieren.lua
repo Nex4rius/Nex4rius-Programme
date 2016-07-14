@@ -57,7 +57,7 @@ local function installieren(versionTyp)
       if sprachen then
         print(sprachen.fehlerName .. i)
       end
-      f = io.open ("/autorun.lua", "w")
+      local f = io.open ("/autorun.lua", "w")
       f:write('-- pastebin run -f Dkt9dn4S\n')
       f:write('-- von Nex4rius\n')
       f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n\n')
