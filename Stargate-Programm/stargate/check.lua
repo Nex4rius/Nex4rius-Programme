@@ -203,7 +203,11 @@ function Funktionen.main()
     sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
   else
     print("\nUnbekannte Sprache\nStandardeinstellung = deutsch")
-    sprachen = loadfile("/stargate/sprache/deutsch.lua")()
+    if fs.exists("/stargate/sprache/deutsch.lua") then
+      sprachen = loadfile("/stargate/sprache/deutsch.lua")()
+    else
+      print(sprachen.fehlerName)
+    end
   end
   if arg == sprachen.hilfe or arg == "hilfe" or arg == "help" then
     print(sprachen.Hilfetext)
