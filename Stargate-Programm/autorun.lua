@@ -1,4 +1,4 @@
--- pastebin run -f wLK1gCKt
+-- pastebin run -f Dkt9dn4S
 -- von Nex4rius
 -- https://github.com/Nex4rius/Stargate-Programm/tree/master/Stargate-Programm
 
