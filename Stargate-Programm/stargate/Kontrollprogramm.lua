@@ -152,7 +152,7 @@ if component.isAvailable("redstone") then
 end
 
 function Funktionen.schreibeAdressen()
-  f = io.open("/stargate/adressen.lua", "w")
+  local f = io.open("/stargate/adressen.lua", "w")
   f:write('-- pastebin run -f Dkt9dn4S\n')
   f:write('-- von Nex4rius\n')
   f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n--\n')
@@ -854,6 +854,7 @@ end
 
 function Funktionen.schreibFehlerLog(...)
   if letzteEingabe == ... then else
+    local f
     if fs.exists("/log") then
       f = io.open("log", "a")
     else
