@@ -4,7 +4,7 @@
 
 local component               = require("component")
 local fs                      = require("filesystem")
-local arg                     = require("shell").parse(...)[1]
+local arg                     = string.lower(tostring(require("shell").parse(...)[1]))
 local gpu                     = component.getPrimary("gpu")
 local wget                    = loadfile("/bin/wget.lua")
 local schreibSicherungsdatei  = loadfile("/stargate/schreibSicherungsdatei.lua")
@@ -23,8 +23,7 @@ function Funktionen.checkSprache()
   else
     print("Sprache? / Language? deutsch / english\n")
     antwortFrageSprache = io.read()
-    if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" or 
-    wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/sprache/" .. antwortFrageSprache .. ".lua", "/update/stargate/sprache/" .. antwortFrageSprache .. ".lua") then
+    if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" or wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/sprache/" .. antwortFrageSprache .. ".lua", "/update/stargate/sprache/" .. antwortFrageSprache .. ".lua") then
       Sicherung.Sprache = string.lower(antwortFrageSprache)
       schreibSicherungsdatei(Sicherung)
       print("")
@@ -46,10 +45,8 @@ function Funktionen.checkKomponenten()
   end
   if component.isAvailable("internet") then
     print(sprachen.InternetOK)
-    internet = true
   else
     print(sprachen.InternetFehlt)
-    internet = false
   end
   if gpu.maxResolution() == 80 then
     print(sprachen.gpuOK2T)
@@ -122,9 +119,9 @@ function Funktionen.checkDateien()
 end
 
 function Funktionen.mainCheck()
-  if internet == true then
-    serverVersion = Funktionen.checkServerVersion()
-    betaServerVersion = Funktionen.checkBetaServerVersion()
+  if component.isAvailable("internet") then
+    local serverVersion = Funktionen.checkServerVersion()
+    local betaServerVersion = Funktionen.checkBetaServerVersion()
     print(sprachen.derzeitigeVersion .. version .. sprachen.verfuegbareVersion .. serverVersion)
     if serverVersion == betaServerVersion then else
       print(sprachen.betaVersion .. betaServerVersion .. " BETA")
@@ -140,7 +137,7 @@ function Funktionen.mainCheck()
     elseif arg == "beta" then
       print(sprachen.aktualisierenBeta)
       Funktionen.update("beta")
-    elseif version == serverVersion and version == betaServerVersion then else
+    elseif version ~= serverVersion or version ~= betaServerVersion then
       if installieren == false then
         local EndpunktVersion = string.len(version)
         if Sicherung.autoUpdate == true and version ~= serverVersion and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" then
