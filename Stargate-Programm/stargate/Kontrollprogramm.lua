@@ -994,11 +994,10 @@ handlers[key_event_name] = function(e)
         send = true
         if Sicherung.control == "On" then
           Sicherung.control = "Off"
-          schreibSicherungsdatei(Sicherung)
         else
           Sicherung.control = "On"
-          schreibSicherungsdatei(Sicherung)
         end
+        schreibSicherungsdatei(Sicherung)
       end
     elseif c == "z" then
       gpu.setBackground(Farben.Nachrichtfarbe)
