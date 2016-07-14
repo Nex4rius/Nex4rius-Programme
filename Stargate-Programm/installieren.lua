@@ -1,6 +1,6 @@
 -- pastebin run -f Dkt9dn4S
 -- von Nex4rius
--- https://github.com/Nex4rius/Nex4rius-Programme/blob/beta/Stargate-Programm
+-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
 local fs          = require("filesystem")
 local arg         = require("shell").parse(...)[1]
@@ -60,7 +60,7 @@ local function installieren(versionTyp)
       f = io.open ("/autorun.lua", "w")
       f:write('-- pastebin run -f Dkt9dn4S\n')
       f:write('-- von Nex4rius\n')
-      f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/blob/beta/Stargate-Programm\n\n')
+      f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n\n')
       f:write('local args = require("shell").parse(...)[1]\n\n')
       f:write('if type(args) == "string" then\n')
       f:write('  loadfile("/stargate/check.lua")(args)\n')
