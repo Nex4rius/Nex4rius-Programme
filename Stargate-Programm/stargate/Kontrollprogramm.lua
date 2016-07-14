@@ -1,6 +1,6 @@
--- pastebin run -f wLK1gCKt
+-- pastebin run -f Dkt9dn4S
 -- von Nex4rius
--- https://github.com/Nex4rius/Stargate-Programm/tree/master/Stargate-Programm
+-- https://github.com/Nex4rius/Nex4rius-Programme/blob/beta/Stargate-Programm
 
 local component                 = require("component")
 local term                      = require("term")
@@ -153,9 +153,9 @@ end
 
 function Funktionen.schreibeAdressen()
   f = io.open("/stargate/adressen.lua", "w")
-  f:write('-- pastebin run -f wLK1gCKt\n')
+  f:write('-- pastebin run -f Dkt9dn4S\n')
   f:write('-- von Nex4rius\n')
-  f:write('-- https://github.com/Nex4rius/Stargate-Programm/tree/master/Stargate-Programm\n--\n')
+  f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/blob/beta/Stargate-Programm\n--\n')
   f:write('-- to save press "Ctrl + S"\n')
   f:write('-- to close press "Ctrl + W"\n--\n')
   f:write('-- Put your own stargate addresses here\n')
