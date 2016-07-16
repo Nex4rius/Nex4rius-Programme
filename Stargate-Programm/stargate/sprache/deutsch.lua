@@ -111,4 +111,6 @@ return {
   Sprache                   = "deutsch / english",
   side                      = "unten, oben, hinten, vorne, rechts oder links",
   autoUpdate                = "aktiviere automatische Aktualisierungen",
+  iris                      = "Trage deinen eigene Stargate Adressen hier ein",
+  keinIDC                   = "für keinen Iris Code",
 }
