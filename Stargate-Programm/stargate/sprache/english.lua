@@ -103,4 +103,12 @@ return {
   entwicklerName            = "Developer:",
   IDCgesendet               = "sending IDC",
   DateienFehlen             = "files are missing\nredownload everything?",
+  speichern                 = 'to save press "Ctrl + S"',
+  schliessen                = 'to close press "Ctrl + W"',
+  IDC                       = "Iris Deactivation Code",
+  autoclosetime             = "in seconds -- false for no autoclose",
+  RF                        = "show energy in RF instead of EU",
+  Sprache                   = "deutsch / english",
+  side                      = "bottom, top, back, front, right or left",
+  autoUpdate                = "enable automated updates",
 }
