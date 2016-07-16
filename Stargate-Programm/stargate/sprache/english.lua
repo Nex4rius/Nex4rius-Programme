@@ -111,6 +111,6 @@ return {
   Sprache                   = "deutsch / english",
   side                      = "bottom, top, back, front, right or left",
   autoUpdate                = "enable automated updates",
-  iris                      = "Put your own stargate addresses here",
+  iris                      = "Put your own Stargate addresses here",
   keinIDC                   = "for no Iris Code",
 }
