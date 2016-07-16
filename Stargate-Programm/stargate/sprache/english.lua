@@ -113,4 +113,5 @@ return {
   autoUpdate                = "enable automated updates",
   iris                      = "Put your own Stargate addresses here",
   keinIDC                   = "for no Iris Code",
+  nichtsAendern             = "don't change anything below",
 }
