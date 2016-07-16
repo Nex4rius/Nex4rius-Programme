@@ -98,6 +98,7 @@ local function installieren(versionTyp)
   end
   Sicherung.installieren = true
   loadfile("/stargate/schreibSicherungsdatei.lua")(Sicherung)
+  print()
   loadfile("/bin/rm.lua")("-v", "/update")
   loadfile("/bin/rm.lua")("-v", "/installieren.lua")
   --loadfile("/autorun.lua")("no")
