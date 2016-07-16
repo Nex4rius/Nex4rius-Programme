@@ -4,44 +4,53 @@
 
 local SicherungNEU = require("shell").parse(...)[1]
 local SicherungALT = loadfile("/stargate/Sicherungsdatei.lua")()
+local sprachen
+
+if fs.exists("/stargate/sprache/" .. SicherungNEU.Sprache .. ".lua") then
+  sprachen = loadfile("/stargate/sprache/" .. SicherungNEU.Sprache .. ".lua")()
+elseif fs.exists("/stargate/sprache/" .. SicherungALT.Sprache .. ".lua") then
+  sprachen = loadfile("/stargate/sprache/" .. SicherungALT.Sprache .. ".lua")()
+else
+  sprachen = loadfile("/stargate/sprache/deutsch.lua")()
+end
 
 if type(SicherungNEU) == "table" then
   local f = io.open ("/stargate/Sicherungsdatei.lua", "w")
   f:write('-- pastebin run -f Dkt9dn4S\n')
   f:write('-- von Nex4rius\n')
   f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n--\n')
-  f:write('-- to save press "Ctrl + S"\n')
-  f:write('-- to close press "Ctrl + W"\n--\n\n')
+  f:write('-- ' .. sprachen.speichern .. '\n')
+  f:write('-- ' .. sprachen.schliessen .. '\n--\n\n')
   f:write('return {\n')
   if type(SicherungNEU.IDC) == "string" then
-    f:write('  IDC           = "' .. tostring(SicherungNEU.IDC) .. '", -- Iris Deactivation Code\n')
+    f:write('  IDC           = "' .. tostring(SicherungNEU.IDC) .. '", -- ' .. sprachen.iriscode .. '\n')
   else
-    f:write('  IDC           = "' .. tostring(SicherungALT.IDC) .. '", -- Iris Deactivation Code\n')
+    f:write('  IDC           = "' .. tostring(SicherungALT.IDC) .. '", -- ' .. sprachen.iriscode .. '\n')
   end
   if type(SicherungNEU.autoclosetime) == "number" or SicherungNEU.autoclosetime == false then
-    f:write('  autoclosetime = '  .. tostring(SicherungNEU.autoclosetime) .. ', -- in seconds -- false for no autoclose\n')
+    f:write('  autoclosetime = '  .. tostring(SicherungNEU.autoclosetime) .. ', -- ' .. sprachen.autoclosetime .. '\n')
   else
-    f:write('  autoclosetime = '  .. tostring(SicherungALT.autoclosetime) .. ', -- in seconds -- false for no autoclose\n')
+    f:write('  autoclosetime = '  .. tostring(SicherungALT.autoclosetime) .. ', -- ' .. sprachen.autoclosetime .. '\n')
   end
   if type(SicherungNEU.RF) == "boolean" then
-    f:write('  RF            = '  .. tostring(SicherungNEU.RF) .. ', -- show energy in RF instead of EU\n')
+    f:write('  RF            = '  .. tostring(SicherungNEU.RF) .. ', -- ' .. sprachen.RF .. '\n')
   else
-    f:write('  RF            = '  .. tostring(SicherungALT.RF) .. ', -- show energy in RF instead of EU\n')
+    f:write('  RF            = '  .. tostring(SicherungALT.RF) .. ', -- ' .. sprachen.RF .. '\n')
   end
   if type(SicherungNEU.Sprache) == "string" then
-    f:write('  Sprache       = "' .. tostring(SicherungNEU.Sprache) .. '", -- deutsch / english\n')
+    f:write('  Sprache       = "' .. tostring(SicherungNEU.Sprache) .. '", -- ' .. sprachen.Sprache .. '\n')
   else
-    f:write('  Sprache       = "' .. tostring(SicherungALT.Sprache) .. '", -- deutsch / english\n')
+    f:write('  Sprache       = "' .. tostring(SicherungALT.Sprache) .. '", -- ' .. sprachen.Sprache .. '\n')
   end
   if type(SicherungNEU.side) == "string" then
-    f:write('  side          = "' .. tostring(SicherungNEU.side) .. '", -- bottom, top, back, front, right or left\n')
+    f:write('  side          = "' .. tostring(SicherungNEU.side) .. '", -- ' ... sprachen.side .. '\n')
   else
-    f:write('  side          = "' .. tostring(SicherungALT.side) .. '", -- bottom, top, back, front, right or left\n')
+    f:write('  side          = "' .. tostring(SicherungALT.side) .. '", -- ' ... sprachen.side .. '\n')
   end
   if type(SicherungNEU.autoUpdate) == "boolean" then
-    f:write('  autoUpdate    = '  .. tostring(SicherungNEU.autoUpdate) .. ', -- automatically updates the programm\n')
+    f:write('  autoUpdate    = '  .. tostring(SicherungNEU.autoUpdate) .. ', -- ' .. sprachen.autoUpdate .. '\n')
   else
-    f:write('  autoUpdate    = '  .. tostring(SicherungALT.autoUpdate) .. ', -- automatically updates the programm\n')
+    f:write('  autoUpdate    = '  .. tostring(SicherungALT.autoUpdate) .. ', -- ' .. sprachen.autoUpdate .. '\n')
   end
   if type(SicherungNEU.control) == "string" then
     f:write('  control       = "' .. tostring(SicherungNEU.control) .. '",\n\n')
