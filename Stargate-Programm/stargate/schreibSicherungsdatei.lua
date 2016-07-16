@@ -61,7 +61,7 @@ if type(SicherungNEU) == "table" then
   else
     f:write('  control       = "' .. tostring(SicherungALT.control) .. '",\n\n')
   end
-  f:write(string.rep("-", 10) .. tostring.(sprachen.nichtsAendern) .. string.rep("-", 33) .. '\n\n')
+  f:write(string.rep("-", 10) .. tostring(sprachen.nichtsAendern) .. string.rep("-", 33) .. '\n\n')
   if type(SicherungNEU.installieren) == "boolean" then
     f:write('  installieren  = '  .. tostring(SicherungNEU.installieren) .. ',\n')
   else
