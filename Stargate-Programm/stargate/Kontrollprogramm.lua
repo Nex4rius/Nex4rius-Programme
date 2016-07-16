@@ -1023,6 +1023,7 @@ handlers[key_event_name] = function(e)
         sprachen = loadfile("/stargate/sprache/deutsch.lua")()
         os.sleep(1)
       end
+      schreibSicherungsdatei(Sicherung)
       Funktionen.sides()
       gpu.setBackground(Farben.Nachrichtfarbe)
       term.clear()
