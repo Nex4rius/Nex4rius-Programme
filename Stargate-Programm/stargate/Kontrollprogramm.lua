@@ -84,6 +84,7 @@ local adressen
 local alte_eingabe
 local anwahlEnergie
 local ausgabe
+local c
 local chevron
 local direction
 local eingabe
