@@ -113,4 +113,5 @@ return {
   autoUpdate                = "aktiviere automatische Aktualisierungen",
   iris                      = "Trage deinen eigene Stargate Adressen hier ein",
   keinIDC                   = "für keinen Iris Code",
+  nichtsAendern             = "verändere nichts hier drunter",
 }
