@@ -1014,6 +1014,7 @@ handlers[key_event_name] = function(e)
     elseif c == "l" then
       gpu.setBackground(Farben.Nachrichtfarbe)
       gpu.setForeground(Farben.Textfarbe)
+      schreibSicherungsdatei(Sicherung)
       edit("stargate/Sicherungsdatei.lua")
       Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
       if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
@@ -1023,6 +1024,7 @@ handlers[key_event_name] = function(e)
         sprachen = loadfile("/stargate/sprache/deutsch.lua")()
         os.sleep(1)
       end
+      schreibSicherungsdatei(Sicherung)
       Funktionen.sides()
       gpu.setBackground(Farben.Nachrichtfarbe)
       term.clear()
