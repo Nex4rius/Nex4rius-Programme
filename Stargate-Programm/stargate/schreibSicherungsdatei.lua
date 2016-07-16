@@ -10,10 +10,10 @@ if fs.exists("/stargate/Sicherungsdatei.lua") then
   SicherungALT = loadfile("/stargate/Sicherungsdatei.lua")()
 end
 
-if fs.exists("/stargate/sprache/" .. SicherungNEU.Sprache .. ".lua") then
-  sprachen = loadfile("/stargate/sprache/" .. SicherungNEU.Sprache .. ".lua")()
-elseif fs.exists("/stargate/sprache/" .. SicherungALT.Sprache .. ".lua") then
-  sprachen = loadfile("/stargate/sprache/" .. SicherungALT.Sprache .. ".lua")()
+if fs.exists("/stargate/sprache/" .. tostring(SicherungNEU.Sprache) .. ".lua") then
+  sprachen = loadfile("/stargate/sprache/" .. tostring(SicherungNEU.Sprache) .. ".lua")()
+elseif fs.exists("/stargate/sprache/" .. tostring(SicherungALT.Sprache) .. ".lua") then
+  sprachen = loadfile("/stargate/sprache/" .. tostring(SicherungALT.Sprache) .. ".lua")()
 else
   sprachen = loadfile("/stargate/sprache/deutsch.lua")()
 end
@@ -27,34 +27,34 @@ if type(SicherungNEU) == "table" then
   f:write('-- ' .. sprachen.schliessen .. '\n--\n\n')
   f:write('return {\n')
   if type(SicherungNEU.IDC) == "string" then
-    f:write('  IDC           = "' .. tostring(SicherungNEU.IDC) .. '", -- ' .. sprachen.iriscode .. '\n')
+    f:write('  IDC           = "' .. tostring(SicherungNEU.IDC) .. '", -- ' .. tostring(sprachen.iriscode) .. '\n')
   else
-    f:write('  IDC           = "' .. tostring(SicherungALT.IDC) .. '", -- ' .. sprachen.iriscode .. '\n')
+    f:write('  IDC           = "' .. tostring(SicherungALT.IDC) .. '", -- ' .. tostring(sprachen.iriscode) .. '\n')
   end
   if type(SicherungNEU.autoclosetime) == "number" or SicherungNEU.autoclosetime == false then
-    f:write('  autoclosetime = '  .. tostring(SicherungNEU.autoclosetime) .. ', -- ' .. sprachen.autoclosetime .. '\n')
+    f:write('  autoclosetime = '  .. tostring(SicherungNEU.autoclosetime) .. ', -- ' .. tostring(sprachen.autoclosetime) .. '\n')
   else
-    f:write('  autoclosetime = '  .. tostring(SicherungALT.autoclosetime) .. ', -- ' .. sprachen.autoclosetime .. '\n')
+    f:write('  autoclosetime = '  .. tostring(SicherungALT.autoclosetime) .. ', -- ' .. tostring(sprachen.autoclosetime) .. '\n')
   end
   if type(SicherungNEU.RF) == "boolean" then
-    f:write('  RF            = '  .. tostring(SicherungNEU.RF) .. ', -- ' .. sprachen.RF .. '\n')
+    f:write('  RF            = '  .. tostring(SicherungNEU.RF) .. ', -- ' .. tostring(sprachen.RF) .. '\n')
   else
-    f:write('  RF            = '  .. tostring(SicherungALT.RF) .. ', -- ' .. sprachen.RF .. '\n')
+    f:write('  RF            = '  .. tostring(SicherungALT.RF) .. ', -- ' .. tostring(sprachen.RF) .. '\n')
   end
   if type(SicherungNEU.Sprache) == "string" then
-    f:write('  Sprache       = "' .. tostring(SicherungNEU.Sprache) .. '", -- ' .. sprachen.Sprache .. '\n')
+    f:write('  Sprache       = "' .. tostring(SicherungNEU.Sprache) .. '", -- ' .. tostring(sprachen.Sprache) .. '\n')
   else
-    f:write('  Sprache       = "' .. tostring(SicherungALT.Sprache) .. '", -- ' .. sprachen.Sprache .. '\n')
+    f:write('  Sprache       = "' .. tostring(SicherungALT.Sprache) .. '", -- ' .. tostring(sprachen.Sprache) .. '\n')
   end
   if type(SicherungNEU.side) == "string" then
-    f:write('  side          = "' .. tostring(SicherungNEU.side) .. '", -- ' ... sprachen.side .. '\n')
+    f:write('  side          = "' .. tostring(SicherungNEU.side) .. '", -- ' ... tostring(sprachen.side) .. '\n')
   else
-    f:write('  side          = "' .. tostring(SicherungALT.side) .. '", -- ' ... sprachen.side .. '\n')
+    f:write('  side          = "' .. tostring(SicherungALT.side) .. '", -- ' ... tostring(sprachen.side) .. '\n')
   end
   if type(SicherungNEU.autoUpdate) == "boolean" then
-    f:write('  autoUpdate    = '  .. tostring(SicherungNEU.autoUpdate) .. ', -- ' .. sprachen.autoUpdate .. '\n')
+    f:write('  autoUpdate    = '  .. tostring(SicherungNEU.autoUpdate) .. ', -- ' .. tostring(sprachen.autoUpdate) .. '\n')
   else
-    f:write('  autoUpdate    = '  .. tostring(SicherungALT.autoUpdate) .. ', -- ' .. sprachen.autoUpdate .. '\n')
+    f:write('  autoUpdate    = '  .. tostring(SicherungALT.autoUpdate) .. ', -- ' .. tostring(sprachen.autoUpdate) .. '\n')
   end
   if type(SicherungNEU.control) == "string" then
     f:write('  control       = "' .. tostring(SicherungNEU.control) .. '",\n\n')
