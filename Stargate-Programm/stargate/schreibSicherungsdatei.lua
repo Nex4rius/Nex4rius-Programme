@@ -2,9 +2,13 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
-local SicherungNEU = require("shell").parse(...)[1]
-local SicherungALT = loadfile("/stargate/Sicherungsdatei.lua")()
-local sprachen
+local SicherungNEU  = require("shell").parse(...)[1]
+local SicherungALT  = {}
+local sprachen      = {}
+
+if fs.exists("/stargate/Sicherungsdatei.lua") then
+  SicherungALT = loadfile("/stargate/Sicherungsdatei.lua")()
+end
 
 if fs.exists("/stargate/sprache/" .. SicherungNEU.Sprache .. ".lua") then
   sprachen = loadfile("/stargate/sprache/" .. SicherungNEU.Sprache .. ".lua")()
