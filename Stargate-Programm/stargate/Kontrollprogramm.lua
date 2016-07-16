@@ -84,6 +84,7 @@ local adressen
 local alte_eingabe
 local anwahlEnergie
 local ausgabe
+local c
 local chevron
 local direction
 local eingabe
@@ -643,6 +644,9 @@ function Funktionen.autoclose()
   if Sicherung.autoclosetime == false then
     Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAus)
   else
+    if type(Sicherung.autoclosetime) ~= "number" then
+      Sicherung.autoclosetime = 60
+    end
     Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAn .. Sicherung.autoclosetime .. "s")
     if (activationtime - os.time()) / sectime > Sicherung.autoclosetime and state == "Connected" then
       sg.disconnect()
