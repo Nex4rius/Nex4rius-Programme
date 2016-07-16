@@ -103,5 +103,12 @@ return {
   entwicklerName            = "Entwickler:",
   IDCgesendet               = "sende IDC",
   DateienFehlen             = "Dateien fehlen\nAlles neu herunterladen?",
+  speichern                 = 'zum speichern drücke "Strg + S"',
+  schliessen                = 'zum schließen drücke "Strg + W"',
+  IDC                       = "Iris Deaktivierungscode",
+  autoclosetime             = "in Sekunden -- false für keine automatische Schließung",
+  RF                        = "zeige Energie in RF anstatt in EU",
+  Sprache                   = "deutsch / english",
+  side                      = "unten, oben, hinten, vorne, rechts oder links",
+  autoUpdate                = "aktiviere automatische Aktualisierungen",
 }
-
