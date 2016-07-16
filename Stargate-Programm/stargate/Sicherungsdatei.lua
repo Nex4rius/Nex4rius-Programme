@@ -12,7 +12,7 @@ return {
   RF            = false, -- show energy in RF instead of EU
   Sprache       = "english", -- deutsch / english
   side          = "unten", -- bottom, top, back, front, right or left
-  autoUpdate    = true, -- automatically updates the programm
+  autoUpdate    = true, -- enable automated updates
   control       = "On",
 
 ----------don't change anything below---------------------------------
