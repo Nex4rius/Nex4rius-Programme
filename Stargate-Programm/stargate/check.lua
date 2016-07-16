@@ -175,7 +175,7 @@ function Funktionen.mainCheck()
     end
     loadfile("/stargate/Kontrollprogramm.lua")(Funktionen.update, Funktionen.checkServerVersion, version)
   else
-    print(sprachen.fehlerName .. "\n" .. sprachen.DateienFehlen)
+    print(string.format("%s\n%s %s/%s", sprachen.fehlerName, sprachen.DateienFehlen, ja, nein))
     antwortFrage = io.read()
     if string.lower(antwortFrage) == sprachen.ja or string.lower(antwortFrage) == "ja" or string.lower(antwortFrage) == "yes" then
       loadfile("/bin/pastebin.lua")("run", "-f", "wLK1gCKt")
