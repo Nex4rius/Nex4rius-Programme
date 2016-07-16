@@ -47,9 +47,9 @@ if type(SicherungNEU) == "table" then
     f:write('  Sprache       = "' .. tostring(SicherungALT.Sprache) .. '", -- ' .. tostring(sprachen.Sprache) .. '\n')
   end
   if type(SicherungNEU.side) == "string" then
-    f:write('  side          = "' .. tostring(SicherungNEU.side) .. '", -- ' ... tostring(sprachen.side) .. '\n')
+    f:write('  side          = "' .. tostring(SicherungNEU.side) .. '", -- ' .. tostring(sprachen.side) .. '\n')
   else
-    f:write('  side          = "' .. tostring(SicherungALT.side) .. '", -- ' ... tostring(sprachen.side) .. '\n')
+    f:write('  side          = "' .. tostring(SicherungALT.side) .. '", -- ' .. tostring(sprachen.side) .. '\n')
   end
   if type(SicherungNEU.autoUpdate) == "boolean" then
     f:write('  autoUpdate    = '  .. tostring(SicherungNEU.autoUpdate) .. ', -- ' .. tostring(sprachen.autoUpdate) .. '\n')
