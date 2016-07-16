@@ -6,13 +6,13 @@ local SicherungNEU  = require("shell").parse(...)[1]
 local SicherungALT  = {}
 local sprachen      = {}
 
-if fs.exists("/stargate/Sicherungsdatei.lua") then
+if require("filesystem").exists("/stargate/Sicherungsdatei.lua") then
   SicherungALT = loadfile("/stargate/Sicherungsdatei.lua")()
 end
 
-if fs.exists("/stargate/sprache/" .. tostring(SicherungNEU.Sprache) .. ".lua") then
+if require("filesystem").exists("/stargate/sprache/" .. tostring(SicherungNEU.Sprache) .. ".lua") then
   sprachen = loadfile("/stargate/sprache/" .. tostring(SicherungNEU.Sprache) .. ".lua")()
-elseif fs.exists("/stargate/sprache/" .. tostring(SicherungALT.Sprache) .. ".lua") then
+elseif require("filesystem").exists("/stargate/sprache/" .. tostring(SicherungALT.Sprache) .. ".lua") then
   sprachen = loadfile("/stargate/sprache/" .. tostring(SicherungALT.Sprache) .. ".lua")()
 else
   sprachen = loadfile("/stargate/sprache/deutsch.lua")()
