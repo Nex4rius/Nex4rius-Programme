@@ -95,7 +95,6 @@ local function installieren(versionTyp)
       f:write(version .. " BETA")
       f:close()
     end
-    print("\nUpdate komplett\n" .. version .. " " .. string.upper(tostring(versionTyp)) .. "\n")
   end
   Sicherung.installieren = true
   loadfile("/stargate/schreibSicherungsdatei.lua")(Sicherung)
@@ -103,6 +102,9 @@ local function installieren(versionTyp)
   loadfile("/bin/rm.lua")("-v", "/installieren.lua")
   --loadfile("/autorun.lua")("no")
   --os.exit()
+  if updateKomplett then
+    print("\nUpdate komplett\n" .. version .. " " .. string.upper(tostring(versionTyp)))
+  end
   os.sleep(2)
   require("computer").shutdown(true)
 end
