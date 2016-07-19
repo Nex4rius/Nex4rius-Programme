@@ -7,28 +7,25 @@ local ALT       = {}
 local Sicherung = {}
 local sprachen  = {}
 
-if require("filesystem").exists("/stargate/Sicherungsdatei.lua") then
-  ALT = loadfile("/stargate/Sicherungsdatei.lua")()
-end
-
-if require("filesystem").exists("/stargate/sprache/" .. tostring(NEU.Sprache) .. ".lua") then
-  sprachen = loadfile("/stargate/sprache/" .. tostring(NEU.Sprache) .. ".lua")()
-elseif require("filesystem").exists("/stargate/sprache/" .. tostring(ALT.Sprache) .. ".lua") then
-  sprachen = loadfile("/stargate/sprache/" .. tostring(ALT.Sprache) .. ".lua")()
-else
-  sprachen = loadfile("/stargate/sprache/deutsch.lua")()
-end
-
-if type(NEU.autoclosetime) == "number" or NEU.autoclosetime == false then Sicherung.autoclosetime = NEU.autoclosetime else Sicherung.autoclosetime = ALT.autoclosetime end
-if type(NEU.IDC)           == "string" then Sicherung.IDC          = NEU.IDC          else Sicherung.IDC          = ALT.IDC          end
-if type(NEU.RF)            == "boolean"then Sicherung.RF           = NEU.RF           else Sicherung.RF           = ALT.RF           end
-if type(NEU.Sprache)       == "string" then Sicherung.Sprache      = NEU.Sprache      else Sicherung.Sprache      = ALT.Sprache      end
-if type(NEU.side)          == "string" then Sicherung.side         = NEU.side         else Sicherung.side         = ALT.side         end
-if type(NEU.autoUpdate)    == "boolean"then Sicherung.autoUpdate   = NEU.autoUpdate   else Sicherung.autoUpdate   = ALT.autoUpdate   end
-if type(NEU.control)       == "string" then Sicherung.control      = NEU.control      else Sicherung.control      = ALT.control      end
-if type(NEU.installieren)  == "boolean"then Sicherung.installieren = NEU.installieren else Sicherung.installieren = ALT.installieren end
-
 if type(NEU) == "table" then
+  if require("filesystem").exists("/stargate/Sicherungsdatei.lua") then
+    ALT = loadfile("/stargate/Sicherungsdatei.lua")()
+  end
+  if require("filesystem").exists("/stargate/sprache/" .. tostring(NEU.Sprache) .. ".lua") then
+    sprachen = loadfile("/stargate/sprache/" .. tostring(NEU.Sprache) .. ".lua")()
+  elseif require("filesystem").exists("/stargate/sprache/" .. tostring(ALT.Sprache) .. ".lua") then
+    sprachen = loadfile("/stargate/sprache/" .. tostring(ALT.Sprache) .. ".lua")()
+  else
+    sprachen = loadfile("/stargate/sprache/deutsch.lua")()
+  end
+  if type(NEU.autoclosetime) == "number" or NEU.autoclosetime == false then Sicherung.autoclosetime = NEU.autoclosetime else Sicherung.autoclosetime = ALT.autoclosetime end
+  if type(NEU.IDC)           == "string" then Sicherung.IDC          = NEU.IDC          else Sicherung.IDC          = ALT.IDC          end
+  if type(NEU.RF)            == "boolean"then Sicherung.RF           = NEU.RF           else Sicherung.RF           = ALT.RF           end
+  if type(NEU.Sprache)       == "string" then Sicherung.Sprache      = NEU.Sprache      else Sicherung.Sprache      = ALT.Sprache      end
+  if type(NEU.side)          == "string" then Sicherung.side         = NEU.side         else Sicherung.side         = ALT.side         end
+  if type(NEU.autoUpdate)    == "boolean"then Sicherung.autoUpdate   = NEU.autoUpdate   else Sicherung.autoUpdate   = ALT.autoUpdate   end
+  if type(NEU.control)       == "string" then Sicherung.control      = NEU.control      else Sicherung.control      = ALT.control      end
+  if type(NEU.installieren)  == "boolean"then Sicherung.installieren = NEU.installieren else Sicherung.installieren = ALT.installieren end
   local f = io.open ("/stargate/Sicherungsdatei.lua", "w")
   f:write('-- pastebin run -f Dkt9dn4S\n')
   f:write('-- von Nex4rius\n')
