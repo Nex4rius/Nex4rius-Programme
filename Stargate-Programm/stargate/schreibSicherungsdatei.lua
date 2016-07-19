@@ -40,7 +40,7 @@ if type(NEU) == "table" then
   f:write('  side          = "' .. tostring(Sicherung.side)         .. '", -- ' .. tostring(sprachen.side)          .. '\n')
   f:write('  autoUpdate    = '  .. tostring(Sicherung.autoUpdate)   ..  ', -- ' .. tostring(sprachen.autoUpdate)    .. '\n')
   f:write('  control       = "' .. tostring(Sicherung.control)      .. '",\n\n')
-  f:write(string.rep("-", 10)   .. tostring(sprachen.nichtsAendern) .. string.rep("-", 33) .. '\n\n')
+  f:write(string.rep("-", 10)   .. tostring(sprachen.nichtsAendern) .. string.rep("-", 60 - string.len(tostring(sprachen.nichtsAendern))) .. '\n\n')
   f:write('  installieren  = '  .. tostring(Sicherung.installieren) .. ',\n')
   f:write('}')
   f:close()
