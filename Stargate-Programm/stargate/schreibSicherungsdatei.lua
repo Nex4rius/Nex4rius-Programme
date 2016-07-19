@@ -27,9 +27,9 @@ if type(SicherungNEU) == "table" then
   f:write('-- ' .. sprachen.schliessen .. '\n--\n\n')
   f:write('return {\n')
   if type(SicherungNEU.IDC) == "string" then
-    f:write('  IDC           = "' .. tostring(SicherungNEU.IDC) .. '", -- ' .. tostring(sprachen.iriscode) .. '\n')
+    f:write('  IDC           = "' .. tostring(SicherungNEU.IDC) .. '", -- ' .. tostring(sprachen.IDC) .. '\n')
   else
-    f:write('  IDC           = "' .. tostring(SicherungALT.IDC) .. '", -- ' .. tostring(sprachen.iriscode) .. '\n')
+    f:write('  IDC           = "' .. tostring(SicherungALT.IDC) .. '", -- ' .. tostring(sprachen.IDC) .. '\n')
   end
   if type(SicherungNEU.autoclosetime) == "number" or SicherungNEU.autoclosetime == false then
     f:write('  autoclosetime = '  .. tostring(SicherungNEU.autoclosetime) .. ', -- ' .. tostring(sprachen.autoclosetime) .. '\n')
