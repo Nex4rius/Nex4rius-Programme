@@ -7,10 +7,10 @@
 --
 
 return {
-  IDC           = "", -- Iris Deactivation Code
   autoclosetime = 60, -- in seconds -- false for no autoclose
+  IDC           = "", -- Iris Deactivation Code
   RF            = false, -- show energy in RF instead of EU
-  Sprache       = "english", -- deutsch / english
+  Sprache       = "", -- deutsch / english
   side          = "unten", -- bottom, top, back, front, right or left
   autoUpdate    = true, -- enable automated updates
   control       = "On",
