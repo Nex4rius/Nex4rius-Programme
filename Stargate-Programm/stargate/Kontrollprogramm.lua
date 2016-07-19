@@ -152,6 +152,15 @@ if component.isAvailable("redstone") then
   r.setBundledOutput(0, Farben.black, 0)
 end
 
+if Sicherung.RF == true then
+  energytype          = "RF"
+  energymultiplicator = 80
+end
+
+if sg.irisState() == "Offline" then
+  Trennlinienhoehe    = 13
+end
+
 function Funktionen.schreibeAdressen()
   local f = io.open("/stargate/adressen.lua", "w")
   f:write('-- pastebin run -f Dkt9dn4S\n')
@@ -168,15 +177,6 @@ function Funktionen.schreibeAdressen()
   end
   f:write('}')
   f:close()
-end
-
-if Sicherung.RF == true then
-  energytype          = "RF"
-  energymultiplicator = 80
-end
-
-if sg.irisState() == "Offline" then
-  Trennlinienhoehe    = 13
 end
 
 function Funktionen.setCursor(col, row)
