@@ -30,9 +30,9 @@ end
 
 function Funktionen.Pfad(versionTyp)
   if versionTyp then
-    return "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/" .. versionTyp .. "/Stargate-Programm/"
+    return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/" .. versionTyp .. "/Stargate-Programm/"
   else
-    return "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/master/Stargate-Programm/"
+    return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Stargate-Programm/"
   end
 end
 
