@@ -10,15 +10,16 @@ local WardedGlass               = 0
 local WardedGlassPlatz          = 2
 local Treibstoff                = 0
 local TreibstoffPlatz           = 4
+local Funktion                  = {}
 
-function chunkloader(zustand)
+function Funktion.chunkloader(zustand)
   if chunkloaderstatus == true then
     c.setActive(zustand)
   end
 end
 
-function generator()
-  if generatorstatus == true then
+function Funktion.generator()
+  if generatorstatus then
     if Treibstoff > 0 then
       r.select(Treibstoff)
       g.insert()
@@ -26,8 +27,8 @@ function generator()
   end
 end
 
-function placeWither()
-  if chunkloaderstatus == true then
+function Funktion.placeWither()
+  if chunkloaderstatus then
     print(spawnWitherChunkloaderAn)
   else
     print(spawnWither)
@@ -73,8 +74,8 @@ function placeWither()
   r.turnLeft()
 end
 
-function checkWand()
-  item = inv.getStackInInternalSlot(13)
+function Funktion.checkWand()
+  local item = inv.getStackInInternalSlot(13)
   r.select(13)
   if item then
     if item.name == "Thaumcraft:WandCasting" then
@@ -95,9 +96,9 @@ function checkWand()
   end
 end
 
-function checkInventory()
+function Funktion.checkInventory()
   for i = 1, 16 do
-    item = inv.getStackInInternalSlot(i)
+    local item = inv.getStackInInternalSlot(i)
     if item then
       name = item.name .. ":" .. item.damage
       if "minecraft:skull:1" == name then
@@ -128,9 +129,9 @@ function checkInventory()
   end
 end
 
-function invRefill()
+function Funktion.invRefill()
   for i = 1, inv.getInventorySize(0) do
-    item = inv.getStackInSlot(0, i)
+    local item = inv.getStackInSlot(0, i)
     if item then
       name = item.name .. ":" .. item.damage
       if "minecraft:skull:1" == name then
@@ -171,19 +172,19 @@ function invRefill()
   end
 end
 
-function reset()
-  WitherSkeletonSkull = 0
-  WitherSkeletonSkullPlatz = 64
-  SoulSand = 0
-  SoulSandPlatz = 64
-  WardedGlass = 0
-  WardedGlassPlatz = 64
-  Treibstoff = 0
-  TreibstoffPlatz = 4
+function Funktion.reset()
+  WitherSkeletonSkull       = 0
+  WitherSkeletonSkullPlatz  = 64
+  SoulSand                  = 0
+  SoulSandPlatz             = 64
+  WardedGlass               = 0
+  WardedGlassPlatz          = 64
+  Treibstoff                = 0
+  TreibstoffPlatz           = 4
 end
 
-function WaitForNetherStar()
-  wait = true
+function Funktion.WaitForNetherStar()
+  local wait = true
   print(warteNetherStar)
   while wait do
     os.sleep(5)
@@ -208,36 +209,36 @@ function WaitForNetherStar()
   end
 end
 
-function main()
+function Funktion.main()
   print("")
   while running do
-    if checkWand() == true then
-      checkInventory()
-      invRefill()
-      checkInventory()
-      generator()
+    if Funktion.checkWand() then
+      Funktion.checkInventory()
+      Funktion.invRefill()
+      Funktion.checkInventory()
+      Funktion.generator()
       if WitherSkeletonSkull == 0 or SoulSand == 0 or WardedGlass == 0 then
-        if chunkloaderstatus == true then
+        if chunkloaderstatus then
           print(materialFehltMitChunk)
         else
           print(materialFehlt)
         end
-        chunkloader(false)
+        Funktion.chunkloader(false)
         os.sleep(300)
       else
-        chunkloader(true)
-        placeWither()
-        WaitForNetherStar()
+        Funktion.chunkloader(true)
+        Funktion.placeWither()
+        Funktion.WaitForNetherStar()
       end
-      reset()
+      Funktion.reset()
     else
       print(ZauberstabFehlt)
-      if chunkloaderstatus == true then
+      if chunkloaderstatus then
         print(ZauberstabFehltwarteChunk)
       else
         print(ZauberstabFehltwarte)
       end
-      chunkloader(false)
+      Funktion.chunkloader(false)
       os.sleep(60)
     end
     print("")
@@ -246,4 +247,4 @@ end
 
 running = true
 
-main()
+Funktion.main()
