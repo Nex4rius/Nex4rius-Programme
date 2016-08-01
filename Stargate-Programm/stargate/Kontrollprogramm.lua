@@ -29,7 +29,7 @@ local iriscontrol               = "on"
 local energytype                = "EU"
 local handlers                  = {}
 local Farben                    = {}
-local Funktionen                = {}
+local Funktion                  = {}
 local activationtime            = 0
 local energy                    = 0
 local seite                     = 0
@@ -110,8 +110,8 @@ local version
 
 do
   local args                    = require("shell").parse(...)
-  Funktionen.update             = args[1]
-  Funktionen.checkServerVersion = args[2]
+  Funktion.update             = args[1]
+  Funktion.checkServerVersion = args[2]
   version                       = tostring(args[3])
 end
 
@@ -161,7 +161,7 @@ if sg.irisState() == "Offline" then
   Trennlinienhoehe    = 13
 end
 
-function Funktionen.schreibeAdressen()
+function Funktion.schreibeAdressen()
   local f = io.open("/stargate/adressen.lua", "w")
   f:write('-- pastebin run -f Dkt9dn4S\n')
   f:write('-- von Nex4rius\n')
@@ -179,11 +179,11 @@ function Funktionen.schreibeAdressen()
   f:close()
 end
 
-function Funktionen.setCursor(col, row)
+function Funktion.setCursor(col, row)
   term.setCursor(col, row)
 end
 
-function Funktionen.pull_event()
+function Funktion.pull_event()
   local Wartezeit = 1
   if state == "Idle" and checkEnergy == energy then
     if Nachrichtleer == true then
@@ -191,7 +191,7 @@ function Funktionen.pull_event()
         gpu.setBackground(Farben.schwarzeFarbe)
         gpu.setForeground(Farben.weisseFarbe)
         print(sprachen.aktualisierenJetzt)
-        Funktionen.update("master")
+        Funktion.update("master")
       end
       Wartezeit = 300
     else
@@ -201,7 +201,7 @@ function Funktionen.pull_event()
   checkEnergy = energy
   local eventErgebnis = {event.pull(Wartezeit)}
   if eventErgebnis[1] == "component_removed" or eventErgebnis[1] == "component_added" then
-    schreibFehlerLog(eventErgebnis)
+    Funktion.schreibFehlerLog(eventErgebnis)
   end
   return eventErgebnis
 end
@@ -213,11 +213,11 @@ local key_event_name = "key_down"
 local sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
 local ersetzen = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
 
-function Funktionen.zeichenErsetzen(eingabeErsetzung)
+function Funktion.zeichenErsetzen(eingabeErsetzung)
   return string.gsub(eingabeErsetzung, "%a+", function (str) return ersetzen [str] end)
 end
 
-function Funktionen.checkReset()
+function Funktion.checkReset()
   if time == "-" then else
     if time > 500 then
       zielAdresse     = ""
@@ -240,9 +240,9 @@ function Funktionen.checkReset()
   end
 end
 
-function Funktionen.zeigeHier(x, y, s, h)
+function Funktion.zeigeHier(x, y, s, h)
   if type(x) == "number" and type(y) == "number" and type(s) == "string" then
-    Funktionen.setCursor(x, y)
+    Funktion.setCursor(x, y)
     if not h then
       h = Bildschirmbreite
     end
@@ -250,7 +250,7 @@ function Funktionen.zeigeHier(x, y, s, h)
   end
 end
 
-function Funktionen.ErsetzePunktMitKomma(...)
+function Funktion.ErsetzePunktMitKomma(...)
   if Sicherung.Sprache == "deutsch" then
     local Punkt = string.find(..., "%.")
     if type(Punkt) == "number" then
@@ -260,7 +260,7 @@ function Funktionen.ErsetzePunktMitKomma(...)
   return ...
 end
 
-function Funktionen.getAddress(...)
+function Funktion.getAddress(...)
   if ... == "" or ... == nil then
     return ""
   elseif string.len(...) == 7 then
@@ -270,7 +270,7 @@ function Funktionen.getAddress(...)
   end
 end
 
-function Funktionen.AdressenLesen()
+function Funktion.AdressenLesen()
   for i, na in pairs(gespeicherteAdressen) do
     if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
       AdressAnzeige = i - seite * 10
@@ -289,7 +289,7 @@ function Funktionen.AdressenLesen()
   end
 end
 
-function Funktionen.Infoseite()
+function Funktion.Infoseite()
   print(sprachen.Steuerung)
   if iris == "Offline" then else
     print("I " .. sprachen.IrisSteuerung .. sprachen.an_aus)
@@ -316,13 +316,13 @@ function Funktionen.Infoseite()
   print("\n" .. sprachen.entwicklerName .. " Nex4rius")
 end
 
-function Funktionen.AdressenSpeichern()
+function Funktion.AdressenSpeichern()
   adressen = loadfile("/stargate/adressen.lua")()
   gespeicherteAdressen = {}
   sendeAdressen = {}
   local k = 0
   for i, na in pairs(adressen) do
-    if na[2] == Funktionen.getAddress(sg.localAddress()) then
+    if na[2] == Funktion.getAddress(sg.localAddress()) then
       k = -1
       sendeAdressen[i] = {}
       sendeAdressen[i][1] = na[1]
@@ -349,74 +349,74 @@ function Funktionen.AdressenSpeichern()
       gespeicherteAdressen[i + k][1] = na[1]
       gespeicherteAdressen[i + k][2] = na[2]
       gespeicherteAdressen[i + k][3] = na[3]
-      gespeicherteAdressen[i + k][4] = Funktionen.ErsetzePunktMitKomma(anwahlEnergie)
+      gespeicherteAdressen[i + k][4] = Funktion.ErsetzePunktMitKomma(anwahlEnergie)
     end
-    Funktionen.zeigeNachricht(sprachen.verarbeiteAdressen .. "<" .. na[2] .. "> <" .. na[1] .. ">")
+    Funktion.zeigeNachricht(sprachen.verarbeiteAdressen .. "<" .. na[2] .. "> <" .. na[1] .. ">")
     maxseiten = (i + k) / 10
     AdressenAnzahl = i
   end
   gpu.setBackground(Farben.Adressfarbe)
   gpu.setForeground(Farben.Adresstextfarbe)
   for P = 1, Bildschirmhoehe - 3 do
-    Funktionen.zeigeHier(1, P, "", xVerschiebung - 3)
+    Funktion.zeigeHier(1, P, "", xVerschiebung - 3)
   end
-  Funktionen.zeigeMenu()
-  Funktionen.zeigeNachricht("")
+  Funktion.zeigeMenu()
+  Funktion.zeigeNachricht("")
 end
 
-function Funktionen.zeigeMenu()
+function Funktion.zeigeMenu()
   gpu.setBackground(Farben.Adressfarbe)
   gpu.setForeground(Farben.Adresstextfarbe)
   for P = 1, Bildschirmhoehe - 3 do
-    Funktionen.zeigeHier(1, P, "", xVerschiebung - 3)
+    Funktion.zeigeHier(1, P, "", xVerschiebung - 3)
   end
-  Funktionen.setCursor(1, 1)
+  Funktion.setCursor(1, 1)
   if seite == -1 then
-    Funktionen.Infoseite()
+    Funktion.Infoseite()
   else
     if (os.time() / sectime) - letzterAdressCheck > 21600 then
       letzterAdressCheck = os.time() / sectime
-      Funktionen.AdressenSpeichern()
+      Funktion.AdressenSpeichern()
     else
       print(sprachen.Adressseite .. seite + 1)
-      Funktionen.AdressenLesen()
+      Funktion.AdressenLesen()
     end
-    iris = Funktionen.getIrisState()
+    iris = Funktion.getIrisState()
   end
 end
 
-function Funktionen.neueZeile(...)
+function Funktion.neueZeile(...)
   zeile = zeile + ...
 end
 
-function Funktionen.zeigeFarben()
+function Funktion.zeigeFarben()
   gpu.setBackground(Farben.Trennlinienfarbe)
   for P = 1, Bildschirmhoehe - 2 do
-    Funktionen.zeigeHier(xVerschiebung - 2, P, "  ", 1)
+    Funktion.zeigeHier(xVerschiebung - 2, P, "  ", 1)
   end
-  Funktionen.zeigeHier(1, Bildschirmhoehe - 2, "", 80)
-  Funktionen.zeigeHier(xVerschiebung - 2, Trennlinienhoehe, "")
-  Funktionen.neueZeile(1)
+  Funktion.zeigeHier(1, Bildschirmhoehe - 2, "", 80)
+  Funktion.zeigeHier(xVerschiebung - 2, Trennlinienhoehe, "")
+  Funktion.neueZeile(1)
 end
 
-function Funktionen.getIrisState()
+function Funktion.getIrisState()
   ok, result = pcall(sg.irisState)
   return result
 end
 
-function Funktionen.irisClose()
+function Funktion.irisClose()
   sg.closeIris()
-  Funktionen.RedstoneAenderung(Farben.yellow, 255)
-  Funktionen.Colorful_Lamp_Steuerung()
+  Funktion.RedstoneAenderung(Farben.yellow, 255)
+  Funktion.Colorful_Lamp_Steuerung()
 end
 
-function Funktionen.irisOpen()
+function Funktion.irisOpen()
   sg.openIris()
-  Funktionen.RedstoneAenderung(Farben.yellow, 0)
-  Funktionen.Colorful_Lamp_Steuerung()
+  Funktion.RedstoneAenderung(Farben.yellow, 0)
+  Funktion.Colorful_Lamp_Steuerung()
 end
 
-function Funktionen.sides()
+function Funktion.sides()
   if Sicherung.side == "oben" or Sicherung.side == "top" then
     sideNum = 1
   elseif Sicherung.side == "hinten" or Sicherung.side == "back" then
@@ -432,36 +432,36 @@ function Funktionen.sides()
   end
 end
 
-function Funktionen.iriscontroller()
+function Funktion.iriscontroller()
   if state == "Dialing" then
     messageshow = true
     AddNewAddress = true
   end
   if direction == "Incoming" and incode == Sicherung.IDC and Sicherung.control == "Off" then
     IDCyes = true
-    Funktionen.RedstoneAenderung(Farben.black, 255)
+    Funktion.RedstoneAenderung(Farben.black, 255)
     if iris == "Closed" or iris == "Closing" or LampenRot == true then else
-      Funktionen.Colorful_Lamp_Farben(992)
+      Funktion.Colorful_Lamp_Farben(992)
     end
   end
   if direction == "Incoming" and incode == Sicherung.IDC and iriscontrol == "on" and Sicherung.control == "On" then
     if iris == "Offline" then
       sg.sendMessage("IDC Accepted Iris: Offline")
     else
-      Funktionen.irisOpen()
+      Funktion.irisOpen()
       os.sleep(2)
       sg.sendMessage("IDC Accepted Iris: Open")
     end
     iriscontrol = "off"
     IDCyes = true
   elseif direction == "Incoming" and send == true then
-    sg.sendMessage("Iris Control: " .. Sicherung.control .. " Iris: " .. iris, Funktionen.sendeAdressliste())
+    sg.sendMessage("Iris Control: " .. Sicherung.control .. " Iris: " .. iris, Funktion.sendeAdressliste())
     send = false
   end
   if wormhole == "in" and state == "Dialling" and iriscontrol == "on" and Sicherung.control == "On" then
     if iris == "Offline" then else
-      Funktionen.irisClose()
-      Funktionen.RedstoneAenderung(Farben.red, 255)
+      Funktion.irisClose()
+      Funktion.RedstoneAenderung(Farben.red, 255)
       redstoneIncoming = false
     end
     k = "close"
@@ -472,7 +472,7 @@ function Funktionen.iriscontroller()
   if state == "Idle" and k == "close" and Sicherung.control == "On" then
     outcode = nil
     if iris == "Offline" then else
-      Funktionen.irisOpen()
+      Funktion.irisOpen()
     end
     iriscontrol = "on"
     wormhole = "in"
@@ -493,7 +493,7 @@ function Funktionen.iriscontroller()
     LampenGruen = false
     LampenRot = false
     zielAdresse = ""
-    Funktionen.zeigeNachricht("")
+    Funktion.zeigeNachricht("")
   end
   if state == "Idle" then
     incode = "-"
@@ -508,13 +508,13 @@ function Funktionen.iriscontroller()
   end
   if state == "Connected" and direction == "Outgoing" and send == true then
     if outcode == "-" or outcode == nil then else
-      sg.sendMessage(outcode, Funktionen.sendeAdressliste())
+      sg.sendMessage(outcode, Funktion.sendeAdressliste())
       send = false
     end
   end
   if codeaccepted == "-" or codeaccepted == nil then
   elseif messageshow == true then
-    Funktionen.zeigeNachricht(sprachen.nachrichtAngekommen .. codeaccepted .. "                   ")
+    Funktion.zeigeNachricht(sprachen.nachrichtAngekommen .. codeaccepted .. "                   ")
     if codeaccepted == "Request: Disconnect Stargate" then
       sg.disconnect()
     elseif string.match(codeaccepted, "Iris: Open") or string.match(codeaccepted, "Iris: Offline") then
@@ -536,7 +536,7 @@ function Funktionen.iriscontroller()
   end
 end
 
-function Funktionen.sendeAdressliste()
+function Funktion.sendeAdressliste()
   if einmalAdressenSenden then
     einmalAdressenSenden = false
     return "Adressliste", require("serialization").serialize(sendeAdressen), version
@@ -545,7 +545,7 @@ function Funktionen.sendeAdressliste()
   end
 end
 
-function Funktionen.newAddress(neueAdresse, neuerName, ...)
+function Funktion.newAddress(neueAdresse, neuerName, ...)
   if AddNewAddress == true and string.len(neueAdresse) == 11 then
     AdressenAnzahl = AdressenAnzahl + 1
     adressen[AdressenAnzahl] = {}
@@ -559,12 +559,12 @@ function Funktionen.newAddress(neueAdresse, neuerName, ...)
     adressen[AdressenAnzahl][2] = neueAdresse
     adressen[AdressenAnzahl][3] = ""
     if ... == nil then
-      Funktionen.schreibeAdressen()
+      Funktion.schreibeAdressen()
       if nichtmehr then
         AddNewAddress = false
       end
-      Funktionen.AdressenSpeichern()
-      Funktionen.zeigeMenu()
+      Funktion.AdressenSpeichern()
+      Funktion.zeigeMenu()
     end
     return true
   else
@@ -572,7 +572,7 @@ function Funktionen.newAddress(neueAdresse, neuerName, ...)
   end
 end
 
-function Funktionen.destinationName()
+function Funktion.destinationName()
   if state == "Dialling" or state == "Connected" then
     if remoteName == "" and state == "Dialling" and wormhole == "in" then
       for j, na in pairs(adressen) do
@@ -586,13 +586,13 @@ function Funktionen.destinationName()
         end
       end
       if remoteName == "" then
-        Funktionen.newAddress(remAddr)
+        Funktion.newAddress(remAddr)
       end
     end
   end
 end
 
-function Funktionen.wormholeDirection()
+function Funktion.wormholeDirection()
   if direction == "Outgoing" then
     wormhole = "out"
   end
@@ -601,16 +601,16 @@ function Funktionen.wormholeDirection()
   end
 end
 
-function Funktionen.aktualisiereStatus()
+function Funktion.aktualisiereStatus()
   gpu.setResolution(70, 25)
   sg                          = component.getPrimary("stargate")
-  locAddr                     = Funktionen.getAddress(sg.localAddress())
-  remAddr                     = Funktionen.getAddress(sg.remoteAddress())
-  iris                        = Funktionen.getIrisState()
+  locAddr                     = Funktion.getAddress(sg.localAddress())
+  remAddr                     = Funktion.getAddress(sg.remoteAddress())
+  iris                        = Funktion.getIrisState()
   state, chevrons, direction  = sg.stargateState()
-  Funktionen.destinationName()
-  Funktionen.wormholeDirection()
-  Funktionen.iriscontroller()
+  Funktion.destinationName()
+  Funktion.wormholeDirection()
+  Funktion.iriscontroller()
   if state == "Idle" then
     RichtungName = ""
   else
@@ -635,26 +635,26 @@ function Funktionen.aktualisiereStatus()
   zeile = 1
   if (letzteNachrichtZeit - os.time()) / sectime > 45 then
     if letzteNachricht ~= "" then
-      Funktionen.zeigeNachricht("")
+      Funktion.zeigeNachricht("")
     end
   end
 end
 
-function Funktionen.autoclose()
+function Funktion.autoclose()
   if Sicherung.autoclosetime == false then
-    Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAus)
+    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAus)
   else
     if type(Sicherung.autoclosetime) ~= "number" then
       Sicherung.autoclosetime = 60
     end
-    Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAn .. Sicherung.autoclosetime .. "s")
+    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAn .. Sicherung.autoclosetime .. "s")
     if (activationtime - os.time()) / sectime > Sicherung.autoclosetime and state == "Connected" then
       sg.disconnect()
     end
   end
 end
 
-function Funktionen.zeigeEnergie()
+function Funktion.zeigeEnergie()
   if     energy > 10000000000 then
     energieMenge = string.format("%.3f", energy / 1000000000) .. " G"
   elseif energy > 10000000 then
@@ -664,109 +664,109 @@ function Funktionen.zeigeEnergie()
   else
     energieMenge = string.format("%.f",  energy)
   end
-  Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2 .. Funktionen.ErsetzePunktMitKomma(energieMenge))
+  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2 .. Funktion.ErsetzePunktMitKomma(energieMenge))
 end
 
-function Funktionen.activetime()
+function Funktion.activetime()
   if state == "Connected" then
     if activationtime == 0 then
       activationtime = os.time()
     end
     time = (activationtime - os.time()) / sectime
     if time > 0 then
-      Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit1 .. Funktionen.ErsetzePunktMitKomma(string.format("%.1f", time)) .. "s")
+      Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit1 .. Funktion.ErsetzePunktMitKomma(string.format("%.1f", time)) .. "s")
     end
   else
-    Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit2)
+    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit2)
     time = 0
   end
 end
 
-function Funktionen.zeigeSteuerung()
-  Funktionen.zeigeFarben()
+function Funktion.zeigeSteuerung()
+  Funktion.zeigeFarben()
   gpu.setBackground(Farben.Steuerungsfarbe)
   gpu.setForeground(Farben.Steuerungstextfarbe)
-  Funktionen.neueZeile(3)
-  Funktionen.zeigeHier(xVerschiebung, zeile - 1, "")
-  Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.Steuerung) Funktionen.neueZeile(1)
-  Funktionen.zeigeHier(xVerschiebung, zeile, "") Funktionen.neueZeile(1)
-  Funktionen.zeigeHier(xVerschiebung, zeile, "  D " .. sprachen.abschalten)
-  Funktionen.zeigeHier(xVerschiebung + 20, zeile, "E " .. sprachen.IDCeingabe) Funktionen.neueZeile(1)
+  Funktion.neueZeile(3)
+  Funktion.zeigeHier(xVerschiebung, zeile - 1, "")
+  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.Steuerung) Funktion.neueZeile(1)
+  Funktion.zeigeHier(xVerschiebung, zeile, "") Funktion.neueZeile(1)
+  Funktion.zeigeHier(xVerschiebung, zeile, "  D " .. sprachen.abschalten)
+  Funktion.zeigeHier(xVerschiebung + 20, zeile, "E " .. sprachen.IDCeingabe) Funktion.neueZeile(1)
   if iris == "Offline" then
     Sicherung.control = "Off"
   else
-    Funktionen.zeigeHier(xVerschiebung, zeile, "  O " .. sprachen.oeffneIris)
-    Funktionen.zeigeHier(xVerschiebung + 20, zeile, "C " .. sprachen.schliesseIris) Funktionen.neueZeile(1)
+    Funktion.zeigeHier(xVerschiebung, zeile, "  O " .. sprachen.oeffneIris)
+    Funktion.zeigeHier(xVerschiebung + 20, zeile, "C " .. sprachen.schliesseIris) Funktion.neueZeile(1)
   end
   if seite >= 0 then
     if seite >= 1 then
-      Funktionen.zeigeHier(xVerschiebung, zeile, "  ← " .. sprachen.vorherigeSeite)
+      Funktion.zeigeHier(xVerschiebung, zeile, "  ← " .. sprachen.vorherigeSeite)
     else
-      Funktionen.zeigeHier(xVerschiebung, zeile, "  ← " .. sprachen.SteuerungName)
+      Funktion.zeigeHier(xVerschiebung, zeile, "  ← " .. sprachen.SteuerungName)
     end
   else
-    Funktionen.zeigeHier(xVerschiebung, zeile, "")
+    Funktion.zeigeHier(xVerschiebung, zeile, "")
   end
   if seite == -1 then
-    Funktionen.zeigeHier(xVerschiebung + 20, zeile, "→ " .. sprachen.zeigeAdressen)
+    Funktion.zeigeHier(xVerschiebung + 20, zeile, "→ " .. sprachen.zeigeAdressen)
   elseif maxseiten > seite + 1 then
-    Funktionen.zeigeHier(xVerschiebung + 20, zeile, "→ " .. sprachen.naechsteSeite)
+    Funktion.zeigeHier(xVerschiebung + 20, zeile, "→ " .. sprachen.naechsteSeite)
   end
-  Funktionen.neueZeile(1)
+  Funktion.neueZeile(1)
   for i = zeile, Bildschirmhoehe - 3 do
-    Funktionen.zeigeHier(xVerschiebung, i, "")
+    Funktion.zeigeHier(xVerschiebung, i, "")
   end
 end
 
-function Funktionen.RedstoneAenderung(a, b)
+function Funktion.RedstoneAenderung(a, b)
   if sideNum == nil then
-    Funktionen.sides()
+    Funktion.sides()
   end
   if component.isAvailable("redstone") then
     component.getPrimary("redstone").setBundledOutput(sideNum, a, b)
   end
 end
 
-function Funktionen.RedstoneKontrolle()
+function Funktion.RedstoneKontrolle()
   if RichtungName == sprachen.RichtungNameEin then
     if redstoneIncoming == true then
-      Funktionen.RedstoneAenderung(Farben.red, 255)
+      Funktion.RedstoneAenderung(Farben.red, 255)
       redstoneIncoming = false
     end
   elseif redstoneIncoming == false and state == "Idle" then
-    Funktionen.RedstoneAenderung(Farben.red, 0)
+    Funktion.RedstoneAenderung(Farben.red, 0)
     redstoneIncoming = true
   end
   if state == "Idle" then
     if redstoneState == true then
-      Funktionen.RedstoneAenderung(Farben.white, 0)
+      Funktion.RedstoneAenderung(Farben.white, 0)
       redstoneState = false
     end
   elseif redstoneState == false then
-    Funktionen.RedstoneAenderung(Farben.white, 255)
+    Funktion.RedstoneAenderung(Farben.white, 255)
     redstoneState = true
   end
   if IDCyes == true or (Sicherung.IDC == "" and state == "Connected" and direction == "Incoming" and iris == "Offline") then
     if redstoneIDC == true then
-      Funktionen.RedstoneAenderung(Farben.black, 255)
+      Funktion.RedstoneAenderung(Farben.black, 255)
       redstoneIDC = false
     end
   elseif redstoneIDC == false then
-    Funktionen.RedstoneAenderung(Farben.black, 0)
+    Funktion.RedstoneAenderung(Farben.black, 0)
     redstoneIDC = true
   end
   if state == "Connected" then
     if redstoneConnected == true then
-      Funktionen.RedstoneAenderung(Farben.green, 255)
+      Funktion.RedstoneAenderung(Farben.green, 255)
       redstoneConnected = false
     end
   elseif redstoneConnected == false then
-    Funktionen.RedstoneAenderung(Farben.green, 0)
+    Funktion.RedstoneAenderung(Farben.green, 0)
     redstoneConnected = true
   end
 end
 
-function Funktionen.Colorful_Lamp_Farben(eingabe, ausgabe)
+function Funktion.Colorful_Lamp_Farben(eingabe, ausgabe)
   if alte_eingabe == eingabe then else
     for k in component.list("colorful_lamp") do
       component.proxy(k).setLampColor(eingabe)
@@ -778,19 +778,19 @@ function Funktionen.Colorful_Lamp_Farben(eingabe, ausgabe)
   end
 end
 
-function Funktionen.Colorful_Lamp_Steuerung()
+function Funktion.Colorful_Lamp_Steuerung()
   if iris == "Closed" or iris == "Closing" or LampenRot == true then
-    Funktionen.Colorful_Lamp_Farben(31744) -- rot
+    Funktion.Colorful_Lamp_Farben(31744) -- rot
   elseif redstoneIDC == false then
-    Funktionen.Colorful_Lamp_Farben(992)   -- grün
+    Funktion.Colorful_Lamp_Farben(992)   -- grün
   elseif redstoneIncoming == false then
-    Funktionen.Colorful_Lamp_Farben(32256) -- orange
+    Funktion.Colorful_Lamp_Farben(32256) -- orange
   elseif LampenGruen == true then
-    Funktionen.Colorful_Lamp_Farben(992)   -- grün
+    Funktion.Colorful_Lamp_Farben(992)   -- grün
   elseif redstoneState == true then
-    Funktionen.Colorful_Lamp_Farben(32736) -- gelb
+    Funktion.Colorful_Lamp_Farben(32736) -- gelb
   else
-    Funktionen.Colorful_Lamp_Farben(32767) -- weiß
+    Funktion.Colorful_Lamp_Farben(32767) -- weiß
   end
   --32767  weiß
   --32736  gelb
@@ -800,36 +800,36 @@ function Funktionen.Colorful_Lamp_Steuerung()
   --0      schwarz
 end
 
-function Funktionen.zeigeStatus()
-  Funktionen.aktualisiereStatus()
+function Funktion.zeigeStatus()
+  Funktion.aktualisiereStatus()
   gpu.setBackground(Farben.Statusfarbe)
   gpu.setForeground(Farben.Statustextfarbe)
-  Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.lokaleAdresse .. locAddr) Funktionen.neueZeile(1)
-  Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zielAdresseName .. zielAdresse) Funktionen.neueZeile(1)
-  Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zielName .. remoteName) Funktionen.neueZeile(1)
-  Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.statusName .. StatusName) Funktionen.neueZeile(1)
-  Funktionen.zeigeEnergie() Funktionen.neueZeile(1)
-  Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IrisName .. Funktionen.zeichenErsetzen(iris)) Funktionen.neueZeile(1)
+  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.lokaleAdresse .. locAddr) Funktion.neueZeile(1)
+  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zielAdresseName .. zielAdresse) Funktion.neueZeile(1)
+  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zielName .. remoteName) Funktion.neueZeile(1)
+  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.statusName .. StatusName) Funktion.neueZeile(1)
+  Funktion.zeigeEnergie() Funktion.neueZeile(1)
+  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IrisName .. Funktion.zeichenErsetzen(iris)) Funktion.neueZeile(1)
   if iris == "Offline" then else
-    Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IrisSteuerung .. Funktionen.zeichenErsetzen(Sicherung.control)) Funktionen.neueZeile(1)
+    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IrisSteuerung .. Funktion.zeichenErsetzen(Sicherung.control)) Funktion.neueZeile(1)
   end
   if IDCyes == true then
-    Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IDCakzeptiert) Funktionen.neueZeile(1)
+    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IDCakzeptiert) Funktion.neueZeile(1)
   else
-    Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IDCname .. incode) Funktionen.neueZeile(1)
+    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IDCname .. incode) Funktion.neueZeile(1)
   end
-  Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.chevronName .. chevrons) Funktionen.neueZeile(1)
-  Funktionen.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.richtung .. RichtungName) Funktionen.neueZeile(1)
-  Funktionen.activetime() Funktionen.neueZeile(1)
-  Funktionen.autoclose()
-  Funktionen.zeigeHier(xVerschiebung, zeile + 1, "")
+  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.chevronName .. chevrons) Funktion.neueZeile(1)
+  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.richtung .. RichtungName) Funktion.neueZeile(1)
+  Funktion.activetime() Funktion.neueZeile(1)
+  Funktion.autoclose()
+  Funktion.zeigeHier(xVerschiebung, zeile + 1, "")
   Trennlinienhoehe = zeile + 2
-  Funktionen.zeigeSteuerung()
-  Funktionen.RedstoneKontrolle()
-  Funktionen.Colorful_Lamp_Steuerung()
+  Funktion.zeigeSteuerung()
+  Funktion.RedstoneKontrolle()
+  Funktion.Colorful_Lamp_Steuerung()
 end
 
-function Funktionen.zeigeNachricht(...)
+function Funktion.zeigeNachricht(...)
   if ... == "" then
     Nachrichtleer = true
   else
@@ -840,23 +840,23 @@ function Funktionen.zeigeNachricht(...)
   gpu.setBackground(Farben.Nachrichtfarbe)
   gpu.setForeground(Farben.Nachrichttextfarbe)
   if VersionUpdate == true then
-    Funktionen.zeigeHier(1, Bildschirmhoehe - 1, sprachen.aktualisierenGleich, Bildschirmbreite)
-    Funktionen.zeigeMenu()
+    Funktion.zeigeHier(1, Bildschirmhoehe - 1, sprachen.aktualisierenGleich, Bildschirmbreite)
+    Funktion.zeigeMenu()
   elseif fs.exists("/log") then
-    Funktionen.zeigeHier(1, Bildschirmhoehe - 1, sprachen.fehlerName .. " /log", Bildschirmbreite)
-    Funktionen.zeigeHier(1, Bildschirmhoehe, "", 0)
+    Funktion.zeigeHier(1, Bildschirmhoehe - 1, sprachen.fehlerName .. " /log", Bildschirmbreite)
+    Funktion.zeigeHier(1, Bildschirmhoehe, "", 0)
   else
-    Funktionen.zeigeHier(1, Bildschirmhoehe - 1, "", Bildschirmbreite)
+    Funktion.zeigeHier(1, Bildschirmhoehe - 1, "", Bildschirmbreite)
   end
   if ... then
-    Funktionen.zeigeHier(1, Bildschirmhoehe, Funktionen.zeichenErsetzen(...), Bildschirmbreite)
+    Funktion.zeigeHier(1, Bildschirmhoehe, Funktion.zeichenErsetzen(...), Bildschirmbreite)
   else
-    Funktionen.zeigeHier(1, Bildschirmhoehe, "", Bildschirmbreite)
+    Funktion.zeigeHier(1, Bildschirmhoehe, "", Bildschirmbreite)
   end
   gpu.setBackground(Farben.Statusfarbe)
 end
 
-function Funktionen.schreibFehlerLog(...)
+function Funktion.schreibFehlerLog(...)
   if letzteEingabe == ... then else
     local f
     if fs.exists("/log") then
@@ -876,17 +876,17 @@ function Funktionen.schreibFehlerLog(...)
   letzteEingabe = ...
 end
 
-function Funktionen.zeigeFehler(...)
+function Funktion.zeigeFehler(...)
   if ... == "" then else
-    Funktionen.schreibFehlerLog(...)
-    Funktionen.zeigeNachricht(string.format("%s %s", sprachen.fehlerName, ...))
+    Funktion.schreibFehlerLog(...)
+    Funktion.zeigeNachricht(string.format("%s %s", sprachen.fehlerName, ...))
   end
 end
 
-function Funktionen.dial(name, adresse)
+function Funktion.dial(name, adresse)
   if state == "Idle" then
     remoteName = name
-    Funktionen.zeigeNachricht(sprachen.waehlen .. "<" .. string.sub(remoteName, 1, xVerschiebung + 12) .. "> <" .. adresse .. ">")
+    Funktion.zeigeNachricht(sprachen.waehlen .. "<" .. string.sub(remoteName, 1, xVerschiebung + 12) .. "> <" .. adresse .. ">")
   end
   state = "Dialling"
   wormhole = "out"
@@ -894,9 +894,9 @@ function Funktionen.dial(name, adresse)
   if ok == nil then
     if string.sub(ergebnis, 0, 20) == "Stargate at address " then
       local AdressEnde = string.find(string.sub(ergebnis, 21), " ") + 20
-      ergebnis = string.sub(ergebnis, 0, 20) .. "<" .. Funktionen.getAddress(string.sub(ergebnis, 21, AdressEnde - 1)) .. ">" .. string.sub(ergebnis, AdressEnde)
+      ergebnis = string.sub(ergebnis, 0, 20) .. "<" .. Funktion.getAddress(string.sub(ergebnis, 21, AdressEnde - 1)) .. ">" .. string.sub(ergebnis, AdressEnde)
     end
-    Funktionen.zeigeNachricht(ergebnis)
+    Funktion.zeigeNachricht(ergebnis)
   end
   os.sleep(1)
 end
@@ -907,35 +907,35 @@ handlers[key_event_name] = function(e)
     if e[3] == 13 then
       entercode = false
       sg.sendMessage(enteridc)
-      Funktionen.zeigeNachricht(sprachen.IDCgesendet)
+      Funktion.zeigeNachricht(sprachen.IDCgesendet)
     else
       enteridc = enteridc .. c
       showidc = showidc .. "*"
-      Funktionen.zeigeNachricht(sprachen.IDCeingabe .. ": " .. showidc)
+      Funktion.zeigeNachricht(sprachen.IDCeingabe .. ": " .. showidc)
     end
   elseif c == "e" then
     if state == "Connected" and direction == "Outgoing" then
       enteridc = ""
       showidc = ""
       entercode = true
-      Funktionen.zeigeNachricht(sprachen.IDCeingabe .. ":")
+      Funktion.zeigeNachricht(sprachen.IDCeingabe .. ":")
     else
-      Funktionen.zeigeNachricht(sprachen.keineVerbindung)
+      Funktion.zeigeNachricht(sprachen.keineVerbindung)
     end
   elseif c == "d" then
     if state == "Connected" and direction == "Incoming" then
       sg.disconnect()
       sg.sendMessage("Request: Disconnect Stargate")
-      Funktionen.zeigeNachricht(sprachen.senden .. sprachen.aufforderung .. ": " .. sprachen.stargateAbschalten .. " " .. sprachen.stargateName)
+      Funktion.zeigeNachricht(sprachen.senden .. sprachen.aufforderung .. ": " .. sprachen.stargateAbschalten .. " " .. sprachen.stargateName)
     else
       sg.disconnect()
       if state == "Idle" then else
-        Funktionen.zeigeNachricht(sprachen.stargateAbschalten .. " " .. sprachen.stargateName)
+        Funktion.zeigeNachricht(sprachen.stargateAbschalten .. " " .. sprachen.stargateName)
       end
     end
   elseif c == "o" then
     if iris == "Offline" then else
-      Funktionen.irisOpen()
+      Funktion.irisOpen()
       if wormhole == "in" then
         if iris == "Offline" then else
           os.sleep(2)
@@ -950,7 +950,7 @@ handlers[key_event_name] = function(e)
     end
   elseif c == "c" then
     if iris == "Offline" then else
-      Funktionen.irisClose()
+      Funktion.irisClose()
       iriscontrol = "off"
       if wormhole == "in" then
         sg.sendMessage("Manual Override: Iris: Closed")
@@ -965,7 +965,7 @@ handlers[key_event_name] = function(e)
     iriscontrol = "off"
     wormhole = "out"
     if na then
-      Funktionen.dial(na[1], na[2])
+      Funktion.dial(na[1], na[2])
       if na[3] == "-" then
         else outcode = na[3]
       end
@@ -976,9 +976,9 @@ handlers[key_event_name] = function(e)
       gpu.setBackground(Farben.Adressfarbe)
       gpu.setForeground(Farben.Adresstextfarbe)
       for P = 1, Bildschirmhoehe - 3 do
-        Funktionen.zeigeHier(1, P, "", xVerschiebung - 3)
+        Funktion.zeigeHier(1, P, "", xVerschiebung - 3)
       end
-      Funktionen.zeigeAnzeige()
+      Funktion.zeigeAnzeige()
     end
   elseif e[3] == 0 and e[4] == 205 then
     if seite + 1 < maxseiten then
@@ -986,9 +986,9 @@ handlers[key_event_name] = function(e)
       gpu.setBackground(Farben.Adressfarbe)
       gpu.setForeground(Farben.Adresstextfarbe)
       for P = 1, Bildschirmhoehe - 3 do
-        Funktionen.zeigeHier(1, P, "", xVerschiebung - 3)
+        Funktion.zeigeHier(1, P, "", xVerschiebung - 3)
       end
-      Funktionen.zeigeAnzeige()
+      Funktion.zeigeAnzeige()
     end
   elseif seite == -1 then
     if c == "q" then
@@ -1008,9 +1008,9 @@ handlers[key_event_name] = function(e)
       gpu.setForeground(Farben.Textfarbe)
       edit("stargate/adressen.lua")
       seite = -1
-      Funktionen.zeigeAnzeige()
+      Funktion.zeigeAnzeige()
       seite = 0
-      Funktionen.AdressenSpeichern()
+      Funktion.AdressenSpeichern()
     elseif c == "l" then
       gpu.setBackground(Farben.Nachrichtfarbe)
       gpu.setForeground(Farben.Textfarbe)
@@ -1025,11 +1025,11 @@ handlers[key_event_name] = function(e)
         os.sleep(1)
       end
       schreibSicherungsdatei(Sicherung)
-      Funktionen.sides()
+      Funktion.sides()
       gpu.setBackground(Farben.Nachrichtfarbe)
       term.clear()
       seite = 0
-      Funktionen.zeigeAnzeige()
+      Funktion.zeigeAnzeige()
     end
   end
 end
@@ -1043,19 +1043,19 @@ function handlers.sgChevronEngaged(e)
   else
     zielAdresse = string.sub(sg.remoteAddress(), 1, 4) .. "-" .. string.sub(sg.remoteAddress(), 5, 7) .. "-" .. string.sub(sg.remoteAddress(), 8, chevron)
   end
-  Funktionen.zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
+  Funktion.zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
 end
 
-function Funktionen.eventLoop()
+function Funktion.eventLoop()
   while running do
-    Funktionen.checken(Funktionen.zeigeStatus)
-    Funktionen.checken(Funktionen.checkReset)
-    e = Funktionen.pull_event()
+    Funktion.checken(Funktion.zeigeStatus)
+    Funktion.checken(Funktion.checkReset)
+    e = Funktion.pull_event()
     if e[1] == nil then else
       name = e[1]
       f = handlers[name]
       if f then
-        Funktionen.checken(f, e)
+        Funktion.checken(f, e)
       end
       if string.sub(e[1],1,3) == "sgM" then
         if direction == "Outgoing" then
@@ -1066,10 +1066,10 @@ function Funktionen.eventLoop()
         if e[4] == "Adressliste" then
           local inAdressen = require("serialization").unserialize(e[5])
           if type(inAdressen) == "table" then
-            Funktionen.angekommeneAdressen(inAdressen)
+            Funktion.angekommeneAdressen(inAdressen)
           end
           if type(e[6]) == "string" then
-            Funktionen.angekommeneVersion(e[6])
+            Funktion.angekommeneVersion(e[6])
           end
         end
         messageshow = true
@@ -1078,7 +1078,7 @@ function Funktionen.eventLoop()
   end
 end
 
-function Funktionen.angekommeneAdressen(...)
+function Funktion.angekommeneAdressen(...)
   local AddNewAddress = false
   for a, b in pairs(...) do
     local neuHinzufuegen = false
@@ -1086,7 +1086,7 @@ function Funktionen.angekommeneAdressen(...)
       if b[2] ~= d[2] then
         neuHinzufuegen = true
       elseif b[2] == d[2] and d[1] == ">>>" .. d[2] .. "<<<" and d[1] ~= b[1] then
-        if Funktionen.newAddress(b[2], b[1], true) then
+        if Funktion.newAddress(b[2], b[1], true) then
           adressen[c] = nil
         end
         AddNewAddress = true
@@ -1099,91 +1099,91 @@ function Funktionen.angekommeneAdressen(...)
     end
     if neuHinzufuegen == true then
       AddNewAddress = true
-      Funktionen.newAddress(b[2], b[1], true)
+      Funktion.newAddress(b[2], b[1], true)
     end
   end
   if AddNewAddress == true then
-    Funktionen.schreibeAdressen()
-    Funktionen.AdressenSpeichern()
-    Funktionen.zeigeMenu()
+    Funktion.schreibeAdressen()
+    Funktion.AdressenSpeichern()
+    Funktion.zeigeMenu()
   end
 end
 
-function Funktionen.angekommeneVersion(...)
+function Funktion.angekommeneVersion(...)
   local Endpunkt = string.len(...)
   local EndpunktVersion = string.len(version)
   if string.sub(..., Endpunkt - 3, Endpunkt) ~= "BETA" and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" and version ~= ... and Sicherung.autoUpdate == true then
     if component.isAvailable("internet") then
-      if version ~= Funktionen.checkServerVersion() then
+      if version ~= Funktion.checkServerVersion() then
         VersionUpdate = true
       end
     end
   end
 end
 
-function Funktionen.checken(...)
+function Funktion.checken(...)
   ok, result = pcall(...)
   if not ok then
-    Funktionen.zeigeFehler(result)
+    Funktion.zeigeFehler(result)
   end
 end
 
-function Funktionen.zeigeAnzeige()
-  Funktionen.zeigeFarben()
-  Funktionen.zeigeStatus()
-  Funktionen.zeigeMenu()
+function Funktion.zeigeAnzeige()
+  Funktion.zeigeFarben()
+  Funktion.zeigeStatus()
+  Funktion.zeigeMenu()
 end
 
-function Funktionen.redstoneAbschalten(sideNum, Farbe, printAusgabe)
+function Funktion.redstoneAbschalten(sideNum, Farbe, printAusgabe)
   r.setBundledOutput(sideNum, Farbe, 0)
   print(sprachen.redstoneAusschalten .. printAusgabe)
 end
 
-function Funktionen.beendeAlles()
+function Funktion.beendeAlles()
   gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   gpu.setBackground(Farben.schwarzeFarbe)
   gpu.setForeground(Farben.weisseFarbe)
   term.clear()
   print(sprachen.ausschaltenName .. "\n")
-  Funktionen.Colorful_Lamp_Farben(0, true)
+  Funktion.Colorful_Lamp_Farben(0, true)
   if component.isAvailable("redstone") then
     r = component.getPrimary("redstone")
-    Funktionen.redstoneAbschalten(sideNum, Farben.white, "white")
---    Funktionen.redstoneAbschalten(sideNum, Farben.orange, "orange")
---    Funktionen.redstoneAbschalten(sideNum, Farben.magenta, "magenta")
---    Funktionen.redstoneAbschalten(sideNum, Farben.lightblue, "lightblue")
-    Funktionen.redstoneAbschalten(sideNum, Farben.yellow, "yellow")
---    Funktionen.redstoneAbschalten(sideNum, Farben.lime, "lime")
---    Funktionen.redstoneAbschalten(sideNum, Farben.pink, "pink")
---    Funktionen.redstoneAbschalten(sideNum, Farben.gray, "gray")
---    Funktionen.redstoneAbschalten(sideNum, Farben.silver, "silver")
---    Funktionen.redstoneAbschalten(sideNum, Farben.cyan, "cyan")
---    Funktionen.redstoneAbschalten(sideNum, Farben.purple, "purple")
---    Funktionen.redstoneAbschalten(sideNum, Farben.blue, "blue")
---    Funktionen.redstoneAbschalten(sideNum, Farben.brown, "brown")
-    Funktionen.redstoneAbschalten(sideNum, Farben.green, "green")
-    Funktionen.redstoneAbschalten(sideNum, Farben.red, "red")
-    Funktionen.redstoneAbschalten(sideNum, Farben.black, "black")
+    Funktion.redstoneAbschalten(sideNum, Farben.white, "white")
+--    Funktion.redstoneAbschalten(sideNum, Farben.orange, "orange")
+--    Funktion.redstoneAbschalten(sideNum, Farben.magenta, "magenta")
+--    Funktion.redstoneAbschalten(sideNum, Farben.lightblue, "lightblue")
+    Funktion.redstoneAbschalten(sideNum, Farben.yellow, "yellow")
+--    Funktion.redstoneAbschalten(sideNum, Farben.lime, "lime")
+--    Funktion.redstoneAbschalten(sideNum, Farben.pink, "pink")
+--    Funktion.redstoneAbschalten(sideNum, Farben.gray, "gray")
+--    Funktion.redstoneAbschalten(sideNum, Farben.silver, "silver")
+--    Funktion.redstoneAbschalten(sideNum, Farben.cyan, "cyan")
+--    Funktion.redstoneAbschalten(sideNum, Farben.purple, "purple")
+--    Funktion.redstoneAbschalten(sideNum, Farben.blue, "blue")
+--    Funktion.redstoneAbschalten(sideNum, Farben.brown, "brown")
+    Funktion.redstoneAbschalten(sideNum, Farben.green, "green")
+    Funktion.redstoneAbschalten(sideNum, Farben.red, "red")
+    Funktion.redstoneAbschalten(sideNum, Farben.black, "black")
   end
 end
 
-function Funktionen.main()
+function Funktion.main()
   loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "StargateComputer")
-  if sg.stargateState() == "Idle" and Funktionen.getIrisState() == "Closed" then
-    Funktionen.irisOpen()
+  if sg.stargateState() == "Idle" and Funktion.getIrisState() == "Closed" then
+    Funktion.irisOpen()
   end
   term.clear()
   gpu.setResolution(70, 25)
   Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
-  Funktionen.zeigeFarben()
-  Funktionen.zeigeStatus()
+  Funktion.zeigeFarben()
+  Funktion.zeigeStatus()
   seite = -1
-  Funktionen.zeigeMenu()
-  Funktionen.AdressenSpeichern()
+  Funktion.zeigeMenu()
+  Funktion.AdressenSpeichern()
   seite = 0
-  Funktionen.zeigeMenu()
-  Funktionen.eventLoop()
-  Funktionen.beendeAlles()
+  Funktion.zeigeMenu()
+  Funktion.eventLoop()
+  Funktion.beendeAlles()
 end
 
-Funktionen.checken(Funktionen.main)
+Funktion.checken(Funktion.main)
