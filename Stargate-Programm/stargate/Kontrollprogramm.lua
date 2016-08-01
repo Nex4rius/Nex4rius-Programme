@@ -201,7 +201,7 @@ function Funktion.pull_event()
   checkEnergy = energy
   local eventErgebnis = {event.pull(Wartezeit)}
   if eventErgebnis[1] == "component_removed" or eventErgebnis[1] == "component_added" then
-    schreibFehlerLog(eventErgebnis)
+    Funktion.schreibFehlerLog(eventErgebnis)
   end
   return eventErgebnis
 end
