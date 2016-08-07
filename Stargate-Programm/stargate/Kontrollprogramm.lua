@@ -27,7 +27,6 @@ local codeaccepted              = "-"
 local wormhole                  = "in"
 local iriscontrol               = "on"
 local energytype                = "EU"
-local handlers                  = {}
 local Farben                    = {}
 local Funktion                  = {}
 local activationtime            = 0
@@ -901,7 +900,7 @@ function Funktion.dial(name, adresse)
   os.sleep(1)
 end
 
-handlers[key_event_name] = function(e)
+Funktion[key_event_name] = function(e)
   c = string.char(e[3])
   if entercode == true then
     if e[3] == 13 then
@@ -1034,7 +1033,7 @@ handlers[key_event_name] = function(e)
   end
 end
 
-function handlers.sgChevronEngaged(e)
+function Funktion.sgChevronEngaged(e)
   chevron = e[3]
   if chevron <= 4 then
     zielAdresse = string.sub(sg.remoteAddress(), 1, chevron)
@@ -1053,7 +1052,7 @@ function Funktion.eventLoop()
     e = Funktion.pull_event()
     if e[1] == nil then else
       name = e[1]
-      f = handlers[name]
+      f = Funktion[name]
       if f then
         Funktion.checken(f, e)
       end
