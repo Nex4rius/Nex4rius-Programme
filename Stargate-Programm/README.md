@@ -1,3 +1,5 @@
+<a href="#english">english</a><a href="#deutsch">deutsch</a>
+<a name="english"></a>
 # Stargate-Program for SG-Craft and OpenComputers
 
 How to install:
@@ -19,7 +21,11 @@ pastebin run -f Dkt9dn4S
 
 3) Profit
 
-<a href="http://imgur.com/a/WnwiV">Screenshots</a>
+<a href="http://imgur.com/a/WnwiV">
+<img src="http://i.imgur.com/toQcuXj.png">
+<img src="http://i.imgur.com/C8gTzIC.png">
+<img src="http://i.imgur.com/jWwlBNI.png">
+</a>
 
 Some feature of my program:
 
@@ -52,7 +58,7 @@ OpenComputers-MC1.7.10-1.5.22.46-universal<br>
 SGCraft-1.11.2-mc1.7.10
 
 ___
-
+<a name="deutsch"></a>
 # Stargate-Programm für SG-Craft und OpenComputers
 
 Installationsanleitung:
@@ -66,7 +72,7 @@ Installationsanleitung:
 - Internet Card - nur benötigt zur Installation und für Aktualisierungen
 - Redstone Card T2 - optional
 
-2) kopieren / einfügen von Befehlen
+2) kopieren / einfügen vom Befehl
 
 ```
 pastebin run -f Dkt9dn4S
@@ -74,7 +80,11 @@ pastebin run -f Dkt9dn4S
 
 3) Profit
 
-<a href="http://imgur.com/a/WnwiV">Screenshots</a>
+<a href="http://imgur.com/a/WnwiV">
+<img src="http://i.imgur.com/toQcuXj.png">
+<img src="http://i.imgur.com/C8gTzIC.png">
+<img src="http://i.imgur.com/jWwlBNI.png">
+</a>
 
 Einige Funktionen meines Programms:
 
