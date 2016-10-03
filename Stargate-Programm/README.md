@@ -1,6 +1,5 @@
-<a href="#english">english</a>/<a href="#deutsch">deutsch</a>
-<a name="deutsch"></a>
-# Stargate-Programm für SG-Craft und OpenComputers
+<a href="#english">english</a>/<a href="#deutsch">deutsch</a><a name="deutsch">
+# Stargate-Programm für SG-Craft und OpenComputers</a>
 
 Installationsanleitung:
 
@@ -58,8 +57,8 @@ OpenComputers-MC1.7.10-1.5.22.46-universal<br>
 SGCraft-1.11.2-mc1.7.10
 
 ___
-<a name="english"></a>
-# Stargate-Program for SG-Craft and OpenComputers
+<a name="english">
+# Stargate-Program for SG-Craft and OpenComputers</a>
 
 How to install:
 
