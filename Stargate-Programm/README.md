@@ -7,7 +7,7 @@ Installationsanleitung:
 - CPU T2
 - GPU T2
 - 12x Screen T2
-- HDD T1 (with OpenOS)
+- HDD T1 (mit OpenOS)
 - 2x Memory T1.5
 - Internet Card - nur benötigt zur Installation und für Aktualisierungen
 - Redstone Card T2 - optional
