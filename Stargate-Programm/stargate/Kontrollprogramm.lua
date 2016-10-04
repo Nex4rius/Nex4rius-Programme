@@ -1065,7 +1065,8 @@ function Funktion.eventLoop()
   while running do
     Funktion.checken(Funktion.zeigeStatus)
     e = Funktion.pull_event()
-    if e[1] == nil then
+    if not e then
+    elseif not e[1] then
     elseif eventErgebnis[1] == "touch" then
       Funktion.touchscreen(eventErgebnis[3], eventErgebnis[4])
     else
