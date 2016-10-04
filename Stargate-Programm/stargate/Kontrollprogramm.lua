@@ -30,6 +30,7 @@ local iriscontrol               = "on"
 local energytype                = "EU"
 local Farben                    = {}
 local Funktion                  = {}
+local Taste                     = {}
 local activationtime            = 0
 local energy                    = 0
 local seite                     = 0
@@ -881,6 +882,104 @@ function Funktion.dial(name, adresse)
   os.sleep(1)
 end
 
+function Taste.q()
+  running = false
+end
+
+function Taste.e()
+  if state == "Connected" and direction == "Outgoing" then
+    enteridc = ""
+    showidc = ""
+    entercode = true
+    Funktion.zeigeNachricht(sprachen.IDCeingabe .. ":")
+  else
+    Funktion.zeigeNachricht(sprachen.keineVerbindung)
+  end
+end
+
+function Taste.d()
+  if state == "Connected" and direction == "Incoming" then
+    sg.disconnect()
+    sg.sendMessage("Request: Disconnect Stargate")
+    Funktion.zeigeNachricht(sprachen.senden .. sprachen.aufforderung .. ": " .. sprachen.stargateAbschalten .. " " .. sprachen.stargateName)
+  else
+    sg.disconnect()
+    if state == "Idle" then else
+      Funktion.zeigeNachricht(sprachen.stargateAbschalten .. " " .. sprachen.stargateName)
+    end
+  end
+end
+
+function Taste.o()
+  if iris == "Offline" then else
+    Funktion.irisOpen()
+    if wormhole == "in" then
+      if iris == "Offline" then else
+        os.sleep(2)
+        sg.sendMessage("Manual Override: Iris: Open")
+      end
+    end
+    if state == "Idle" then
+      iriscontrol = "on"
+    else
+      iriscontrol = "off"
+    end
+  end
+end
+
+function Taste.c()
+  if iris == "Offline" then else
+    Funktion.irisClose()
+    iriscontrol = "off"
+    if wormhole == "in" then
+      sg.sendMessage("Manual Override: Iris: Closed")
+    end
+  end
+end
+
+function Taste.i()
+  if iris == "Offline" then else
+    send = true
+    if Sicherung.control == "On" then
+      Sicherung.control = "Off"
+    else
+      Sicherung.control = "On"
+    end
+    schreibSicherungsdatei(Sicherung)
+  end
+end
+
+function Taste.z()
+  gpu.setBackground(Farben.Nachrichtfarbe)
+  gpu.setForeground(Farben.Textfarbe)
+  edit("stargate/adressen.lua")
+  seite = -1
+  Funktion.zeigeAnzeige()
+  seite = 0
+  Funktion.AdressenSpeichern()
+end
+
+function Taste.l()
+  gpu.setBackground(Farben.Nachrichtfarbe)
+  gpu.setForeground(Farben.Textfarbe)
+  schreibSicherungsdatei(Sicherung)
+  edit("stargate/Sicherungsdatei.lua")
+  Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
+  if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
+    sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
+  else
+    print("\nUnbekannte Sprache\nStandardeinstellung = deutsch")
+    sprachen = loadfile("/stargate/sprache/deutsch.lua")()
+    os.sleep(1)
+  end
+  schreibSicherungsdatei(Sicherung)
+  Funktion.sides()
+  gpu.setBackground(Farben.Nachrichtfarbe)
+  term.clear()
+  seite = 0
+  Funktion.zeigeAnzeige()
+end
+
 Funktion[key_event_name] = function(e)
   c = string.char(e[3])
   if entercode == true then
@@ -892,63 +991,6 @@ Funktion[key_event_name] = function(e)
       enteridc = enteridc .. c
       showidc = showidc .. "*"
       Funktion.zeigeNachricht(sprachen.IDCeingabe .. ": " .. showidc)
-    end
-  elseif c == "e" then
-    if state == "Connected" and direction == "Outgoing" then
-      enteridc = ""
-      showidc = ""
-      entercode = true
-      Funktion.zeigeNachricht(sprachen.IDCeingabe .. ":")
-    else
-      Funktion.zeigeNachricht(sprachen.keineVerbindung)
-    end
-  elseif c == "d" then
-    if state == "Connected" and direction == "Incoming" then
-      sg.disconnect()
-      sg.sendMessage("Request: Disconnect Stargate")
-      Funktion.zeigeNachricht(sprachen.senden .. sprachen.aufforderung .. ": " .. sprachen.stargateAbschalten .. " " .. sprachen.stargateName)
-    else
-      sg.disconnect()
-      if state == "Idle" then else
-        Funktion.zeigeNachricht(sprachen.stargateAbschalten .. " " .. sprachen.stargateName)
-      end
-    end
-  elseif c == "o" then
-    if iris == "Offline" then else
-      Funktion.irisOpen()
-      if wormhole == "in" then
-        if iris == "Offline" then else
-          os.sleep(2)
-          sg.sendMessage("Manual Override: Iris: Open")
-        end
-      end
-      if state == "Idle" then
-        iriscontrol = "on"
-      else
-        iriscontrol = "off"
-      end
-    end
-  elseif c == "c" then
-    if iris == "Offline" then else
-      Funktion.irisClose()
-      iriscontrol = "off"
-      if wormhole == "in" then
-        sg.sendMessage("Manual Override: Iris: Closed")
-      end
-    end
-  elseif c >= "0" and c <= "9" then
-    if c == "0" then
-      c = 10
-    end
-    c = c + seite * 10
-    na = gespeicherteAdressen[tonumber(c)]
-    iriscontrol = "off"
-    wormhole = "out"
-    if na then
-      Funktion.dial(na[1], na[2])
-      if na[3] == "-" then
-        else outcode = na[3]
-      end
     end
   elseif e[3] == 0 and e[4] == 203 then
     if seite <= -1 then else
@@ -970,46 +1012,35 @@ Funktion[key_event_name] = function(e)
       end
       Funktion.zeigeAnzeige()
     end
-  elseif seite == -1 then
-    if c == "q" then
-      running = false
-    elseif c == "i" then
-      if iris == "Offline" then else
-        send = true
-        if Sicherung.control == "On" then
-          Sicherung.control = "Off"
-        else
-          Sicherung.control = "On"
-        end
-        schreibSicherungsdatei(Sicherung)
+  elseif c == "e" then
+    Taste.e()
+  elseif c == "d" then
+    Taste.d()
+  elseif c == "o" then
+    Taste.o()
+  elseif c == "c" then
+    Taste.c()
+  elseif c == "q" and seite == -1 then
+    Taste.q()
+  elseif c == "i" and seite == -1 then
+    Taste.i()
+  elseif c == "z" and seite == -1 then
+    Taste.z()
+  elseif c == "l" and seite == -1 then
+    Taste.l()
+  elseif c >= "0" and c <= "9" then
+    if c == "0" then
+      c = 10
+    end
+    c = c + seite * 10
+    na = gespeicherteAdressen[tonumber(c)]
+    iriscontrol = "off"
+    wormhole = "out"
+    if na then
+      Funktion.dial(na[1], na[2])
+      if na[3] == "-" then
+        else outcode = na[3]
       end
-    elseif c == "z" then
-      gpu.setBackground(Farben.Nachrichtfarbe)
-      gpu.setForeground(Farben.Textfarbe)
-      edit("stargate/adressen.lua")
-      seite = -1
-      Funktion.zeigeAnzeige()
-      seite = 0
-      Funktion.AdressenSpeichern()
-    elseif c == "l" then
-      gpu.setBackground(Farben.Nachrichtfarbe)
-      gpu.setForeground(Farben.Textfarbe)
-      schreibSicherungsdatei(Sicherung)
-      edit("stargate/Sicherungsdatei.lua")
-      Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
-      if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
-        sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
-      else
-        print("\nUnbekannte Sprache\nStandardeinstellung = deutsch")
-        sprachen = loadfile("/stargate/sprache/deutsch.lua")()
-        os.sleep(1)
-      end
-      schreibSicherungsdatei(Sicherung)
-      Funktion.sides()
-      gpu.setBackground(Farben.Nachrichtfarbe)
-      term.clear()
-      seite = 0
-      Funktion.zeigeAnzeige()
     end
   end
 end
