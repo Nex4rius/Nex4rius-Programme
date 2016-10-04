@@ -915,31 +915,29 @@ Funktion[key_event_name] = function(e)
       end
       Funktion.zeigeAnzeige()
     end
-  elseif string.find("edoqizlub", c) then
-    if c == "e" then
-      Taste.e()
-    elseif c == "d" then
-      Taste.d()
-    elseif c == "o" then
-      Taste.o()
-    elseif c == "c" then
-      Taste.c()
-    elseif seite == -1 then
-      if c == "q" then
-        Taste.q()
-      elseif c == "i" then
-        Taste.i()
-      elseif c == "z" then
-        Taste.z()
-      elseif c == "l" then
-        Taste.l()
-      elseif c == "u" then
-        Taste.u()
-      elseif c == "b" then
-        Taste.b()
-      end
+  elseif c == "e" then
+    Taste.e()
+  elseif c == "d" then
+    Taste.d()
+  elseif c == "o" then
+    Taste.o()
+  elseif c == "c" then
+    Taste.c()
+  elseif seite == -1 then
+    if c == "q" then
+      Taste.q()
+    elseif c == "i" then
+      Taste.i()
+    elseif c == "z" then
+      Taste.z()
+    elseif c == "l" then
+      Taste.l()
+    elseif c == "u" then
+      Taste.u()
+    elseif c == "b" then
+      Taste.b()
     end
-  elseif c >= "0" and c <= "9" then
+  elseif c >= "0" and c <= "9" and seite >= 0 then
     Taste.Zahl(c)
   end
 end
