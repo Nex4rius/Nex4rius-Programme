@@ -116,4 +116,5 @@ return {
   nichtsAendern             = "verändere nichts ab hier",
   Update                    = "Aktualisierung?",
   UpdateBeta                = "Aktualisierung Beta?",
+  TastaturFehlt             = "Tastatur wird benötigt",
 }
