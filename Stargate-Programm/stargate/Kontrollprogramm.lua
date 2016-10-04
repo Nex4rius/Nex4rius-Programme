@@ -1012,22 +1012,26 @@ Funktion[key_event_name] = function(e)
       end
       Funktion.zeigeAnzeige()
     end
-  elseif c == "e" then
-    Taste.e()
-  elseif c == "d" then
-    Taste.d()
-  elseif c == "o" then
-    Taste.o()
-  elseif c == "c" then
-    Taste.c()
-  elseif c == "q" and seite == -1 then
-    Taste.q()
-  elseif c == "i" and seite == -1 then
-    Taste.i()
-  elseif c == "z" and seite == -1 then
-    Taste.z()
-  elseif c == "l" and seite == -1 then
-    Taste.l()
+  elseif c == "e" or c == "d" or c == "o" or c == "q" or c == "i" or c == "z" or c == "l" then
+    if c == "e" then
+      Taste.e()
+    elseif c == "d" then
+      Taste.d()
+    elseif c == "o" then
+      Taste.o()
+    elseif c == "c" then
+      Taste.c()
+    elseif seite == -1 then
+      if c == "q" then
+        Taste.q()
+      elseif c == "i" then
+        Taste.i()
+      elseif c == "z" then
+        Taste.z()
+      elseif c == "l" then
+        Taste.l()
+      end
+    end
   elseif c >= "0" and c <= "9" then
     if c == "0" then
       c = 10
