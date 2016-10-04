@@ -192,7 +192,7 @@ function Funktion.zeichenErsetzen(eingabeErsetzung)
 end
 
 function Funktion.touchscreen(x, y)
-  Funktion.zeigeNachricht(x .. " --- " .. y)
+  --Funktion.zeigeNachricht(x .. " --- " .. y)
 end
 
 function Funktion.checkReset()
@@ -1012,7 +1012,7 @@ Funktion[key_event_name] = function(e)
       end
       Funktion.zeigeAnzeige()
     end
-  elseif c == "e" or c == "d" or c == "o" or c == "q" or c == "i" or c == "z" or c == "l" then
+  elseif string.find("edoqizlub", c) then
     if c == "e" then
       Taste.e()
     elseif c == "d" then
@@ -1043,7 +1043,8 @@ Funktion[key_event_name] = function(e)
     if na then
       Funktion.dial(na[1], na[2])
       if na[3] == "-" then
-        else outcode = na[3]
+      else
+        outcode = na[3]
       end
     end
   end
