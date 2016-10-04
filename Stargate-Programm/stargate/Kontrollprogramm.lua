@@ -202,8 +202,8 @@ function Funktion.pull_event()
   end
   checkEnergy = energy
   local eventErgebnis = {event.pull(Wartezeit)}
-  if eventErgebnis[1] == "component_removed" or eventErgebnis[1] == "component_added" then
-    Funktion.schreibFehlerLog(eventErgebnis)
+  if eventErgebnis[1] == "touch" then
+    Funktion.touchscreen(eventErgebnis[3], eventErgebnis[4])
   end
   return eventErgebnis
 end
@@ -219,8 +219,14 @@ function Funktion.zeichenErsetzen(eingabeErsetzung)
   return string.gsub(eingabeErsetzung, "%a+", function (str) return ersetzen [str] end)
 end
 
+function Funktion.touchscreen(x, y)
+  print("x" .. x .. "\ny" .. y)
+  print(eventErgebnis[1], eventErgebnis[2], eventErgebnis[3], eventErgebnis[4])
+  print(eventErgebnis)
+end
+
 function Funktion.checkReset()
-  if time == "-" then else
+  if type(time) == "number" then
     if time > 500 then
       zielAdresse     = ""
       remoteName      = ""
@@ -680,6 +686,7 @@ function Funktion.activetime()
     if time > 0 then
       Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit1 .. Funktion.ErsetzePunktMitKomma(string.format("%.1f", time)) .. "s")
     end
+    Funktion.checkReset()
   else
     Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit2)
     time = 0
@@ -1053,7 +1060,6 @@ end
 function Funktion.eventLoop()
   while running do
     Funktion.checken(Funktion.zeigeStatus)
-    Funktion.checken(Funktion.checkReset)
     e = Funktion.pull_event()
     if e[1] == nil then else
       name = e[1]
