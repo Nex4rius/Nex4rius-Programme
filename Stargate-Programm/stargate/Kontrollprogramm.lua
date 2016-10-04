@@ -989,6 +989,23 @@ function Taste.b()
   loadfile("/autorun.lua")("beta")
 end
 
+function Taste.Zahl(c)
+  if c == "0" then
+    c = 10
+  end
+  c = c + seite * 10
+  na = gespeicherteAdressen[tonumber(c)]
+  iriscontrol = "off"
+  wormhole = "out"
+  if na then
+    Funktion.dial(na[1], na[2])
+    if na[3] == "-" then
+    else
+      outcode = na[3]
+    end
+  end
+end
+
 Funktion[key_event_name] = function(e)
   c = string.char(e[3])
   if entercode == true then
@@ -1046,20 +1063,7 @@ Funktion[key_event_name] = function(e)
       end
     end
   elseif c >= "0" and c <= "9" then
-    if c == "0" then
-      c = 10
-    end
-    c = c + seite * 10
-    na = gespeicherteAdressen[tonumber(c)]
-    iriscontrol = "off"
-    wormhole = "out"
-    if na then
-      Funktion.dial(na[1], na[2])
-      if na[3] == "-" then
-      else
-        outcode = na[3]
-      end
-    end
+    Taste.Zahl(c)
   end
 end
 
