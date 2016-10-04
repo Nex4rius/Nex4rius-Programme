@@ -980,6 +980,14 @@ function Taste.l()
   Funktion.zeigeAnzeige()
 end
 
+function Taste.u()
+  loadfile("/autorun.lua")("ja")
+end
+
+function Taste.b()
+  loadfile("/autorun.lua")("beta")
+end
+
 Funktion[key_event_name] = function(e)
   c = string.char(e[3])
   if entercode == true then
@@ -1030,6 +1038,10 @@ Funktion[key_event_name] = function(e)
         Taste.z()
       elseif c == "l" then
         Taste.l()
+      elseif c == "u" then
+        Taste.u()
+      elseif c == "b" then
+        Taste.b()
       end
     end
   elseif c >= "0" and c <= "9" then
