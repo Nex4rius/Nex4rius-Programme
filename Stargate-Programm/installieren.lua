@@ -74,9 +74,6 @@ function Funktionen.installieren(versionTyp)
   end
   if updateKomplett then
     fs.makeDirectory("/stargate/sprache")
-    --if sprachen then
-    --  print(sprachen.Update)
-    --end
     move("-f", "/update/autorun.lua",                         "/autorun.lua")
     move("-f", "/update/stargate/check.lua",                  "/stargate/check.lua")
     move("-f", "/update/stargate/version.txt",                "/stargate/version.txt")
@@ -105,13 +102,13 @@ function Funktionen.installieren(versionTyp)
   print()
   loadfile("/bin/rm.lua")("-v", "/update")
   loadfile("/bin/rm.lua")("-v", "/installieren.lua")
-  --loadfile("/autorun.lua")("no")
-  --os.exit()
   if updateKomplett then
     print("\nUpdate komplett\n" .. version .. " " .. string.upper(tostring(versionTyp)))
   end
   os.sleep(2)
-  require("computer").shutdown(true)
+  loadfile("/autorun.lua")("no")
+  os.exit()
+  --require("computer").shutdown(true)
 end
 
 if versionTyp == nil then
