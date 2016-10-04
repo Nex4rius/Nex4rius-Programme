@@ -79,42 +79,6 @@ Farben.Steuerungstextfarbe      = Farben.schwarzeFarbe
 Farben.Statusfarbe              = Farben.grueneFarbe
 Farben.Statustextfarbe          = Farben.Textfarbe
 
-local AdressAnzeige
-local adressen
-local alte_eingabe
-local anwahlEnergie
-local ausgabe
-local c
-local chevron
-local direction
-local eingabe
-local energieMenge
-local ergebnis
-local gespeicherteAdressen
-local iris
-local k
-local letzteNachricht
-local locAddr
-local mess
-local mess_old
-local ok
-local r
-local remAddr
-local result
-local RichtungName
-local sendeAdressen
-local sideNum
-local state
-local StatusName
-local version
-
-do
-  local args                    = require("shell").parse(...)
-  Funktion.update             = args[1]
-  Funktion.checkServerVersion = args[2]
-  version                       = tostring(args[3])
-end
-
 Farben.white                    = 0
 --Farben.orange                   = 1
 --Farben.magenta                  = 2
@@ -131,6 +95,16 @@ Farben.yellow                   = 4
 Farben.green                    = 13
 Farben.red                      = 14
 Farben.black                    = 15
+
+local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, c, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen
+local iris, k, letzteNachricht, locAddr, mess, mess_old, ok, r, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version
+
+do
+  local args                    = require("shell").parse(...)
+  Funktion.update             = args[1]
+  Funktion.checkServerVersion = args[2]
+  version                       = tostring(args[3])
+end
   
 if component.isAvailable("redstone") then
   r = component.getPrimary("redstone")
