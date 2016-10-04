@@ -115,5 +115,5 @@ return {
   keinIDC                   = "for no Iris Code",
   nichtsAendern             = "don't change anything below",
   Update                    = "update?",
-  UpdateBeta                = "update to beta version?",
+  UpdateBeta                = "update beta?",
 }
