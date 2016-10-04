@@ -11,6 +11,7 @@ local schreibSicherungsdatei    = loadfile("/stargate/schreibSicherungsdatei.lua
 local Sicherung                 = loadfile("/stargate/Sicherungsdatei.lua")()
 local gpu                       = component.getPrimary("gpu")
 local sg                        = component.getPrimary("stargate")
+local screen                    = component.getPrimaty("screen")
 
 local sectime                   = os.time()
 os.sleep(1)
@@ -1164,7 +1165,6 @@ function Funktion.beendeAlles()
     Funktion.redstoneAbschalten(sideNum, Farben.red, "red")
     Funktion.redstoneAbschalten(sideNum, Farben.black, "black")
   end
-  os.exit()
 end
 
 function Funktion.main()
