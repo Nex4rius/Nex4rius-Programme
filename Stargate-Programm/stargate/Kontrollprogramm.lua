@@ -203,7 +203,7 @@ function Funktion.pull_event()
   checkEnergy = energy
   local eventErgebnis = {event.pull(Wartezeit)}
   if eventErgebnis[1] == "touch" then
-    Funktion.touchscreen(eventErgebnis[3], eventErgebnis[4])
+    Funktion.touchscreen(eventErgebnis[3], eventErgebnis[4], eventErgebnis)
   end
   return eventErgebnis
 end
@@ -219,7 +219,7 @@ function Funktion.zeichenErsetzen(eingabeErsetzung)
   return string.gsub(eingabeErsetzung, "%a+", function (str) return ersetzen [str] end)
 end
 
-function Funktion.touchscreen(x, y)
+function Funktion.touchscreen(x, y, eventErgebnis)
   print("x" .. x .. "\ny" .. y)
   print(eventErgebnis[1], eventErgebnis[2], eventErgebnis[3], eventErgebnis[4])
   print(eventErgebnis)
