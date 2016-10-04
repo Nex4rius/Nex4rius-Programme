@@ -161,6 +161,8 @@ if sg.irisState() == "Offline" then
   Trennlinienhoehe    = 13
 end
 
+screen.setTouchModeInverted(true)
+
 function Funktion.schreibeAdressen()
   local f = io.open("/stargate/adressen.lua", "w")
   f:write('-- pastebin run -f Dkt9dn4S\n')
