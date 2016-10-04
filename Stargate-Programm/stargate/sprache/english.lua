@@ -116,4 +116,5 @@ return {
   nichtsAendern             = "don't change anything below",
   Update                    = "update?",
   UpdateBeta                = "update beta?",
+  TastaturFehlt             = "keyboard is required",
 }
