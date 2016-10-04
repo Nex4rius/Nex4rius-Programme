@@ -102,8 +102,8 @@ local iris, k, letzteNachricht, locAddr, mess, mess_old, ok, r, remAddr, result,
 
 do
   local args                    = require("shell").parse(...)
-  Funktion.update             = args[1]
-  Funktion.checkServerVersion = args[2]
+  Funktion.update               = args[1]
+  Funktion.checkServerVersion   = args[2]
   version                       = tostring(args[3])
 end
   
@@ -192,7 +192,7 @@ function Funktion.zeichenErsetzen(eingabeErsetzung)
 end
 
 function Funktion.touchscreen(x, y)
-  --Funktion.zeigeNachricht(x .. " --- " .. y)
+  Funktion.zeigeNachricht(x .. " --- " .. y)
 end
 
 function Funktion.checkReset()
