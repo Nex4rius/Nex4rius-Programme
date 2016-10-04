@@ -176,9 +176,6 @@ function Funktion.pull_event()
   end
   checkEnergy = energy
   local eventErgebnis = {event.pull(Wartezeit)}
-  if eventErgebnis[1] == "touch" then
-    Funktion.touchscreen(eventErgebnis[3], eventErgebnis[4])
-  end
   return eventErgebnis
 end
 
@@ -1033,7 +1030,10 @@ function Funktion.eventLoop()
   while running do
     Funktion.checken(Funktion.zeigeStatus)
     e = Funktion.pull_event()
-    if e[1] == nil then else
+    if e[1] == nil then
+    elseif eventErgebnis[1] == "touch" then
+      Funktion.touchscreen(eventErgebnis[3], eventErgebnis[4])
+    else
       name = e[1]
       f = Funktion[name]
       if f then
