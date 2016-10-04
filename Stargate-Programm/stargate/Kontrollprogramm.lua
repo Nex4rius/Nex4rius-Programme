@@ -883,6 +883,67 @@ function Funktion.dial(name, adresse)
   os.sleep(1)
 end
 
+Funktion[key_event_name] = function(e)
+  c = string.char(e[3])
+  if entercode == true then
+    if e[3] == 13 then
+      entercode = false
+      sg.sendMessage(enteridc)
+      Funktion.zeigeNachricht(sprachen.IDCgesendet)
+    else
+      enteridc = enteridc .. c
+      showidc = showidc .. "*"
+      Funktion.zeigeNachricht(sprachen.IDCeingabe .. ": " .. showidc)
+    end
+  elseif e[3] == 0 and e[4] == 203 then
+    if seite <= -1 then else
+      seite = seite - 1
+      gpu.setBackground(Farben.Adressfarbe)
+      gpu.setForeground(Farben.Adresstextfarbe)
+      for P = 1, Bildschirmhoehe - 3 do
+        Funktion.zeigeHier(1, P, "", xVerschiebung - 3)
+      end
+      Funktion.zeigeAnzeige()
+    end
+  elseif e[3] == 0 and e[4] == 205 then
+    if seite + 1 < maxseiten then
+      seite = seite + 1
+      gpu.setBackground(Farben.Adressfarbe)
+      gpu.setForeground(Farben.Adresstextfarbe)
+      for P = 1, Bildschirmhoehe - 3 do
+        Funktion.zeigeHier(1, P, "", xVerschiebung - 3)
+      end
+      Funktion.zeigeAnzeige()
+    end
+  elseif string.find("edoqizlub", c) then
+    if c == "e" then
+      Taste.e()
+    elseif c == "d" then
+      Taste.d()
+    elseif c == "o" then
+      Taste.o()
+    elseif c == "c" then
+      Taste.c()
+    elseif seite == -1 then
+      if c == "q" then
+        Taste.q()
+      elseif c == "i" then
+        Taste.i()
+      elseif c == "z" then
+        Taste.z()
+      elseif c == "l" then
+        Taste.l()
+      elseif c == "u" then
+        Taste.u()
+      elseif c == "b" then
+        Taste.b()
+      end
+    end
+  elseif c >= "0" and c <= "9" then
+    Taste.Zahl(c)
+  end
+end
+
 function Taste.q()
   running = false
 end
@@ -1003,67 +1064,6 @@ function Taste.Zahl(c)
     else
       outcode = na[3]
     end
-  end
-end
-
-Funktion[key_event_name] = function(e)
-  c = string.char(e[3])
-  if entercode == true then
-    if e[3] == 13 then
-      entercode = false
-      sg.sendMessage(enteridc)
-      Funktion.zeigeNachricht(sprachen.IDCgesendet)
-    else
-      enteridc = enteridc .. c
-      showidc = showidc .. "*"
-      Funktion.zeigeNachricht(sprachen.IDCeingabe .. ": " .. showidc)
-    end
-  elseif e[3] == 0 and e[4] == 203 then
-    if seite <= -1 then else
-      seite = seite - 1
-      gpu.setBackground(Farben.Adressfarbe)
-      gpu.setForeground(Farben.Adresstextfarbe)
-      for P = 1, Bildschirmhoehe - 3 do
-        Funktion.zeigeHier(1, P, "", xVerschiebung - 3)
-      end
-      Funktion.zeigeAnzeige()
-    end
-  elseif e[3] == 0 and e[4] == 205 then
-    if seite + 1 < maxseiten then
-      seite = seite + 1
-      gpu.setBackground(Farben.Adressfarbe)
-      gpu.setForeground(Farben.Adresstextfarbe)
-      for P = 1, Bildschirmhoehe - 3 do
-        Funktion.zeigeHier(1, P, "", xVerschiebung - 3)
-      end
-      Funktion.zeigeAnzeige()
-    end
-  elseif string.find("edoqizlub", c) then
-    if c == "e" then
-      Taste.e()
-    elseif c == "d" then
-      Taste.d()
-    elseif c == "o" then
-      Taste.o()
-    elseif c == "c" then
-      Taste.c()
-    elseif seite == -1 then
-      if c == "q" then
-        Taste.q()
-      elseif c == "i" then
-        Taste.i()
-      elseif c == "z" then
-        Taste.z()
-      elseif c == "l" then
-        Taste.l()
-      elseif c == "u" then
-        Taste.u()
-      elseif c == "b" then
-        Taste.b()
-      end
-    end
-  elseif c >= "0" and c <= "9" then
-    Taste.Zahl(c)
   end
 end
 
