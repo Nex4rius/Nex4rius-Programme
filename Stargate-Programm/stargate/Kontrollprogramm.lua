@@ -1067,8 +1067,8 @@ function Funktion.eventLoop()
     e = Funktion.pull_event()
     if not e then
     elseif not e[1] then
-    elseif eventErgebnis[1] == "touch" then
-      Funktion.touchscreen(eventErgebnis[3], eventErgebnis[4])
+    elseif e[1] == "touch" then
+      Funktion.touchscreen(e[3], e[4])
     else
       name = e[1]
       f = Funktion[name]
