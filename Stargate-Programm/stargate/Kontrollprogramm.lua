@@ -1019,34 +1019,38 @@ function Taste.i()
 end
 
 function Taste.z()
-  gpu.setBackground(Farben.Nachrichtfarbe)
-  gpu.setForeground(Farben.Textfarbe)
-  edit("stargate/adressen.lua")
-  seite = -1
-  Funktion.zeigeAnzeige()
-  seite = 0
-  Funktion.AdressenSpeichern()
+  if Funktion.Tastatur() then
+    gpu.setBackground(Farben.Nachrichtfarbe)
+    gpu.setForeground(Farben.Textfarbe)
+    edit("stargate/adressen.lua")
+    seite = -1
+    Funktion.zeigeAnzeige()
+    seite = 0
+    Funktion.AdressenSpeichern()
+  end
 end
 
 function Taste.l()
-  gpu.setBackground(Farben.Nachrichtfarbe)
-  gpu.setForeground(Farben.Textfarbe)
-  schreibSicherungsdatei(Sicherung)
-  edit("stargate/Sicherungsdatei.lua")
-  Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
-  if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
-    sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
-  else
-    print("\nUnbekannte Sprache\nStandardeinstellung = deutsch")
-    sprachen = loadfile("/stargate/sprache/deutsch.lua")()
-    os.sleep(1)
+  if Funktion.Tastatur() then
+    gpu.setBackground(Farben.Nachrichtfarbe)
+    gpu.setForeground(Farben.Textfarbe)
+    schreibSicherungsdatei(Sicherung)
+    edit("stargate/Sicherungsdatei.lua")
+    Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
+    if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
+      sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
+    else
+      print("\nUnbekannte Sprache\nStandardeinstellung = deutsch")
+      sprachen = loadfile("/stargate/sprache/deutsch.lua")()
+      os.sleep(1)
+    end
+    schreibSicherungsdatei(Sicherung)
+    Funktion.sides()
+    gpu.setBackground(Farben.Nachrichtfarbe)
+    term.clear()
+    seite = 0
+    Funktion.zeigeAnzeige()
   end
-  schreibSicherungsdatei(Sicherung)
-  Funktion.sides()
-  gpu.setBackground(Farben.Nachrichtfarbe)
-  term.clear()
-  seite = 0
-  Funktion.zeigeAnzeige()
 end
 
 function Taste.u()
@@ -1071,6 +1075,15 @@ function Taste.Zahl(c)
     else
       outcode = na[3]
     end
+  end
+end
+
+function Funktion.Tastatur()
+  if component.isAvailable("keyboard") then
+    return true
+  else
+    Funktion.zeigeNachricht(sprachen.TastaturFehlt)
+    return false
   end
 end
 
