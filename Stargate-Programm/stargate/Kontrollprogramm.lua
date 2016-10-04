@@ -193,6 +193,11 @@ end
 
 function Funktion.touchscreen(x, y)
   Funktion.zeigeNachricht(x .. " --- " .. y)
+  if x <= 30 then
+    if y == 2 or y == 3 then
+      Taste.Zahl(1)
+    end
+  end
 end
 
 function Funktion.checkReset()
