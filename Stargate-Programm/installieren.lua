@@ -56,7 +56,7 @@ function Funktionen.installieren(versionTyp)
     else
       updateKomplett = false
       if sprachen then
-        print(sprachen.fehlerName .. i)
+        print(sprachen.fehlerName .. " " .. i)
       end
       local f = io.open ("/autorun.lua", "w")
       f:write('-- pastebin run -f Dkt9dn4S\n')
@@ -74,6 +74,9 @@ function Funktionen.installieren(versionTyp)
   end
   if updateKomplett then
     fs.makeDirectory("/stargate/sprache")
+    --if sprachen then
+    --  print(sprachen.Update)
+    --end
     move("-f", "/update/autorun.lua",                         "/autorun.lua")
     move("-f", "/update/stargate/check.lua",                  "/stargate/check.lua")
     move("-f", "/update/stargate/version.txt",                "/stargate/version.txt")
