@@ -1164,6 +1164,7 @@ function Funktion.beendeAlles()
     Funktion.redstoneAbschalten(sideNum, Farben.red, "red")
     Funktion.redstoneAbschalten(sideNum, Farben.black, "black")
   end
+  os.exit()
 end
 
 function Funktion.main()
