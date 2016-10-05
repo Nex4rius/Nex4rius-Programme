@@ -529,6 +529,7 @@ function Funktion.iriscontroller()
     LampenRot = false
     zielAdresse = ""
     Funktion.zeigeNachricht("")
+    Funktion.zeigeMenu()
   end
   if state == "Idle" then
     incode = "-"
