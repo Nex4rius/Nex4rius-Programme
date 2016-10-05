@@ -315,7 +315,7 @@ function Funktion.Infoseite()
   i = i + 1
   Taste.links[i] = Taste.u
   local version_Zeichenlaenge = string.len(version)
-  if string.sub(..., version_Zeichenlaenge - 3, version_Zeichenlaenge) == "BETA" then
+  if string.sub(version, version_Zeichenlaenge - 3, version_Zeichenlaenge) == "BETA" then
     print("B " .. sprachen.UpdateBeta)
     i = i + 1
     Taste.links[i] = Taste.b
