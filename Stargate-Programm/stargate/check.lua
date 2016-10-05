@@ -169,7 +169,7 @@ function Funktionen.mainCheck()
   Sicherung.installieren = false
   schreibSicherungsdatei(Sicherung)
   if Funktionen.checkDateien() then
-    if fs.exists("/log") then
+    if fs.exists("/log") and component.isAvailable("keyboard") then
       loadfile("/bin/edit.lua")("-r", "/log")
       loadfile("/bin/rm.lua")("/log")
     end

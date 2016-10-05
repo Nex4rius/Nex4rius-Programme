@@ -56,7 +56,7 @@ function Funktionen.installieren(versionTyp)
     else
       updateKomplett = false
       if sprachen then
-        print(sprachen.fehlerName .. i)
+        print(sprachen.fehlerName .. " " .. i)
       end
       local f = io.open ("/autorun.lua", "w")
       f:write('-- pastebin run -f Dkt9dn4S\n')
@@ -102,12 +102,12 @@ function Funktionen.installieren(versionTyp)
   print()
   loadfile("/bin/rm.lua")("-v", "/update")
   loadfile("/bin/rm.lua")("-v", "/installieren.lua")
-  --loadfile("/autorun.lua")("no")
-  --os.exit()
   if updateKomplett then
     print("\nUpdate komplett\n" .. version .. " " .. string.upper(tostring(versionTyp)))
   end
   os.sleep(2)
+  --loadfile("/autorun.lua")("no")
+  --os.exit()
   require("computer").shutdown(true)
 end
 

@@ -114,4 +114,7 @@ return {
   iris                      = "Trage deinen eigene Stargate Adressen hier ein",
   keinIDC                   = "für keinen Iris Code",
   nichtsAendern             = "verändere nichts ab hier",
+  Update                    = "Aktualisierung?",
+  UpdateBeta                = "Aktualisierung Beta?",
+  TastaturFehlt             = "Tastatur wird benötigt",
 }
