@@ -1178,14 +1178,16 @@ function Taste.u(y)
   gpu.setBackground(Farben.AdressfarbeAktiv)
   gpu.setForeground(Farben.Adresstextfarbe)
   Funktion.zeigeHier(1, y, "U " .. sprachen.Update, 0)
-  event.timer(2, Funktion.zeigeMenu)
   if component.isAvailable("internet") then
     if version ~= Funktion.checkServerVersion() then
       Funktion.beendeAlles()
       loadfile("/autorun.lua")("ja")
     else
       Funktion.zeigeNachricht(sprachen.bereitsNeusteVersion)
+      event.timer(2, Funktion.zeigeMenu)
     end
+  else
+    event.timer(2, Funktion.zeigeMenu)
   end
 end
 
