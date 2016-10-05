@@ -297,7 +297,6 @@ function Funktion.AdressenLesen()
 end
 
 function Funktion.Infoseite()
-  local _
   local i = 1
   Taste.links = {}
   print(sprachen.Steuerung)
@@ -1174,8 +1173,18 @@ end
 
 function Taste.Zahl(c)
   --event.timer(2, Funktion.zeigeMenu)
+  gpu.setBackground(Farben.Adresstextfarbe)
+  gpu.setForeground(Farben.Adressfarbe)
   if c == "0" then
     c = 10
+  end
+  Funktion.zeigeHier(1, c * 2, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 28 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
+  if string.sub(na[4], 1, 1) == "<" then
+    gpu.setForeground(Farben.FehlerFarbe)
+    Funktion.zeigeHier(1, c * 2 + 1, "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
+    --gpu.setForeground(Farben.Adressfarbe)
+  else
+    Funktion.zeigeHier(1, c * 2 + 1, "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
   end
   c = c + seite * 10
   na = gespeicherteAdressen[tonumber(c)]
