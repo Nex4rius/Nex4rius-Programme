@@ -98,6 +98,8 @@ Farben.red                      = 14
 Farben.black                    = 15
 
 Taste.Koordinaten               = {}
+Taste.Steuerunglinks            = {}
+Taste.Steuerungrechts           = {}
 
 local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, c, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen
 local iris, k, letzteNachricht, locAddr, mess, mess_old, ok, r, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version
