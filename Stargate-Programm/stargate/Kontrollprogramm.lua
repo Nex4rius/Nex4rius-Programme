@@ -1062,7 +1062,7 @@ function Taste.d()
       Funktion.zeigeNachricht(sprachen.stargateAbschalten .. " " .. sprachen.stargateName)
     end
   end
-  Funktion.zeigeMenu()
+  event.timer(1, Funktion.zeigeMenu)
 end
 
 function Taste.e()
