@@ -201,7 +201,11 @@ function Funktion.touchscreen(x, y)
         Taste.Zahl(math.floor(((y - 1) / 2) + 0.5))
       end
     elseif seite == -1 then
-      pcall(Taste.Koordinaten.links[y])
+      Funktion.zeigeNachricht(x .. " --- " .. y .. "hier" .. tostring(Taste.Koordinaten.links[y]))
+      --pcall(Taste.Koordinaten.links[y])
+      if Taste.Koordinaten.links[y] then
+        Taste.Koordinaten.links[y]()
+      end
     end
   elseif x >= 35 and y >= Taste.Koordinaten.Steuerunganfang_Y and y <= Taste.Koordinaten.Steuerungsende_Y then
     Funktion.zeigeNachricht(x .. " --- " .. y .. " klappt")
