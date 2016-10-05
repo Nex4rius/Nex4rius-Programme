@@ -21,8 +21,8 @@ pastebin run -f Dkt9dn4S
 3) Profit
 
 <a href="http://imgur.com/a/WnwiV">
+<img src="http://i.imgur.com/Wlxir7S.png">
 <img src="http://i.imgur.com/toQcuXj.png">
-<img src="http://i.imgur.com/C8gTzIC.png">
 <img src="http://i.imgur.com/jWwlBNI.png">
 </a>
 
@@ -81,8 +81,8 @@ pastebin run -f Dkt9dn4S
 3) Profit
 
 <a href="http://imgur.com/a/WnwiV">
+<img src="http://i.imgur.com/Wlxir7S.png">
 <img src="http://i.imgur.com/toQcuXj.png">
-<img src="http://i.imgur.com/C8gTzIC.png">
 <img src="http://i.imgur.com/jWwlBNI.png">
 </a>
 
