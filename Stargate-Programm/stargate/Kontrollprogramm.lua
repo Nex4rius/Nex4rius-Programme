@@ -1047,7 +1047,7 @@ end
 function Taste.q(y)
   gpu.setBackground(Farben.AdressfarbeAktiv)
   gpu.setForeground(Farben.Adresstextfarbe)
-  Funktion.zeigeHier(1, y, "Q " .. sprachen.beenden), 0)
+  Funktion.zeigeHier(1, y, "Q " .. sprachen.beenden, 0)
   --event.timer(2, Funktion.Infoseite)
   running = false
 end
@@ -1119,7 +1119,7 @@ end
 function Taste.i(y)
   gpu.setBackground(Farben.AdressfarbeAktiv)
   gpu.setForeground(Farben.Adresstextfarbe)
-  Funktion.zeigeHier(1, y, "I " .. sprachen.IrisSteuerung .. sprachen.an_aus), 0)
+  Funktion.zeigeHier(1, y, "I " .. sprachen.IrisSteuerung .. sprachen.an_aus, 0)
   --event.timer(2, Funktion.Infoseite)
   if iris == "Offline" then else
     send = true
@@ -1135,7 +1135,7 @@ end
 function Taste.z(y)
   gpu.setBackground(Farben.AdressfarbeAktiv)
   gpu.setForeground(Farben.Adresstextfarbe)
-  Funktion.zeigeHier(1, y, "Z " .. sprachen.AdressenBearbeiten), 0)
+  Funktion.zeigeHier(1, y, "Z " .. sprachen.AdressenBearbeiten, 0)
   --event.timer(2, Funktion.Infoseite)
   if Funktion.Tastatur() then
     gpu.setBackground(Farben.Nachrichtfarbe)
@@ -1151,7 +1151,7 @@ end
 function Taste.l(y)
   gpu.setBackground(Farben.AdressfarbeAktiv)
   gpu.setForeground(Farben.Adresstextfarbe)
-  Funktion.zeigeHier(1, y, "L " .. sprachen.EinstellungenAendern), 0)
+  Funktion.zeigeHier(1, y, "L " .. sprachen.EinstellungenAendern, 0)
   --event.timer(2, Funktion.Infoseite)
   if Funktion.Tastatur() then
     gpu.setBackground(Farben.Nachrichtfarbe)
@@ -1178,7 +1178,7 @@ end
 function Taste.u(y)
   gpu.setBackground(Farben.AdressfarbeAktiv)
   gpu.setForeground(Farben.Adresstextfarbe)
-  Funktion.zeigeHier(1, y, "U " .. sprachen.Update), 0)
+  Funktion.zeigeHier(1, y, "U " .. sprachen.Update, 0)
   --event.timer(2, Funktion.Infoseite)
   if component.isAvailable("internet") then
     if version ~= Funktion.checkServerVersion() then
@@ -1193,7 +1193,7 @@ end
 function Taste.b(y)
   gpu.setBackground(Farben.AdressfarbeAktiv)
   gpu.setForeground(Farben.Adresstextfarbe)
-  Funktion.zeigeHier(1, y, "B " .. sprachen.UpdateBeta), 0)
+  Funktion.zeigeHier(1, y, "B " .. sprachen.UpdateBeta, 0)
   --event.timer(2, Funktion.Infoseite)
   if component.isAvailable("internet") then
     Funktion.beendeAlles()
