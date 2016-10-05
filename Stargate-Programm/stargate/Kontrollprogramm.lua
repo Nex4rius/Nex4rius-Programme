@@ -1015,9 +1015,9 @@ function Taste.Pfeil_rechts()
   gpu.setBackground(Farben.Steuerungstextfarbe)
   gpu.setForeground(Farben.Steuerungsfarbe)
   if seite == -1 then
-    Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.zeigeAdressen)
+    Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.zeigeAdressen, 0)
   elseif maxseiten > seite + 1 then
-    Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.naechsteSeite)
+    Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.naechsteSeite, 0)
   end
   if seite + 1 < maxseiten then
     seite = seite + 1
