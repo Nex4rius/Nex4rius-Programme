@@ -97,8 +97,6 @@ Farben.green                    = 13
 Farben.red                      = 14
 Farben.black                    = 15
 
-Taste.Koordinaten               = {}
-
 local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, c, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen
 local iris, k, letzteNachricht, locAddr, mess, mess_old, ok, r, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version
 
@@ -201,9 +199,9 @@ function Funktion.touchscreen(x, y)
         Taste.Zahl(math.floor(((y - 1) / 2) + 0.5))
       end
     elseif seite == -1 then
-      Funktion.zeigeNachricht(x .. " --- " .. y .. tostring(Taste.Koordinaten.links[y]))
-      if Taste.Koordinaten.links[y] then
-        Taste.Koordinaten.links[y]()
+      Funktion.zeigeNachricht(x .. " --- " .. y .. tostring(Taste.links[y]))
+      if Taste.links[y] then
+        Taste.links[y]()
       end
     end
   elseif x >= 35 and y >= Taste.Koordinaten.Steuerunganfang_Y and y <= Taste.Koordinaten.Steuerungsende_Y then
@@ -303,29 +301,29 @@ end
 function Funktion.Infoseite()
   local _
   local i = 1
-  Taste.Koordinaten.links = {}
+  Taste.links = {}
   print(sprachen.Steuerung)
   if iris == "Offline" then
   else
     print("I " .. sprachen.IrisSteuerung .. sprachen.an_aus)
     i = i + 1
-    Taste.Koordinaten.links[i] = Taste.i
+    Taste.links[i] = Taste.i
   end
   print("Z " .. sprachen.AdressenBearbeiten)
   i = i + 1
-  Taste.Koordinaten.links[i] = Taste.z
+  Taste.links[i] = Taste.z
   print("Q " .. sprachen.beenden)
   i = i + 1
-  Taste.Koordinaten.links[i] = Taste.q
+  Taste.links[i] = Taste.q
   print("L " .. sprachen.EinstellungenAendern)
   i = i + 1
-  Taste.Koordinaten.links[i] = Taste.l
+  Taste.links[i] = Taste.l
   print("U " .. sprachen.Update)
   i = i + 1
-  Taste.Koordinaten.links[i] = Taste.l
+  Taste.links[i] = Taste.u
   --print("B " .. sprachen.UpdateBeta)
   --i = i + 1
-  --Taste.Koordinaten.links[i] = Taste.b
+  --Taste.links[i] = Taste.b
   print(sprachen.RedstoneSignale)
   gpu.setBackground(Farben.weisseFarbe)
   gpu.setForeground(Farben.schwarzeFarbe)
