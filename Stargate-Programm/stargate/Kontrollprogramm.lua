@@ -207,7 +207,7 @@ function Funktion.touchscreen(x, y)
         Taste.links[y]()
       end
     end
-  elseif x >= 35 and y >= Taste.Koordinaten.Steuerunganfang_Y and y <= Taste.Koordinaten.Steuerungsende_Y then
+  elseif x >= 35 and y >= Taste.Koordinaten.Steuerungsanfang_Y and y <= Taste.Koordinaten.Steuerungsende_Y then
     if x <= 52 then
       if Taste.Steuerunglinks[y] then
         Taste.Steuerunglinks[y]()
