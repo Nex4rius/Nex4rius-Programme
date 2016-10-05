@@ -1186,6 +1186,8 @@ function Taste.u(y)
       Funktion.zeigeNachricht(sprachen.bereitsNeusteVersion)
       event.timer(2, Funktion.zeigeMenu)
     end
+  else
+    event.timer(2, Funktion.zeigeMenu)
   end
 end
 
