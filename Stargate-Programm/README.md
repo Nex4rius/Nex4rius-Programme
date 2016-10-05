@@ -43,6 +43,7 @@ Einige Funktionen meines Programms:
 - funktioniert mit Computronics ColorfulLamps
 - erlaubt die Schließung eines eingehenden Wurmloch wenns es in den Einstellungen ausgeschaltet ist UND ein Computer mit diesem Programm auf beiden Seiten des Stargates ist
 - automatisches senden und empfangen der gesamten Adressliste bei einem offenen Wurmloch (natürlich ohne den IDC) und automatisches hinzufügen von den neuen Adressen
+- mit Touchscreenfunktion !
 
 Verwendung: autorun [...]<br>
 ja -> Aktualisierung zur stabilen Version<br>
@@ -102,6 +103,7 @@ Some feature of my program:
 - works with Computronics ColorfulLamps
 - allows closing of incoming wormholes if its disabled in config AND there is a computer at either end
 - automatically sends and receives entire address list on an open wormhole (without the IDC of course) and automatically adds the new addresses
+- with touchscreen functionalities
 
 Usage: autorun [...]<br>
 yes   -> update to stable version<br>
