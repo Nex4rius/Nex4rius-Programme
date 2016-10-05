@@ -996,9 +996,9 @@ function Taste.Pfeil_links()
   gpu.setBackground(Farben.Steuerungstextfarbe)
   gpu.setForeground(Farben.Steuerungsfarbe)
   if seite >= 1 then
-    Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "  ← " .. sprachen.vorherigeSeite)
+    Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "  ← " .. sprachen.vorherigeSeite, 0)
   else
-    Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "  ← " .. sprachen.SteuerungName)
+    Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "  ← " .. sprachen.SteuerungName, 0)
   end
   if seite <= -1 then else
     event.timer(2, Funktion.zeigeSteuerung)
@@ -1041,7 +1041,7 @@ function Taste.d()
   --event.timer(2, Funktion.zeigeSteuerung)
   gpu.setBackground(Farben.Steuerungstextfarbe)
   gpu.setForeground(Farben.Steuerungsfarbe)
-  Funktion.zeigeHier(Taste.Koordinaten.d_X, Taste.Koordinaten.d_Y, "  D " .. sprachen.abschalten)
+  Funktion.zeigeHier(Taste.Koordinaten.d_X + 2, Taste.Koordinaten.d_Y, "  D " .. sprachen.abschalten, 0)
   if state == "Connected" and direction == "Incoming" then
     sg.disconnect()
     sg.sendMessage("Request: Disconnect Stargate")
@@ -1058,7 +1058,7 @@ function Taste.e()
   --event.timer(2, Funktion.zeigeSteuerung)
   gpu.setBackground(Farben.Steuerungstextfarbe)
   gpu.setForeground(Farben.Steuerungsfarbe)
-  Funktion.zeigeHier(Taste.Koordinaten.e_X, Taste.Koordinaten.e_Y, "E " .. sprachen.IDCeingabe)
+  Funktion.zeigeHier(Taste.Koordinaten.e_X, Taste.Koordinaten.e_Y, "E " .. sprachen.IDCeingabe, 0)
   if state == "Connected" and direction == "Outgoing" then
     enteridc = ""
     showidc = ""
@@ -1073,7 +1073,7 @@ function Taste.o()
   --event.timer(2, Funktion.zeigeSteuerung)
   gpu.setBackground(Farben.Steuerungstextfarbe)
   gpu.setForeground(Farben.Steuerungsfarbe)
-  Funktion.zeigeHier(Taste.Koordinaten.o_X, Taste.Koordinaten.o_Y, "  O " .. sprachen.oeffneIris)
+  Funktion.zeigeHier(Taste.Koordinaten.o_X + 2, Taste.Koordinaten.o_Y, "  O " .. sprachen.oeffneIris, 0)
   if iris == "Offline" then else
     Funktion.irisOpen()
     if wormhole == "in" then
@@ -1094,7 +1094,7 @@ function Taste.c()
   --event.timer(2, Funktion.zeigeSteuerung)
   gpu.setBackground(Farben.Steuerungstextfarbe)
   gpu.setForeground(Farben.Steuerungsfarbe)
-  Funktion.zeigeHier(Taste.Koordinaten.c_X, Taste.Koordinaten.c_Y, "C " .. sprachen.schliesseIris)
+  Funktion.zeigeHier(Taste.Koordinaten.c_X, Taste.Koordinaten.c_Y, "C " .. sprachen.schliesseIris, 0)
   if iris == "Offline" then else
     Funktion.irisClose()
     iriscontrol = "off"
