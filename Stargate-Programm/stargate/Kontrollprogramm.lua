@@ -273,7 +273,7 @@ function Funktion.getAddress(...)
 end
 
 function Funktion.zeile_Y(y)
-  return y = y + 1
+  return y + 1
 end
 
 function Funktion.AdressenLesen()
