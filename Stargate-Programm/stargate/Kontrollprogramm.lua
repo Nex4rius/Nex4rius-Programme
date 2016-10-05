@@ -1150,14 +1150,22 @@ end
 
 function Taste.u()
   --event.timer(2, Funktion.Infoseite)
-  Funktion.beendeAlles()
-  loadfile("/autorun.lua")("ja")
+  if component.isAvailable("internet") then
+    if version ~= Funktion.checkServerVersion() then
+      Funktion.beendeAlles()
+      loadfile("/autorun.lua")("ja")
+    else
+      Funktion.zeigeNachricht()
+    end
+  end
 end
 
 function Taste.b()
   --event.timer(2, Funktion.Infoseite)
-  Funktion.beendeAlles()
-  loadfile("/autorun.lua")("beta")
+  if component.isAvailable("internet") then
+    Funktion.beendeAlles()
+    loadfile("/autorun.lua")("beta")
+  end
 end
 
 function Taste.Zahl(c)
