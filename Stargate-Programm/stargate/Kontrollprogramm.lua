@@ -1121,7 +1121,7 @@ function Taste.i(y)
   gpu.setBackground(Farben.AdressfarbeAktiv)
   gpu.setForeground(Farben.Adresstextfarbe)
   Funktion.zeigeHier(1, y, "I " .. sprachen.IrisSteuerung .. sprachen.an_aus, 0)
-  event.timer(2, Funktion.Infoseite)
+  event.timer(2, Funktion.zeigeMenu)
   if iris == "Offline" then else
     send = true
     if Sicherung.control == "On" then
@@ -1389,7 +1389,7 @@ function Funktion.beendeAlles()
 end
 
 function Funktion.main()
-  loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "StargateComputer")
+  loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Stargate OS")
   if sg.stargateState() == "Idle" and Funktion.getIrisState() == "Closed" then
     Funktion.irisOpen()
   end
