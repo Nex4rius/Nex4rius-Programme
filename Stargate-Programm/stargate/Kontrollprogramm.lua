@@ -288,10 +288,10 @@ function Funktion.AdressenLesen()
       Funktion.zeigeHier(1, Funktion.zeile_Y(y), AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 28 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
       if string.sub(na[4], 1, 1) == "<" then
         gpu.setForeground(Farben.FehlerFarbe)
-        Funktion.zeigeHier(1, Funktion.zeile_Y(y), "   " .. na[4], 27 - string.sub(na[1], 1, xVerschiebung - 7))
+        Funktion.zeigeHier(1, Funktion.zeile_Y(y), "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
         gpu.setForeground(Farben.Adresstextfarbe)
       else
-        Funktion.zeigeHier(1, Funktion.zeile_Y(y), "   " .. na[4], 27 - string.sub(na[1], 1, xVerschiebung - 7))
+        Funktion.zeigeHier(1, Funktion.zeile_Y(y), "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
       end
     end
   end
