@@ -492,6 +492,7 @@ function Funktion.iriscontroller()
   elseif direction == "Incoming" and send == true then
     sg.sendMessage("Iris Control: " .. Sicherung.control .. " Iris: " .. iris, Funktion.sendeAdressliste())
     send = false
+    Funktion.zeigeMenu()
   end
   if wormhole == "in" and state == "Dialling" and iriscontrol == "on" and Sicherung.control == "On" then
     if iris == "Offline" then else
