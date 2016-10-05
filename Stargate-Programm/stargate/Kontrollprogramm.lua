@@ -201,7 +201,7 @@ function Funktion.touchscreen(x, y)
         Taste.Zahl(math.floor(((y - 1) / 2) + 0.5))
       end
     elseif seite == -1 then
-      pcall(Taste.Koordinaten[y])
+      pcall(Taste.Koordinaten.links[y])
     end
   elseif x >= 35 and y >= Taste.Koordinaten.Steuerunganfang_Y and y <= Taste.Koordinaten.Steuerungsende_Y then
     Funktion.zeigeNachricht(x .. " --- " .. y .. " klappt")
@@ -300,29 +300,29 @@ end
 function Funktion.Infoseite()
   local _
   local i = 1
-  Taste.Koordianten.links = {}
+  Taste.Koordinaten.links = {}
   print(sprachen.Steuerung)
   if iris == "Offline" then
   else
     print("I " .. sprachen.IrisSteuerung .. sprachen.an_aus)
     i = i + 1
-    _,Taste.Koordinaten[i] = Taste.i
+    _,Taste.Koordinaten.links[i] = Taste.i
   end
   print("Z " .. sprachen.AdressenBearbeiten)
   i = i + 1
-  _,Taste.Koordinaten[i] = Taste.z
+  _,Taste.Koordinaten.links[i] = Taste.z
   print("Q " .. sprachen.beenden)
   i = i + 1
-  _,Taste.Koordinaten[i] = Taste.q
+  _,Taste.Koordinaten.links[i] = Taste.q
   print("L " .. sprachen.EinstellungenAendern)
   i = i + 1
-  _,Taste.Koordinaten[i] = Taste.l
+  _,Taste.Koordinaten.links[i] = Taste.l
   print("U " .. sprachen.Update)
   i = i + 1
-  _,Taste.Koordinaten[i] = Taste.l
+  _,Taste.Koordinaten.links[i] = Taste.l
   --print("B " .. sprachen.UpdateBeta)
   --i = i + 1
-  --_,Taste.Koordinaten[i] = Taste.b
+  --_,Taste.Koordinaten.links[i] = Taste.b
   print(sprachen.RedstoneSignale)
   gpu.setBackground(Farben.weisseFarbe)
   gpu.setForeground(Farben.schwarzeFarbe)
