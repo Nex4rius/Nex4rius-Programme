@@ -1047,7 +1047,7 @@ end
 function Taste.q(y)
   gpu.setBackground(Farben.AdressfarbeAktiv)
   gpu.setForeground(Farben.Adresstextfarbe)
-  Funktion.zeigeHier(1, y, "Q " .. sprachen.beenden), 0
+  Funktion.zeigeHier(1, y, "Q " .. sprachen.beenden), 0)
   --event.timer(2, Funktion.Infoseite)
   running = false
 end
