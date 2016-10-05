@@ -272,27 +272,26 @@ function Funktion.getAddress(...)
   end
 end
 
-function Funktion.zeile_Y(y)
-  return y + 1
-end
-
 function Funktion.AdressenLesen()
-  local y = 0
-  Funktion.zeigeHier(1, Funktion.zeile_Y(y), sprachen.Adressseite .. seite + 1, 0)
+  local y = 1
+  Funktion.zeigeHier(1, y, sprachen.Adressseite .. seite + 1, 0)
+  y = y + 1
   for i, na in pairs(gespeicherteAdressen) do
     if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
       AdressAnzeige = i - seite * 10
       if AdressAnzeige == 10 then
         AdressAnzeige = 0
       end
-      Funktion.zeigeHier(1, Funktion.zeile_Y(y), AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 28 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
+      Funktion.zeigeHier(1, y, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 28 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
+      y = y + 1
       if string.sub(na[4], 1, 1) == "<" then
         gpu.setForeground(Farben.FehlerFarbe)
-        Funktion.zeigeHier(1, Funktion.zeile_Y(y), "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
+        Funktion.zeigeHier(1, y, "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
         gpu.setForeground(Farben.Adresstextfarbe)
       else
-        Funktion.zeigeHier(1, Funktion.zeile_Y(y), "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
+        Funktion.zeigeHier(1, y, "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
       end
+      y = y + 1
     end
   end
 end
