@@ -200,7 +200,7 @@ function Funktion.touchscreen(x, y)
       end
     end
   elseif x >= 35 and y >= Taste.Steuerungsanfang_Y and y <= Taste.Steuerungsende_Y then
-    Funktion.zeigeNachricht("klappt")
+  Funktion.zeigeNachricht(x .. " --- " .. y .. " klappt")
   end
 end
 
@@ -681,6 +681,7 @@ function Funktion.zeigeSteuerung()
   Funktion.zeigeHier(xVerschiebung, zeile - 1, "")
   Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.Steuerung) Funktion.neueZeile(1)
   Funktion.zeigeHier(xVerschiebung, zeile, "") Funktion.neueZeile(1)
+  Taste.Steuerungsanfang_Y = zeile
   Funktion.zeigeHier(xVerschiebung, zeile, "  D " .. sprachen.abschalten)
   Funktion.zeigeHier(xVerschiebung + 20, zeile, "E " .. sprachen.IDCeingabe) Funktion.neueZeile(1)
   if iris == "Offline" then
@@ -689,6 +690,7 @@ function Funktion.zeigeSteuerung()
     Funktion.zeigeHier(xVerschiebung, zeile, "  O " .. sprachen.oeffneIris)
     Funktion.zeigeHier(xVerschiebung + 20, zeile, "C " .. sprachen.schliesseIris) Funktion.neueZeile(1)
   end
+  Taste.Steuerungsende_Y = zeile
   if seite >= 0 then
     if seite >= 1 then
       Funktion.zeigeHier(xVerschiebung, zeile, "  ← " .. sprachen.vorherigeSeite)
