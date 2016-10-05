@@ -713,34 +713,46 @@ function Funktion.zeigeSteuerung()
   Funktion.zeigeHier(xVerschiebung, zeile, "") Funktion.neueZeile(1)
   Taste.Koordinaten.Steuerungsanfang_Y = zeile
   Taste.Steuerunglinks[zeile] = Taste.d
-  Funktion.zeigeHier(xVerschiebung, zeile, "  D " .. sprachen.abschalten)
+  Taste.Koordinaten.d_Y = zeile
+  Taste.Koordinaten.d_X = xVerschiebung
+  Funktion.zeigeHier(Taste.Koordinaten.d_X, Taste.Koordinaten.d_Y, "  D " .. sprachen.abschalten)
   Taste.Steuerungrechts[zeile] = Taste.e
-  Funktion.zeigeHier(xVerschiebung + 20, zeile, "E " .. sprachen.IDCeingabe) Funktion.neueZeile(1)
+  Taste.Koordinaten.e_Y = zeile
+  Taste.Koordinaten.e_X = xVerschiebung + 20
+  Funktion.zeigeHier(Taste.Koordinaten.e_X, Taste.Koordinaten.e_Y, "E " .. sprachen.IDCeingabe) Funktion.neueZeile(1)
   if iris == "Offline" then
     Sicherung.control = "Off"
   else
-  Taste.Steuerunglinks[zeile] = Taste.o
-    Funktion.zeigeHier(xVerschiebung, zeile, "  O " .. sprachen.oeffneIris)
-  Taste.Steuerungrechts[zeile] = Taste.c
-    Funktion.zeigeHier(xVerschiebung + 20, zeile, "C " .. sprachen.schliesseIris) Funktion.neueZeile(1)
+    Taste.Steuerunglinks[zeile] = Taste.o
+    Taste.Koordinaten.o_Y = zeile
+    Taste.Koordinaten.o_X = xVerschiebung
+    Funktion.zeigeHier(Taste.Koordinaten.o_X, Taste.Koordinaten.o_Y, "  O " .. sprachen.oeffneIris)
+    Taste.Steuerungrechts[zeile] = Taste.c
+    Taste.Koordinaten.c_Y = zeile
+    Taste.Koordinaten.c_X = xVerschiebung + 20
+    Funktion.zeigeHier(Taste.Koordinaten.c_X, Taste.Koordinaten.c_Y, "C " .. sprachen.schliesseIris) Funktion.neueZeile(1)
   end
-  Taste.Koordinaten.Steuerungsende_Y = zeile
   if seite >= 0 then
     Taste.Steuerunglinks[zeile] = Taste.Pfeil_links
+    Taste.Koordinaten.Pfeil_links_Y = zeile
+    Taste.Koordinaten.Pfeil_links_X = xVerschiebung
     if seite >= 1 then
-      Funktion.zeigeHier(xVerschiebung, zeile, "  ← " .. sprachen.vorherigeSeite)
+      Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "  ← " .. sprachen.vorherigeSeite)
     else
-      Funktion.zeigeHier(xVerschiebung, zeile, "  ← " .. sprachen.SteuerungName)
+      Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "  ← " .. sprachen.SteuerungName)
     end
   else
     Funktion.zeigeHier(xVerschiebung, zeile, "")
   end
   Taste.Steuerungrechts[zeile] = Taste.Pfeil_rechts
+  Taste.Koordinaten.Pfeil_rechts_Y = zeile
+  Taste.Koordinaten.Pfeil_rechts_X = xVerschiebung + 20
   if seite == -1 then
-    Funktion.zeigeHier(xVerschiebung + 20, zeile, "→ " .. sprachen.zeigeAdressen)
+    Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.zeigeAdressen)
   elseif maxseiten > seite + 1 then
-    Funktion.zeigeHier(xVerschiebung + 20, zeile, "→ " .. sprachen.naechsteSeite)
+    Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.naechsteSeite)
   end
+  Taste.Koordinaten.Steuerungsende_Y = zeile
   Funktion.neueZeile(1)
   for i = zeile, Bildschirmhoehe - 3 do
     Funktion.zeigeHier(xVerschiebung, i, "")
