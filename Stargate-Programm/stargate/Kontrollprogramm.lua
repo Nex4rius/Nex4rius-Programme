@@ -736,7 +736,7 @@ function Funktion.zeigeSteuerung()
   else
     Funktion.zeigeHier(xVerschiebung, zeile, "")
   end
-  Taste.Steuerunglinks[zeile] = Taste.Pfeil_rechts
+  Taste.Steuerungrechts[zeile] = Taste.Pfeil_rechts
   if seite == -1 then
     Funktion.zeigeHier(xVerschiebung + 20, zeile, "→ " .. sprachen.zeigeAdressen)
   elseif maxseiten > seite + 1 then
