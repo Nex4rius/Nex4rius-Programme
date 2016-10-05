@@ -1211,22 +1211,24 @@ function Taste.Zahl(c)
   if y == 10 then
     Nummer = 0
   end
-  Funktion.zeigeHier(1, y * 2, Nummer .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 0)
-  if string.sub(na[4], 1, 1) == "<" then
-    gpu.setForeground(Farben.FehlerFarbe)
-    Funktion.zeigeHier(1, y * 2 + 1, "", 30)
-    Funktion.zeigeHier(1, y * 2 + 1, "   " .. na[4], 0)
-  else
-    Funktion.zeigeHier(1, y * 2 + 1, "", 30)
-    Funktion.zeigeHier(1, y * 2 + 1, "   " .. na[4], 0)
-  end
-  iriscontrol = "off"
-  wormhole = "out"
   if na then
-    Funktion.dial(na[1], na[2])
-    if na[3] == "-" then
+    Funktion.zeigeHier(1, y * 2, Nummer .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 0)
+    if string.sub(na[4], 1, 1) == "<" then
+      gpu.setForeground(Farben.FehlerFarbe)
+      Funktion.zeigeHier(1, y * 2 + 1, "", 30)
+      Funktion.zeigeHier(1, y * 2 + 1, "   " .. na[4], 0)
     else
-      outcode = na[3]
+      Funktion.zeigeHier(1, y * 2 + 1, "", 30)
+      Funktion.zeigeHier(1, y * 2 + 1, "   " .. na[4], 0)
+    end
+    iriscontrol = "off"
+    wormhole = "out"
+    if na then
+      Funktion.dial(na[1], na[2])
+      if na[3] == "-" then
+      else
+        outcode = na[3]
+      end
     end
   end
 end
