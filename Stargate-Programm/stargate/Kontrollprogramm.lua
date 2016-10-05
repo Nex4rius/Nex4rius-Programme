@@ -1184,7 +1184,7 @@ function Taste.Zahl(c)
   c = c + seite * 10
   na = gespeicherteAdressen[tonumber(c)]
   Funktion.zeigeHier(1, y * 2, "", 30)
-  Funktion.zeigeHier(1, y * 2, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 0)
+  Funktion.zeigeHier(1, y * 2, y .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 0)
   if string.sub(na[4], 1, 1) == "<" then
     gpu.setForeground(Farben.FehlerFarbe)
     Funktion.zeigeHier(1, y * 2 + 1, "", 30)
