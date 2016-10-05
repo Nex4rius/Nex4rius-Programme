@@ -1072,13 +1072,15 @@ function Taste.e()
   gpu.setBackground(Farben.Steuerungstextfarbe)
   gpu.setForeground(Farben.Steuerungsfarbe)
   Funktion.zeigeHier(Taste.Koordinaten.e_X, Taste.Koordinaten.e_Y, "E " .. sprachen.IDCeingabe, 0)
-  if state == "Connected" and direction == "Outgoing" then
-    enteridc = ""
-    showidc = ""
-    entercode = true
-    Funktion.zeigeNachricht(sprachen.IDCeingabe .. ":")
-  else
-    Funktion.zeigeNachricht(sprachen.keineVerbindung)
+  if Funktion.Tastatur() then
+    if state == "Connected" and direction == "Outgoing" then
+      enteridc = ""
+      showidc = ""
+      entercode = true
+      Funktion.zeigeNachricht(sprachen.IDCeingabe .. ":")
+    else
+      Funktion.zeigeNachricht(sprachen.keineVerbindung)
+    end
   end
 end
 
