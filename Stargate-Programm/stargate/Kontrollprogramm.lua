@@ -196,7 +196,6 @@ function Funktion.zeichenErsetzen(eingabeErsetzung)
 end
 
 function Funktion.touchscreen(x, y)
-  Funktion.zeigeNachricht(x .. " --- " .. y)
   if x <= 30 then
     if seite >= 0 then
       if y > 1 and y <= 21 then
