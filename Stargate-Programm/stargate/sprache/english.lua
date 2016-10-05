@@ -117,4 +117,5 @@ return {
   Update                    = "update?",
   UpdateBeta                = "update beta?",
   TastaturFehlt             = "keyboard is required",
+  bereitsNeusteVersion      = "no updates found",
 }
