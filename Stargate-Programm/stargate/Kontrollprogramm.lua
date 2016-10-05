@@ -199,7 +199,7 @@ function Funktion.touchscreen(x, y)
         Taste.Zahl(math.floor(((y - 1) / 2) + 0.5))
       end
     end
-  elseif x >= 35 and y >= 18 then
+  elseif x >= 35 and y >= Taste.Steuerungsanfang_Y and y <= Taste.Steuerungsende_Y then
     Funktion.zeigeNachricht("klappt")
   end
 end
