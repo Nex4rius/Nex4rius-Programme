@@ -97,6 +97,8 @@ Farben.green                    = 13
 Farben.red                      = 14
 Farben.black                    = 15
 
+Taste.Koordinaten               = {}
+
 local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, c, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen
 local iris, k, letzteNachricht, locAddr, mess, mess_old, ok, r, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version
 
@@ -199,30 +201,20 @@ function Funktion.touchscreen(x, y)
         Taste.Zahl(math.floor(((y - 1) / 2) + 0.5))
       end
     elseif seite == -1 then
-      Funktion.zeigeNachricht(x .. " --- " .. y .. tostring(Taste.links[y]))
       if Taste.links[y] then
         Taste.links[y]()
       end
     end
   elseif x >= 35 and y >= Taste.Koordinaten.Steuerunganfang_Y and y <= Taste.Koordinaten.Steuerungsende_Y then
-    Funktion.zeigeNachricht(x .. " --- " .. y .. " klappt")
-    --[[
     if x <= 52 then
-      if
-        
-      elseif
-        
-      elseif
-        
+      if Taste.Steuerunglinks[y] then
+        Taste.Steuerunglinks[y]()
+      end
     else
-      if
-        
-      elseif
-        
-      elseif
-      
+      if Taste.Steuerungrechts[y] then
+        Taste.Steuerungrechts[y]()
+      end
     end
-    ]]--
   end
 end
 
@@ -719,16 +711,21 @@ function Funktion.zeigeSteuerung()
   Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.Steuerung) Funktion.neueZeile(1)
   Funktion.zeigeHier(xVerschiebung, zeile, "") Funktion.neueZeile(1)
   Taste.Koordinaten.Steuerungsanfang_Y = zeile
+  Taste.Steuerunglinks[zeile] = Taste.d
   Funktion.zeigeHier(xVerschiebung, zeile, "  D " .. sprachen.abschalten)
+  Taste.Steuerungrechts[zeile] = Taste.e
   Funktion.zeigeHier(xVerschiebung + 20, zeile, "E " .. sprachen.IDCeingabe) Funktion.neueZeile(1)
   if iris == "Offline" then
     Sicherung.control = "Off"
   else
+  Taste.Steuerunglinks[zeile] = Taste.o
     Funktion.zeigeHier(xVerschiebung, zeile, "  O " .. sprachen.oeffneIris)
+  Taste.Steuerungrechts[zeile] = Taste.c
     Funktion.zeigeHier(xVerschiebung + 20, zeile, "C " .. sprachen.schliesseIris) Funktion.neueZeile(1)
   end
   Taste.Koordinaten.Steuerungsende_Y = zeile
   if seite >= 0 then
+    Taste.Steuerunglinks[zeile] = Taste.Pfeil_links
     if seite >= 1 then
       Funktion.zeigeHier(xVerschiebung, zeile, "  ← " .. sprachen.vorherigeSeite)
     else
@@ -737,6 +734,7 @@ function Funktion.zeigeSteuerung()
   else
     Funktion.zeigeHier(xVerschiebung, zeile, "")
   end
+  Taste.Steuerunglinks[zeile] = Taste.Pfeil_rechts
   if seite == -1 then
     Funktion.zeigeHier(xVerschiebung + 20, zeile, "→ " .. sprachen.zeigeAdressen)
   elseif maxseiten > seite + 1 then
@@ -934,35 +932,11 @@ end
 Funktion[key_event_name] = function(e)
   c = string.char(e[3])
   if entercode == true then
-    if e[3] == 13 then
-      entercode = false
-      sg.sendMessage(enteridc)
-      Funktion.zeigeNachricht(sprachen.IDCgesendet)
-    else
-      enteridc = enteridc .. c
-      showidc = showidc .. "*"
-      Funktion.zeigeNachricht(sprachen.IDCeingabe .. ": " .. showidc)
-    end
+    Taste.eingabe_enter()
   elseif e[3] == 0 and e[4] == 203 then
-    if seite <= -1 then else
-      seite = seite - 1
-      gpu.setBackground(Farben.Adressfarbe)
-      gpu.setForeground(Farben.Adresstextfarbe)
-      for P = 1, Bildschirmhoehe - 3 do
-        Funktion.zeigeHier(1, P, "", xVerschiebung - 3)
-      end
-      Funktion.zeigeAnzeige()
-    end
+    Taste.Pfeil_links()
   elseif e[3] == 0 and e[4] == 205 then
-    if seite + 1 < maxseiten then
-      seite = seite + 1
-      gpu.setBackground(Farben.Adressfarbe)
-      gpu.setForeground(Farben.Adresstextfarbe)
-      for P = 1, Bildschirmhoehe - 3 do
-        Funktion.zeigeHier(1, P, "", xVerschiebung - 3)
-      end
-      Funktion.zeigeAnzeige()
-    end
+    Taste.Pfeil_rechts()
   elseif c == "e" then
     Taste.e()
   elseif c == "d" then
@@ -987,6 +961,42 @@ Funktion[key_event_name] = function(e)
     end
   elseif c >= "0" and c <= "9" and seite >= 0 then
     Taste.Zahl(c)
+  end
+end
+
+function Taste.eingabe_enter()
+  if e[3] == 13 then
+    entercode = false
+    sg.sendMessage(enteridc)
+    Funktion.zeigeNachricht(sprachen.IDCgesendet)
+  else
+    enteridc = enteridc .. c
+    showidc = showidc .. "*"
+    Funktion.zeigeNachricht(sprachen.IDCeingabe .. ": " .. showidc)
+  end
+end
+
+function Taste.Pfeil_links()
+  if seite <= -1 then else
+    seite = seite - 1
+    gpu.setBackground(Farben.Adressfarbe)
+    gpu.setForeground(Farben.Adresstextfarbe)
+    for P = 1, Bildschirmhoehe - 3 do
+      Funktion.zeigeHier(1, P, "", xVerschiebung - 3)
+    end
+    Funktion.zeigeAnzeige()
+  end
+end
+
+function Taste.Pfeil_rechts()
+  if seite + 1 < maxseiten then
+    seite = seite + 1
+    gpu.setBackground(Farben.Adressfarbe)
+    gpu.setForeground(Farben.Adresstextfarbe)
+    for P = 1, Bildschirmhoehe - 3 do
+      Funktion.zeigeHier(1, P, "", xVerschiebung - 3)
+    end
+    Funktion.zeigeAnzeige()
   end
 end
 
