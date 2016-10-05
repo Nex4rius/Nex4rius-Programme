@@ -1119,10 +1119,12 @@ function Taste.l()
 end
 
 function Taste.u()
+  Funktion.beendeAlles()
   loadfile("/autorun.lua")("ja")
 end
 
 function Taste.b()
+  Funktion.beendeAlles()
   loadfile("/autorun.lua")("beta")
 end
 
