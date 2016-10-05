@@ -287,6 +287,8 @@ function Funktion.AdressenLesen()
       end
       if na[2] == remAddr and string.len(tostring(remAddr)) > 5 then
         gpu.setBackground(Farben.AdressfarbeAktiv)
+        Funktion.zeigeHier(1, y , "", 30)
+        Funktion.zeigeHier(1, y + 1, "", 30)
       end
       Funktion.zeigeHier(1, y, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 28 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
       y = y + 1
