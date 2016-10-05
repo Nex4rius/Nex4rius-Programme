@@ -1155,7 +1155,7 @@ function Taste.u()
       Funktion.beendeAlles()
       loadfile("/autorun.lua")("ja")
     else
-      Funktion.zeigeNachricht()
+      Funktion.zeigeNachricht(sprachen.bereitsNeusteVersion)
     end
   end
 end
