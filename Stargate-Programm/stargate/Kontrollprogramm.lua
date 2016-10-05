@@ -1145,6 +1145,8 @@ function Taste.z(y)
     Funktion.zeigeAnzeige()
     seite = 0
     Funktion.AdressenSpeichern()
+  else
+    event.timer(2, Funktion.zeigeMenu)
   end
 end
 
@@ -1171,6 +1173,8 @@ function Taste.l(y)
     term.clear()
     seite = 0
     Funktion.zeigeAnzeige()
+  else
+    event.timer(2, Funktion.zeigeMenu)
   end
 end
 
