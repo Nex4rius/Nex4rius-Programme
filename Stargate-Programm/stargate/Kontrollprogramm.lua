@@ -206,7 +206,7 @@ function Funktion.touchscreen(x, y)
       end
     elseif seite == -1 then
       if Taste.links[y] then
-        Taste.links[y]()
+        Taste.links[y](y)
       end
     end
   elseif x >= 35 and y >= Taste.Koordinaten.Steuerungsanfang_Y and y <= Taste.Koordinaten.Steuerungsende_Y then
@@ -1044,7 +1044,10 @@ function Taste.Pfeil_rechts()
   end
 end
 
-function Taste.q()
+function Taste.q(y)
+  gpu.setBackground(Farben.AdressfarbeAktiv)
+  gpu.setForeground(Farben.Adresstextfarbe)
+  Funktion.zeigeHier(1, y, "Q " .. sprachen.beenden), 0
   --event.timer(2, Funktion.Infoseite)
   running = false
 end
@@ -1113,7 +1116,10 @@ function Taste.c()
   end
 end
 
-function Taste.i()
+function Taste.i(y)
+  gpu.setBackground(Farben.AdressfarbeAktiv)
+  gpu.setForeground(Farben.Adresstextfarbe)
+  Funktion.zeigeHier(1, y, "I " .. sprachen.IrisSteuerung .. sprachen.an_aus), 0)
   --event.timer(2, Funktion.Infoseite)
   if iris == "Offline" then else
     send = true
@@ -1126,7 +1132,10 @@ function Taste.i()
   end
 end
 
-function Taste.z()
+function Taste.z(y)
+  gpu.setBackground(Farben.AdressfarbeAktiv)
+  gpu.setForeground(Farben.Adresstextfarbe)
+  Funktion.zeigeHier(1, y, "Z " .. sprachen.AdressenBearbeiten), 0)
   --event.timer(2, Funktion.Infoseite)
   if Funktion.Tastatur() then
     gpu.setBackground(Farben.Nachrichtfarbe)
@@ -1139,7 +1148,10 @@ function Taste.z()
   end
 end
 
-function Taste.l()
+function Taste.l(y)
+  gpu.setBackground(Farben.AdressfarbeAktiv)
+  gpu.setForeground(Farben.Adresstextfarbe)
+  Funktion.zeigeHier(1, y, "L " .. sprachen.EinstellungenAendern), 0)
   --event.timer(2, Funktion.Infoseite)
   if Funktion.Tastatur() then
     gpu.setBackground(Farben.Nachrichtfarbe)
@@ -1163,7 +1175,10 @@ function Taste.l()
   end
 end
 
-function Taste.u()
+function Taste.u(y)
+  gpu.setBackground(Farben.AdressfarbeAktiv)
+  gpu.setForeground(Farben.Adresstextfarbe)
+  Funktion.zeigeHier(1, y, "U " .. sprachen.Update), 0)
   --event.timer(2, Funktion.Infoseite)
   if component.isAvailable("internet") then
     if version ~= Funktion.checkServerVersion() then
@@ -1175,7 +1190,10 @@ function Taste.u()
   end
 end
 
-function Taste.b()
+function Taste.b(y)
+  gpu.setBackground(Farben.AdressfarbeAktiv)
+  gpu.setForeground(Farben.Adresstextfarbe)
+  Funktion.zeigeHier(1, y, "B " .. sprachen.UpdateBeta), 0)
   --event.timer(2, Funktion.Infoseite)
   if component.isAvailable("internet") then
     Funktion.beendeAlles()
