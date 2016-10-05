@@ -993,9 +993,9 @@ function Taste.eingabe_enter()
 end
 
 function Taste.Pfeil_links()
+  --[[
   gpu.setBackground(Farben.Steuerungstextfarbe)
   gpu.setForeground(Farben.Steuerungsfarbe)
-  --[[
   if seite >= 1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.vorherigeSeite, 0)
   else
@@ -1015,9 +1015,9 @@ function Taste.Pfeil_links()
 end
 
 function Taste.Pfeil_rechts()
+  --[[
   gpu.setBackground(Farben.Steuerungstextfarbe)
   gpu.setForeground(Farben.Steuerungsfarbe)
-  --[[
   if seite == -1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.zeigeAdressen)
   elseif maxseiten > seite + 1 then
