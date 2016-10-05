@@ -74,6 +74,7 @@ Farben.Trennlinienfarbe         = Farben.blaueFarbe
 Farben.Textfarbe                = Farben.weisseFarbe
 
 Farben.Adressfarbe              = Farben.brauenFarbe
+Farben.AdressfarbeAktiv         = Farben.hellblau
 Farben.Adresstextfarbe          = Farben.Textfarbe
 Farben.Nachrichtfarbe           = Farben.graueFarbe
 Farben.Nachrichttextfarbe       = Farben.Textfarbe
@@ -284,6 +285,9 @@ function Funktion.AdressenLesen()
       if AdressAnzeige == 10 then
         AdressAnzeige = 0
       end
+      if na[2] == remAddr then
+        gpu.setBackground(Farben.AdressfarbeAktiv)
+      end
       Funktion.zeigeHier(1, y, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 28 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
       y = y + 1
       if string.sub(na[4], 1, 1) == "<" then
@@ -294,6 +298,7 @@ function Funktion.AdressenLesen()
         Funktion.zeigeHier(1, y, "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
       end
       y = y + 1
+      gpu.setBackground(Farben.Adressfarbe)
     end
   end
 end
