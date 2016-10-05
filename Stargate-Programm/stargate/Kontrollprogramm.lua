@@ -58,7 +58,8 @@ local LampenRot                 = false
 local VersionUpdate             = false
 
 Farben.graueFarbe               = 6684774
-Farben.hellgrau                 = 0x808080
+Farben.hellblau                 = 0x808080
+Farben.hellgrau                 = 8421504
 Farben.roteFarbe                = 0xFF0000
 Farben.weisseFarbe              = 0xFFFFFF
 Farben.blaueFarbe               = 0x0000FF
