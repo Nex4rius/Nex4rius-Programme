@@ -995,13 +995,13 @@ end
 function Taste.Pfeil_links()
   gpu.setBackground(Farben.Steuerungstextfarbe)
   gpu.setForeground(Farben.Steuerungsfarbe)
-  [[--
+  --[[
   if seite >= 1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.vorherigeSeite, 0)
   else
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.SteuerungName, 0)
   end
-  --]]
+  ]]--
   if seite <= -1 then else
     event.timer(2, Funktion.zeigeSteuerung)
     seite = seite - 1
@@ -1017,13 +1017,13 @@ end
 function Taste.Pfeil_rechts()
   gpu.setBackground(Farben.Steuerungstextfarbe)
   gpu.setForeground(Farben.Steuerungsfarbe)
-  [[--
+  --[[
   if seite == -1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.zeigeAdressen)
   elseif maxseiten > seite + 1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.naechsteSeite)
   end
-  --]]
+  ]]--
   if seite + 1 < maxseiten then
     event.timer(2, Funktion.zeigeSteuerung)
     seite = seite + 1
