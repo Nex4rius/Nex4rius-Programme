@@ -1150,11 +1150,13 @@ end
 
 function Taste.u()
   --event.timer(2, Funktion.Infoseite)
+  Funktion.beendeAlles()
   loadfile("/autorun.lua")("ja")
 end
 
 function Taste.b()
   --event.timer(2, Funktion.Infoseite)
+  Funktion.beendeAlles()
   loadfile("/autorun.lua")("beta")
 end
 
