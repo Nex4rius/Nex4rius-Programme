@@ -97,6 +97,8 @@ Farben.green                    = 13
 Farben.red                      = 14
 Farben.black                    = 15
 
+Taste.Koordinaten               = {}
+
 local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, c, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen
 local iris, k, letzteNachricht, locAddr, mess, mess_old, ok, r, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version
 
@@ -198,9 +200,28 @@ function Funktion.touchscreen(x, y)
       if y > 1 and y <= 21 then
         Taste.Zahl(math.floor(((y - 1) / 2) + 0.5))
       end
+    elseif seite == -1 then
+      pcall(Taste.Koordinaten[y])
     end
-  elseif x >= 35 and y >= Taste.Steuerungsanfang_Y and y <= Taste.Steuerungsende_Y then
-  Funktion.zeigeNachricht(x .. " --- " .. y .. " klappt")
+  elseif x >= 35 and y >= Taste.Koordinaten.Steuerunganfang_Y and y <= Taste.Koordinaten.Steuerungsende_Y then
+    Funktion.zeigeNachricht(x .. " --- " .. y .. " klappt")
+    --[[
+    if x <= 52 then
+      if
+        
+      elseif
+        
+      elseif
+        
+    else
+      if
+        
+      elseif
+        
+      elseif
+      
+    end
+    ]]--
   end
 end
 
@@ -277,16 +298,31 @@ function Funktion.AdressenLesen()
 end
 
 function Funktion.Infoseite()
+  local _
+  local i = 1
+  Taste.Koordianten.links = {}
   print(sprachen.Steuerung)
-  if iris == "Offline" then else
+  if iris == "Offline" then
+  else
     print("I " .. sprachen.IrisSteuerung .. sprachen.an_aus)
+    i = i + 1
+    _,Taste.Koordinaten[i] = Taste.i
   end
   print("Z " .. sprachen.AdressenBearbeiten)
+  i = i + 1
+  _,Taste.Koordinaten[i] = Taste.z
   print("Q " .. sprachen.beenden)
+  i = i + 1
+  _,Taste.Koordinaten[i] = Taste.q
   print("L " .. sprachen.EinstellungenAendern)
+  i = i + 1
+  _,Taste.Koordinaten[i] = Taste.l
   print("U " .. sprachen.Update)
+  i = i + 1
+  _,Taste.Koordinaten[i] = Taste.l
   --print("B " .. sprachen.UpdateBeta)
-  print("\n")
+  --i = i + 1
+  --_,Taste.Koordinaten[i] = Taste.b
   print(sprachen.RedstoneSignale)
   gpu.setBackground(Farben.weisseFarbe)
   gpu.setForeground(Farben.schwarzeFarbe)
@@ -681,7 +717,7 @@ function Funktion.zeigeSteuerung()
   Funktion.zeigeHier(xVerschiebung, zeile - 1, "")
   Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.Steuerung) Funktion.neueZeile(1)
   Funktion.zeigeHier(xVerschiebung, zeile, "") Funktion.neueZeile(1)
-  Taste.Steuerungsanfang_Y = zeile
+  Taste.Koordinaten.Steuerungsanfang_Y = zeile
   Funktion.zeigeHier(xVerschiebung, zeile, "  D " .. sprachen.abschalten)
   Funktion.zeigeHier(xVerschiebung + 20, zeile, "E " .. sprachen.IDCeingabe) Funktion.neueZeile(1)
   if iris == "Offline" then
@@ -690,7 +726,7 @@ function Funktion.zeigeSteuerung()
     Funktion.zeigeHier(xVerschiebung, zeile, "  O " .. sprachen.oeffneIris)
     Funktion.zeigeHier(xVerschiebung + 20, zeile, "C " .. sprachen.schliesseIris) Funktion.neueZeile(1)
   end
-  Taste.Steuerungsende_Y = zeile
+  Taste.Koordinaten.Steuerungsende_Y = zeile
   if seite >= 0 then
     if seite >= 1 then
       Funktion.zeigeHier(xVerschiebung, zeile, "  ← " .. sprachen.vorherigeSeite)
