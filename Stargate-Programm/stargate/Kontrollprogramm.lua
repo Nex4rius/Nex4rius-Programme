@@ -272,20 +272,26 @@ function Funktion.getAddress(...)
   end
 end
 
+function Funktion.zeile_Y(y)
+  return y = y + 1
+end
+
 function Funktion.AdressenLesen()
+  local y = 0
+  Funktion.zeigeHier(1, Funktion.zeile_Y(y), sprachen.Adressseite .. seite + 1, 0)
   for i, na in pairs(gespeicherteAdressen) do
     if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
       AdressAnzeige = i - seite * 10
       if AdressAnzeige == 10 then
         AdressAnzeige = 0
       end
-      print(AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
+      Funktion.zeigeHier(1, Funktion.zeile_Y(y), AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 28 - string.sub(na[1], 1, xVerschiebung - 7))
       if string.sub(na[4], 1, 1) == "<" then
         gpu.setForeground(Farben.FehlerFarbe)
-        print("   " .. na[4])
+        Funktion.zeigeHier(1, Funktion.zeile_Y(y), "   " .. na[4], 27 - string.sub(na[1], 1, xVerschiebung - 7))
         gpu.setForeground(Farben.Adresstextfarbe)
       else
-        print("   " .. na[4])
+        Funktion.zeigeHier(1, Funktion.zeile_Y(y), "   " .. na[4], 27 - string.sub(na[1], 1, xVerschiebung - 7))
       end
     end
   end
@@ -401,7 +407,6 @@ function Funktion.zeigeMenu()
       letzterAdressCheck = os.time() / sectime
       Funktion.AdressenSpeichern()
     else
-      print(sprachen.Adressseite .. seite + 1)
       Funktion.AdressenLesen()
     end
     iris = Funktion.getIrisState()
