@@ -993,7 +993,6 @@ function Taste.eingabe_enter()
 end
 
 function Taste.Pfeil_links()
-  --[[
   gpu.setBackground(Farben.Steuerungstextfarbe)
   gpu.setForeground(Farben.Steuerungsfarbe)
   if seite >= 1 then
@@ -1001,9 +1000,7 @@ function Taste.Pfeil_links()
   else
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.SteuerungName, 0)
   end
-  ]]--
   if seite <= -1 then else
-    event.timer(2, Funktion.zeigeSteuerung)
     seite = seite - 1
     gpu.setBackground(Farben.Adressfarbe)
     gpu.setForeground(Farben.Adresstextfarbe)
@@ -1015,7 +1012,6 @@ function Taste.Pfeil_links()
 end
 
 function Taste.Pfeil_rechts()
-  --[[
   gpu.setBackground(Farben.Steuerungstextfarbe)
   gpu.setForeground(Farben.Steuerungsfarbe)
   if seite == -1 then
@@ -1023,9 +1019,7 @@ function Taste.Pfeil_rechts()
   elseif maxseiten > seite + 1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.naechsteSeite)
   end
-  ]]--
   if seite + 1 < maxseiten then
-    event.timer(2, Funktion.zeigeSteuerung)
     seite = seite + 1
     gpu.setBackground(Farben.Adressfarbe)
     gpu.setForeground(Farben.Adresstextfarbe)
@@ -1042,7 +1036,6 @@ function Taste.q()
 end
 
 function Taste.d()
-  --event.timer(2, Funktion.zeigeSteuerung)
   gpu.setBackground(Farben.Steuerungstextfarbe)
   gpu.setForeground(Farben.Steuerungsfarbe)
   Funktion.zeigeHier(Taste.Koordinaten.d_X + 2, Taste.Koordinaten.d_Y, "D " .. sprachen.abschalten, 0)
@@ -1059,7 +1052,6 @@ function Taste.d()
 end
 
 function Taste.e()
-  --event.timer(2, Funktion.zeigeSteuerung)
   gpu.setBackground(Farben.Steuerungstextfarbe)
   gpu.setForeground(Farben.Steuerungsfarbe)
   Funktion.zeigeHier(Taste.Koordinaten.e_X, Taste.Koordinaten.e_Y, "E " .. sprachen.IDCeingabe, 0)
@@ -1074,7 +1066,6 @@ function Taste.e()
 end
 
 function Taste.o()
-  --event.timer(2, Funktion.zeigeSteuerung)
   gpu.setBackground(Farben.Steuerungstextfarbe)
   gpu.setForeground(Farben.Steuerungsfarbe)
   Funktion.zeigeHier(Taste.Koordinaten.o_X + 2, Taste.Koordinaten.o_Y, "O " .. sprachen.oeffneIris, 0)
@@ -1095,7 +1086,6 @@ function Taste.o()
 end
 
 function Taste.c()
-  --event.timer(2, Funktion.zeigeSteuerung)
   gpu.setBackground(Farben.Steuerungstextfarbe)
   gpu.setForeground(Farben.Steuerungsfarbe)
   Funktion.zeigeHier(Taste.Koordinaten.c_X, Taste.Koordinaten.c_Y, "C " .. sprachen.schliesseIris, 0)
@@ -1164,7 +1154,7 @@ function Taste.u()
 end
 
 function Taste.b()
-  event.timer(2, Funktion.Infoseite)
+  --event.timer(2, Funktion.Infoseite)
   loadfile("/autorun.lua")("beta")
 end
 
