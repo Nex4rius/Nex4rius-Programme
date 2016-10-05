@@ -1178,6 +1178,8 @@ function Taste.Zahl(c)
   if c == "0" then
     c = 10
   end
+  c = c + seite * 10
+  na = gespeicherteAdressen[tonumber(c)]
   Funktion.zeigeHier(1, c * 2, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 28 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
   if string.sub(na[4], 1, 1) == "<" then
     gpu.setForeground(Farben.FehlerFarbe)
@@ -1186,8 +1188,6 @@ function Taste.Zahl(c)
   else
     Funktion.zeigeHier(1, c * 2 + 1, "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
   end
-  c = c + seite * 10
-  na = gespeicherteAdressen[tonumber(c)]
   iriscontrol = "off"
   wormhole = "out"
   if na then
