@@ -58,6 +58,8 @@ local LampenRot                 = false
 local VersionUpdate             = false
 
 Farben.graueFarbe               = 6684774
+Farben.hellblau                 = 0x606060
+Farben.hellgrau                 = 8421504
 Farben.roteFarbe                = 0xFF0000
 Farben.weisseFarbe              = 0xFFFFFF
 Farben.blaueFarbe               = 0x0000FF
@@ -72,6 +74,7 @@ Farben.Trennlinienfarbe         = Farben.blaueFarbe
 Farben.Textfarbe                = Farben.weisseFarbe
 
 Farben.Adressfarbe              = Farben.brauenFarbe
+Farben.AdressfarbeAktiv         = Farben.hellblau
 Farben.Adresstextfarbe          = Farben.Textfarbe
 Farben.Nachrichtfarbe           = Farben.graueFarbe
 Farben.Nachrichttextfarbe       = Farben.Textfarbe
@@ -203,7 +206,7 @@ function Funktion.touchscreen(x, y)
       end
     elseif seite == -1 then
       if Taste.links[y] then
-        Taste.links[y]()
+        Taste.links[y](y)
       end
     end
   elseif x >= 35 and y >= Taste.Koordinaten.Steuerungsanfang_Y and y <= Taste.Koordinaten.Steuerungsende_Y then
@@ -273,26 +276,36 @@ function Funktion.getAddress(...)
 end
 
 function Funktion.AdressenLesen()
+  local y = 1
+  Funktion.zeigeHier(1, y, sprachen.Adressseite .. seite + 1, 0)
+  y = y + 1
   for i, na in pairs(gespeicherteAdressen) do
     if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
       AdressAnzeige = i - seite * 10
       if AdressAnzeige == 10 then
         AdressAnzeige = 0
       end
-      print(AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
+      if na[2] == remAddr and string.len(tostring(remAddr)) > 5 then
+        gpu.setBackground(Farben.AdressfarbeAktiv)
+        Funktion.zeigeHier(1, y , "", 30)
+        Funktion.zeigeHier(1, y + 1, "", 30)
+      end
+      Funktion.zeigeHier(1, y, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 28 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
+      y = y + 1
       if string.sub(na[4], 1, 1) == "<" then
         gpu.setForeground(Farben.FehlerFarbe)
-        print("   " .. na[4])
+        Funktion.zeigeHier(1, y, "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
         gpu.setForeground(Farben.Adresstextfarbe)
       else
-        print("   " .. na[4])
+        Funktion.zeigeHier(1, y, "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
       end
+      y = y + 1
+      gpu.setBackground(Farben.Adressfarbe)
     end
   end
 end
 
 function Funktion.Infoseite()
-  local _
   local i = 1
   Taste.links = {}
   print(sprachen.Steuerung)
@@ -401,7 +414,6 @@ function Funktion.zeigeMenu()
       letzterAdressCheck = os.time() / sectime
       Funktion.AdressenSpeichern()
     else
-      print(sprachen.Adressseite .. seite + 1)
       Funktion.AdressenLesen()
     end
     iris = Funktion.getIrisState()
@@ -480,6 +492,7 @@ function Funktion.iriscontroller()
   elseif direction == "Incoming" and send == true then
     sg.sendMessage("Iris Control: " .. Sicherung.control .. " Iris: " .. iris, Funktion.sendeAdressliste())
     send = false
+    Funktion.zeigeMenu()
   end
   if wormhole == "in" and state == "Dialling" and iriscontrol == "on" and Sicherung.control == "On" then
     if iris == "Offline" then else
@@ -517,6 +530,7 @@ function Funktion.iriscontroller()
     LampenRot = false
     zielAdresse = ""
     Funktion.zeigeNachricht("")
+    Funktion.zeigeMenu()
   end
   if state == "Idle" then
     incode = "-"
@@ -1030,8 +1044,10 @@ function Taste.Pfeil_rechts()
   end
 end
 
-function Taste.q()
-  --event.timer(2, Funktion.Infoseite)
+function Taste.q(y)
+  gpu.setBackground(Farben.AdressfarbeAktiv)
+  gpu.setForeground(Farben.Adresstextfarbe)
+  Funktion.zeigeHier(1, y, "Q " .. sprachen.beenden, 0)
   running = false
 end
 
@@ -1049,6 +1065,7 @@ function Taste.d()
       Funktion.zeigeNachricht(sprachen.stargateAbschalten .. " " .. sprachen.stargateName)
     end
   end
+  event.timer(1, Funktion.zeigeMenu)
 end
 
 function Taste.e()
@@ -1098,8 +1115,11 @@ function Taste.c()
   end
 end
 
-function Taste.i()
-  --event.timer(2, Funktion.Infoseite)
+function Taste.i(y)
+  gpu.setBackground(Farben.AdressfarbeAktiv)
+  gpu.setForeground(Farben.Adresstextfarbe)
+  Funktion.zeigeHier(1, y, "I " .. sprachen.IrisSteuerung .. sprachen.an_aus, 0)
+  event.timer(2, Funktion.Infoseite)
   if iris == "Offline" then else
     send = true
     if Sicherung.control == "On" then
@@ -1111,8 +1131,10 @@ function Taste.i()
   end
 end
 
-function Taste.z()
-  --event.timer(2, Funktion.Infoseite)
+function Taste.z(y)
+  gpu.setBackground(Farben.AdressfarbeAktiv)
+  gpu.setForeground(Farben.Adresstextfarbe)
+  Funktion.zeigeHier(1, y, "Z " .. sprachen.AdressenBearbeiten, 0)
   if Funktion.Tastatur() then
     gpu.setBackground(Farben.Nachrichtfarbe)
     gpu.setForeground(Farben.Textfarbe)
@@ -1124,8 +1146,10 @@ function Taste.z()
   end
 end
 
-function Taste.l()
-  --event.timer(2, Funktion.Infoseite)
+function Taste.l(y)
+  gpu.setBackground(Farben.AdressfarbeAktiv)
+  gpu.setForeground(Farben.Adresstextfarbe)
+  Funktion.zeigeHier(1, y, "L " .. sprachen.EinstellungenAendern, 0)
   if Funktion.Tastatur() then
     gpu.setBackground(Farben.Nachrichtfarbe)
     gpu.setForeground(Farben.Textfarbe)
@@ -1148,32 +1172,63 @@ function Taste.l()
   end
 end
 
-function Taste.u()
-  --event.timer(2, Funktion.Infoseite)
-  Funktion.beendeAlles()
-  loadfile("/autorun.lua")("ja")
+function Taste.u(y)
+  gpu.setBackground(Farben.AdressfarbeAktiv)
+  gpu.setForeground(Farben.Adresstextfarbe)
+  Funktion.zeigeHier(1, y, "U " .. sprachen.Update, 0)
+  if component.isAvailable("internet") then
+    if version ~= Funktion.checkServerVersion() then
+      Funktion.beendeAlles()
+      loadfile("/autorun.lua")("ja")
+    else
+      Funktion.zeigeNachricht(sprachen.bereitsNeusteVersion)
+    end
+  end
 end
 
-function Taste.b()
-  --event.timer(2, Funktion.Infoseite)
-  Funktion.beendeAlles()
-  loadfile("/autorun.lua")("beta")
+function Taste.b(y)
+  gpu.setBackground(Farben.AdressfarbeAktiv)
+  gpu.setForeground(Farben.Adresstextfarbe)
+  Funktion.zeigeHier(1, y, "B " .. sprachen.UpdateBeta, 0)
+  if component.isAvailable("internet") then
+    Funktion.beendeAlles()
+    loadfile("/autorun.lua")("beta")
+  end
 end
 
 function Taste.Zahl(c)
-  --event.timer(2, Funktion.zeigeMenu)
+  event.timer(2, Funktion.zeigeMenu)
+  gpu.setBackground(Farben.hellgrau)
+  gpu.setForeground(Farben.Adresstextfarbe)
   if c == "0" then
     c = 10
   end
+  local y = c
   c = c + seite * 10
   na = gespeicherteAdressen[tonumber(c)]
-  iriscontrol = "off"
-  wormhole = "out"
   if na then
-    Funktion.dial(na[1], na[2])
-    if na[3] == "-" then
+    Funktion.zeigeHier(1, y * 2, "", 30)
+    local Nummer = y
+    if y == 10 then
+      Nummer = 0
+    end
+    Funktion.zeigeHier(1, y * 2, Nummer .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 0)
+    if string.sub(na[4], 1, 1) == "<" then
+      gpu.setForeground(Farben.FehlerFarbe)
+      Funktion.zeigeHier(1, y * 2 + 1, "", 30)
+      Funktion.zeigeHier(1, y * 2 + 1, "   " .. na[4], 0)
     else
-      outcode = na[3]
+      Funktion.zeigeHier(1, y * 2 + 1, "", 30)
+      Funktion.zeigeHier(1, y * 2 + 1, "   " .. na[4], 0)
+    end
+    iriscontrol = "off"
+    wormhole = "out"
+    if na then
+      Funktion.dial(na[1], na[2])
+      if na[3] == "-" then
+      else
+        outcode = na[3]
+      end
     end
   end
 end
