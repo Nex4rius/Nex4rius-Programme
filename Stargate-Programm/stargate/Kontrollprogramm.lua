@@ -314,9 +314,12 @@ function Funktion.Infoseite()
   print("U " .. sprachen.Update)
   i = i + 1
   Taste.links[i] = Taste.u
-  --print("B " .. sprachen.UpdateBeta)
-  --i = i + 1
-  --Taste.links[i] = Taste.b
+  local version_Zeichenlaenge = string.len(version)
+  if string.sub(..., version_Zeichenlaenge - 3, version_Zeichenlaenge) == "BETA" then
+    print("B " .. sprachen.UpdateBeta)
+    i = i + 1
+    Taste.links[i] = Taste.b
+  end
   print(sprachen.RedstoneSignale)
   gpu.setBackground(Farben.weisseFarbe)
   gpu.setForeground(Farben.schwarzeFarbe)
