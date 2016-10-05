@@ -1048,7 +1048,6 @@ function Taste.q(y)
   gpu.setBackground(Farben.AdressfarbeAktiv)
   gpu.setForeground(Farben.Adresstextfarbe)
   Funktion.zeigeHier(1, y, "Q " .. sprachen.beenden, 0)
-  --event.timer(2, Funktion.Infoseite)
   running = false
 end
 
@@ -1120,7 +1119,7 @@ function Taste.i(y)
   gpu.setBackground(Farben.AdressfarbeAktiv)
   gpu.setForeground(Farben.Adresstextfarbe)
   Funktion.zeigeHier(1, y, "I " .. sprachen.IrisSteuerung .. sprachen.an_aus, 0)
-  --event.timer(2, Funktion.Infoseite)
+  event.timer(2, Funktion.Infoseite)
   if iris == "Offline" then else
     send = true
     if Sicherung.control == "On" then
@@ -1136,7 +1135,6 @@ function Taste.z(y)
   gpu.setBackground(Farben.AdressfarbeAktiv)
   gpu.setForeground(Farben.Adresstextfarbe)
   Funktion.zeigeHier(1, y, "Z " .. sprachen.AdressenBearbeiten, 0)
-  --event.timer(2, Funktion.Infoseite)
   if Funktion.Tastatur() then
     gpu.setBackground(Farben.Nachrichtfarbe)
     gpu.setForeground(Farben.Textfarbe)
@@ -1152,7 +1150,6 @@ function Taste.l(y)
   gpu.setBackground(Farben.AdressfarbeAktiv)
   gpu.setForeground(Farben.Adresstextfarbe)
   Funktion.zeigeHier(1, y, "L " .. sprachen.EinstellungenAendern, 0)
-  --event.timer(2, Funktion.Infoseite)
   if Funktion.Tastatur() then
     gpu.setBackground(Farben.Nachrichtfarbe)
     gpu.setForeground(Farben.Textfarbe)
@@ -1179,7 +1176,6 @@ function Taste.u(y)
   gpu.setBackground(Farben.AdressfarbeAktiv)
   gpu.setForeground(Farben.Adresstextfarbe)
   Funktion.zeigeHier(1, y, "U " .. sprachen.Update, 0)
-  --event.timer(2, Funktion.Infoseite)
   if component.isAvailable("internet") then
     if version ~= Funktion.checkServerVersion() then
       Funktion.beendeAlles()
@@ -1194,7 +1190,6 @@ function Taste.b(y)
   gpu.setBackground(Farben.AdressfarbeAktiv)
   gpu.setForeground(Farben.Adresstextfarbe)
   Funktion.zeigeHier(1, y, "B " .. sprachen.UpdateBeta, 0)
-  --event.timer(2, Funktion.Infoseite)
   if component.isAvailable("internet") then
     Funktion.beendeAlles()
     loadfile("/autorun.lua")("beta")
