@@ -58,6 +58,7 @@ local LampenRot                 = false
 local VersionUpdate             = false
 
 Farben.graueFarbe               = 6684774
+Farben.hellgrau                 = 0x808080
 Farben.roteFarbe                = 0xFF0000
 Farben.weisseFarbe              = 0xFFFFFF
 Farben.blaueFarbe               = 0x0000FF
@@ -1172,21 +1173,24 @@ function Taste.b()
 end
 
 function Taste.Zahl(c)
-  --event.timer(2, Funktion.zeigeMenu)
-  gpu.setBackground(Farben.Adresstextfarbe)
-  gpu.setForeground(Farben.Adressfarbe)
+  event.timer(2, Funktion.zeigeMenu)
+  gpu.setBackground(Farben.hellgrau)
+  gpu.setForeground(Farben.Adresstextfarbe)
   if c == "0" then
     c = 10
   end
+  local y = c
   c = c + seite * 10
   na = gespeicherteAdressen[tonumber(c)]
-  Funktion.zeigeHier(1, c * 2, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 28 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
+  Funktion.zeigeHier(1, y * 2, "", 30)
+  Funktion.zeigeHier(1, y * 2, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 0)
   if string.sub(na[4], 1, 1) == "<" then
     gpu.setForeground(Farben.FehlerFarbe)
-    Funktion.zeigeHier(1, c * 2 + 1, "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
-    --gpu.setForeground(Farben.Adressfarbe)
+    Funktion.zeigeHier(1, y * 2 + 1, "", 30)
+    Funktion.zeigeHier(1, y * 2 + 1, "   " .. na[4], 0)
   else
-    Funktion.zeigeHier(1, c * 2 + 1, "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
+    Funktion.zeigeHier(1, y * 2 + 1, "", 30)
+    Funktion.zeigeHier(1, y * 2 + 1, "   " .. na[4], 0)
   end
   iriscontrol = "off"
   wormhole = "out"
