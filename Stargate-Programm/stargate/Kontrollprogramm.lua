@@ -626,11 +626,11 @@ end
 
 function Funktion.aktualisiereStatus()
   gpu.setResolution(70, 25)
-  sg                          = component.getPrimary("stargate")
-  locAddr                     = Funktion.getAddress(sg.localAddress())
-  remAddr                     = Funktion.getAddress(sg.remoteAddress())
-  iris                        = Funktion.getIrisState()
-  state, chevrons, direction  = sg.stargateState()
+  sg = component.getPrimary("stargate")
+  locAddr = Funktion.getAddress(sg.localAddress())
+  remAddr = Funktion.getAddress(sg.remoteAddress())
+  iris = Funktion.getIrisState()
+  state, chevrons, direction = sg.stargateState()
   Funktion.destinationName()
   Funktion.wormholeDirection()
   Funktion.iriscontroller()
@@ -993,7 +993,15 @@ function Taste.eingabe_enter()
 end
 
 function Taste.Pfeil_links()
+  gpu.setBackground(Farben.Steuerungstextfarbe)
+  gpu.setForeground(Farben.Steuerungsfarbe)
+  if seite >= 1 then
+    Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "  ← " .. sprachen.vorherigeSeite)
+  else
+    Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "  ← " .. sprachen.SteuerungName)
+  end
   if seite <= -1 then else
+    event.timer(2, Funktion.zeigeSteuerung)
     seite = seite - 1
     gpu.setBackground(Farben.Adressfarbe)
     gpu.setForeground(Farben.Adresstextfarbe)
@@ -1005,7 +1013,15 @@ function Taste.Pfeil_links()
 end
 
 function Taste.Pfeil_rechts()
+  gpu.setBackground(Farben.Steuerungstextfarbe)
+  gpu.setForeground(Farben.Steuerungsfarbe)
+  if seite == -1 then
+    Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.zeigeAdressen)
+  elseif maxseiten > seite + 1 then
+    Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.naechsteSeite)
+  end
   if seite + 1 < maxseiten then
+    event.timer(2, Funktion.zeigeSteuerung)
     seite = seite + 1
     gpu.setBackground(Farben.Adressfarbe)
     gpu.setForeground(Farben.Adresstextfarbe)
@@ -1017,21 +1033,15 @@ function Taste.Pfeil_rechts()
 end
 
 function Taste.q()
+  --event.timer(2, Funktion.Infoseite)
   running = false
 end
 
-function Taste.e()
-  if state == "Connected" and direction == "Outgoing" then
-    enteridc = ""
-    showidc = ""
-    entercode = true
-    Funktion.zeigeNachricht(sprachen.IDCeingabe .. ":")
-  else
-    Funktion.zeigeNachricht(sprachen.keineVerbindung)
-  end
-end
-
 function Taste.d()
+  --event.timer(2, Funktion.zeigeSteuerung)
+  gpu.setBackground(Farben.Steuerungstextfarbe)
+  gpu.setForeground(Farben.Steuerungsfarbe)
+  Funktion.zeigeHier(Taste.Koordinaten.d_X, Taste.Koordinaten.d_Y, "  D " .. sprachen.abschalten)
   if state == "Connected" and direction == "Incoming" then
     sg.disconnect()
     sg.sendMessage("Request: Disconnect Stargate")
@@ -1044,7 +1054,26 @@ function Taste.d()
   end
 end
 
+function Taste.e()
+  --event.timer(2, Funktion.zeigeSteuerung)
+  gpu.setBackground(Farben.Steuerungstextfarbe)
+  gpu.setForeground(Farben.Steuerungsfarbe)
+  Funktion.zeigeHier(Taste.Koordinaten.e_X, Taste.Koordinaten.e_Y, "E " .. sprachen.IDCeingabe)
+  if state == "Connected" and direction == "Outgoing" then
+    enteridc = ""
+    showidc = ""
+    entercode = true
+    Funktion.zeigeNachricht(sprachen.IDCeingabe .. ":")
+  else
+    Funktion.zeigeNachricht(sprachen.keineVerbindung)
+  end
+end
+
 function Taste.o()
+  --event.timer(2, Funktion.zeigeSteuerung)
+  gpu.setBackground(Farben.Steuerungstextfarbe)
+  gpu.setForeground(Farben.Steuerungsfarbe)
+  Funktion.zeigeHier(Taste.Koordinaten.o_X, Taste.Koordinaten.o_Y, "  O " .. sprachen.oeffneIris)
   if iris == "Offline" then else
     Funktion.irisOpen()
     if wormhole == "in" then
@@ -1062,6 +1091,10 @@ function Taste.o()
 end
 
 function Taste.c()
+  --event.timer(2, Funktion.zeigeSteuerung)
+  gpu.setBackground(Farben.Steuerungstextfarbe)
+  gpu.setForeground(Farben.Steuerungsfarbe)
+  Funktion.zeigeHier(Taste.Koordinaten.c_X, Taste.Koordinaten.c_Y, "C " .. sprachen.schliesseIris)
   if iris == "Offline" then else
     Funktion.irisClose()
     iriscontrol = "off"
@@ -1072,6 +1105,7 @@ function Taste.c()
 end
 
 function Taste.i()
+  --event.timer(2, Funktion.Infoseite)
   if iris == "Offline" then else
     send = true
     if Sicherung.control == "On" then
@@ -1084,6 +1118,7 @@ function Taste.i()
 end
 
 function Taste.z()
+  --event.timer(2, Funktion.Infoseite)
   if Funktion.Tastatur() then
     gpu.setBackground(Farben.Nachrichtfarbe)
     gpu.setForeground(Farben.Textfarbe)
@@ -1096,6 +1131,7 @@ function Taste.z()
 end
 
 function Taste.l()
+  --event.timer(2, Funktion.Infoseite)
   if Funktion.Tastatur() then
     gpu.setBackground(Farben.Nachrichtfarbe)
     gpu.setForeground(Farben.Textfarbe)
@@ -1119,16 +1155,19 @@ function Taste.l()
 end
 
 function Taste.u()
+  --event.timer(2, Funktion.Infoseite)
   Funktion.beendeAlles()
   loadfile("/autorun.lua")("ja")
 end
 
 function Taste.b()
+  event.timer(2, Funktion.Infoseite)
   Funktion.beendeAlles()
   loadfile("/autorun.lua")("beta")
 end
 
 function Taste.Zahl(c)
+  --event.timer(2, Funktion.zeigeMenu)
   if c == "0" then
     c = 10
   end
