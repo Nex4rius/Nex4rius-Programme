@@ -1140,7 +1140,9 @@ function Taste.z(y)
   if Funktion.Tastatur() then
     gpu.setBackground(Farben.Nachrichtfarbe)
     gpu.setForeground(Farben.Textfarbe)
+    screen.setTouchModeInverted(false)
     edit("stargate/adressen.lua")
+    screen.setTouchModeInverted(true)
     seite = -1
     Funktion.zeigeAnzeige()
     seite = 0
@@ -1158,7 +1160,9 @@ function Taste.l(y)
     gpu.setBackground(Farben.Nachrichtfarbe)
     gpu.setForeground(Farben.Textfarbe)
     schreibSicherungsdatei(Sicherung)
+    screen.setTouchModeInverted(false)
     edit("stargate/Sicherungsdatei.lua")
+    screen.setTouchModeInverted(true)
     Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
     if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
       sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
