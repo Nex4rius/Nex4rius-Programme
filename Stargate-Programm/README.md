@@ -1,6 +1,9 @@
 <a href="#english">english</a>/<a href="#deutsch">deutsch</a><a name="deutsch">
 # Stargate-Programm für SG-Craft und OpenComputers</a>
 
+<img src="http://i.imgur.com/W4MNT5X.png" width="700px">
+<img src="http://i.imgur.com/jWwlBNI.png" width="700px">
+
 Installationsanleitung:
 
 1) Ein OpenComputer Computer mit folgenden Komponenten:
@@ -19,12 +22,6 @@ pastebin run -f Dkt9dn4S
 ```
 
 3) Profit
-
-<a href="http://imgur.com/a/WnwiV">
-<img src="http://i.imgur.com/Wlxir7S.png">
-<img src="http://i.imgur.com/toQcuXj.png">
-<img src="http://i.imgur.com/jWwlBNI.png">
-</a>
 
 Einige Funktionen meines Programms:
 
@@ -61,6 +58,9 @@ ___
 <a href="#english">english</a>/<a href="#deutsch">deutsch</a><a name="english">
 # Stargate-Program for SG-Craft and OpenComputers</a>
 
+<img src="http://i.imgur.com/jOFJQuK.png" width="700px">
+<img src="http://i.imgur.com/jWwlBNI.png" width="700px">
+
 How to install:
 
 1) Make an OpenComputer computer with:
@@ -79,12 +79,6 @@ pastebin run -f Dkt9dn4S
 ```
 
 3) Profit
-
-<a href="http://imgur.com/a/WnwiV">
-<img src="http://i.imgur.com/Wlxir7S.png">
-<img src="http://i.imgur.com/toQcuXj.png">
-<img src="http://i.imgur.com/jWwlBNI.png">
-</a>
 
 Some feature of my program:
 
