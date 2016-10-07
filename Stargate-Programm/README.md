@@ -6,22 +6,22 @@
 
 Installationsanleitung:
 
-1) Ein OpenComputer Computer mit folgenden Komponenten:
+Ein OpenComputer Computer mit folgenden Komponenten:
 - CPU T2
 - GPU T2
 - 12x Screen T2
 - HDD T1 (mit OpenOS)
 - 2x Memory T1.5
 - Internet Card - nur benötigt zur Installation und für Aktualisierungen
+- Tastatur - nur benötigt zur Installation
 - Redstone Card T2 - optional
+- EEPROM (Lua BIOS)
 
-2) kopieren / einfügen vom Befehl
+<a href="https://www.youtube.com/embed/MgWY4es5oEs"><img src="http://img.youtube.com/vi/MgWY4es5oEs/0.jpg"></a>
 
 ```
 pastebin run -f Dkt9dn4S
 ```
-
-3) Profit
 
 Einige Funktionen meines Programms:
 
@@ -63,22 +63,22 @@ ___
 
 How to install:
 
-1) Make an OpenComputer computer with:
+Make an OpenComputer computer with:
 - CPU T2
 - GPU T2
 - 12x Screen T2
 - HDD T1 (with OpenOS)
 - 2x Memory T1.5
 - Internet Card - only required for installation and updates
+- keyboard - only required for installation
 - Redstone Card T2 - optional
+- EEPROM (Lua BIOS)
 
-2) copy / paste command
+<a href="https://www.youtube.com/embed/MgWY4es5oEs"><img src="http://img.youtube.com/vi/MgWY4es5oEs/0.jpg"></a>
 
 ```
 pastebin run -f Dkt9dn4S
 ```
-
-3) Profit
 
 Some feature of my program:
 
