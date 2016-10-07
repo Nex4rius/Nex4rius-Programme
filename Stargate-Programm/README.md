@@ -15,6 +15,7 @@ Installationsanleitung:
 - Internet Card - nur benötigt zur Installation und für Aktualisierungen
 - Tastatur - nur benötigt zur Installation
 - Redstone Card T2 - optional
+- EEPROM (Lua BIOS)
 
 2) kopieren / einfügen vom Befehl
 
@@ -73,6 +74,7 @@ How to install:
 - Internet Card - only required for installation and updates
 - keyboard - only required for installation
 - Redstone Card T2 - optional
+- EEPROM (Lua BIOS)
 
 2) copy / paste command
 
