@@ -20,11 +20,8 @@ pastebin run -f Dkt9dn4S
 
 3) Profit
 
-<a href="http://imgur.com/a/WnwiV">
-<img src="http://i.imgur.com/Wlxir7S.png">
-<img src="http://i.imgur.com/toQcuXj.png">
+<img src="http://i.imgur.com/W4MNT5X.png">
 <img src="http://i.imgur.com/jWwlBNI.png">
-</a>
 
 Einige Funktionen meines Programms:
 
@@ -80,11 +77,8 @@ pastebin run -f Dkt9dn4S
 
 3) Profit
 
-<a href="http://imgur.com/a/WnwiV">
-<img src="http://i.imgur.com/Wlxir7S.png">
-<img src="http://i.imgur.com/toQcuXj.png">
+<img src="http://i.imgur.com/jOFJQuK.png">
 <img src="http://i.imgur.com/jWwlBNI.png">
-</a>
 
 Some feature of my program:
 
