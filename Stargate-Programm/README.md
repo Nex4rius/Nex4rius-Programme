@@ -20,8 +20,8 @@ pastebin run -f Dkt9dn4S
 
 3) Profit
 
-<img src="http://i.imgur.com/W4MNT5X.png">
-<img src="http://i.imgur.com/jWwlBNI.png">
+<img src="http://i.imgur.com/W4MNT5X.png" width="700px">
+<img src="http://i.imgur.com/jWwlBNI.png" width="700px">
 
 Einige Funktionen meines Programms:
 
