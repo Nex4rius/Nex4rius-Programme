@@ -13,6 +13,7 @@ Installationsanleitung:
 - HDD T1 (mit OpenOS)
 - 2x Memory T1.5
 - Internet Card - nur benötigt zur Installation und für Aktualisierungen
+- Tastatur - nur benötigt zur Installation
 - Redstone Card T2 - optional
 
 2) kopieren / einfügen vom Befehl
@@ -70,6 +71,7 @@ How to install:
 - HDD T1 (with OpenOS)
 - 2x Memory T1.5
 - Internet Card - only required for installation and updates
+- keyboard - only required for installation
 - Redstone Card T2 - optional
 
 2) copy / paste command
