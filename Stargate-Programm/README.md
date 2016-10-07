@@ -1,8 +1,8 @@
 <a href="#english">english</a>/<a href="#deutsch">deutsch</a><a name="deutsch">
 # Stargate-Programm für SG-Craft und OpenComputers</a>
 
-<img src="http://i.imgur.com/W4MNT5X.png" width="700px">
-<img src="http://i.imgur.com/jWwlBNI.png" width="700px">
+<img src="https://i.imgur.com/W4MNT5X.png" width="700px">
+<img src="https://i.imgur.com/jWwlBNI.png" width="700px">
 
 Installationsanleitung:
 
@@ -17,7 +17,7 @@ Ein OpenComputer Computer mit folgenden Komponenten:
 - Redstone Card T2 - optional
 - EEPROM (Lua BIOS)
 
-<a href="https://www.youtube.com/embed/MgWY4es5oEs"><img src="http://img.youtube.com/vi/MgWY4es5oEs/0.jpg"></a>
+<a href="https://www.youtube.com/embed/MgWY4es5oEs"><img src="https://i.imgur.com/h6VjgRe.jpg"></a>
 
 ```
 pastebin run -f Dkt9dn4S
@@ -58,8 +58,8 @@ ___
 <a href="#english">english</a>/<a href="#deutsch">deutsch</a><a name="english">
 # Stargate-Program for SG-Craft and OpenComputers</a>
 
-<img src="http://i.imgur.com/jOFJQuK.png" width="700px">
-<img src="http://i.imgur.com/jWwlBNI.png" width="700px">
+<img src="https://i.imgur.com/jOFJQuK.png" width="700px">
+<img src="https://i.imgur.com/jWwlBNI.png" width="700px">
 
 How to install:
 
@@ -74,7 +74,7 @@ Make an OpenComputer computer with:
 - Redstone Card T2 - optional
 - EEPROM (Lua BIOS)
 
-<a href="https://www.youtube.com/embed/MgWY4es5oEs"><img src="http://img.youtube.com/vi/MgWY4es5oEs/0.jpg"></a>
+<a href="https://www.youtube.com/embed/MgWY4es5oEs"><img src="https://i.imgur.com/h6VjgRe.jpg"></a>
 
 ```
 pastebin run -f Dkt9dn4S
