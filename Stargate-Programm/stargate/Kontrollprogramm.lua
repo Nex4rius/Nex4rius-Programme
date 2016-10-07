@@ -1011,7 +1011,7 @@ function Taste.Pfeil_links()
   gpu.setForeground(Farben.Steuerungsfarbe)
   if seite >= 1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.vorherigeSeite, 0)
-  else
+  elseif seite ∼= -1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.SteuerungName, 0)
   end
   if seite <= -1 then else
