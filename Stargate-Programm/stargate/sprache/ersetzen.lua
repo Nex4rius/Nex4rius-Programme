@@ -15,6 +15,7 @@ return {
   ["Override"]        = sprachen.Eingriff,
   ["Manual"]          = sprachen.manueller,
   ["Control"]         = sprachen.IrisSteuerungName,
-  ["Atmo_good"]       = sprachen.atmosphereJA,
-  ["Atmo_dangerous"]  = sprachen.atmosphereNEIN,
+  ["Accepted"]        = sprachen.akzeptiert,
+  ["Atmogood"]        = sprachen.atmosphereJA,
+  ["Atmodangerous"]   = sprachen.atmosphereNEIN,
 }
