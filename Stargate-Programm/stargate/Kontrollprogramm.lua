@@ -287,8 +287,7 @@ function Funktion.AdressenLesen()
       end
       if na[2] == remAddr and string.len(tostring(remAddr)) > 5 then
         gpu.setBackground(Farben.AdressfarbeAktiv)
-        Funktion.zeigeHier(1, y , "", 30)
-        Funktion.zeigeHier(1, y + 1, "", 30)
+        gpu.fill(1, y, 30, 2, " ")
       end
       Funktion.zeigeHier(1, y, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 28 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
       y = y + 1
@@ -544,7 +543,10 @@ function Funktion.iriscontroller()
     k = "close"
   end
   if state == "Connected" and direction == "Outgoing" and send == true then
-    if outcode == "-" or outcode == nil then else
+    if outcode == "-" or outcode == nil then
+      sg.sendMessage("Adressliste", Funktion.sendeAdressliste())
+      send = false
+    else
       sg.sendMessage(outcode, Funktion.sendeAdressliste())
       send = false
     end
@@ -1286,7 +1288,10 @@ function Funktion.eventLoop()
         if direction == "Outgoing" then
           codeaccepted = e[3]
         elseif direction == "Incoming" and wormhole == "in" then
-          incode = e[3]
+          if e[3] == "Adressliste" then
+          else
+            incode = e[3]
+          end
         end
         if e[4] == "Adressliste" then
           local inAdressen = require("serialization").unserialize(e[5])
