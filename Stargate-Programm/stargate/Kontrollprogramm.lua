@@ -163,6 +163,15 @@ function Funktion.schreibeAdressen()
   f:close()
 end
 
+function Funktion.Farbe(background, foreground)
+  if background then
+    gpu.setBackground(background)
+  end
+  if foreground then
+    gpu.setForeground(foreground)
+  end
+end
+
 function Funktion.setCursor(col, row)
   term.setCursor(col, row)
 end
@@ -172,8 +181,7 @@ function Funktion.pull_event()
   if state == "Idle" and checkEnergy == energy then
     if Nachrichtleer == true then
       if VersionUpdate == true then
-        gpu.setBackground(Farben.schwarzeFarbe)
-        gpu.setForeground(Farben.weisseFarbe)
+        Funktion.Farbe(Farben.schwarzeFarbe, Farben.weisseFarbe)
         print(sprachen.aktualisierenJetzt)
         Funktion.update("master")
       end
@@ -286,7 +294,7 @@ function Funktion.AdressenLesen()
         AdressAnzeige = 0
       end
       if na[2] == remAddr and string.len(tostring(remAddr)) > 5 then
-        gpu.setBackground(Farben.AdressfarbeAktiv)
+        Funktion.Farbe(Farben.AdressfarbeAktiv)
         gpu.fill(1, y, 30, 2, " ")
       end
       Funktion.zeigeHier(1, y, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 28 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
