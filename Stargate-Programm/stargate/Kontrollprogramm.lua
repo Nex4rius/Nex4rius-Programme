@@ -1294,7 +1294,9 @@ function Funktion.angekommeneAdressen(...)
   for a, b in pairs(...) do
     local neuHinzufuegen = false
     for c, d in pairs(adressen) do
-      if b[2] ~= d[2] then
+      if d[2] == "XXXX-XXX-XX" then
+        adressen[c] = nil
+      elseif b[2] ~= d[2] then
         neuHinzufuegen = true
       elseif b[2] == d[2] and d[1] == ">>>" .. d[2] .. "<<<" and d[1] ~= b[1] then
         if Funktion.newAddress(b[2], b[1], true) then
@@ -1303,8 +1305,6 @@ function Funktion.angekommeneAdressen(...)
         AddNewAddress = true
         neuHinzufuegen = false
         break
-      elseif d[2] == "XXXX-XXX-XX" then
-        adressen[c] = nil
       else
         neuHinzufuegen = false
         break
