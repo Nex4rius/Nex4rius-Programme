@@ -291,6 +291,9 @@ function Funktion.AdressenLesen()
   local y = 1
   Funktion.zeigeHier(1, y, sprachen.Adressseite .. seite + 1, 0)
   y = y + 1
+  if not gespeicherteAdressen then
+    Funktion.AdressenSpeichern()
+  end
   for i, na in pairs(gespeicherteAdressen) do
     if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
       AdressAnzeige = i - seite * 10
