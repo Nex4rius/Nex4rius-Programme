@@ -905,9 +905,9 @@ function Funktion.atmosphere(...)
   if ... then
     if sensor then
       if sensor.hasBreathableAtmosphere() then
-        return " Atmo_good"
+        return " Atmogood"
       else
-        return " Atmo_dangerous"
+        return " Atmodangerous"
       end
     else
       return ""
