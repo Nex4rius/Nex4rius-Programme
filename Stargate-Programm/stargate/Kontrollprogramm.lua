@@ -114,10 +114,6 @@ do
   version                       = tostring(args[3])
 end
 
-if component.isAvailable("world_sensor") then
-  sensor = component.getPrimary("world_sensor")
-end
-
 if component.isAvailable("redstone") then
   r = component.getPrimary("redstone")
   r.setBundledOutput(0, Farben.white, 0)
@@ -291,6 +287,9 @@ function Funktion.AdressenLesen()
   local y = 1
   Funktion.zeigeHier(1, y, sprachen.Adressseite .. seite + 1, 0)
   y = y + 1
+  if not gespeicherteAdressen then
+    Funktion.AdressenSpeichern()
+  end
   for i, na in pairs(gespeicherteAdressen) do
     if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
       AdressAnzeige = i - seite * 10
@@ -887,11 +886,28 @@ function Funktion.zeigeStatus()
   Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.richtung .. RichtungName) Funktion.neueZeile(1)
   Funktion.activetime() Funktion.neueZeile(1)
   Funktion.autoclose()
+  Funktion.atmosphere()
   Funktion.zeigeHier(xVerschiebung, zeile + 1, "")
   Trennlinienhoehe = zeile + 2
   Funktion.zeigeSteuerung()
   Funktion.RedstoneKontrolle()
   Funktion.Colorful_Lamp_Steuerung()
+end
+
+function Funktion.atmosphere()
+  if not sensor then
+    if component.isAvailable("world_sensor") then
+      sensor = component.getPrimary("world_sensor")
+    else
+      return
+    end
+  end
+  Funktion.neueZeile(1)
+  if sensor.hasBreathableAtmosphere() then
+    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.atmosphere .. sprachen.atmosphereJA)
+  else
+    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.atmosphere .. sprachen.atmosphereNEIN)
+  end
 end
 
 function Funktion.zeigeNachricht(...)
