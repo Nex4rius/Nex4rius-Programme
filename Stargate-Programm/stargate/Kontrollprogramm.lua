@@ -559,7 +559,7 @@ function Funktion.iriscontroller()
   end
   if codeaccepted == "-" or codeaccepted == nil then
   elseif messageshow == true then
-    Funktion.zeigeNachricht(sprachen.nachrichtAngekommen .. codeaccepted .. "                   ")
+    Funktion.zeigeNachricht(sprachen.nachrichtAngekommen .. Funktion.zeichenErsetzen(codeaccepted) .. "                   ")
     if codeaccepted == "Request: Disconnect Stargate" then
       sg.disconnect()
     elseif string.match(codeaccepted, "Iris: Open") or string.match(codeaccepted, "Iris: Offline") then
@@ -939,7 +939,7 @@ function Funktion.zeigeNachricht(...)
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, "", Bildschirmbreite)
   end
   if ... then
-    Funktion.zeigeHier(1, Bildschirmhoehe, Funktion.zeichenErsetzen(...), Bildschirmbreite)
+    Funktion.zeigeHier(1, Bildschirmhoehe, Funktion.zeichenErsetzen(Funktion.zeichenErsetzen(...)), Bildschirmbreite)
   else
     Funktion.zeigeHier(1, Bildschirmhoehe, "", Bildschirmbreite)
   end
