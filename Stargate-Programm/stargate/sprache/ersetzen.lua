@@ -16,6 +16,6 @@ return {
   ["Manual"]          = sprachen.manueller,
   ["Control"]         = sprachen.IrisSteuerungName,
   ["Accepted"]        = sprachen.akzeptiert,
-  ["Atmogood"]        = sprachen.atmosphereJA,
-  ["Atmodangerous"]   = sprachen.atmosphereNEIN,
+  ["Atmogood"]        = sprachen.atmosphere2 .. sprachen.atmosphereJA,
+  ["Atmodangerous"]   = sprachen.atmosphere2 .. sprachen.atmosphereNEIN,
 }
