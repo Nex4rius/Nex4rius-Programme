@@ -896,11 +896,13 @@ function Funktion.zeigeStatus()
 end
 
 function Funktion.sensor()
-  Funktion.neueZeile(1)
-  if sensor.hasBreathableAtmosphere() then
-    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.atmosphere .. sprachen.atmosphereJA)
-  else
-    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.atmosphere .. sprachen.atmosphereNEIN)
+  if sensor then
+    Funktion.neueZeile(1)
+    if sensor.hasBreathableAtmosphere() then
+      Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.atmosphere .. sprachen.atmosphereJA)
+    else
+      Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.atmosphere .. sprachen.atmosphereNEIN)
+    end
   end
 end
 
