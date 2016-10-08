@@ -899,13 +899,20 @@ function Funktion.zeigeStatus()
 end
 
 function Funktion.sensor()
-  if sensor then
-    Funktion.neueZeile(1)
-    if sensor.hasBreathableAtmosphere() then
-      Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.atmosphere .. sprachen.atmosphereJA)
+  if not sensor then
+    if component.isAvailable("world_sensor") then
+      sensor = component.getPrimary("world_sensor")
     else
-      Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.atmosphere .. sprachen.atmosphereNEIN)
+      return
     end
+  else
+    return
+  end
+  Funktion.neueZeile(1)
+  if sensor.hasBreathableAtmosphere() then
+    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.atmosphere .. sprachen.atmosphereJA)
+  else
+    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.atmosphere .. sprachen.atmosphereNEIN)
   end
 end
 
