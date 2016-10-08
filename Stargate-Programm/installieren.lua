@@ -96,9 +96,9 @@ function Funktionen.installieren(versionTyp)
       f:write(version .. " BETA")
       f:close()
     end
+    Sicherung.installieren = true
+    loadfile("/stargate/schreibSicherungsdatei.lua")(Sicherung)
   end
-  Sicherung.installieren = true
-  loadfile("/stargate/schreibSicherungsdatei.lua")(Sicherung)
   print()
   loadfile("/bin/rm.lua")("-v", "/update")
   loadfile("/bin/rm.lua")("-v", "/installieren.lua")

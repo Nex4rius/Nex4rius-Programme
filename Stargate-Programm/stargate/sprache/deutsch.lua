@@ -118,4 +118,5 @@ return {
   UpdateBeta                = "Aktualisierung Beta?",
   TastaturFehlt             = "Tastatur wird benötigt",
   bereitsNeusteVersion      = "keine Aktualisierungen gefunden",
+  autoUpdate                = "automatische Aktualisierungen sind aktiviert",
 }

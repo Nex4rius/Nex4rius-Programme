@@ -118,4 +118,5 @@ return {
   UpdateBeta                = "update beta?",
   TastaturFehlt             = "keyboard is required",
   bereitsNeusteVersion      = "no updates found",
+  autoUpdate                = "automated updates are enabled",
 }

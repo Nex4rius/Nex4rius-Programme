@@ -28,40 +28,38 @@ function Funktionen.checkSprache()
       schreibSicherungsdatei(Sicherung)
       print("")
       return true
-    else
-      return false
     end
   end
 end
 
 function Funktionen.checkKomponenten()
-  print(sprachen.pruefeKomponenten)
+  print(sprachen.pruefeKomponenten or "Prüfe Komponenten\n")
   if component.isAvailable("redstone") then
-    print(sprachen.redstoneOK)
+    print(sprachen.redstoneOK or "- Redstone Card        ok - optional")
     r = component.getPrimary("redstone")
   else
-    print(sprachen.redstoneFehlt)
+    print(sprachen.redstoneFehlt or "- Redstone Card        fehlt - optional")
     r = nil
   end
   if component.isAvailable("internet") then
-    print(sprachen.InternetOK)
+    print(sprachen.InternetOK or "- Internet             ok - optional")
   else
-    print(sprachen.InternetFehlt)
+    print(sprachen.InternetFehlt or "- Internet             fehlt - optional")
   end
   if gpu.maxResolution() == 80 then
-    print(sprachen.gpuOK2T)
+    print(sprachen.gpuOK2T or "- GPU Tier2            ok")
   elseif gpu.maxResolution() == 160 then
     graphicT3 = true
-    print(sprachen.gpuOK3T)
+    print(sprachen.gpuOK3T or "- GPU Tier3            ok - WARNUNG optimiert für T2 Bildschirme")
   else
-    print(sprachen.gpuFehlt)
+    print(sprachen.gpuFehlt or "- GPU Tier2            fehlt")
   end
   if component.isAvailable("stargate") then
-    print(sprachen.StargateOK)
+    print(sprachen.StargateOK or "- Stargate             ok\n")
     sg = component.getPrimary("stargate")
     return true
   else
-    print(sprachen.StargateFehlt)
+    print(sprachen.StargateFehlt or "- Stargate             fehlt\n")
     return false
   end
 end
@@ -78,7 +76,7 @@ function Funktionen.update(versionTyp)
       f:close()
       loadfile("autorun.lua")()
     else
-      print(sprachen.fehlerName)
+      print(sprachen.fehlerName or "<FEHLER>")
     end
   elseif versionTyp == "master" then
     loadfile("/bin/pastebin.lua")("run", "-f", "wLK1gCKt")
@@ -125,47 +123,54 @@ function Funktionen.mainCheck()
   if component.isAvailable("internet") then
     local serverVersion = Funktionen.checkServerVersion()
     local betaServerVersion = Funktionen.checkBetaServerVersion()
-    print(sprachen.derzeitigeVersion .. version .. sprachen.verfuegbareVersion .. serverVersion)
+    print(sprachen.derzeitigeVersion .. version .. sprachen.verfuegbareVersion .. serverVersion or "\nDerzeitige Version:    " .. version .. "\nVerfügbare Version:    " .. serverVersion)
     if serverVersion == betaServerVersion then else
-      print(sprachen.betaVersion .. betaServerVersion .. " BETA")
+      print(sprachen.betaVersion .. betaServerVersion .. " BETA" or "Beta-Version:          " .. betaServerVersion .. " BETA")
       if betaServerVersion == sprachen.fehlerName then else
         betaVersionName = "/beta"
       end
     end
     if arg == sprachen.ja or arg == "ja" or arg == "yes" then
-      print(sprachen.aktualisierenJa)
+      print(sprachen.aktualisierenJa or "\nAktualisieren: Ja\n")
       Funktionen.update("master")
     elseif arg == sprachen.nein or arg == "nein" or arg == "no" then
       -- nichts
     elseif arg == "beta" then
-      print(sprachen.aktualisierenBeta)
+      print(sprachen.aktualisierenBeta or "\nAktualisieren: Beta-Version\n")
       Funktionen.update("beta")
     elseif version ~= serverVersion or version ~= betaServerVersion then
       if Sicherung.installieren == false then
         local EndpunktVersion = string.len(version)
         if Sicherung.autoUpdate == true and version ~= serverVersion and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" then
-          print(sprachen.aktualisierenJa)
+          print(sprachen.aktualisierenJa or "\nAktualisieren: Ja\n")
           Funktionen.update("master")
           return
         else
-          print(sprachen.aktualisierenFrage .. betaVersionName .. "\n")
-          antwortFrage = io.read()
-          if string.lower(antwortFrage) == sprachen.ja or string.lower(antwortFrage) == "ja" or string.lower(antwortFrage) == "yes" then
-            print(sprachen.aktualisierenJa)
+          print(sprachen.aktualisierenFrage .. betaVersionName .. "\n" or "\nAktualisieren? ja/nein" .. betaVersionName .. "\n")
+          if Sicherung.autoUpdate then
+            print(sprachen.autoUpdateAn or "automatische Aktualisierungen sind aktiviert")
+            os.sleep(2)
             Funktionen.update("master")
             return
-          elseif string.lower(antwortFrage) == "beta" then
-            print(sprachen.aktualisierenBeta)
-            Funktionen.update("beta")
-            return
           else
-            print(sprachen.aktualisierenNein .. antwortFrage)
+            antwortFrage = io.read()
+            if string.lower(antwortFrage) == sprachen.ja or string.lower(antwortFrage) == "ja" or string.lower(antwortFrage) == "yes" then
+              print(sprachen.aktualisierenJa or "\nAktualisieren: Ja\n")
+              Funktionen.update("master")
+              return
+            elseif string.lower(antwortFrage) == "beta" then
+              print(sprachen.aktualisierenBeta or "\nAktualisieren: Beta-Version\n")
+              Funktionen.update("beta")
+              return
+            else
+              print(sprachen.aktualisierenNein .. antwortFrage or "\nAntwort: " .. antwortFrage)
+            end
           end
         end
       end
     end
   end
-  print(sprachen.laden)
+  print(sprachen.laden or "\nLaden...")
   Sicherung.installieren = false
   schreibSicherungsdatei(Sicherung)
   if Funktionen.checkDateien() then
@@ -175,10 +180,16 @@ function Funktionen.mainCheck()
     end
     loadfile("/stargate/Kontrollprogramm.lua")(Funktionen.update, Funktionen.checkServerVersion, version)
   else
-    print(string.format("%s\n%s %s/%s", sprachen.fehlerName, sprachen.DateienFehlen, sprachen.ja, sprachen.nein))
-    antwortFrage = io.read()
-    if string.lower(antwortFrage) == sprachen.ja or string.lower(antwortFrage) == "ja" or string.lower(antwortFrage) == "yes" then
+    print(string.format("%s\n%s %s/%s", sprachen.fehlerName, sprachen.DateienFehlen, sprachen.ja, sprachen.nein) or "<FEHLER>\nDateien fehlen\nAlles neu herunterladen? ja/nein")
+    if Sicherung.autoUpdate then
+      print(sprachen.autoUpdateAn or "automatische Aktualisierungen sind aktiviert")
+      os.sleep(2)
       loadfile("/bin/pastebin.lua")("run", "-f", "wLK1gCKt")
+    else
+      antwortFrage = io.read()
+      if string.lower(antwortFrage) == sprachen.ja or string.lower(antwortFrage) == "ja" or string.lower(antwortFrage) == "yes" then
+        loadfile("/bin/pastebin.lua")("run", "-f", "wLK1gCKt")
+      end
     end
   end
 end
@@ -207,11 +218,11 @@ function Funktionen.main()
     if fs.exists("/stargate/sprache/deutsch.lua") then
       sprachen = loadfile("/stargate/sprache/deutsch.lua")()
     else
-      print(sprachen.fehlerName)
+      print(sprachen.fehlerName or "<FEHLER>")
     end
   end
   if arg == sprachen.hilfe or arg == "hilfe" or arg == "help" then
-    print(sprachen.Hilfetext)
+    print(sprachen.Hilfetext or "Verwendung: autorun [...]\nja\t-> Aktualisierung zur stabilen Version\nnein\t-> keine Aktualisierung\nbeta\t-> Aktualisierung zur Beta-Version\nhilfe\t-> zeige diese Nachricht nochmal")
   else
     if Funktionen.checkKomponenten() then
       Funktionen.mainCheck()

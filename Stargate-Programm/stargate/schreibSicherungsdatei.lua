@@ -2,21 +2,32 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
+local fs        = require("filesystem")
 local NEU       = require("shell").parse(...)[1]
 local ALT       = {}
 local Sicherung = {}
 local sprachen  = {}
 
 if type(NEU) == "table" then
-  if require("filesystem").exists("/stargate/Sicherungsdatei.lua") then
+  if fs.exists("/stargate/Sicherungsdatei.lua") then
     ALT = loadfile("/stargate/Sicherungsdatei.lua")()
   end
-  if require("filesystem").exists("/stargate/sprache/" .. tostring(NEU.Sprache) .. ".lua") then
+  if fs.exists("/stargate/sprache/" .. tostring(NEU.Sprache) .. ".lua") then
     sprachen = loadfile("/stargate/sprache/" .. tostring(NEU.Sprache) .. ".lua")()
-  elseif require("filesystem").exists("/stargate/sprache/" .. tostring(ALT.Sprache) .. ".lua") then
+  elseif fs.exists("/stargate/sprache/" .. tostring(ALT.Sprache) .. ".lua") then
     sprachen = loadfile("/stargate/sprache/" .. tostring(ALT.Sprache) .. ".lua")()
-  else
+  elseif fs.exists("/stargate/sprache/deutsch.lua") then
     sprachen = loadfile("/stargate/sprache/deutsch.lua")()
+  else
+    sprachen.speichern      = 'zum speichern drücke "Strg + S"'
+    sprachen.schliessen     = 'zum schließen drücke "Strg + W"'
+    sprachen.autoclosetime  = "in Sekunden -- false für keine automatische Schließung"
+    sprachen.IDC            = "Iris Deaktivierungscode"
+    sprachen.RF             = "zeige Energie in RF anstatt in EU"
+    sprachen.Sprache        = "deutsch / english"
+    sprachen.side           = "unten, oben, hinten, vorne, rechts oder links"
+    sprachen.autoUpdate     = "aktiviere automatische Aktualisierungen"
+    sprachen.nichtsAendern  = "verändere nichts ab hier"
   end
   if type(NEU.autoclosetime) == "number" or NEU.autoclosetime == false then Sicherung.autoclosetime = NEU.autoclosetime else Sicherung.autoclosetime = ALT.autoclosetime end
   if type(NEU.IDC)           == "string" then Sicherung.IDC          = NEU.IDC          else Sicherung.IDC          = ALT.IDC          end
