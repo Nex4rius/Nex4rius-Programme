@@ -910,7 +910,7 @@ function Funktion.atmosphere(...)
         return " Atmodangerous"
       end
     else
-      return ""
+      return " "
     end
   else
     Funktion.neueZeile(1)
