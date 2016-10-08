@@ -67,7 +67,7 @@ return {
   zeit2                     = "Zeit:",
   atmosphere                = "Atmosphäre:       ",
   atmosphereJA              = "gut",
-  atmosphereNEIN            = "Gefahr",
+  atmosphereNEIN            = "gefährlich",
   abschalten                = "Abschalten",
   oeffneIris                = "Öffne Iris",
   schliesseIris             = "Schließe Iris",
