@@ -124,4 +124,5 @@ return {
   TastaturFehlt             = "Tastatur wird benötigt",
   bereitsNeusteVersion      = "keine Aktualisierungen gefunden",
   autoUpdate                = "automatische Aktualisierungen sind aktiviert",
+  akzeptiert                = "akzeptiert",
 }
