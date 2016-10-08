@@ -41,7 +41,7 @@ return {
   an_aus                    = "An/Aus",
   AdressenBearbeiten        = "Bearbeite Adressen",
   beenden                   = "Beenden",
-  nachrichtAngekommen       = "Nachricht angekommen: ",
+  nachrichtAngekommen       = "Nachricht: ",
   RedstoneSignale           = "\nRedstonesignale",
   RedstoneWeiss             = "weiß: Status nicht Inaktiv",
   RedstoneRot               = "rot: eingehende Verbindung",
