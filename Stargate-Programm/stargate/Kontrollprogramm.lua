@@ -114,10 +114,6 @@ do
   version                       = tostring(args[3])
 end
 
-if component.isAvailable("world_sensor") then
-  sensor = component.getPrimary("world_sensor")
-end
-
 if component.isAvailable("redstone") then
   r = component.getPrimary("redstone")
   r.setBundledOutput(0, Farben.white, 0)
