@@ -300,14 +300,14 @@ function Funktion.AdressenLesen()
       Funktion.zeigeHier(1, y, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 28 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
       y = y + 1
       if string.sub(na[4], 1, 1) == "<" then
-        gpu.setForeground(Farben.FehlerFarbe)
+        Funktion.Farbe(background, Farben.FehlerFarbe)
         Funktion.zeigeHier(1, y, "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
-        gpu.setForeground(Farben.Adresstextfarbe)
+        Funktion.Farbe(background, Farben.Adresstextfarbe)
       else
         Funktion.zeigeHier(1, y, "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
       end
       y = y + 1
-      gpu.setBackground(Farben.Adressfarbe)
+      Funktion.Farbe(Farben.Adressfarbe)
     end
   end
 end
@@ -341,20 +341,17 @@ function Funktion.Infoseite()
     Taste.links[i] = Taste.b
   end
   print(sprachen.RedstoneSignale)
-  gpu.setBackground(Farben.weisseFarbe)
-  gpu.setForeground(Farben.schwarzeFarbe)
+  Funktion.Farbe(Farben.weisseFarbe, Farben.schwarzeFarbe)
   print(sprachen.RedstoneWeiss)
-  gpu.setBackground(Farben.roteFarbe)
+  Funktion.Farbe(Farben.roteFarbe)
   print(sprachen.RedstoneRot)
-  gpu.setBackground(Farben.gelbeFarbe)
+  Funktion.Farbe(Farben.gelbeFarbe)
   print(sprachen.RedstoneGelb)
-  gpu.setBackground(Farben.schwarzeFarbe)
-  gpu.setForeground(Farben.weisseFarbe)
+  Funktion.Farbe(Farben.schwarzeFarbe, Farben.weisseFarbe)
   print(sprachen.RedstoneSchwarz)
-  gpu.setBackground(Farben.grueneFarbe)
+  Funktion.Farbe(Farben.grueneFarbe)
   print(sprachen.RedstoneGruen)
-  gpu.setBackground(Farben.Adressfarbe)
-  gpu.setForeground(Farben.Adresstextfarbe)
+  Funktion.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
   print(sprachen.versionName .. version)
   print("\n" .. sprachen.entwicklerName .. " Nex4rius")
 end
@@ -398,8 +395,7 @@ function Funktion.AdressenSpeichern()
     maxseiten = (i + k) / 10
     AdressenAnzahl = i
   end
-  gpu.setBackground(Farben.Adressfarbe)
-  gpu.setForeground(Farben.Adresstextfarbe)
+  Funktion.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
   for P = 1, Bildschirmhoehe - 3 do
     Funktion.zeigeHier(1, P, "", xVerschiebung - 3)
   end
@@ -408,8 +404,7 @@ function Funktion.AdressenSpeichern()
 end
 
 function Funktion.zeigeMenu()
-  gpu.setBackground(Farben.Adressfarbe)
-  gpu.setForeground(Farben.Adresstextfarbe)
+  Funktion.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
   for P = 1, Bildschirmhoehe - 3 do
     Funktion.zeigeHier(1, P, "", xVerschiebung - 3)
   end
@@ -432,7 +427,7 @@ function Funktion.neueZeile(...)
 end
 
 function Funktion.zeigeFarben()
-  gpu.setBackground(Farben.Trennlinienfarbe)
+  Funktion.Farbe(Farben.Trennlinienfarbe)
   for P = 1, Bildschirmhoehe - 2 do
     Funktion.zeigeHier(xVerschiebung - 2, P, "  ", 1)
   end
@@ -732,8 +727,7 @@ end
 
 function Funktion.zeigeSteuerung()
   Funktion.zeigeFarben()
-  gpu.setBackground(Farben.Steuerungsfarbe)
-  gpu.setForeground(Farben.Steuerungstextfarbe)
+  Funktion.Farbe(Farben.Steuerungsfarbe, Farben.Steuerungstextfarbe)
   Funktion.neueZeile(3)
   Funktion.zeigeHier(xVerschiebung, zeile - 1, "")
   Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.Steuerung) Funktion.neueZeile(1)
@@ -870,8 +864,7 @@ end
 
 function Funktion.zeigeStatus()
   Funktion.aktualisiereStatus()
-  gpu.setBackground(Farben.Statusfarbe)
-  gpu.setForeground(Farben.Statustextfarbe)
+  Funktion.Farbe(Farben.Statusfarbe, Farben.Statustextfarbe)
   Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.lokaleAdresse .. locAddr) Funktion.neueZeile(1)
   Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zielAdresseName .. zielAdresse) Funktion.neueZeile(1)
   Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zielName .. remoteName) Funktion.neueZeile(1)
@@ -905,8 +898,7 @@ function Funktion.zeigeNachricht(...)
   end
   letzteNachricht = ...
   letzteNachrichtZeit = os.time()
-  gpu.setBackground(Farben.Nachrichtfarbe)
-  gpu.setForeground(Farben.Nachrichttextfarbe)
+  Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
   if VersionUpdate == true then
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, sprachen.aktualisierenGleich, Bildschirmbreite)
   elseif fs.exists("/log") then
@@ -919,7 +911,7 @@ function Funktion.zeigeNachricht(...)
   else
     Funktion.zeigeHier(1, Bildschirmhoehe, "", Bildschirmbreite)
   end
-  gpu.setBackground(Farben.Statusfarbe)
+  Funktion.Farbe(Farben.Statusfarbe)
 end
 
 function Funktion.schreibFehlerLog(...)
@@ -1015,8 +1007,7 @@ function Taste.eingabe_enter()
 end
 
 function Taste.Pfeil_links()
-  gpu.setBackground(Farben.Steuerungstextfarbe)
-  gpu.setForeground(Farben.Steuerungsfarbe)
+  Funktion.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
   if seite >= 1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.vorherigeSeite, 0)
   elseif seite == -1 then
@@ -1025,8 +1016,7 @@ function Taste.Pfeil_links()
   end
   if seite <= -1 then else
     seite = seite - 1
-    gpu.setBackground(Farben.Adressfarbe)
-    gpu.setForeground(Farben.Adresstextfarbe)
+    Funktion.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
     for P = 1, Bildschirmhoehe - 3 do
       Funktion.zeigeHier(1, P, "", xVerschiebung - 3)
     end
@@ -1035,8 +1025,7 @@ function Taste.Pfeil_links()
 end
 
 function Taste.Pfeil_rechts()
-  gpu.setBackground(Farben.Steuerungstextfarbe)
-  gpu.setForeground(Farben.Steuerungsfarbe)
+  Funktion.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
   if seite == -1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.zeigeAdressen, 0)
   elseif maxseiten > seite + 1 then
@@ -1044,8 +1033,7 @@ function Taste.Pfeil_rechts()
   end
   if seite + 1 < maxseiten then
     seite = seite + 1
-    gpu.setBackground(Farben.Adressfarbe)
-    gpu.setForeground(Farben.Adresstextfarbe)
+    Funktion.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
     for P = 1, Bildschirmhoehe - 3 do
       Funktion.zeigeHier(1, P, "", xVerschiebung - 3)
     end
@@ -1054,15 +1042,13 @@ function Taste.Pfeil_rechts()
 end
 
 function Taste.q(y)
-  gpu.setBackground(Farben.AdressfarbeAktiv)
-  gpu.setForeground(Farben.Adresstextfarbe)
+  Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
   Funktion.zeigeHier(1, y, "Q " .. sprachen.beenden, 0)
   running = false
 end
 
 function Taste.d()
-  gpu.setBackground(Farben.Steuerungstextfarbe)
-  gpu.setForeground(Farben.Steuerungsfarbe)
+  Funktion.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
   Funktion.zeigeHier(Taste.Koordinaten.d_X + 2, Taste.Koordinaten.d_Y, "D " .. sprachen.abschalten, 0)
   if state == "Connected" and direction == "Incoming" then
     sg.disconnect()
@@ -1078,8 +1064,7 @@ function Taste.d()
 end
 
 function Taste.e()
-  gpu.setBackground(Farben.Steuerungstextfarbe)
-  gpu.setForeground(Farben.Steuerungsfarbe)
+  Funktion.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
   Funktion.zeigeHier(Taste.Koordinaten.e_X, Taste.Koordinaten.e_Y, "E " .. sprachen.IDCeingabe, 0)
   if Funktion.Tastatur() then
     if state == "Connected" and direction == "Outgoing" then
@@ -1094,8 +1079,7 @@ function Taste.e()
 end
 
 function Taste.o()
-  gpu.setBackground(Farben.Steuerungstextfarbe)
-  gpu.setForeground(Farben.Steuerungsfarbe)
+  Funktion.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
   Funktion.zeigeHier(Taste.Koordinaten.o_X + 2, Taste.Koordinaten.o_Y, "O " .. sprachen.oeffneIris, 0)
   if iris == "Offline" then else
     Funktion.irisOpen()
@@ -1114,8 +1098,7 @@ function Taste.o()
 end
 
 function Taste.c()
-  gpu.setBackground(Farben.Steuerungstextfarbe)
-  gpu.setForeground(Farben.Steuerungsfarbe)
+  Funktion.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
   Funktion.zeigeHier(Taste.Koordinaten.c_X, Taste.Koordinaten.c_Y, "C " .. sprachen.schliesseIris, 0)
   if iris == "Offline" then else
     Funktion.irisClose()
@@ -1127,8 +1110,7 @@ function Taste.c()
 end
 
 function Taste.i(y)
-  gpu.setBackground(Farben.AdressfarbeAktiv)
-  gpu.setForeground(Farben.Adresstextfarbe)
+  Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
   Funktion.zeigeHier(1, y, "I " .. sprachen.IrisSteuerung .. sprachen.an_aus, 0)
   event.timer(2, Funktion.zeigeMenu)
   if iris == "Offline" then else
@@ -1143,12 +1125,10 @@ function Taste.i(y)
 end
 
 function Taste.z(y)
-  gpu.setBackground(Farben.AdressfarbeAktiv)
-  gpu.setForeground(Farben.Adresstextfarbe)
+  Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
   Funktion.zeigeHier(1, y, "Z " .. sprachen.AdressenBearbeiten, 0)
   if Funktion.Tastatur() then
-    gpu.setBackground(Farben.Nachrichtfarbe)
-    gpu.setForeground(Farben.Textfarbe)
+    Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
     screen.setTouchModeInverted(false)
     edit("stargate/adressen.lua")
     screen.setTouchModeInverted(true)
@@ -1162,12 +1142,10 @@ function Taste.z(y)
 end
 
 function Taste.l(y)
-  gpu.setBackground(Farben.AdressfarbeAktiv)
-  gpu.setForeground(Farben.Adresstextfarbe)
+  Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
   Funktion.zeigeHier(1, y, "L " .. sprachen.EinstellungenAendern, 0)
   if Funktion.Tastatur() then
-    gpu.setBackground(Farben.Nachrichtfarbe)
-    gpu.setForeground(Farben.Textfarbe)
+    Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
     schreibSicherungsdatei(Sicherung)
     screen.setTouchModeInverted(false)
     edit("stargate/Sicherungsdatei.lua")
@@ -1192,8 +1170,7 @@ function Taste.l(y)
 end
 
 function Taste.u(y)
-  gpu.setBackground(Farben.AdressfarbeAktiv)
-  gpu.setForeground(Farben.Adresstextfarbe)
+  Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
   Funktion.zeigeHier(1, y, "U " .. sprachen.Update, 0)
   if component.isAvailable("internet") then
     if version ~= Funktion.checkServerVersion() then
@@ -1209,8 +1186,7 @@ function Taste.u(y)
 end
 
 function Taste.b(y)
-  gpu.setBackground(Farben.AdressfarbeAktiv)
-  gpu.setForeground(Farben.Adresstextfarbe)
+  Funktion.Farbe(Farben.AdressfarbeAktiv), Farben.Adresstextfarbe)
   Funktion.zeigeHier(1, y, "B " .. sprachen.UpdateBeta, 0)
   if component.isAvailable("internet") then
     Funktion.beendeAlles()
@@ -1220,8 +1196,7 @@ end
 
 function Taste.Zahl(c)
   event.timer(2, Funktion.zeigeMenu)
-  gpu.setBackground(Farben.hellgrau)
-  gpu.setForeground(Farben.Adresstextfarbe)
+  Funktion.Farbe(Farben.hellgrau, Farben.Adresstextfarbe)
   if c == "0" then
     c = 10
   end
@@ -1377,8 +1352,7 @@ end
 
 function Funktion.beendeAlles()
   gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
-  gpu.setBackground(Farben.schwarzeFarbe)
-  gpu.setForeground(Farben.weisseFarbe)
+  Funktion.Farbe(Farben.schwarzeFarbe, Farben.weisseFarbe)
   term.clear()
   print(sprachen.ausschaltenName .. "\n")
   Funktion.Colorful_Lamp_Farben(0, true)
