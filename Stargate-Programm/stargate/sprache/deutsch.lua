@@ -66,6 +66,7 @@ return {
   zeit1                     = "Zeit:             ",
   zeit2                     = "Zeit:",
   atmosphere                = "Atmosphäre:       ",
+  atmosphere2               = "Atmosphäre: ",
   atmosphereJA              = "gut",
   atmosphereNEIN            = "gefährlich",
   abschalten                = "Abschalten",
