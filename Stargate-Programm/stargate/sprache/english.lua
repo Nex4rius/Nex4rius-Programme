@@ -41,7 +41,7 @@ return {
   an_aus                    = "On/Off",
   AdressenBearbeiten        = "Edit addresses",
   beenden                   = "Quit",
-  nachrichtAngekommen       = "message received: ",
+  nachrichtAngekommen       = "message: ",
   RedstoneSignale           = "\nredstone signals",
   RedstoneWeiss             = "white: state not Idle",
   RedstoneRot               = "red: incoming connection",
