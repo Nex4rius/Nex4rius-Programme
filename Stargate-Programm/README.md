@@ -42,6 +42,9 @@ Die Funktionen meines Programms:
 - automatisches senden und empfangen der gesamten Adressliste bei einem offenen Wurmloch (natürlich ohne den IDC) und automatisches hinzufügen von den neuen Adressen
 - mit Touchscreenfunktion !
 
+Wichtig!
+Damit das Programm ordentlich funktioniert muss der Computer entweder im gleichen Chunk wie das Stargate sein oder einen Chunkloader haben.
+
 Verwendung: autorun [...]<br>
 ja -> Aktualisierung zur stabilen Version<br>
 nein -> keine Aktualisierung<br>
@@ -98,6 +101,9 @@ the features of my program:
 - allows closing of incoming wormholes if its disabled in config AND there is a computer at either end
 - automatically sends and receives entire address list on an open wormhole (without the IDC of course) and automatically adds the new addresses
 - with touchscreen functionalities
+
+important!
+This program either needs to be in the same chunk as the Stargate or there has to be a chunkloader nearby to function properly.
 
 Usage: autorun [...]<br>
 yes   -> update to stable version<br>
