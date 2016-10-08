@@ -16,7 +16,7 @@ if type(NEU) == "table" then
     sprachen = loadfile("/stargate/sprache/" .. tostring(NEU.Sprache) .. ".lua")()
   elseif fs.exists("/stargate/sprache/" .. tostring(ALT.Sprache) .. ".lua") then
     sprachen = loadfile("/stargate/sprache/" .. tostring(ALT.Sprache) .. ".lua")()
-  elseif fs.exists("/stargate/sprache/deutsch.lua")
+  elseif fs.exists("/stargate/sprache/deutsch.lua") then
     sprachen = loadfile("/stargate/sprache/deutsch.lua")()
   else
     sprachen.speichern      = 'zum speichern drücke "Strg + S"'
