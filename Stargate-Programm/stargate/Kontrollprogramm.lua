@@ -104,7 +104,7 @@ Taste.Koordinaten               = {}
 Taste.Steuerunglinks            = {}
 Taste.Steuerungrechts           = {}
 
-local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, c, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen
+local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, c, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor
 local iris, k, letzteNachricht, locAddr, mess, mess_old, ok, r, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version
 
 do
@@ -113,7 +113,11 @@ do
   Funktion.checkServerVersion   = args[2]
   version                       = tostring(args[3])
 end
-  
+
+if component.isAvailable("world_sensor") then
+  sensor = component.getPrimary("world_sensor")
+end
+
 if component.isAvailable("redstone") then
   r = component.getPrimary("redstone")
   r.setBundledOutput(0, Farben.white, 0)
