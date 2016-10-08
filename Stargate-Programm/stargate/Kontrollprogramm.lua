@@ -621,6 +621,8 @@ function Funktion.destinationName()
         if remAddr == na[2] then
           if na[1] == na[2] then
             remoteName = sprachen.Unbekannt
+          elseif na[2] == "XXXX-XXX-XX" then
+            adressen[j] = nil
           else
             remoteName = na[1]
             break
