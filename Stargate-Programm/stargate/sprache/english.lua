@@ -124,4 +124,5 @@ return {
   TastaturFehlt             = "keyboard is required",
   bereitsNeusteVersion      = "no updates found",
   autoUpdate                = "automated updates are enabled",
+  akzeptiert                = "accepted",
 }
