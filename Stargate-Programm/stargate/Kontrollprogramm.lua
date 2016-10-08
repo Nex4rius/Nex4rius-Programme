@@ -202,8 +202,8 @@ local key_event_name = "key_down"
 local sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
 local ersetzen = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
 
-function Funktion.zeichenErsetzen(eingabeErsetzung)
-  return string.gsub(eingabeErsetzung, "%a+", function (str) return ersetzen [str] end)
+function Funktion.zeichenErsetzen(...)
+  return string.gsub(..., "%a+", function (str) return ersetzen [str] end)
 end
 
 function Funktion.touchscreen(x, y)
@@ -486,16 +486,16 @@ function Funktion.iriscontroller()
   end
   if direction == "Incoming" and incode == Sicherung.IDC and iriscontrol == "on" and Sicherung.control == "On" then
     if iris == "Offline" then
-      sg.sendMessage("IDC Accepted Iris: Offline")
+      sg.sendMessage("IDC Accepted Iris: Offline" .. Funktion.atmosphere(true))
     else
       Funktion.irisOpen()
       os.sleep(2)
-      sg.sendMessage("IDC Accepted Iris: Open")
+      sg.sendMessage("IDC Accepted Iris: Open" .. Funktion.atmosphere(true))
     end
     iriscontrol = "off"
     IDCyes = true
   elseif direction == "Incoming" and send == true then
-    sg.sendMessage("Iris Control: " .. Sicherung.control .. " Iris: " .. iris, Funktion.sendeAdressliste())
+    sg.sendMessage("Iris Control: " .. Sicherung.control .. " Iris: " .. iris .. Funktion.atmosphere(true), Funktion.sendeAdressliste())
     send = false
     Funktion.zeigeMenu()
   end
@@ -894,7 +894,7 @@ function Funktion.zeigeStatus()
   Funktion.Colorful_Lamp_Steuerung()
 end
 
-function Funktion.atmosphere()
+function Funktion.atmosphere(...)
   if not sensor then
     if component.isAvailable("world_sensor") then
       sensor = component.getPrimary("world_sensor")
@@ -902,11 +902,23 @@ function Funktion.atmosphere()
       return
     end
   end
-  Funktion.neueZeile(1)
-  if sensor.hasBreathableAtmosphere() then
-    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.atmosphere .. sprachen.atmosphereJA)
+  if ... then
+    if sensor then
+      if sensor.hasBreathableAtmosphere() then
+        return " Atmo_good"
+      else
+        return " Atmo_dangerous"
+      end
+    else
+      return ""
+    end
   else
-    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.atmosphere .. sprachen.atmosphereNEIN)
+    Funktion.neueZeile(1)
+    if sensor.hasBreathableAtmosphere() then
+      Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.atmosphere .. sprachen.atmosphereJA)
+    else
+      Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.atmosphere .. sprachen.atmosphereNEIN)
+    end
   end
 end
 
@@ -1106,7 +1118,7 @@ function Taste.o()
     if wormhole == "in" then
       if iris == "Offline" then else
         os.sleep(2)
-        sg.sendMessage("Manual Override: Iris: Open")
+        sg.sendMessage("Manual Override: Iris: Open .. Funktion.atmosphere(true)")
       end
     end
     if state == "Idle" then
@@ -1124,7 +1136,7 @@ function Taste.c()
     Funktion.irisClose()
     iriscontrol = "off"
     if wormhole == "in" then
-      sg.sendMessage("Manual Override: Iris: Closed")
+      sg.sendMessage("Manual Override: Iris: Closed .. Funktion.atmosphere(true)")
     end
   end
 end
