@@ -23,7 +23,7 @@ Ein OpenComputer Computer mit folgenden Komponenten:
 pastebin run -f Dkt9dn4S
 ```
 
-Einige Funktionen meines Programms:
+Die Funktionen meines Programms:
 
 - automatische Schließung der Iris beim eingehenden Wurmloch (wenn Iriskontrolle eingeschaltet ist)
 - automatische Öffnung der Iris beim Erhalt des richtigen IDC (**I**ris **D**eaktivierungs**c**ode)
@@ -80,7 +80,7 @@ Make an OpenComputer computer with:
 pastebin run -f Dkt9dn4S
 ```
 
-Some feature of my program:
+the features of my program:
 
 - autoclose iris on incoming wormhole (when iriscontrol is turned on)
 - autoopen iris if correct IDC is received (**i**ris **d**eactivation **c**ode)
