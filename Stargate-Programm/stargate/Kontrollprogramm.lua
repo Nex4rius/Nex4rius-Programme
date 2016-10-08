@@ -1188,7 +1188,7 @@ function Taste.u(y)
 end
 
 function Taste.b(y)
-  Funktion.Farbe(Farben.AdressfarbeAktiv), Farben.Adresstextfarbe)
+  Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
   Funktion.zeigeHier(1, y, "B " .. sprachen.UpdateBeta, 0)
   if component.isAvailable("internet") then
     Funktion.beendeAlles()
