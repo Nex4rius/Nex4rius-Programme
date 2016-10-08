@@ -41,7 +41,7 @@ return {
   an_aus                    = "On/Off",
   AdressenBearbeiten        = "Edit addresses",
   beenden                   = "Quit",
-  nachrichtAngekommen       = "message received: ",
+  nachrichtAngekommen       = "message: ",
   RedstoneSignale           = "\nredstone signals",
   RedstoneWeiss             = "white: state not Idle",
   RedstoneRot               = "red: incoming connection",
@@ -66,6 +66,7 @@ return {
   zeit1                     = "Time:             ",
   zeit2                     = "Time:",
   atmosphere                = "Atmosphere:       ",
+  atmosphere2               = "Atmosphere: ",
   atmosphereJA              = "good",
   atmosphereNEIN            = "dangerous",
   abschalten                = "Disconnect",
@@ -124,4 +125,5 @@ return {
   TastaturFehlt             = "keyboard is required",
   bereitsNeusteVersion      = "no updates found",
   autoUpdate                = "automated updates are enabled",
+  akzeptiert                = "accepted",
 }
