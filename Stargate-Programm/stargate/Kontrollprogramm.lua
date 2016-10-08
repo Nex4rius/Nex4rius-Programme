@@ -905,7 +905,7 @@ function Funktion.atmosphere()
   else
     if component.isAvailable("world_sensor") then
       sensor = component.getPrimary("world_sensor")
-    else
+    end
   end
 end
 
