@@ -46,6 +46,11 @@ function Funktionen.checkKomponenten()
   else
     print(sprachen.InternetFehlt or "- Internet             fehlt - optional")
   end
+  if component.isAvailable("world_sensor") then
+    print(sprachen.SensorOK or "- World Sensor         ok - optional")
+  else
+    print(sprachen.SensorFehlt or "- World Sensor         fehlt - optional")
+  end
   if gpu.maxResolution() == 80 then
     print(sprachen.gpuOK2T or "- GPU Tier2            ok")
   elseif gpu.maxResolution() == 160 then
