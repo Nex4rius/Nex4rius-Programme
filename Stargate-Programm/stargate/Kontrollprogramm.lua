@@ -886,7 +886,7 @@ function Funktion.zeigeStatus()
   Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.richtung .. RichtungName) Funktion.neueZeile(1)
   Funktion.activetime() Funktion.neueZeile(1)
   Funktion.autoclose()
-  Funktion.sensor()
+  Funktion.atmosphere()
   Funktion.zeigeHier(xVerschiebung, zeile + 1, "")
   Trennlinienhoehe = zeile + 2
   Funktion.zeigeSteuerung()
@@ -894,21 +894,18 @@ function Funktion.zeigeStatus()
   Funktion.Colorful_Lamp_Steuerung()
 end
 
-function Funktion.sensor()
-  if not sensor then
+function Funktion.atmosphere()
+  if sensor then
+    Funktion.neueZeile(1)
+    if sensor.hasBreathableAtmosphere() then
+      Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.atmosphere .. sprachen.atmosphereJA)
+    else
+      Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.atmosphere .. sprachen.atmosphereNEIN)
+    end
+  else
     if component.isAvailable("world_sensor") then
       sensor = component.getPrimary("world_sensor")
     else
-      return
-    end
-  else
-    return
-  end
-  Funktion.neueZeile(1)
-  if sensor.hasBreathableAtmosphere() then
-    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.atmosphere .. sprachen.atmosphereJA)
-  else
-    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.atmosphere .. sprachen.atmosphereNEIN)
   end
 end
 
