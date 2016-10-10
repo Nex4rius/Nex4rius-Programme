@@ -127,4 +127,5 @@ return {
   autoUpdate                = "automated updates are enabled",
   akzeptiert                = "accepted",
   StargateName              = "the name of this stargate",
+  FrageStargateName         = "give this stargate a name",
 }
