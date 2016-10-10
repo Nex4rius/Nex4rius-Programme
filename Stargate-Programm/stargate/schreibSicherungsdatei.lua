@@ -52,7 +52,7 @@ if type(NEU) == "table" then
   f:write('  Sprache       = "' .. tostring(Sicherung.Sprache)      .. '", -- ' .. tostring(sprachen.Sprache)       .. '\n')
   f:write('  side          = "' .. tostring(Sicherung.side)         .. '", -- ' .. tostring(sprachen.side)          .. '\n')
   f:write('  autoUpdate    = '  .. tostring(Sicherung.autoUpdate)   ..  ', -- ' .. tostring(sprachen.autoUpdate)    .. '\n')
-  f:write('  name          = "' .. tostring(Sicherung.StargateName) .. '", -- ' .. tostring(sprachen.StargateName)  .. '\n')
+  f:write('  StargateName  = "' .. tostring(Sicherung.StargateName) .. '", -- ' .. tostring(sprachen.StargateName)  .. '\n')
   f:write('\n')
   f:write(string.rep("-", 10)   .. tostring(sprachen.nichtsAendern) .. string.rep("-", 60 - string.len(tostring(sprachen.nichtsAendern))) .. '\n')
   f:write('\n')
