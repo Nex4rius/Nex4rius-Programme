@@ -1364,7 +1364,7 @@ function Funktion.checkStargateName()
   if Sicherung.StargateName ~= "string" then
     Sicherung.StargateName = ""
   end
-  if string.len(Sicherung.StargateName) = 0 then
+  if string.len(Sicherung.StargateName) == 0 then
     Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
     term.clear()
     print(sprachen.FrageStargateName .. "\n")
