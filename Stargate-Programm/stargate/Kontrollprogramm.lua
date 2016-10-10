@@ -1361,18 +1361,17 @@ function Funktion.angekommeneAdressen(...)
 end
 
 function Funktion.checkStargateName()
-  if Sicherung.StargateName then
-    if type(Sicherung.StargateName) == "string" then
-      if string.len(Sicherung.StargateName) = 0 then
-        Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
-        term.clear()
-        print(sprachen.FrageStargateName .. "\n")
-        Sicherung.StargateName = io.read()
-        schreibSicherungsdatei(Sicherung)
-      end
-      Funktion.newAddress(Funktion.getAddress(sg.localAddress()), Sicherung.StargateName)
-    end
+  if Sicherung.StargateName ~= "string" then
+    Sicherung.StargateName = ""
   end
+  if string.len(Sicherung.StargateName) = 0 then
+    Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
+    term.clear()
+    print(sprachen.FrageStargateName .. "\n")
+    Sicherung.StargateName = io.read()
+    schreibSicherungsdatei(Sicherung)
+  end
+  Funktion.newAddress(Funktion.getAddress(sg.localAddress()), Sicherung.StargateName)
 end
 
 function Funktion.angekommeneVersion(...)
