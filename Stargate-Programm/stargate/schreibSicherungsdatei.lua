@@ -28,8 +28,10 @@ if type(NEU) == "table" then
     sprachen.side           = "unten, oben, hinten, vorne, rechts oder links"
     sprachen.autoUpdate     = "aktiviere automatische Aktualisierungen"
     sprachen.nichtsAendern  = "verändere nichts ab hier"
+    sprachen.StargateName   = "der Name dieses Stargates"
   end
   if type(NEU.autoclosetime) == "number" or NEU.autoclosetime == false then Sicherung.autoclosetime = NEU.autoclosetime else Sicherung.autoclosetime = ALT.autoclosetime end
+  if type(NEU.StargateName)  == "string" then Sicherung.StargateName = NEU.StargateName elseif type(ALT.StargateName) == "string" then Sicherung.StargateName = ALT.StargateName else Sicherung.StargateName = "" end
   if type(NEU.IDC)           == "string" then Sicherung.IDC          = NEU.IDC          else Sicherung.IDC          = ALT.IDC          end
   if type(NEU.RF)            == "boolean"then Sicherung.RF           = NEU.RF           else Sicherung.RF           = ALT.RF           end
   if type(NEU.Sprache)       == "string" then Sicherung.Sprache      = NEU.Sprache      else Sicherung.Sprache      = ALT.Sprache      end
@@ -50,8 +52,11 @@ if type(NEU) == "table" then
   f:write('  Sprache       = "' .. tostring(Sicherung.Sprache)      .. '", -- ' .. tostring(sprachen.Sprache)       .. '\n')
   f:write('  side          = "' .. tostring(Sicherung.side)         .. '", -- ' .. tostring(sprachen.side)          .. '\n')
   f:write('  autoUpdate    = '  .. tostring(Sicherung.autoUpdate)   ..  ', -- ' .. tostring(sprachen.autoUpdate)    .. '\n')
-  f:write('  control       = "' .. tostring(Sicherung.control)      .. '",\n\n')
-  f:write(string.rep("-", 10)   .. tostring(sprachen.nichtsAendern) .. string.rep("-", 60 - string.len(tostring(sprachen.nichtsAendern))) .. '\n\n')
+  f:write('  StargateName  = "' .. tostring(Sicherung.StargateName) .. '", -- ' .. tostring(sprachen.StargateName)  .. '\n')
+  f:write('\n')
+  f:write(string.rep("-", 10)   .. tostring(sprachen.nichtsAendern) .. string.rep("-", 60 - string.len(tostring(sprachen.nichtsAendern))) .. '\n')
+  f:write('\n')
+  f:write('  control       = "' .. tostring(Sicherung.control)      .. '",\n')
   f:write('  installieren  = '  .. tostring(Sicherung.installieren) .. ',\n')
   f:write('}')
   f:close()

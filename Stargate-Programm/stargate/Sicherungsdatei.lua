@@ -13,9 +13,10 @@ return {
   Sprache       = "", -- deutsch / english
   side          = "unten", -- bottom, top, back, front, right or left
   autoUpdate    = true, -- enable automated updates
-  control       = "On",
+  name          = "", -- the name of this stargate
 
 ----------don't change anything below---------------------------------
 
+  control       = "On",
   installieren  = false,
 }
