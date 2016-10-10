@@ -31,6 +31,7 @@ local energytype                = "EU"
 local Farben                    = {}
 local Funktion                  = {}
 local Taste                     = {}
+local Variablen                 = {}
 local activationtime            = 0
 local energy                    = 0
 local seite                     = 0
@@ -364,13 +365,14 @@ function Funktion.AdressenSpeichern()
   gespeicherteAdressen = {}
   sendeAdressen = {}
   local k = 0
-  local LokaleAdresse = Funktion.getAddress(sg.localAddress()
+  local LokaleAdresse = Funktion.getAddress(sg.localAddress())
   for i, na in pairs(adressen) do
     if na[2] == LokaleAdresse then
       k = -1
       sendeAdressen[i] = {}
       sendeAdressen[i][1] = na[1]
       sendeAdressen[i][2] = na[2]
+      Variablen.lokaleAdresse = true
     else
       local anwahlEnergie = sg.energyToDial(na[2])
       if not anwahlEnergie then
@@ -398,6 +400,9 @@ function Funktion.AdressenSpeichern()
     Funktion.zeigeNachricht(sprachen.verarbeiteAdressen .. "<" .. na[2] .. "> <" .. na[1] .. ">")
     maxseiten = (i + k) / 10
     AdressenAnzahl = i
+  end
+  if not Variablen.lokaleAdresse then
+    Funktion.checkStargateName()
   end
   Funktion.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
   for P = 1, Bildschirmhoehe - 3 do
@@ -1365,6 +1370,7 @@ function Funktion.checkStargateName()
         Sicherung.StargateName = io.read()
         schreibSicherungsdatei(Sicherung)
       end
+      Funktion.newAddress(Funktion.getAddress(sg.localAddress()), Sicherung.StargateName)
     end
   end
 end
