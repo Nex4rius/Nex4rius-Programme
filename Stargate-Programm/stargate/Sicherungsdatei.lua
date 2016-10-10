@@ -13,7 +13,7 @@ return {
   Sprache       = "", -- deutsch / english
   side          = "unten", -- bottom, top, back, front, right or left
   autoUpdate    = true, -- enable automated updates
-  name          = "", -- the name of this stargate
+  StargateName  = "", -- the name of this stargate
 
 ----------don't change anything below---------------------------------
 
