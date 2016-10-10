@@ -51,6 +51,8 @@ nein -> keine Aktualisierung<br>
 beta -> Aktualisierung zur Beta-Version<br>
 hilfe -> zeige diese Nachricht nochmal
 
+<a href="https://oc.cil.li/index.php?/topic/1062-sg-craft-stargate-control-program/">Forum</a>
+
 Macht pull request wenn ihr wollt :)
 
 getestet mit:<br>
@@ -110,6 +112,8 @@ yes   -> update to stable version<br>
 no    -> no update<br>
 beta  -> update to beta version<br>
 help  -> show this message again
+
+<a href="https://oc.cil.li/index.php?/topic/1062-sg-craft-stargate-control-program/">Forum</a>
 
 Make pull requests if you want :)
 
