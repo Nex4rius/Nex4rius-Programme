@@ -504,7 +504,11 @@ function Funktion.iriscontroller()
     Funktion.schreibFehlerLog(Sicherung.control)
     Funktion.schreibFehlerLog(iris)
     Funktion.schreibFehlerLog(Funktion.atmosphere(true))
-    sg.sendMessage("Iris Control: " .. tostring(Sicherung.control) .. " Iris: " .. tostring(iris) .. tostring(Funktion.atmosphere(true)), Funktion.sendeAdressliste())
+    if Funktion.atmosphere(true) then
+      sg.sendMessage("Iris Control: " .. Sicherung.control .. " Iris: " .. iris .. Funktion.atmosphere(true), Funktion.sendeAdressliste())
+    else
+      sg.sendMessage("Iris Control: " .. Sicherung.control .. " Iris: " .. iris, Funktion.sendeAdressliste())
+    end
     send = false
     Funktion.zeigeMenu()
   end
@@ -919,7 +923,7 @@ function Funktion.atmosphere(...)
         return " Atmodangerous"
       end
     end
-    return " "
+    return
   else
     Funktion.neueZeile(1)
     if sensor.hasBreathableAtmosphere() then
