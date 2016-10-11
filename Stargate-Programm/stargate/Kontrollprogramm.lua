@@ -501,9 +501,6 @@ function Funktion.iriscontroller()
     iriscontrol = "off"
     IDCyes = true
   elseif direction == "Incoming" and send == true then
-    Funktion.schreibFehlerLog(Sicherung.control)
-    Funktion.schreibFehlerLog(iris)
-    Funktion.schreibFehlerLog(Funktion.atmosphere(true))
     if Funktion.atmosphere(true) then
       sg.sendMessage("Iris Control: " .. Sicherung.control .. " Iris: " .. iris .. Funktion.atmosphere(true), Funktion.sendeAdressliste())
     else
