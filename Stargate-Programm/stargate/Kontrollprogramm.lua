@@ -378,6 +378,7 @@ function Funktion.AdressenSpeichern()
       if not anwahlEnergie then
         anwahlEnergie = sprachen.fehlerName
       else
+        anwahlEnergie = anwahlEnergie * energymultiplicator
         sendeAdressen[i] = {}
         sendeAdressen[i][1] = na[1]
         sendeAdressen[i][2] = na[2]
