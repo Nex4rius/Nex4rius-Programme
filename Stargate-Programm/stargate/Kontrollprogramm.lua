@@ -501,7 +501,7 @@ function Funktion.iriscontroller()
     iriscontrol = "off"
     IDCyes = true
   elseif direction == "Incoming" and send == true then
-    sg.sendMessage("Iris Control: " .. Sicherung.control .. " Iris: " .. iris .. Funktion.atmosphere(true), Funktion.sendeAdressliste())
+    sg.sendMessage("Iris Control: " .. tostring(Sicherung.control) .. " Iris: " .. tostring(iris) .. tostring(Funktion.atmosphere(true)), Funktion.sendeAdressliste())
     send = false
     Funktion.zeigeMenu()
   end
