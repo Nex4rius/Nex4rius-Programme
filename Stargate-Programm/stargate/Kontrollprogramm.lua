@@ -501,7 +501,11 @@ function Funktion.iriscontroller()
     iriscontrol = "off"
     IDCyes = true
   elseif direction == "Incoming" and send == true then
-    sg.sendMessage("Iris Control: " .. Sicherung.control .. " Iris: " .. iris .. Funktion.atmosphere(true), Funktion.sendeAdressliste())
+    if Funktion.atmosphere(true) then
+      sg.sendMessage("Iris Control: " .. Sicherung.control .. " Iris: " .. iris .. Funktion.atmosphere(true), Funktion.sendeAdressliste())
+    else
+      sg.sendMessage("Iris Control: " .. Sicherung.control .. " Iris: " .. iris, Funktion.sendeAdressliste())
+    end
     send = false
     Funktion.zeigeMenu()
   end
@@ -915,9 +919,8 @@ function Funktion.atmosphere(...)
       else
         return " Atmodangerous"
       end
-    else
-      return " "
     end
+    return
   else
     Funktion.neueZeile(1)
     if sensor.hasBreathableAtmosphere() then
