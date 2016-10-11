@@ -915,9 +915,8 @@ function Funktion.atmosphere(...)
       else
         return " Atmodangerous"
       end
-    else
-      return " "
     end
+    return " "
   else
     Funktion.neueZeile(1)
     if sensor.hasBreathableAtmosphere() then
