@@ -129,5 +129,5 @@ return {
   StargateName              = "der Name dieses Stargates",
   FrageStargateName         = "Gib dem Stargate einen Namen",
   debug                     = "zum debuggen",
-  keineEnergie              = "keine Energie",
+  keineEnergie              = "<keine Energie>",
 }
