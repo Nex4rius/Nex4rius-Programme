@@ -226,7 +226,7 @@ function Funktionen.main()
       print(sprachen.fehlerName or "<FEHLER>")
     end
   end
-  if arg == sprachen.hilfe or arg == "hilfe" or arg == "help" then
+  if arg == sprachen.hilfe or arg == "hilfe" or arg == "help" or arg == "?" then
     print(sprachen.Hilfetext or "Verwendung: autorun [...]\nja\t-> Aktualisierung zur stabilen Version\nnein\t-> keine Aktualisierung\nbeta\t-> Aktualisierung zur Beta-Version\nhilfe\t-> zeige diese Nachricht nochmal")
   else
     if Funktionen.checkKomponenten() then
