@@ -60,7 +60,7 @@ if type(NEU) == "table" then
   f:write('\n')
   f:write(string.rep("-", 10)   .. tostring(sprachen.nichtsAendern) .. string.rep("-", 60 - string.len(tostring(sprachen.nichtsAendern))) .. '\n')
   f:write('\n')
-  f:write('  zeigeFehler   = '  .. tostring(Sicherung.debug)        .. ',  -- ' .. tostring(sprachen.debug)         .. '\n')
+  f:write('  debug         = '  .. tostring(Sicherung.debug)        .. ',  -- ' .. tostring(sprachen.debug)         .. '\n')
   f:write('  control       = "' .. tostring(Sicherung.control)      .. '",\n')
   f:write('  installieren  = '  .. tostring(Sicherung.installieren) .. ',\n')
   f:write('}')
