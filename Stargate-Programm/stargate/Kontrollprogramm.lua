@@ -717,6 +717,8 @@ function Funktion.zeigeEnergie()
     energieMenge = string.format("%.2f", energy / 1000000) .. " M"
   elseif energy > 10000 then
     energieMenge = string.format("%.1f", energy / 1000) .. " k"
+  elseif energy == 0 then
+    Funktion.SchreibInAndererFarben(sprachen.keineEnergie, Farben.FehlerFarbe)
   else
     energieMenge = string.format("%.f",  energy)
   end
@@ -903,6 +905,16 @@ function Funktion.zeigeStatus()
   Funktion.zeigeSteuerung()
   Funktion.RedstoneKontrolle()
   Funktion.Colorful_Lamp_Steuerung()
+end
+
+function Funktion.SchreibInAndererFarben(text, textfarbe, hintergrundfarbe)
+  if text then
+    local ALT_hintergrundfarbe = gpu.getBackground()
+    local ALT_textfarbe = gpu.getForeground()
+    Funktion.Farbe(hintergrundfarbe, textfarbe)
+    term.write(text)
+    Funktion.Farbe(ALT_hintergrundfarbe, ALT_textfarbe)
+  end
 end
 
 function Funktion.atmosphere(...)
