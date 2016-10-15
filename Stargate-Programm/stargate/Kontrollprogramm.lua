@@ -711,18 +711,20 @@ function Funktion.autoclose()
 end
 
 function Funktion.zeigeEnergie()
-  if     energy > 10000000000 then
-    energieMenge = string.format("%.3f", energy / 1000000000) .. " G"
-  elseif energy > 10000000 then
-    energieMenge = string.format("%.2f", energy / 1000000) .. " M"
-  elseif energy > 10000 then
-    energieMenge = string.format("%.1f", energy / 1000) .. " k"
-  elseif energy == 0 then
-    Funktion.SchreibInAndererFarben(sprachen.keineEnergie, Farben.FehlerFarbe)
+  if energy == 0 then
+    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2 .. Funktion.SchreibInAndererFarben(sprachen.keineEnergie, Farben.FehlerFarbe))
   else
-    energieMenge = string.format("%.f",  energy)
+    if     energy > 10000000000 then
+      energieMenge = string.format("%.3f", energy / 1000000000) .. " G"
+    elseif energy > 10000000 then
+      energieMenge = string.format("%.2f", energy / 1000000) .. " M"
+    elseif energy > 10000 then
+      energieMenge = string.format("%.1f", energy / 1000) .. " k"
+    else
+      energieMenge = string.format("%.f",  energy)
+    end
+    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2 .. Funktion.ErsetzePunktMitKomma(energieMenge))
   end
-  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2 .. Funktion.ErsetzePunktMitKomma(energieMenge))
 end
 
 function Funktion.activetime()
