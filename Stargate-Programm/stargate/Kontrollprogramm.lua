@@ -711,16 +711,21 @@ function Funktion.autoclose()
 end
 
 function Funktion.zeigeEnergie()
-  if     energy > 10000000000 then
-    energieMenge = string.format("%.3f", energy / 1000000000) .. " G"
-  elseif energy > 10000000 then
-    energieMenge = string.format("%.2f", energy / 1000000) .. " M"
-  elseif energy > 10000 then
-    energieMenge = string.format("%.1f", energy / 1000) .. " k"
+  if energy == 0 then
+    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2, 0)
+    Funktion.SchreibInAndererFarben(sprachen.keineEnergie, Farben.FehlerFarbe)
   else
-    energieMenge = string.format("%.f",  energy)
+    if     energy > 10000000000 then
+      energieMenge = string.format("%.3f", energy / 1000000000) .. " G"
+    elseif energy > 10000000 then
+      energieMenge = string.format("%.2f", energy / 1000000) .. " M"
+    elseif energy > 10000 then
+      energieMenge = string.format("%.1f", energy / 1000) .. " k"
+    else
+      energieMenge = string.format("%.f",  energy)
+    end
+    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2 .. Funktion.ErsetzePunktMitKomma(energieMenge))
   end
-  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2 .. Funktion.ErsetzePunktMitKomma(energieMenge))
 end
 
 function Funktion.activetime()
@@ -903,6 +908,20 @@ function Funktion.zeigeStatus()
   Funktion.zeigeSteuerung()
   Funktion.RedstoneKontrolle()
   Funktion.Colorful_Lamp_Steuerung()
+end
+
+function Funktion.SchreibInAndererFarben(text, textfarbe, hintergrundfarbe, h)
+  if text then
+    local ALT_hintergrundfarbe = gpu.getBackground()
+    local ALT_textfarbe = gpu.getForeground()
+    Funktion.Farbe(hintergrundfarbe, textfarbe)
+    if not h then
+      h = Bildschirmbreite
+    end
+    term.write(text .. string.rep(" ", h - string.len(text)))
+    Funktion.Farbe(ALT_hintergrundfarbe, ALT_textfarbe)
+  end
+  return " "
 end
 
 function Funktion.atmosphere(...)
