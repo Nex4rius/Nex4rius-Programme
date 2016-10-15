@@ -11,8 +11,6 @@ local sprachen  = {}
 if type(NEU) == "table" then
   if fs.exists("/stargate/Sicherungsdatei.lua") then
     ALT = loadfile("/stargate/Sicherungsdatei.lua")()
-    print("jap")
-    os.sleep(5)
   end
   if fs.exists("/stargate/sprache/" .. tostring(NEU.Sprache) .. ".lua") then
     sprachen = loadfile("/stargate/sprache/" .. tostring(NEU.Sprache) .. ".lua")()
