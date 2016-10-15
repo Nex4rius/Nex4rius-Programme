@@ -339,7 +339,7 @@ function Funktion.Infoseite()
   i = i + 1
   Taste.links[i] = Taste.u
   local version_Zeichenlaenge = string.len(version)
-  if string.sub(version, version_Zeichenlaenge - 3, version_Zeichenlaenge) == "BETA" then
+  if string.sub(version, version_Zeichenlaenge - 3, version_Zeichenlaenge) == "BETA" or Sicherung.debug then
     print("B " .. sprachen.UpdateBeta)
     i = i + 1
     Taste.links[i] = Taste.b
@@ -943,7 +943,7 @@ function Funktion.zeigeNachricht(...)
   Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
   if VersionUpdate == true then
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, sprachen.aktualisierenGleich, Bildschirmbreite)
-  elseif fs.exists("/log") then
+  elseif fs.exists("/log") and Sicherung.debug then
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, sprachen.fehlerName .. " /log", Bildschirmbreite)
   else
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, "", Bildschirmbreite)
