@@ -17,6 +17,7 @@ return {
 
 ----------don't change anything below---------------------------------
 
+  debug         = false,
   control       = "On",
   installieren  = false,
 }
