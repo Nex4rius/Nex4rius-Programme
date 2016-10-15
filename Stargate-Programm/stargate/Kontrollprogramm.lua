@@ -1307,7 +1307,7 @@ function Funktion.eventLoop()
       if f then
         Funktion.checken(f, e)
       end
-      if string.sub(e[1],1,3) == "sgM" then
+      if e[1] == "sgMessageReceived" then
         if direction == "Outgoing" then
           codeaccepted = e[3]
         elseif direction == "Incoming" and wormhole == "in" then
@@ -1326,6 +1326,11 @@ function Funktion.eventLoop()
           end
         end
         messageshow = true
+      elseif e[1] == "sgDialIn" then
+        wormhole = "in"
+      elseif e[1] == "sgDialOut" then
+        state = "Dialling"
+        wormhole = "out"
       end
     end
   end
