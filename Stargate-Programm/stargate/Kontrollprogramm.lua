@@ -1332,6 +1332,7 @@ function Funktion.eventLoop()
         state = "Dialling"
         wormhole = "out"
         direction == "Outgoing"
+        os.sleep(1)
       end
     end
   end
