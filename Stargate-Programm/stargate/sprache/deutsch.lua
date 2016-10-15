@@ -128,4 +128,5 @@ return {
   akzeptiert                = "akzeptiert",
   StargateName              = "der Name dieses Stargates",
   FrageStargateName         = "Gib dem Stargate einen Namen",
+  debug                     = "zum debuggen",
 }
