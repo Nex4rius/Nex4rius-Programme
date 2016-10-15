@@ -129,4 +129,5 @@ return {
   StargateName              = "the name of this stargate",
   FrageStargateName         = "give this stargate a name",
   debug                     = "for debugging",
+  keineEnergie              = "no energy",
 }
