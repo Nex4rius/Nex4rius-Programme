@@ -1314,6 +1314,7 @@ end
 
 function Funktion.eventLoop()
   while running do
+    Funktion.checken(Funktion.zeigeMenu)
     Funktion.checken(Funktion.zeigeStatus)
     e = Funktion.pull_event()
     if not e then
