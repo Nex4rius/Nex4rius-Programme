@@ -917,6 +917,7 @@ function Funktion.SchreibInAndererFarben(text, textfarbe, hintergrundfarbe)
     term.write(text)
     Funktion.Farbe(ALT_hintergrundfarbe, ALT_textfarbe)
   end
+  return " "
 end
 
 function Funktion.atmosphere(...)
