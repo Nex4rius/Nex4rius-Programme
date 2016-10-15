@@ -154,6 +154,7 @@ function Funktionen.mainCheck()
           print(sprachen.aktualisierenFrage .. betaVersionName .. "\n" or "\nAktualisieren? ja/nein" .. betaVersionName .. "\n")
           if Sicherung.autoUpdate then
             print(sprachen.autoUpdateAn or "automatische Aktualisierungen sind aktiviert")
+            print()
             os.sleep(2)
             Funktionen.update("master")
             return
@@ -179,7 +180,7 @@ function Funktionen.mainCheck()
   Sicherung.installieren = false
   schreibSicherungsdatei(Sicherung)
   if Funktionen.checkDateien() then
-    if fs.exists("/log") and component.isAvailable("keyboard") then
+    if fs.exists("/log") and component.isAvailable("keyboard") and Sicherung.debug then
       loadfile("/bin/edit.lua")("-r", "/log")
       loadfile("/bin/rm.lua")("/log")
     end
@@ -226,7 +227,7 @@ function Funktionen.main()
       print(sprachen.fehlerName or "<FEHLER>")
     end
   end
-  if arg == sprachen.hilfe or arg == "hilfe" or arg == "help" then
+  if arg == sprachen.hilfe or arg == "hilfe" or arg == "help" or arg == "?" then
     print(sprachen.Hilfetext or "Verwendung: autorun [...]\nja\t-> Aktualisierung zur stabilen Version\nnein\t-> keine Aktualisierung\nbeta\t-> Aktualisierung zur Beta-Version\nhilfe\t-> zeige diese Nachricht nochmal")
   else
     if Funktionen.checkKomponenten() then

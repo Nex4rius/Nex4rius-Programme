@@ -339,7 +339,7 @@ function Funktion.Infoseite()
   i = i + 1
   Taste.links[i] = Taste.u
   local version_Zeichenlaenge = string.len(version)
-  if string.sub(version, version_Zeichenlaenge - 3, version_Zeichenlaenge) == "BETA" then
+  if string.sub(version, version_Zeichenlaenge - 3, version_Zeichenlaenge) == "BETA" or Sicherung.debug then
     print("B " .. sprachen.UpdateBeta)
     i = i + 1
     Taste.links[i] = Taste.b
@@ -943,7 +943,7 @@ function Funktion.zeigeNachricht(...)
   Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
   if VersionUpdate == true then
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, sprachen.aktualisierenGleich, Bildschirmbreite)
-  elseif fs.exists("/log") then
+  elseif fs.exists("/log") and Sicherung.debug then
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, sprachen.fehlerName .. " /log", Bildschirmbreite)
   else
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, "", Bildschirmbreite)
@@ -1307,7 +1307,7 @@ function Funktion.eventLoop()
       if f then
         Funktion.checken(f, e)
       end
-      if string.sub(e[1],1,3) == "sgM" then
+      if e[1] == "sgMessageReceived" then
         if direction == "Outgoing" then
           codeaccepted = e[3]
         elseif direction == "Incoming" and wormhole == "in" then
@@ -1326,6 +1326,12 @@ function Funktion.eventLoop()
           end
         end
         messageshow = true
+      elseif e[1] == "sgDialIn" then
+        wormhole = "in"
+      elseif e[1] == "sgDialOut" then
+        state = "Dialling"
+        wormhole = "out"
+        direction = "Outgoing"
       end
     end
   end
