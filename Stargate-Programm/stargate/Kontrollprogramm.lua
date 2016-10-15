@@ -1331,7 +1331,7 @@ function Funktion.eventLoop()
       elseif e[1] == "sgDialOut" then
         state = "Dialling"
         wormhole = "out"
-        direction == "Outgoing"
+        direction = "Outgoing"
         os.sleep(1)
       end
     end
