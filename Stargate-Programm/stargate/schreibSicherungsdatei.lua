@@ -27,6 +27,7 @@ if type(NEU) == "table" then
     sprachen.Sprache        = "deutsch / english"
     sprachen.side           = "unten, oben, hinten, vorne, rechts oder links"
     sprachen.autoUpdate     = "aktiviere automatische Aktualisierungen"
+    sprachen.debug          = "zum debuggen"
     sprachen.nichtsAendern  = "verändere nichts ab hier"
     sprachen.StargateName   = "der Name dieses Stargates"
   end
@@ -37,6 +38,7 @@ if type(NEU) == "table" then
   if type(NEU.Sprache)       == "string" then Sicherung.Sprache      = NEU.Sprache      else Sicherung.Sprache      = ALT.Sprache      end
   if type(NEU.side)          == "string" then Sicherung.side         = NEU.side         else Sicherung.side         = ALT.side         end
   if type(NEU.autoUpdate)    == "boolean"then Sicherung.autoUpdate   = NEU.autoUpdate   else Sicherung.autoUpdate   = ALT.autoUpdate   end
+  if type(NEU.debug)         == "boolean"then Sicherung.debug        = NEU.debug        else Sicherung.debug        = ALT.debug        end
   if type(NEU.control)       == "string" then Sicherung.control      = NEU.control      else Sicherung.control      = ALT.control      end
   if type(NEU.installieren)  == "boolean"then Sicherung.installieren = NEU.installieren else Sicherung.installieren = ALT.installieren end
   local f = io.open ("/stargate/Sicherungsdatei.lua", "w")
@@ -56,6 +58,7 @@ if type(NEU) == "table" then
   f:write('\n')
   f:write(string.rep("-", 10)   .. tostring(sprachen.nichtsAendern) .. string.rep("-", 60 - string.len(tostring(sprachen.nichtsAendern))) .. '\n')
   f:write('\n')
+  f:write('  zeigeFehler   = '  .. tostring(Sicherung.debug)  .. ',\n')
   f:write('  control       = "' .. tostring(Sicherung.control)      .. '",\n')
   f:write('  installieren  = '  .. tostring(Sicherung.installieren) .. ',\n')
   f:write('}')
