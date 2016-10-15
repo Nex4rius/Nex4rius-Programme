@@ -153,7 +153,7 @@ function Funktionen.mainCheck()
         else
           print(sprachen.aktualisierenFrage .. betaVersionName .. "\n" or "\nAktualisieren? ja/nein" .. betaVersionName .. "\n")
           if Sicherung.autoUpdate then
-            print(sprachen.autoUpdateAn or "automatische Aktualisierungen sind aktiviert")
+            print(sprachen.autoUpdateAn .. "\n" or "automatische Aktualisierungen sind aktiviert\n")
             os.sleep(2)
             Funktionen.update("master")
             return
