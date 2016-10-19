@@ -1001,7 +1001,7 @@ function Funktion.key_down(e)
   elseif c >= "0" and c <= "9" and seite >= 0 then
     Taste.Zahl(c)
   else
-    local f = Funktion[c]
+    local f = Taste[c]
     if f then
       Funktion.checken(f)
     end
