@@ -207,30 +207,6 @@ function Funktion.zeichenErsetzen(...)
   return string.gsub(..., "%a+", function (str) return ersetzen [str] end)
 end
 
-function Funktion.touchscreen(x, y)
-  if x <= 30 then
-    if seite >= 0 then
-      if y > 1 and y <= 21 then
-        Taste.Zahl(math.floor(((y - 1) / 2) + 0.5))
-      end
-    elseif seite == -1 then
-      if Taste.links[y] then
-        Taste.links[y](y)
-      end
-    end
-  elseif x >= 35 and y >= Taste.Koordinaten.Steuerungsanfang_Y and y <= Taste.Koordinaten.Steuerungsende_Y then
-    if x <= 52 then
-      if Taste.Steuerunglinks[y] then
-        Taste.Steuerunglinks[y]()
-      end
-    else
-      if Taste.Steuerungrechts[y] then
-        Taste.Steuerungrechts[y]()
-      end
-    end
-  end
-end
-
 function Funktion.checkReset()
   if type(time) == "number" then
     if time > 500 then
@@ -1312,6 +1288,63 @@ function Funktion.sgChevronEngaged(e)
   Funktion.zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
 end
 
+function Funktion.sgMessageReceived(e)
+  if direction == "Outgoing" then
+    codeaccepted = e[3]
+  elseif direction == "Incoming" and wormhole == "in" then
+    if e[3] == "Adressliste" then
+    else
+      incode = e[3]
+    end
+  end
+  if e[4] == "Adressliste" then
+    local inAdressen = require("serialization").unserialize(e[5])
+    if type(inAdressen) == "table" then
+      Funktion.angekommeneAdressen(inAdressen)
+    end
+    if type(e[6]) == "string" then
+      Funktion.angekommeneVersion(e[6])
+    end
+  end
+  messageshow = true
+end
+
+function Funktion.touch(e)
+  local x = e[3]
+  local y = e[4]
+  if x <= 30 then
+    if seite >= 0 then
+      if y > 1 and y <= 21 then
+        Taste.Zahl(math.floor(((y - 1) / 2) + 0.5))
+      end
+    elseif seite == -1 then
+      if Taste.links[y] then
+        Taste.links[y](y)
+      end
+    end
+  elseif x >= 35 and y >= Taste.Koordinaten.Steuerungsanfang_Y and y <= Taste.Koordinaten.Steuerungsende_Y then
+    if x <= 52 then
+      if Taste.Steuerunglinks[y] then
+        Taste.Steuerunglinks[y]()
+      end
+    else
+      if Taste.Steuerungrechts[y] then
+        Taste.Steuerungrechts[y]()
+      end
+    end
+  end
+end
+
+function Funktion.sgDialIn()
+  wormhole = "in"
+end
+
+function Funktion.sgDialOut()
+  state = "Dialling"
+  wormhole = "out"
+  direction = "Outgoing"
+end
+
 function Funktion.eventLoop()
   while running do
     Funktion.checken(Funktion.zeigeMenu)
@@ -1319,39 +1352,11 @@ function Funktion.eventLoop()
     e = Funktion.pull_event()
     if not e then
     elseif not e[1] then
-    elseif e[1] == "touch" then
-      Funktion.touchscreen(e[3], e[4])
     else
       name = e[1]
       f = Funktion[name]
       if f then
         Funktion.checken(f, e)
-      end
-      if e[1] == "sgMessageReceived" then
-        if direction == "Outgoing" then
-          codeaccepted = e[3]
-        elseif direction == "Incoming" and wormhole == "in" then
-          if e[3] == "Adressliste" then
-          else
-            incode = e[3]
-          end
-        end
-        if e[4] == "Adressliste" then
-          local inAdressen = require("serialization").unserialize(e[5])
-          if type(inAdressen) == "table" then
-            Funktion.angekommeneAdressen(inAdressen)
-          end
-          if type(e[6]) == "string" then
-            Funktion.angekommeneVersion(e[6])
-          end
-        end
-        messageshow = true
-      elseif e[1] == "sgDialIn" then
-        wormhole = "in"
-      elseif e[1] == "sgDialOut" then
-        state = "Dialling"
-        wormhole = "out"
-        direction = "Outgoing"
       end
     end
   end
