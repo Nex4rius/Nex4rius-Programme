@@ -572,7 +572,7 @@ function Funktion.sendeAdressliste()
 end
 
 function Funktion.newAddress(neueAdresse, neuerName, ...)
-  if AddNewAddress == true and string.len(neueAdresse) == 11 then
+  if AddNewAddress == true and string.len(neueAdresse) == 11 and sg.energyToDial(neueAdresse) then
     AdressenAnzahl = AdressenAnzahl + 1
     adressen[AdressenAnzahl] = {}
     local nichtmehr
