@@ -86,7 +86,6 @@ function Funktionen.update(versionTyp)
   elseif versionTyp == "master" then
     loadfile("/bin/pastebin.lua")("run", "-f", "wLK1gCKt")
   end
-  return "no"
 end
 
 function Funktionen.checkServerVersion()
@@ -137,33 +136,39 @@ function Funktionen.mainCheck()
     end
     if arg == sprachen.ja or arg == "ja" or arg == "yes" then
       print(sprachen.aktualisierenJa or "\nAktualisieren: Ja\n")
-      return Funktionen.update("master")
+      Funktionen.update("master")
+      return
     elseif arg == sprachen.nein or arg == "nein" or arg == "no" then
       -- nichts
     elseif arg == "beta" then
       print(sprachen.aktualisierenBeta or "\nAktualisieren: Beta-Version\n")
-      return Funktionen.update("beta")
+      Funktionen.update("beta")
+      return
     elseif version ~= serverVersion or version ~= betaServerVersion then
       if Sicherung.installieren == false then
         local EndpunktVersion = string.len(version)
         if Sicherung.autoUpdate == true and version ~= serverVersion and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" then
           print(sprachen.aktualisierenJa or "\nAktualisieren: Ja\n")
-          return Funktionen.update("master")
+          Funktionen.update("master")
+          return
         else
           print(sprachen.aktualisierenFrage .. betaVersionName .. "\n" or "\nAktualisieren? ja/nein" .. betaVersionName .. "\n")
           if Sicherung.autoUpdate then
             print(sprachen.autoUpdateAn or "automatische Aktualisierungen sind aktiviert")
             print()
             os.sleep(2)
-            return Funktionen.update("master")
+            Funktionen.update("master")
+            return
           else
             antwortFrage = io.read()
             if string.lower(antwortFrage) == sprachen.ja or string.lower(antwortFrage) == "ja" or string.lower(antwortFrage) == "yes" then
               print(sprachen.aktualisierenJa or "\nAktualisieren: Ja\n")
-              return Funktionen.update("master")
+              Funktionen.update("master")
+              return
             elseif string.lower(antwortFrage) == "beta" then
               print(sprachen.aktualisierenBeta or "\nAktualisieren: Beta-Version\n")
-              return Funktionen.update("beta")
+              Funktionen.update("beta")
+              return
             else
               print(sprachen.aktualisierenNein .. antwortFrage or "\nAntwort: " .. antwortFrage)
             end
@@ -180,7 +185,7 @@ function Funktionen.mainCheck()
       loadfile("/bin/edit.lua")("-r", "/log")
       loadfile("/bin/rm.lua")("/log")
     end
-    return loadfile("/stargate/Kontrollprogramm.lua")(Funktionen.update, Funktionen.checkServerVersion, version)
+    loadfile("/stargate/Kontrollprogramm.lua")(Funktionen.update, Funktionen.checkServerVersion, version)
   else
     print(string.format("%s\n%s %s/%s", sprachen.fehlerName, sprachen.DateienFehlen, sprachen.ja, sprachen.nein) or "<FEHLER>\nDateien fehlen\nAlles neu herunterladen? ja/nein")
     if Sicherung.autoUpdate then
@@ -227,9 +232,12 @@ function Funktionen.main()
     print(sprachen.Hilfetext or "Verwendung: autorun [...]\nja\t-> Aktualisierung zur stabilen Version\nnein\t-> keine Aktualisierung\nbeta\t-> Aktualisierung zur Beta-Version\nhilfe\t-> zeige diese Nachricht nochmal")
   else
     if Funktionen.checkKomponenten() then
-      return Funktionen.mainCheck()
+      Funktionen.mainCheck()
     end
   end
+  gpu.setBackground(0x000000)
+  gpu.setForeground(0xFFFFFF)
+  gpu.setResolution(gpu.maxResolution())
 end
 
-return Funktionen.main(), Funktionen.update
+Funktionen.main()
