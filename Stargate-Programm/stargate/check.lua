@@ -184,7 +184,7 @@ function Funktionen.mainCheck()
       loadfile("/bin/edit.lua")("-r", "/log")
       loadfile("/bin/rm.lua")("/log")
     end
-    loadfile("/stargate/Kontrollprogramm.lua")(Funktionen.update, Funktionen.checkServerVersion, version)
+    return loadfile("/stargate/Kontrollprogramm.lua")(Funktionen.update, Funktionen.checkServerVersion, version)
   else
     print(string.format("%s\n%s %s/%s", sprachen.fehlerName, sprachen.DateienFehlen, sprachen.ja, sprachen.nein) or "<FEHLER>\nDateien fehlen\nAlles neu herunterladen? ja/nein")
     if Sicherung.autoUpdate then
@@ -201,6 +201,7 @@ function Funktionen.mainCheck()
 end
 
 function Funktionen.main()
+  local a
   gpu.setResolution(70, 25)
   gpu.setBackground(6684774)
   gpu.setForeground(0xFFFFFF)
@@ -231,12 +232,13 @@ function Funktionen.main()
     print(sprachen.Hilfetext or "Verwendung: autorun [...]\nja\t-> Aktualisierung zur stabilen Version\nnein\t-> keine Aktualisierung\nbeta\t-> Aktualisierung zur Beta-Version\nhilfe\t-> zeige diese Nachricht nochmal")
   else
     if Funktionen.checkKomponenten() then
-      Funktionen.mainCheck()
+      a = Funktionen.mainCheck()
     end
   end
   gpu.setBackground(0x000000)
   gpu.setForeground(0xFFFFFF)
   gpu.setResolution(gpu.maxResolution())
+  return a
 end
 
 Funktionen.main()
