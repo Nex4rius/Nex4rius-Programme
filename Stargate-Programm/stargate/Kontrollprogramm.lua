@@ -998,30 +998,13 @@ function Funktion.key_down(e)
     Taste.Pfeil_links()
   elseif e[3] == 0 and e[4] == 205 then
     Taste.Pfeil_rechts()
-  elseif c == "e" then
-    Taste.e()
-  elseif c == "d" then
-    Taste.d()
-  elseif c == "o" then
-    Taste.o()
-  elseif c == "c" then
-    Taste.c()
-  elseif seite == -1 then
-    if c == "q" then
-      Taste.q()
-    elseif c == "i" then
-      Taste.i()
-    elseif c == "z" then
-      Taste.z()
-    elseif c == "l" then
-      Taste.l()
-    elseif c == "u" then
-      Taste.u()
-    elseif c == "b" then
-      Taste.b()
-    end
   elseif c >= "0" and c <= "9" and seite >= 0 then
     Taste.Zahl(c)
+  else
+    local f = Funktion[c]
+    if f then
+      Funktion.checken(f)
+    end
   end
 end
 
@@ -1073,9 +1056,11 @@ function Taste.Pfeil_rechts()
 end
 
 function Taste.q(y)
-  Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-  Funktion.zeigeHier(1, y, "Q " .. sprachen.beenden, 0)
-  running = false
+  if seite == -1 then
+    Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
+    Funktion.zeigeHier(1, y, "Q " .. sprachen.beenden, 0)
+    running = false
+  end
 end
 
 function Taste.d()
@@ -1141,87 +1126,97 @@ function Taste.c()
 end
 
 function Taste.i(y)
-  Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-  Funktion.zeigeHier(1, y, "I " .. sprachen.IrisSteuerung .. sprachen.an_aus, 0)
-  event.timer(2, Funktion.zeigeMenu)
-  if iris == "Offline" then else
-    send = true
-    if Sicherung.control == "On" then
-      Sicherung.control = "Off"
-    else
-      Sicherung.control = "On"
+  if seite == -1 then
+    Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
+    Funktion.zeigeHier(1, y, "I " .. sprachen.IrisSteuerung .. sprachen.an_aus, 0)
+    event.timer(2, Funktion.zeigeMenu)
+    if iris == "Offline" then else
+      send = true
+      if Sicherung.control == "On" then
+        Sicherung.control = "Off"
+      else
+        Sicherung.control = "On"
+      end
+      schreibSicherungsdatei(Sicherung)
     end
-    schreibSicherungsdatei(Sicherung)
   end
 end
 
 function Taste.z(y)
-  Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-  Funktion.zeigeHier(1, y, "Z " .. sprachen.AdressenBearbeiten, 0)
-  if Funktion.Tastatur() then
-    Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
-    screen.setTouchModeInverted(false)
-    edit("stargate/adressen.lua")
-    screen.setTouchModeInverted(true)
-    seite = -1
-    Funktion.zeigeAnzeige()
-    seite = 0
-    Funktion.AdressenSpeichern()
-  else
-    event.timer(2, Funktion.zeigeMenu)
+  if seite == -1 then
+    Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
+    Funktion.zeigeHier(1, y, "Z " .. sprachen.AdressenBearbeiten, 0)
+    if Funktion.Tastatur() then
+      Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
+      screen.setTouchModeInverted(false)
+      edit("stargate/adressen.lua")
+      screen.setTouchModeInverted(true)
+      seite = -1
+      Funktion.zeigeAnzeige()
+      seite = 0
+      Funktion.AdressenSpeichern()
+    else
+      event.timer(2, Funktion.zeigeMenu)
+    end
   end
 end
 
 function Taste.l(y)
-  Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-  Funktion.zeigeHier(1, y, "L " .. sprachen.EinstellungenAendern, 0)
-  if Funktion.Tastatur() then
-    Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
-    schreibSicherungsdatei(Sicherung)
-    screen.setTouchModeInverted(false)
-    edit("stargate/Sicherungsdatei.lua")
-    screen.setTouchModeInverted(true)
-    Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
-    if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
-      sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
+  if seite == -1 then
+    Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
+    Funktion.zeigeHier(1, y, "L " .. sprachen.EinstellungenAendern, 0)
+    if Funktion.Tastatur() then
+      Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
+      schreibSicherungsdatei(Sicherung)
+      screen.setTouchModeInverted(false)
+      edit("stargate/Sicherungsdatei.lua")
+      screen.setTouchModeInverted(true)
+      Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
+      if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
+        sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
+      else
+        print("\nUnbekannte Sprache\nStandardeinstellung = deutsch")
+        sprachen = loadfile("/stargate/sprache/deutsch.lua")()
+        os.sleep(1)
+      end
+      schreibSicherungsdatei(Sicherung)
+      Funktion.sides()
+      gpu.setBackground(Farben.Nachrichtfarbe)
+      term.clear()
+      seite = 0
+      Funktion.zeigeAnzeige()
     else
-      print("\nUnbekannte Sprache\nStandardeinstellung = deutsch")
-      sprachen = loadfile("/stargate/sprache/deutsch.lua")()
-      os.sleep(1)
+      event.timer(2, Funktion.zeigeMenu)
     end
-    schreibSicherungsdatei(Sicherung)
-    Funktion.sides()
-    gpu.setBackground(Farben.Nachrichtfarbe)
-    term.clear()
-    seite = 0
-    Funktion.zeigeAnzeige()
-  else
-    event.timer(2, Funktion.zeigeMenu)
   end
 end
 
 function Taste.u(y)
-  Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-  Funktion.zeigeHier(1, y, "U " .. sprachen.Update, 0)
-  if component.isAvailable("internet") then
-    if version ~= Funktion.checkServerVersion() then
-      Funktion.beendeAlles()
-      loadfile("/autorun.lua")("ja")
+  if seite == -1 then
+    Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
+    Funktion.zeigeHier(1, y, "U " .. sprachen.Update, 0)
+    if component.isAvailable("internet") then
+      if version ~= Funktion.checkServerVersion() then
+        Funktion.beendeAlles()
+        loadfile("/autorun.lua")("ja")
+      else
+        Funktion.zeigeNachricht(sprachen.bereitsNeusteVersion)
+        event.timer(2, Funktion.zeigeMenu)
+      end
     else
-      Funktion.zeigeNachricht(sprachen.bereitsNeusteVersion)
       event.timer(2, Funktion.zeigeMenu)
     end
-  else
-    event.timer(2, Funktion.zeigeMenu)
   end
 end
 
 function Taste.b(y)
-  Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-  Funktion.zeigeHier(1, y, "B " .. sprachen.UpdateBeta, 0)
-  if component.isAvailable("internet") then
-    Funktion.beendeAlles()
-    loadfile("/autorun.lua")("beta")
+  if seite == -1 then
+    Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
+    Funktion.zeigeHier(1, y, "B " .. sprachen.UpdateBeta, 0)
+    if component.isAvailable("internet") then
+      Funktion.beendeAlles()
+      loadfile("/autorun.lua")("beta")
+    end
   end
 end
 
