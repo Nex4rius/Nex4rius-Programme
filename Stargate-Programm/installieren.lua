@@ -106,17 +106,15 @@ function Funktionen.installieren(versionTyp)
     print("\nUpdate komplett\n" .. version .. " " .. string.upper(tostring(versionTyp)))
   end
   os.sleep(2)
-  --loadfile("/autorun.lua")("no")
-  --os.exit()
   require("computer").shutdown(true)
 end
 
 if versionTyp == nil then
   if type(arg) == "string" then
-    return Funktionen.installieren(arg)
+    Funktionen.installieren(arg)
   else
-    return Funktionen.installieren("master")
+    Funktionen.installieren("master")
   end
 else
-  return Funktionen.installieren(versionTyp)
+  Funktionen.installieren(versionTyp)
 end
