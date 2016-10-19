@@ -10,17 +10,8 @@ if type(args) == "table" then
   args = ""
 end
 
-local i = 0
-
 while args do
-  i = i + 1
-  args, update = loadfile("/stargate/check.lua")(args)
-  print(i)
-  os.sleep(2)
-  --if i >= 5 then
-  --  update(args)
-  --  require("computer").shutdown(true)
-  --end
+  args = loadfile("/stargate/check.lua")(args)
 end
 
 gpu.setBackground(0x000000)
