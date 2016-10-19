@@ -232,16 +232,9 @@ function Funktionen.main()
     print(sprachen.Hilfetext or "Verwendung: autorun [...]\nja\t-> Aktualisierung zur stabilen Version\nnein\t-> keine Aktualisierung\nbeta\t-> Aktualisierung zur Beta-Version\nhilfe\t-> zeige diese Nachricht nochmal")
   else
     if Funktionen.checkKomponenten() then
-      a = Funktionen.mainCheck()
+      return Funktionen.mainCheck()
     end
   end
-  gpu.setBackground(0x000000)
-  gpu.setForeground(0xFFFFFF)
-  gpu.setResolution(gpu.maxResolution())
-  if not a then
-    a = ""
-  end
-  return ""
 end
 
 Funktionen.main()
