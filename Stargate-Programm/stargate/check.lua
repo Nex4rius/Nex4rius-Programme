@@ -238,7 +238,10 @@ function Funktionen.main()
   gpu.setBackground(0x000000)
   gpu.setForeground(0xFFFFFF)
   gpu.setResolution(gpu.maxResolution())
-  return a
+  if not a then
+    a = ""
+  end
+  return ""
 end
 
 Funktionen.main()
