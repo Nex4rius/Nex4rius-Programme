@@ -10,13 +10,6 @@ if type(args) == "table" then
   args = ""
 end
 
-args, update = loadfile("/stargate/check.lua")(args)
-if args then
-  update(args)
-  require("computer").shutdown(true)
-end
+loadfile("/stargate/check.lua")(args)
 
-gpu.setBackground(0x000000)
-gpu.setForeground(0xFFFFFF)
-gpu.setResolution(gpu.maxResolution())
 os.exit()
