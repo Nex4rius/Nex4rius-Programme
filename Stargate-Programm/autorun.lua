@@ -9,3 +9,7 @@ if type(args) == "table" then
 end
 
 load(loadfile("/stargate/check.lua")(args))()
+
+gpu.setBackground(0x000000)
+gpu.setForeground(0xFFFFFF)
+gpu.setResolution(gpu.maxResolution())
