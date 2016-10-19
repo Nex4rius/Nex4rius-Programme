@@ -232,7 +232,4 @@ function Funktionen.main()
   end
 end
 
-a = Funktionen.main()
-print(a)
-os.sleep(2)
-return a
+return Funktionen.main(), Funktionen.update
