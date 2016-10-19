@@ -186,6 +186,7 @@ function Funktion.pull_event()
       if VersionUpdate == true then
         running = false
         Variablen.update = "ja"
+        Taste.q()
       end
       Wartezeit = 600
     else
@@ -931,7 +932,6 @@ function Funktion.zeigeNachricht(...)
   Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
   if VersionUpdate == true then
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, sprachen.aktualisierenGleich, Bildschirmbreite)
-    event.timer(30, funtion() end)
   elseif fs.exists("/log") and Sicherung.debug then
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, sprachen.fehlerName .. " /log", Bildschirmbreite)
   else
