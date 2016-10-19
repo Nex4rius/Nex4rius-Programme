@@ -1347,8 +1347,7 @@ function Funktion.eventLoop()
     if not e then
     elseif not e[1] then
     else
-      name = e[1]
-      f = Funktion[name]
+      f = Funktion[e[1]]
       if f then
         Funktion.checken(f, e)
       end
