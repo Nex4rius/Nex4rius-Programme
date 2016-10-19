@@ -20,11 +20,6 @@ local screen                    = component.getPrimary("screen")
 local Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
 local max_Bildschirmbreite, max_Bildschirmhoehe = gpu.maxResolution()
 local key_event_name            = "key_down"
-local sectime                   = os.time()
-os.sleep(1)
-sectime                         = sectime - os.time()
-local letzteNachrichtZeit       = os.time()
-local letzterAdressCheck        = os.time() / sectime
 local enteridc                  = ""
 local showidc                   = ""
 local remoteName                = ""
@@ -112,12 +107,15 @@ Taste.Koordinaten               = {}
 Taste.Steuerunglinks            = {}
 Taste.Steuerungrechts           = {}
 
-local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, c, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor
-local iris, k, letzteNachricht, locAddr, mess, mess_old, ok, r, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version
-
-screen.setTouchModeInverted(true)
+local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, c, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit
+local iris, k, letzteNachricht, locAddr, mess, mess_old, ok, r, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck
 
 do
+  sectime                       = os.time()
+  os.sleep(1)
+  sectime                       = sectime - os.time()
+  letzteNachrichtZeit           = os.time()
+  letzterAdressCheck            = os.time() / sectime
   local args                    = require("shell").parse(...)
   Funktion.update               = args[1]
   Funktion.checkServerVersion   = args[2]
@@ -132,6 +130,8 @@ end
 if sg.irisState() == "Offline" then
   Trennlinienhoehe    = 13
 end
+
+screen.setTouchModeInverted(true)
 
 if component.isAvailable("redstone") then
   r = component.getPrimary("redstone")
