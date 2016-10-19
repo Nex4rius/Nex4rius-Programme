@@ -1197,6 +1197,7 @@ function Taste.u(y)
     Funktion.zeigeHier(1, y, "U " .. sprachen.Update, 0)
     if component.isAvailable("internet") then
       if version ~= Funktion.checkServerVersion() then
+        Funktion.zeigeNachricht(sprachen.aktualisierenJetzt)
         running = false
         Variablen.update = "ja"
       else
@@ -1214,6 +1215,7 @@ function Taste.b(y)
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
     Funktion.zeigeHier(1, y, "B " .. sprachen.UpdateBeta, 0)
     if component.isAvailable("internet") then
+      Funktion.zeigeNachricht(sprachen.aktualisierenJetzt)
       running = false
       Variablen.update = "beta"
     end
