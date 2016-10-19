@@ -3,6 +3,7 @@
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
 local args = require("shell").parse(...)[1]
+local gpu = component.getPrimary("gpu")
 
 if type(args) == "table" then
   args = nil
