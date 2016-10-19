@@ -201,7 +201,6 @@ function Funktionen.mainCheck()
 end
 
 function Funktionen.main()
-  local a
   gpu.setResolution(70, 25)
   gpu.setBackground(6684774)
   gpu.setForeground(0xFFFFFF)
