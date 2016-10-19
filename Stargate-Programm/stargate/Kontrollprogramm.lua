@@ -32,7 +32,7 @@ local energytype                = "EU"
 local Farben                    = {}
 local Funktion                  = {}
 local Taste                     = {}
-local Variablen                 = {}
+local Variabel                  = {}
 local activationtime            = 0
 local energy                    = 0
 local seite                     = 0
@@ -342,7 +342,7 @@ function Funktion.AdressenSpeichern()
       sendeAdressen[i] = {}
       sendeAdressen[i][1] = na[1]
       sendeAdressen[i][2] = na[2]
-      Variablen.lokaleAdresse = true
+      Variabel.lokaleAdresse = true
     else
       local anwahlEnergie = sg.energyToDial(na[2])
       if not anwahlEnergie then
@@ -372,7 +372,7 @@ function Funktion.AdressenSpeichern()
     maxseiten = (i + k) / 10
     AdressenAnzahl = i
   end
-  if not Variablen.lokaleAdresse then
+  if not Variabel.lokaleAdresse then
     Funktion.checkStargateName()
   end
   Funktion.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
