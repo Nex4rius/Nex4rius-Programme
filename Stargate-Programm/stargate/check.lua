@@ -236,4 +236,4 @@ function Funktionen.main()
   end
 end
 
-Funktionen.main()
+return Funktionen.main()
