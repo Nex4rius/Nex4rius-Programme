@@ -232,4 +232,4 @@ function Funktionen.main()
   end
 end
 
-return Funktionen.main(), Funktionen.update
+return Funktionen.main()
