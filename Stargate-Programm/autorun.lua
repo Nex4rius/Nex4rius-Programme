@@ -6,7 +6,7 @@ local args = require("shell").parse(...)[1]
 local gpu = require("component").getPrimary("gpu")
 
 if type(args) == "table" then
-  args = nil
+  args = ""
 end
 
 while args do
