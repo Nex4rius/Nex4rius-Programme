@@ -5,13 +5,19 @@
 local args = require("shell").parse(...)[1]
 local gpu = require("component").getPrimary("gpu")
 local update
+local i = 0
 
 if type(args) == "table" then
   args = ""
 end
 
 while args do
-  args = loadfile("/stargate/check.lua")(args)
+  i = i + 1
+  args, update = loadfile("/stargate/check.lua")(args)
+  if i >= 10 then
+    update(args)
+    require("computer").shutdown(true)
+  end
 end
 
 gpu.setBackground(0x000000)
