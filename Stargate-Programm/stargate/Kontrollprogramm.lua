@@ -186,7 +186,7 @@ function Funktion.pull_event()
       if VersionUpdate == true then
         Funktion.zeigeNachricht(sprachen.aktualisierenJetzt)
         running = false
-        Variablen.update = 'loadfile("/autorun.lua")("ja")'
+        Variablen.update = "ja"
       end
       Wartezeit = 600
     else
@@ -1198,7 +1198,7 @@ function Taste.u(y)
     if component.isAvailable("internet") then
       if version ~= Funktion.checkServerVersion() then
         running = false
-        Variablen.update = 'loadfile("/autorun.lua")("ja")'
+        Variablen.update = "ja"
       else
         Funktion.zeigeNachricht(sprachen.bereitsNeusteVersion)
         event.timer(2, Funktion.zeigeMenu)
@@ -1215,7 +1215,7 @@ function Taste.b(y)
     Funktion.zeigeHier(1, y, "B " .. sprachen.UpdateBeta, 0)
     if component.isAvailable("internet") then
       running = false
-      Variablen.update = 'loadfile("/autorun.lua")("beta")'
+      Variablen.update = "beta"
     end
   end
 end
