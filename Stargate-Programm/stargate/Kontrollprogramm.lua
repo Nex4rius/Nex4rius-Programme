@@ -6,18 +6,19 @@ local component                 = require("component")
 local term                      = require("term")
 local event                     = require("event")
 local fs                        = require("filesystem")
+
 local edit                      = loadfile("/bin/edit.lua")
 local schreibSicherungsdatei    = loadfile("/stargate/schreibSicherungsdatei.lua")
 local Sicherung                 = loadfile("/stargate/Sicherungsdatei.lua")()
+local sprachen                  = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
+local ersetzen                  = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
+
 local gpu                       = component.getPrimary("gpu")
 local sg                        = component.getPrimary("stargate")
 local screen                    = component.getPrimary("screen")
 
-local sectime                   = os.time()
-os.sleep(1)
-sectime                         = sectime - os.time()
-local letzteNachrichtZeit       = os.time()
-local letzterAdressCheck        = os.time() / sectime
+local Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
+local max_Bildschirmbreite, max_Bildschirmhoehe = gpu.maxResolution()
 local enteridc                  = ""
 local showidc                   = ""
 local remoteName                = ""
@@ -105,15 +106,31 @@ Taste.Koordinaten               = {}
 Taste.Steuerunglinks            = {}
 Taste.Steuerungrechts           = {}
 
-local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, c, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor
-local iris, k, letzteNachricht, locAddr, mess, mess_old, ok, r, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version
+local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit
+local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, f, k, r
 
 do
+  sectime                       = os.time()
+  os.sleep(1)
+  sectime                       = sectime - os.time()
+  letzteNachrichtZeit           = os.time()
+  letzterAdressCheck            = os.time() / sectime
   local args                    = require("shell").parse(...)
   Funktion.update               = args[1]
   Funktion.checkServerVersion   = args[2]
   version                       = tostring(args[3])
 end
+
+if Sicherung.RF then
+  energytype          = "RF"
+  energymultiplicator = 80
+end
+
+if sg.irisState() == "Offline" then
+  Trennlinienhoehe    = 13
+end
+
+screen.setTouchModeInverted(true)
 
 if component.isAvailable("redstone") then
   r = component.getPrimary("redstone")
@@ -134,17 +151,6 @@ if component.isAvailable("redstone") then
   r.setBundledOutput(0, Farben.red, 0)
   r.setBundledOutput(0, Farben.black, 0)
 end
-
-if Sicherung.RF == true then
-  energytype          = "RF"
-  energymultiplicator = 80
-end
-
-if sg.irisState() == "Offline" then
-  Trennlinienhoehe    = 13
-end
-
-screen.setTouchModeInverted(true)
 
 function Funktion.schreibeAdressen()
   local f = io.open("/stargate/adressen.lua", "w")
@@ -173,10 +179,6 @@ function Funktion.Farbe(background, foreground)
   end
 end
 
-function Funktion.setCursor(col, row)
-  term.setCursor(col, row)
-end
-
 function Funktion.pull_event()
   local Wartezeit = 1
   if state == "Idle" and checkEnergy == energy then
@@ -186,49 +188,17 @@ function Funktion.pull_event()
         print(sprachen.aktualisierenJetzt)
         Funktion.update("master")
       end
-      Wartezeit = 300
+      Wartezeit = 600
     else
       Wartezeit = 50
     end
   end
   checkEnergy = energy
-  local eventErgebnis = {event.pull(Wartezeit)}
-  return eventErgebnis
+  return {event.pull(Wartezeit)}
 end
-
-local Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
-local max_Bildschirmbreite, max_Bildschirmhoehe = gpu.maxResolution()
-local key_event_name = "key_down"
-
-local sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
-local ersetzen = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
 
 function Funktion.zeichenErsetzen(...)
   return string.gsub(..., "%a+", function (str) return ersetzen [str] end)
-end
-
-function Funktion.touchscreen(x, y)
-  if x <= 30 then
-    if seite >= 0 then
-      if y > 1 and y <= 21 then
-        Taste.Zahl(math.floor(((y - 1) / 2) + 0.5))
-      end
-    elseif seite == -1 then
-      if Taste.links[y] then
-        Taste.links[y](y)
-      end
-    end
-  elseif x >= 35 and y >= Taste.Koordinaten.Steuerungsanfang_Y and y <= Taste.Koordinaten.Steuerungsende_Y then
-    if x <= 52 then
-      if Taste.Steuerunglinks[y] then
-        Taste.Steuerunglinks[y]()
-      end
-    else
-      if Taste.Steuerungrechts[y] then
-        Taste.Steuerungrechts[y]()
-      end
-    end
-  end
 end
 
 function Funktion.checkReset()
@@ -256,7 +226,7 @@ end
 
 function Funktion.zeigeHier(x, y, s, h)
   if type(x) == "number" and type(y) == "number" and type(s) == "string" then
-    Funktion.setCursor(x, y)
+    term.setCursor(x, y)
     if not h then
       h = Bildschirmbreite
     end
@@ -418,7 +388,7 @@ function Funktion.zeigeMenu()
   for P = 1, Bildschirmhoehe - 3 do
     Funktion.zeigeHier(1, P, "", xVerschiebung - 3)
   end
-  Funktion.setCursor(1, 1)
+  term.setCursor(1, 1)
   if seite == -1 then
     Funktion.Infoseite()
   else
@@ -1020,7 +990,7 @@ function Funktion.dial(name, adresse)
   os.sleep(1)
 end
 
-Funktion[key_event_name] = function(e)
+function Funktion.key_down(e)
   c = string.char(e[3])
   if entercode == true then
     Taste.eingabe_enter()
@@ -1028,30 +998,13 @@ Funktion[key_event_name] = function(e)
     Taste.Pfeil_links()
   elseif e[3] == 0 and e[4] == 205 then
     Taste.Pfeil_rechts()
-  elseif c == "e" then
-    Taste.e()
-  elseif c == "d" then
-    Taste.d()
-  elseif c == "o" then
-    Taste.o()
-  elseif c == "c" then
-    Taste.c()
-  elseif seite == -1 then
-    if c == "q" then
-      Taste.q()
-    elseif c == "i" then
-      Taste.i()
-    elseif c == "z" then
-      Taste.z()
-    elseif c == "l" then
-      Taste.l()
-    elseif c == "u" then
-      Taste.u()
-    elseif c == "b" then
-      Taste.b()
-    end
   elseif c >= "0" and c <= "9" and seite >= 0 then
     Taste.Zahl(c)
+  else
+    local f = Taste[c]
+    if f then
+      Funktion.checken(f)
+    end
   end
 end
 
@@ -1103,9 +1056,11 @@ function Taste.Pfeil_rechts()
 end
 
 function Taste.q(y)
-  Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-  Funktion.zeigeHier(1, y, "Q " .. sprachen.beenden, 0)
-  running = false
+  if seite == -1 then
+    Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
+    Funktion.zeigeHier(1, y, "Q " .. sprachen.beenden, 0)
+    running = false
+  end
 end
 
 function Taste.d()
@@ -1171,87 +1126,97 @@ function Taste.c()
 end
 
 function Taste.i(y)
-  Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-  Funktion.zeigeHier(1, y, "I " .. sprachen.IrisSteuerung .. sprachen.an_aus, 0)
-  event.timer(2, Funktion.zeigeMenu)
-  if iris == "Offline" then else
-    send = true
-    if Sicherung.control == "On" then
-      Sicherung.control = "Off"
-    else
-      Sicherung.control = "On"
+  if seite == -1 then
+    Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
+    Funktion.zeigeHier(1, y, "I " .. sprachen.IrisSteuerung .. sprachen.an_aus, 0)
+    event.timer(2, Funktion.zeigeMenu)
+    if iris == "Offline" then else
+      send = true
+      if Sicherung.control == "On" then
+        Sicherung.control = "Off"
+      else
+        Sicherung.control = "On"
+      end
+      schreibSicherungsdatei(Sicherung)
     end
-    schreibSicherungsdatei(Sicherung)
   end
 end
 
 function Taste.z(y)
-  Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-  Funktion.zeigeHier(1, y, "Z " .. sprachen.AdressenBearbeiten, 0)
-  if Funktion.Tastatur() then
-    Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
-    screen.setTouchModeInverted(false)
-    edit("stargate/adressen.lua")
-    screen.setTouchModeInverted(true)
-    seite = -1
-    Funktion.zeigeAnzeige()
-    seite = 0
-    Funktion.AdressenSpeichern()
-  else
-    event.timer(2, Funktion.zeigeMenu)
+  if seite == -1 then
+    Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
+    Funktion.zeigeHier(1, y, "Z " .. sprachen.AdressenBearbeiten, 0)
+    if Funktion.Tastatur() then
+      Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
+      screen.setTouchModeInverted(false)
+      edit("stargate/adressen.lua")
+      screen.setTouchModeInverted(true)
+      seite = -1
+      Funktion.zeigeAnzeige()
+      seite = 0
+      Funktion.AdressenSpeichern()
+    else
+      event.timer(2, Funktion.zeigeMenu)
+    end
   end
 end
 
 function Taste.l(y)
-  Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-  Funktion.zeigeHier(1, y, "L " .. sprachen.EinstellungenAendern, 0)
-  if Funktion.Tastatur() then
-    Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
-    schreibSicherungsdatei(Sicherung)
-    screen.setTouchModeInverted(false)
-    edit("stargate/Sicherungsdatei.lua")
-    screen.setTouchModeInverted(true)
-    Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
-    if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
-      sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
+  if seite == -1 then
+    Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
+    Funktion.zeigeHier(1, y, "L " .. sprachen.EinstellungenAendern, 0)
+    if Funktion.Tastatur() then
+      Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
+      schreibSicherungsdatei(Sicherung)
+      screen.setTouchModeInverted(false)
+      edit("stargate/Sicherungsdatei.lua")
+      screen.setTouchModeInverted(true)
+      Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
+      if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
+        sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
+      else
+        print("\nUnbekannte Sprache\nStandardeinstellung = deutsch")
+        sprachen = loadfile("/stargate/sprache/deutsch.lua")()
+        os.sleep(1)
+      end
+      schreibSicherungsdatei(Sicherung)
+      Funktion.sides()
+      gpu.setBackground(Farben.Nachrichtfarbe)
+      term.clear()
+      seite = 0
+      Funktion.zeigeAnzeige()
     else
-      print("\nUnbekannte Sprache\nStandardeinstellung = deutsch")
-      sprachen = loadfile("/stargate/sprache/deutsch.lua")()
-      os.sleep(1)
+      event.timer(2, Funktion.zeigeMenu)
     end
-    schreibSicherungsdatei(Sicherung)
-    Funktion.sides()
-    gpu.setBackground(Farben.Nachrichtfarbe)
-    term.clear()
-    seite = 0
-    Funktion.zeigeAnzeige()
-  else
-    event.timer(2, Funktion.zeigeMenu)
   end
 end
 
 function Taste.u(y)
-  Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-  Funktion.zeigeHier(1, y, "U " .. sprachen.Update, 0)
-  if component.isAvailable("internet") then
-    if version ~= Funktion.checkServerVersion() then
-      Funktion.beendeAlles()
-      loadfile("/autorun.lua")("ja")
+  if seite == -1 then
+    Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
+    Funktion.zeigeHier(1, y, "U " .. sprachen.Update, 0)
+    if component.isAvailable("internet") then
+      if version ~= Funktion.checkServerVersion() then
+        Funktion.beendeAlles()
+        loadfile("/autorun.lua")("ja")
+      else
+        Funktion.zeigeNachricht(sprachen.bereitsNeusteVersion)
+        event.timer(2, Funktion.zeigeMenu)
+      end
     else
-      Funktion.zeigeNachricht(sprachen.bereitsNeusteVersion)
       event.timer(2, Funktion.zeigeMenu)
     end
-  else
-    event.timer(2, Funktion.zeigeMenu)
   end
 end
 
 function Taste.b(y)
-  Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-  Funktion.zeigeHier(1, y, "B " .. sprachen.UpdateBeta, 0)
-  if component.isAvailable("internet") then
-    Funktion.beendeAlles()
-    loadfile("/autorun.lua")("beta")
+  if seite == -1 then
+    Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
+    Funktion.zeigeHier(1, y, "B " .. sprachen.UpdateBeta, 0)
+    if component.isAvailable("internet") then
+      Funktion.beendeAlles()
+      loadfile("/autorun.lua")("beta")
+    end
   end
 end
 
@@ -1312,45 +1277,73 @@ function Funktion.sgChevronEngaged(e)
   Funktion.zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
 end
 
+function Funktion.sgMessageReceived(e)
+  if direction == "Outgoing" then
+    codeaccepted = e[3]
+  elseif direction == "Incoming" and wormhole == "in" then
+    if e[3] == "Adressliste" then
+    else
+      incode = e[3]
+    end
+  end
+  if e[4] == "Adressliste" then
+    local inAdressen = require("serialization").unserialize(e[5])
+    if type(inAdressen) == "table" then
+      Funktion.angekommeneAdressen(inAdressen)
+    end
+    if type(e[6]) == "string" then
+      Funktion.angekommeneVersion(e[6])
+    end
+  end
+  messageshow = true
+end
+
+function Funktion.touch(e)
+  local x = e[3]
+  local y = e[4]
+  if x <= 30 then
+    if seite >= 0 then
+      if y > 1 and y <= 21 then
+        Taste.Zahl(math.floor(((y - 1) / 2) + 0.5))
+      end
+    elseif seite == -1 then
+      if Taste.links[y] then
+        Taste.links[y](y)
+      end
+    end
+  elseif x >= 35 and y >= Taste.Koordinaten.Steuerungsanfang_Y and y <= Taste.Koordinaten.Steuerungsende_Y then
+    if x <= 52 then
+      if Taste.Steuerunglinks[y] then
+        Taste.Steuerunglinks[y]()
+      end
+    else
+      if Taste.Steuerungrechts[y] then
+        Taste.Steuerungrechts[y]()
+      end
+    end
+  end
+end
+
+function Funktion.sgDialIn()
+  wormhole = "in"
+end
+
+function Funktion.sgDialOut()
+  state = "Dialling"
+  wormhole = "out"
+  direction = "Outgoing"
+end
+
 function Funktion.eventLoop()
   while running do
     Funktion.checken(Funktion.zeigeStatus)
     e = Funktion.pull_event()
     if not e then
     elseif not e[1] then
-    elseif e[1] == "touch" then
-      Funktion.touchscreen(e[3], e[4])
     else
-      name = e[1]
-      f = Funktion[name]
+      f = Funktion[e[1]]
       if f then
         Funktion.checken(f, e)
-      end
-      if e[1] == "sgMessageReceived" then
-        if direction == "Outgoing" then
-          codeaccepted = e[3]
-        elseif direction == "Incoming" and wormhole == "in" then
-          if e[3] == "Adressliste" then
-          else
-            incode = e[3]
-          end
-        end
-        if e[4] == "Adressliste" then
-          local inAdressen = require("serialization").unserialize(e[5])
-          if type(inAdressen) == "table" then
-            Funktion.angekommeneAdressen(inAdressen)
-          end
-          if type(e[6]) == "string" then
-            Funktion.angekommeneVersion(e[6])
-          end
-        end
-        messageshow = true
-      elseif e[1] == "sgDialIn" then
-        wormhole = "in"
-      elseif e[1] == "sgDialOut" then
-        state = "Dialling"
-        wormhole = "out"
-        direction = "Outgoing"
       end
     end
   end
