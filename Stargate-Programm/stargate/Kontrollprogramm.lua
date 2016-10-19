@@ -192,14 +192,13 @@ function Funktion.pull_event()
         print(sprachen.aktualisierenJetzt)
         Funktion.update("master")
       end
-      Wartezeit = 300
+      Wartezeit = 600
     else
       Wartezeit = 50
     end
   end
   checkEnergy = energy
-  local eventErgebnis = {event.pull(Wartezeit)}
-  return eventErgebnis
+  return {event.pull(Wartezeit)}
 end
 
 function Funktion.zeichenErsetzen(...)
