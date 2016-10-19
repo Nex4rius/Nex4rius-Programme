@@ -9,5 +9,3 @@ if type(args) == "table" then
 end
 
 loadfile("/stargate/check.lua")(args)
-
-os.exit()
