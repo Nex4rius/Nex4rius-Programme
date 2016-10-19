@@ -86,6 +86,7 @@ function Funktionen.update(versionTyp)
   elseif versionTyp == "master" then
     loadfile("/bin/pastebin.lua")("run", "-f", "wLK1gCKt")
   end
+  os.exit()
 end
 
 function Funktionen.checkServerVersion()
