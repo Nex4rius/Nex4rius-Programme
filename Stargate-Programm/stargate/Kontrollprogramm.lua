@@ -6,13 +6,20 @@ local component                 = require("component")
 local term                      = require("term")
 local event                     = require("event")
 local fs                        = require("filesystem")
+
 local edit                      = loadfile("/bin/edit.lua")
 local schreibSicherungsdatei    = loadfile("/stargate/schreibSicherungsdatei.lua")
 local Sicherung                 = loadfile("/stargate/Sicherungsdatei.lua")()
+local sprachen                  = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
+local ersetzen                  = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
+
 local gpu                       = component.getPrimary("gpu")
 local sg                        = component.getPrimary("stargate")
 local screen                    = component.getPrimary("screen")
 
+local Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
+local max_Bildschirmbreite, max_Bildschirmhoehe = gpu.maxResolution()
+local key_event_name            = "key_down"
 local sectime                   = os.time()
 os.sleep(1)
 sectime                         = sectime - os.time()
@@ -108,11 +115,22 @@ Taste.Steuerungrechts           = {}
 local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, c, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor
 local iris, k, letzteNachricht, locAddr, mess, mess_old, ok, r, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version
 
+screen.setTouchModeInverted(true)
+
 do
   local args                    = require("shell").parse(...)
   Funktion.update               = args[1]
   Funktion.checkServerVersion   = args[2]
   version                       = tostring(args[3])
+end
+
+if Sicherung.RF then
+  energytype          = "RF"
+  energymultiplicator = 80
+end
+
+if sg.irisState() == "Offline" then
+  Trennlinienhoehe    = 13
 end
 
 if component.isAvailable("redstone") then
@@ -134,17 +152,6 @@ if component.isAvailable("redstone") then
   r.setBundledOutput(0, Farben.red, 0)
   r.setBundledOutput(0, Farben.black, 0)
 end
-
-if Sicherung.RF == true then
-  energytype          = "RF"
-  energymultiplicator = 80
-end
-
-if sg.irisState() == "Offline" then
-  Trennlinienhoehe    = 13
-end
-
-screen.setTouchModeInverted(true)
 
 function Funktion.schreibeAdressen()
   local f = io.open("/stargate/adressen.lua", "w")
@@ -195,13 +202,6 @@ function Funktion.pull_event()
   local eventErgebnis = {event.pull(Wartezeit)}
   return eventErgebnis
 end
-
-local Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
-local max_Bildschirmbreite, max_Bildschirmhoehe = gpu.maxResolution()
-local key_event_name = "key_down"
-
-local sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
-local ersetzen = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
 
 function Funktion.zeichenErsetzen(...)
   return string.gsub(..., "%a+", function (str) return ersetzen [str] end)
