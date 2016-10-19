@@ -186,6 +186,7 @@ function Funktion.pull_event()
       if VersionUpdate == true then
         running = false
         Variablen.update = "ja"
+        Taste.q()
       end
       Wartezeit = 600
     else
