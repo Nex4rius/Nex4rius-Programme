@@ -10,11 +10,7 @@ if type(args) == "table" then
 end
 
 while args do
-  print("davor " .. tostring(args))
-  os.sleep(2)
   args = loadfile("/stargate/check.lua")(args)
-  print("danach " .. tostring(args))
-  os.sleep(2)
 end
 
 gpu.setBackground(0x000000)
