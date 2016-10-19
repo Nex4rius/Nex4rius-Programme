@@ -4,8 +4,8 @@
 
 local args = require("shell").parse(...)[1]
 
-if type(args) == "string" then
-  loadfile("/stargate/check.lua")(args)
-else
-  loadfile("/stargate/check.lua")()
+if type(args) == "table" then
+  args = ""
 end
+
+loadfile("/stargate/check.lua")(args)

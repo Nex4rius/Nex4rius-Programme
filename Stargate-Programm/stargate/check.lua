@@ -138,11 +138,13 @@ function Funktionen.mainCheck()
     if arg == sprachen.ja or arg == "ja" or arg == "yes" then
       print(sprachen.aktualisierenJa or "\nAktualisieren: Ja\n")
       Funktionen.update("master")
+      return
     elseif arg == sprachen.nein or arg == "nein" or arg == "no" then
       -- nichts
     elseif arg == "beta" then
       print(sprachen.aktualisierenBeta or "\nAktualisieren: Beta-Version\n")
       Funktionen.update("beta")
+      return
     elseif version ~= serverVersion or version ~= betaServerVersion then
       if Sicherung.installieren == false then
         local EndpunktVersion = string.len(version)

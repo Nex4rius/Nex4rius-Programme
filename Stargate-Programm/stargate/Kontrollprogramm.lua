@@ -184,9 +184,8 @@ function Funktion.pull_event()
   if state == "Idle" and checkEnergy == energy then
     if Nachrichtleer == true then
       if VersionUpdate == true then
-        Funktion.Farbe(Farben.schwarzeFarbe, Farben.weisseFarbe)
-        print(sprachen.aktualisierenJetzt)
-        Funktion.update("master")
+        running = false
+        Variablen.update = "ja"
       end
       Wartezeit = 600
     else
@@ -1197,8 +1196,8 @@ function Taste.u(y)
     Funktion.zeigeHier(1, y, "U " .. sprachen.Update, 0)
     if component.isAvailable("internet") then
       if version ~= Funktion.checkServerVersion() then
-        Funktion.beendeAlles()
-        loadfile("/autorun.lua")("ja")
+        running = false
+        Variablen.update = "ja"
       else
         Funktion.zeigeNachricht(sprachen.bereitsNeusteVersion)
         event.timer(2, Funktion.zeigeMenu)
@@ -1214,8 +1213,8 @@ function Taste.b(y)
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
     Funktion.zeigeHier(1, y, "B " .. sprachen.UpdateBeta, 0)
     if component.isAvailable("internet") then
-      Funktion.beendeAlles()
-      loadfile("/autorun.lua")("beta")
+      running = false
+      Variablen.update = "beta"
     end
   end
 end
@@ -1470,7 +1469,16 @@ function Funktion.main()
   seite = 0
   Funktion.zeigeMenu()
   Funktion.eventLoop()
+  os.sleep(2)
   Funktion.beendeAlles()
 end
 
 Funktion.checken(Funktion.main)
+
+if Variablen.update == "ja" then
+  print(sprachen.aktualisierenJetzt)
+  Funktion.update("master")
+elseif Variablen.update == "beta" then
+  print(sprachen.aktualisierenJetzt)
+  Funktion.update("beta")
+end
