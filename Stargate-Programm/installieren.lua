@@ -114,10 +114,10 @@ end
 
 if versionTyp == nil then
   if type(arg) == "string" then
-    Funktionen.installieren(arg)
+    return Funktionen.installieren(arg)
   else
-    Funktionen.installieren("master")
+    return Funktionen.installieren("master")
   end
 else
-  Funktionen.installieren(versionTyp)
+  return Funktionen.installieren(versionTyp)
 end
