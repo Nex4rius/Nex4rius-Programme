@@ -86,7 +86,7 @@ function Funktionen.update(versionTyp)
   elseif versionTyp == "master" then
     loadfile("/bin/pastebin.lua")("run", "-f", "wLK1gCKt")
   end
-  os.exit()
+  return "no"
 end
 
 function Funktionen.checkServerVersion()
@@ -137,37 +137,33 @@ function Funktionen.mainCheck()
     end
     if arg == sprachen.ja or arg == "ja" or arg == "yes" then
       print(sprachen.aktualisierenJa or "\nAktualisieren: Ja\n")
-      Funktionen.update("master")
+      return Funktionen.update("master")
     elseif arg == sprachen.nein or arg == "nein" or arg == "no" then
       -- nichts
     elseif arg == "beta" then
       print(sprachen.aktualisierenBeta or "\nAktualisieren: Beta-Version\n")
-      Funktionen.update("beta")
+      return Funktionen.update("beta")
     elseif version ~= serverVersion or version ~= betaServerVersion then
       if Sicherung.installieren == false then
         local EndpunktVersion = string.len(version)
         if Sicherung.autoUpdate == true and version ~= serverVersion and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" then
           print(sprachen.aktualisierenJa or "\nAktualisieren: Ja\n")
-          Funktionen.update("master")
-          return
+          return Funktionen.update("master")
         else
           print(sprachen.aktualisierenFrage .. betaVersionName .. "\n" or "\nAktualisieren? ja/nein" .. betaVersionName .. "\n")
           if Sicherung.autoUpdate then
             print(sprachen.autoUpdateAn or "automatische Aktualisierungen sind aktiviert")
             print()
             os.sleep(2)
-            Funktionen.update("master")
-            return
+            return Funktionen.update("master")
           else
             antwortFrage = io.read()
             if string.lower(antwortFrage) == sprachen.ja or string.lower(antwortFrage) == "ja" or string.lower(antwortFrage) == "yes" then
               print(sprachen.aktualisierenJa or "\nAktualisieren: Ja\n")
-              Funktionen.update("master")
-              return
+              return Funktionen.update("master")
             elseif string.lower(antwortFrage) == "beta" then
               print(sprachen.aktualisierenBeta or "\nAktualisieren: Beta-Version\n")
-              Funktionen.update("beta")
-              return
+              return Funktionen.update("beta")
             else
               print(sprachen.aktualisierenNein .. antwortFrage or "\nAntwort: " .. antwortFrage)
             end
