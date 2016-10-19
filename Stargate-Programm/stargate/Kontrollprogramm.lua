@@ -19,7 +19,6 @@ local screen                    = component.getPrimary("screen")
 
 local Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
 local max_Bildschirmbreite, max_Bildschirmhoehe = gpu.maxResolution()
-local key_event_name            = "key_down"
 local enteridc                  = ""
 local showidc                   = ""
 local remoteName                = ""
@@ -996,7 +995,7 @@ function Funktion.dial(name, adresse)
   os.sleep(1)
 end
 
-Funktion[key_event_name] = function(e)
+function Funktion.key_down(e)
   c = string.char(e[3])
   if entercode == true then
     Taste.eingabe_enter()
