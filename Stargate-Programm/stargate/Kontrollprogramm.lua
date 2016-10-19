@@ -179,10 +179,6 @@ function Funktion.Farbe(background, foreground)
   end
 end
 
-function Funktion.setCursor(col, row)
-  term.setCursor(col, row)
-end
-
 function Funktion.pull_event()
   local Wartezeit = 1
   if state == "Idle" and checkEnergy == energy then
@@ -230,7 +226,7 @@ end
 
 function Funktion.zeigeHier(x, y, s, h)
   if type(x) == "number" and type(y) == "number" and type(s) == "string" then
-    Funktion.setCursor(x, y)
+    term.setCursor(x, y)
     if not h then
       h = Bildschirmbreite
     end
@@ -392,7 +388,7 @@ function Funktion.zeigeMenu()
   for P = 1, Bildschirmhoehe - 3 do
     Funktion.zeigeHier(1, P, "", xVerschiebung - 3)
   end
-  Funktion.setCursor(1, 1)
+  term.setCursor(1, 1)
   if seite == -1 then
     Funktion.Infoseite()
   else
