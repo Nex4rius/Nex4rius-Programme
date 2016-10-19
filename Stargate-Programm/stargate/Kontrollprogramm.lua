@@ -1478,4 +1478,8 @@ end
 
 Funktion.checken(Funktion.main)
 
-return Variablen.update
+if Variablen.update == "ja" then
+  Funktion.update("master")
+elseif Variablen.update == "beta" then
+  Funktion.update("beta")
+end
