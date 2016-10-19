@@ -232,4 +232,7 @@ function Funktionen.main()
   end
 end
 
-return Funktionen.main()
+a = Funktionen.main()
+print(a)
+os.sleep(2)
+return a
