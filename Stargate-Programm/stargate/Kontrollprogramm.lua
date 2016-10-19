@@ -85,7 +85,7 @@ Farben.Steuerungstextfarbe      = Farben.schwarzeFarbe
 Farben.Statusfarbe              = Farben.grueneFarbe
 Farben.Statustextfarbe          = Farben.Textfarbe
 
-Variablen.update                = ""
+Variablen.update                = "os.exit()"
 
 Farben.white                    = 0
 --Farben.orange                   = 1
