@@ -32,7 +32,7 @@ local energytype                = "EU"
 local Farben                    = {}
 local Funktion                  = {}
 local Taste                     = {}
-local Variabel                  = {}
+local Variablen                 = {}
 local activationtime            = 0
 local energy                    = 0
 local seite                     = 0
@@ -84,6 +84,8 @@ Farben.Steuerungsfarbe          = Farben.gelbeFarbe
 Farben.Steuerungstextfarbe      = Farben.schwarzeFarbe
 Farben.Statusfarbe              = Farben.grueneFarbe
 Farben.Statustextfarbe          = Farben.Textfarbe
+
+Variablen.update                = ""
 
 Farben.white                    = 0
 --Farben.orange                   = 1
@@ -184,9 +186,9 @@ function Funktion.pull_event()
   if state == "Idle" and checkEnergy == energy then
     if Nachrichtleer == true then
       if VersionUpdate == true then
-        Funktion.Farbe(Farben.schwarzeFarbe, Farben.weisseFarbe)
-        print(sprachen.aktualisierenJetzt)
-        Funktion.update("master")
+        Funktion.zeigeNachricht(sprachen.aktualisierenJetzt)
+        running = false
+        Variablen.update = 'loadfile("/autorun.lua")("ja")'
       end
       Wartezeit = 600
     else
@@ -342,7 +344,7 @@ function Funktion.AdressenSpeichern()
       sendeAdressen[i] = {}
       sendeAdressen[i][1] = na[1]
       sendeAdressen[i][2] = na[2]
-      Variabel.lokaleAdresse = true
+      Variablen.lokaleAdresse = true
     else
       local anwahlEnergie = sg.energyToDial(na[2])
       if not anwahlEnergie then
@@ -372,7 +374,7 @@ function Funktion.AdressenSpeichern()
     maxseiten = (i + k) / 10
     AdressenAnzahl = i
   end
-  if not Variabel.lokaleAdresse then
+  if not Variablen.lokaleAdresse then
     Funktion.checkStargateName()
   end
   Funktion.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
@@ -1197,8 +1199,8 @@ function Taste.u(y)
     Funktion.zeigeHier(1, y, "U " .. sprachen.Update, 0)
     if component.isAvailable("internet") then
       if version ~= Funktion.checkServerVersion() then
-        Funktion.beendeAlles()
-        loadfile("/autorun.lua")("ja")
+        running = false
+        Variablen.update = 'loadfile("/autorun.lua")("ja")'
       else
         Funktion.zeigeNachricht(sprachen.bereitsNeusteVersion)
         event.timer(2, Funktion.zeigeMenu)
@@ -1214,8 +1216,8 @@ function Taste.b(y)
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
     Funktion.zeigeHier(1, y, "B " .. sprachen.UpdateBeta, 0)
     if component.isAvailable("internet") then
-      Funktion.beendeAlles()
-      loadfile("/autorun.lua")("beta")
+      running = false
+      Variablen.update = 'loadfile("/autorun.lua")("beta")'
     end
   end
 end
@@ -1470,7 +1472,10 @@ function Funktion.main()
   seite = 0
   Funktion.zeigeMenu()
   Funktion.eventLoop()
+  os.sleep(2)
   Funktion.beendeAlles()
 end
 
 Funktion.checken(Funktion.main)
+
+return Variablen.update
