@@ -9,7 +9,9 @@ if type(args) == "table" then
   args = nil
 end
 
-load(loadfile("/stargate/check.lua")(args))()
+while args do
+  args = loadfile("/stargate/check.lua")(args)
+end
 
 gpu.setBackground(0x000000)
 gpu.setForeground(0xFFFFFF)
