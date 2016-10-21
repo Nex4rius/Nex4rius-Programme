@@ -10,20 +10,20 @@ local wget                    = loadfile("/bin/wget.lua")
 local schreibSicherungsdatei  = loadfile("/stargate/schreibSicherungsdatei.lua")
 local betaVersionName         = ""
 local Sicherung               = {}
-local Funktionen              = {}
+local Funktion                = {}
 local version
 
-function Funktionen.Pfad(versionTyp)
-  return "https://raw.githubusercontent.com/Nex4rius/Stargate-Programm/" .. versionTyp .. "/Stargate-Programm/"
+function Funktion.Pfad(versionTyp)
+  return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/" .. versionTyp .. "/Stargate-Programm/"
 end
 
-function Funktionen.checkSprache()
+function Funktion.checkSprache()
   if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
     return true
   else
     print("Sprache? / Language? deutsch / english\n")
     antwortFrageSprache = io.read()
-    if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" or wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/sprache/" .. antwortFrageSprache .. ".lua", "/update/stargate/sprache/" .. antwortFrageSprache .. ".lua") then
+    if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" or wget("-f", Funktion.Pfad(versionTyp) .. "stargate/sprache/" .. antwortFrageSprache .. ".lua", "/update/stargate/sprache/" .. antwortFrageSprache .. ".lua") then
       Sicherung.Sprache = string.lower(antwortFrageSprache)
       schreibSicherungsdatei(Sicherung)
       print("")
@@ -32,7 +32,7 @@ function Funktionen.checkSprache()
   end
 end
 
-function Funktionen.checkKomponenten()
+function Funktion.checkKomponenten()
   print(sprachen.pruefeKomponenten or "Prüfe Komponenten\n")
   if component.isAvailable("redstone") then
     print(sprachen.redstoneOK or "- Redstone Card        ok - optional")
@@ -69,11 +69,11 @@ function Funktionen.checkKomponenten()
   end
 end
 
-function Funktionen.update(versionTyp)
+function Funktion.update(versionTyp)
   if versionTyp == nil then
     versionTyp = "master"
   end
-  if wget("-f", Funktionen.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua") then
+  if wget("-f", Funktion.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua") then
     Sicherung.installieren = true
     if schreibSicherungsdatei(Sicherung) then
       local f = io.open ("autorun.lua", "w")
@@ -89,8 +89,8 @@ function Funktionen.update(versionTyp)
   os.exit()
 end
 
-function Funktionen.checkServerVersion()
-  if wget("-fQ", Funktionen.Pfad("master") .. "stargate/version.txt", "/serverVersion.txt") then
+function Funktion.checkServerVersion()
+  if wget("-fQ", Funktion.Pfad("master") .. "stargate/version.txt", "/serverVersion.txt") then
     local f = io.open ("/serverVersion.txt", "r")
     serverVersion = f:read()
     f:close()
@@ -101,8 +101,8 @@ function Funktionen.checkServerVersion()
   return serverVersion
 end
 
-function Funktionen.checkBetaServerVersion()
-  if wget("-fQ", Funktionen.Pfad("beta") .. "stargate/version.txt", "/betaVersion.txt") then
+function Funktion.checkBetaServerVersion()
+  if wget("-fQ", Funktion.Pfad("beta") .. "stargate/version.txt", "/betaVersion.txt") then
     local f = io.open ("/betaVersion.txt", "r")
     betaServerVersion = f:read()
     f:close()
@@ -113,7 +113,7 @@ function Funktionen.checkBetaServerVersion()
   return betaServerVersion
 end
 
-function Funktionen.checkDateien()
+function Funktion.checkDateien()
   if fs.exists("/autorun.lua") and fs.exists("/stargate/Kontrollprogramm.lua") then
     if fs.exists("/stargate/Sicherungsdatei.lua") and fs.exists("/stargate/adressen.lua") then
       if fs.exists("/stargate/check.lua") and fs.exists("/stargate/version.txt") then
@@ -124,10 +124,10 @@ function Funktionen.checkDateien()
   return false
 end
 
-function Funktionen.mainCheck()
+function Funktion.mainCheck()
   if component.isAvailable("internet") then
-    local serverVersion = Funktionen.checkServerVersion()
-    local betaServerVersion = Funktionen.checkBetaServerVersion()
+    local serverVersion = Funktion.checkServerVersion()
+    local betaServerVersion = Funktion.checkBetaServerVersion()
     print(sprachen.derzeitigeVersion .. version .. sprachen.verfuegbareVersion .. serverVersion or "\nDerzeitige Version:    " .. version .. "\nVerfügbare Version:    " .. serverVersion)
     if serverVersion == betaServerVersion then else
       print(sprachen.betaVersion .. betaServerVersion .. " BETA" or "Beta-Version:          " .. betaServerVersion .. " BETA")
@@ -135,41 +135,35 @@ function Funktionen.mainCheck()
         betaVersionName = "/beta"
       end
     end
-    if arg == sprachen.ja or arg == "ja" or arg == "yes" then
+    if (arg == sprachen.ja or arg == "ja" or arg == "yes") and serverVersion ~= sprachen.fehlerName then
       print(sprachen.aktualisierenJa or "\nAktualisieren: Ja\n")
-      Funktionen.update("master")
-      return
+      Funktion.update("master")
     elseif arg == sprachen.nein or arg == "nein" or arg == "no" then
       -- nichts
-    elseif arg == "beta" then
+    elseif arg == "beta" and betaServerVersion ~= sprachen.fehlerName then
       print(sprachen.aktualisierenBeta or "\nAktualisieren: Beta-Version\n")
-      Funktionen.update("beta")
-      return
+      Funktion.update("beta")
     elseif version ~= serverVersion or version ~= betaServerVersion then
       if Sicherung.installieren == false then
         local EndpunktVersion = string.len(version)
-        if Sicherung.autoUpdate == true and version ~= serverVersion and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" then
+        if Sicherung.autoUpdate == true and version ~= serverVersion and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" and serverVersion ~= sprachen.fehlerName then
           print(sprachen.aktualisierenJa or "\nAktualisieren: Ja\n")
-          Funktionen.update("master")
-          return
-        else
+          Funktion.update("master")
+        elseif serverVersion ~= sprachen.fehlerName then
           print(sprachen.aktualisierenFrage .. betaVersionName .. "\n" or "\nAktualisieren? ja/nein" .. betaVersionName .. "\n")
           if Sicherung.autoUpdate then
             print(sprachen.autoUpdateAn or "automatische Aktualisierungen sind aktiviert")
             print()
             os.sleep(2)
-            Funktionen.update("master")
-            return
+            Funktion.update("master")
           else
             antwortFrage = io.read()
             if string.lower(antwortFrage) == sprachen.ja or string.lower(antwortFrage) == "ja" or string.lower(antwortFrage) == "yes" then
               print(sprachen.aktualisierenJa or "\nAktualisieren: Ja\n")
-              Funktionen.update("master")
-              return
+              Funktion.update("master")
             elseif string.lower(antwortFrage) == "beta" then
               print(sprachen.aktualisierenBeta or "\nAktualisieren: Beta-Version\n")
-              Funktionen.update("beta")
-              return
+              Funktion.update("beta")
             else
               print(sprachen.aktualisierenNein .. antwortFrage or "\nAntwort: " .. antwortFrage)
             end
@@ -181,12 +175,12 @@ function Funktionen.mainCheck()
   print(sprachen.laden or "\nLaden...")
   Sicherung.installieren = false
   schreibSicherungsdatei(Sicherung)
-  if Funktionen.checkDateien() then
+  if Funktion.checkDateien() then
     if fs.exists("/log") and component.isAvailable("keyboard") and Sicherung.debug then
       loadfile("/bin/edit.lua")("-r", "/log")
       loadfile("/bin/rm.lua")("/log")
     end
-    loadfile("/stargate/Kontrollprogramm.lua")(Funktionen.update, Funktionen.checkServerVersion, version)
+    loadfile("/stargate/Kontrollprogramm.lua")(Funktion.update, Funktion.checkServerVersion, version)
   else
     print(string.format("%s\n%s %s/%s", sprachen.fehlerName, sprachen.DateienFehlen, sprachen.ja, sprachen.nein) or "<FEHLER>\nDateien fehlen\nAlles neu herunterladen? ja/nein")
     if Sicherung.autoUpdate then
@@ -202,7 +196,7 @@ function Funktionen.mainCheck()
   end
 end
 
-function Funktionen.main()
+function Funktion.main()
   gpu.setResolution(70, 25)
   gpu.setBackground(6684774)
   gpu.setForeground(0xFFFFFF)
@@ -219,7 +213,7 @@ function Funktionen.main()
   else
     Sicherung.installieren = false
   end
-  if Funktionen.checkSprache() then
+  if Funktion.checkSprache() then
     sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
   else
     print("\nUnbekannte Sprache\nStandardeinstellung = deutsch")
@@ -232,8 +226,8 @@ function Funktionen.main()
   if arg == sprachen.hilfe or arg == "hilfe" or arg == "help" or arg == "?" then
     print(sprachen.Hilfetext or "Verwendung: autorun [...]\nja\t-> Aktualisierung zur stabilen Version\nnein\t-> keine Aktualisierung\nbeta\t-> Aktualisierung zur Beta-Version\nhilfe\t-> zeige diese Nachricht nochmal")
   else
-    if Funktionen.checkKomponenten() then
-      Funktionen.mainCheck()
+    if Funktion.checkKomponenten() then
+      Funktion.mainCheck()
     end
   end
   gpu.setBackground(0x000000)
@@ -241,4 +235,4 @@ function Funktionen.main()
   gpu.setResolution(gpu.maxResolution())
 end
 
-Funktionen.main()
+Funktion.main()
