@@ -138,20 +138,17 @@ function Funktion.mainCheck()
     if (arg == sprachen.ja or arg == "ja" or arg == "yes") and serverVersion ~= sprachen.fehlerName then
       print(sprachen.aktualisierenJa or "\nAktualisieren: Ja\n")
       Funktion.update("master")
-      return
     elseif arg == sprachen.nein or arg == "nein" or arg == "no" then
       -- nichts
     elseif arg == "beta" and betaServerVersion ~= sprachen.fehlerName then
       print(sprachen.aktualisierenBeta or "\nAktualisieren: Beta-Version\n")
       Funktion.update("beta")
-      return
     elseif version ~= serverVersion or version ~= betaServerVersion then
       if Sicherung.installieren == false then
         local EndpunktVersion = string.len(version)
         if Sicherung.autoUpdate == true and version ~= serverVersion and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" and serverVersion ~= sprachen.fehlerName then
           print(sprachen.aktualisierenJa or "\nAktualisieren: Ja\n")
           Funktion.update("master")
-          return
         elseif serverVersion ~= sprachen.fehlerName then
           print(sprachen.aktualisierenFrage .. betaVersionName .. "\n" or "\nAktualisieren? ja/nein" .. betaVersionName .. "\n")
           if Sicherung.autoUpdate then
@@ -159,17 +156,14 @@ function Funktion.mainCheck()
             print()
             os.sleep(2)
             Funktion.update("master")
-            return
           else
             antwortFrage = io.read()
             if string.lower(antwortFrage) == sprachen.ja or string.lower(antwortFrage) == "ja" or string.lower(antwortFrage) == "yes" then
               print(sprachen.aktualisierenJa or "\nAktualisieren: Ja\n")
               Funktion.update("master")
-              return
             elseif string.lower(antwortFrage) == "beta" then
               print(sprachen.aktualisierenBeta or "\nAktualisieren: Beta-Version\n")
               Funktion.update("beta")
-              return
             else
               print(sprachen.aktualisierenNein .. antwortFrage or "\nAntwort: " .. antwortFrage)
             end
