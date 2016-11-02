@@ -453,60 +453,7 @@ function Funktion.iriscontroller()
   if state == "Dialing" then
     messageshow = true
     AddNewAddress = true
-  elseif state == "Idle" then
-    if k == "close" and Sicherung.control == "On" then
-      outcode = nil
-      if iris == "Offline" then else
-        Funktion.irisOpen()
-      end
-      iriscontrol = "on"
-      wormhole = "in"
-      codeaccepted = "-"
-      activationtime = 0
-      entercode = false
-      showidc = ""
-      zielAdresse = ""
-    end
-    incode = "-"
-    wormhole = "in"
-    AddNewAddress = true
-    LampenGruen = false
-    LampenRot = false
-    zielAdresse = ""
-    activationtime = 0
-    entercode = false
-    remoteName = ""
-    einmalAdressenSenden = true
-    if Sicherung.control == "On" then
-      iriscontrol = "on"
-    end
-  elseif state == "Closing" then
-    send = true
-    incode = "-"
-    IDCyes = false
-    AddNewAddress = true
-    LampenGruen = false
-    LampenRot = false
-    zielAdresse = ""
-    Funktion.zeigeNachricht("")
-    Funktion.zeigeMenu()
-  elseif state == "Closing" then
-    if Sicherung.control == "On" then
-      k = "close"
-    end
-  elseif state == "Connected" then
-    if direction == "Outgoing" and send == true then
-      if outcode == "-" or outcode == nil then
-        sg.sendMessage("Adressliste", Funktion.sendeAdressliste())
-        send = false
-      else
-        sg.sendMessage(outcode, Funktion.sendeAdressliste())
-        send = false
-      end
-    end
   end
-  
-  
   if direction == "Incoming" and incode == Sicherung.IDC and Sicherung.control == "Off" then
     IDCyes = true
     Funktion.RedstoneAenderung(Farben.black, 255)
@@ -552,6 +499,53 @@ function Funktion.iriscontroller()
   if iris == "Closing" and Sicherung.control == "On" then
     k = "open"
   end
+  if state == "Idle" and k == "close" and Sicherung.control == "On" then
+    outcode = nil
+    if iris == "Offline" then else
+      Funktion.irisOpen()
+    end
+    iriscontrol = "on"
+    wormhole = "in"
+    codeaccepted = "-"
+    activationtime = 0
+    entercode = false
+    showidc = ""
+    zielAdresse = ""
+  end
+  if state == "Idle" and Sicherung.control == "On" then
+    iriscontrol = "on"
+  end
+  if state == "Closing" then
+    send = true
+    incode = "-"
+    IDCyes = false
+    AddNewAddress = true
+    LampenGruen = false
+    LampenRot = false
+    zielAdresse = ""
+    Funktion.zeigeNachricht("")
+    Funktion.zeigeMenu()
+  end
+  if state == "Idle" then
+    incode = "-"
+    wormhole = "in"
+    AddNewAddress = true
+    LampenGruen = false
+    LampenRot = false
+    zielAdresse = ""
+  end
+  if state == "Closing" and Sicherung.control == "On" then
+    k = "close"
+  end
+  if state == "Connected" and direction == "Outgoing" and send == true then
+    if outcode == "-" or outcode == nil then
+      sg.sendMessage("Adressliste", Funktion.sendeAdressliste())
+      send = false
+    else
+      sg.sendMessage(outcode, Funktion.sendeAdressliste())
+      send = false
+    end
+  end
   if codeaccepted == "-" or codeaccepted == nil then
   elseif messageshow == true then
     Funktion.zeigeNachricht(sprachen.nachrichtAngekommen .. Funktion.zeichenErsetzen(codeaccepted) .. "                   ")
@@ -567,6 +561,12 @@ function Funktion.iriscontroller()
     messageshow = false
     incode = "-"
     codeaccepted = "-"
+  end
+  if state == "Idle" then
+    activationtime = 0
+    entercode = false
+    remoteName = ""
+    einmalAdressenSenden = true
   end
 end
 
