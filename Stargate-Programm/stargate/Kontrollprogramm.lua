@@ -517,11 +517,11 @@ function Funktion.iriscontroller()
   end
   if direction == "Incoming" and incode == Sicherung.IDC and iriscontrol == "on" and Sicherung.control == "On" then
     if iris == "Offline" then
-      sg.sendMessage("IDC Accepted Iris: Offline" .. Funktion.atmosphere(true))
+      sg.sendMessage("IDC Accepted Iris: Offline" .. tostring(Funktion.atmosphere(true)))
     else
       Funktion.irisOpen()
       os.sleep(2)
-      sg.sendMessage("IDC Accepted Iris: Open" .. Funktion.atmosphere(true))
+      sg.sendMessage("IDC Accepted Iris: Open" .. tostring(Funktion.atmosphere(true)))
     end
     iriscontrol = "off"
     IDCyes = true
