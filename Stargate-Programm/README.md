@@ -1,7 +1,7 @@
 <a href="#english">english</a>/<a href="#deutsch">deutsch</a><a name="deutsch">
 # Stargate-Programm für SG-Craft und OpenComputers</a>
 
-<img src="https://i.imgur.com/W4MNT5X.png" width="700px">
+<img src="https://i.imgur.com/XtCzDAs.png">
 <img src="https://i.imgur.com/jWwlBNI.png" width="700px">
 
 Installationsanleitung:
@@ -63,7 +63,7 @@ ___
 <a href="#english">english</a>/<a href="#deutsch">deutsch</a><a name="english">
 # Stargate-Program for SG-Craft and OpenComputers</a>
 
-<img src="https://i.imgur.com/jOFJQuK.png" width="700px">
+<img src="https://i.imgur.com/E5JAcS5.png">
 <img src="https://i.imgur.com/jWwlBNI.png" width="700px">
 
 How to install:
