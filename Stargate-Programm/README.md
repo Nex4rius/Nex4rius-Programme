@@ -57,7 +57,7 @@ Macht pull request wenn ihr wollt :)
 
 getestet mit:<br>
 OpenComputers-MC1.7.10-1.5.22.46-universal<br>
-SGCraft-1.11.2-mc1.7.10
+SGCraft-1.13.0-mc1.7.10
 
 ___
 <a href="#english">english</a>/<a href="#deutsch">deutsch</a><a name="english">
@@ -119,4 +119,4 @@ Make pull requests if you want :)
 
 tested with:<br>
 OpenComputers-MC1.7.10-1.5.22.46-universal<br>
-SGCraft-1.11.2-mc1.7.10
+SGCraft-1.13.0-mc1.7.10
