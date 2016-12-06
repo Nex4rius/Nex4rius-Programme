@@ -17,7 +17,7 @@ return {
 
 ----------don't change anything below---------------------------------
 
-  debug         = false,
+  debug         = false, -- for debugging
   control       = "On",
   installieren  = false,
 }
