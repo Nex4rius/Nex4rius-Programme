@@ -78,9 +78,7 @@ function farm()
   r.turnLeft()
   while r.forward() do end
   r.turnLeft()
-  for i = 0, farmlaenge do
-    r.back()
-  end
+  while r.back() do end
   r.down()
   print("Ernte komplett")
 end
