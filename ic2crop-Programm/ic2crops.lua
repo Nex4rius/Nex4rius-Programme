@@ -38,8 +38,9 @@ function invleer()
       end
       r.select(i)
       inv.equip()
-      print("Leere Inventar - Warte " .. string.format("%.f", a.size / 3 + 1) .. "s")
-      os.sleep(a.size / 4 + 1)
+      local wartezeit = a.size / 3 + 1
+      print("Leere Inventar - Warte " .. string.format("%.f", wartezeit) .. "s")
+      os.sleep(wartezeit)
     end
   end
   if inventar then
