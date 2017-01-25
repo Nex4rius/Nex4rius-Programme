@@ -113,13 +113,13 @@ if graphicT3 then
   Farben.graueFarbe             = 0x333333
   --Farben.hellblau               = 0x606060
   --Farben.hellgrau               = 8421504
-  --Farben.roteFarbe              = 0xFF0000
-  --Farben.weisseFarbe            = 0xFFFFFF
-  --Farben.blaueFarbe             = 0x0000FF
-  --Farben.schwarzeFarbe          = 0x000000
-  --Farben.gelbeFarbe             = 16750899
-  --Farben.brauenFarbe            = 10046464
-  --Farben.grueneFarbe            = 39168
+  Farben.roteFarbe              = 0xFF3333
+  Farben.weisseFarbe            = 0xFFFFFF
+  Farben.blaueFarbe             = 0x333399
+  Farben.schwarzeFarbe          = 0x000000
+  Farben.gelbeFarbe             = 0xFFCC33
+  Farben.brauenFarbe            = 0x663300
+  Farben.grueneFarbe            = 0x336600
 end
 
 Farben.FehlerFarbe              = Farben.roteFarbe
