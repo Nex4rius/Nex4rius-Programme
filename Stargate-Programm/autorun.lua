@@ -2,6 +2,8 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
+require("shell").setWorkingDirectory("/")
+
 local args = require("shell").parse(...)[1]
 
 if type(args) == "table" then
