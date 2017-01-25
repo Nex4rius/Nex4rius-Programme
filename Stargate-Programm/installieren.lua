@@ -113,15 +113,18 @@ function Funktionen.installieren(versionTyp)
   print()
   updateKomplett = loadfile("/bin/rm.lua")("-v", "/update", "-r")
   updateKomplett = loadfile("/bin/rm.lua")("-v", "/installieren.lua")
-  do
-    local f = io.open ("/home/stargate", "w")
-    f:write('-- pastebin run -f YVqKFnsP\n')
-    f:write('-- von Nex4rius\n')
-    f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n')
-    f:write('\n')
-    f:write('loadfile("/autorun.lua")(require("shell").parse(...)[1])\n')
-    f:close()
+  local f
+  if fs.exists("/home") then
+    f = io.open ("/home/stargate", "w")
+  else
+    f = io.open ("/stargate", "w")
   end
+  f:write('-- pastebin run -f YVqKFnsP\n')
+  f:write('-- von Nex4rius\n')
+  f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n')
+  f:write('\n')
+  f:write('loadfile("/autorun.lua")(require("shell").parse(...)[1])\n')
+  f:close()
   if updateKomplett then
     print("\nUpdate komplett\n" .. version .. " " .. string.upper(tostring(versionTyp)))
     os.sleep(2)
