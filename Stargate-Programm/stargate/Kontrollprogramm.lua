@@ -232,7 +232,7 @@ function Funktion.zeigeHier(x, y, s, h)
     if not h then
       h = Bildschirmbreite
     end
-    term.write(s .. string.rep(" ", h - string.len(s)))
+    term.write(s .. string.rep(" ", h - string.len(s)), false)
   end
 end
 
