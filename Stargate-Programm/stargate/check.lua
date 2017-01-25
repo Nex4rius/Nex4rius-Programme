@@ -57,7 +57,8 @@ function Funktion.checkKomponenten()
     print(sprachen.gpuOK2T or "- GPU Tier2            ok")
   elseif gpu.maxResolution() == 160 then
     graphicT3 = true
-    print(sprachen.gpuOK3T or "- GPU Tier3            ok - WARNUNG optimiert für T2 Bildschirme")
+    gpu.setBackground(0x333333)
+    print(sprachen.gpuOK3T or "- GPU Tier3            ok - Tier2 ist ausreichend")
   else
     print(sprachen.gpuFehlt or "- GPU Tier2            fehlt")
   end
