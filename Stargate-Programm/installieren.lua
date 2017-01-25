@@ -11,6 +11,8 @@ local Funktionen  = {}
 local sprachen
 local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate
 
+require("shell").setWorkingDirectory("/")
+
 if fs.exists("/stargate/Sicherungsdatei.lua") then
   Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
   if type(Sicherung) == "string" then
@@ -100,7 +102,7 @@ function Funktionen.installieren(versionTyp)
     loadfile("/stargate/schreibSicherungsdatei.lua")(Sicherung)
   end
   print()
-  loadfile("/bin/rm.lua")("-v", "/update")
+  loadfile("/bin/rm.lua")("-v", "/update -r")
   loadfile("/bin/rm.lua")("-v", "/installieren.lua")
   if updateKomplett then
     print("\nUpdate komplett\n" .. version .. " " .. string.upper(tostring(versionTyp)))
