@@ -109,10 +109,10 @@ function Funktionen.installieren(versionTyp)
     end
     Sicherung.installieren = true
     loadfile("/stargate/schreibSicherungsdatei.lua")(Sicherung)
+    print()
+    updateKomplett = loadfile("/bin/rm.lua")("-v", "/update", "-r")
+    updateKomplett = loadfile("/bin/rm.lua")("-v", "/installieren.lua")
   end
-  print()
-  updateKomplett = loadfile("/bin/rm.lua")("-v", "/update", "-r")
-  updateKomplett = loadfile("/bin/rm.lua")("-v", "/installieren.lua")
   if fs.exists("/home") then
     local f = io.open ("/home/stargate", "w")
     f:write('-- pastebin run -f YVqKFnsP\n')
@@ -127,7 +127,7 @@ function Funktionen.installieren(versionTyp)
     os.sleep(2)
     require("computer").shutdown(true)
   else
-    print("\nERROR\n")
+    print("\nERROR install / update failed\n")
   end
 end
 
