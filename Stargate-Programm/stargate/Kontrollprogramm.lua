@@ -1462,6 +1462,7 @@ function Funktion.beendeAlles()
     Funktion.redstoneAbschalten(sideNum, Farben.black, "black")
   end
   screen.setTouchModeInverted(false)
+  term.clear()
 end
 
 function Funktion.main()
