@@ -57,7 +57,8 @@ function Funktion.checkKomponenten()
     print(sprachen.gpuOK2T or "- GPU Tier2            ok")
   elseif gpu.maxResolution() == 160 then
     graphicT3 = true
-    print(sprachen.gpuOK3T or "- GPU Tier3            ok - WARNUNG optimiert für T2 Bildschirme")
+    gpu.setBackground(0x333333)
+    print(sprachen.gpuOK3T or "- GPU Tier3            ok - Tier2 ist ausreichend")
   else
     print(sprachen.gpuFehlt or "- GPU Tier2            fehlt")
   end
@@ -182,7 +183,7 @@ function Funktion.mainCheck()
       loadfile("/bin/edit.lua")("-r", "/log")
       loadfile("/bin/rm.lua")("/log")
     end
-    loadfile("/stargate/Kontrollprogramm.lua")(Funktion.update, Funktion.checkServerVersion, version)
+    loadfile("/stargate/Kontrollprogramm.lua")(Funktion.update, Funktion.checkServerVersion, version, graphicT3)
   else
     print(string.format("%s\n%s %s/%s", sprachen.fehlerName, sprachen.DateienFehlen, sprachen.ja, sprachen.nein) or "<FEHLER>\nDateien fehlen\nAlles neu herunterladen? ja/nein")
     if Sicherung.autoUpdate then
@@ -200,8 +201,11 @@ end
 
 function Funktion.main()
   gpu.setResolution(70, 25)
-  gpu.setBackground(6684774)
   gpu.setForeground(0xFFFFFF)
+  gpu.setBackground(6684774)
+  if gpu.maxResolution() == 160 then
+    gpu.setBackground(0x333333)
+  end
   require("term").clear()
   if fs.exists("/stargate/version.txt") then
     local f = io.open ("/stargate/version.txt", "r")

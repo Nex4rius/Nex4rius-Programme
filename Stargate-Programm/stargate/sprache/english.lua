@@ -11,7 +11,7 @@ return {
   SensorOK                  = "- World Sensor         ok - optional",
   SensorFehlt               = "- World Sensor         missing - optional",
   gpuOK2T                   = "- GPU Tier2            ok",
-  gpuOK3T                   = "- GPU Tier3            ok - WARNING optimized for T2 screens",
+  gpuOK3T                   = "- GPU Tier3            ok - Tier2 is enough",
   gpuFehlt                  = "- GPU Tier2            missing",
   StargateOK                = "- Stargate             ok\n",
   StargateFehlt             = "- Stargate             missing\n",
