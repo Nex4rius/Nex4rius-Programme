@@ -2,6 +2,8 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
+local alterPfad                 = require("shell").setWorkingDirectory("/")
+
 local component                 = require("component")
 local term                      = require("term")
 local event                     = require("event")
@@ -108,6 +110,8 @@ Taste.Steuerungrechts           = {}
 
 local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, f, k, r
+
+require("shell").setWorkingDirectory("/")
 
 do
   sectime                       = os.time()
@@ -957,9 +961,9 @@ function Funktion.schreibFehlerLog(...)
   if letzteEingabe == ... then else
     local f
     if fs.exists("/log") then
-      f = io.open("log", "a")
+      f = io.open("/log", "a")
     else
-      f = io.open("log", "w")
+      f = io.open("/log", "w")
       f:write('-- "Ctrl + W" to exit\n\n')
     end
     if type(...) == "string" then
@@ -1177,7 +1181,7 @@ function Taste.l(y)
       Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
       schreibSicherungsdatei(Sicherung)
       screen.setTouchModeInverted(false)
-      edit("stargate/Sicherungsdatei.lua")
+      edit("/stargate/Sicherungsdatei.lua")
       screen.setTouchModeInverted(true)
       Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
       if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
@@ -1460,6 +1464,7 @@ function Funktion.beendeAlles()
     Funktion.redstoneAbschalten(sideNum, Farben.black, "black")
   end
   screen.setTouchModeInverted(false)
+  require("shell").setWorkingDirectory(alterPfad)
 end
 
 function Funktion.main()
