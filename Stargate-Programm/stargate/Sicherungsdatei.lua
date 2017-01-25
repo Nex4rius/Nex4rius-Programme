@@ -1,4 +1,4 @@
--- pastebin run -f Dkt9dn4S
+-- pastebin run -f YVqKFnsP
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 --
@@ -17,7 +17,7 @@ return {
 
 ----------don't change anything below---------------------------------
 
-  debug         = false,
+  debug         = false, -- for debugging
   control       = "On",
   installieren  = false,
 }

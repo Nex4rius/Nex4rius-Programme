@@ -1,11 +1,17 @@
--- pastebin run -f Dkt9dn4S
+-- pastebin run -f YVqKFnsP
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
-local args = require("shell").parse(...)[1]
+local shell = require("shell")
+local alterPfad = shell.getWorkingDirectory("/")
+local args = shell.parse(...)[1]
 
-if type(args) == "table" then
-  args = ""
+shell.setWorkingDirectory("/")
+
+if type(args) == "string" then
+  loadfile("/stargate/check.lua")(args)
+else
+  loadfile("/stargate/check.lua")()
 end
 
-loadfile("/stargate/check.lua")(args)
+require("shell").setWorkingDirectory(alterPfad)

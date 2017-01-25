@@ -1,6 +1,8 @@
--- pastebin run -f Dkt9dn4S
+-- pastebin run -f YVqKFnsP
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
+
+require("shell").setWorkingDirectory("/")
 
 local fs          = require("filesystem")
 local arg         = require("shell").parse(...)[1]
@@ -59,15 +61,23 @@ function Funktionen.installieren(versionTyp)
         print(sprachen.fehlerName .. " " .. i)
       end
       local f = io.open ("/autorun.lua", "w")
-      f:write('-- pastebin run -f Dkt9dn4S\n')
+      f:write('-- pastebin run -f YVqKFnsP\n')
       f:write('-- von Nex4rius\n')
-      f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n\n')
-      f:write('local args = require("shell").parse(...)[1]\n\n')
+      f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n')
+      f:write('\n')
+      f:write('local shell = require("shell")\n')
+      f:write('local alterPfad = shell.getWorkingDirectory("/")\n')
+      f:write('local args = shell.parse(...)[1]\n')
+      f:write('\n')
+      f:write('shell.setWorkingDirectory("/")\n')
+      f:write('\n')
       f:write('if type(args) == "string" then\n')
       f:write('  loadfile("/stargate/check.lua")(args)\n')
       f:write('else\n')
       f:write('  loadfile("/stargate/check.lua")()\n')
-      f:write('end\n\n')
+      f:write('end\n')
+      f:write('\n')
+      f:write('require("shell").setWorkingDirectory(alterPfad)\n')
       f:close()
       break
     end
@@ -100,13 +110,24 @@ function Funktionen.installieren(versionTyp)
     loadfile("/stargate/schreibSicherungsdatei.lua")(Sicherung)
   end
   print()
-  loadfile("/bin/rm.lua")("-v", "/update")
-  loadfile("/bin/rm.lua")("-v", "/installieren.lua")
+  updateKomplett = loadfile("/bin/rm.lua")("-v", "/update", "-r")
+  updateKomplett = loadfile("/bin/rm.lua")("-v", "/installieren.lua")
+  do
+    local f = io.open ("/home/stargate", "w")
+    f:write('-- pastebin run -f YVqKFnsP\n')
+    f:write('-- von Nex4rius\n')
+    f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n')
+    f:write('\n')
+    f:write('loadfile("/stargate/autorun.lua")(require("shell").parse(...)[1])\n')
+    f:close()
+  end
   if updateKomplett then
     print("\nUpdate komplett\n" .. version .. " " .. string.upper(tostring(versionTyp)))
+    os.sleep(2)
+    require("computer").shutdown(true)
+  else
+    print("\nERROR\n")
   end
-  os.sleep(2)
-  require("computer").shutdown(true)
 end
 
 if versionTyp == nil then

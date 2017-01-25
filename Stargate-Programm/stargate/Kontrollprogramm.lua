@@ -1,6 +1,8 @@
--- pastebin run -f Dkt9dn4S
+-- pastebin run -f YVqKFnsP
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
+
+require("shell").setWorkingDirectory("/")
 
 local component                 = require("component")
 local term                      = require("term")
@@ -154,7 +156,7 @@ end
 
 function Funktion.schreibeAdressen()
   local f = io.open("/stargate/adressen.lua", "w")
-  f:write('-- pastebin run -f Dkt9dn4S\n')
+  f:write('-- pastebin run -f YVqKFnsP\n')
   f:write('-- von Nex4rius\n')
   f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n--\n')
   f:write('-- ' .. sprachen.speichern .. '\n')
@@ -230,7 +232,7 @@ function Funktion.zeigeHier(x, y, s, h)
     if not h then
       h = Bildschirmbreite
     end
-    term.write(s .. string.rep(" ", h - string.len(s)))
+    term.write(s .. string.rep(" ", h - string.len(s)), false)
   end
 end
 
@@ -957,9 +959,9 @@ function Funktion.schreibFehlerLog(...)
   if letzteEingabe == ... then else
     local f
     if fs.exists("/log") then
-      f = io.open("log", "a")
+      f = io.open("/log", "a")
     else
-      f = io.open("log", "w")
+      f = io.open("/log", "w")
       f:write('-- "Ctrl + W" to exit\n\n')
     end
     if type(...) == "string" then
@@ -1177,7 +1179,7 @@ function Taste.l(y)
       Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
       schreibSicherungsdatei(Sicherung)
       screen.setTouchModeInverted(false)
-      edit("stargate/Sicherungsdatei.lua")
+      edit("/stargate/Sicherungsdatei.lua")
       screen.setTouchModeInverted(true)
       Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
       if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
@@ -1460,6 +1462,7 @@ function Funktion.beendeAlles()
     Funktion.redstoneAbschalten(sideNum, Farben.black, "black")
   end
   screen.setTouchModeInverted(false)
+  term.clear()
 end
 
 function Funktion.main()

@@ -1,6 +1,8 @@
--- pastebin run -f Dkt9dn4S
+-- pastebin run -f YVqKFnsP
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
+
+require("shell").setWorkingDirectory("/")
 
 local component               = require("component")
 local fs                      = require("filesystem")
@@ -76,15 +78,15 @@ function Funktion.update(versionTyp)
   if wget("-f", Funktion.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua") then
     Sicherung.installieren = true
     if schreibSicherungsdatei(Sicherung) then
-      local f = io.open ("autorun.lua", "w")
-      f:write('loadfile("installieren.lua")("' .. versionTyp .. '")')
+      local f = io.open ("/autorun.lua", "w")
+      f:write('loadfile("/installieren.lua")("' .. versionTyp .. '")')
       f:close()
-      loadfile("autorun.lua")()
+      loadfile("/autorun.lua")()
     else
       print(sprachen.fehlerName or "<FEHLER>")
     end
   elseif versionTyp == "master" then
-    loadfile("/bin/pastebin.lua")("run", "-f", "wLK1gCKt")
+    loadfile("/bin/pastebin.lua")("run", "-f", "YVqKFnsP")
   end
   os.exit()
 end
@@ -186,11 +188,11 @@ function Funktion.mainCheck()
     if Sicherung.autoUpdate then
       print(sprachen.autoUpdateAn or "automatische Aktualisierungen sind aktiviert")
       os.sleep(2)
-      loadfile("/bin/pastebin.lua")("run", "-f", "wLK1gCKt")
+      loadfile("/bin/pastebin.lua")("run", "-f", "YVqKFnsP")
     else
       antwortFrage = io.read()
       if string.lower(antwortFrage) == sprachen.ja or string.lower(antwortFrage) == "ja" or string.lower(antwortFrage) == "yes" then
-        loadfile("/bin/pastebin.lua")("run", "-f", "wLK1gCKt")
+        loadfile("/bin/pastebin.lua")("run", "-f", "YVqKFnsP")
       end
     end
   end

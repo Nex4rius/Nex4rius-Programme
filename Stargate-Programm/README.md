@@ -20,7 +20,7 @@ Ein OpenComputer Computer mit folgenden Komponenten:
 <a href="https://www.youtube.com/embed/MgWY4es5oEs"><img src="https://i.imgur.com/h6VjgRe.jpg"></a>
 
 ```
-pastebin run -f Dkt9dn4S
+pastebin run -f YVqKFnsP
 ```
 
 Die Funktionen meines Programms:
@@ -56,8 +56,8 @@ hilfe -> zeige diese Nachricht nochmal
 Macht pull request wenn ihr wollt :)
 
 getestet mit:<br>
-OpenComputers-MC1.7.10-1.5.22.46-universal<br>
-SGCraft-1.13.0-mc1.7.10
+OpenComputers-MC1.7.10-1.6.1.11-universal<br>
+SGCraft-1.13.3-mc1.7.10
 
 ___
 <a href="#english">english</a>/<a href="#deutsch">deutsch</a><a name="english">
@@ -82,7 +82,7 @@ Make an OpenComputer computer with:
 <a href="https://www.youtube.com/embed/MgWY4es5oEs"><img src="https://i.imgur.com/h6VjgRe.jpg"></a>
 
 ```
-pastebin run -f Dkt9dn4S
+pastebin run -f YVqKFnsP
 ```
 
 the features of my program:
@@ -118,5 +118,5 @@ help  -> show this message again
 Make pull requests if you want :)
 
 tested with:<br>
-OpenComputers-MC1.7.10-1.5.22.46-universal<br>
-SGCraft-1.13.0-mc1.7.10
+OpenComputers-MC1.7.10-1.6.1.11-universal<br>
+SGCraft-1.13.3-mc1.7.10
