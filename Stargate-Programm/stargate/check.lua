@@ -2,6 +2,8 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
+require("shell").setWorkingDirectory("/")
+
 local component               = require("component")
 local fs                      = require("filesystem")
 local arg                     = string.lower(tostring(require("shell").parse(...)[1]))
@@ -76,10 +78,10 @@ function Funktion.update(versionTyp)
   if wget("-f", Funktion.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua") then
     Sicherung.installieren = true
     if schreibSicherungsdatei(Sicherung) then
-      local f = io.open ("autorun.lua", "w")
-      f:write('loadfile("installieren.lua")("' .. versionTyp .. '")')
+      local f = io.open ("/autorun.lua", "w")
+      f:write('loadfile("/installieren.lua")("' .. versionTyp .. '")')
       f:close()
-      loadfile("autorun.lua")()
+      loadfile("/autorun.lua")()
     else
       print(sprachen.fehlerName or "<FEHLER>")
     end
