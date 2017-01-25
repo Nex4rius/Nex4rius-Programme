@@ -100,7 +100,7 @@ end
 
 Farben.graueFarbe               = 6684774
 Farben.hellblau                 = 0x606060
-Farben.hellgrau                 = 8421504
+Farben.mittelblau               = 8421504
 Farben.roteFarbe                = 0xFF0000
 Farben.weisseFarbe              = 0xFFFFFF
 Farben.blaueFarbe               = 0x0000FF
@@ -111,8 +111,8 @@ Farben.grueneFarbe              = 39168
 
 if graphicT3 then
   Farben.graueFarbe             = 0x333333
-  --Farben.hellblau               = 0x606060
-  --Farben.hellgrau               = 8421504
+  Farben.hellblau               = 0x336699
+  Farben.mittelblau             = 0x6699FF
   Farben.roteFarbe              = 0xFF3333
   Farben.weisseFarbe            = 0xFFFFFF
   Farben.blaueFarbe             = 0x333399
@@ -1246,7 +1246,7 @@ end
 
 function Taste.Zahl(c)
   event.timer(2, Funktion.zeigeMenu)
-  Funktion.Farbe(Farben.hellgrau, Farben.Adresstextfarbe)
+  Funktion.Farbe(Farben.mittelblau, Farben.Adresstextfarbe)
   if c == "0" then
     c = 10
   end
