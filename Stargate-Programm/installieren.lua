@@ -113,7 +113,7 @@ function Funktionen.installieren(versionTyp)
   print()
   updateKomplett = loadfile("/bin/rm.lua")("-v", "/update", "-r")
   updateKomplett = loadfile("/bin/rm.lua")("-v", "/installieren.lua")
-  do
+  if fs.exists("/home") then
     local f = io.open ("/home/stargate", "w")
     f:write('-- pastebin run -f YVqKFnsP\n')
     f:write('-- von Nex4rius\n')
