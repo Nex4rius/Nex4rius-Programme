@@ -7,7 +7,8 @@ require("shell").setWorkingDirectory("/")
 local fs          = require("filesystem")
 local arg         = require("shell").parse(...)[1]
 local wget        = loadfile("/bin/wget.lua")
-local move        = loadfile("/bin/mv.lua")
+--local move        = loadfile("/bin/mv.lua") -- overwrite is buggy
+local copy        = loadfile("/bin/cp.lua")
 local Sicherung   = {}
 local Funktionen  = {}
 local sprachen
@@ -84,20 +85,20 @@ function Funktionen.installieren(versionTyp)
   end
   if updateKomplett then
     fs.makeDirectory("/stargate/sprache")
-    move("-f", "/update/autorun.lua",                         "/autorun.lua")
-    move("-f", "/update/stargate/check.lua",                  "/stargate/check.lua")
-    move("-f", "/update/stargate/version.txt",                "/stargate/version.txt")
+    copy("/update/autorun.lua",                         "/autorun.lua")
+    copy("/update/stargate/check.lua",                  "/stargate/check.lua")
+    copy("/update/stargate/version.txt",                "/stargate/version.txt")
     if fs.exists("/stargate/adressen.lua") == false then
-      move(    "/update/stargate/adressen.lua",               "/stargate/adressen.lua")
+      copy("/update/stargate/adressen.lua",              "/stargate/adressen.lua", "-n")
     end
     if fs.exists("/stargate/Sicherungsdatei.lua") == false then
-      move(    "/update/stargate/Sicherungsdatei.lua",        "/stargate/Sicherungsdatei.lua")
+      copy("/update/stargate/Sicherungsdatei.lua",       "/stargate/Sicherungsdatei.lua", "-n")
     end
-    move("-f", "/update/stargate/Kontrollprogramm.lua",       "/stargate/Kontrollprogramm.lua")
-    move("-f", "/update/stargate/schreibSicherungsdatei.lua", "/stargate/schreibSicherungsdatei.lua")
-    move("-f", "/update/stargate/sprache/deutsch.lua",        "/stargate/sprache/deutsch.lua")
-    move("-f", "/update/stargate/sprache/english.lua",        "/stargate/sprache/english.lua")
-    move("-f", "/update/stargate/sprache/ersetzen.lua",       "/stargate/sprache/ersetzen.lua")
+    copy("/update/stargate/Kontrollprogramm.lua",       "/stargate/Kontrollprogramm.lua")
+    copy("/update/stargate/schreibSicherungsdatei.lua", "/stargate/schreibSicherungsdatei.lua")
+    copy("/update/stargate/sprache/deutsch.lua",        "/stargate/sprache/deutsch.lua")
+    copy("/update/stargate/sprache/english.lua",        "/stargate/sprache/english.lua")
+    copy("/update/stargate/sprache/ersetzen.lua",       "/stargate/sprache/ersetzen.lua")
     f = io.open ("/stargate/version.txt", "r")
     version = f:read()
     f:close()
