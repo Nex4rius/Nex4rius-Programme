@@ -2,7 +2,7 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
-local alterPfad                 = require("shell").setWorkingDirectory("/")
+require("shell").setWorkingDirectory("/")
 
 local component                 = require("component")
 local term                      = require("term")
@@ -110,8 +110,6 @@ Taste.Steuerungrechts           = {}
 
 local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, f, k, r
-
-require("shell").setWorkingDirectory("/")
 
 do
   sectime                       = os.time()
@@ -1464,7 +1462,6 @@ function Funktion.beendeAlles()
     Funktion.redstoneAbschalten(sideNum, Farben.black, "black")
   end
   screen.setTouchModeInverted(false)
-  require("shell").setWorkingDirectory(alterPfad)
 end
 
 function Funktion.main()
