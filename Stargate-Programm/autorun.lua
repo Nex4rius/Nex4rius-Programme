@@ -6,8 +6,8 @@ require("shell").setWorkingDirectory("/")
 
 local args = require("shell").parse(...)[1]
 
-if type(args) == "table" then
-  args = ""
+if type(args) == "string" then
+  loadfile("/stargate/check.lua")(args)
+else
+  loadfile("/stargate/check.lua")()
 end
-
-loadfile("/stargate/check.lua")(args)
