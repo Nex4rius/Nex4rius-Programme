@@ -118,7 +118,7 @@ function Funktionen.installieren(versionTyp)
     f:write('-- von Nex4rius\n')
     f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n')
     f:write('\n')
-    f:write('loadfile("/stargate/autorun.lua")(require("shell").parse(...)[1])\n')
+    f:write('loadfile("/autorun.lua")(require("shell").parse(...)[1])\n')
     f:close()
   end
   if updateKomplett then
