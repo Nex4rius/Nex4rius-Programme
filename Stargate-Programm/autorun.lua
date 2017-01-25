@@ -2,10 +2,11 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
-local alterPfad = require("shell").setWorkingDirectory("/")
-local args = require("shell").parse(...)[1]
+local shell = require("shell")
+local alterPfad = shell.setWorkingDirectory("/")
+local args = shell.parse(...)[1]
 
-require("shell").setWorkingDirectory("/")
+shell.setWorkingDirectory("/")
 
 if type(args) == "string" then
   loadfile("/stargate/check.lua")(args)
