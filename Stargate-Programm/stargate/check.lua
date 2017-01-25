@@ -1,4 +1,4 @@
--- pastebin run -f Dkt9dn4S
+-- pastebin run -f YVqKFnsP
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
@@ -86,7 +86,7 @@ function Funktion.update(versionTyp)
       print(sprachen.fehlerName or "<FEHLER>")
     end
   elseif versionTyp == "master" then
-    loadfile("/bin/pastebin.lua")("run", "-f", "wLK1gCKt")
+    loadfile("/bin/pastebin.lua")("run", "-f", "YVqKFnsP")
   end
   os.exit()
 end
@@ -188,11 +188,11 @@ function Funktion.mainCheck()
     if Sicherung.autoUpdate then
       print(sprachen.autoUpdateAn or "automatische Aktualisierungen sind aktiviert")
       os.sleep(2)
-      loadfile("/bin/pastebin.lua")("run", "-f", "wLK1gCKt")
+      loadfile("/bin/pastebin.lua")("run", "-f", "YVqKFnsP")
     else
       antwortFrage = io.read()
       if string.lower(antwortFrage) == sprachen.ja or string.lower(antwortFrage) == "ja" or string.lower(antwortFrage) == "yes" then
-        loadfile("/bin/pastebin.lua")("run", "-f", "wLK1gCKt")
+        loadfile("/bin/pastebin.lua")("run", "-f", "YVqKFnsP")
       end
     end
   end
