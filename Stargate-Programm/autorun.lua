@@ -3,7 +3,7 @@
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
 local shell = require("shell")
-local alterPfad = shell.setWorkingDirectory("/")
+local alterPfad = shell.getWorkingDirectory("/")
 local args = shell.parse(...)[1]
 
 shell.setWorkingDirectory("/")
