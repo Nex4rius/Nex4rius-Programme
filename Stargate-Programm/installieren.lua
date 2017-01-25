@@ -2,6 +2,8 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
+require("shell").setWorkingDirectory("/")
+
 local fs          = require("filesystem")
 local arg         = require("shell").parse(...)[1]
 local wget        = loadfile("/bin/wget.lua")
@@ -10,8 +12,6 @@ local Sicherung   = {}
 local Funktionen  = {}
 local sprachen
 local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate
-
-require("shell").setWorkingDirectory("/")
 
 if fs.exists("/stargate/Sicherungsdatei.lua") then
   Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
