@@ -102,7 +102,7 @@ function Funktionen.installieren(versionTyp)
     loadfile("/stargate/schreibSicherungsdatei.lua")(Sicherung)
   end
   print()
-  loadfile("/bin/rm.lua")("-v", "/update -r")
+  loadfile("/bin/rm.lua")("-v", "/update", "-r")
   loadfile("/bin/rm.lua")("-v", "/installieren.lua")
   if updateKomplett then
     print("\nUpdate komplett\n" .. version .. " " .. string.upper(tostring(versionTyp)))
