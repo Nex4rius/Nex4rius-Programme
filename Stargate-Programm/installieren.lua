@@ -116,6 +116,8 @@ function Funktionen.installieren(versionTyp)
     print("\nUpdate komplett\n" .. version .. " " .. string.upper(tostring(versionTyp)))
     os.sleep(2)
     require("computer").shutdown(true)
+  else
+    print("\nERROR\n")
   end
 end
 
