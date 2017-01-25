@@ -20,7 +20,7 @@ Ein OpenComputer Computer mit folgenden Komponenten:
 <a href="https://www.youtube.com/embed/MgWY4es5oEs"><img src="https://i.imgur.com/h6VjgRe.jpg"></a>
 
 ```
-pastebin run -f Dkt9dn4S
+pastebin run -f YVqKFnsP
 ```
 
 Die Funktionen meines Programms:
@@ -82,7 +82,7 @@ Make an OpenComputer computer with:
 <a href="https://www.youtube.com/embed/MgWY4es5oEs"><img src="https://i.imgur.com/h6VjgRe.jpg"></a>
 
 ```
-pastebin run -f Dkt9dn4S
+pastebin run -f YVqKFnsP
 ```
 
 the features of my program:
