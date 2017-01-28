@@ -154,7 +154,7 @@ function Funktion.mainCheck()
           Funktion.update("master")
         elseif serverVersion ~= sprachen.fehlerName then
           print(sprachen.aktualisierenFrage .. betaVersionName .. "\n" or "\nAktualisieren? ja/nein" .. betaVersionName .. "\n")
-          if Sicherung.autoUpdate then
+          if Sicherung.autoUpdate and version ~= serverVersion then
             print(sprachen.autoUpdateAn or "automatische Aktualisierungen sind aktiviert")
             print()
             os.sleep(2)
