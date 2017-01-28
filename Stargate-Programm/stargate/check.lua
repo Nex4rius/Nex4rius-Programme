@@ -23,7 +23,19 @@ function Funktion.checkSprache()
   if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
     return true
   else
-    print("Sprache? / Language? deutsch / english\n")
+    local alleSprachen = ""
+    for i in fs.list("/stargate/sprache") do
+      local Ende = string.len(i)
+      i = string.sub(i, Ende - 3, Ende)
+      if i ~= "ersetzen" then
+        if alleSprachen == "" then
+          alleSprachen = string.format("%s", i)
+        else
+          alleSprachen = string.format("%s / %s", alleSprachen, i)
+        end
+      end
+    end
+    print("Sprache? / Language? " .. alleSprachen .. "\n")
     antwortFrageSprache = io.read()
     if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" or wget("-f", Funktion.Pfad(versionTyp) .. "stargate/sprache/" .. antwortFrageSprache .. ".lua", "/update/stargate/sprache/" .. antwortFrageSprache .. ".lua") then
       Sicherung.Sprache = string.lower(antwortFrageSprache)
