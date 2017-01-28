@@ -35,7 +35,8 @@ function Funktion.checkSprache()
         end
       end
     end
-    print("Sprache? / Language? " .. alleSprachen .. "\n")
+    print("Sprache? / Language?")
+    io.write(alleSprachen .. "\n\n")
     antwortFrageSprache = io.read()
     if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" or wget("-f", Funktion.Pfad(versionTyp) .. "stargate/sprache/" .. antwortFrageSprache .. ".lua", "/update/stargate/sprache/" .. antwortFrageSprache .. ".lua") then
       Sicherung.Sprache = string.lower(antwortFrageSprache)
