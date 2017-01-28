@@ -219,6 +219,9 @@ function Funktion.main()
   if gpu.maxResolution() == 160 then
     gpu.setBackground(0x333333)
   end
+  if gpu then
+    gpu.fill(1, 1, 160, 80, " ")
+  end
   require("term").clear()
   if fs.exists("/stargate/version.txt") then
     local f = io.open ("/stargate/version.txt", "r")
