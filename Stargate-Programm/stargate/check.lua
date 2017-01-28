@@ -23,7 +23,20 @@ function Funktion.checkSprache()
   if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
     return true
   else
-    print("Sprache? / Language? deutsch / english\n")
+    local alleSprachen = ""
+    for i in fs.list("/stargate/sprache") do
+      local Ende = string.len(i)
+      i = string.sub(i, 1, Ende - 4)
+      if i ~= "ersetzen" then
+        if alleSprachen == "" then
+          alleSprachen = string.format("%s", i)
+        else
+          alleSprachen = string.format("%s / %s", alleSprachen, i)
+        end
+      end
+    end
+    print("Sprache? / Language?")
+    io.write(alleSprachen .. "\n\n")
     antwortFrageSprache = io.read()
     if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" or wget("-f", Funktion.Pfad(versionTyp) .. "stargate/sprache/" .. antwortFrageSprache .. ".lua", "/update/stargate/sprache/" .. antwortFrageSprache .. ".lua") then
       Sicherung.Sprache = string.lower(antwortFrageSprache)
@@ -154,7 +167,7 @@ function Funktion.mainCheck()
           Funktion.update("master")
         elseif serverVersion ~= sprachen.fehlerName then
           print(sprachen.aktualisierenFrage .. betaVersionName .. "\n" or "\nAktualisieren? ja/nein" .. betaVersionName .. "\n")
-          if Sicherung.autoUpdate then
+          if Sicherung.autoUpdate and version ~= serverVersion then
             print(sprachen.autoUpdateAn or "automatische Aktualisierungen sind aktiviert")
             print()
             os.sleep(2)
@@ -206,6 +219,7 @@ function Funktion.main()
   if gpu.maxResolution() == 160 then
     gpu.setBackground(0x333333)
   end
+  gpu.fill(1, 1, 160, 80, " ")
   require("term").clear()
   if fs.exists("/stargate/version.txt") then
     local f = io.open ("/stargate/version.txt", "r")

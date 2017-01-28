@@ -29,7 +29,7 @@ Die Funktionen meines Programms:
 - automatische Öffnung der Iris beim Erhalt des richtigen IDC (**I**ris **D**eaktivierungs**c**ode)
 - automatische Schließungs des Stargates nach X-Sekunden
 - zeige alle möglichen Eigenschaften des Stargates (Lokale- / Zieladresse, Status, Verbindungsrichtung, IDC, Iris Status, Energie, ...)
-- mehrere Sprache: zur Zeit deutsch und englisch (weil ich nichts anderes spreche)
+- mehrere Sprache: zur Zeit deutsch und englisch (weil ich nichts anderes spreche) (Ihr könnt neue Sprachen mit pull requests hinzufügen)
 - zeige Energie in EU or RF
 - zeige bis zu 10 Adressen auf 1 Seite (unbegrenzte Seiten)
 - ermöglicht die Anwahl des Stargates mithilfe einer Adressliste
@@ -91,7 +91,7 @@ the features of my program:
 - autoopen iris if correct IDC is received (**i**ris **d**eactivation **c**ode)
 - autoclose stargate after X seconds
 - show all kinds of stats (local / remote address, state, direction, idc, iris state, energy, ...)
-- multiple languages: right now german and english (because I don't speak anything else)
+- multiple languages: right now german and english (because I don't speak anything else) (You can add new languages with pull requests)
 - displays energy in EU or RF
 - displays up to 10 addresses on 1 page (unlimited pages)
 - allows dialing from the address list
