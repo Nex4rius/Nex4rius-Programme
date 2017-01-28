@@ -1476,6 +1476,7 @@ function Funktion.beendeAlles()
     Funktion.redstoneAbschalten(sideNum, Farben.black, "black")
   end
   screen.setTouchModeInverted(false)
+  gpu.fill(1, 1, 160, 80, " ")
   term.clear()
 end
 
