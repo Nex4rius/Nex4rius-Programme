@@ -26,7 +26,7 @@ function Funktion.checkSprache()
     local alleSprachen = ""
     for i in fs.list("/stargate/sprache") do
       local Ende = string.len(i)
-      i = string.sub(i, Ende - 3, Ende)
+      i = string.sub(i, 1, Ende - 4)
       if i ~= "ersetzen" then
         if alleSprachen == "" then
           alleSprachen = string.format("%s", i)
