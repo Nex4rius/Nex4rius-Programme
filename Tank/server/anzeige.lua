@@ -7,6 +7,7 @@ local m = component.modem
 local farben = loadfile("/farben.lua")()
 local port = 70
 local tank = {}
+local laeuft = true
 local tankneu
 
 function update()
@@ -134,6 +135,12 @@ function split(a)
   return output
 end
 
+function beenden()
+  gpu.setBackground(0x000000)
+  gpu.setForeground(0xFFFFFF)
+  gpu.setResolution(gpu.maxResoltution())
+end
+
 function main()
   gpu.setBackground(0x000000)
   term.clear()
@@ -141,13 +148,11 @@ function main()
   m.open(port)
   m.broadcast(port, "update")
   gpu.set(1, 50, "Warte auf Daten")
-  while true do
+  while laeuft do
     update()
   end
+  beenden()
 end
 
 main()
 
-gpu.setBackground(0x000000)
-gpu.setForeground(0xFFFFFF)
-gpu.setResolution(gpu.maxResoltution())
