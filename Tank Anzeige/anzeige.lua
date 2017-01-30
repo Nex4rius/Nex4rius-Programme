@@ -76,7 +76,6 @@ function verarbeiten(tank)
 end
 
 function anzeigen(tankneu)
-  term.clear()
   local x = 1
   local y = 1
   local leer = true
