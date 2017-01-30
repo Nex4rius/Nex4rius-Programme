@@ -21,7 +21,7 @@ function check()
           local dazu = true
           local c
           for j, k in pairs(tank) do
-            if b.label == k.name then
+            if b.name == k.name then
               dazu = false
               c = j
               break
@@ -29,7 +29,8 @@ function check()
           end
           if dazu then
             tank[i] = {}
-            tank[i].name = b.label
+            tank[i].name = b.name
+            tank[i].label = b.label
             tank[i].menge = b.amount
             tank[i].maxmenge = b.capacity
             i = i + 1
@@ -43,7 +44,7 @@ function check()
   end
   term.clear()
   for i in pairs(tank) do
-    print(string.format("Menge %s: %s/%s %.1f%%", tank[i].name, tank[i].menge, tank[i].maxmenge, tank[i].maxmenge / tank[i].menge))
+    print(string.format("Menge %s: %s/%s %.1f%%", tank[i].label, tank[i].menge, tank[i].maxmenge, tank[i].maxmenge / tank[i].menge))
   end
   return anders(tank, tankalt), tank
 end
@@ -65,7 +66,7 @@ function serialize(a)
   if type(a) == "table" then
     local ausgabe = ""
     for k in pairs(a) do
-      ausgabe = string.format([[%s{name="%s", menge="%s", maxmenge="%s"}, ]], ausgabe, a[k].name, a[k].menge, a[k].maxmenge)
+      ausgabe = string.format([[%s{name="%s", label="%s", menge="%s", maxmenge="%s"}, ]], ausgabe, a[k].name, a[k].label, a[k].menge, a[k].maxmenge)
     end
     return "{" .. ausgabe .. "}"
   end
