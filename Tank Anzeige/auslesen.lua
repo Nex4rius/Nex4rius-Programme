@@ -3,9 +3,9 @@ local term = require("term")
 local event = require("event")
 local c = require("computer")
 local m = component.modem
-local reichweite = 400
 local port = 70
 local maxzeit = 15
+local reichweite = 400
 local zeit = maxzeit
 local tank = {}
 local tankalt, adresse, empfangen
@@ -32,12 +32,12 @@ function check()
             tank[i].name = b.label
             tank[i].menge = b.amount
             tank[i].maxmenge = b.capacity
-            tank[i].prozent = string.format("%.1f%%", tank[i].menge / tank[i].maxmenge * 100)
+            --tank[i].prozent = string.format("%.1f%%", tank[i].menge / tank[i].maxmenge * 100)
             i = i + 1
           else
             tank[c].menge = tank[c].menge + b.amount
             tank[c].maxmenge = tank[c].maxmenge + b.capacity
-            tank[c].prozent = string.format("%.1f%%", tank[c].menge / tank[c].maxmenge * 100)
+            --tank[c].prozent = string.format("%.1f%%", tank[c].menge / tank[c].maxmenge * 100)
           end
         end
       end
@@ -45,7 +45,7 @@ function check()
   end
   term.clear()
   for i in pairs(tank) do
-    print(string.format("%s: %s/%s %s", tank[i].name, tank[i].menge, tank[i].maxmenge, tank[i].prozent))
+    print(string.format("Menge %s: %s/%s %.1f%%", tank[i].name, tank[i].menge, tank[i].maxmenge, tank[i].maxmenge / tank[i].menge))
   end
   return anders(tank, tankalt), tank
 end
@@ -67,7 +67,7 @@ function serialize(a)
   if type(a) == "table" then
     local ausgabe = ""
     for k in pairs(a) do
-      ausgabe = string.format([[%s{name="%s", menge="%s", maxmenge="%s", prozent="%s"}, ]], ausgabe, a[k].name, a[k].menge, a[k].maxmenge, a[k].prozent)
+      ausgabe = string.format([[%s{name="%s", menge="%s", maxmenge="%s"}, ]], ausgabe, a[k].name, a[k].menge, a[k].maxmenge)
     end
     return "{" .. ausgabe .. "}"
   end
@@ -77,11 +77,16 @@ function senden(warten, nachricht)
   if type(empfangen) == "table" then
     if empfangen[6] == "update" then
       adresse = empfangen[3]
-      reichweite = empfangen[5]
-      m.send(adresse, port, serialize(nachricht))
+      if type(empfangen[5]) == "number" then
+        m.setStrength(empfangen[5])
+      end
     end
   end
-  os.sleep(zeit / 2)
+  if adresse then
+    m.send(adresse, port, serialize(nachricht))
+  else
+    m.broadcast(port, serialize(nachricht))
+  end
   return warten
 end
 
@@ -93,7 +98,8 @@ function main()
     if senden(check()) then
       zeit = 1
     end
-    empfangen = {event.pull(zeit / 2, "modem_message")}
+    os.sleep(zeit / 10)
+    empfangen = {event.pull(zeit, "modem_message")}
   end
 end
 
