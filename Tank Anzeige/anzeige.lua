@@ -10,7 +10,7 @@ local tank = {}
 local tankneu
 
 function update()
-  local hier, _, id, _, _, nachricht = event.pull(300, "modem_message")
+  local hier, _, id, _, _, nachricht = event.pull(60, "modem_message")
   local dazu = true
   local ende = 0
   if hier then
@@ -36,7 +36,7 @@ function update()
     m.broadcast(port, "update")
   end
   for i in pairs(tank) do
-    if c.uptime() - tank[i].zeit > 20 then
+    if c.uptime() - tank[i].zeit > 45 then
       tank[i] = nil
     end
   end
