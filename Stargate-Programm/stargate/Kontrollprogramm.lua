@@ -1453,7 +1453,7 @@ end
 function Funktion.beendeAlles()
   gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   Funktion.Farbe(Farben.schwarzeFarbe, Farben.weisseFarbe)
-  term.clear()
+  gpu.fill(1, 1, 160, 80, " ")
   print(sprachen.ausschaltenName .. "\n")
   Funktion.Colorful_Lamp_Farben(0, true)
   if component.isAvailable("redstone") then
@@ -1476,8 +1476,6 @@ function Funktion.beendeAlles()
     Funktion.redstoneAbschalten(sideNum, Farben.black, "black")
   end
   screen.setTouchModeInverted(false)
-  gpu.fill(1, 1, 160, 80, " ")
-  term.clear()
 end
 
 function Funktion.main()
