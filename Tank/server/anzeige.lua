@@ -43,7 +43,7 @@ function update()
   end
 end
 
-function hinzu(name, menge, maxmenge)
+function hinzu(name, label, menge, maxmenge)
   local weiter = true
   if name ~= "nil" then
     for i in pairs(tankneu) do
