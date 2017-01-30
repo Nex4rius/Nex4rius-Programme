@@ -44,7 +44,7 @@ function check()
   end
   term.clear()
   for i in pairs(tank) do
-    print(string.format("%s --- %s: %s/%s %.1f%%", tank[i].name, tank[i].label, tank[i].menge, tank[i].maxmenge, tank[i].maxmenge / tank[i].menge))
+    print(string.format("%s - %s: %s/%s %.1f%%", tank[i].name, tank[i].label, tank[i].menge, tank[i].maxmenge, tank[i].maxmenge / tank[i].menge))
   end
   return anders(tank, tankalt), tank
 end
