@@ -132,6 +132,7 @@ end
 function main()
   m.open(port)
   m.broadcast(port, "update")
+  print("Warte auf Daten")
   while true do
     update()
   end
