@@ -34,7 +34,7 @@ function update()
     anzeigen(verarbeiten(tank))
   else
     m.broadcast(port, "update")
-    gpu.set(1, 60, "Keine Daten vorhanden")
+    gpu.set(1, 50, "Keine Daten vorhanden")
   end
   for i in pairs(tank) do
     if c.uptime() - tank[i].zeit > 45 then
@@ -92,7 +92,7 @@ function anzeigen(tankneu)
     leer = false
   end
   if leer then
-    gpu.set(1, 60, "Keine Daten vorhanden")
+    gpu.set(1, 50, "Keine Daten vorhanden")
   end
     gpu.setBackground(0x000000)
     gpu.setForeground(0xFFFFFF)
@@ -105,8 +105,6 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent)
   if farben[label] == nil then
     name = "unbekannt"
   end
-  gpu.setBackground(0xFF0000)
-  gpu.set(81, 1, string.rep(" ", 60), true)
   gpu.setForeground(farben[label][1])
   gpu.setBackground(farben[label][2])
   local ende = 0
@@ -137,7 +135,7 @@ function main()
   term.setCursor(1, 50)
   m.open(port)
   m.broadcast(port, "update")
-  gpu.set(1, 60, "Warte auf Daten")
+  gpu.set(1, 50, "Warte auf Daten")
   while true do
     update()
   end
