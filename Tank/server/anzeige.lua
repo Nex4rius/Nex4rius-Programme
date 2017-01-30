@@ -34,7 +34,7 @@ function update()
     anzeigen(verarbeiten(tank))
   else
     m.broadcast(port, "update")
-    print("Keine Daten vorhanden")
+    gpu.set(1, 60, "Keine Daten vorhanden")
   end
   for i in pairs(tank) do
     if c.uptime() - tank[i].zeit > 45 then
@@ -56,6 +56,7 @@ function hinzu(name, menge, maxmenge)
     if weiter then
       tankneu[tanknr] = {}
       tankneu[tanknr].name = name
+      tankneu[tanknr].label = label
       tankneu[tanknr].menge = menge
       tankneu[tanknr].maxmenge = maxmenge
     end
@@ -69,7 +70,7 @@ function verarbeiten(tank)
     if type(tank[i]) == "table" then
       for j in pairs(tank[i].inhalt) do
         tanknr = tanknr + 1
-        hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge)
+        hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge)
       end
     end
   end
@@ -82,39 +83,40 @@ function anzeigen(tankneu)
   local leer = true
   for i in pairs(tankneu) do
     local name = tankneu[i].name
+    local label = tankneu[i].label
     local menge = tankneu[i].menge
     local maxmenge = tankneu[i].maxmenge
     local prozent = menge / maxmenge * 100
-    zeigeHier(x, y, name, menge, maxmenge, prozent)
+    zeigeHier(x, y, label, name, menge, maxmenge, prozent)
     y = y + 3
     leer = false
   end
   if leer then
-    print("Keine Daten vorhanden")
+    gpu.set(1, 60, "Keine Daten vorhanden")
   end
     gpu.setBackground(0x000000)
     gpu.setForeground(0xFFFFFF)
 end
 
-function zeigeHier(x, y, name, menge, maxmenge, prozent)
+function zeigeHier(x, y, label, name, menge, maxmenge, prozent)
   local nachricht = string.format("%s %smb/%smb %.1f%%", name, menge, maxmenge, prozent)
   local laenge = (80 - string.len(nachricht)) / 2
   nachricht = split(string.format("%s%s%s ", string.rep(" ", laenge), nachricht, string.rep(" ", laenge)))
-  if farben[name] == nil then
+  if farben[label] == nil then
     name = "unbekannt"
   end
   gpu.setBackground(0xFF0000)
-  gpu.set(81, 1, "                                                             ", true)
-  gpu.setForeground(farben[name][1])
-  gpu.setBackground(farben[name][2])
+  gpu.set(81, 1, string.rep(" ", 60), true)
+  gpu.setForeground(farben[label][1])
+  gpu.setBackground(farben[label][2])
   local ende = 0
   for i = 1, math.floor(80 * menge / maxmenge) do
     gpu.set(x, y, string.format(" %s ", nachricht[i]), true)
     x = x + 1
     ende = i
   end
-  gpu.setForeground(farben[name][3])
-  gpu.setBackground(farben[name][4])
+  gpu.setForeground(farben[label][3])
+  gpu.setBackground(farben[label][4])
   local a = math.floor(80 * menge / maxmenge)
   for i = 1, 80 - a do
     gpu.set(x, y, string.format(" %s ", nachricht[i + ende]), true)
@@ -135,7 +137,7 @@ function main()
   term.setCursor(1, 50)
   m.open(port)
   m.broadcast(port, "update")
-  print("Warte auf Daten")
+  gpu.set(1, 60, "Warte auf Daten")
   while true do
     update()
   end
