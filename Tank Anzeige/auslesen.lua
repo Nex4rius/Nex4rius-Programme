@@ -81,7 +81,7 @@ function senden(warten, nachricht)
       m.send(adresse, port, serialize(nachricht))
     end
   end
-  os.sleep(zeit)
+  os.sleep(zeit / 2)
   return warten
 end
 
@@ -93,7 +93,7 @@ function main()
     if senden(check()) then
       zeit = 1
     end
-    empfangen = {event.pull(zeit, "modem_message")}
+    empfangen = {event.pull(zeit / 2, "modem_message")}
   end
 end
 
