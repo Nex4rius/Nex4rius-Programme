@@ -29,7 +29,7 @@ return {
 --seedoil                   = {0x------,  0x------,  0x------,  0x------},
   tritium                   = {0x000000,  0xFC0000,  0x000000,  0xCA0000},
   deuterium                 = {0x000000,  0xF9FC00,  0x000000,  0xC3CA00},
-  helium                    = {0x000000,  0x9D2500,  0xFFFFFF,  0x6C1900},
+  helium                    = {0xFFFFFF,  0x9D2500,  0xFFFFFF,  0x6C1900},
 --helium-3                  = {0x000000,  0xF9FC8E,  0x000000,  0xC7CA71}, buggy wegen minus
 --methane                   = {0x------,  0x------,  0x------,  0x------},
 --liquid_hydricsulfur       = {0x------,  0x------,  0x------,  0x------},
