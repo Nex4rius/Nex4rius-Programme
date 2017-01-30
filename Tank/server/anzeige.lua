@@ -99,7 +99,7 @@ end
 function zeigeHier(x, y, name, menge, maxmenge, prozent)
   local nachricht = string.format("%s %smb/%smb %.1f%%", name, menge, maxmenge, prozent)
   local laenge = (80 - string.len(nachricht)) / 2
-  nachricht = split(string.format("%s%s%s\n", string.rep(" ", laenge), nachricht, string.rep(" ", laenge)))
+  nachricht = split(string.format("%s%s%s ", string.rep(" ", laenge), nachricht, string.rep(" ", laenge)))
   if farben[name] == nil then
     name = "unbekannt"
   end
