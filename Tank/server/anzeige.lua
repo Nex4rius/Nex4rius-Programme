@@ -105,16 +105,16 @@ function zeigeHier(x, y, name, menge, maxmenge, prozent)
   end
   gpu.setBackground(0xFF0000)
   gpu.set(81, 1, "                                                             ", true)
-  gpu.setBackground(farben[name].hinterAN)
-  gpu.setForeground(farben[name].schriftAN)
+  gpu.setForeground(farben[name][1])
+  gpu.setBackground(farben[name][2])
   local ende = 0
   for i = 1, math.floor(80 * menge / maxmenge) do
     gpu.set(x, y, string.format(" %s ", nachricht[i]), true)
     x = x + 1
     ende = i
   end
-  gpu.setBackground(farben[name].hinterAUS)
-  gpu.setForeground(farben[name].schriftAUS)
+  gpu.setForeground(farben[name][3])
+  gpu.setBackground(farben[name][4])
   local a = math.floor(80 * menge / maxmenge)
   for i = 1, 80 - a do
     gpu.set(x, y, string.format(" %s ", nachricht[i + ende]), true)
