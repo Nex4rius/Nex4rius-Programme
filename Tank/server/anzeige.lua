@@ -135,6 +135,7 @@ function split(a)
 end
 
 function main()
+  gpu.setBackground(0x000000)
   term.clear()
   term.setCursor(1, 50)
   m.open(port)
