@@ -34,6 +34,7 @@ function update()
     anzeigen(verarbeiten(tank))
   else
     m.broadcast(port, "update")
+    print("Keine Daten vorhanden")
   end
   for i in pairs(tank) do
     if c.uptime() - tank[i].zeit > 45 then
