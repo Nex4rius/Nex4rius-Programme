@@ -11,7 +11,7 @@ local laeuft = true
 local tankneu
 
 function update()
-  local hier, _, id, _, _, nachricht = event.pull(60, "modem_message")
+  local hier, _, id, _, _, nachricht = event.pull(120, "modem_message")
   local dazu = true
   local ende = 0
   if hier then
@@ -39,7 +39,7 @@ function update()
     gpu.set(1, 50, "Keine Daten vorhanden")
   end
   for i in pairs(tank) do
-    if c.uptime() - tank[i].zeit > 45 then
+    if c.uptime() - tank[i].zeit > 90 then
       tank[i] = nil
     end
   end
