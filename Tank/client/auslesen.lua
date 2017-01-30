@@ -44,7 +44,9 @@ function check()
   end
   term.clear()
   for i in pairs(tank) do
-    print(string.format("%s - %s: %s/%s %.1f%%", tank[i].name, tank[i].label, tank[i].menge, tank[i].maxmenge, tank[i].maxmenge / tank[i].menge))
+    if tank[i].name ~= nil then
+      print(string.format("%s - %s: %s/%s %.1f%%", tank[i].name, tank[i].label, tank[i].menge, tank[i].maxmenge, tank[i].maxmenge / tank[i].menge))
+    end
   end
   return anders(tank, tankalt), tank
 end
@@ -66,7 +68,9 @@ function serialize(a)
   if type(a) == "table" then
     local ausgabe = ""
     for k in pairs(a) do
-      ausgabe = string.format([[%s{name="%s", label="%s", menge="%s", maxmenge="%s"}, ]], ausgabe, a[k].name, a[k].label, a[k].menge, a[k].maxmenge)
+      if a[k].name ~= nil then
+        ausgabe = string.format([[%s{name="%s", label="%s", menge="%s", maxmenge="%s"}, ]], ausgabe, a[k].name, a[k].label, a[k].menge, a[k].maxmenge)
+      end
     end
     return "{" .. ausgabe .. "}"
   end
