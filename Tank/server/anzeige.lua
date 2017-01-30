@@ -103,7 +103,7 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent)
   local laenge = (80 - string.len(nachricht)) / 2
   nachricht = split(string.format("%s%s%s ", string.rep(" ", laenge), nachricht, string.rep(" ", laenge)))
   if farben[label] == nil then
-    name = "unbekannt"
+    label = "unbekannt"
   end
   gpu.setForeground(farben[label][1])
   gpu.setBackground(farben[label][2])
