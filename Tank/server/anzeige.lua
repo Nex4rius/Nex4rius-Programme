@@ -131,6 +131,8 @@ function split(a)
 end
 
 function main()
+  term.clear()
+  term.setCursor(1, 50)
   m.open(port)
   m.broadcast(port, "update")
   print("Warte auf Daten")
@@ -138,8 +140,6 @@ function main()
     update()
   end
 end
-
-term.clear()
 
 main()
 
