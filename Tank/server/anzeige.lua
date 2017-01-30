@@ -82,6 +82,11 @@ function anzeigen(tankneu)
   local x = 1
   local y = 1
   local leer = true
+  if #tankneu ~= 0 and #tankneu < 17 then
+    gpu.setResolution(80, #tankneu * 3)
+  else
+    gpu.setResolution(160, 48)
+  end
   for i in pairs(tankneu) do
     if i == 17 then
       x = 81
@@ -97,6 +102,7 @@ function anzeigen(tankneu)
     leer = false
   end
   if leer then
+    gpu.setResolution(gpu.maxResolution())
     gpu.set(1, 50, "Keine Daten vorhanden")
   end
     gpu.setBackground(0x000000)
@@ -155,4 +161,3 @@ function main()
 end
 
 main()
-
