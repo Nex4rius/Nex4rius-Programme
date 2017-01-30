@@ -99,22 +99,22 @@ function anzeigen(tankneu)
 end
 
 function zeigeHier(x, y, label, name, menge, maxmenge, prozent)
-  local nachricht = string.format("%s %smb/%smb %.1f%%", name, menge, maxmenge, prozent)
+  local nachricht = string.format("%s     %smb/%smb     %.1f%%", label, menge, maxmenge, prozent)
   local laenge = (80 - string.len(nachricht)) / 2
   nachricht = split(string.format("%s%s%s ", string.rep(" ", laenge), nachricht, string.rep(" ", laenge)))
-  if farben[label] == nil then
-    label = "unbekannt"
+  if farben[name] == nil then
+    name = "unbekannt"
   end
-  gpu.setForeground(farben[label][1])
-  gpu.setBackground(farben[label][2])
+  gpu.setForeground(farben[name][1])
+  gpu.setBackground(farben[name][2])
   local ende = 0
   for i = 1, math.floor(80 * menge / maxmenge) do
     gpu.set(x, y, string.format(" %s ", nachricht[i]), true)
     x = x + 1
     ende = i
   end
-  gpu.setForeground(farben[label][3])
-  gpu.setBackground(farben[label][4])
+  gpu.setForeground(farben[name][3])
+  gpu.setBackground(farben[name][4])
   local a = math.floor(80 * menge / maxmenge)
   for i = 1, 80 - a do
     gpu.set(x, y, string.format(" %s ", nachricht[i + ende]), true)
