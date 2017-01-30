@@ -4,7 +4,7 @@ local event = require("event")
 local c = require("computer")
 local m = component.modem
 local port = 70
-local maxzeit = 15
+local maxzeit = 60
 local reichweite = 400
 local zeit = maxzeit
 local tank = {}
@@ -99,7 +99,7 @@ function main()
   while true do
     zeit = maxzeit
     if senden(check()) then
-      zeit = 1
+      zeit = 5
     end
     os.sleep(zeit / 10)
     empfangen = {event.pull(zeit, "modem_message")}
