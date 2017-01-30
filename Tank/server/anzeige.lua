@@ -82,6 +82,10 @@ function anzeigen(tankneu)
   local y = 1
   local leer = true
   for i in pairs(tankneu) do
+    if i == 17 then
+      x = 81
+      y = 1
+    end
     local name = tankneu[i].name
     local label = tankneu[i].label
     local menge = tankneu[i].menge
