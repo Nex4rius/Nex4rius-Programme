@@ -35,6 +35,7 @@ function update()
     anzeigen(verarbeiten(tank))
   else
     m.broadcast(port, "update")
+    gpu.setResolution(gpu.maxResolution())
     gpu.set(1, 50, "Keine Daten vorhanden")
   end
   for i in pairs(tank) do
