@@ -32,12 +32,10 @@ function check()
             tank[i].name = b.label
             tank[i].menge = b.amount
             tank[i].maxmenge = b.capacity
-            --tank[i].prozent = string.format("%.1f%%", tank[i].menge / tank[i].maxmenge * 100)
             i = i + 1
           else
             tank[c].menge = tank[c].menge + b.amount
             tank[c].maxmenge = tank[c].maxmenge + b.capacity
-            --tank[c].prozent = string.format("%.1f%%", tank[c].menge / tank[c].maxmenge * 100)
           end
         end
       end
