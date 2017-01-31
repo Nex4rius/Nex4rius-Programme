@@ -1,4 +1,4 @@
--- pastebin run -f ------
+-- pastebin run -f cyF0yhXZ
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/
 
@@ -49,7 +49,7 @@ function Funktionen.installieren(versionTyp)
         print(sprachen.fehlerName .. " " .. i)
       end
       local f = io.open ("/autorun.lua", "w")
-      f:write('-- pastebin run -f ------\n')
+      f:write('-- pastebin run -f cyF0yhXZ\n')
       f:write('-- von Nex4rius\n')
       f:write('-- https://github.com/Nex4rius/Nex4rius-Programme\n')
       f:write('\n')
@@ -90,7 +90,7 @@ function Funktionen.installieren(versionTyp)
   end
   if fs.exists("/home") then
     local f = io.open ("/home/tank", "w")
-    f:write('-- pastebin run -f ------\n')
+    f:write('-- pastebin run -f cyF0yhXZ\n')
     f:write('-- von Nex4rius\n')
     f:write('-- https://github.com/Nex4rius/Nex4rius-Programme\n')
     f:write('\n')
@@ -108,6 +108,9 @@ end
 
 if versionTyp == nil then
   if type(arg) == "string" then
+    if arg == "client" or arg == "server" then else
+      arg = "master"
+    end
     Funktionen.installieren(arg)
   else
     Funktionen.installieren("master")
