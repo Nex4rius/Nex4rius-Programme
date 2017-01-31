@@ -23,8 +23,10 @@ function Funktion.Pfad(versionTyp)
 end
 
 function Funktion.checkSprache()
-  if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
-    return true
+  if Sicherung.Sprache then
+    if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
+      return true
+    end
   else
     local alleSprachen = ""
     for i in fs.list("/stargate/sprache") do
