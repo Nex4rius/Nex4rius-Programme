@@ -36,7 +36,7 @@ end
 function Funktionen.installieren(versionTyp)
   local weiter = true
   while weiter do
-    print("\n\nserver / client?\n")
+    print("\n\nserver (display) / client (adapter + tank)?\n")
     typ = io.read()
     if typ == "server" or typ == "client" then
       weiter = false
