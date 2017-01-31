@@ -88,26 +88,33 @@ function anzeigen(tankneu)
   else
     gpu.setResolution(160, 48)
   end
-  for i in pairs(tankneu) do
+  for i = 1, 32 do
     if i == 17 then
       x = 81
       y = 1
     end
-    local name = tankneu[i].name
-    local label = tankneu[i].label
-    local menge = tankneu[i].menge
-    local maxmenge = tankneu[i].maxmenge
-    local prozent = menge / maxmenge * 100
-    zeigeHier(x, y, label, name, menge, maxmenge, prozent)
+    if type(tankneu[i]) == "table" then
+      local name = tankneu[i].name
+      local label = tankneu[i].label
+      local menge = tankneu[i].menge
+      local maxmenge = tankneu[i].maxmenge
+      local prozent = menge / maxmenge * 100
+      zeigeHier(x, y, label, name, menge, maxmenge, prozent)
+      leer = false
+    else
+      gpu.set(x, y    , string.rep(" ", 80))
+      gpu.set(x, y + 1, string.rep(" ", 80))
+      gpu.set(x, y + 2, string.rep(" ", 80))
+    end
     y = y + 3
-    leer = false
   end
   if leer then
     gpu.setResolution(gpu.maxResolution())
+    term.clear()
     gpu.set(1, 50, "Keine Daten vorhanden")
   end
-    gpu.setBackground(0x000000)
-    gpu.setForeground(0xFFFFFF)
+  gpu.setBackground(0x000000)
+  gpu.setForeground(0xFFFFFF)
 end
 
 function zeigeHier(x, y, label, name, menge, maxmenge, prozent)
