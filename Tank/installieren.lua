@@ -34,19 +34,15 @@ function Funktionen.Pfad(versionTyp)
 end
 
 function Funktionen.installieren(versionTyp)
-  if versionTyp == "server" or versionTyp == "client" then
-    typ = versionTyp
-    versionTyp = "master"
-  else
-    local weiter = true
-    while weiter do
-      print("server or client?")
-      weiter = io.read()
-      if weiter == "server" or weiter == "client" then
-        typ = weiter
-      else
-        weiter = true
-      end
+  local weiter = true
+  while weiter do
+    print("server or client?")
+    weiter = io.read()
+    if weiter == "server" or weiter == "client" then
+      typ = weiter
+      weiter = false
+    else
+      weiter = true
     end
   end
   fs.makeDirectory("/update/stargate/sprache")
@@ -137,9 +133,6 @@ end
 
 if versionTyp == nil then
   if type(arg) == "string" then
-    if arg == "client" or arg == "server" then else
-      arg = "master"
-    end
     Funktionen.installieren(arg)
   else
     Funktionen.installieren("master")
