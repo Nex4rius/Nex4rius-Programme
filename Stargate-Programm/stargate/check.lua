@@ -30,27 +30,35 @@ function Funktion.checkSprache()
       return true
     end
   else
-    local alleSprachen = ""
+    local alleSprachen = {}
+    local j = 1
     for i in fs.list("/stargate/sprache") do
       local Ende = string.len(i)
       i = string.sub(i, 1, Ende - 4)
       if i ~= "ersetzen" then
-        if alleSprachen == "" then
-          alleSprachen = string.format("%s", i)
-        else
-          alleSprachen = string.format("%s / %s", alleSprachen, i)
+        alleSprachen[j] = i
+        j = j + 1
+      end
+    end
+    local weiter = true
+    while weiter do
+      print("Sprache? / Language?")
+      for i in pairs(alleSprachen) do
+        io.write(alleSprachen[i] .. "\t")
+      end
+      io.write("\n\n")
+      antwortFrageSprache = string.lower(tostring(io.read()))
+      for i in pairs(alleSprachen) do
+        if antwortFrageSprache == alleSprachen[i] then
+          weiter = false
+          break
         end
       end
     end
-    print("Sprache? / Language?")
-    io.write(alleSprachen .. "\n\n")
-    antwortFrageSprache = string.lower(tostring(io.read()))
-    if antwortFrageSprache == "deutsch" or antwortFrageSprache == "english" or antwortFrageSprache == "russian" or wget("-f", Funktion.Pfad(versionTyp) .. "stargate/sprache/" .. antwortFrageSprache .. ".lua", "/update/stargate/sprache/" .. antwortFrageSprache .. ".lua") then
-      Sicherung.Sprache = antwortFrageSprache
-      schreibSicherungsdatei(Sicherung)
-      print("")
-      return true
-    end
+    Sicherung.Sprache = antwortFrageSprache
+    schreibSicherungsdatei(Sicherung)
+    print("")
+    return true
   end
 end
 
