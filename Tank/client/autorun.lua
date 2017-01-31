@@ -1,6 +1,6 @@
--- pastebin run -f cyF0yhXZ\n')
--- von Nex4rius\n')
--- https://github.com/Nex4rius/Nex4rius-Programme\n')
+-- pastebin run -f cyF0yhXZ
+-- von Nex4rius
+-- https://github.com/Nex4rius/Nex4rius-Programme
 
 local shell = require("shell")
 local alterPfad = shell.getWorkingDirectory("/")
