@@ -45,10 +45,11 @@ function Funktionen.installieren(versionTyp)
       weiter = true
     end
   end
-  fs.makeDirectory("/update/stargate/sprache")
+  fs.makeDirectory("/tank")
+  fs.makeDirectory("/update/tank")
   local updateKomplett = false
   local update = {}
-  update[1]   = wget("-f", Funktionen.Pfad(versionTyp) .. "autorun.lua",   "/update/autorun.lua")
+  update[1]   = wget("-f", Funktionen.Pfad(versionTyp) .. "autorun.lua",  "/update/autorun.lua")
   if typ == "client" then
     update[2] = wget("-f", Funktionen.Pfad(versionTyp) .. "auslesen.lua", "/update/tank/auslesen.lua")
   else
