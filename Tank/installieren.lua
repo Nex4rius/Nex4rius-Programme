@@ -27,9 +27,9 @@ end
 
 function Funktionen.Pfad(versionTyp)
   if versionTyp then
-    return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/" .. versionTyp .. "/Tank/client/"
+    return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/" .. versionTyp .. "/Tank/" .. typ .. "/"
   else
-    return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/client/"
+    return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/" .. typ .. "/"
   end
 end
 
@@ -52,13 +52,13 @@ function Funktionen.installieren(versionTyp)
   fs.makeDirectory("/update/stargate/sprache")
   local updateKomplett = false
   local update = {}
-  update[1]   = wget("-f", Funktionen.Pfad(versionTyp) .. "autorun.lua",       "/update/autorun.lua")
+  update[1]   = wget("-f", Funktionen.Pfad(versionTyp) .. "autorun.lua",   "/update/autorun.lua")
   if typ == "client" then
-    update[2] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/auslesen.lua", "/update/tank/auslesen.lua")
+    update[2] = wget("-f", Funktionen.Pfad(versionTyp) .. "auslesen.lua", "/update/tank/auslesen.lua")
   else
-    update[2] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/anzeige.lua",  "/update/tank/anzeige.lua")
+    update[2] = wget("-f", Funktionen.Pfad(versionTyp) .. "anzeige.lua",  "/update/tank/anzeige.lua")
   end
-  update[3]   = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/version.txt",  "/update/tank/version.txt")
+  update[3]   = wget("-f", Funktionen.Pfad(versionTyp) .. "version.txt",  "/update/tank/version.txt")
   for i = 1, 3 do
     if update[i] then
       updateKomplett = true
