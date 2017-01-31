@@ -36,10 +36,9 @@ end
 function Funktionen.installieren(versionTyp)
   local weiter = true
   while weiter do
-    print("server or client?")
-    weiter = io.read()
-    if weiter == "server" or weiter == "client" then
-      typ = weiter
+    print("\n\nserver / client?\n")
+    typ = io.read()
+    if typ == "server" or typ == "client" then
       weiter = false
     else
       weiter = true
@@ -48,15 +47,18 @@ function Funktionen.installieren(versionTyp)
   fs.makeDirectory("/tank")
   fs.makeDirectory("/update/tank")
   local updateKomplett = false
+  local anzahl = 3
   local update = {}
   update[1]   = wget("-f", Funktionen.Pfad(versionTyp) .. "autorun.lua",  "/update/autorun.lua")
+  update[2]   = wget("-f", Funktionen.Pfad(versionTyp) .. "version.txt",  "/update/tank/version.txt")
   if typ == "client" then
-    update[2] = wget("-f", Funktionen.Pfad(versionTyp) .. "auslesen.lua", "/update/tank/auslesen.lua")
+    update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "auslesen.lua", "/update/tank/auslesen.lua")
   else
-    update[2] = wget("-f", Funktionen.Pfad(versionTyp) .. "anzeige.lua",  "/update/tank/anzeige.lua")
+    update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "anzeige.lua",  "/update/tank/anzeige.lua")
+    update[4] = wget("-f", Funktionen.Pfad(versionTyp) .. "farben.lua",   "/update/tank/farben.lua")
+    anzahl = 4
   end
-  update[3]   = wget("-f", Funktionen.Pfad(versionTyp) .. "version.txt",  "/update/tank/version.txt")
-  for i = 1, 3 do
+  for i = 1, anzahl do
     if update[i] then
       updateKomplett = true
     else
@@ -126,6 +128,7 @@ function Funktionen.installieren(versionTyp)
   if updateKomplett then
     print("\nUpdate komplett\n" .. version .. " " .. string.upper(tostring(versionTyp)))
     os.sleep(2)
+    loadfile("/autorun.lua")()
     require("computer").shutdown(true)
   else
     print("\nERROR install / update failed\n")
