@@ -34,12 +34,31 @@ function Funktionen.Pfad(versionTyp)
 end
 
 function Funktionen.installieren(versionTyp)
+  if versionTyp == "server" or versionTyp == "client" then
+    typ = versionTyp
+    versionTyp = "master"
+  else
+    local weiter = true
+    while weiter do
+      print("server or client?")
+      weiter = io.read()
+      if weiter == "server" or weiter == "client" then
+        typ = weiter
+      else
+        weiter = true
+      end
+    end
+  end
   fs.makeDirectory("/update/stargate/sprache")
   local updateKomplett = false
   local update = {}
-  update[1] = wget("-f", Funktionen.Pfad(versionTyp) .. "autorun.lua",       "/update/autorun.lua")
-  update[2] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/auslesen.lua", "/update/tank/auslesen.lua")
-  update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/version.txt",  "/update/tank/version.txt")
+  update[1]   = wget("-f", Funktionen.Pfad(versionTyp) .. "autorun.lua",       "/update/autorun.lua")
+  if typ == "client" then
+    update[2] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/auslesen.lua", "/update/tank/auslesen.lua")
+  else
+    update[2] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/anzeige.lua",  "/update/tank/anzeige.lua")
+  end
+  update[3]   = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/version.txt",  "/update/tank/version.txt")
   for i = 1, 3 do
     if update[i] then
       updateKomplett = true
@@ -60,9 +79,15 @@ function Funktionen.installieren(versionTyp)
       f:write('shell.setWorkingDirectory("/")\n')
       f:write('\n')
       f:write('if type(args) == "string" then\n')
-      f:write('  loadfile("/tank/auslesen.lua")(args)\n')
-      f:write('else\n')
-      f:write('  loadfile("/tank/auslesen.lua")()\n')
+      if typ == "client" then
+        f:write('  loadfile("/tank/auslesen.lua")(args)\n')
+        f:write('else\n')
+        f:write('  loadfile("/tank/auslesen.lua")()\n')
+      else
+        f:write('  loadfile("/tank/anzeige.lua")(args)\n')
+        f:write('else\n')
+        f:write('  loadfile("/tank/anzeige.lua")()\n')
+      end
       f:write('end\n')
       f:write('\n')
       f:write('require("shell").setWorkingDirectory(alterPfad)\n')
@@ -73,7 +98,11 @@ function Funktionen.installieren(versionTyp)
   if updateKomplett then
     copy("/update/autorun.lua",       "/autorun.lua")
     copy("/update/tank/version.txt",  "/tank/version.txt")
-    copy("/update/tank/auslesen.lua", "/tank/auslesen.lua")
+    if typ == "client" then
+      copy("/update/tank/auslesen.lua", "/tank/auslesen.lua")
+    else
+      copy("/update/tank/anzeige.lua",  "/tank/anzeige.lua")
+    end
     f = io.open ("/tank/version.txt", "r")
     version = f:read()
     f:close()
