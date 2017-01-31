@@ -10,17 +10,17 @@ local sprachen  = {}
 
 local function reset()
   return {
-    sprachen.speichern      = 'zum speichern drücke "Strg + S"',
-    sprachen.schliessen     = 'zum schließen drücke "Strg + W"',
-    sprachen.autoclosetime  = "in Sekunden -- false für keine automatische Schließung",
-    sprachen.IDC            = "Iris Deaktivierungscode",
-    sprachen.RF             = "zeige Energie in RF anstatt in EU",
-    sprachen.Sprache        = "deutsch / english",
-    sprachen.side           = "unten, oben, hinten, vorne, rechts oder links",
-    sprachen.autoUpdate     = "aktiviere automatische Aktualisierungen",
-    sprachen.debug          = "zum debuggen",
-    sprachen.nichtsAendern  = "verändere nichts ab hier",
-    sprachen.StargateName   = "der Name dieses Stargates",
+    speichern      = 'zum speichern drücke "Strg + S"',
+    schliessen     = 'zum schließen drücke "Strg + W"',
+    autoclosetime  = "in Sekunden -- false für keine automatische Schließung",
+    IDC            = "Iris Deaktivierungscode",
+    RF             = "zeige Energie in RF anstatt in EU",
+    Sprache        = "deutsch / english",
+    side           = "unten, oben, hinten, vorne, rechts oder links",
+    autoUpdate     = "aktiviere automatische Aktualisierungen",
+    debug          = "zum debuggen",
+    nichtsAendern  = "verändere nichts ab hier",
+    StargateName   = "der Name dieses Stargates",
   }
 end
 
