@@ -97,12 +97,13 @@ function Funktionen.installieren(versionTyp)
     end
   end
   if updateKomplett then
-    copy("/update/autorun.lua",       "/autorun.lua")
-    copy("/update/tank/version.txt",  "/tank/version.txt")
+    copy("/update/autorun.lua",         "/autorun.lua")
+    copy("/update/tank/version.txt",    "/tank/version.txt")
     if typ == "client" then
       copy("/update/tank/auslesen.lua", "/tank/auslesen.lua")
     else
       copy("/update/tank/anzeige.lua",  "/tank/anzeige.lua")
+      copy("/update/tank/farben.lua",   "/tank/farben.lua")
     end
     f = io.open ("/tank/version.txt", "r")
     version = f:read()
