@@ -50,12 +50,12 @@ function Funktionen.installieren(versionTyp)
   local anzahl = 3
   local update = {}
   update[1]   = wget("-f", Funktionen.Pfad(versionTyp) .. "autorun.lua",  "/update/autorun.lua")
-  update[2]   = wget("-f", Funktionen.Pfad(versionTyp) .. "version.txt",  "/update/tank/version.txt")
+  update[2]   = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/version.txt",  "/update/tank/version.txt")
   if typ == "client" then
-    update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "auslesen.lua", "/update/tank/auslesen.lua")
+    update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/auslesen.lua", "/update/tank/auslesen.lua")
   else
-    update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "anzeige.lua",  "/update/tank/anzeige.lua")
-    update[4] = wget("-f", Funktionen.Pfad(versionTyp) .. "farben.lua",   "/update/tank/farben.lua")
+    update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/anzeige.lua",  "/update/tank/anzeige.lua")
+    update[4] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/farben.lua",   "/update/tank/farben.lua")
     anzahl = 4
   end
   for i = 1, anzahl do
