@@ -80,7 +80,7 @@ function senden(warten, nachricht)
   if type(empfangen) == "table" then
     if empfangen[6] == "update" then
       adresse = empfangen[3]
-      if type(empfangen[5]) == "number" then
+      if type(empfangen[5]) == "number" and m.isWireless() then
         m.setStrength(empfangen[5])
       end
     end
@@ -94,7 +94,9 @@ function senden(warten, nachricht)
 end
 
 function main()
-  m.setStrength(reichweite)
+  if m.isWireless() then
+    m.setStrength(reichweite)
+  end
   m.open(port)
   while true do
     zeit = maxzeit
