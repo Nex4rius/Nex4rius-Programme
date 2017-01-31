@@ -83,6 +83,7 @@ function anzeigen(tankneu)
   local x = 1
   local y = 1
   local leer = true
+  local schwarz = true
   if #tankneu ~= 0 and #tankneu < 17 then
     gpu.setResolution(80, #tankneu * 3)
   else
@@ -102,6 +103,11 @@ function anzeigen(tankneu)
       zeigeHier(x, y, label, name, menge, maxmenge, prozent)
       leer = false
     else
+      if schwarz then
+        gpu.setBackground(0x000000)
+        gpu.setForeground(0xFFFFFF)
+        schwarz = false
+      end
       gpu.set(x, y    , string.rep(" ", 80))
       gpu.set(x, y + 1, string.rep(" ", 80))
       gpu.set(x, y + 2, string.rep(" ", 80))
