@@ -110,6 +110,7 @@ function anzeigen(tankneu)
     gpu.set(x, y    , string.rep(" ", 80))
     gpu.set(x, y + 1, string.rep(" ", 80))
     gpu.set(x, y + 2, string.rep(" ", 80))
+    y = y + 3
   end
   if leer then
     gpu.setResolution(gpu.maxResolution())
