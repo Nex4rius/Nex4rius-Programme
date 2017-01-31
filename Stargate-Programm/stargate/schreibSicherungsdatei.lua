@@ -8,6 +8,22 @@ local ALT       = {}
 local Sicherung = {}
 local sprachen  = {}
 
+local function reset()
+  return {
+    sprachen.speichern      = 'zum speichern drücke "Strg + S"',
+    sprachen.schliessen     = 'zum schließen drücke "Strg + W"',
+    sprachen.autoclosetime  = "in Sekunden -- false für keine automatische Schließung",
+    sprachen.IDC            = "Iris Deaktivierungscode",
+    sprachen.RF             = "zeige Energie in RF anstatt in EU",
+    sprachen.Sprache        = "deutsch / english",
+    sprachen.side           = "unten, oben, hinten, vorne, rechts oder links",
+    sprachen.autoUpdate     = "aktiviere automatische Aktualisierungen",
+    sprachen.debug          = "zum debuggen",
+    sprachen.nichtsAendern  = "verändere nichts ab hier",
+    sprachen.StargateName   = "der Name dieses Stargates",
+  }
+end
+
 if type(NEU) == "table" then
   if fs.exists("/stargate/Sicherungsdatei.lua") then
     ALT = loadfile("/stargate/Sicherungsdatei.lua")()
@@ -19,17 +35,10 @@ if type(NEU) == "table" then
   elseif fs.exists("/stargate/sprache/deutsch.lua") then
     sprachen = loadfile("/stargate/sprache/deutsch.lua")()
   else
-    sprachen.speichern      = 'zum speichern drücke "Strg + S"'
-    sprachen.schliessen     = 'zum schließen drücke "Strg + W"'
-    sprachen.autoclosetime  = "in Sekunden -- false für keine automatische Schließung"
-    sprachen.IDC            = "Iris Deaktivierungscode"
-    sprachen.RF             = "zeige Energie in RF anstatt in EU"
-    sprachen.Sprache        = "deutsch / english"
-    sprachen.side           = "unten, oben, hinten, vorne, rechts oder links"
-    sprachen.autoUpdate     = "aktiviere automatische Aktualisierungen"
-    sprachen.debug          = "zum debuggen"
-    sprachen.nichtsAendern  = "verändere nichts ab hier"
-    sprachen.StargateName   = "der Name dieses Stargates"
+    sprachen = reset()
+  end
+  if type(sprachen) ~= "table" then
+    sprachen = reset()
   end
   if type(NEU.autoclosetime) == "number" or NEU.autoclosetime == false then Sicherung.autoclosetime = NEU.autoclosetime else Sicherung.autoclosetime = ALT.autoclosetime end
   if type(NEU.StargateName)  == "string" then Sicherung.StargateName = NEU.StargateName elseif type(ALT.StargateName) == "string" then Sicherung.StargateName = ALT.StargateName else Sicherung.StargateName = "" end
@@ -64,6 +73,7 @@ if type(NEU) == "table" then
   f:write('}')
   f:close()
   return true
+  end
 else
   return false
 end
