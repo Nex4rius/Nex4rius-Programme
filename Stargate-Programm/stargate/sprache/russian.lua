@@ -73,8 +73,8 @@ return {
   oeffneIris                = "Открыть",
   schliesseIris             = "Закрыть",
   IDCeingabe                = "Ввод IDC",
-  naechsteSeite             = "Следующая страница",
-  vorherigeSeite            = "Предыдущая страница",
+  naechsteSeite             = "Следующая страница", -- max 16 characters
+  vorherigeSeite            = "Предыдущая страница", -- max 16 characters
   senden                    = "Отправка: ",
   aufforderung              = "Запрос",
   manueller                 = "Ручной",
