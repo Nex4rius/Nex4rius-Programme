@@ -44,6 +44,7 @@ function Funktionen.installieren(versionTyp)
       weiter = io.read()
       if weiter == "server" or weiter == "client" then
         typ = weiter
+        weiter = false
       else
         weiter = true
       end
