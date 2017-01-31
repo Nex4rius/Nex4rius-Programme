@@ -1,5 +1,6 @@
 return {
 --Beispiel                  = {schriftAN, hinterAN, schriftAUS, hinterAUS},
+--example                   = {textON,    backON,    textOFF,   backOFF},
   water                     = {0x000000,  0x1E90FF,  0xFFFFFF,  0x1268FD},
   lava                      = {0x000000,  0xFF5E00,  0x000000,  0xCC460A},
   chlorine                  = {0xFFFFFF,  0x164444,  0xFFFFFF,  0x1C5656},
