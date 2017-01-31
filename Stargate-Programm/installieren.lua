@@ -129,6 +129,9 @@ function Funktionen.installieren(versionTyp)
     require("computer").shutdown(true)
   else
     print("\nERROR install / update failed\n")
+    print("10s bis Neustart")
+    os.sleep(10)
+    require("computer").shutdown(true)
   end
 end
 
