@@ -36,10 +36,9 @@ end
 function Funktionen.installieren(versionTyp)
   local weiter = true
   while weiter do
-    print("server or client?")
-    weiter = io.read()
-    if weiter == "server" or weiter == "client" then
-      typ = weiter
+    print("\n\nserver / client?\n")
+    typ = io.read()
+    if typ == "server" or typ == "client" then
       weiter = false
     else
       weiter = true
@@ -48,21 +47,26 @@ function Funktionen.installieren(versionTyp)
   fs.makeDirectory("/tank")
   fs.makeDirectory("/update/tank")
   local updateKomplett = false
+  local anzahl = 3
   local update = {}
   update[1]   = wget("-f", Funktionen.Pfad(versionTyp) .. "autorun.lua",  "/update/autorun.lua")
+  update[2]   = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/version.txt",  "/update/tank/version.txt")
   if typ == "client" then
-    update[2] = wget("-f", Funktionen.Pfad(versionTyp) .. "auslesen.lua", "/update/tank/auslesen.lua")
+    update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/auslesen.lua", "/update/tank/auslesen.lua")
   else
-    update[2] = wget("-f", Funktionen.Pfad(versionTyp) .. "anzeige.lua",  "/update/tank/anzeige.lua")
+    update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/farben.lua",   "/update/tank/farben.lua")
+    update[4] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/anzeige.lua",  "/update/tank/anzeige.lua")
+    anzahl = 4
   end
-  update[3]   = wget("-f", Funktionen.Pfad(versionTyp) .. "version.txt",  "/update/tank/version.txt")
-  for i = 1, 3 do
+  for i = 1, anzahl do
     if update[i] then
       updateKomplett = true
     else
       updateKomplett = false
       if sprachen then
         print(sprachen.fehlerName .. " " .. i)
+      else
+        print("Fehler " ..i)
       end
       local f = io.open ("/autorun.lua", "w")
       f:write('-- pastebin run -f cyF0yhXZ\n')
@@ -87,18 +91,19 @@ function Funktionen.installieren(versionTyp)
       end
       f:write('end\n')
       f:write('\n')
-      f:write('require("shell").setWorkingDirectory(alterPfad)\n')
+      f:write('shell.setWorkingDirectory(alterPfad)\n')
       f:close()
       break
     end
   end
   if updateKomplett then
-    copy("/update/autorun.lua",       "/autorun.lua")
-    copy("/update/tank/version.txt",  "/tank/version.txt")
+    copy("/update/autorun.lua",         "/autorun.lua")
+    copy("/update/tank/version.txt",    "/tank/version.txt")
     if typ == "client" then
       copy("/update/tank/auslesen.lua", "/tank/auslesen.lua")
     else
       copy("/update/tank/anzeige.lua",  "/tank/anzeige.lua")
+      copy("/update/tank/farben.lua",   "/tank/farben.lua")
     end
     f = io.open ("/tank/version.txt", "r")
     version = f:read()
@@ -126,10 +131,13 @@ function Funktionen.installieren(versionTyp)
   if updateKomplett then
     print("\nUpdate komplett\n" .. version .. " " .. string.upper(tostring(versionTyp)))
     os.sleep(2)
-    require("computer").shutdown(true)
+    loadfile("/autorun.lua")()
   else
     print("\nERROR install / update failed\n")
   end
+  print("10s bis Neustart")
+  os.sleep(10)
+  require("computer").shutdown(true)
 end
 
 if versionTyp == nil then

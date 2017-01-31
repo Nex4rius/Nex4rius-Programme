@@ -9,9 +9,9 @@ local args = shell.parse(...)[1]
 shell.setWorkingDirectory("/")
 
 if type(args) == "string" then
-  loadfile("/tank/anzeige.lua")(args)
+  loadfile("/tank/auslesen.lua")(args)
 else
-  loadfile("/tank/anzeige.lua")()
+  loadfile("/tank/auslesen.lua")()
 end
 
-require("shell").setWorkingDirectory(alterPfad)
+shell.setWorkingDirectory(alterPfad)
