@@ -107,7 +107,7 @@ function anzeigen(tankneu)
   end
   gpu.setBackground(0x000000)
   gpu.setForeground(0xFFFFFF)
-  for i = anzahl, 32 do
+  for i = anzahl, 33 do
     gpu.set(x, y    , string.rep(" ", 80))
     gpu.set(x, y + 1, string.rep(" ", 80))
     gpu.set(x, y + 2, string.rep(" ", 80))
