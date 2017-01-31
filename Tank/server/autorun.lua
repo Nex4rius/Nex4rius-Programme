@@ -9,9 +9,9 @@ local args = shell.parse(...)[1]
 shell.setWorkingDirectory("/")
 
 if type(args) == "string" then
-  loadfile("/tank/auslesen.lua")(args)
+  loadfile("/tank/anzeige.lua")(args)
 else
-  loadfile("/tank/auslesen.lua")()
+  loadfile("/tank/anzeige.lua")()
 end
 
 require("shell").setWorkingDirectory(alterPfad)
