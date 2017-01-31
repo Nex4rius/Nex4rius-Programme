@@ -3,6 +3,7 @@ local term = require("term")
 local event = require("event")
 local c = require("computer")
 local m = component.modem
+local einServer = true
 local port = 70
 local maxzeit = 60
 local reichweite = 400
@@ -85,7 +86,7 @@ function senden(warten, nachricht)
       end
     end
   end
-  if adresse then
+  if adresse and einServer then
     m.send(adresse, port, serialize(nachricht))
   else
     m.broadcast(port, serialize(nachricht))

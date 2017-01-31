@@ -16,34 +16,49 @@ local Funktion                = {}
 local version
 
 function Funktion.Pfad(versionTyp)
+  if versionTyp == nil then
+    versionTyp = "master"
+  end
   return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/" .. versionTyp .. "/Stargate-Programm/"
 end
 
 function Funktion.checkSprache()
-  if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
-    return true
+  if Sicherung.Sprache and Sicherung.Sprache ~= "" then
+    if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
+      return true
+    elseif wget("-f", Funktion.Pfad(versionTyp) .. "stargate/sprache/" .. Sicherung.Sprache .. ".lua", "/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
+      return true
+    end
   else
-    local alleSprachen = ""
+    local alleSprachen = {}
+    local j = 1
     for i in fs.list("/stargate/sprache") do
       local Ende = string.len(i)
       i = string.sub(i, 1, Ende - 4)
       if i ~= "ersetzen" then
-        if alleSprachen == "" then
-          alleSprachen = string.format("%s", i)
-        else
-          alleSprachen = string.format("%s / %s", alleSprachen, i)
+        alleSprachen[j] = i
+        j = j + 1
+      end
+    end
+    local weiter = true
+    while weiter do
+      print("Sprache? / Language?")
+      for i in pairs(alleSprachen) do
+        io.write(alleSprachen[i] .. "\t")
+      end
+      io.write("\n\n")
+      antwortFrageSprache = string.lower(tostring(io.read()))
+      for i in pairs(alleSprachen) do
+        if antwortFrageSprache == alleSprachen[i] then
+          weiter = false
+          break
         end
       end
     end
-    print("Sprache? / Language?")
-    io.write(alleSprachen .. "\n\n")
-    antwortFrageSprache = io.read()
-    if string.lower(antwortFrageSprache) == "deutsch" or string.lower(antwortFrageSprache) == "english" or wget("-f", Funktion.Pfad(versionTyp) .. "stargate/sprache/" .. antwortFrageSprache .. ".lua", "/update/stargate/sprache/" .. antwortFrageSprache .. ".lua") then
-      Sicherung.Sprache = string.lower(antwortFrageSprache)
-      schreibSicherungsdatei(Sicherung)
-      print("")
-      return true
-    end
+    Sicherung.Sprache = antwortFrageSprache
+    schreibSicherungsdatei(Sicherung)
+    print("")
+    return true
   end
 end
 
@@ -232,6 +247,9 @@ function Funktion.main()
     Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
   else
     Sicherung.installieren = false
+  end
+  if arg == "master" or arg == "beta" then
+    versionTyp = arg
   end
   if Funktion.checkSprache() then
     sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
