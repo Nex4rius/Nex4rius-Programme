@@ -16,6 +16,9 @@ local Funktion                = {}
 local version
 
 function Funktion.Pfad(versionTyp)
+  if versionTyp == nil then
+    versionTyp = "master"
+  end
   return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/" .. versionTyp .. "/Stargate-Programm/"
 end
 
