@@ -73,7 +73,6 @@ if type(NEU) == "table" then
   f:write('}')
   f:close()
   return true
-  end
 else
   return false
 end
