@@ -10,6 +10,8 @@ shell.setWorkingDirectory("/")
 
 if type(args) == "string" then
   loadfile("/tank/auslesen.lua")(args)
-else\n')
+else
   loadfile("/tank/auslesen.lua")()
 end
+
+require("shell").setWorkingDirectory(alterPfad)
