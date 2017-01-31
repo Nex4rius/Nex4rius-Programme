@@ -26,6 +26,8 @@ function Funktion.checkSprache()
   if Sicherung.Sprache then
     if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
       return true
+    elseif wget("-f", Funktion.Pfad(versionTyp) .. "stargate/sprache/" .. Sicherung.Sprache .. ".lua", "/stargate/sprache/" .. Sicherung.Sprache .. ".lua")
+      return true
     end
   else
     local alleSprachen = ""
