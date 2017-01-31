@@ -240,6 +240,9 @@ function Funktion.main()
   else
     Sicherung.installieren = false
   end
+  if arg == "master" or arg == "beta" then
+    versionTyp = arg
+  end
   if Funktion.checkSprache() then
     sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
   else
