@@ -14,4 +14,4 @@ else
   loadfile("/tank/anzeige.lua")()
 end
 
-require("shell").setWorkingDirectory(alterPfad)
+shell.setWorkingDirectory(alterPfad)
