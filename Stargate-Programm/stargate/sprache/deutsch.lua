@@ -98,7 +98,7 @@ return {
   StatusNameVerbunden       = "Verbunden",
   StatusNameSchliessend     = "Schließend",
   Neustart                  = "Neustart",
-  verfuegbareSprachen       = "deutsch / english",
+  verfuegbareSprachen       = "deutsch / english / russian",
   IrisSteuerungName         = "Steuerung",
   ausschaltenName           = "Herunterfahren...",
   redstoneAusschalten       = "Redstone ausschalten: ",
