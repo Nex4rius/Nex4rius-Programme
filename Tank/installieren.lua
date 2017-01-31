@@ -54,8 +54,8 @@ function Funktionen.installieren(versionTyp)
   if typ == "client" then
     update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/auslesen.lua", "/update/tank/auslesen.lua")
   else
-    update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/anzeige.lua",  "/update/tank/anzeige.lua")
-    update[4] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/farben.lua",   "/update/tank/farben.lua")
+    update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/farben.lua",   "/update/tank/farben.lua")
+    update[4] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/anzeige.lua",  "/update/tank/anzeige.lua")
     anzahl = 4
   end
   for i = 1, anzahl do
@@ -65,6 +65,8 @@ function Funktionen.installieren(versionTyp)
       updateKomplett = false
       if sprachen then
         print(sprachen.fehlerName .. " " .. i)
+      else
+        print("Fehler " ..i)
       end
       local f = io.open ("/autorun.lua", "w")
       f:write('-- pastebin run -f cyF0yhXZ\n')
@@ -89,7 +91,7 @@ function Funktionen.installieren(versionTyp)
       end
       f:write('end\n')
       f:write('\n')
-      f:write('require("shell").setWorkingDirectory(alterPfad)\n')
+      f:write('shell.setWorkingDirectory(alterPfad)\n')
       f:close()
       break
     end
