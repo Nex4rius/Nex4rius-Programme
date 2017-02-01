@@ -1,3 +1,7 @@
+-- pastebin run -f cyF0yhXZ
+-- von Nex4rius
+-- https://github.com/Nex4rius/Nex4rius-Programme/
+
 local component = require("component")
 local term = require("term")
 local event = require("event")
