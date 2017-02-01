@@ -36,6 +36,7 @@ function update()
   else
     m.broadcast(port, "update")
     gpu.setResolution(gpu.maxResolution())
+    term.clear()
     gpu.set(1, 50, "Keine Daten vorhanden")
   end
   for i in pairs(tank) do
@@ -88,6 +89,7 @@ function anzeigen(tankneu)
   else
     gpu.setResolution(160, 48)
   end
+  os.sleep(1)
   for i in pairs(tankneu) do
     if i == 17 then
       x = 81
