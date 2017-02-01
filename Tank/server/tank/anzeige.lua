@@ -115,6 +115,7 @@ function anzeigen(tankneu)
     y = y + 3
   end
   if leer then
+    m.broadcast(port, "update")
     gpu.setResolution(gpu.maxResolution())
     term.clear()
     gpu.set(1, 50, "Keine Daten vorhanden")
