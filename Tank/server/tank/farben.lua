@@ -1,3 +1,7 @@
+-- pastebin run -f cyF0yhXZ
+-- von Nex4rius
+-- https://github.com/Nex4rius/Nex4rius-Programme/
+
 return {
 --Beispiel                  = {schriftAN, hinterAN, schriftAUS, hinterAUS},
 --example                   = {textON,    backON,    textOFF,   backOFF},
@@ -35,7 +39,7 @@ return {
   methane                   = {0xFFFFFF,  0x747200,  0xFFFFFF,  0x404000},
   liquid_hydricsulfur       = {0x000000,  0xFC5100,  0x000000,  0xCA4300},
   fluorine                  = {0x000000,  0x5296D1,  0xFFFFFF,  0x3E729F},
-  creosote                  = {0x000000,  0x6D6800,  0xFFFFFF,  0xA19C00},
+  creosote                  = {0xFFFFFF,  0x6D6800,  0xFFFFFF,  0xA19C00},
   glue                      = {0x000000,  0xFBC986,  0x000000,  0xC89F6A},
   for_honey                 = {0x000000,  0xFCAB1F,  0x000000,  0xCA8918},
   lubricant                 = {0x000000,  0xFCEAAD,  0x000000,  0xCABC8C},

@@ -1,3 +1,7 @@
+-- pastebin run -f cyF0yhXZ
+-- von Nex4rius
+-- https://github.com/Nex4rius/Nex4rius-Programme/
+
 local component = require("component")
 local term = require("term")
 local event = require("event")
@@ -5,7 +9,7 @@ local c = require("computer")
 local m = component.modem
 local einServer = true
 local port = 70
-local maxzeit = 60
+local maxzeit = 30
 local reichweite = 400
 local zeit = maxzeit
 local tank = {}
