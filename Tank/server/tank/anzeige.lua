@@ -15,7 +15,7 @@ local laeuft = true
 local tankneu
 
 function update()
-  local hier, _, id, _, _, nachricht = event.pull(120, "modem_message")
+  local hier, _, id, _, _, nachricht = event.pull(30, "modem_message")
   local dazu = true
   local ende = 0
   local eigenerTank = check()
