@@ -148,7 +148,7 @@ function anzeigen(tankneu)
   local y = 1
   local leer = true
   local anzahl = 0
-  if #tankneu ~= 0 and #tankneu < 17 then
+  if #tankneu <= 16 and #tankneu ~= 0 then
     gpu.setResolution(80, #tankneu * 3)
   else
     gpu.setResolution(160, 48)
