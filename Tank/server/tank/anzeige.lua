@@ -38,6 +38,9 @@ function update()
       tank[ende].zeit = c.uptime()
       tank[ende].inhalt = eigenerTank
     end
+    if not hier then
+      anzeigen(verarbeiten(tank))
+    end
   end
   if hier then
     for i in pairs(tank) do
