@@ -104,6 +104,7 @@ function anzeigen(tankneu)
   end
   if leer then
     gpu.setResolution(gpu.maxResolution())
+    term.clear()
     gpu.set(1, 50, "Keine Daten vorhanden")
   end
     gpu.setBackground(0x000000)
