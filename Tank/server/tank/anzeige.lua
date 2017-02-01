@@ -14,6 +14,27 @@ function update()
   local hier, _, id, _, _, nachricht = event.pull(120, "modem_message")
   local dazu = true
   local ende = 0
+  local eigenerTank = check()
+  if eigenerTank then
+    local dazu = true
+    for i in pairs(tank) do
+      if type(tank[i]) == "table" then
+        if tank[i].id == c.address() then
+          tank[i].zeit = c.uptime()
+          tank[i].inhalt = eigenerTank
+          dazu = false
+        end
+      end
+      ende = i
+    end
+    if dazu then
+      ende = ende + 1
+      tank[ende] = {}
+      tank[ende].id = c.address()
+      tank[ende].zeit = c.uptime()
+      tank[ende].inhalt = eigenerTank
+    end
+  end
   if hier then
     for i in pairs(tank) do
       if type(tank[i]) == "table" then
@@ -36,13 +57,51 @@ function update()
   else
     m.broadcast(port, "update")
     gpu.setResolution(gpu.maxResolution())
-    term.clear()
+    gpu.fill(1, 1, 160, 80, " ")
     gpu.set(1, 50, "Keine Daten vorhanden")
   end
   for i in pairs(tank) do
     if c.uptime() - tank[i].zeit > 90 then
       tank[i] = nil
     end
+  end
+end
+
+function check()
+  local tank = {}
+  local i = 1
+  for adresse, name in pairs(component.list("tank_controller")) do
+    for side = 0, 5 do
+      for a, b in pairs(component.proxy(adresse).getFluidInTank(side)) do
+        if type(a) == "number" then
+          local dazu = true
+          local c
+          for j, k in pairs(tank) do
+            if b.name == k.name then
+              dazu = false
+              c = j
+              break
+            end
+          end
+          if dazu then
+            tank[i] = {}
+            tank[i].name = b.name
+            tank[i].label = b.label
+            tank[i].menge = b.amount
+            tank[i].maxmenge = b.capacity
+            i = i + 1
+          else
+            tank[c].menge = tank[c].menge + b.amount
+            tank[c].maxmenge = tank[c].maxmenge + b.capacity
+          end
+        end
+      end
+    end
+  end
+  if tank == {} then
+    return false
+  else
+    return tank
   end
 end
 
@@ -117,7 +176,7 @@ function anzeigen(tankneu)
   if leer then
     m.broadcast(port, "update")
     gpu.setResolution(gpu.maxResolution())
-    term.clear()
+    gpu.fill(1, 1, 160, 80, " ")
     gpu.set(1, 50, "Keine Daten vorhanden")
   end
 end
@@ -163,10 +222,10 @@ end
 
 function main()
   gpu.setBackground(0x000000)
-  term.clear()
   term.setCursor(1, 50)
   m.open(port)
   m.broadcast(port, "update")
+  gpu.fill(1, 1, 160, 80, " ")
   gpu.set(1, 50, "Warte auf Daten")
   while laeuft do
     update()
