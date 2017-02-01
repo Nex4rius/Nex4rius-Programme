@@ -149,7 +149,7 @@ function anzeigen(tankneu)
   else
     gpu.setResolution(160, 48)
   end
-  os.sleep(1)
+  os.sleep(0.1)
   for i in pairs(tankneu) do
     if i == 17 then
       x = 81
