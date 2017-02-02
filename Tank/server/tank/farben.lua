@@ -5,8 +5,9 @@
 return {
 --Beispiel                  = {schriftAN, hinterAN, schriftAUS, hinterAUS},
 --example                   = {textON,    backON,    textOFF,   backOFF},
-  water                     = {0x000000,  0x1E90FF,  0xFFFFFF,  0x1268FD},
   lava                      = {0x000000,  0xCF4E0C,  0xFFFFFF,  0x9C3A09},
+  water                     = {0x000000,  0x1E90FF,  0xFFFFFF,  0x1268FD},
+  ic2distilledwater         = {0x000000,  0x1E90FF,  0xFFFFFF,  0x1268FD},
   chlorine                  = {0xFFFFFF,  0x2E8C8C,  0xFFFFFF,  0x1E5A5A},
   oil                       = {0xFFFFFF,  0x010101,  0xFFFFFF,  0x333333},
   liquid_light_oil          = {0xFFFFFF,  0x010101,  0xFFFFFF,  0x333333},
