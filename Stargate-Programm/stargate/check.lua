@@ -63,6 +63,7 @@ function Funktion.checkSprache()
 end
 
 function Funktion.checkKomponenten()
+  os.sleep(0.5)
   print(sprachen.pruefeKomponenten or "Prüfe Komponenten\n")
   if component.isAvailable("redstone") then
     gpu.setForeground(0x00FF00)
