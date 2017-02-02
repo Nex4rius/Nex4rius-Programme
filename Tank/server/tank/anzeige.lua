@@ -218,12 +218,13 @@ end
 
 function zeigeHier(x, y, label, name, menge, maxmenge, prozent)
   local nachricht = string.format("%s     %smb/%smb     %.1f%%", label, menge, maxmenge, prozent)
+  if farben[name] == nil then
+    nachricht = string.format("%s - %s     %smb/%smb     %.1f%%", name, label, menge, maxmenge, prozent)
+    name = "unbekannt"
+  end
   local laenge = (80 - string.len(nachricht)) / 2
   nachricht = split(string.format("%s%s%s ", string.rep(" ", laenge), nachricht, string.rep(" ", laenge)))
   name = string.gsub(string.gsub(name, "-", "_"), "%.", "_")
-  if farben[name] == nil then
-    name = "unbekannt"
-  end
   gpu.setForeground(farben[name][1])
   gpu.setBackground(farben[name][2])
   local ende = 0
@@ -262,6 +263,7 @@ function main()
     m.open(port)
     m.broadcast(port, "update")
   end
+  gpu.setResolution(gpu.maxResolution())
   gpu.fill(1, 1, 160, 80, " ")
   gpu.set(1, 50, "Warte auf Daten")
   while laeuft do
