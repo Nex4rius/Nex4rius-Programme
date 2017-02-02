@@ -12,6 +12,7 @@ if component.isAvailable("modem") then
   m = component.modem
 end
 local farben = loadfile("/tank/farben.lua")()
+local ersetzen = loadfile("/tank/ersetzen.lua")()
 local port = 70
 local tank = {}
 local laeuft = true
@@ -216,8 +217,12 @@ function anzeigen(tankneu)
   end
 end
 
+function zeichenErsetzen(...)
+  return string.gsub(..., "%a+", function (str) return ersetzen [str] end)
+end
+
 function zeigeHier(x, y, label, name, menge, maxmenge, prozent)
-  local nachricht = string.format("%s     %smb/%smb     %.1f%%", label, menge, maxmenge, prozent)
+  local nachricht = string.format("%s     %smb/%smb     %.1f%%", zeichenErsetzen(label), menge, maxmenge, prozent)
   if farben[string.gsub(string.gsub(name, "-", "_"), "%.", "_")] == nil then
     nachricht = string.format("%s - %s     %smb/%smb     %.1f%%", name, label, menge, maxmenge, prozent)
     name = "unbekannt"
