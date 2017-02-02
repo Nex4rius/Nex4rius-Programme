@@ -90,16 +90,18 @@ function check()
               break
             end
           end
-          if dazu then
-            tank[i] = {}
-            tank[i].name = b.name
-            tank[i].label = b.label
-            tank[i].menge = b.amount
-            tank[i].maxmenge = b.capacity
-            i = i + 1
-          else
-            tank[c].menge = tank[c].menge + b.amount
-            tank[c].maxmenge = tank[c].maxmenge + b.capacity
+          if b.label ~= nil then
+            if dazu then
+              tank[i] = {}
+              tank[i].name = b.name
+              tank[i].label = b.label
+              tank[i].menge = b.amount
+              tank[i].maxmenge = b.capacity
+              i = i + 1
+            else
+              tank[c].menge = tank[c].menge + b.amount
+              tank[c].maxmenge = tank[c].maxmenge + b.capacity
+            end
           end
         end
       end
