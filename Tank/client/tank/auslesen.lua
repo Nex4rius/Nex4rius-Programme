@@ -108,8 +108,8 @@ function main()
     if senden(check()) then
       zeit = 5
     end
-    os.sleep(zeit / 10)
-    empfangen = {event.pull(zeit, "modem_message")}
+    os.sleep(zeit / 2)
+    empfangen = {event.pull(zeit / 2, "modem_message")}
   end
 end
 
