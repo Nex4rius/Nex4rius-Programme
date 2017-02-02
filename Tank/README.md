@@ -7,6 +7,18 @@
 pastebin run -f cyF0yhXZ
 ```
 
+server / display components:
+- Internet Card (to install)
+- Network Card
+- Adapter + Tank Controller Upgrade
+- Graphics Card T3
+- Screen T3
+
+client / adapter + tank components:
+- Internet Card (to install)
+- Network Card
+- Adapter + Tank Controller Upgrade
+
 Make pull requests if you want :)
 
 tested with:<br>
