@@ -106,7 +106,7 @@ function main()
   while true do
     zeit = maxzeit
     if senden(check()) then
-      zeit = 5
+      zeit = maxzeit / 3
     end
     os.sleep(zeit / 2)
     empfangen = {event.pull(zeit / 2, "modem_message")}
