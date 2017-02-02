@@ -18,12 +18,14 @@ local laeuft = true
 local startevents = false
 local tankneu
 local Wartezeit = 30
+local letzteNachricht = c.uptime()
 
 function update()
   local hier, _, id, _, _, nachricht
   if startevents then
     if m then
       hier, _, id, _, _, nachricht = event.pull(Wartezeit, "modem_message")
+      letzteNachricht = c.uptime()
     else
       os.sleep(Wartezeit)
     end
@@ -31,7 +33,7 @@ function update()
   startevents = true
   local dazu = true
   local ende = 0
-  local eigenerTank = check()
+  --local eigenerTank = check() -- buggy
   if eigenerTank then
     local dazu = true
     for i in pairs(tank) do
@@ -78,14 +80,20 @@ function update()
     if m then
       m.broadcast(port, "update")
     end
+    keineDaten()
+  end
+  for i in pairs(tank) do
+    if c.uptime() - tank[i].zeit > Wartezeit - Wartezeit / 4 then
+      tank[i] = nil
+    end
+  end
+end
+
+function keineDaten()
+  if c.uptime() - letzteNachricht > Wartezeit - Wartezeit / 4 then
     gpu.setResolution(gpu.maxResolution())
     gpu.fill(1, 1, 160, 80, " ")
     gpu.set(1, 50, "Keine Daten vorhanden")
-  end
-  for i in pairs(tank) do
-    if c.uptime() - tank[i].zeit > 90 then
-      tank[i] = nil
-    end
   end
 end
 
@@ -204,8 +212,7 @@ function anzeigen(tankneu)
       m.broadcast(port, "update")
     end
     gpu.setResolution(gpu.maxResolution())
-    gpu.fill(1, 1, 160, 80, " ")
-    gpu.set(1, 50, "Keine Daten vorhanden")
+    keineDaten()
   end
 end
 
