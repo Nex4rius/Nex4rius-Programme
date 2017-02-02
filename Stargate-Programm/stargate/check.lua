@@ -103,13 +103,14 @@ function Funktion.checkKomponenten()
     gpu.setForeground(0x00FF00)
     print(sprachen.StargateOK or "- Stargate             ok\n")
     sg = component.getPrimary("stargate")
+    gpu.setForeground(0xFFFFFF)
     return true
   else
     gpu.setForeground(0xFF0000)
     print(sprachen.StargateFehlt or "- Stargate             fehlt\n")
+    gpu.setForeground(0xFFFFFF)
     return false
   end
-  gpu.setForeground(0xFFFFFF)
 end
 
 function Funktion.update(versionTyp)
