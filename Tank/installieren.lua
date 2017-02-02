@@ -160,13 +160,6 @@ function Funktionen.Komponenten(typ)
     gpu.setForeground(0xFF0000)
     print("Network Card - ERROR")
   end
-  if component.isAvailable("tank_controller") then
-    gpu.setForeground(0x00FF00)
-    print("Adapter + Tank Controller Upgrade - OK")
-  else
-    gpu.setForeground(0xFF0000)
-    print("Adapter + Tank Controller Upgrade - ERROR")
-  end
   if typ == "server" then
     if gpu.maxResolution() == 160 then
       gpu.setForeground(0x00FF00)
@@ -176,6 +169,14 @@ function Funktionen.Komponenten(typ)
       gpu.setForeground(0xFF0000)
       print("Graphic Card T3 - ERROR")
       print("Screen T3 - ERROR")
+    end
+  else
+    if component.isAvailable("tank_controller") then
+      gpu.setForeground(0x00FF00)
+      print("Adapter + Tank Controller Upgrade - OK")
+    else
+      gpu.setForeground(0xFF0000)
+      print("Adapter + Tank Controller Upgrade - ERROR")
     end
   end
   gpu.setForeground(0xFFFFFF)
