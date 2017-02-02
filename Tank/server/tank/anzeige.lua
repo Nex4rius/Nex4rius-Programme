@@ -7,18 +7,26 @@ local c = require("computer")
 local gpu = component.getPrimary("gpu")
 local event = require("event")
 local term = require("term")
-local m = component.modem
+local m
+if component.isAvailable("modem") then
+  m = component.modem
+end
 local farben = loadfile("/tank/farben.lua")()
 local port = 70
 local tank = {}
 local laeuft = true
 local startevents = false
 local tankneu
+local Wartezeit = 30
 
 function update()
   local hier, _, id, _, _, nachricht
   if startevents then
-    hier, _, id, _, _, nachricht = event.pull(30, "modem_message")
+    if m then
+      hier, _, id, _, _, nachricht = event.pull(Wartezeit, "modem_message")
+    else
+      os.sleep(Wartezeit)
+    end
   end
   startevents = true
   local dazu = true
@@ -67,7 +75,9 @@ function update()
     end
     anzeigen(verarbeiten(tank))
   elseif not eigenerTank then
-    m.broadcast(port, "update")
+    if m then
+      m.broadcast(port, "update")
+    end
     gpu.setResolution(gpu.maxResolution())
     gpu.fill(1, 1, 160, 80, " ")
     gpu.set(1, 50, "Keine Daten vorhanden")
@@ -190,7 +200,9 @@ function anzeigen(tankneu)
     y = y + 3
   end
   if leer then
-    m.broadcast(port, "update")
+    if m then
+      m.broadcast(port, "update")
+    end
     gpu.setResolution(gpu.maxResolution())
     gpu.fill(1, 1, 160, 80, " ")
     gpu.set(1, 50, "Keine Daten vorhanden")
@@ -239,8 +251,10 @@ end
 function main()
   gpu.setBackground(0x000000)
   term.setCursor(1, 50)
-  m.open(port)
-  m.broadcast(port, "update")
+  if m then
+    m.open(port)
+    m.broadcast(port, "update")
+  end
   gpu.fill(1, 1, 160, 80, " ")
   gpu.set(1, 50, "Warte auf Daten")
   while laeuft do
