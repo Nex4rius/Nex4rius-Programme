@@ -65,39 +65,50 @@ end
 function Funktion.checkKomponenten()
   print(sprachen.pruefeKomponenten or "Prüfe Komponenten\n")
   if component.isAvailable("redstone") then
+    gpu.setForeground(0x00FF00)
     print(sprachen.redstoneOK or "- Redstone Card        ok - optional")
     r = component.getPrimary("redstone")
   else
+    gpu.setForeground(0xFF0000)
     print(sprachen.redstoneFehlt or "- Redstone Card        fehlt - optional")
     r = nil
   end
   if component.isAvailable("internet") then
+    gpu.setForeground(0x00FF00)
     print(sprachen.InternetOK or "- Internet             ok - optional")
   else
+    gpu.setForeground(0xFF0000)
     print(sprachen.InternetFehlt or "- Internet             fehlt - optional")
   end
   if component.isAvailable("world_sensor") then
+    gpu.setForeground(0x00FF00)
     print(sprachen.SensorOK or "- World Sensor         ok - optional")
   else
+    gpu.setForeground(0xFF0000)
     print(sprachen.SensorFehlt or "- World Sensor         fehlt - optional")
   end
   if gpu.maxResolution() == 80 then
+    gpu.setForeground(0x00FF00)
     print(sprachen.gpuOK2T or "- GPU Tier2            ok")
   elseif gpu.maxResolution() == 160 then
     graphicT3 = true
-    gpu.setBackground(0x333333)
+    gpu.setForeground(0xFF7F24)
     print(sprachen.gpuOK3T or "- GPU Tier3            ok - Tier2 ist ausreichend")
   else
+    gpu.setForeground(0xFF0000)
     print(sprachen.gpuFehlt or "- GPU Tier2            fehlt")
   end
   if component.isAvailable("stargate") then
+    gpu.setForeground(0x00FF00)
     print(sprachen.StargateOK or "- Stargate             ok\n")
     sg = component.getPrimary("stargate")
     return true
   else
+    gpu.setForeground(0xFF0000)
     print(sprachen.StargateFehlt or "- Stargate             fehlt\n")
     return false
   end
+  gpu.setForeground(0xFFFFFF)
 end
 
 function Funktion.update(versionTyp)
