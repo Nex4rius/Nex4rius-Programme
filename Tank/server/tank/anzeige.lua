@@ -83,14 +83,14 @@ function update()
     keineDaten()
   end
   for i in pairs(tank) do
-    if c.uptime() - tank[i].zeit > Wartezeit - Wartezeit / 4 then
+    if c.uptime() - tank[i].zeit > Wartezeit then
       tank[i] = nil
     end
   end
 end
 
 function keineDaten()
-  if c.uptime() - letzteNachricht > Wartezeit - Wartezeit / 4 then
+  if c.uptime() - letzteNachricht > Wartezeit then
     gpu.setResolution(gpu.maxResolution())
     gpu.fill(1, 1, 160, 80, " ")
     gpu.set(1, 50, "Keine Daten vorhanden")
