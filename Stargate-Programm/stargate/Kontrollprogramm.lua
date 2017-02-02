@@ -1217,6 +1217,7 @@ end
 
 function Taste.u(y)
   if seite == -1 then
+    Funktion.zeigeNachricht(sprachen.Update)
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
     Funktion.zeigeHier(1, y, "U " .. sprachen.Update, 0)
     if component.isAvailable("internet") then
@@ -1235,6 +1236,7 @@ end
 
 function Taste.b(y)
   if seite == -1 then
+    Funktion.zeigeNachricht(sprachen.UpdateBeta)
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
     Funktion.zeigeHier(1, y, "B " .. sprachen.UpdateBeta, 0)
     if component.isAvailable("internet") then
