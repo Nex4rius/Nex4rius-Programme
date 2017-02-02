@@ -8,6 +8,8 @@ local fs          = require("filesystem")
 local arg         = require("shell").parse(...)[1]
 local wget        = loadfile("/bin/wget.lua")
 local copy        = loadfile("/bin/cp.lua")
+local component   = require("component")
+local gpu         = component.gpu
 local Sicherung   = {}
 local Funktionen  = {}
 local sprachen
@@ -44,6 +46,7 @@ function Funktionen.installieren(versionTyp)
       weiter = true
     end
   end
+  Funktionen.Komponenten(typ)
   fs.makeDirectory("/tank")
   fs.makeDirectory("/update/tank")
   local updateKomplett = false
@@ -138,6 +141,46 @@ function Funktionen.installieren(versionTyp)
   print("10s bis Neustart")
   os.sleep(10)
   require("computer").shutdown(true)
+end
+
+function Funktionen.Komponenten(typ)
+  require("term").clear()
+  print("check components\n")
+  if component.isAvailable("internet") then
+    gpu.setForeground(0x00FF00)
+    print("Internet Card - OK")
+  else
+    gpu.setForeground(0xFF0000)
+    print("Internet Card - ERROR")
+  end
+  if component.isAvailable("modem") then
+    gpu.setForeground(0x00FF00)
+    print("Network Card - OK")
+  else
+    gpu.setForeground(0xFF0000)
+    print("Network Card - ERROR")
+  end
+  if component.isAvailable("tank_controller") then
+    gpu.setForeground(0x00FF00)
+    print("Adapter + Tank Controller Upgrade - OK")
+  else
+    gpu.setForeground(0xFF0000)
+    print("Adapter + Tank Controller Upgrade - ERROR")
+  end
+  if typ == "server" then
+    if gpu.maxResolution() == 160 then
+      gpu.setForeground(0x00FF00)
+      print("Graphic Card T3 - OK")
+      print("Screen T3 - OK")
+    else
+      gpu.setForeground(0xFF0000)
+      print("Graphic Card T3 - ERROR")
+      print("Screen T3 - ERROR")
+    end
+  end
+  gpu.setForeground(0xFFFFFF)
+  print("\npress enter to continue\n")
+  require("term").read()
 end
 
 if versionTyp == nil then

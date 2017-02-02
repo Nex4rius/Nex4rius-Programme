@@ -12,10 +12,15 @@ local farben = loadfile("/tank/farben.lua")()
 local port = 70
 local tank = {}
 local laeuft = true
+local startevents = false
 local tankneu
 
 function update()
-  local hier, _, id, _, _, nachricht = event.pull(30, "modem_message")
+  local hier, _, id, _, _, nachricht
+  if startevents then
+    hier, _, id, _, _, nachricht = event.pull(30, "modem_message")
+  end
+  startevents = true
   local dazu = true
   local ende = 0
   local eigenerTank = check()
@@ -38,6 +43,9 @@ function update()
       tank[ende].zeit = c.uptime()
       tank[ende].inhalt = eigenerTank
     end
+    if not hier then
+      anzeigen(verarbeiten(tank))
+    end
   end
   if hier then
     for i in pairs(tank) do
@@ -58,7 +66,7 @@ function update()
       tank[ende].inhalt = require("serialization").unserialize(nachricht)
     end
     anzeigen(verarbeiten(tank))
-  else
+  elseif not eigenerTank then
     m.broadcast(port, "update")
     gpu.setResolution(gpu.maxResolution())
     gpu.fill(1, 1, 160, 80, " ")
@@ -74,6 +82,7 @@ end
 function check()
   local tank = {}
   local i = 1
+  local leer = true
   for adresse, name in pairs(component.list("tank_controller")) do
     for side = 0, 5 do
       for a, b in pairs(component.proxy(adresse).getFluidInTank(side)) do
@@ -87,22 +96,25 @@ function check()
               break
             end
           end
-          if dazu then
-            tank[i] = {}
-            tank[i].name = b.name
-            tank[i].label = b.label
-            tank[i].menge = b.amount
-            tank[i].maxmenge = b.capacity
-            i = i + 1
-          else
-            tank[c].menge = tank[c].menge + b.amount
-            tank[c].maxmenge = tank[c].maxmenge + b.capacity
+          if b.label ~= nil then
+            if dazu then
+              tank[i] = {}
+              tank[i].name = b.name
+              tank[i].label = b.label
+              tank[i].menge = b.amount
+              tank[i].maxmenge = b.capacity
+              i = i + 1
+            else
+              tank[c].menge = tank[c].menge + b.amount
+              tank[c].maxmenge = tank[c].maxmenge + b.capacity
+            end
+            leer = false
           end
         end
       end
     end
   end
-  if tank == {} then
+  if leer then
     return false
   else
     return tank
