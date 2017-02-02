@@ -52,14 +52,15 @@ function Funktionen.installieren(versionTyp)
   local updateKomplett = false
   local anzahl = 3
   local update = {}
-  update[1]   = wget("-f", Funktionen.Pfad(versionTyp) .. "autorun.lua",  "/update/autorun.lua")
+  update[1]   = wget("-f", Funktionen.Pfad(versionTyp) .. "autorun.lua",       "/update/autorun.lua")
   update[2]   = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/version.txt",  "/update/tank/version.txt")
   if typ == "client" then
     update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/auslesen.lua", "/update/tank/auslesen.lua")
   else
     update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/farben.lua",   "/update/tank/farben.lua")
     update[4] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/anzeige.lua",  "/update/tank/anzeige.lua")
-    anzahl = 4
+    update[5] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/ersetzen.lua", "/update/tank/ersetzen.lua")
+    anzahl = 5
   end
   for i = 1, anzahl do
     if update[i] then
@@ -107,6 +108,7 @@ function Funktionen.installieren(versionTyp)
     else
       copy("/update/tank/anzeige.lua",  "/tank/anzeige.lua")
       copy("/update/tank/farben.lua",   "/tank/farben.lua")
+      copy("/update/tank/ersetzen.lua", "/tank/ersetzen.lua")
     end
     f = io.open ("/tank/version.txt", "r")
     version = f:read()
