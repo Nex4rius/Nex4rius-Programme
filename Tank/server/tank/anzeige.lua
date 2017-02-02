@@ -222,7 +222,7 @@ function zeichenErsetzen(...)
 end
 
 function zeigeHier(x, y, label, name, menge, maxmenge, prozent)
-  local nachricht = string.format("%s     %smb/%smb     %.1f%%", zeichenErsetzen(label), menge, maxmenge, prozent)
+  local nachricht = string.format("%s     %smb/%smb     %.1f%%", zeichenErsetzen(string.gsub(string.gsub(label, "-", "_"), "%.", "_")), menge, maxmenge, prozent)
   if farben[string.gsub(string.gsub(name, "-", "_"), "%.", "_")] == nil then
     nachricht = string.format("%s - %s     %smb/%smb     %.1f%%", name, label, menge, maxmenge, prozent)
     name = "unbekannt"
