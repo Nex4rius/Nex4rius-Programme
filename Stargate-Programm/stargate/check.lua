@@ -63,7 +63,6 @@ function Funktion.checkSprache()
 end
 
 function Funktion.checkKomponenten()
-  os.sleep(0.5)
   print(sprachen.pruefeKomponenten or "Prüfe Komponenten\n")
   if component.isAvailable("redstone") then
     gpu.setForeground(0x00FF00)
@@ -241,6 +240,7 @@ function Funktion.mainCheck()
 end
 
 function Funktion.main()
+  os.sleep(0.5)
   gpu.setResolution(70, 25)
   gpu.setForeground(0xFFFFFF)
   gpu.setBackground(6684774)
