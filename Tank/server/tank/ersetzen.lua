@@ -3,5 +3,5 @@
 -- https://github.com/Nex4rius/Nex4rius-Programme/
 
 return {
-  ["fluid.chlorine"] = Chlorine,
+  ["fluid.chlorine"] = "Chlorine",
 }
