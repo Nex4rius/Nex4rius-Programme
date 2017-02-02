@@ -12,10 +12,15 @@ local farben = loadfile("/tank/farben.lua")()
 local port = 70
 local tank = {}
 local laeuft = true
+local startevents = false
 local tankneu
 
 function update()
-  local hier, _, id, _, _, nachricht = event.pull(30, "modem_message")
+  local hier, _, id, _, _, nachricht
+  if startevents then
+    hier, _, id, _, _, nachricht = event.pull(30, "modem_message")
+  end
+  startevents = true
   local dazu = true
   local ende = 0
   local eigenerTank = check()
@@ -61,7 +66,7 @@ function update()
       tank[ende].inhalt = require("serialization").unserialize(nachricht)
     end
     anzeigen(verarbeiten(tank))
-  else
+  elseif not eigenerTank then
     m.broadcast(port, "update")
     gpu.setResolution(gpu.maxResolution())
     gpu.fill(1, 1, 160, 80, " ")
@@ -77,6 +82,7 @@ end
 function check()
   local tank = {}
   local i = 1
+  local leer = true
   for adresse, name in pairs(component.list("tank_controller")) do
     for side = 0, 5 do
       for a, b in pairs(component.proxy(adresse).getFluidInTank(side)) do
@@ -102,12 +108,13 @@ function check()
               tank[c].menge = tank[c].menge + b.amount
               tank[c].maxmenge = tank[c].maxmenge + b.capacity
             end
+            leer = false
           end
         end
       end
     end
   end
-  if tank == {} then
+  if leer then
     return false
   else
     return tank
