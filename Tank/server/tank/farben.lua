@@ -53,5 +53,6 @@ return {
   plasma_oxygen             = {0xFFFFFF,  0x0063C6,  0xFFFFFF,  0x004A94},
   plasma_nickel             = {0x000000,  0xB6C6F7,  0xFFFFFF,  0x929EC5},
   molten_neutronium         = {0x000000,  0xC7C7C7,  0x000000,  0x949494},
+  etchacid                  = {0xFFFFFF,  0x401904,  0xFFFFFF,  0x261002},
   unbekannt                 = {0xFFFFFF,  0x444444,  0xFFFFFF,  0x333333},
 }
