@@ -18,7 +18,7 @@ local tank = {}
 local laeuft = true
 local startevents = false
 local tankneu
-local Wartezeit = 30
+local Wartezeit = 40
 local letzteNachricht = c.uptime()
 
 function update()
@@ -84,7 +84,7 @@ function update()
     keineDaten()
   end
   for i in pairs(tank) do
-    if c.uptime() - tank[i].zeit > Wartezeit then
+    if c.uptime() - tank[i].zeit > Wartezeit * 2 then
       tank[i] = nil
     end
   end
