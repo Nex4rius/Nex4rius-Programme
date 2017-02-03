@@ -3,10 +3,10 @@
 -- https://github.com/Nex4rius/Nex4rius-Programme/
 
 return {
-  ["fluidchlorine"]          = "Chlorine",
-  ["fluidglue"]              = "Glue",
-  ["fluidmercury"]           = "Mercury",
-  ["fluidhelium3"]           = "Helium-3",
-  ["fluidliquid_heavy_fuel"] = "Heavy Fuel",
-  ["fluidliquid_light_fuel"] = "Light Fuel",
+  ["fluidchlorine"]        = "Chlorine",
+  ["fluidglue"]            = "Glue",
+  ["fluidmercury"]         = "Mercury",
+  ["fluidhelium3"]         = "Helium-3",
+  ["fluidliquidheavyfuel"] = "Heavy Fuel",
+  ["fluidliquidlightfuel"] = "Light Fuel",
 }
