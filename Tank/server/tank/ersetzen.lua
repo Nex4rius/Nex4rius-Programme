@@ -5,4 +5,6 @@
 return {
   ["fluidchlorine"] = "Chlorine",
   ["fluidglue"]     = "Glue",
+  ["fluidmercury"]  = "Mercury",
+  ["fluidhelium3"]  = "Helium-3",
 }
