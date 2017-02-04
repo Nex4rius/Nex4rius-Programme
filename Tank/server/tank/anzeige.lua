@@ -249,8 +249,8 @@ end
 
 function zeigeHier(x, y, label, name, menge, maxmenge, prozent)
   local nachricht = string.format("%s     %smb/%smb     %.1f%%", zeichenErsetzen(string.gsub(label, "%p", "")), menge, maxmenge, prozent)
-  if farben[string.gsub(name, "%p", ""))] == nil then
-    nachricht = string.format("%s - %s     %smb/%smb     %.1f%%", string.gsub(name, "%p", "")), zeichenErsetzen(string.gsub(label, "%p", "")), menge, maxmenge, prozent)
+  if farben[string.gsub(name, "%p", "")] == nil then
+    nachricht = string.format("%s - %s     %smb/%smb     %.1f%%", string.gsub(name, "%p", ""), zeichenErsetzen(string.gsub(label, "%p", "")), menge, maxmenge, prozent)
     name = "unbekannt"
   end
   local laenge = (80 - string.len(nachricht)) / 2
