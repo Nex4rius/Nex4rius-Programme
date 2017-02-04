@@ -81,7 +81,7 @@ function update()
     anzeigen(verarbeiten(tank))
   elseif not eigenerTank then
     if m then
-      m.broadcast(port, "update")
+      m.broadcast(port + 1, "update")
     end
     keineDaten()
   end
@@ -229,7 +229,7 @@ function anzeigen(tankneu)
   end
   if leer then
     if m then
-      m.broadcast(port, "update")
+      m.broadcast(port + 1, "update")
     end
     gpu.setResolution(gpu.maxResolution())
     keineDaten()
@@ -285,7 +285,7 @@ function main()
   term.setCursor(1, 50)
   if m then
     m.open(port)
-    m.broadcast(port, "update")
+    m.broadcast(port + 1, "update")
   end
   gpu.setResolution(gpu.maxResolution())
   gpu.fill(1, 1, 160, 80, " ")
