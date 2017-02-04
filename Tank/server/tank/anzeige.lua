@@ -7,7 +7,7 @@ local c = require("computer")
 local gpu = component.getPrimary("gpu")
 local event = require("event")
 local term = require("term")
-local m
+local m, version, tankneu
 if component.isAvailable("modem") then
   m = component.modem
 end
@@ -17,9 +17,16 @@ local port = 70
 local tank = {}
 local laeuft = true
 local startevents = false
-local tankneu
-local Wartezeit = 30
+local Wartezeit = 40
 local letzteNachricht = c.uptime()
+
+if fs.exists("/tank/version.txt") then
+    local f = io.open ("/tank/version.txt", "r")
+    version = f:read()
+    f:close()
+  else
+    version = "<FEHLER>"
+end
 
 function update()
   local hier, _, id, _, _, nachricht
@@ -34,7 +41,8 @@ function update()
   startevents = true
   local dazu = true
   local ende = 0
-  --local eigenerTank = check() -- buggy
+[[-- buggy
+  local eigenerTank = check()
   if eigenerTank then
     local dazu = true
     for i in pairs(tank) do
@@ -58,6 +66,7 @@ function update()
       anzeigen(verarbeiten(tank))
     end
   end
+--]]
   if hier then
     for i in pairs(tank) do
       if type(tank[i]) == "table" then
@@ -79,12 +88,12 @@ function update()
     anzeigen(verarbeiten(tank))
   elseif not eigenerTank then
     if m then
-      m.broadcast(port, "update")
+      m.broadcast(port + 1, "update", version)
     end
     keineDaten()
   end
   for i in pairs(tank) do
-    if c.uptime() - tank[i].zeit > Wartezeit then
+    if c.uptime() - tank[i].zeit > Wartezeit * 2 then
       tank[i] = nil
     end
   end
@@ -174,6 +183,23 @@ function verarbeiten(tank)
   return tankneu
 end
 
+function spairs(t, order)
+    local keys = {}
+    for k in pairs(t) do keys[#keys+1] = k end
+    if order then
+        table.sort(keys, function(a,b) return order(t, a, b) end)
+    else
+        table.sort(keys)
+    end
+    local i = 0
+    return function()
+        i = i + 1
+        if keys[i] then
+            return keys[i], t[keys[i]]
+        end
+    end
+end
+
 function anzeigen(tankneu)
   local x = 1
   local y = 1
@@ -185,8 +211,9 @@ function anzeigen(tankneu)
     gpu.setResolution(160, 48)
   end
   os.sleep(0.1)
-  for i in pairs(tankneu) do
-    if i == 17 then
+  for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
+    anzahl = anzahl + 1
+    if anzahl == 17 then
       x = 81
       y = 1
     end
@@ -197,7 +224,6 @@ function anzeigen(tankneu)
     local prozent = menge / maxmenge * 100
     zeigeHier(x, y, label, name, menge, maxmenge, prozent)
     leer = false
-    anzahl = i
     y = y + 3
   end
   gpu.setBackground(0x000000)
@@ -210,7 +236,7 @@ function anzeigen(tankneu)
   end
   if leer then
     if m then
-      m.broadcast(port, "update")
+      m.broadcast(port + 1, "update", version)
     end
     gpu.setResolution(gpu.maxResolution())
     keineDaten()
@@ -222,9 +248,9 @@ function zeichenErsetzen(...)
 end
 
 function zeigeHier(x, y, label, name, menge, maxmenge, prozent)
-  local nachricht = string.format("%s     %smb/%smb     %.1f%%", zeichenErsetzen(string.gsub(string.gsub(label, "-", "_"), "%.", "_")), menge, maxmenge, prozent)
+  local nachricht = string.format("%s     %smb/%smb     %.1f%%", zeichenErsetzen(string.gsub(label, "%p", "")), menge, maxmenge, prozent)
   if farben[string.gsub(string.gsub(name, "-", "_"), "%.", "_")] == nil then
-    nachricht = string.format("%s - %s     %smb/%smb     %.1f%%", name, label, menge, maxmenge, prozent)
+    nachricht = string.format("%s - %s     %smb/%smb     %.1f%%", name, zeichenErsetzen(string.gsub(label, "%p", "")), menge, maxmenge, prozent)
     name = "unbekannt"
   end
   local laenge = (80 - string.len(nachricht)) / 2
@@ -266,7 +292,7 @@ function main()
   term.setCursor(1, 50)
   if m then
     m.open(port)
-    m.broadcast(port, "update")
+    m.broadcast(port + 1, "update", version)
   end
   gpu.setResolution(gpu.maxResolution())
   gpu.fill(1, 1, 160, 80, " ")

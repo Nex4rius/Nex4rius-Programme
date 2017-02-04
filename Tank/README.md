@@ -6,6 +6,7 @@
 ```
 pastebin run -f cyF0yhXZ
 ```
+<a href="https://www.youtube.com/watch?v=avvYO2xSxGw">installation instructions</a>
 
 server / display components:
 - Internet Card (to install)

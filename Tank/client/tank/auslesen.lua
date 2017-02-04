@@ -7,9 +7,9 @@ local term = require("term")
 local event = require("event")
 local c = require("computer")
 local m = component.modem
-local einServer = true
+local einServer = false
 local port = 70
-local maxzeit = 30
+local maxzeit = 45
 local reichweite = 400
 local zeit = maxzeit
 local tank = {}
@@ -102,7 +102,7 @@ function main()
   if m.isWireless() then
     m.setStrength(reichweite)
   end
-  m.open(port)
+  m.open(port + 1)
   while true do
     zeit = maxzeit
     if senden(check()) then
