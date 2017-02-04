@@ -185,10 +185,9 @@ function anzeigen(tankneu)
     gpu.setResolution(160, 48)
   end
   os.sleep(0.1)
-  local j = 0
   for i in pairs(tankneu) do
-    j = j + 1
-    if j == 17 then
+    anzahl = anzahl + 1
+    if anzahl == 17 then
       x = 81
       y = 1
     end
@@ -199,7 +198,6 @@ function anzeigen(tankneu)
     local prozent = menge / maxmenge * 100
     zeigeHier(x, y, label, name, menge, maxmenge, prozent)
     leer = false
-    anzahl = i
     y = y + 3
   end
   gpu.setBackground(0x000000)
