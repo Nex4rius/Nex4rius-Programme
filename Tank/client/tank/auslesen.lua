@@ -102,7 +102,7 @@ function main()
   if m.isWireless() then
     m.setStrength(reichweite)
   end
-  m.open(port)
+  m.open(port + 1)
   while true do
     zeit = maxzeit
     if senden(check()) then
