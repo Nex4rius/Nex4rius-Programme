@@ -21,6 +21,7 @@ return {
   ["fluidliquidtoluene"]          = "Toluene",
   ["fluidmoltenplastic"]          = "Molten Polyethylene",
   ["fluidsulfuricacid"]           = "Sulfuric Acid",
+  ["fluidair"]                    = "Air",
   ["lpg"]                         = "LPG",
   ["plastic"]                     = "Liquid Plastic",
   ["fluidgasgas"]                 = "Refinery Gas",
