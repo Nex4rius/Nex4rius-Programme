@@ -255,15 +255,15 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent)
   end
   local laenge = (80 - string.len(nachricht)) / 2
   nachricht = split(string.format("%s%s%s ", string.rep(" ", laenge), nachricht, string.rep(" ", laenge)))
-  if farben[name][1] then
+  if type(farben[name][1]) == "number" then
     gpu.setForeground(farben[name][1])
   else
     gpu.setForeground(0xFFFFFF)
   end
-  if farben[name][2] then
-    gpu.setForeground(farben[name][2])
+  if type(farben[name][2]) == "number" then
+    gpu.setBackground(farben[name][2])
   else
-    gpu.setForeground(0x444444)
+    gpu.setBackground(0x444444)
   end
   local ende = 0
   for i = 1, math.floor(80 * menge / maxmenge) do
@@ -271,15 +271,15 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent)
     x = x + 1
     ende = i
   end
-  if farben[name][3] then
+  if type(farben[name][3]) == "number" then
     gpu.setForeground(farben[name][3])
   else
     gpu.setForeground(0xFFFFFF)
   end
-  if farben[name][4] then
-    gpu.setForeground(farben[name][4])
+  if type(farben[name][4]) == "number" then
+    gpu.setBackground(farben[name][4])
   else
-    gpu.setForeground(0x333333)
+    gpu.setBackground(0x333333)
   end
   local a = math.floor(80 * menge / maxmenge)
   for i = 1, 80 - a do
