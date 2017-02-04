@@ -7,7 +7,7 @@ local c = require("computer")
 local gpu = component.getPrimary("gpu")
 local event = require("event")
 local term = require("term")
-local m
+local m, version, tankneu
 if component.isAvailable("modem") then
   m = component.modem
 end
@@ -17,9 +17,16 @@ local port = 70
 local tank = {}
 local laeuft = true
 local startevents = false
-local tankneu
 local Wartezeit = 40
 local letzteNachricht = c.uptime()
+
+if fs.exists("/tank/version.txt") then
+    local f = io.open ("/tank/version.txt", "r")
+    version = f:read()
+    f:close()
+  else
+    version = "<FEHLER>"
+end
 
 function update()
   local hier, _, id, _, _, nachricht
@@ -81,7 +88,7 @@ function update()
     anzeigen(verarbeiten(tank))
   elseif not eigenerTank then
     if m then
-      m.broadcast(port + 1, "update")
+      m.broadcast(port + 1, "update", version)
     end
     keineDaten()
   end
@@ -229,7 +236,7 @@ function anzeigen(tankneu)
   end
   if leer then
     if m then
-      m.broadcast(port + 1, "update")
+      m.broadcast(port + 1, "update", version)
     end
     gpu.setResolution(gpu.maxResolution())
     keineDaten()
@@ -285,7 +292,7 @@ function main()
   term.setCursor(1, 50)
   if m then
     m.open(port)
-    m.broadcast(port + 1, "update")
+    m.broadcast(port + 1, "update", version)
   end
   gpu.setResolution(gpu.maxResolution())
   gpu.fill(1, 1, 160, 80, " ")
