@@ -20,7 +20,7 @@ local startevents = false
 local Wartezeit = 40
 local letzteNachricht = c.uptime()
 
-if fs.exists("/tank/version.txt") then
+if require("filesystem").exists("/tank/version.txt") then
     local f = io.open ("/tank/version.txt", "r")
     version = f:read()
     f:close()
