@@ -185,8 +185,10 @@ function anzeigen(tankneu)
     gpu.setResolution(160, 48)
   end
   os.sleep(0.1)
+  local j = 0
   for i in pairs(tankneu) do
-    if i == 17 then
+    j = j + 1
+    if j == 17 then
       x = 81
       y = 1
     end
