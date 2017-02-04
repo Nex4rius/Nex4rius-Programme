@@ -222,7 +222,7 @@ function anzeigen(tankneu)
     local menge = tankneu[i].menge
     local maxmenge = tankneu[i].maxmenge
     local prozent = menge / maxmenge * 100
-    zeigeHier(x, y, label, name, menge, maxmenge, prozent)
+    zeigeHier(x, y, zeichenErsetzen(string.gsub(label, "%p", "")), string.gsub(name, "%p", ""), menge, maxmenge, prozent)
     leer = false
     y = y + 3
   end
@@ -248,24 +248,39 @@ function zeichenErsetzen(...)
 end
 
 function zeigeHier(x, y, label, name, menge, maxmenge, prozent)
-  local nachricht = string.format("%s     %smb/%smb     %.1f%%", zeichenErsetzen(string.gsub(label, "%p", "")), menge, maxmenge, prozent)
-  if farben[string.gsub(name, "%p", "")] == nil then
-    nachricht = string.format("%s - %s     %smb/%smb     %.1f%%", string.gsub(name, "%p", ""), zeichenErsetzen(string.gsub(label, "%p", "")), menge, maxmenge, prozent)
+  local nachricht = string.format("%s     %smb/%smb     %.1f%%", label, menge, maxmenge, prozent)
+  if farben[name] == nil then
+    nachricht = string.format("%s - %s     %smb/%smb     %.1f%%", name, label, menge, maxmenge, prozent)
     name = "unbekannt"
   end
   local laenge = (80 - string.len(nachricht)) / 2
   nachricht = split(string.format("%s%s%s ", string.rep(" ", laenge), nachricht, string.rep(" ", laenge)))
-  name = string.gsub(string.gsub(name, "-", "_"), "%.", "_")
-  gpu.setForeground(farben[name][1])
-  gpu.setBackground(farben[name][2])
+  if farben[name][1] then
+    gpu.setForeground(farben[name][1])
+  else
+    gpu.setForeground(0xFFFFFF)
+  end
+  if farben[name][2] then
+    gpu.setForeground(farben[name][2])
+  else
+    gpu.setForeground(0x444444)
+  end
   local ende = 0
   for i = 1, math.floor(80 * menge / maxmenge) do
     gpu.set(x, y, string.format(" %s ", nachricht[i]), true)
     x = x + 1
     ende = i
   end
-  gpu.setForeground(farben[name][3])
-  gpu.setBackground(farben[name][4])
+  if farben[name][3] then
+    gpu.setForeground(farben[name][3])
+  else
+    gpu.setForeground(0xFFFFFF)
+  end
+  if farben[name][4] then
+    gpu.setForeground(farben[name][4])
+  else
+    gpu.setForeground(0x333333)
+  end
   local a = math.floor(80 * menge / maxmenge)
   for i = 1, 80 - a do
     gpu.set(x, y, string.format(" %s ", nachricht[i + ende]), true)
