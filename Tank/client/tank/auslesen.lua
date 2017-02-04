@@ -29,27 +29,29 @@ function check()
   local i = 1
   for adresse, name in pairs(component.list("tank_controller")) do
     for side = 0, 5 do
-      for a, b in pairs(component.proxy(adresse).getFluidInTank(side)) do
-        if type(a) == "number" then
-          local dazu = true
-          local c
-          for j, k in pairs(tank) do
-            if b.name == k.name then
-              dazu = false
-              c = j
-              break
+      if type(component.proxy(adresse).getFluidInTank(side)) == "table" then
+        for a, b in pairs(component.proxy(adresse).getFluidInTank(side)) do
+          if type(a) == "number" then
+            local dazu = true
+            local c
+            for j, k in pairs(tank) do
+              if b.name == k.name then
+                dazu = false
+                c = j
+                break
+              end
             end
-          end
-          if dazu then
-            tank[i] = {}
-            tank[i].name = b.name
-            tank[i].label = b.label
-            tank[i].menge = b.amount
-            tank[i].maxmenge = b.capacity
-            i = i + 1
-          else
-            tank[c].menge = tank[c].menge + b.amount
-            tank[c].maxmenge = tank[c].maxmenge + b.capacity
+            if dazu then
+              tank[i] = {}
+              tank[i].name = b.name
+              tank[i].label = b.label
+              tank[i].menge = b.amount
+              tank[i].maxmenge = b.capacity
+              i = i + 1
+            else
+              tank[c].menge = tank[c].menge + b.amount
+              tank[c].maxmenge = tank[c].maxmenge + b.capacity
+            end
           end
         end
       end
