@@ -174,6 +174,23 @@ function verarbeiten(tank)
   return tankneu
 end
 
+function spairs(t, order)
+    local keys = {}
+    for k in pairs(t) do keys[#keys+1] = k end
+    if order then
+        table.sort(keys, function(a,b) return order(t, a, b) end)
+    else
+        table.sort(keys)
+    end
+    local i = 0
+    return function()
+        i = i + 1
+        if keys[i] then
+            return keys[i], t[keys[i]]
+        end
+    end
+end
+
 function anzeigen(tankneu)
   local x = 1
   local y = 1
@@ -185,7 +202,7 @@ function anzeigen(tankneu)
     gpu.setResolution(160, 48)
   end
   os.sleep(0.1)
-  for i in pairs(tankneu) do
+  for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
     anzahl = anzahl + 1
     if anzahl == 17 then
       x = 81
