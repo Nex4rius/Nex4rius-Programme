@@ -17,7 +17,7 @@ local port = 70
 local tank = {}
 local laeuft = true
 local startevents = false
-local Wartezeit = 40
+local Wartezeit = 60
 local letzteNachricht = c.uptime()
 
 if require("filesystem").exists("/tank/version.txt") then
