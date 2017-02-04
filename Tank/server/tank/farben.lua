@@ -31,6 +31,7 @@ return {
   diesel                    = {0x000000,  0x888300,  0xFFFFFF,  0x666300},
   nitrofuel                 = {0x000000,  0xCFE400,  0x000000,  0xA1B300},
   ic2biogas                 = {0x000000,  0x9B8D45,  0xFFFFFF,  0x695F2F},
+  ic2uumatter               = {0xFFFFFF,  0x730A6C,  0xFFFFFF,  0x41063E},
   biomass                   = {0x000000,  0x64852A,  0xFFFFFF,  0x3D521A},
   seedoil                   = {0x000000,  0xFCFC96,  0x000000,  0xCACA79},
   tritium                   = {0x000000,  0xFC0000,  0x000000,  0xCA0000},
@@ -53,6 +54,6 @@ return {
   plasma_oxygen             = {0xFFFFFF,  0x0063C6,  0xFFFFFF,  0x004A94},
   plasma_nickel             = {0x000000,  0xB6C6F7,  0x000000,  0x929EC5},
   molten_neutronium         = {0x000000,  0xC7C7C7,  0x000000,  0x949494},
-  etchacid                  = {0xFFFFFF,  0x401904,  0xFFFFFF,  0x261002},
+  etchacid                  = {0xFFFFFF,  0x732F07,  0xFFFFFF,  0x401904},
   unbekannt                 = {0xFFFFFF,  0x444444,  0xFFFFFF,  0x333333},
 }
