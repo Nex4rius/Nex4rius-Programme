@@ -23,5 +23,5 @@ return {
   ["fluidsulfuricacid"]           = "Sulfuric Acid",
   ["lpg"]                         = "LPG",
   ["plastic"]                     = "Liquid Plastic",
-  ["gasgas"]                      = "Refinery Gas",
+  ["fluidgasgas"]                 = "Refinery Gas",
 }
