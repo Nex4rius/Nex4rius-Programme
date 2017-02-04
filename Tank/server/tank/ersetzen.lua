@@ -9,5 +9,6 @@ return {
   ["fluidhelium3"]         = "Helium-3",
   ["Helium3"]              = "Helium-3",
   ["fluidliquidheavyfuel"] = "Heavy Fuel",
+  ["fluidliquidlightfuel"] = "Light Fuel",
   ["fluidliquidnaphtha"]   = "Naphtha",
 }
