@@ -13,8 +13,16 @@ local maxzeit = 45
 local reichweite = 400
 local zeit = maxzeit
 local tank = {}
-local tankalt, adresse, empfangen
+local tankalt, adresse, empfangen, version
 tank[1] = {}
+
+if require("filesystem").exists("/tank/version.txt") then
+    local f = io.open ("/tank/version.txt", "r")
+    version = f:read()
+    f:close()
+  else
+    version = "<FEHLER>"
+end
 
 function check()
   tank, tankalt = {}, tank
@@ -81,12 +89,18 @@ function serialize(a)
   end
 end
 
+function aktualisieren()
+end
+
 function senden(warten, nachricht)
   if type(empfangen) == "table" then
     if empfangen[6] == "update" then
       adresse = empfangen[3]
       if type(empfangen[5]) == "number" and m.isWireless() then
         m.setStrength(empfangen[5])
+      end
+      if tostring(version) ~= tostring(empfangen[7]) then
+        aktualisieren()
       end
     end
   end
