@@ -34,7 +34,8 @@ function update()
   startevents = true
   local dazu = true
   local ende = 0
-  --local eigenerTank = check() -- buggy
+[[--
+  local eigenerTank = check() -- buggy
   if eigenerTank then
     local dazu = true
     for i in pairs(tank) do
@@ -58,6 +59,7 @@ function update()
       anzeigen(verarbeiten(tank))
     end
   end
+--]]
   if hier then
     for i in pairs(tank) do
       if type(tank[i]) == "table" then
