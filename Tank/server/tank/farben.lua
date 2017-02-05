@@ -61,6 +61,6 @@ return {
   toluene                   = {0x000000,  0x6A2200,  0xFFFFFF,  0x381300},
   liquidepichlorhyrin       = {0x000000,  0x6D2300,  0xFFFFFF,  0x3B1400},
   moltenepoxid              = {0x000000,  0x9F6F10,  0xFFFFFF,  0x6C4B0B},
-  moltenplastic             = {0x000000,  0x9D9D9Dv  0xFFFFFF,  0x6C6C6C},
+  moltenplastic             = {0x000000,  0x9D9D9D,  0xFFFFFF,  0x6C6C6C},
   unbekannt                 = {0xFFFFFF,  0x444444,  0xFFFFFF,  0x333333},
 }
