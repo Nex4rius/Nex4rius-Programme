@@ -1,7 +1,7 @@
 <a name="start">
 # Tank Display for OpenComputers</a>
 
-<img src="http://i.imgur.com/o4MTAjW.png">
+<img src="http://i.imgur.com/muijaM8.png">
 
 ```
 pastebin run -f cyF0yhXZ
