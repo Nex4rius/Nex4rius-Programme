@@ -17,7 +17,7 @@ return {
   ["fluidnitrogendioxide"]        = "Nitrogen Dioxide",
   ["fluidliquidlpg"]              = "LPG",
   ["fluidmoltenepoxid"]           = "Molten Epoxid",
-  ["fluidliquidepichlorhydrin"]   = "Epichlorohydrin",
+  ["fluidliquidepichlorhydrin"]   = "Epichlorhydrin",
   ["fluidliquidtoluene"]          = "Toluene",
   ["fluidmoltenplastic"]          = "Molten Polyethylene",
   ["fluidsulfuricacid"]           = "Sulfuric Acid",

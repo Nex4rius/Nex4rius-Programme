@@ -99,7 +99,7 @@ function senden(warten, nachricht)
     if empfangen[6] == "update" then
       adresse = empfangen[3]
       if type(empfangen[5]) == "number" and m.isWireless() then
-        m.setStrength(empfangen[5])
+        m.setStrength(tonumber(empfangen[5] + 5))
       end
       if tostring(version) ~= tostring(empfangen[7]) then
         aktualisieren()
@@ -116,7 +116,7 @@ end
 
 function main()
   if m.isWireless() then
-    m.setStrength(reichweite)
+    m.setStrength(tonumber(reichweite + 5))
   end
   m.open(port + 1)
   while true do
