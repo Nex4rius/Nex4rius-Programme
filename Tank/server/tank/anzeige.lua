@@ -253,6 +253,9 @@ function zeichenErsetzen(...)
 end
 
 function zeigeHier(x, y, label, name, menge, maxmenge, prozent)
+  if label == "fluidhelium3" then
+    label = "Helium-3"
+  end
   local nachricht = string.format("%s     %smb/%smb     %.1f%%", label, menge, maxmenge, prozent)
   if farben[name] == nil then
     nachricht = string.format("%s - %s     %smb/%smb     %.1f%%", name, label, menge, maxmenge, prozent)
