@@ -205,12 +205,16 @@ function anzeigen(tankneu)
   local y = 1
   local leer = true
   local anzahl = 0
-  if #tankneu <= 16 and #tankneu ~= 0 then
-    gpu.setResolution(80, #tankneu * 3)
+  for i in pairs(tankneu) do
+    anzahl = anzahl + 1
+  end
+  if anzahl <= 16 and anzahl ~= 0 then
+    gpu.setResolution(80, anzahl * 3)
   else
     gpu.setResolution(160, 48)
   end
   os.sleep(0.1)
+  anzahl = 0
   for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
     anzahl = anzahl + 1
     if anzahl == 17 then
@@ -225,11 +229,6 @@ function anzeigen(tankneu)
     zeigeHier(x, y, zeichenErsetzen(string.gsub(label, "%p", "")), string.gsub(name, "%p", ""), menge, maxmenge, prozent)
     leer = false
     y = y + 3
-  end
-  if anzahl <= 16 and anzahl ~= 0 then
-    gpu.setResolution(80, anzahl * 3)
-  else
-    gpu.setResolution(160, 48)
   end
   gpu.setBackground(0x000000)
   gpu.setForeground(0xFFFFFF)
