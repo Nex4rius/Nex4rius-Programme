@@ -11,7 +11,6 @@ pastebin run -f cyF0yhXZ
 server / display components:
 - Internet Card (to install)
 - Network Card
-- Adapter + Tank Controller Upgrade
 - Graphics Card T3
 - Screen T3
 
