@@ -63,5 +63,6 @@ return {
   lpg                       = {0x000000,  0xE9D41C,  0x000000,  0xB6A616},
   air                       = {0xFFFFFF,  0x010101,  0xFFFFFF,  0x333333},
   rocketfuel                = {0xFFFFFF,  0x6E6C41,  0x000000,  0xA19F5F},
+  sulfuricacid              = {0x000000,  0xFA7B00,  0x000000,  0xC86400},
   unbekannt                 = {0xFFFFFF,  0x444444,  0xFFFFFF,  0x333333},
 }
