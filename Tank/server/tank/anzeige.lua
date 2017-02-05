@@ -226,6 +226,11 @@ function anzeigen(tankneu)
     leer = false
     y = y + 3
   end
+  if anzahl <= 16 and anzahl ~= 0 then
+    gpu.setResolution(80, anzahl * 3)
+  else
+    gpu.setResolution(160, 48)
+  end
   gpu.setBackground(0x000000)
   gpu.setForeground(0xFFFFFF)
   for i = anzahl, 33 do
