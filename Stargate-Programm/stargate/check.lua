@@ -181,6 +181,9 @@ function Funktion.mainCheck()
     if (arg == sprachen.ja or arg == "ja" or arg == "yes") and serverVersion ~= sprachen.fehlerName then
       print(sprachen.aktualisierenJa or "\nAktualisieren: Ja\n")
       Funktion.update("master")
+    elseif arg == "neu" then
+      print(sprachen.neuinstallation or "\nNeuinstallation")
+      loadfile("/bin/pastebin.lua")("run", "-f", "YVqKFnsP", "neu")
     elseif arg == sprachen.nein or arg == "nein" or arg == "no" then
       -- nichts
     elseif arg == "beta" and betaServerVersion ~= sprachen.fehlerName then
