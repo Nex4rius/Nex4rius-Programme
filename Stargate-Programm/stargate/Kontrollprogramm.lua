@@ -1456,6 +1456,7 @@ function Funktion.beendeAlles()
   gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   Funktion.Farbe(Farben.schwarzeFarbe, Farben.weisseFarbe)
   gpu.fill(1, 1, 160, 80, " ")
+  term.setCursor(1, 1)
   print(sprachen.ausschaltenName .. "\n")
   Funktion.Colorful_Lamp_Farben(0, true)
   if component.isAvailable("redstone") then
