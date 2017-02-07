@@ -136,6 +136,12 @@ function Funktionen.installieren(versionTyp)
 end
 
 if versionTyp == nil then
+  if arg == "neu" then
+    loadfile("/bin/rm.lua")("-v", "/autorun.lua")
+    loadfile("/bin/rm.lua")("-v", "/home/stargate")
+    loadfile("/bin/rm.lua")("-v", "/stargate", "-r")
+    loadfile("/bin/rm.lua")("-v", "/update", "-r")
+  end
   if type(arg) == "string" then
     Funktionen.installieren(arg)
   else
