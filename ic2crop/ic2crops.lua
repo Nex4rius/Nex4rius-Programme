@@ -3,9 +3,8 @@ local computer = require("computer")
 local redstone = component.redstone
 local tractor = component.tractor_beam
 local inv = component.inventory_controller
-local fs = require("filesystem")
 local r = require("robot")
-local term = require("term")
+local event = require("event")
 local farmlaenge
 local richtung = true
 local weiter = true
@@ -38,9 +37,8 @@ function invleer()
       end
       r.select(i)
       inv.equip()
-      local wartezeit = a.size / 3 + 1
-      print("Leere Inventar - Warte " .. string.format("%.f", wartezeit) .. "s")
-      os.sleep(wartezeit)
+      print("Leere Inventar - Warte " .. string.format("%.f", a.size / 3 + 1) .. "s")
+      os.sleep(a.size / 4 + 1)
     end
   end
   if inventar then
@@ -48,6 +46,10 @@ function invleer()
   else
     print("Inventar leer")
   end
+--  if component.chunkloader then
+--    component.chunkloader.setActive(false)
+--    print("Chunkloaderstatus: " .. tostring(component.chunkloader.isActive()))
+--  end
   return true
 end
 
@@ -56,6 +58,10 @@ function farm()
   if redstone then
     redstone.setOutput(0, 15)
   end
+--  if component.chunkloader then
+--    component.chunkloader.setActive(true)
+--    print("Chunkloaderstatus: " .. tostring(component.chunkloader.isActive()))
+--  end
   if not farmlaenge then
     r.up()
     farmlaenge = -1
@@ -78,7 +84,9 @@ function farm()
   r.turnLeft()
   while r.forward() do end
   r.turnLeft()
-  while r.back() do end
+  for i = 0, farmlaenge do
+    r.back()
+  end
   r.down()
   print("Ernte komplett")
 end
@@ -157,8 +165,8 @@ function main()
       if invleer() then
         farm()
         invleer()
-        print("Warte 300s\n")
-        os.sleep(300)
+        print("Warte 600s\n")
+        event.pull(600, "redstone_changed")
       end
     else
       if reset() then
