@@ -40,6 +40,8 @@ local function standby(arg)
   if screen then
     screen.turnOn()
   end
+  
+  return true
 end
 
 return standby
