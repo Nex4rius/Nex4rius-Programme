@@ -5,6 +5,7 @@
 local function standby(arg)
   local component = require("component")
   local computer = require("computer")
+  local term = require("term")
   local standby = 0.75
   local display = 0.50
   local wartezeit = 30
@@ -28,14 +29,14 @@ local function standby(arg)
     return computer.energy() / computer.maxEnergy()
   end
   while energie() < standby do
+    term.clear()
+    print(string.format("Standby Energie: %.f%%", energie() * 100))
     if energie() < display and screen then
-      print("jetzt aus")
-      --screen.turnOff()
+      screen.turnOff()
     end
     os.sleep(wartezeit)
   end
   if screen then
-    print("jetzt an")
     screen.turnOn()
   end
   return true
