@@ -158,7 +158,9 @@ end
 function main()
   invleer()
   r.up()
-  while energie() do end
+  while energie() do
+    os.sleep(1)
+  end
   reset()
   while weiter do
     if energie() then

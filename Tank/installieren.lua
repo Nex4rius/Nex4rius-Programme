@@ -52,6 +52,7 @@ function Funktionen.installieren(versionTyp)
   local updateKomplett = false
   local anzahl = 3
   local update = {}
+  loadfile("/bin/pastebin.lua")("-f", "63v6mQtK")
   update[1]   = wget("-f", Funktionen.Pfad(versionTyp) .. "autorun.lua",       "/update/autorun.lua")
   update[2]   = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/version.txt",  "/update/tank/version.txt")
   if typ == "client" then
@@ -124,15 +125,13 @@ function Funktionen.installieren(versionTyp)
     updateKomplett = loadfile("/bin/rm.lua")("-v", "/update", "-r")
     updateKomplett = loadfile("/bin/rm.lua")("-v", "/installieren.lua")
   end
-  if fs.exists("/home") then
-    local f = io.open ("/home/tank", "w")
-    f:write('-- pastebin run -f cyF0yhXZ\n')
-    f:write('-- von Nex4rius\n')
-    f:write('-- https://github.com/Nex4rius/Nex4rius-Programme\n')
-    f:write('\n')
-    f:write('loadfile("/autorun.lua")(require("shell").parse(...)[1])\n')
-    f:close()
-  end
+  local f = io.open ("/bin/tank.lua", "w")
+  f:write('-- pastebin run -f cyF0yhXZ\n')
+  f:write('-- von Nex4rius\n')
+  f:write('-- https://github.com/Nex4rius/Nex4rius-Programme\n')
+  f:write('\n')
+  f:write('loadfile("/autorun.lua")(require("shell").parse(...)[1])\n')
+  f:close()
   if updateKomplett then
     print("\nUpdate komplett\n" .. version .. " " .. string.upper(tostring(versionTyp)))
     os.sleep(2)
