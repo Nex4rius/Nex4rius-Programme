@@ -21,11 +21,13 @@ local startevents = false
 local Wartezeit = 150
 local letzteNachricht = c.uptime()
 
+--[[
 if fs.exists("/bin/standby.lua") then
   energie = require("standby")
 else
   energie = function() end
 end
+--]]
 
 if fs.exists("/tank/version.txt") then
     local f = io.open ("/tank/version.txt", "r")
@@ -328,7 +330,7 @@ function main()
   gpu.set(1, 50, "Warte auf Daten")
   while laeuft do
     update()
-    energie()
+    --energie()
   end
   beenden()
 end
