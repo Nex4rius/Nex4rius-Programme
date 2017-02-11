@@ -7,7 +7,7 @@ local function standby()
   local computer  = require("computer")
   local standby   = 0.90
   local display   = 0.75
-  local wartezeit = 10
+  local wartezeit = 5
   
   if component.isAvailable("screen") and component.isAvailable("gpu") then
     local screen = component.getPrimary("screen")
