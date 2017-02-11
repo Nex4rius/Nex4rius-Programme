@@ -2,7 +2,7 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme
 
-local function standby()
+local function standby(text)
   local component = require("component")
   local computer  = require("computer")
   local standby   = 0.90
@@ -24,7 +24,9 @@ local function standby()
         os.sleep(wartezeit * 6)
       else
         screen.turnOn()
-        gpu.set(1, 1, string.format("Standby Energie: %.f%%", energie() * 100))
+        if text then
+          gpu.set(1, 1, string.format("Standby Energie: %.f%%", energie() * 100))
+        end
         os.sleep(wartezeit)
       end
     end
