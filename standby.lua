@@ -9,10 +9,15 @@ local function standby(arg)
   local standby = 0.90
   local display = 0.75
   local wartezeit = 20
-  local screen
+  local screen, gpu
+  local x, y
   
   if component.isAvailable("screen") then
     screen = component.getPrimary("screen")
+  end
+  if component.isAvailable("gpu") then
+    gpu = component.getPrimary("gpu")
+    x, y = gpu.getResolution()
   end
   if type(arg) == "table" then
     if type(arg.standby) == "number" then
@@ -28,6 +33,9 @@ local function standby(arg)
   local function energie()
     return computer.energy() / computer.maxEnergy()
   end
+  if gpu and energie() < standby then
+    gpu.setResolution(1, 21)
+  end
   while energie() < standby do
     term.clear()
     print(string.format("Standby Energie: %.f%%", energie() * 100))
@@ -38,6 +46,9 @@ local function standby(arg)
   end
   if screen then
     screen.turnOn()
+  end
+  if gpu then
+    gpu.setResolution(x, y)
   end
   return true
 end
