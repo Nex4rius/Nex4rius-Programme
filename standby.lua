@@ -2,55 +2,36 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme
 
-local function standby(arg)
+local function standby()
   local component = require("component")
-  local computer = require("computer")
-  local term = require("term")
-  local standby = 0.90
-  local display = 0.75
-  local wartezeit = 20
-  local screen, gpu
-  local x, y
+  local computer  = require("computer")
+  local standby   = 0.90
+  local display   = 0.75
+  local wartezeit = 15
   
-  if component.isAvailable("screen") then
-    screen = component.getPrimary("screen")
-  end
-  if component.isAvailable("gpu") then
-    gpu = component.getPrimary("gpu")
-    x, y = gpu.getResolution()
-  end
-  if type(arg) == "table" then
-    if type(arg.standby) == "number" then
-      standby = arg.standby
+  if component.isAvailable("screen") and component.isAvailable("gpu") then
+    local screen = component.getPrimary("screen")
+    local gpu = component.getPrimary("gpu")
+    
+    local function energie()
+      return computer.energy() / computer.maxEnergy()
     end
-    if type(arg.display) == "number" then
-      display = arg.display
+    
+    while energie() < standby do
+      require("term").clear()
+      if energie() < display and screen then
+        screen.turnOff()
+      else
+        screen.turnOn()
+        gpu.set(1, 1, string.format("Standby Energie: %.f%%", energie() * 100))
+      end
+      os.sleep(wartezeit)
     end
-    if type(arg.wait) == "number" then
-      wartezeit = arg.wait
-    end
-  end
-  local function energie()
-    return computer.energy() / computer.maxEnergy()
-  end
-  while energie() < standby do
-    term.clear()
-    if gpu then
-      gpu.set(1, 1, string.format("Standby Energie: %.f%%", energie() * 100))
-    end
-    if energie() < display and screen then
-      screen.turnOff()
-    end
-    os.sleep(wartezeit)
-  end
-  if screen then
+    
     screen.turnOn()
+    
+    return true
   end
-  if gpu then
-    gpu.setResolution(x, y)
-    os.sleep(0.1)
-  end
-  return true
 end
 
 return standby
