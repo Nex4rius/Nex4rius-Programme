@@ -8,7 +8,7 @@ local function standby(arg)
   local term = require("term")
   local standby = 0.90
   local display = 0.75
-  local wartezeit = 30
+  local wartezeit = 20
   local screen
   
   if component.isAvailable("screen") then
@@ -21,8 +21,8 @@ local function standby(arg)
     if type(arg.display) == "number" then
       display = arg.display
     end
-    if type(arg.wartezeit) == "number" then
-      wartezeit = arg.wartezeit
+    if type(arg.wait) == "number" then
+      wartezeit = arg.wait
     end
   end
   local function energie()
