@@ -3,11 +3,12 @@
 -- https://github.com/Nex4rius/Nex4rius-Programme/
 
 local component = require("component")
+local fs = require("filesystem")
 local c = require("computer")
 local gpu = component.getPrimary("gpu")
 local event = require("event")
 local term = require("term")
-local m, version, tankneu
+local m, version, tankneu, energie
 if component.isAvailable("modem") then
   m = component.modem
 end
@@ -20,7 +21,13 @@ local startevents = false
 local Wartezeit = 150
 local letzteNachricht = c.uptime()
 
-if require("filesystem").exists("/tank/version.txt") then
+if fs.exists("/bin/standby.lua") then
+  energie = require("standby")
+else
+  energie = function() end
+end
+
+if fs.exists("/tank/version.txt") then
     local f = io.open ("/tank/version.txt", "r")
     version = f:read()
     f:close()
@@ -321,6 +328,7 @@ function main()
   gpu.set(1, 50, "Warte auf Daten")
   while laeuft do
     update()
+    energie()
   end
   beenden()
 end
