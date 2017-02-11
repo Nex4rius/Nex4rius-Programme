@@ -21,11 +21,12 @@ local function standby()
       require("term").clear()
       if energie() < display and screen then
         screen.turnOff()
+        os.sleep(wartezeit * 6)
       else
         screen.turnOn()
         gpu.set(1, 1, string.format("Standby Energie: %.f%%", energie() * 100))
+        os.sleep(wartezeit)
       end
-      os.sleep(wartezeit)
     end
     
     screen.turnOn()
