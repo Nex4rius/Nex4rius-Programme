@@ -6,8 +6,8 @@ local function standby(arg)
   local component = require("component")
   local computer = require("computer")
   local term = require("term")
-  local standby = 0.75
-  local display = 0.50
+  local standby = 0.80
+  local display = 0.60
   local wartezeit = 30
   local screen
   
