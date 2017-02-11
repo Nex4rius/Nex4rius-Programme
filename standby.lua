@@ -9,11 +9,10 @@ local function standby(arg)
   local display = 0.50
   local wartezeit = 30
   local screen
-
+  
   if component.isAvailable("screen") then
     screen = component.getPrimary("screen")
   end
-
   if type(arg) == "table" then
     if type(arg.standby) == "number" then
       standby = arg.standby
@@ -25,22 +24,20 @@ local function standby(arg)
       wartezeit = arg.wartezeit
     end
   end
-
   local function energie()
     return computer.energy() / computer.maxEnergy()
   end
-
   while energie() < standby do
     if energie() < display and screen then
-      screen.turnOff()
+      print("jetzt aus")
+      --screen.turnOff()
     end
     os.sleep(wartezeit)
   end
-
   if screen then
+    print("jetzt an")
     screen.turnOn()
   end
-  
   return true
 end
 
