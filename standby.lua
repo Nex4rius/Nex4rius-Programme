@@ -36,6 +36,8 @@ local function standby(arg)
   if gpu and energie() < standby then
     gpu.setResolution(21, 1)
     os.sleep(0.1)
+    term.clear()
+    term.setCursor(1, 1)
   end
   while energie() < standby do
     term.clear()
