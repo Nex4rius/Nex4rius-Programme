@@ -34,7 +34,8 @@ local function standby(arg)
     return computer.energy() / computer.maxEnergy()
   end
   if gpu and energie() < standby then
-    gpu.setResolution(1, 21)
+    gpu.setResolution(21, 1)
+    os.sleep(0.1)
   end
   while energie() < standby do
     term.clear()
@@ -49,6 +50,7 @@ local function standby(arg)
   end
   if gpu then
     gpu.setResolution(x, y)
+    os.sleep(0.1)
   end
   return true
 end
