@@ -33,15 +33,11 @@ local function standby(arg)
   local function energie()
     return computer.energy() / computer.maxEnergy()
   end
-  if gpu and energie() < standby then
-    gpu.setResolution(21, 1)
-    os.sleep(0.1)
-    term.clear()
-    term.setCursor(1, 1)
-  end
   while energie() < standby do
     term.clear()
-    print(string.format("Standby Energie: %.f%%", energie() * 100))
+    if gpu then
+      gpu.set(1, 1, string.format("Standby Energie: %.f%%", energie() * 100))
+    end
     if energie() < display and screen then
       screen.turnOff()
     end
