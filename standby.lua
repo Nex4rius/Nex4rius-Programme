@@ -29,6 +29,7 @@ local function standby()
         gpu.setForeground(0xFFFFFF)
         gpu.setResolution(1, 21)
         require("term").clear()
+        os.sleep(0.1)
         gpu.set(1, 1, string.format("Standby Energie: %.f%%", energie() * 100))
         os.sleep(wartezeit)
       end
