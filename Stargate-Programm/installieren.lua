@@ -64,6 +64,7 @@ function Funktionen.installieren(versionTyp)
   fs.makeDirectory("/update/stargate/sprache")
   local updateKomplett = false
   local update = {}
+  loadfile("/bin/pastebin.lua")("-f", "63v6mQtK")
   update[1] = wget("-f", Funktionen.Pfad(versionTyp) .. "autorun.lua",                        "/update/autorun.lua")
   update[2] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/check.lua",                 "/update/stargate/check.lua")
   update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/version.txt",               "/update/stargate/version.txt")
