@@ -1378,7 +1378,7 @@ function Funktion.eventLoop()
         Funktion.checken(f, e)
       end
     end
-    standby()
+    standby(true)
     Funktion.zeigeAnzeige()
   end
 end
