@@ -7,7 +7,7 @@ local function standby(text)
   if component.isAvailable("screen") and component.isAvailable("gpu") then
     local computer  = require("computer")
     local standby   = 0.90
-    local display   = 0.75
+    local display   = standby
     local wartezeit = 2
     local screen    = component.getPrimary("screen")
     local gpu       = component.getPrimary("gpu")
@@ -19,7 +19,7 @@ local function standby(text)
     end
     
     while energie() < standby do
-      if energie() < display and screen then
+      if energie() < display then
         screen.turnOff()
         os.sleep(wartezeit * 5)
       else
