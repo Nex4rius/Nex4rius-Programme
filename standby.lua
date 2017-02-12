@@ -42,10 +42,6 @@ local function standby(text)
     gpu.setBackground(hinten)
     gpu.setForeground(vorne)
     os.sleep(0.1)
-    
-    return true
-  else
-    return false
   end
 end
 
