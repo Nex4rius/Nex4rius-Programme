@@ -28,7 +28,6 @@ local function standby(text)
         if text then
           gpu.setBackground(0x000000)
           gpu.setForeground(0xFFFFFF)
-          gpu.setResolution(21, 1)
           os.sleep(0.1)
           require("term").clear()
           os.sleep(0.1)
