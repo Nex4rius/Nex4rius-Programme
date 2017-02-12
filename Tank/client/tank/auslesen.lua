@@ -129,13 +129,13 @@ function main()
   end
   m.open(port + 1)
   while true do
-    standby()
     zeit = maxzeit
     if senden(check()) then
       zeit = maxzeit / 3
     end
     os.sleep(zeit / 2)
     empfangen = {event.pull(zeit / 2, "modem_message")}
+    standby()
   end
 end
 
