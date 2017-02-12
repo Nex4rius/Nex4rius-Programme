@@ -25,10 +25,10 @@ local laeuft          = true
 local startevents     = false
 local Wartezeit       = 150
 local letzteNachricht = c.uptime()
-local energie         = function() end
+local standby         = function() end
 
 if fs.exists("/bin/standby.lua") then
-  energie             = require("standby")
+  standby             = require("standby")
 end
 
 if fs.exists("/tank/version.txt") then
@@ -40,6 +40,7 @@ if fs.exists("/tank/version.txt") then
 end
 
 function update()
+  standby()
   local hier, _, id, _, _, nachricht
   if startevents then
     if m then
