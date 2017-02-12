@@ -8,7 +8,7 @@ local function standby(text)
     local computer  = require("computer")
     local standby   = 0.90
     local display   = 0.75
-    local wartezeit = 5
+    local wartezeit = 2
     local screen    = component.getPrimary("screen")
     local gpu       = component.getPrimary("gpu")
     local x, y      = gpu.getResolution()
@@ -22,13 +22,14 @@ local function standby(text)
     while energie() < standby do
       if energie() < display and screen then
         screen.turnOff()
-        os.sleep(wartezeit * 2)
+        os.sleep(wartezeit * 5)
       else
         screen.turnOn()
         if text then
           gpu.setBackground(0x000000)
           gpu.setForeground(0xFFFFFF)
           gpu.setResolution(21, 1)
+          os.sleep(0.1)
           require("term").clear()
           os.sleep(0.1)
           gpu.set(1, 1, string.format("Standby Energie: %.f%%", energie() * 100))
