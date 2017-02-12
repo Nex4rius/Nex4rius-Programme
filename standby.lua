@@ -11,7 +11,6 @@ local function standby(text)
     local wartezeit = 2
     local screen    = component.getPrimary("screen")
     local gpu       = component.getPrimary("gpu")
-    local x, y      = gpu.getResolution()
     local hinten    = gpu.getBackground()
     local vorne     = gpu.getForeground()
     
@@ -38,7 +37,6 @@ local function standby(text)
     end
     
     screen.turnOn()
-    gpu.setResolution(x, y)
     gpu.setBackground(hinten)
     gpu.setForeground(vorne)
     os.sleep(0.1)
