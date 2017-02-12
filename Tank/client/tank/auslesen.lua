@@ -2,19 +2,28 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/
 
-local component = require("component")
-local term = require("term")
-local event = require("event")
-local c = require("computer")
-local m = component.modem
-local einServer = false
-local port = 70
-local maxzeit = 45
+local component  = require("component")
+local term       = require("term")
+local event      = require("event")
+local c          = require("computer")
+
+local m          = component.modem
+
+local standby    = function() end
+local einServer  = false
+local port       = 70
+local maxzeit    = 45
 local reichweite = 400
-local zeit = maxzeit
-local tank = {}
+local zeit       = maxzeit
+local tank       = {}
+
 local tankalt, adresse, empfangen, version
-tank[1] = {}
+
+tank[1]          = {}
+
+if fs.exists("/bin/standby.lua") then
+  energie        = require("standby")
+end
 
 if require("filesystem").exists("/tank/version.txt") then
     local f = io.open ("/tank/version.txt", "r")
