@@ -6,6 +6,7 @@ local component  = require("component")
 local term       = require("term")
 local event      = require("event")
 local c          = require("computer")
+local fs         = require("filesystem")
 
 local m          = component.modem
 
@@ -21,11 +22,11 @@ local tankalt, adresse, empfangen, version
 
 tank[1]          = {}
 
-if require("filesystem").exists("/bin/standby.lua") then
+if fs.exists("/bin/standby.lua") then
   standby        = require("standby")
 end
 
-if require("filesystem").exists("/tank/version.txt") then
+if fs.exists("/tank/version.txt") then
     local f = io.open ("/tank/version.txt", "r")
     version = f:read()
     f:close()
