@@ -1,4 +1,4 @@
--- pastebin -f 63v6mQtK
+-- pastebin get -f 63v6mQtK
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme
 
