@@ -34,7 +34,6 @@ if require("filesystem").exists("/tank/version.txt") then
 end
 
 function check()
-  standby()
   tank, tankalt = {}, tank
   local i = 1
   for adresse, name in pairs(component.list("tank_controller")) do
@@ -129,6 +128,7 @@ function main()
     m.setStrength(tonumber(reichweite + 5))
   end
   m.open(port + 1)
+  event.timer(5, standby, math.huge)
   while true do
     zeit = maxzeit
     if senden(check()) then
