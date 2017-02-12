@@ -52,7 +52,7 @@ function Funktionen.installieren(versionTyp)
   local updateKomplett = false
   local anzahl = 3
   local update = {}
-  loadfile("/bin/pastebin.lua")("-f", "63v6mQtK")
+  loadfile("/bin/pastebin.lua")("run", "-f", "63v6mQtK", versionTyp)
   update[1]   = wget("-f", Funktionen.Pfad(versionTyp) .. "autorun.lua",       "/update/autorun.lua")
   update[2]   = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/version.txt",  "/update/tank/version.txt")
   if typ == "client" then
