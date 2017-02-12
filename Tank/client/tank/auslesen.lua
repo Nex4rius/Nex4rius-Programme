@@ -128,8 +128,8 @@ function main()
     m.setStrength(tonumber(reichweite + 5))
   end
   m.open(port + 1)
-  event.timer(5, standby, math.huge)
   while true do
+    standby()
     zeit = maxzeit
     if senden(check()) then
       zeit = maxzeit / 3
