@@ -1,4 +1,4 @@
--- pastebin get -f 63v6mQtK
+-- pastebin get -f 63v6mQtK /lib/standby.lua
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme
 
