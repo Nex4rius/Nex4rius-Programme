@@ -330,8 +330,8 @@ function main()
   gpu.setResolution(gpu.maxResolution())
   gpu.fill(1, 1, 160, 80, " ")
   gpu.set(1, 50, "Warte auf Daten")
-  event.timer(2, standby, math.huge)
   while laeuft do
+    standby()
     update()
   end
   beenden()
