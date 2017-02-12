@@ -216,7 +216,8 @@ function Funktion.pull_event()
     end
   end
   checkEnergy = energy
-  return {event.pull(Wartezeit)}
+  local a = 30
+  return {event.pull(Wartezeit)}, event.timer(a, standby, Wartezeit / a - a)
 end
 
 function Funktion.zeichenErsetzen(...)
@@ -1369,7 +1370,8 @@ end
 function Funktion.eventLoop()
   while running do
     Funktion.checken(Funktion.zeigeStatus)
-    e = Funktion.pull_event()
+    e, beenden = Funktion.pull_event()
+    event.cancel(beenden)
     if not e then
     elseif not e[1] then
     else
@@ -1378,7 +1380,7 @@ function Funktion.eventLoop()
         Funktion.checken(f, e)
       end
     end
-    standby(true)
+    standby()
     Funktion.zeigeAnzeige()
   end
 end
