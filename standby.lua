@@ -3,8 +3,8 @@
 -- https://github.com/Nex4rius/Nex4rius-Programme
 
 local function standby()
+  local component = require("component")
   if component.isAvailable("screen") and component.isAvailable("gpu") then
-    local component = require("component")
     local computer  = require("computer")
     local standby   = 0.90
     local display   = 0.75
