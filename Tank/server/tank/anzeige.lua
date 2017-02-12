@@ -331,8 +331,8 @@ function main()
   gpu.fill(1, 1, 160, 80, " ")
   gpu.set(1, 50, "Warte auf Daten")
   while laeuft do
-    standby()
     update()
+    standby()
   end
   beenden()
 end
