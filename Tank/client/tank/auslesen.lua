@@ -22,7 +22,7 @@ local tankalt, adresse, empfangen, version
 tank[1]          = {}
 
 if fs.exists("/bin/standby.lua") then
-  energie        = require("standby")
+  standby        = require("standby")
 end
 
 if require("filesystem").exists("/tank/version.txt") then
@@ -34,6 +34,7 @@ if require("filesystem").exists("/tank/version.txt") then
 end
 
 function check()
+  standby()
   tank, tankalt = {}, tank
   local i = 1
   for adresse, name in pairs(component.list("tank_controller")) do
