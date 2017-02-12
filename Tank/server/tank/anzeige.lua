@@ -40,7 +40,6 @@ if fs.exists("/tank/version.txt") then
 end
 
 function update()
-  standby()
   local hier, _, id, _, _, nachricht
   if startevents then
     if m then
@@ -331,9 +330,9 @@ function main()
   gpu.setResolution(gpu.maxResolution())
   gpu.fill(1, 1, 160, 80, " ")
   gpu.set(1, 50, "Warte auf Daten")
+  event.timer(5, standby, math.huge)
   while laeuft do
     update()
-    --energie()
   end
   beenden()
 end
