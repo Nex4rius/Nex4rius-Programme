@@ -1,4 +1,4 @@
-<a href="#english">english</a>/<a href="#deutsch">deutsch</a><a name="deutsch">
+<a href="#english">english</a>/<a href="#deutsch">deutsch</a>/<a href="#russian">russian</a><a name="deutsch">
 # Stargate-Programm für SG-Craft und OpenComputers</a>
 
 <img src="https://i.imgur.com/XtCzDAs.png">
@@ -60,7 +60,7 @@ OpenComputers-MC1.7.10-1.6.1.11-universal<br>
 SGCraft-1.13.3-mc1.7.10
 
 ___
-<a href="#english">english</a>/<a href="#deutsch">deutsch</a><a name="english">
+<a href="#english">english</a>/<a href="#deutsch">deutsch</a>/<a href="#russian">russian</a><a name="english">
 # Stargate-Program for SG-Craft and OpenComputers</a>
 
 <img src="https://i.imgur.com/E5JAcS5.png">
@@ -118,5 +118,66 @@ help  -> show this message again
 Make pull requests if you want :)
 
 tested with:<br>
+OpenComputers-MC1.7.10-1.6.1.11-universal<br>
+SGCraft-1.13.3-mc1.7.10
+
+___
+<a href="#english">english</a>/<a href="#deutsch">deutsch</a>/<a href="#russian">russian</a><a name="russian">
+# Stargate-Program для SG-Craft и OpenComputers</a>
+
+<img src="https://i.imgur.com/XtCzDAs.png">
+<img src="https://i.imgur.com/jWwlBNI.png" width="700px">
+
+Установка:
+
+Собрать компьютер со следующими компонентами:
+- ЦПУ (Уровень 2)
+- Видеокарта (Уровень 2)
+- Монитор 4x3 блока (Уровень 2)
+- Жесткий диск (с установленной OpenOS)
+- 2 модуля памяти (Уровень 1.5)
+- Интернет карта - требуется только для установки и обновления программы
+- Клавиатура - требуется только при установке
+- Редстоун-карта (Уровень 2) - опционально
+- EEPROM (Lua BIOS)
+
+<a href="https://www.youtube.com/embed/MgWY4es5oEs"><img src="https://i.imgur.com/h6VjgRe.jpg"></a>
+
+```
+pastebin run -f YVqKFnsP
+```
+
+особенности моей программы:
+
+- автозакрытие диафрагмы при входящем соединении (если включено управление диафрагмой)
+- автооткрытие диафрагмы при получении правильного IDC (кода деактивации диафрагмы)
+- автозакрытие врат через X секунд
+- вывод подробной информации (локальный/удаленный адрес, состояние, направление, код деактивации, состояние диафрагмы, энергия...)
+- несколько языков: пока только немецкий, английский и русский (Вы можете добавить новые языки, послав pull request)
+- отображение доступной энергии в EU или RF
+- отображение до 10 адресов на 1 странице (бесконечное количество страниц)
+- возможность набора адреса из списка
+- проверка наличия обновлений при запуске
+- статусные редстоун-сигналы (не в режиме ожидания, входящий туннель, диафрагма закрыта, IDC принят, активный туннель)
+- автоматическое добавление новых неизвестных адресов, при открытом туннеле
+- отображение энергии, необходимой для создания туннеля (или ошибки, при неправильном адресе)
+- работа с цветной лампой из Computronics
+- возможность закрывать входящие туннели, если отключено в конфиге на обоих концах
+- автоматическая передача (разумеется, без IDC) и прием списка адресов, по открытому туннелю
+- визуальный сенсорный интерфейс
+
+Важно! Компьютер с этой программой должен быть размещен в том же чанке, что и врата, либо иметь рядом активный чанклоадер.
+
+Использование: autorun [...]<br>
+yes -> обновить до стабильной версии<br>
+no -> не обновлять<br>
+beta -> обновить до беты<br>
+help -> показать это сообщение
+
+<a href="https://oc.cil.li/index.php?/topic/1062-sg-craft-stargate-control-program/">Форум</a>
+
+Предлагайте свои идеи.
+
+проверено с:<br>
 OpenComputers-MC1.7.10-1.6.1.11-universal<br>
 SGCraft-1.13.3-mc1.7.10
