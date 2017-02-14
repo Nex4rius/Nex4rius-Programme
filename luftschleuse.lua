@@ -1,6 +1,6 @@
---for a microcontroller
+-- microcontroller
 
-require("component").eeprom.set([[
+--require("component").eeprom.set([[
 local r = component.proxy(component.list("redstone")())
 local typ, uuid, side, signal
 local Farben = {}
@@ -51,4 +51,4 @@ start()
 while true do
   main()
 end
-]])
+--]])
