@@ -220,7 +220,7 @@ function anzeigen(tankneu)
     anzahl = anzahl + 1
   end
   if anzahl <= 16 and anzahl ~= 0 then
-    gpu.setResolution(80, anzahl * 3)
+    gpu.setResolution(160, anzahl * 3)
   else
     gpu.setResolution(160, 48)
   end
@@ -277,12 +277,11 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, nachricht)
   
   
   
-  nachricht = string.format("%s%s  ", nachricht, prozent)
   
   
   
   
-  nachricht = split(string.format("%s%s%s ", string.rep(" ", laenge), nachricht, string.rep(" ", laenge)))
+  nachricht = split(string.format("%s%s  ", nachricht, prozent))
   if type(farben[name][1]) == "number" then
     gpu.setForeground(farben[name][1])
   else
