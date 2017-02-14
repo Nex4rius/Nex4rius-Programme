@@ -262,16 +262,26 @@ function zeichenErsetzen(...)
   return string.gsub(..., "%a+", function (str) return ersetzen [str] end)
 end
 
-function zeigeHier(x, y, label, name, menge, maxmenge, prozent)
+function zeigeHier(x, y, label, name, menge, maxmenge, prozent, nachricht)
   if label == "fluidhelium3" then
     label = "Helium-3"
   end
-  local nachricht = string.format("%s     %smb/%smb     %.1f%%", label, menge, maxmenge, prozent)
   if farben[name] == nil then
-    nachricht = string.format("%s - %s     %smb/%smb     %.1f%%", name, label, menge, maxmenge, prozent)
+    nachricht = string.format("%s  %smb/%smb  %.1f%%", name, menge, maxmenge, prozent)
     name = "unbekannt"
   end
-  local laenge = (80 - string.len(nachricht)) / 2
+  prozent = string.format("%.1f%%", prozent)
+  prozent = string.format("%s%s", string.rep(" ", 6 - string.len(prozent)), prozent)
+  nachricht = string.sub(string.format("  %s", label), 1, 28)
+  nachricht = nachricht .. string.rep(" ", 28 - string.len(nachricht))
+  
+  
+  
+  nachricht = string.format("%s%s  ", nachricht, prozent)
+  
+  
+  
+  
   nachricht = split(string.format("%s%s%s ", string.rep(" ", laenge), nachricht, string.rep(" ", laenge)))
   if type(farben[name][1]) == "number" then
     gpu.setForeground(farben[name][1])
