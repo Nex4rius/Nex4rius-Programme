@@ -193,9 +193,7 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, anzahl, nachrich
   prozent = string.format("%.1f%%", prozent)
   prozent = string.format("%s%s", string.rep(" ", 6 - string.len(prozent)), prozent)
   nachricht = string.sub(string.format("  %s", label), 1, 28)
-  --nachricht = nachricht .. string.rep(" ", 29 - string.len(nachricht)) .. string.format("%s%s / %s%s", string.rep(" ", 20 - string.len(menge)), menge, maxmenge, string.rep(" ", 20 - string.len(maxmenge)))
-  nachricht = split(string.format("%s%s%s%smb / %smb%s%s  ", nachricht, string.rep(" ", 29 - string.len(nachricht)), string.rep(" ", 15 - string.len(menge)), menge, maxmenge, string.rep(" ", 25 - string.len(maxmenge)), prozent))
-  --nachricht = split(string.format("%s%s%s  ", string.rep(" ", 10), nachricht, prozent))
+  nachricht = split(string.format("%s%s%s%smb / %smb%s%s  ", nachricht, string.rep(" ", 25 - string.len(nachricht)), string.rep(" ", 15 - string.len(menge)), menge, maxmenge, string.rep(" ", 25 - string.len(maxmenge)), prozent))
   if type(farben[name][1]) == "number" then
     gpu.setForeground(farben[name][1])
   else
