@@ -2,6 +2,8 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/
 
+-- label -> angezeigter Name
+
 return {
   ["fluidchlorine"]               = "Chlorine",
   ["fluidglue"]                   = "Glue",
