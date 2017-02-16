@@ -251,7 +251,7 @@ function main()
     update()
     standby()
   end
-  beenden()
+  beenden() -- bisher nicht möglich aber wozu auch
 end
 
 main()
