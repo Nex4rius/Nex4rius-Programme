@@ -151,15 +151,14 @@ function anzeigen(tankneu)
     local breite = 0
     if anzahl == 17 then
       x = 81
-      y = 1
-      y = y + 3 * (32 - maxanzahl)
+      y = 1 + 3 * (32 - maxanzahl)
     end
     local name = tankneu[i].name
     local label = tankneu[i].label
     local menge = tankneu[i].menge
     local maxmenge = tankneu[i].maxmenge
     local prozent = menge / maxmenge * 100
-    if (32 - maxanzahl) == anzahl then
+    if (32 - maxanzahl) >= anzahl then
       breite = 40
     end
     zeigeHier(x, y, zeichenErsetzen(string.gsub(label, "%p", "")), string.gsub(name, "%p", ""), menge, maxmenge, prozent, breite)
