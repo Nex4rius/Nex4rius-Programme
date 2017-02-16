@@ -153,15 +153,15 @@ function anzeigen(tankneu)
       x = 81
       y = 1 + 3 * (32 - maxanzahl)
     end
-    local name = tankneu[i].name
-    local label = tankneu[i].label
+    local name = string.gsub(tankneu[i].name, "%p", "")
+    local label = zeichenErsetzen(string.gsub(tankneu[i].label, "%p", ""))
     local menge = tankneu[i].menge
     local maxmenge = tankneu[i].maxmenge
-    local prozent = menge / maxmenge * 100
+    local prozent = string.format("%.1f%%", menge / maxmenge * 100)
     if (32 - maxanzahl) >= anzahl then
       links, rechts = 40, 40
     end
-    zeigeHier(x, y, zeichenErsetzen(string.gsub(label, "%p", "")), string.gsub(name, "%p", ""), menge, maxmenge, string.format("%.1f%%", prozent), links, rechts)
+    zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 6 - string.len(prozent)), prozent), links, rechts, string.sub(string.format("  %s", label), 1, 28))
     leer = false
     y = y + 3
   end
@@ -191,12 +191,11 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, n
     label = "Helium-3"
   end
   if farben[name] == nil then
-    nachricht = string.format("%s  %smb/%smb  %.1f%%", name, menge, maxmenge, prozent)
+    nachricht = string.format("%s unbekannt %smb/%smb  %.1f%%", name, menge, maxmenge, prozent)
     name = "unbekannt"
+  else
+    nachricht = split(string.format("%s%s%s%smb / %smb%s%s  ", nachricht, string.rep(" ", 25 - string.len(nachricht)), string.rep(" ", links + 12 - string.len(menge)), menge, maxmenge, string.rep(" ", rechts + 28 - string.len(maxmenge)), prozent))
   end
-  prozent = string.format("%s%s", string.rep(" ", 6 - string.len(prozent)), prozent)
-  nachricht = string.sub(string.format("  %s", label), 1, 28)
-  nachricht = split(string.format("%s%s%s%smb / %smb%s%s  ", nachricht, string.rep(" ", 25 - string.len(nachricht)), string.rep(" ", links + 12 - string.len(menge)), menge, maxmenge, string.rep(" ", rechts + 28 - string.len(maxmenge)), prozent))
   Farben(farben[name][1], farben[name][2])
   local ende = 0
   local breite = (links + rechts) * 2 + 80
