@@ -3,8 +3,7 @@
 -- https://github.com/Nex4rius/Nex4rius-Programme/
 
 return {
---Beispiel                  = {schriftAN, hinterAN, schriftAUS, hinterAUS},
---example                   = {textON,    backON,    textOFF,   backOFF},
+--Beispiel                  = {schriftAN, hintenAN, schriftAUS, hintenAUS},
   lava                      = {0x000000,  0xCF4E0C,  0xFFFFFF,  0x9C3A09},
   water                     = {0xFFFFFF,  0x2A3BF1,  0xFFFFFF,  0x212BC0},
   ic2distilledwater         = {0xFFFFFF,  0x2A3BF1,  0xFFFFFF,  0x212BC0},
