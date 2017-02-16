@@ -249,13 +249,11 @@ end
 function main()
   gpu.setBackground(0x000000)
   term.setCursor(1, 50)
-  if m then
-    m.open(port)
-    m.broadcast(port + 1, "update", version)
-  end
+  m.open(port)
   gpu.setResolution(gpu.maxResolution())
   gpu.fill(1, 1, 160, 80, " ")
   gpu.set(1, 50, "Warte auf Daten")
+  m.broadcast(port + 1, "update", version)
   while laeuft do
     update()
     standby()
