@@ -148,7 +148,7 @@ function anzeigen(tankneu)
   local anzahl = 0
   for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
     anzahl = anzahl + 1
-    local breite = 0
+    local links, rechts = 0, 0
     if anzahl == 17 then
       x = 81
       y = 1 + 3 * (32 - maxanzahl)
@@ -159,9 +159,9 @@ function anzeigen(tankneu)
     local maxmenge = tankneu[i].maxmenge
     local prozent = menge / maxmenge * 100
     if (32 - maxanzahl) >= anzahl then
-      breite = 40
+      links, rechts = 40, 40
     end
-    zeigeHier(x, y, zeichenErsetzen(string.gsub(label, "%p", "")), string.gsub(name, "%p", ""), menge, maxmenge, string.format("%.1f%%", prozent), breite)
+    zeigeHier(x, y, zeichenErsetzen(string.gsub(label, "%p", "")), string.gsub(name, "%p", ""), menge, maxmenge, string.format("%.1f%%", prozent), links, rechts)
     leer = false
     y = y + 3
   end
@@ -186,7 +186,7 @@ function zeichenErsetzen(...)
   return string.gsub(..., "%a+", function (str) return ersetzen [str] end)
 end
 
-function zeigeHier(x, y, label, name, menge, maxmenge, prozent, breite, nachricht)
+function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, nachricht)
   if label == "fluidhelium3" then
     label = "Helium-3"
   end
@@ -196,45 +196,39 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, breite, nachrich
   end
   prozent = string.format("%s%s", string.rep(" ", 6 - string.len(prozent)), prozent)
   nachricht = string.sub(string.format("  %s", label), 1, 28)
-  nachricht = split(string.format("%s%s%s%smb / %smb%s%s  ", nachricht, string.rep(" ", 25 - string.len(nachricht)), string.rep(" ", breite + 12 - string.len(menge)), menge, maxmenge, string.rep(" ", breite + 28 - string.len(maxmenge)), prozent))
-  if type(farben[name][1]) == "number" then
-    gpu.setForeground(farben[name][1])
-  else
-    gpu.setForeground(0xFFFFFF)
-  end
-  if type(farben[name][2]) == "number" then
-    gpu.setBackground(farben[name][2])
-  else
-    gpu.setBackground(0x444444)
-  end
+  nachricht = split(string.format("%s%s%s%smb / %smb%s%s  ", nachricht, string.rep(" ", 25 - string.len(nachricht)), string.rep(" ", links + 12 - string.len(menge)), menge, maxmenge, string.rep(" ", rechts + 28 - string.len(maxmenge)), prozent))
+  Farben(farben[name][1], farben[name][2])
   local ende = 0
-  breite = breite * 2 + 80
+  local breite = (links + rechts) * 2 + 80
   for i = 1, math.floor(breite * menge / maxmenge) do
     gpu.set(x, y, string.format(" %s ", nachricht[i]), true)
     x = x + 1
     ende = i
   end
-  if type(farben[name][3]) == "number" then
-    gpu.setForeground(farben[name][3])
-  else
-    gpu.setForeground(0xFFFFFF)
-  end
-  if type(farben[name][4]) == "number" then
-    gpu.setBackground(farben[name][4])
-  else
-    gpu.setBackground(0x333333)
-  end
-  local a = math.floor(breite * menge / maxmenge)
-  for i = 1, breite - a do
+  Farben(farben[name][3], farben[name][4])
+  for i = 1, breite - math.floor(breite * menge / maxmenge) do
     gpu.set(x, y, string.format(" %s ", nachricht[i + ende]), true)
     x = x + 1
   end
 end
 
-function split(a)
+function Farben(vorne, hinten)
+  if type(vorne) == "number" then
+    gpu.setForeground(farben[name][3])
+  else
+    gpu.setForeground(0xFFFFFF)
+  end
+  if type(hinten) == "number" then
+    gpu.setBackground(farben[name][4])
+  else
+    gpu.setBackground(0x333333)
+  end
+end
+
+function split(...)
   local output = {}
-  for i = 1, string.len(a) do
-    output[i] = string.sub(a, i, i)
+  for i = 1, string.len(...) do
+    output[i] = string.sub(..., i, i)
   end
   return output
 end
