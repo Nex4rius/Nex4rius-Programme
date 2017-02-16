@@ -209,7 +209,8 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, breite, nachrich
     gpu.setBackground(0x444444)
   end
   local ende = 0
-  for i = 1, math.floor(80 * menge / maxmenge) do
+  breite = breite * 2 + 80
+  for i = 1, math.floor(breite * menge / maxmenge) do
     gpu.set(x, y, string.format(" %s ", nachricht[i]), true)
     x = x + 1
     ende = i
@@ -224,8 +225,8 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, breite, nachrich
   else
     gpu.setBackground(0x333333)
   end
-  local a = math.floor(80 * menge / maxmenge)
-  for i = 1, 80 - a do
+  local a = math.floor(breite * menge / maxmenge)
+  for i = 1, breite - a do
     gpu.set(x, y, string.format(" %s ", nachricht[i + ende]), true)
     x = x + 1
   end
