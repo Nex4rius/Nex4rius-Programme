@@ -22,7 +22,6 @@ end
 local port            = 70
 local tank            = {}
 local laeuft          = true
---local startevents     = false
 local Wartezeit       = 150
 local letzteNachricht = c.uptime()
 local standby         = function() end
@@ -40,10 +39,10 @@ if fs.exists("/tank/version.txt") then
 end
 
 function update()
-  local hier, _, id, _, _, nachricht = event.pull(Wartezeit, "modem_message")
-  letzteNachricht = c.uptime()
   local dazu = true
   local ende = 0
+  local hier, _, id, _, _, nachricht = event.pull(Wartezeit, "modem_message")
+  letzteNachricht = c.uptime()
   if hier then
     for i in pairs(tank) do
       if type(tank[i]) == "table" then
@@ -139,17 +138,17 @@ function anzeigen(tankneu)
   local x = 1
   local y = 1
   local leer = true
-  local anzahl = 0
+  local maxanzahl = 0
   for i in pairs(tankneu) do
-    anzahl = anzahl + 1
+    maxanzahl = maxanzahl + 1
   end
-  if anzahl <= 16 and anzahl ~= 0 then
-    gpu.setResolution(160, anzahl * 3)
+  if maxanzahl <= 16 and maxanzahl ~= 0 then
+    gpu.setResolution(160, maxanzahl * 3)
   else
     gpu.setResolution(160, 48)
   end
   os.sleep(0.1)
-  anzahl = 0
+  local anzahl = 0
   for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
     anzahl = anzahl + 1
     if anzahl == 17 then
@@ -161,7 +160,7 @@ function anzeigen(tankneu)
     local menge = tankneu[i].menge
     local maxmenge = tankneu[i].maxmenge
     local prozent = menge / maxmenge * 100
-    zeigeHier(x, y, zeichenErsetzen(string.gsub(label, "%p", "")), string.gsub(name, "%p", ""), menge, maxmenge, prozent)
+    zeigeHier(x, y, zeichenErsetzen(string.gsub(label, "%p", "")), string.gsub(name, "%p", ""), menge, maxmenge, prozent, maxanzahl)
     leer = false
     y = y + 3
   end
@@ -186,7 +185,7 @@ function zeichenErsetzen(...)
   return string.gsub(..., "%a+", function (str) return ersetzen [str] end)
 end
 
-function zeigeHier(x, y, label, name, menge, maxmenge, prozent, nachricht)
+function zeigeHier(x, y, label, name, menge, maxmenge, prozent, anzahl, nachricht)
   if label == "fluidhelium3" then
     label = "Helium-3"
   end
@@ -197,15 +196,9 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, nachricht)
   prozent = string.format("%.1f%%", prozent)
   prozent = string.format("%s%s", string.rep(" ", 6 - string.len(prozent)), prozent)
   nachricht = string.sub(string.format("  %s", label), 1, 28)
-  nachricht = nachricht .. string.rep(" ", 28 - string.len(nachricht))
-  
-  
-  
-  
-  
-  
-  
-  nachricht = split(string.format("%s%s  ", nachricht, prozent))
+  --nachricht = nachricht .. string.rep(" ", 29 - string.len(nachricht)) .. string.format("%s%s / %s%s", string.rep(" ", 20 - string.len(menge)), menge, maxmenge, string.rep(" ", 20 - string.len(maxmenge)))
+  nachricht = string.format("%s%s%s%s / %s%s%s  ", nachricht, string.rep(" ", 29 - string.len(nachricht)), string.rep(" ", 20 - string.len(menge)), menge, maxmenge, string.rep(" ", 30 - string.len(maxmenge)), prozent)
+  --nachricht = split(string.format("%s%s%s  ", string.rep(" ", 10), nachricht, prozent))
   if type(farben[name][1]) == "number" then
     gpu.setForeground(farben[name][1])
   else
