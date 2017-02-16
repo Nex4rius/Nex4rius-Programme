@@ -52,32 +52,6 @@ function update()
   startevents = true
   local dazu = true
   local ende = 0
---[[ buggy
-  local eigenerTank = check()
-  if eigenerTank then
-    local dazu = true
-    for i in pairs(tank) do
-      if type(tank[i]) == "table" then
-        if tank[i].id == c.address() then
-          tank[i].zeit = c.uptime()
-          tank[i].inhalt = eigenerTank
-          dazu = false
-        end
-      end
-      ende = i
-    end
-    if dazu then
-      ende = ende + 1
-      tank[ende] = {}
-      tank[ende].id = c.address()
-      tank[ende].zeit = c.uptime()
-      tank[ende].inhalt = eigenerTank
-    end
-    if not hier then
-      anzeigen(verarbeiten(tank))
-    end
-  end
---]]
   if hier then
     for i in pairs(tank) do
       if type(tank[i]) == "table" then
@@ -118,48 +92,6 @@ function keineDaten()
   end
 end
 
-function check()
-  local tank = {}
-  local i = 1
-  local leer = true
-  for adresse, name in pairs(component.list("tank_controller")) do
-    for side = 0, 5 do
-      for a, b in pairs(component.proxy(adresse).getFluidInTank(side)) do
-        if type(a) == "number" then
-          local dazu = true
-          local c
-          for j, k in pairs(tank) do
-            if b.name == k.name then
-              dazu = false
-              c = j
-              break
-            end
-          end
-          if b.label ~= nil then
-            if dazu then
-              tank[i] = {}
-              tank[i].name = b.name
-              tank[i].label = b.label
-              tank[i].menge = b.amount
-              tank[i].maxmenge = b.capacity
-              i = i + 1
-            else
-              tank[c].menge = tank[c].menge + b.amount
-              tank[c].maxmenge = tank[c].maxmenge + b.capacity
-            end
-            leer = false
-          end
-        end
-      end
-    end
-  end
-  if leer then
-    return false
-  else
-    return tank
-  end
-end
-
 function hinzu(name, label, menge, maxmenge)
   local weiter = true
   if name ~= "nil" then
@@ -195,20 +127,20 @@ function verarbeiten(tank)
 end
 
 function spairs(t, order)
-    local keys = {}
-    for k in pairs(t) do keys[#keys+1] = k end
-    if order then
-        table.sort(keys, function(a,b) return order(t, a, b) end)
-    else
-        table.sort(keys)
+  local keys = {}
+  for k in pairs(t) do keys[#keys+1] = k end
+  if order then
+    table.sort(keys, function(a,b) return order(t, a, b) end)
+  else
+    table.sort(keys)
+  end
+  local i = 0
+  return function()
+    i = i + 1
+    if keys[i] then
+      return keys[i], t[keys[i]]
     end
-    local i = 0
-    return function()
-        i = i + 1
-        if keys[i] then
-            return keys[i], t[keys[i]]
-        end
-    end
+  end
 end
 
 function anzeigen(tankneu)
