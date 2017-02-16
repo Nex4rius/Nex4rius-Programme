@@ -22,7 +22,7 @@ end
 local port            = 70
 local tank            = {}
 local laeuft          = true
-local startevents     = false
+--local startevents     = false
 local Wartezeit       = 150
 local letzteNachricht = c.uptime()
 local standby         = function() end
@@ -40,16 +40,8 @@ if fs.exists("/tank/version.txt") then
 end
 
 function update()
-  local hier, _, id, _, _, nachricht
-  if startevents then
-    if m then
-      hier, _, id, _, _, nachricht = event.pull(Wartezeit, "modem_message")
-      letzteNachricht = c.uptime()
-    else
-      os.sleep(Wartezeit)
-    end
-  end
-  startevents = true
+  local hier, _, id, _, _, nachricht = event.pull(Wartezeit, "modem_message")
+  letzteNachricht = c.uptime()
   local dazu = true
   local ende = 0
   if hier then
