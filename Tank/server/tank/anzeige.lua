@@ -187,6 +187,7 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, b
   end
   if farben[name] == nil then
     nachricht = string.format("%s unbekannt %smb/%smb %s", name, menge, maxmenge, prozent)
+    nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
     name = "unbekannt"
   else
     nachricht = split(string.format("%s%s%s%smb / %smb%s%s  ", nachricht, string.rep(" ", 25 - string.len(nachricht)), string.rep(" ", links + 12 - string.len(menge)), menge, maxmenge, string.rep(" ", rechts + 28 - string.len(maxmenge)), prozent))
