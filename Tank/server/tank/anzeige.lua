@@ -213,12 +213,12 @@ end
 
 function Farben(vorne, hinten)
   if type(vorne) == "number" then
-    gpu.setForeground(farben[name][3])
+    gpu.setForeground(vorne)
   else
     gpu.setForeground(0xFFFFFF)
   end
   if type(hinten) == "number" then
-    gpu.setBackground(farben[name][4])
+    gpu.setBackground(hinten)
   else
     gpu.setBackground(0x333333)
   end
