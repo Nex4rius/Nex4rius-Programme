@@ -12,17 +12,13 @@ local farben          = loadfile("/tank/farben.lua")()
 local ersetzen        = loadfile("/tank/ersetzen.lua")()
 
 local gpu             = component.getPrimary("gpu")
+local m               = component.modem
 
-local m, version, tankneu, energie
-
-if component.isAvailable("modem") then
-  m                   = component.modem
-end
+local version, tankneu, energie
 
 local port            = 70
 local tank            = {}
 local laeuft          = true
-local startevents     = false
 local Wartezeit       = 150
 local letzteNachricht = c.uptime()
 local standby         = function() end
@@ -40,44 +36,10 @@ if fs.exists("/tank/version.txt") then
 end
 
 function update()
-  local hier, _, id, _, _, nachricht
-  if startevents then
-    if m then
-      hier, _, id, _, _, nachricht = event.pull(Wartezeit, "modem_message")
-      letzteNachricht = c.uptime()
-    else
-      os.sleep(Wartezeit)
-    end
-  end
-  startevents = true
   local dazu = true
   local ende = 0
---[[ buggy
-  local eigenerTank = check()
-  if eigenerTank then
-    local dazu = true
-    for i in pairs(tank) do
-      if type(tank[i]) == "table" then
-        if tank[i].id == c.address() then
-          tank[i].zeit = c.uptime()
-          tank[i].inhalt = eigenerTank
-          dazu = false
-        end
-      end
-      ende = i
-    end
-    if dazu then
-      ende = ende + 1
-      tank[ende] = {}
-      tank[ende].id = c.address()
-      tank[ende].zeit = c.uptime()
-      tank[ende].inhalt = eigenerTank
-    end
-    if not hier then
-      anzeigen(verarbeiten(tank))
-    end
-  end
---]]
+  local hier, _, id, _, _, nachricht = event.pull(Wartezeit, "modem_message")
+  letzteNachricht = c.uptime()
   if hier then
     for i in pairs(tank) do
       if type(tank[i]) == "table" then
@@ -118,48 +80,6 @@ function keineDaten()
   end
 end
 
-function check()
-  local tank = {}
-  local i = 1
-  local leer = true
-  for adresse, name in pairs(component.list("tank_controller")) do
-    for side = 0, 5 do
-      for a, b in pairs(component.proxy(adresse).getFluidInTank(side)) do
-        if type(a) == "number" then
-          local dazu = true
-          local c
-          for j, k in pairs(tank) do
-            if b.name == k.name then
-              dazu = false
-              c = j
-              break
-            end
-          end
-          if b.label ~= nil then
-            if dazu then
-              tank[i] = {}
-              tank[i].name = b.name
-              tank[i].label = b.label
-              tank[i].menge = b.amount
-              tank[i].maxmenge = b.capacity
-              i = i + 1
-            else
-              tank[c].menge = tank[c].menge + b.amount
-              tank[c].maxmenge = tank[c].maxmenge + b.capacity
-            end
-            leer = false
-          end
-        end
-      end
-    end
-  end
-  if leer then
-    return false
-  else
-    return tank
-  end
-end
-
 function hinzu(name, label, menge, maxmenge)
   local weiter = true
   if name ~= "nil" then
@@ -195,49 +115,54 @@ function verarbeiten(tank)
 end
 
 function spairs(t, order)
-    local keys = {}
-    for k in pairs(t) do keys[#keys+1] = k end
-    if order then
-        table.sort(keys, function(a,b) return order(t, a, b) end)
-    else
-        table.sort(keys)
+  local keys = {}
+  for k in pairs(t) do keys[#keys+1] = k end
+  if order then
+    table.sort(keys, function(a,b) return order(t, a, b) end)
+  else
+    table.sort(keys)
+  end
+  local i = 0
+  return function()
+    i = i + 1
+    if keys[i] then
+      return keys[i], t[keys[i]]
     end
-    local i = 0
-    return function()
-        i = i + 1
-        if keys[i] then
-            return keys[i], t[keys[i]]
-        end
-    end
+  end
 end
 
 function anzeigen(tankneu)
   local x = 1
   local y = 1
   local leer = true
-  local anzahl = 0
+  local maxanzahl = 0
   for i in pairs(tankneu) do
-    anzahl = anzahl + 1
+    maxanzahl = maxanzahl + 1
   end
-  if anzahl <= 16 and anzahl ~= 0 then
-    gpu.setResolution(80, anzahl * 3)
+  if maxanzahl <= 16 and maxanzahl ~= 0 then
+    gpu.setResolution(160, maxanzahl * 3)
   else
     gpu.setResolution(160, 48)
   end
   os.sleep(0.1)
-  anzahl = 0
+  local anzahl = 0
   for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
     anzahl = anzahl + 1
+    local links, rechts, breite = 0, 0, 80
     if anzahl == 17 then
       x = 81
-      y = 1
+      y = 1 + 3 * (32 - maxanzahl)
     end
-    local name = tankneu[i].name
-    local label = tankneu[i].label
+    local name = string.gsub(tankneu[i].name, "%p", "")
+    local label = zeichenErsetzen(string.gsub(tankneu[i].label, "%p", ""))
     local menge = tankneu[i].menge
     local maxmenge = tankneu[i].maxmenge
-    local prozent = menge / maxmenge * 100
-    zeigeHier(x, y, zeichenErsetzen(string.gsub(label, "%p", "")), string.gsub(name, "%p", ""), menge, maxmenge, prozent)
+    local prozent = string.format("%.1f%%", menge / maxmenge * 100)
+    if (32 - maxanzahl) >= anzahl then
+      links, rechts = 40, 40
+      breite = 160
+    end
+    zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 6 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format("  %s", label), 1, 28))
     leer = false
     y = y + 3
   end
@@ -262,54 +187,47 @@ function zeichenErsetzen(...)
   return string.gsub(..., "%a+", function (str) return ersetzen [str] end)
 end
 
-function zeigeHier(x, y, label, name, menge, maxmenge, prozent)
+function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht)
   if label == "fluidhelium3" then
     label = "Helium-3"
   end
-  local nachricht = string.format("%s     %smb/%smb     %.1f%%", label, menge, maxmenge, prozent)
   if farben[name] == nil then
-    nachricht = string.format("%s - %s     %smb/%smb     %.1f%%", name, label, menge, maxmenge, prozent)
+    nachricht = string.format("%s unbekannt %smb/%smb  %.1f%%", name, menge, maxmenge, prozent)
     name = "unbekannt"
-  end
-  local laenge = (80 - string.len(nachricht)) / 2
-  nachricht = split(string.format("%s%s%s ", string.rep(" ", laenge), nachricht, string.rep(" ", laenge)))
-  if type(farben[name][1]) == "number" then
-    gpu.setForeground(farben[name][1])
   else
-    gpu.setForeground(0xFFFFFF)
+    nachricht = split(string.format("%s%s%s%smb / %smb%s%s  ", nachricht, string.rep(" ", 25 - string.len(nachricht)), string.rep(" ", links + 12 - string.len(menge)), menge, maxmenge, string.rep(" ", rechts + 28 - string.len(maxmenge)), prozent))
   end
-  if type(farben[name][2]) == "number" then
-    gpu.setBackground(farben[name][2])
-  else
-    gpu.setBackground(0x444444)
-  end
+  Farben(farben[name][1], farben[name][2])
   local ende = 0
-  for i = 1, math.floor(80 * menge / maxmenge) do
+  for i = 1, math.floor(breite * menge / maxmenge) do
     gpu.set(x, y, string.format(" %s ", nachricht[i]), true)
     x = x + 1
     ende = i
   end
-  if type(farben[name][3]) == "number" then
-    gpu.setForeground(farben[name][3])
-  else
-    gpu.setForeground(0xFFFFFF)
-  end
-  if type(farben[name][4]) == "number" then
-    gpu.setBackground(farben[name][4])
-  else
-    gpu.setBackground(0x333333)
-  end
-  local a = math.floor(80 * menge / maxmenge)
-  for i = 1, 80 - a do
+  Farben(farben[name][3], farben[name][4])
+  for i = 1, breite - math.floor(breite * menge / maxmenge) do
     gpu.set(x, y, string.format(" %s ", nachricht[i + ende]), true)
     x = x + 1
   end
 end
 
-function split(a)
+function Farben(vorne, hinten)
+  if type(vorne) == "number" then
+    gpu.setForeground(vorne)
+  else
+    gpu.setForeground(0xFFFFFF)
+  end
+  if type(hinten) == "number" then
+    gpu.setBackground(hinten)
+  else
+    gpu.setBackground(0x333333)
+  end
+end
+
+function split(...)
   local output = {}
-  for i = 1, string.len(a) do
-    output[i] = string.sub(a, i, i)
+  for i = 1, string.len(...) do
+    output[i] = string.sub(..., i, i)
   end
   return output
 end
@@ -323,18 +241,16 @@ end
 function main()
   gpu.setBackground(0x000000)
   term.setCursor(1, 50)
-  if m then
-    m.open(port)
-    m.broadcast(port + 1, "update", version)
-  end
+  m.open(port)
   gpu.setResolution(gpu.maxResolution())
   gpu.fill(1, 1, 160, 80, " ")
   gpu.set(1, 50, "Warte auf Daten")
+  m.broadcast(port + 1, "update", version)
   while laeuft do
     update()
     standby()
   end
-  beenden()
+  beenden() -- bisher nicht möglich aber eigentlich auch unnötig
 end
 
 main()
