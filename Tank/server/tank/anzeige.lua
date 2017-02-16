@@ -59,10 +59,7 @@ function update()
       tank[ende].inhalt = require("serialization").unserialize(nachricht)
     end
     anzeigen(verarbeiten(tank))
-  elseif not eigenerTank then
-    if m then
-      m.broadcast(port + 1, "update", version)
-    end
+  else
     keineDaten()
   end
   for i in pairs(tank) do
@@ -73,6 +70,7 @@ function update()
 end
 
 function keineDaten()
+  m.broadcast(port + 1, "update", version)
   if c.uptime() - letzteNachricht > Wartezeit then
     gpu.setResolution(gpu.maxResolution())
     gpu.fill(1, 1, 160, 80, " ")
@@ -175,10 +173,6 @@ function anzeigen(tankneu)
     y = y + 3
   end
   if leer then
-    if m then
-      m.broadcast(port + 1, "update", version)
-    end
-    gpu.setResolution(gpu.maxResolution())
     keineDaten()
   end
 end
