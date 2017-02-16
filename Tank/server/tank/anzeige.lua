@@ -161,7 +161,7 @@ function anzeigen(tankneu)
     if (32 - maxanzahl) >= anzahl then
       breite = 40
     end
-    zeigeHier(x, y, zeichenErsetzen(string.gsub(label, "%p", "")), string.gsub(name, "%p", ""), menge, maxmenge, prozent, breite)
+    zeigeHier(x, y, zeichenErsetzen(string.gsub(label, "%p", "")), string.gsub(name, "%p", ""), menge, maxmenge, string.format("%.1f%%", prozent), breite)
     leer = false
     y = y + 3
   end
@@ -194,10 +194,9 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, breite, nachrich
     nachricht = string.format("%s  %smb/%smb  %.1f%%", name, menge, maxmenge, prozent)
     name = "unbekannt"
   end
-  prozent = string.format("%.1f%%", prozent)
   prozent = string.format("%s%s", string.rep(" ", 6 - string.len(prozent)), prozent)
   nachricht = string.sub(string.format("  %s", label), 1, 28)
-  nachricht = split(string.format("%s%s%s%smb / %smb%s%s  ", nachricht, string.rep(" ", 25 - string.len(nachricht)), string.rep(" ", breite + 15 - string.len(menge)), menge, maxmenge, string.rep(" ", breite + 25 - string.len(maxmenge)), prozent))
+  nachricht = split(string.format("%s%s%s%smb / %smb%s%s  ", nachricht, string.rep(" ", 25 - string.len(nachricht)), string.rep(" ", breite + 12 - string.len(menge)), menge, maxmenge, string.rep(" ", breite + 28 - string.len(maxmenge)), prozent))
   if type(farben[name][1]) == "number" then
     gpu.setForeground(farben[name][1])
   else
