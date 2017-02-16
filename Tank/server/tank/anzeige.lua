@@ -12,7 +12,7 @@ local farben          = loadfile("/tank/farben.lua")()
 local ersetzen        = loadfile("/tank/ersetzen.lua")()
 
 local gpu             = component.getPrimary("gpu")
-local m                = component.modem
+local m               = component.modem
 
 local version, tankneu, energie
 
