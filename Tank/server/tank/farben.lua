@@ -41,6 +41,7 @@ return {
   liquidnaphtha             = {0x000000,  0xFCED00,  0x000000,  0xCABD00},
   liquidsulfuricheavyfuel   = {0x000000,  0xFCEBAF,  0x000000,  0xCABE8C},
   liquidsulfuriclightfuel   = {0x000000,  0xFCED00,  0x000000,  0xCABD00},
+  liquidsufluriclightfuel   = {0x000000,  0xFCED00,  0x000000,  0xCABD00}, -- nur bis zum fix in gregtech
   liquidsulfuricnaphtha     = {0x000000,  0xFCED00,  0x000000,  0xCABD00},
   liquidtoluene             = {0xFFFFFF,  0x6A2200,  0xFFFFFF,  0x381300},
   lpg                       = {0x000000,  0xE9D41C,  0x000000,  0xB6A616},
