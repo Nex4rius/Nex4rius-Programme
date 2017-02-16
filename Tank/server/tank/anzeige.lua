@@ -148,7 +148,7 @@ function anzeigen(tankneu)
   local anzahl = 0
   for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
     anzahl = anzahl + 1
-    local links, rechts = 0, 0
+    local links, rechts, breite = 0, 0, 80
     if anzahl == 17 then
       x = 81
       y = 1 + 3 * (32 - maxanzahl)
@@ -160,8 +160,9 @@ function anzeigen(tankneu)
     local prozent = string.format("%.1f%%", menge / maxmenge * 100)
     if (32 - maxanzahl) >= anzahl then
       links, rechts = 40, 40
+      breite = 160
     end
-    zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 6 - string.len(prozent)), prozent), links, rechts, string.sub(string.format("  %s", label), 1, 28))
+    zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 6 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format("  %s", label), 1, 28))
     leer = false
     y = y + 3
   end
@@ -186,7 +187,7 @@ function zeichenErsetzen(...)
   return string.gsub(..., "%a+", function (str) return ersetzen [str] end)
 end
 
-function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, nachricht)
+function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht)
   if label == "fluidhelium3" then
     label = "Helium-3"
   end
@@ -198,7 +199,6 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, n
   end
   Farben(farben[name][1], farben[name][2])
   local ende = 0
-  local breite = (links + rechts) * 2 + 80
   for i = 1, math.floor(breite * menge / maxmenge) do
     gpu.set(x, y, string.format(" %s ", nachricht[i]), true)
     x = x + 1
