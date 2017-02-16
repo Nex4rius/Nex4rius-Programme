@@ -186,7 +186,7 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, b
     label = "Helium-3"
   end
   if farben[name] == nil then
-    nachricht = string.format("%s unbekannt %smb/%smb %s", name, menge, maxmenge, prozent)
+    nachricht = string.format("Name: %s Label: %s >>report this liquid<<< %s / %s %s", name, label, menge, maxmenge, prozent)
     nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
     name = "unbekannt"
   else
