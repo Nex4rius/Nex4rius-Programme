@@ -245,10 +245,8 @@ function main()
   while laeuft do
     update()
     standby()
-    if require("keyboard").isKeyDown(keyboard.keys.w) and require("keyboard").isControlDown() then
-      beenden()
-    end
   end
+  beenden() -- bisher nie
 end
 
 main()
