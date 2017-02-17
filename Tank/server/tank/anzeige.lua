@@ -39,8 +39,8 @@ function update()
   local dazu = true
   local ende = 0
   local hier, _, id, _, _, nachricht = event.pull(Wartezeit, "modem_message")
-  letzteNachricht = c.uptime()
   if hier then
+    letzteNachricht = c.uptime()
     for i in pairs(tank) do
       if type(tank[i]) == "table" then
         if tank[i].id == id then
@@ -164,8 +164,7 @@ function anzeigen(tankneu)
     leer = false
     y = y + 3
   end
-  gpu.setBackground(0x000000)
-  gpu.setForeground(0xFFFFFF)
+  Farben(0xFFFFFF, 0x000000)
   for i = anzahl, 33 do
     gpu.set(x, y    , string.rep(" ", 80))
     gpu.set(x, y + 1, string.rep(" ", 80))
@@ -229,8 +228,7 @@ end
 
 function beenden()
   laeuft = false
-  gpu.setBackground(0x000000)
-  gpu.setForeground(0xFFFFFF)
+  Farben(0xFFFFFF, 0x000000)
   gpu.setResolution(gpu.maxResoltution())
   os.sleep(0.1)
   term.clear()
