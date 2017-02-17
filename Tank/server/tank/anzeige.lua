@@ -247,7 +247,7 @@ function main()
   while laeuft do
     update()
     standby()
-		if keyboard.isKeyDown(keyboard.keys.w) and keyboard.isControlDown() then
+    if keyboard.isKeyDown(keyboard.keys.w) and keyboard.isControlDown() then
       beenden()
     end
   end
