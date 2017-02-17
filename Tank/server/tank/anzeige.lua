@@ -228,9 +228,12 @@ function split(...)
 end
 
 function beenden()
+  laeuft = false
   gpu.setBackground(0x000000)
   gpu.setForeground(0xFFFFFF)
   gpu.setResolution(gpu.maxResoltution())
+  os.sleep(0.1)
+  term.clear()
 end
 
 function main()
@@ -244,8 +247,10 @@ function main()
   while laeuft do
     update()
     standby()
+		if keyboard.isKeyDown(keyboard.keys.w) and keyboard.isControlDown() then
+      beenden()
+    end
   end
-  beenden() -- bisher nicht möglich aber eigentlich auch unnötig
 end
 
 main()
