@@ -40,6 +40,7 @@ function update()
   local ende = 0
   local hier, _, id, _, _, nachricht = event.pull(Wartezeit, "modem_message")
   if hier then
+    term.clear() -- debug
     letzteNachricht = c.uptime()
     for i in pairs(tank) do
       if type(tank[i]) == "table" then
@@ -146,7 +147,7 @@ function anzeigen(tankneu)
   local anzahl = 0
   for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
     anzahl = anzahl + 1
-    local links, rechts, breite = 0, 0, 80
+    local links, rechts, breite = -15, -25, 40
     if anzahl == 17 then
       x = 81
       y = 1 + 3 * (32 - maxanzahl)
@@ -156,11 +157,14 @@ function anzeigen(tankneu)
     local menge = tankneu[i].menge
     local maxmenge = tankneu[i].maxmenge
     local prozent = string.format("%.1f%%", menge / maxmenge * 100)
-    if (32 - maxanzahl) >= anzahl then
+    if (64 - maxanzahl) >= anzahl then
+      links, rechts = 0, 0
+      breite = 80
+    elseif (32 - maxanzahl) >= anzahl then
       links, rechts = 40, 40
       breite = 160
     end
-    zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 6 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format("  %s", label), 1, 28))
+    zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, anzahl, string.sub(string.format(" %s", label), 1, 28))
     leer = false
     y = y + 3
   end
@@ -180,27 +184,36 @@ function zeichenErsetzen(...)
   return string.gsub(..., "%a+", function (str) return ersetzen[str] end)
 end
 
-function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht)
+function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, anzahl, nachricht)
   if label == "fluidhelium3" then
     label = "Helium-3"
   end
   if farben[name] == nil then
-    nachricht = string.format("Name: %s  Label: %s  >>report this liquid<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
+    nachricht = string.format("Name: %s  Label: %s  >>report this liquid<<<  %smb / %smb  %s", name, label, menge, maxmenge, anzahl, prozent)
     nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
     name = "unbekannt"
   else
     local ausgabe = {}
-    ausgabe[1] = string.sub(nachricht, 1, 25)
-    ausgabe[2] = string.rep(" ", links + 37 - string.len(nachricht) - string.len(menge))
-    ausgabe[3] = menge
-    ausgabe[4] = "mb"
-    ausgabe[5] = " / "
-    ausgabe[6] = maxmenge
-    ausgabe[7] = "mb"
-    ausgabe[8] = string.rep(" ", rechts + 28 - string.len(maxmenge))
-    ausgabe[9] = prozent
+    if breite == 40 then
+      table.insert(ausgabe, string.sub(nachricht, 1, 35 - string.len(menge) - string.len(prozent)))
+      table.insert(ausgabe, string.rep(" ", 35 - string.len(nachricht) - string.len(menge) - string.len(prozent)))
+      table.insert(ausgabe, menge)
+      table.insert(ausgabe, "mb")
+      table.insert(ausgabe, prozent)
+      table.insert(ausgabe, " ")
+    else
+      table.insert(ausgabe, string.sub(nachricht, 1, 25))
+      table.insert(ausgabe, string.rep(" ", links + 38 - string.len(nachricht) - string.len(menge)))
+      table.insert(ausgabe, menge)
+      table.insert(ausgabe, "mb")
+      table.insert(ausgabe, " / ")
+      table.insert(ausgabe, maxmenge)
+      table.insert(ausgabe, "mb")
+      table.insert(ausgabe, string.rep(" ", rechts + 26 - string.len(maxmenge)))
+      table.insert(ausgabe, prozent)
+      table.insert(ausgabe, " ")
+    end
     nachricht = split(table.concat(ausgabe))
-  --nachricht = split(string.format("%s%s%s%smb / %smb%s%s  ", nachricht, string.rep(" ", 25 - string.len(nachricht)), string.rep(" ", links + 12 - string.len(menge)), menge, maxmenge, string.rep(" ", rechts + 28 - string.len(maxmenge)), prozent))
   end
   Farben(farben[name][1], farben[name][2])
   local ende = 0
@@ -214,6 +227,7 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, b
     gpu.set(x, y, string.format(" %s ", nachricht[i + ende]), true)
     x = x + 1
   end
+  gpu.set(1, 1, tostring(anzahl))
 end
 
 function Farben(vorne, hinten)
