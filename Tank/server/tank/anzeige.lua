@@ -177,7 +177,7 @@ function anzeigen(tankneu)
 end
 
 function zeichenErsetzen(...)
-  return string.gsub(..., "%a+", function (str) return ersetzen [str] end)
+  return string.gsub(..., "%a+", function (str) return ersetzen[str] end)
 end
 
 function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht)
@@ -189,7 +189,18 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, b
     nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
     name = "unbekannt"
   else
-    nachricht = split(string.format("%s%s%s%smb / %smb%s%s  ", nachricht, string.rep(" ", 25 - string.len(nachricht)), string.rep(" ", links + 12 - string.len(menge)), menge, maxmenge, string.rep(" ", rechts + 28 - string.len(maxmenge)), prozent))
+    local ausgabe = {}
+    ausgabe[1] = string.sub(nachricht, 1, 25)
+    ausgabe[2] = string.rep(" ", links + 37 - string.len(nachricht) - string.len(menge))
+    ausgabe[3] = menge
+    ausgabe[4] = "mb"
+    ausgabe[5] = " / "
+    ausgabe[6] = maxmenge
+    ausgabe[7] = "mb"
+    ausgabe[8] = string.rep(" ", rechts + 28 - string.len(maxmenge))
+    ausgabe[9] = prozent
+    nachricht = split(table.concat(ausgabe))
+  --nachricht = split(string.format("%s%s%s%smb / %smb%s%s  ", nachricht, string.rep(" ", 25 - string.len(nachricht)), string.rep(" ", links + 12 - string.len(menge)), menge, maxmenge, string.rep(" ", rechts + 28 - string.len(maxmenge)), prozent))
   end
   Farben(farben[name][1], farben[name][2])
   local ende = 0
