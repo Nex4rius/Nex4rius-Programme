@@ -8,7 +8,7 @@ local function tps()
     local f = io.open("/tmp/TPS","w")
     f:write("test")
     f:close()
-    return(require("filesystem").lastModified("/tmp/timeFile"))
+    return(require("filesystem").lastModified("/tmp/TPS"))
   end
   local realTimeOld = time()
   os.sleep(1)
