@@ -159,17 +159,23 @@ function anzeigen(tankneu)
       if maxanzahl > 48 and anzahl > 48 then
         x = 41
         y = 1 + 3 * (64 - maxanzahl)
+        print(y, 48)
+        os.sleep(1)
         breite = 40
       elseif maxanzahl > 32 and anzahl > 32 then
         x = 121
         y = 1 + 3 * (48 - maxanzahl)
+        print(y, 32)
+        os.sleep(1)
         breite = 40
-      elseif maxanzahl > 32 and anzahl == 33 then
+      elseif maxanzahl > 16 and anzahl > 16 then
         x = 81
         y = 1
       else
         x = 81
         y = 1 + 3 * (32 - maxanzahl)
+        print(y, "else")
+        os.sleep(1)
       end
     end
     local name = string.gsub(tankneu[i].name, "%p", "")
