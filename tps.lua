@@ -5,14 +5,14 @@
 
 local function tps()
   local function time()
-    local f = io.open("/tmp/timeFile","w")
+    local f = io.open("/tmp/TPS","w")
     f:write("test")
     f:close()
     return(require("filesystem").lastModified("/tmp/timeFile"))
   end
   local realTimeOld = time()
-  os.sleep(2)
-  return 40000 / (time() - realTimeOld)
+  os.sleep(1)
+  return 20000 / (time() - realTimeOld)
 end
 
 return tps
