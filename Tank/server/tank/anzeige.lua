@@ -148,12 +148,13 @@ function anzeigen(tankneu)
   for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
     anzahl = anzahl + 1
     local links, rechts, breite = -15, -25, 40
-    if (64 - maxanzahl) >= anzahl and maxanzahl > 16 then
-      links, rechts = 0, 0
-      breite = 80
-    elseif (32 - maxanzahl) >= anzahl then
+    if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
       links, rechts = 40, 40
       breite = 160
+    --elseif (64 - maxanzahl) >= anzahl and maxanzahl > 16 then
+    else
+      links, rechts = 0, 0
+      breite = 80
     end
     if anzahl == 17 or anzahl == 33 or anzahl == 49 then
       if maxanzahl > 48 and anzahl > 48 then
