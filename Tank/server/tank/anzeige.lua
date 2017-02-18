@@ -143,7 +143,7 @@ function anzeigen(tankneu)
   else
     gpu.setResolution(160, 48)
   end
-  os.sleep(0.1)
+  os.sleep(1)
   local anzahl = 0
   for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
     anzahl = anzahl + 1
@@ -242,7 +242,7 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, b
     x = x + 1
   end
   gpu.set(x - breite, y + 2, tostring(anzahl))
-  gpu.set(1, 1, string.format("%s   x = %s   y = %s", tostring(anzahl), tostring(x), tostring(y)))
+  gpu.set(1, 1, string.format("%s   x = %s   y = %s            ", tostring(anzahl), tostring(x), tostring(y)))
 end
 
 function Farben(vorne, hinten)
