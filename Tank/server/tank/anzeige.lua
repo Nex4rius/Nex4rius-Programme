@@ -19,7 +19,7 @@ local version, tankneu, energie
 local port            = 70
 local tank            = {}
 local laeuft          = true
-local debug           = true
+local debug           = false
 local Wartezeit       = 150
 local letzteNachricht = c.uptime()
 local standby         = function() end
