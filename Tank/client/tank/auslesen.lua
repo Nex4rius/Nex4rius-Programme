@@ -11,7 +11,7 @@ local fs         = require("filesystem")
 local m          = component.modem
 
 local standby    = function() end
-local tps        = function() end
+local tps        = function() return 20 end
 local einServer  = false
 local port       = 70
 local maxzeit    = 45
@@ -144,16 +144,14 @@ function main()
     empfangen = {event.pull(zeit / 2, "modem_message")}
     standby()
     local a = tps()
-    if type(a) == "number" then
-      if     a >= 15 then
-        tpsZeit = 1
-      elseif a >= 10 then
-        tpsZeit = 1.5
-      elseif a >= 5 then
-        tpsZeit = 2
-      else
-        tpsZeit = 3
-      end
+    if     a >= 15 then
+      tpsZeit = 1
+    elseif a >= 10 then
+      tpsZeit = 1.5
+    elseif a >= 5 then
+      tpsZeit = 2
+    else
+      tpsZeit = 3
     end
   end
 end
