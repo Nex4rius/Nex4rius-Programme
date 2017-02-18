@@ -204,7 +204,6 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, b
   if farben[name] == nil and debug then
     nachricht = string.format("%s  %s  >>report this liquid<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
     nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
-    name = "unbekannt"
   else
     local ausgabe = {}
     if breite == 40 then
@@ -227,6 +226,9 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, b
       table.insert(ausgabe, " ")
     end
     nachricht = split(table.concat(ausgabe))
+  end
+  if farben[name] == nil then
+   name = "unbekannt"
   end
   Farben(farben[name][1], farben[name][2])
   local ende = 0
