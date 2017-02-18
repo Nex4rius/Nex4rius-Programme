@@ -148,15 +148,18 @@ function anzeigen(tankneu)
   for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
     anzahl = anzahl + 1
     local links, rechts, breite = -15, -25, 40
-    if anzahl == 17 then
-      x = 81
-      y = 1 + 3 * (32 - maxanzahl)
+    if anzahl == 17 or anzahl == 33 or anzahl == 49 then
+      if maxanzahl > 48 then
+        x = 41
+        y = 1 + 3 * (64 - maxanzahl)
+      elseif maxanzahl > 32 then
+        x = 121
+        y = 1 + 3 * (48 - maxanzahl)
+      else
+        x = 81
+        y = 1 + 3 * (32 - maxanzahl)
+      end
     end
-    local name = string.gsub(tankneu[i].name, "%p", "")
-    local label = zeichenErsetzen(string.gsub(tankneu[i].label, "%p", ""))
-    local menge = tankneu[i].menge
-    local maxmenge = tankneu[i].maxmenge
-    local prozent = string.format("%.1f%%", menge / maxmenge * 100)
     if (64 - maxanzahl) >= anzahl then
       links, rechts = 0, 0
       breite = 80
@@ -164,6 +167,11 @@ function anzeigen(tankneu)
       links, rechts = 40, 40
       breite = 160
     end
+    local name = string.gsub(tankneu[i].name, "%p", "")
+    local label = zeichenErsetzen(string.gsub(tankneu[i].label, "%p", ""))
+    local menge = tankneu[i].menge
+    local maxmenge = tankneu[i].maxmenge
+    local prozent = string.format("%.1f%%", menge / maxmenge * 100)
     zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, anzahl, string.sub(string.format(" %s", label), 1, 28))
     leer = false
     y = y + 3
@@ -189,7 +197,7 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, b
     label = "Helium-3"
   end
   if farben[name] == nil then
-    nachricht = string.format("Name: %s  Label: %s  >>report this liquid<<<  %smb / %smb  %s", name, label, menge, maxmenge, anzahl, prozent)
+    nachricht = string.format("%s  %s  >>report this liquid<<<  %smb / %smb  %s", name, label, menge, maxmenge, anzahl, prozent)
     nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
     name = "unbekannt"
   else
@@ -227,6 +235,7 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, b
     gpu.set(x, y, string.format(" %s ", nachricht[i + ende]), true)
     x = x + 1
   end
+  gpu.set(x - breite, y + 2, tostring(anzahl))
   gpu.set(1, 1, tostring(anzahl))
 end
 
