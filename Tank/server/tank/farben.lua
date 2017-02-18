@@ -2,6 +2,8 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/
 
+-- name -> Farben
+
 return {
 --Beispiel                  = {schriftAN, hintenAN, schriftAUS, hintenAUS},
   air                       = {0x000000,  0xFFFFFF,  0x000000,  0xCDCDCD},
@@ -17,6 +19,7 @@ return {
   fuel                      = {0xFFFFFF,  0x888300,  0xFFFFFF,  0x666300},
   gasgas                    = {0x000000,  0xFFFFFF,  0x000000,  0xCDCDCD},
   gasnaturalgas             = {0x000000,  0xB2B2B2,  0xFFFFFF,  0x808080},
+  gassulfuricgas            = {0x000000,  0xB2B2B2,  0xFFFFFF,  0x808080},
   glue                      = {0x000000,  0xFBC986,  0x000000,  0xE1B377},
   helium                    = {0xFFFFFF,  0x9D2500,  0xFFFFFF,  0x6C1900},
   helium3                   = {0x000000,  0xF9FC8E,  0x000000,  0xC7CA71},
@@ -36,6 +39,10 @@ return {
   liquidlpg                 = {0x000000,  0xFCF8A9,  0x000000,  0xCAC888},
   liquidmediumoil           = {0xFFFFFF,  0x010101,  0xFFFFFF,  0x4F4F4F},
   liquidnaphtha             = {0x000000,  0xFCED00,  0x000000,  0xCABD00},
+  liquidsulfuricheavyfuel   = {0x000000,  0xFCEBAF,  0x000000,  0xCABE8C},
+  liquidsulfuriclightfuel   = {0x000000,  0xFCED00,  0x000000,  0xCABD00},
+  liquidsufluriclightfuel   = {0x000000,  0xFCED00,  0x000000,  0xCABD00}, -- nur bis zum fix in gregtech
+  liquidsulfuricnaphtha     = {0x000000,  0xFCED00,  0x000000,  0xCABD00},
   liquidtoluene             = {0xFFFFFF,  0x6A2200,  0xFFFFFF,  0x381300},
   lpg                       = {0x000000,  0xE9D41C,  0x000000,  0xB6A616},
   lubricant                 = {0x000000,  0xFCEAAD,  0x000000,  0xCABC8C},

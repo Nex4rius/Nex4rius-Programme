@@ -39,8 +39,8 @@ function update()
   local dazu = true
   local ende = 0
   local hier, _, id, _, _, nachricht = event.pull(Wartezeit, "modem_message")
-  letzteNachricht = c.uptime()
   if hier then
+    letzteNachricht = c.uptime()
     for i in pairs(tank) do
       if type(tank[i]) == "table" then
         if tank[i].id == id then
@@ -59,10 +59,7 @@ function update()
       tank[ende].inhalt = require("serialization").unserialize(nachricht)
     end
     anzeigen(verarbeiten(tank))
-  elseif not eigenerTank then
-    if m then
-      m.broadcast(port + 1, "update", version)
-    end
+  else
     keineDaten()
   end
   for i in pairs(tank) do
@@ -73,6 +70,7 @@ function update()
 end
 
 function keineDaten()
+  m.broadcast(port + 1, "update", version)
   if c.uptime() - letzteNachricht > Wartezeit then
     gpu.setResolution(gpu.maxResolution())
     gpu.fill(1, 1, 160, 80, " ")
@@ -166,8 +164,7 @@ function anzeigen(tankneu)
     leer = false
     y = y + 3
   end
-  gpu.setBackground(0x000000)
-  gpu.setForeground(0xFFFFFF)
+  Farben(0xFFFFFF, 0x000000)
   for i = anzahl, 33 do
     gpu.set(x, y    , string.rep(" ", 80))
     gpu.set(x, y + 1, string.rep(" ", 80))
@@ -175,10 +172,6 @@ function anzeigen(tankneu)
     y = y + 3
   end
   if leer then
-    if m then
-      m.broadcast(port + 1, "update", version)
-    end
-    gpu.setResolution(gpu.maxResolution())
     keineDaten()
   end
 end
@@ -192,7 +185,8 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, b
     label = "Helium-3"
   end
   if farben[name] == nil then
-    nachricht = string.format("%s unbekannt %smb/%smb  %.1f%%", name, menge, maxmenge, prozent)
+    nachricht = string.format("Name: %s  Label: %s  >>report this liquid<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
+    nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
     name = "unbekannt"
   else
     nachricht = split(string.format("%s%s%s%smb / %smb%s%s  ", nachricht, string.rep(" ", 25 - string.len(nachricht)), string.rep(" ", links + 12 - string.len(menge)), menge, maxmenge, string.rep(" ", rechts + 28 - string.len(maxmenge)), prozent))
@@ -233,9 +227,11 @@ function split(...)
 end
 
 function beenden()
-  gpu.setBackground(0x000000)
-  gpu.setForeground(0xFFFFFF)
+  laeuft = false
+  Farben(0xFFFFFF, 0x000000)
   gpu.setResolution(gpu.maxResoltution())
+  os.sleep(0.1)
+  term.clear()
 end
 
 function main()
@@ -250,7 +246,7 @@ function main()
     update()
     standby()
   end
-  beenden() -- bisher nicht möglich aber eigentlich auch unnötig
+  beenden() -- bisher nie
 end
 
 main()
