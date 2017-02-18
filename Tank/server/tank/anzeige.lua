@@ -180,7 +180,7 @@ function anzeigen(tankneu)
     zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, anzahl, string.sub(string.format(" %s", label), 1, 28))
     leer = false
     y = y + 3
-    os.sleep(1) -- debug
+    os.sleep(0.5) -- debug
   end
   Farben(0xFFFFFF, 0x000000)
   for i = anzahl, 33 do
@@ -242,7 +242,7 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, b
     x = x + 1
   end
   gpu.set(x - breite, y + 2, tostring(anzahl))
-  gpu.set(1, 1, string.format("%s   x = %s   y = %s            ", tostring(anzahl), tostring(x), tostring(y)))
+  gpu.set(1, 1, string.format("%s   x = %s   y = %s            ", tostring(anzahl), tostring(x - breite), tostring(y)))
 end
 
 function Farben(vorne, hinten)
