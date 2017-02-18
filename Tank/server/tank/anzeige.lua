@@ -175,6 +175,7 @@ function anzeigen(tankneu)
     zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, anzahl, string.sub(string.format(" %s", label), 1, 28))
     leer = false
     y = y + 3
+    os.sleep(0.1) -- debug
   end
   Farben(0xFFFFFF, 0x000000)
   for i = anzahl, 33 do
