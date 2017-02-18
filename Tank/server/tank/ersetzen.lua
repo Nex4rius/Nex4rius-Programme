@@ -24,6 +24,7 @@ return {
   ["fluidmoltenplastic"]          = "Molten Polyethylene",
   ["fluidmoltenredstone"]         = "Molten Redstone",
   ["fluidmoltensolderingalloy"]   = "Molten Soldering Alloy",
+  ["fluidmoltenrubber"]           = "Molten Rubber",
   ["fluidsulfuricacid"]           = "Sulfuric Acid",
   ["fluidair"]                    = "Air",
   ["lpg"]                         = "LPG",
