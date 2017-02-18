@@ -165,6 +165,9 @@ function anzeigen(tankneu)
         x = 121
         y = 1 + 3 * (48 - maxanzahl)
         breite = 40
+      elseif maxanzahl > 32 and anzahl == 33 then
+        x = 81
+        y = 1
       else
         x = 81
         y = 1 + 3 * (32 - maxanzahl)
