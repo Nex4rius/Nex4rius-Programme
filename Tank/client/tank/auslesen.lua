@@ -144,14 +144,16 @@ function main()
     empfangen = {event.pull(zeit / 2, "modem_message")}
     standby()
     local a = tps()
-    if a >= 15 then
-      tpsZeit = 1
-    elseif a >=10 then
-      tpsZeit = 1.5
-    elseif a >=5 then
-      tpsZeit = 2
-    else
-      tpsZeit = 3
+    if type(a) == "number" then
+      if a >= 15 then
+        tpsZeit = 1
+      elseif a >=10 then
+        tpsZeit = 1.5
+      elseif a >=5 then
+        tpsZeit = 2
+      else
+        tpsZeit = 3
+      end
     end
   end
 end
