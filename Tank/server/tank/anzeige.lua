@@ -148,24 +148,29 @@ function anzeigen(tankneu)
   for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
     anzahl = anzahl + 1
     local links, rechts, breite = -15, -25, 40
-    if anzahl == 17 or anzahl == 33 or anzahl == 49 then
-      if maxanzahl > 48 and anzahl > 48 then
-        x = 41
-        y = 1 + 3 * (64 - maxanzahl)
-      elseif maxanzahl > 32 and anzahl > 32 then
-        x = 121
-        y = 1 + 3 * (48 - maxanzahl)
-      else
-        x = 81
-        y = 1 + 3 * (32 - maxanzahl)
-      end
-    end
     if (64 - maxanzahl) >= anzahl then
       links, rechts = 0, 0
       breite = 80
     elseif (32 - maxanzahl) >= anzahl then
       links, rechts = 40, 40
       breite = 160
+    end
+    if anzahl == 17 or anzahl == 33 or anzahl == 49 then
+      if maxanzahl > 48 and anzahl > 48 then
+        x = 41
+        y = 1 + 3 * (64 - maxanzahl)
+        breite = 40
+      elseif maxanzahl > 32 and anzahl > 32 then
+        x = 121
+        y = 1 + 3 * (48 - maxanzahl)
+        breite = 40
+      elseif maxanzahl <= 32 then
+        x = 81
+        y = 1 + 3 * (48 - maxanzahl)
+      else
+        x = 81
+        y = 1
+      end
     end
     local name = string.gsub(tankneu[i].name, "%p", "")
     local label = zeichenErsetzen(string.gsub(tankneu[i].label, "%p", ""))
