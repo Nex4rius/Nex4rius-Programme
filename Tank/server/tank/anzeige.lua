@@ -151,8 +151,7 @@ function anzeigen(tankneu)
     if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
       links, rechts = 40, 40
       breite = 160
-    --elseif (64 - maxanzahl) >= anzahl and maxanzahl > 16 then
-    else
+    elseif (64 - maxanzahl) >= anzahl and maxanzahl > 16 then
       links, rechts = 0, 0
       breite = 80
     end
