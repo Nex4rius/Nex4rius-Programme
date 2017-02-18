@@ -178,7 +178,7 @@ function anzeigen(tankneu)
         --y = 1 + 3 * (32 - maxanzahl)
       end
       y = 1 + 3 * (max - maxanzahl)
-      print(y)
+      print(y, "             ")
       os.sleep(2)
     end
     local name = string.gsub(tankneu[i].name, "%p", "")
