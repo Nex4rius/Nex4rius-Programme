@@ -1,4 +1,4 @@
--- original from ATastyPeanut https://github.com/ATastyPeanut/OpenComputers-Minecraft-Lua
+-- original from ATastyPeanut https://github.com/ATastyPeanut/OpenComputers-Minecraft-Lua/blob/master/Ticks-Second-Tools/OC-TPS-Check.lua
 -- pastebin run -f ZbxDmMeC
 -- modified by Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme
