@@ -57,6 +57,7 @@ function Funktionen.installieren(versionTyp)
   update[2]   = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/version.txt",  "/update/tank/version.txt")
   if typ == "client" then
     update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/auslesen.lua", "/update/tank/auslesen.lua")
+    loadfile("/bin/pastebin.lua")("run", "-f", "ZbxDmMeC", versionTyp)
   else
     update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/farben.lua",   "/update/tank/farben.lua")
     update[4] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/anzeige.lua",  "/update/tank/anzeige.lua")
