@@ -149,10 +149,10 @@ function anzeigen(tankneu)
     anzahl = anzahl + 1
     local links, rechts, breite = -15, -25, 40
     if anzahl == 17 or anzahl == 33 or anzahl == 49 then
-      if maxanzahl > 48 then
+      if maxanzahl > 48 and anzahl > 48 then
         x = 41
         y = 1 + 3 * (64 - maxanzahl)
-      elseif maxanzahl > 32 then
+      elseif maxanzahl > 32 and anzahl > 32 then
         x = 121
         y = 1 + 3 * (48 - maxanzahl)
       else
@@ -203,8 +203,8 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, b
   else
     local ausgabe = {}
     if breite == 40 then
-      table.insert(ausgabe, string.sub(nachricht, 1, 35 - string.len(menge) - string.len(prozent)))
-      table.insert(ausgabe, string.rep(" ", 35 - string.len(nachricht) - string.len(menge) - string.len(prozent)))
+      table.insert(ausgabe, string.sub(nachricht, 1, 37 - string.len(menge) - string.len(prozent)))
+      table.insert(ausgabe, string.rep(" ", 37 - string.len(nachricht) - string.len(menge) - string.len(prozent)))
       table.insert(ausgabe, menge)
       table.insert(ausgabe, "mb")
       table.insert(ausgabe, prozent)
