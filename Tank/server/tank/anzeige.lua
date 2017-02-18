@@ -242,7 +242,7 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, b
     x = x + 1
   end
   gpu.set(x - breite, y + 2, tostring(anzahl))
-  gpu.set(1, 1, tostring(anzahl))
+  gpu.set(1, 1, string.format("%s   x = %s   y = %s", tostring(anzahl), tostring(x), tostring(y))
 end
 
 function Farben(vorne, hinten)
