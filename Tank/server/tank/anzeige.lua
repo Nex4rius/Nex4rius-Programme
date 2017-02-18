@@ -176,7 +176,7 @@ function anzeigen(tankneu)
     local menge = tankneu[i].menge
     local maxmenge = tankneu[i].maxmenge
     local prozent = string.format("%.1f%%", menge / maxmenge * 100)
-    zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, anzahl, string.sub(string.format(" %s", label), 1, 28))
+    zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 28))
     leer = false
     y = y + 3
   end
@@ -196,7 +196,7 @@ function zeichenErsetzen(...)
   return string.gsub(..., "%a+", function (str) return ersetzen[str] end)
 end
 
-function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, anzahl, nachricht)
+function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht)
   if label == "fluidhelium3" then
     label = "Helium-3"
   end
