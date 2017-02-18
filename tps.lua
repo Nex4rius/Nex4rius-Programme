@@ -4,7 +4,6 @@
 -- https://github.com/Nex4rius/Nex4rius-Programme
 
 local function tps()
-  local timeConstant = 2
   local function time()
     local f = io.open("/tmp/timeFile","w")
     f:write("test")
@@ -12,8 +11,8 @@ local function tps()
     return(require("filesystem").lastModified("/tmp/timeFile"))
   end
   local realTimeOld = time()
-  os.sleep(timeConstant)
-  return 20000 * timeConstant / (time() - realTimeOld)
+  os.sleep(2)
+  return 40000 / (time() - realTimeOld)
 end
 
 return tps
