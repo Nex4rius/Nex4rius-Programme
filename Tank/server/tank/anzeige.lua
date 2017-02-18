@@ -19,6 +19,7 @@ local version, tankneu, energie
 local port            = 70
 local tank            = {}
 local laeuft          = true
+local debug           = false
 local Wartezeit       = 150
 local letzteNachricht = c.uptime()
 local standby         = function() end
@@ -146,21 +147,40 @@ function anzeigen(tankneu)
   local anzahl = 0
   for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
     anzahl = anzahl + 1
-    local links, rechts, breite = 0, 0, 80
-    if anzahl == 17 then
-      x = 81
-      y = 1 + 3 * (32 - maxanzahl)
+    local links, rechts, breite = -15, -25, 40
+    if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
+      links, rechts = 40, 40
+      breite = 160
+    elseif (64 - maxanzahl) >= anzahl and maxanzahl > 16 then
+      links, rechts = 0, 0
+      breite = 80
+    end
+    if anzahl == 17 or anzahl == 33 or anzahl == 49 then
+      if maxanzahl > 48 and anzahl > 48 then
+        x = 41
+        y = 1 + 3 * (64 - maxanzahl)
+        breite = 40
+      elseif maxanzahl > 32 and anzahl > 32 then
+        x = 121
+        y = 1 + 3 * (48 - maxanzahl)
+        breite = 40
+      else
+        x = 81
+        y = 1 + 3 * (32 - maxanzahl)
+      end
+      if y < 1 then
+        y = 1
+      end
     end
     local name = string.gsub(tankneu[i].name, "%p", "")
     local label = zeichenErsetzen(string.gsub(tankneu[i].label, "%p", ""))
     local menge = tankneu[i].menge
     local maxmenge = tankneu[i].maxmenge
     local prozent = string.format("%.1f%%", menge / maxmenge * 100)
-    if (32 - maxanzahl) >= anzahl then
-      links, rechts = 40, 40
-      breite = 160
+    if label == "fluidhelium3" then
+      label = "Helium-3"
     end
-    zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 6 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format("  %s", label), 1, 28))
+    zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 28))
     leer = false
     y = y + 3
   end
@@ -177,19 +197,38 @@ function anzeigen(tankneu)
 end
 
 function zeichenErsetzen(...)
-  return string.gsub(..., "%a+", function (str) return ersetzen [str] end)
+  return string.gsub(..., "%a+", function (str) return ersetzen[str] end)
 end
 
 function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht)
-  if label == "fluidhelium3" then
-    label = "Helium-3"
+  if farben[name] == nil and debug then
+    nachricht = string.format("%s  %s  >>report this liquid<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
+    nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
+  else
+    local ausgabe = {}
+    if breite == 40 then
+      table.insert(ausgabe, string.sub(nachricht, 1, 37 - string.len(menge) - string.len(prozent)))
+      table.insert(ausgabe, string.rep(" ", 37 - string.len(nachricht) - string.len(menge) - string.len(prozent)))
+      table.insert(ausgabe, menge)
+      table.insert(ausgabe, "mb")
+      table.insert(ausgabe, prozent)
+      table.insert(ausgabe, " ")
+    else
+      table.insert(ausgabe, string.sub(nachricht, 1, 25))
+      table.insert(ausgabe, string.rep(" ", links + 38 - string.len(nachricht) - string.len(menge)))
+      table.insert(ausgabe, menge)
+      table.insert(ausgabe, "mb")
+      table.insert(ausgabe, " / ")
+      table.insert(ausgabe, maxmenge)
+      table.insert(ausgabe, "mb")
+      table.insert(ausgabe, string.rep(" ", rechts + 26 - string.len(maxmenge)))
+      table.insert(ausgabe, prozent)
+      table.insert(ausgabe, " ")
+    end
+    nachricht = split(table.concat(ausgabe))
   end
   if farben[name] == nil then
-    nachricht = string.format("Name: %s  Label: %s  >>report this liquid<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
-    nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
-    name = "unbekannt"
-  else
-    nachricht = split(string.format("%s%s%s%smb / %smb%s%s  ", nachricht, string.rep(" ", 25 - string.len(nachricht)), string.rep(" ", links + 12 - string.len(menge)), menge, maxmenge, string.rep(" ", rechts + 28 - string.len(maxmenge)), prozent))
+   name = "unbekannt"
   end
   Farben(farben[name][1], farben[name][2])
   local ende = 0

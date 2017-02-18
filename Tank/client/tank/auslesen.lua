@@ -11,9 +11,11 @@ local fs         = require("filesystem")
 local m          = component.modem
 
 local standby    = function() end
+local tps        = function() return 20 end
 local einServer  = false
 local port       = 70
 local maxzeit    = 45
+local tpsZeit    = 1
 local reichweite = 400
 local zeit       = maxzeit
 local tank       = {}
@@ -24,6 +26,10 @@ tank[1]          = {}
 
 if fs.exists("/bin/standby.lua") then
   standby        = require("standby")
+end
+
+if fs.exists("/bin/tps.lua") then
+  tps            = require("tps")
 end
 
 if fs.exists("/tank/version.txt") then
@@ -130,13 +136,23 @@ function main()
   end
   m.open(port + 1)
   while true do
-    zeit = maxzeit
+    zeit = maxzeit * tpsZeit
     if senden(check()) then
       zeit = maxzeit / 3
     end
     os.sleep(zeit / 2)
     empfangen = {event.pull(zeit / 2, "modem_message")}
     standby()
+    local a = tps()
+    if     a >= 15 then
+      tpsZeit = 1
+    elseif a >= 10 then
+      tpsZeit = 1.5
+    elseif a >= 5 then
+      tpsZeit = 2
+    else
+      tpsZeit = 3
+    end
   end
 end
 
