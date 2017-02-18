@@ -22,6 +22,8 @@ return {
   ["fluidliquidepichlorhydrin"]   = "Epichlorhydrin",
   ["fluidliquidtoluene"]          = "Toluene",
   ["fluidmoltenplastic"]          = "Molten Polyethylene",
+  ["fluidmoltenredstone"]         = "Molten Redstone",
+  ["fluidmoltensolderingalloy"]   = "Molten Soldering Alloy",
   ["fluidsulfuricacid"]           = "Sulfuric Acid",
   ["fluidair"]                    = "Air",
   ["lpg"]                         = "LPG",
