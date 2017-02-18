@@ -40,7 +40,6 @@ function update()
   local ende = 0
   local hier, _, id, _, _, nachricht = event.pull(Wartezeit, "modem_message")
   if hier then
-    term.clear() -- debug
     letzteNachricht = c.uptime()
     for i in pairs(tank) do
       if type(tank[i]) == "table" then
@@ -180,7 +179,6 @@ function anzeigen(tankneu)
     zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, anzahl, string.sub(string.format(" %s", label), 1, 28))
     leer = false
     y = y + 3
-    os.sleep(0.5) -- debug
   end
   Farben(0xFFFFFF, 0x000000)
   for i = anzahl, 33 do
@@ -241,8 +239,6 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, b
     gpu.set(x, y, string.format(" %s ", nachricht[i + ende]), true)
     x = x + 1
   end
-  gpu.set(x - breite, y + 2, tostring(anzahl))
-  gpu.set(1, 1, string.format("%s   x = %s   y = %s      ", tostring(anzahl), tostring(x - breite), tostring(y)))
 end
 
 function Farben(vorne, hinten)
