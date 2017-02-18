@@ -19,6 +19,7 @@ local version, tankneu, energie
 local port            = 70
 local tank            = {}
 local laeuft          = true
+local debug           = true
 local Wartezeit       = 150
 local letzteNachricht = c.uptime()
 local standby         = function() end
@@ -200,7 +201,7 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, b
   if label == "fluidhelium3" then
     label = "Helium-3"
   end
-  if farben[name] == nil then
+  if farben[name] == nil and debug then
     nachricht = string.format("%s  %s  >>report this liquid<<<  %smb / %smb  %s", name, label, menge, maxmenge, anzahl, prozent)
     nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
     name = "unbekannt"
