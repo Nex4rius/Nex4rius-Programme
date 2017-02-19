@@ -104,9 +104,11 @@ function verarbeiten(tank)
   tanknr = 0
   for i in pairs(tank) do
     if type(tank[i]) == "table" then
-      for j in pairs(tank[i].inhalt) do
-        tanknr = tanknr + 1
-        hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge)
+      if type(tank[i].inhalt) == "table" then
+        for j in pairs(tank[i].inhalt) do
+          tanknr = tanknr + 1
+          hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge)
+        end
       end
     end
   end
