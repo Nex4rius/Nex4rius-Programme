@@ -14,7 +14,7 @@ local ersetzen        = loadfile("/tank/ersetzen.lua")()
 local gpu             = component.getPrimary("gpu")
 local m               = component.modem
 
-local version, tankneu, energie
+local version, tankneu, energie, hier
 
 local port            = 70
 local tank            = {}
@@ -37,9 +37,14 @@ if fs.exists("/tank/version.txt") then
 end
 
 function update()
+  local id, nachricht, _
   local dazu = true
   local ende = 0
-  local hier, _, id, _, _, nachricht = event.pull(Wartezeit, "modem_message")
+  if hier then
+    hier, _, id, _, _, nachricht = event.pull(Wartezeit, "modem_message")
+  else
+    hier, _, id, _, _, nachricht = event.pull("modem_message")
+  end
   if hier then
     letzteNachricht = c.uptime()
     for i in pairs(tank) do
