@@ -151,4 +151,6 @@ function main()
   end
 end
 
+loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tank Client")
+
 main()
