@@ -28,10 +28,10 @@ end
 function Funktionen.installieren(versionTyp)
   Funktionen.Komponenten(typ)
   local updateKomplett = false
-  local anzahl = 2
   local update = {}
-  update[1] = wget("-f", Funktionen.Pfad(versionTyp) .. "autorun.lua",   "/update/autorun.lua")
+  update[1] = wget("-f", Funktionen.Pfad(versionTyp) .. "autorun.lua",  "/update/autorun.lua")
   update[2] = wget("-f", Funktionen.Pfad(versionTyp) .. "ic2crops.lua", "/update/ic2crops.lua")
+  update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "version.txt",  "/update/version.txt")
   for i in pairs(update) do
     if update[i] then
       updateKomplett = true
@@ -47,6 +47,7 @@ function Funktionen.installieren(versionTyp)
   if updateKomplett then
     copy("/update/autorun.lua",  "/autorun.lua")
     copy("/update/ic2crops.lua", "/ic2crops.lua")
+    copy("/update/version.txt",  "/version.txt")
     f = io.open ("/version.txt", "r")
     version = f:read()
     f:close()
