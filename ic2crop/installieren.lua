@@ -88,6 +88,7 @@ function Funktionen.abfrage(name, text)
     gpu.setForeground(0xFF0000)
     print(text .. " - ERROR")
   end
+  os.sleep(0.1)
 end
 
 function Funktionen.Komponenten(typ)
