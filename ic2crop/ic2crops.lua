@@ -1,3 +1,7 @@
+-- pastebin run -f 5Rpn3MZb
+-- von Nex4rius
+-- https://github.com/Nex4rius/Nex4rius-Programme/
+
 local component = require("component")
 local computer = require("computer")
 local redstone = component.redstone
