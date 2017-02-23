@@ -19,14 +19,14 @@ Sicherung.installieren = false
 
 function Funktionen.Pfad(versionTyp)
   if versionTyp then
-    return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/" .. versionTyp .. "/ic2crop/" .. typ .. "/"
+    return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/" .. versionTyp .. "/ic2crop/"
   else
-    return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/ic2crop/" .. typ .. "/"
+    return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/ic2crop/"
   end
 end
 
 function Funktionen.installieren(versionTyp)
-  Funktionen.Komponenten(typ)
+  Funktionen.Komponenten()
   local updateKomplett = false
   local update = {}
   update[1] = wget("-f", Funktionen.Pfad(versionTyp) .. "autorun.lua",  "/update/autorun.lua")
