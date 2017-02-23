@@ -33,7 +33,7 @@ function Funktionen.installieren(versionTyp)
   update[1] = wget("-f", Funktionen.Pfad(versionTyp) .. "autorun.lua",  "/update/autorun.lua")
   update[2] = wget("-f", Funktionen.Pfad(versionTyp) .. "ic2crops.lua", "/update/ic2crops.lua")
   update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "version.txt",  "/update/version.txt")
-  for i = 0, 3 do
+  for i = 1, 3 do
     if update[i] then
       updateKomplett = true
     else
@@ -43,6 +43,7 @@ function Funktionen.installieren(versionTyp)
       else
         print("Fehler " ..i)
       end
+      break
     end
   end
   if updateKomplett then
