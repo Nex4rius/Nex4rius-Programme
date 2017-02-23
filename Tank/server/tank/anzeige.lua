@@ -142,6 +142,9 @@ function anzeigen(tankneu)
   local y = 1
   local leer = true
   local maxanzahl = 0
+  local anzahl = 0
+  local AnzahlSchmal = 0
+  local vierteSpalteAnzahl = 0
   for i in pairs(tankneu) do
     maxanzahl = maxanzahl + 1
   end
@@ -151,45 +154,23 @@ function anzeigen(tankneu)
     gpu.setResolution(160, 48)
   end
   os.sleep(0.1)
-  local anzahl = 0
   for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
-    anzahl = anzahl + 1
-    local links, rechts, breite = -15, -25, 40
-    if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
-      links, rechts = 40, 40
-      breite = 160
-    elseif (64 - maxanzahl) >= anzahl and maxanzahl > 16 then
-      links, rechts = 0, 0
-      breite = 80
+    if anzahl > 16 and AnzahlSchmal ~= vierteSpalteAnzahl and AnzahlSchmal > 0 then
+      vierteSpalteAnzahl = vierteSpalteAnzahl + 1
+  --  _, _, maxanzahl, anzahl, AnzahlSchmal = anzeigenLoop(i, x, y, maxanzahl, anzahl, AnzahlSchmal, false)
+    else
+      x, y, maxanzahl, anzahl, AnzahlSchmal = anzeigenLoop(i, x, y, maxanzahl, anzahl - vierteSpalteAnzahl, AnzahlSchmal, true)
     end
-    if anzahl == 17 or anzahl == 33 or anzahl == 49 then
-      if maxanzahl > 48 and anzahl > 48 then
-        x = 41
-        y = 1 + 3 * (64 - maxanzahl)
-        breite = 40
-      elseif maxanzahl > 32 and anzahl > 32 then
-        x = 121
-        y = 1 + 3 * (48 - maxanzahl)
-        breite = 40
-      else
-        x = 81
-        y = 1 + 3 * (32 - maxanzahl)
-      end
-      if y < 1 then
-        y = 1
-      end
-    end
-    local name = string.gsub(tankneu[i].name, "%p", "")
-    local label = zeichenErsetzen(string.gsub(tankneu[i].label, "%p", ""))
-    local menge = tankneu[i].menge
-    local maxmenge = tankneu[i].maxmenge
-    local prozent = string.format("%.1f%%", menge / maxmenge * 100)
-    if label == "fluidhelium3" then
-      label = "Helium-3"
-    end
-    zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 28))
     leer = false
-    y = y + 3
+  end
+  x, y = 1, 1
+  for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
+    if anzahl > 16 and AnzahlSchmal > 0 then
+      AnzahlSchmal = AnzahlSchmal - 1
+      x, y, maxanzahl, anzahl, AnzahlSchmal = anzeigenLoop(i, x, y, maxanzahl, anzahl + 32, AnzahlSchmal, true)
+  --else
+  --  _, _, maxanzahl, anzahl, AnzahlSchmal = anzeigenLoop(i, x, y, maxanzahl, anzahl, AnzahlSchmal, false)
+    end
   end
   Farben(0xFFFFFF, 0x000000)
   for i = anzahl, 33 do
@@ -201,6 +182,51 @@ function anzeigen(tankneu)
   if leer then
     keineDaten()
   end
+end
+
+function anzeigenLoop(i, x, y, maxanzahl, anzahl, AnzahlSchmal, schreiben)
+  anzahl = anzahl + 1
+  local links, rechts, breite = -15, -25, 40
+  if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
+    links, rechts = 40, 40
+    breite = 160
+    if anzahl <= 16 then
+      AnzahlSchmal = AnzahlSchmal + 1
+    end
+  elseif (64 - maxanzahl) >= anzahl and maxanzahl > 16 then
+    links, rechts = 0, 0
+    breite = 80
+  end
+  if anzahl == 17 or anzahl == 33 or anzahl == 49 then
+    if maxanzahl > 48 and anzahl > 48 then
+      x = 41
+      y = 1 + 3 * (64 - maxanzahl)
+      breite = 40
+    elseif maxanzahl > 32 and anzahl > 32 then
+      x = 121
+      y = 1 + 3 * (48 - maxanzahl)
+      breite = 40
+    else
+      x = 81
+      y = 1 + 3 * (32 - maxanzahl)
+    end
+    if y < 1 then
+      y = 1
+    end
+  end
+  local name = string.gsub(tankneu[i].name, "%p", "")
+  local label = zeichenErsetzen(string.gsub(tankneu[i].label, "%p", ""))
+  local menge = tankneu[i].menge
+  local maxmenge = tankneu[i].maxmenge
+  local prozent = string.format("%.1f%%", menge / maxmenge * 100)
+  if label == "fluidhelium3" then
+    label = "Helium-3"
+  end
+  if schreiben then
+    zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 28))
+  end
+  y = y + 3
+  return x, y, maxanzahl, AnzahlSchmal
 end
 
 function zeichenErsetzen(...)
