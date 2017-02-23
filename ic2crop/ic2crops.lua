@@ -184,4 +184,6 @@ function main()
   end
 end
 
+loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "IC2 Crops")
+
 main()
