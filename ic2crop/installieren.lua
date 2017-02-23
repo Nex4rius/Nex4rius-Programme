@@ -1,4 +1,4 @@
--- pastebin run -f cyF0yhXZ
+-- pastebin run -f 5Rpn3MZb
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/
 
@@ -14,57 +14,25 @@ local Sicherung   = {}
 local Funktionen  = {}
 local sprachen
 
-if fs.exists("/stargate/Sicherungsdatei.lua") then
-  Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
-else
-  Sicherung.Sprache = ""
-  Sicherung.installieren = false
-end
-
-if Sicherung.Sprache then
-  if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
-    sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
-  end
-end
+Sicherung.Sprache = ""
+Sicherung.installieren = false
 
 function Funktionen.Pfad(versionTyp)
   if versionTyp then
-    return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/" .. versionTyp .. "/Tank/" .. typ .. "/"
+    return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/" .. versionTyp .. "/ic2crop/" .. typ .. "/"
   else
-    return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/" .. typ .. "/"
+    return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/ic2crop/" .. typ .. "/"
   end
 end
 
 function Funktionen.installieren(versionTyp)
-  local weiter = true
-  while weiter do
-    print("\n\nserver (display) / client (adapter + tank)?\n")
-    typ = io.read()
-    if typ == "server" or typ == "client" then
-      weiter = false
-    else
-      weiter = true
-    end
-  end
   Funktionen.Komponenten(typ)
-  fs.makeDirectory("/tank")
-  fs.makeDirectory("/update/tank")
   local updateKomplett = false
-  local anzahl = 3
+  local anzahl = 2
   local update = {}
-  loadfile("/bin/pastebin.lua")("run", "-f", "63v6mQtK", versionTyp)
-  update[1]   = wget("-f", Funktionen.Pfad(versionTyp) .. "autorun.lua",       "/update/autorun.lua")
-  update[2]   = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/version.txt",  "/update/tank/version.txt")
-  if typ == "client" then
-    update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/auslesen.lua", "/update/tank/auslesen.lua")
-    loadfile("/bin/pastebin.lua")("run", "-f", "ZbxDmMeC", versionTyp)
-  else
-    update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/farben.lua",   "/update/tank/farben.lua")
-    update[4] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/anzeige.lua",  "/update/tank/anzeige.lua")
-    update[5] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/ersetzen.lua", "/update/tank/ersetzen.lua")
-    anzahl = 5
-  end
-  for i = 1, anzahl do
+  update[1] = wget("-f", Funktionen.Pfad(versionTyp) .. "autorun.lua",   "/update/autorun.lua")
+  update[2] = wget("-f", Funktionen.Pfad(versionTyp) .. "ic2crops.lua", "/update/ic2crops.lua")
+  for i in pairs(update) do
     if update[i] then
       updateKomplett = true
     else
@@ -74,60 +42,26 @@ function Funktionen.installieren(versionTyp)
       else
         print("Fehler " ..i)
       end
-      local f = io.open ("/autorun.lua", "w")
-      f:write('-- pastebin run -f cyF0yhXZ\n')
-      f:write('-- von Nex4rius\n')
-      f:write('-- https://github.com/Nex4rius/Nex4rius-Programme\n')
-      f:write('\n')
-      f:write('local shell = require("shell")\n')
-      f:write('local alterPfad = shell.getWorkingDirectory("/")\n')
-      f:write('local args = shell.parse(...)[1]\n')
-      f:write('\n')
-      f:write('shell.setWorkingDirectory("/")\n')
-      f:write('\n')
-      f:write('if type(args) == "string" then\n')
-      if typ == "client" then
-        f:write('  loadfile("/tank/auslesen.lua")(args)\n')
-        f:write('else\n')
-        f:write('  loadfile("/tank/auslesen.lua")()\n')
-      else
-        f:write('  loadfile("/tank/anzeige.lua")(args)\n')
-        f:write('else\n')
-        f:write('  loadfile("/tank/anzeige.lua")()\n')
-      end
-      f:write('end\n')
-      f:write('\n')
-      f:write('shell.setWorkingDirectory(alterPfad)\n')
-      f:close()
-      break
     end
   end
   if updateKomplett then
-    copy("/update/autorun.lua",         "/autorun.lua")
-    copy("/update/tank/version.txt",    "/tank/version.txt")
-    if typ == "client" then
-      copy("/update/tank/auslesen.lua", "/tank/auslesen.lua")
-    else
-      copy("/update/tank/anzeige.lua",  "/tank/anzeige.lua")
-      copy("/update/tank/farben.lua",   "/tank/farben.lua")
-      copy("/update/tank/ersetzen.lua", "/tank/ersetzen.lua")
-    end
-    f = io.open ("/tank/version.txt", "r")
+    copy("/update/autorun.lua",  "/autorun.lua")
+    copy("/update/ic2crops.lua", "/ic2crops.lua")
+    f = io.open ("/version.txt", "r")
     version = f:read()
     f:close()
     if versionTyp == "beta" then
-      f = io.open ("/tank/version.txt", "w")
+      f = io.open ("/version.txt", "w")
       f:write(version .. " BETA")
       f:close()
     end
     Sicherung.installieren = true
-    --loadfile("/stargate/schreibSicherungsdatei.lua")(Sicherung)
     print()
     updateKomplett = loadfile("/bin/rm.lua")("-v", "/update", "-r")
     updateKomplett = loadfile("/bin/rm.lua")("-v", "/installieren.lua")
   end
-  local f = io.open ("/bin/tank.lua", "w")
-  f:write('-- pastebin run -f cyF0yhXZ\n')
+  local f = io.open ("/bin/ic2crops.lua", "w")
+  f:write('-- pastebin run -f 5Rpn3MZb\n')
   f:write('-- von Nex4rius\n')
   f:write('-- https://github.com/Nex4rius/Nex4rius-Programme\n')
   f:write('\n')
@@ -145,44 +79,28 @@ function Funktionen.installieren(versionTyp)
   require("computer").shutdown(true)
 end
 
+function Funktionen.abfrage(name, text)
+  if component.isAvailable(name) then
+    gpu.setForeground(0x00FF00)
+    print(text .. " - OK")
+  else
+    gpu.setForeground(0xFF0000)
+    print(text .. " - ERROR")
+  end
+end
+
 function Funktionen.Komponenten(typ)
   require("term").clear()
-  print("check components\n")
-  if component.isAvailable("internet") then
-    gpu.setForeground(0x00FF00)
-    print("Internet Card - OK")
-  else
-    gpu.setForeground(0xFF0000)
-    print("Internet Card - ERROR")
-  end
-  if component.isAvailable("modem") then
-    gpu.setForeground(0x00FF00)
-    print("Network Card - OK")
-  else
-    gpu.setForeground(0xFF0000)
-    print("Network Card - ERROR")
-  end
-  if typ == "server" then
-    if gpu.maxResolution() == 160 then
-      gpu.setForeground(0x00FF00)
-      print("Graphic Card T3 - OK")
-      print("Screen T3 - OK")
-    else
-      gpu.setForeground(0xFF0000)
-      print("Graphic Card T3 - ERROR")
-      print("Screen T3 - ERROR")
-    end
-  else
-    if component.isAvailable("tank_controller") then
-      gpu.setForeground(0x00FF00)
-      print("Adapter + Tank Controller Upgrade - OK")
-    else
-      gpu.setForeground(0xFF0000)
-      print("Adapter + Tank Controller Upgrade - ERROR")
-    end
-  end
+  print("Checke Komponenten\n")
+  Funktionen.abfrage("internet", "Internet Card")
+  Funktionen.abfrage("inventory_controller", "Inventory Controller")
+  Funktionen.abfrage("tractor_beam", "Tractor Beam")
+  Funktionen.abfrage("redstone", "Redstone Card")
+  Funktionen.abfrage("gpu", "GPU")
+  Funktionen.abfrage("screen", "Screen")
+  Funktionen.abfrage("robot", "Robot")
   gpu.setForeground(0xFFFFFF)
-  print("\npress enter to continue\n")
+  print("\nEnter drücken\n")
   require("term").read()
 end
 
