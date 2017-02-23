@@ -321,4 +321,6 @@ function main()
   beenden() -- bisher nie
 end
 
+loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tank Server")
+
 main()
