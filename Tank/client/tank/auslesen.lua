@@ -12,7 +12,6 @@ local m          = component.modem
 
 local standby    = function() end
 local tps        = function() return 20 end
-local einServer  = false
 local port       = 70
 local maxzeit    = 45
 local tpsZeit    = 1
@@ -122,11 +121,7 @@ function senden(warten, nachricht)
       end
     end
   end
-  if adresse and einServer then
-    m.send(adresse, port, serialize(nachricht))
-  else
-    m.broadcast(port, serialize(nachricht))
-  end
+  m.broadcast(port, serialize(nachricht))
   return warten
 end
 
