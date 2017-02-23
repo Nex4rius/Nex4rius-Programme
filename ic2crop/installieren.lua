@@ -29,6 +29,7 @@ function Funktionen.installieren(versionTyp)
   Funktionen.Komponenten()
   local updateKomplett = false
   local update = {}
+  fs.makeDirectory("/update")
   update[1] = wget("-f", Funktionen.Pfad(versionTyp) .. "autorun.lua",  "/update/autorun.lua")
   update[2] = wget("-f", Funktionen.Pfad(versionTyp) .. "ic2crops.lua", "/update/ic2crops.lua")
   update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "version.txt",  "/update/version.txt")
