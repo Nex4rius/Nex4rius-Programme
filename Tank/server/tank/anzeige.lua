@@ -174,6 +174,8 @@ function anzeigen(tankneu)
       if anzahl > 16 and AnzahlSchmal > 0 then
         AnzahlSchmal = AnzahlSchmal - 1
         x, y, AnzahlSchmal = anzeigenLoop(i, x, y, #tankneu, anzahl + 32, AnzahlSchmal)
+      elseif AnzahlSchmal == 0 then
+        break
       end
       if debug then
         gpu.set(1, 1, string.format("%s   %s   %s  %s   teil_2   ", anzahl, x, y, vierteSpalteAnzahl))
