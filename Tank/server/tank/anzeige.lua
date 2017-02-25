@@ -19,7 +19,7 @@ local version, tankneu, energie, hier
 local port            = 70
 local tank            = {}
 local laeuft          = true
-local debug           = false
+local debug           = true
 local Wartezeit       = 150
 local letzteNachricht = c.uptime()
 local standby         = function() end
@@ -157,7 +157,9 @@ function anzeigen(tankneu)
       x, y, anzahl, AnzahlSchmal = anzeigenLoop(i, x, y, #tankneu, anzahl - vierteSpalteAnzahl, AnzahlSchmal)
     end
     leer = false
-    gpu.set(1, 1, string.format("%s   %s   %s   teil1   ", x, y, anzahl))
+    if debug then
+      gpu.set(1, 1, string.format("%s   %s   %s   teil1   ", x, y, anzahl))--debug
+    end
   end
   x, y = 1, 1
   for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
@@ -165,7 +167,9 @@ function anzeigen(tankneu)
       AnzahlSchmal = AnzahlSchmal - 1
       x, y, anzahl, AnzahlSchmal = anzeigenLoop(i, x, y, #tankneu, anzahl + 32, AnzahlSchmal)
     end
-    gpu.set(1, 1, string.format("%s   %s   %s   teil2   ", x, y, anzahl))
+    if debug then
+      gpu.set(1, 1, string.format("%s   %s   %s   teil2   ", x, y, anzahl))--debug
+    end
   end
   Farben(0xFFFFFF, 0x000000)
   for i = anzahl, 33 do
@@ -219,8 +223,10 @@ function anzeigenLoop(i, x, y, maxanzahl, anzahl, AnzahlSchmal, schreiben)
   end
   zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 28))
   y = y + 3
-  gpu.set(x, y - 1, tostring(anzahl))
-  os.sleep(0.5)
+  if debug then
+    gpu.set(x, y - 1, tostring(anzahl))--debug
+    os.sleep(0.5)--debug
+  end
   return x, y, anzahl, AnzahlSchmal
 end
 
