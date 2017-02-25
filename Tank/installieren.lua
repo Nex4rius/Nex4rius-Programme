@@ -36,6 +36,9 @@ function Funktionen.Pfad(versionTyp)
 end
 
 function Funktionen.installieren(versionTyp)
+  gpu.setBackground(0x000000)
+  gpu.setForeground(0xFFFFFF)
+  require("term").clear()
   local weiter = true
   while weiter do
     print("\n\nserver (display) / client (adapter + tank)?\n")
