@@ -224,8 +224,8 @@ function anzeigenLoop(i, x, y, maxanzahl, anzahl, AnzahlSchmal, schreiben)
   zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 28))
   y = y + 3
   if debug then
-    gpu.set(x, y - 1, tostring(anzahl) .. "    ")--debug
-    os.sleep(0.5)--debug
+    gpu.set(x, y - 1, string.format("%s   %s    ", anzahl, AnzahlSchmal)--debug
+    os.sleep(1)--debug
   end
   return x, y, anzahl, AnzahlSchmal
 end
