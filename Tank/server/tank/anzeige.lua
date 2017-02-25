@@ -141,15 +141,11 @@ function anzeigen(tankneu)
   local x = 1
   local y = 1
   local leer = true
-  local maxanzahl = 0
   local anzahl = 0
   local AnzahlSchmal = 0
   local vierteSpalteAnzahl = 0
-  for i in pairs(tankneu) do
-    maxanzahl = maxanzahl + 1
-  end
-  if maxanzahl <= 16 and maxanzahl ~= 0 then
-    gpu.setResolution(160, maxanzahl * 3)
+  if #tankneu <= 16 and #tankneu ~= 0 then
+    gpu.setResolution(160, #tankneu * 3)
   else
     gpu.setResolution(160, 48)
   end
@@ -157,9 +153,8 @@ function anzeigen(tankneu)
   for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
     if anzahl > 16 and AnzahlSchmal ~= vierteSpalteAnzahl and AnzahlSchmal > 0 then
       vierteSpalteAnzahl = vierteSpalteAnzahl + 1
-  --  _, _, maxanzahl, anzahl, AnzahlSchmal = anzeigenLoop(i, x, y, maxanzahl, anzahl, AnzahlSchmal, false)
     else
-      x, y, maxanzahl, anzahl, AnzahlSchmal = anzeigenLoop(i, x, y, maxanzahl, anzahl - vierteSpalteAnzahl, AnzahlSchmal, true)
+      x, y, anzahl, AnzahlSchmal = anzeigenLoop(i, x, y, #tankneu, anzahl - vierteSpalteAnzahl, AnzahlSchmal)
     end
     leer = false
   end
@@ -167,9 +162,7 @@ function anzeigen(tankneu)
   for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
     if anzahl > 16 and AnzahlSchmal > 0 then
       AnzahlSchmal = AnzahlSchmal - 1
-      x, y, maxanzahl, anzahl, AnzahlSchmal = anzeigenLoop(i, x, y, maxanzahl, anzahl + 32, AnzahlSchmal, true)
-  --else
-  --  _, _, maxanzahl, anzahl, AnzahlSchmal = anzeigenLoop(i, x, y, maxanzahl, anzahl, AnzahlSchmal, false)
+      x, y, anzahl, AnzahlSchmal = anzeigenLoop(i, x, y, #tankneu, anzahl + 32, AnzahlSchmal)
     end
   end
   Farben(0xFFFFFF, 0x000000)
@@ -222,11 +215,11 @@ function anzeigenLoop(i, x, y, maxanzahl, anzahl, AnzahlSchmal, schreiben)
   if label == "fluidhelium3" then
     label = "Helium-3"
   end
-  if schreiben then
-    zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 28))
-  end
+  zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 28))
   y = y + 3
-  return x, y, maxanzahl, anzahl, AnzahlSchmal
+  gpu.set(x, y - 1, tostring(anzahl))
+  os.sleep(0.5)
+  return x, y, anzahl, AnzahlSchmal
 end
 
 function zeichenErsetzen(...)
