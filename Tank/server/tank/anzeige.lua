@@ -159,7 +159,7 @@ function anzeigen(tankneu)
     if anzahl > 16 and AnzahlSchmal ~= vierteSpalteAnzahl and AnzahlSchmal > 0 then
       vierteSpalteAnzahl = vierteSpalteAnzahl + 1
     else
-      x, y, anzahl, AnzahlSchmal = anzeigenLoop(i, x, y, #tankneu, anzahl - vierteSpalteAnzahl, AnzahlSchmal)
+      x, y, AnzahlSchmal = anzeigenLoop(i, x, y, #tankneu, anzahl - vierteSpalteAnzahl, AnzahlSchmal)
     end
     leer = false
     if debug then
@@ -173,7 +173,7 @@ function anzeigen(tankneu)
       anzahl = anzahl + 1
       if anzahl > 16 and AnzahlSchmal > 0 then
         AnzahlSchmal = AnzahlSchmal - 1
-        x, y, anzahl, AnzahlSchmal = anzeigenLoop(i, x, y, #tankneu, anzahl + 32, AnzahlSchmal)
+        x, y, AnzahlSchmal = anzeigenLoop(i, x, y, #tankneu, anzahl + 32, AnzahlSchmal)
       end
       if debug then
         gpu.set(1, 1, string.format("%s   %s   %s  %s   teil_2   ", anzahl, x, y, vierteSpalteAnzahl))
@@ -234,7 +234,7 @@ function anzeigenLoop(i, x, y, maxanzahl, anzahl, AnzahlSchmal, schreiben)
   if debug then
     gpu.set(x, y - 1, string.format("%s   %s    ", anzahl, AnzahlSchmal))
   end
-  return x, y, anzahl, AnzahlSchmal
+  return x, y, AnzahlSchmal
 end
 
 function zeichenErsetzen(...)
