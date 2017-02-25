@@ -162,15 +162,17 @@ function anzeigen(tankneu)
       os.sleep(1)
     end
   end
-  anzahl, x, y = 0, 1, 1
-  for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
-    if anzahl > 16 and AnzahlSchmal > 0 then
-      AnzahlSchmal = AnzahlSchmal - 1
-      x, y, anzahl, AnzahlSchmal = anzeigenLoop(i, x, y, #tankneu, anzahl + 32, AnzahlSchmal)
-    end
-    if debug then
-      gpu.set(1, 1, string.format("%s   %s   %s   teil2   ", anzahl, x, y))
-      os.sleep(1)
+  if #tankneu > 48 then
+    anzahl, x, y = 0, 1, 1
+    for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
+      if anzahl > 16 and AnzahlSchmal > 0 then
+        AnzahlSchmal = AnzahlSchmal - 1
+        x, y, anzahl, AnzahlSchmal = anzeigenLoop(i, x, y, #tankneu, anzahl + 32, AnzahlSchmal)
+      end
+      if debug then
+        gpu.set(1, 1, string.format("%s   %s   %s   teil2   ", anzahl, x, y))
+        os.sleep(1)
+      end
     end
   end
   Farben(0xFFFFFF, 0x000000)
