@@ -162,7 +162,7 @@ function anzeigen(tankneu)
     end
     leer = false
     if debug then
-      gpu.set(1, 1, string.format("%s   %s   %s   teil1   ", anzahl, x, y))
+      gpu.set(1, 1, string.format("%s   %s   %s   %s   teil_1   ", anzahl, x, y, vierteSpalteAnzahl))
       os.sleep(1)
     end
   end
@@ -174,7 +174,7 @@ function anzeigen(tankneu)
         x, y, anzahl, AnzahlSchmal = anzeigenLoop(i, x, y, #tankneu, anzahl + 32, AnzahlSchmal)
       end
       if debug then
-        gpu.set(1, 1, string.format("%s   %s   %s   teil2   ", anzahl, x, y))
+        gpu.set(1, 1, string.format("%s   %s   %s  %s   teil_2   ", anzahl, x, y, vierteSpalteAnzahl))
         os.sleep(1)
       end
     end
