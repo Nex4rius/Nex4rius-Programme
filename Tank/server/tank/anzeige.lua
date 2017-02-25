@@ -155,6 +155,7 @@ function anzeigen(tankneu)
   end
   os.sleep(0.1)
   for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
+    anzahl = anzahl + 1
     if anzahl > 16 and AnzahlSchmal ~= vierteSpalteAnzahl and AnzahlSchmal > 0 then
       vierteSpalteAnzahl = vierteSpalteAnzahl + 1
     else
@@ -169,6 +170,7 @@ function anzeigen(tankneu)
   if #tankneu > 48 then
     anzahl, x, y = 0, 1, 1
     for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
+      anzahl = anzahl + 1
       if anzahl > 16 and AnzahlSchmal > 0 then
         AnzahlSchmal = AnzahlSchmal - 1
         x, y, anzahl, AnzahlSchmal = anzeigenLoop(i, x, y, #tankneu, anzahl + 32, AnzahlSchmal)
@@ -192,7 +194,6 @@ function anzeigen(tankneu)
 end
 
 function anzeigenLoop(i, x, y, maxanzahl, anzahl, AnzahlSchmal, schreiben)
-  anzahl = anzahl + 1
   local links, rechts, breite = -15, -25, 40
   if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
     links, rechts = 40, 40
