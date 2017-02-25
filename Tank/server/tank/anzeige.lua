@@ -19,7 +19,7 @@ local version, tankneu, energie, hier
 local port            = 70
 local tank            = {}
 local laeuft          = true
-local debug           = true
+local debug           = false
 local Wartezeit       = 150
 local letzteNachricht = c.uptime()
 local standby         = function() end
@@ -164,7 +164,7 @@ function anzeigen(tankneu)
     leer = false
     if debug then
       gpu.set(1, 1, string.format("%s   %s   %s   %s   teil_1   ", anzahl, x, y, vierteSpalteAnzahl))
-      os.sleep(1)
+      os.sleep(0.3)
     end
   end
   if #tankneu > 48 then
@@ -179,7 +179,7 @@ function anzeigen(tankneu)
       end
       if debug then
         gpu.set(1, 1, string.format("%s   %s   %s  %s   teil_2   ", anzahl, x, y, vierteSpalteAnzahl))
-        os.sleep(1)
+        os.sleep(0.3)
       end
     end
   end
