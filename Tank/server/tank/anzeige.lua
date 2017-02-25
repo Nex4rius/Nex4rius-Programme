@@ -163,7 +163,7 @@ function anzeigen(tankneu)
   end
   anzahl, x, y = 0, 1, 1
   for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
-    if anzahl > 48 and AnzahlSchmal > 0 then
+    if anzahl > 16 and AnzahlSchmal > 0 then
       AnzahlSchmal = AnzahlSchmal - 1
       x, y, anzahl, AnzahlSchmal = anzeigenLoop(i, x, y, #tankneu, anzahl + 32, AnzahlSchmal)
     end
