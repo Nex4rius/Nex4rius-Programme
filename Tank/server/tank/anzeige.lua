@@ -158,7 +158,8 @@ function anzeigen(tankneu)
     end
     leer = false
     if debug then
-      gpu.set(1, 1, string.format("%s   %s   %s   teil1   ", anzahl, x, y))--debug
+      gpu.set(1, 1, string.format("%s   %s   %s   teil1   ", anzahl, x, y))
+      os.sleep(1)
     end
   end
   anzahl, x, y = 0, 1, 1
@@ -168,7 +169,8 @@ function anzeigen(tankneu)
       x, y, anzahl, AnzahlSchmal = anzeigenLoop(i, x, y, #tankneu, anzahl + 32, AnzahlSchmal)
     end
     if debug then
-      gpu.set(1, 1, string.format("%s   %s   %s   teil2   ", anzahl, x, y))--debug
+      gpu.set(1, 1, string.format("%s   %s   %s   teil2   ", anzahl, x, y))
+      os.sleep(1)
     end
   end
   Farben(0xFFFFFF, 0x000000)
@@ -224,8 +226,7 @@ function anzeigenLoop(i, x, y, maxanzahl, anzahl, AnzahlSchmal, schreiben)
   zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 28))
   y = y + 3
   if debug then
-    gpu.set(x, y - 1, string.format("%s   %s    ", anzahl, AnzahlSchmal))--debug
-    os.sleep(1)--debug
+    gpu.set(x, y - 1, string.format("%s   %s    ", anzahl, AnzahlSchmal))
   end
   return x, y, anzahl, AnzahlSchmal
 end
