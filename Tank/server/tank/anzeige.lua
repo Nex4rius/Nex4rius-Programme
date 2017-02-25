@@ -193,12 +193,11 @@ function anzeigenLoop(i, x, y, maxanzahl, anzahl, AnzahlSchmal, schreiben)
   if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
     links, rechts = 40, 40
     breite = 160
-    if anzahl <= 16 then
-      AnzahlSchmal = AnzahlSchmal + 1
-    end
   elseif (64 - maxanzahl) >= anzahl and maxanzahl > 16 then
     links, rechts = 0, 0
     breite = 80
+  elseif anzahl <= 16 then
+    AnzahlSchmal = AnzahlSchmal + 1
   end
   if anzahl == 17 or anzahl == 33 or anzahl == 49 then
     if maxanzahl > 48 and anzahl > 48 then
