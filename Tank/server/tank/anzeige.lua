@@ -40,6 +40,7 @@ function update()
   local id, nachricht, _
   local dazu = true
   local ende = 0
+  m.broadcast(port + 1, "update", version)
   if hier then
     hier, _, id, _, _, nachricht = event.pull(Wartezeit, "modem_message")
   else
