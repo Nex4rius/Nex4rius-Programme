@@ -138,6 +138,9 @@ function spairs(t, order)
 end
 
 function anzeigen(tankneu)
+  if debug then
+    require("term").clear()
+  end
   local x = 1
   local y = 1
   local leer = true
