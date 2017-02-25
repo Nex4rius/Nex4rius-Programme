@@ -135,8 +135,8 @@ function main()
     if senden(check()) then
       zeit = maxzeit / 3
     end
-    os.sleep(zeit / 2)
-    empfangen = {event.pull(zeit / 2, "modem_message")}
+    os.sleep(4)
+    empfangen = {event.pull(zeit, "modem_message")}
     standby()
     local a = tps()
     if     a >= 15 then
