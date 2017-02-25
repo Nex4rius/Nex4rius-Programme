@@ -226,7 +226,7 @@ function anzeigenLoop(i, x, y, maxanzahl, anzahl, AnzahlSchmal, schreiben)
     zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 28))
   end
   y = y + 3
-  return x, y, maxanzahl, AnzahlSchmal
+  return x, y, maxanzahl, anzahl, AnzahlSchmal
 end
 
 function zeichenErsetzen(...)
