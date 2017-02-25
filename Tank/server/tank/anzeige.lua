@@ -157,6 +157,7 @@ function anzeigen(tankneu)
       x, y, anzahl, AnzahlSchmal = anzeigenLoop(i, x, y, #tankneu, anzahl - vierteSpalteAnzahl, AnzahlSchmal)
     end
     leer = false
+    gpu.set(1, 1, string.format("%s   %s   %s   teil1   ", x, y, anzahl))
   end
   x, y = 1, 1
   for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
@@ -164,6 +165,7 @@ function anzeigen(tankneu)
       AnzahlSchmal = AnzahlSchmal - 1
       x, y, anzahl, AnzahlSchmal = anzeigenLoop(i, x, y, #tankneu, anzahl + 32, AnzahlSchmal)
     end
+    gpu.set(1, 1, string.format("%s   %s   %s   teil2   ", x, y, anzahl))
   end
   Farben(0xFFFFFF, 0x000000)
   for i = anzahl, 33 do
