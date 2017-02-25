@@ -36,6 +36,9 @@ function Funktionen.Pfad(versionTyp)
 end
 
 function Funktionen.installieren(versionTyp)
+  gpu.setBackground(0x000000)
+  gpu.setForeground(0xFFFFFF)
+  require("term").clear()
   local weiter = true
   while weiter do
     print("\n\nserver (display) / client (adapter + tank)?\n")
@@ -136,7 +139,7 @@ function Funktionen.installieren(versionTyp)
   if updateKomplett then
     print("\nUpdate komplett\n" .. version .. " " .. string.upper(tostring(versionTyp)))
     os.sleep(2)
-    loadfile("/autorun.lua")()
+    pcall(loadfile("/autorun.lua"))
   else
     print("\nERROR install / update failed\n")
   end

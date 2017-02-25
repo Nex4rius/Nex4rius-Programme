@@ -12,7 +12,6 @@ local m          = component.modem
 
 local standby    = function() end
 local tps        = function() return 20 end
-local einServer  = false
 local port       = 70
 local maxzeit    = 45
 local tpsZeit    = 1
@@ -122,11 +121,7 @@ function senden(warten, nachricht)
       end
     end
   end
-  if adresse and einServer then
-    m.send(adresse, port, serialize(nachricht))
-  else
-    m.broadcast(port, serialize(nachricht))
-  end
+  m.broadcast(port, serialize(nachricht))
   return warten
 end
 
@@ -140,8 +135,8 @@ function main()
     if senden(check()) then
       zeit = maxzeit / 3
     end
-    os.sleep(zeit / 2)
-    empfangen = {event.pull(zeit / 2, "modem_message")}
+    os.sleep(4)
+    empfangen = {event.pull(zeit, "modem_message")}
     standby()
     local a = tps()
     if     a >= 15 then
@@ -155,5 +150,7 @@ function main()
     end
   end
 end
+
+loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tank Client")
 
 main()
