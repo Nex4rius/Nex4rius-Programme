@@ -156,6 +156,9 @@ function anzeigen(tankneu)
   os.sleep(0.1)
   for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
     anzahl = anzahl + 1
+    if anzahl > 64 then
+      break
+    end
     if anzahl > 16 and AnzahlSchmal ~= vierteSpalteAnzahl and AnzahlSchmal > 0 then
       vierteSpalteAnzahl = vierteSpalteAnzahl + 1
     else
