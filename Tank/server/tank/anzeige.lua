@@ -176,7 +176,7 @@ function anzeigen(tankneu)
       anzahl = anzahl + 1
       if anzahl > 16 and AnzahlSchmal > 0 then
         AnzahlSchmal = AnzahlSchmal - 1
-        x, y, AnzahlSchmal = anzeigenLoop(i, x, y, #tankneu, anzahl + 32, AnzahlSchmal)
+        x, y, AnzahlSchmal = anzeigenLoop(i, x, y, tankneu, anzahl + 32, AnzahlSchmal)
       elseif AnzahlSchmal == 0 then
         break
       end
@@ -198,29 +198,29 @@ function anzeigen(tankneu)
   end
 end
 
-function anzeigenLoop(i, x, y, maxanzahl, anzahl, AnzahlSchmal, schreiben)
+function anzeigenLoop(i, x, y, tankneu, anzahl, AnzahlSchmal, schreiben)
   local links, rechts, breite = -15, -25, 40
-  if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
+  if (32 - #tankneu) >= anzahl and #tankneu < 32 then
     links, rechts = 40, 40
     breite = 160
-  elseif (64 - maxanzahl) >= anzahl and maxanzahl > 16 then
+  elseif (64 - #tankneu) >= anzahl and #tankneu > 16 then
     links, rechts = 0, 0
     breite = 80
   elseif anzahl <= 16 then
     AnzahlSchmal = AnzahlSchmal + 1
   end
   if anzahl == 17 or anzahl == 33 or anzahl == 49 then
-    if maxanzahl > 48 and anzahl > 48 then
+    if #tankneu > 48 and anzahl > 48 then
       x = 41
-      y = 1 + 3 * (64 - maxanzahl)
+      y = 1 + 3 * (64 - #tankneu)
       breite = 40
-    elseif maxanzahl > 32 and anzahl > 32 then
+    elseif #tankneu > 32 and anzahl > 32 then
       x = 121
-      y = 1 + 3 * (48 - maxanzahl)
+      y = 1 + 3 * (48 - #tankneu)
       breite = 40
     else
       x = 81
-      y = 1 + 3 * (32 - maxanzahl)
+      y = 1 + 3 * (32 - #tankneu)
     end
     if y < 1 then
       y = 1
