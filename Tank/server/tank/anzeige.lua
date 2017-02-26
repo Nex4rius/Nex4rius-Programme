@@ -29,11 +29,11 @@ if fs.exists("/bin/standby.lua") then
 end
 
 if fs.exists("/tank/version.txt") then
-    local f = io.open ("/tank/version.txt", "r")
-    version = f:read()
-    f:close()
-  else
-    version = "<FEHLER>"
+  local f = io.open ("/tank/version.txt", "r")
+  version = f:read()
+  f:close()
+else
+  version = "<FEHLER>"
 end
 
 function update()
