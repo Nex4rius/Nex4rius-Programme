@@ -146,10 +146,11 @@ function anzeigen(tankneu)
   local y = 1
   local leer = true
   local anzahl = 0
+  local maxanzahl = #tankneu
   local AnzahlSchmal = 0
   local vierteSpalteAnzahl = 0
-  if #tankneu <= 16 and #tankneu ~= 0 then
-    gpu.setResolution(160, #tankneu * 3)
+  if maxanzahl <= 16 and maxanzahl ~= 0 then
+    gpu.setResolution(160, maxanzahl * 3)
   else
     gpu.setResolution(160, 48)
   end
@@ -159,30 +160,30 @@ function anzeigen(tankneu)
     if anzahl > 64 then
       break
     end
-    if anzahl > 16 and AnzahlSchmal ~= vierteSpalteAnzahl and AnzahlSchmal > 0 then
+    if anzahl > 16 and AnzahlSchmal ~= vierteSpalteAnzahl and AnzahlSchmal > 0 and maxanzahl > 48 then
       vierteSpalteAnzahl = vierteSpalteAnzahl + 1
     else
-      x, y, AnzahlSchmal = anzeigenLoop(i, x, y, #tankneu, anzahl - vierteSpalteAnzahl, AnzahlSchmal)
+      x, y, AnzahlSchmal = anzeigenLoop(i, x, y, maxanzahl, anzahl - vierteSpalteAnzahl, AnzahlSchmal)
     end
     leer = false
     if debug then
-      gpu.set(1, 1, string.format("%s   %s   %s   %s   teil_1   ", anzahl, x, y, vierteSpalteAnzahl))
-      os.sleep(0.3)
+      gpu.set(1, 1, string.format("Anzahl:%s   X:%s   Y:%s   vierte:%s   teil_1   ", anzahl, x, y, vierteSpalteAnzahl))
+      os.sleep(0.2)
     end
   end
-  if #tankneu > 48 then
+  if maxanzahl > 48 then
     anzahl, x, y = 0, 1, 1
     for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
       anzahl = anzahl + 1
       if anzahl > 16 and AnzahlSchmal > 0 then
         AnzahlSchmal = AnzahlSchmal - 1
-        x, y, AnzahlSchmal = anzeigenLoop(i, x, y, #tankneu, anzahl + 32, AnzahlSchmal)
+        x, y, AnzahlSchmal = anzeigenLoop(i, x, y, maxanzahl, anzahl + 32, AnzahlSchmal)
       elseif AnzahlSchmal == 0 then
         break
       end
       if debug then
-        gpu.set(1, 1, string.format("%s   %s   %s  %s   teil_2   ", anzahl, x, y, vierteSpalteAnzahl))
-        os.sleep(0.3)
+        gpu.set(1, 1, string.format("Anzahl:%s   X:%s   Y:%s   vierte:%s   teil_2   ", anzahl, x, y, vierteSpalteAnzahl))
+        os.sleep(0.2)
       end
     end
   end
@@ -198,29 +199,29 @@ function anzeigen(tankneu)
   end
 end
 
-function anzeigenLoop(i, x, y, max, anzahl, AnzahlSchmal, schreiben)
+function anzeigenLoop(i, x, y, maxanzahl, anzahl, AnzahlSchmal, schreiben)
   local links, rechts, breite = -15, -25, 40
-  if (32 - max) >= anzahl and max < 32 then
+  if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
     links, rechts = 40, 40
     breite = 160
-  elseif (64 - max) >= anzahl and max > 16 then
+  elseif (64 - maxanzahl) >= anzahl and maxanzahl > 16 then
     links, rechts = 0, 0
     breite = 80
   elseif anzahl <= 16 then
     AnzahlSchmal = AnzahlSchmal + 1
   end
   if anzahl == 17 or anzahl == 33 or anzahl == 49 then
-    if max > 48 and anzahl > 48 then
+    if maxanzahl > 48 and anzahl > 48 then
       x = 41
-      y = 1 + 3 * (64 - max)
+      y = 1 + 3 * (64 - maxanzahl)
       breite = 40
-    elseif max > 32 and anzahl > 32 then
+    elseif maxanzahl > 32 and anzahl > 32 then
       x = 121
-      y = 1 + 3 * (48 - max)
+      y = 1 + 3 * (48 - maxanzahl)
       breite = 40
     else
       x = 81
-      y = 1 + 3 * (32 - max)
+      y = 1 + 3 * (32 - maxanzahl)
     end
     if y < 1 then
       y = 1
