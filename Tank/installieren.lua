@@ -29,9 +29,9 @@ end
 
 function Funktionen.Pfad(versionTyp)
   if versionTyp then
-    return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/" .. versionTyp .. "/Tank/" .. typ .. "/"
+    return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/" .. versionTyp .. "/Tank/"
   else
-    return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/" .. typ .. "/"
+    return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/"
   end
 end
 
@@ -56,15 +56,15 @@ function Funktionen.installieren(versionTyp)
   local anzahl = 3
   local update = {}
   loadfile("/bin/pastebin.lua")("run", "-f", "63v6mQtK", versionTyp)
-  update[1]   = wget("-f", Funktionen.Pfad(versionTyp) .. "autorun.lua",       "/update/autorun.lua")
-  update[2]   = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/version.txt",  "/update/tank/version.txt")
+  update[1]   = wget("-f", Funktionen.Pfad(versionTyp) .. typ .. "/autorun.lua",       "/update/autorun.lua")
+  update[2]   = wget("-f", Funktionen.Pfad(versionTyp) ..        "/version.txt",       "/update/tank/version.txt")
   if typ == "client" then
-    update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/auslesen.lua", "/update/tank/auslesen.lua")
+    update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. typ .. "/tank/auslesen.lua", "/update/tank/auslesen.lua")
     loadfile("/bin/pastebin.lua")("run", "-f", "ZbxDmMeC", versionTyp)
   else
-    update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/farben.lua",   "/update/tank/farben.lua")
-    update[4] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/anzeige.lua",  "/update/tank/anzeige.lua")
-    update[5] = wget("-f", Funktionen.Pfad(versionTyp) .. "tank/ersetzen.lua", "/update/tank/ersetzen.lua")
+    update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. typ .. "/tank/farben.lua",   "/update/tank/farben.lua")
+    update[4] = wget("-f", Funktionen.Pfad(versionTyp) .. typ .. "/tank/anzeige.lua",  "/update/tank/anzeige.lua")
+    update[5] = wget("-f", Funktionen.Pfad(versionTyp) .. typ .. "/tank/ersetzen.lua", "/update/tank/ersetzen.lua")
     anzahl = 5
   end
   for i = 1, anzahl do

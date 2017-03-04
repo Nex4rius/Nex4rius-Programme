@@ -14,7 +14,7 @@ local ersetzen        = loadfile("/tank/ersetzen.lua")()
 local gpu             = component.getPrimary("gpu")
 local m               = component.modem
 
-local version, tankneu, energie, hier
+local version, tankneu, energie
 
 local port            = 70
 local tank            = {}
@@ -37,15 +37,9 @@ if fs.exists("/tank/version.txt") then
 end
 
 function update()
-  local id, nachricht, _
   local dazu = true
   local ende = 0
-  m.broadcast(port + 1, "update", version)
-  if hier then
-    hier, _, id, _, _, nachricht = event.pull(Wartezeit, "modem_message")
-  else
-    hier, _, id, _, _, nachricht = event.pull("modem_message")
-  end
+  local hier, _, id, _, _, nachricht = event.pull(Wartezeit, "modem_message")
   if hier then
     letzteNachricht = c.uptime()
     for i in pairs(tank) do
@@ -139,52 +133,58 @@ function spairs(t, order)
 end
 
 function anzeigen(tankneu)
-  if debug then
-    require("term").clear()
-  end
   local x = 1
   local y = 1
   local leer = true
-  local anzahl = 0
-  local AnzahlSchmal = 0
-  local vierteSpalteAnzahl = 0
-  if #tankneu <= 16 and #tankneu ~= 0 then
-    gpu.setResolution(160, #tankneu * 3)
+  local maxanzahl = 0
+  for i in pairs(tankneu) do
+    maxanzahl = maxanzahl + 1
+  end
+  if maxanzahl <= 16 and maxanzahl ~= 0 then
+    gpu.setResolution(160, maxanzahl * 3)
   else
     gpu.setResolution(160, 48)
   end
   os.sleep(0.1)
+  local anzahl = 0
   for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
     anzahl = anzahl + 1
-    if anzahl > 64 then
-      break
+    local links, rechts, breite = -15, -25, 40
+    if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
+      links, rechts = 40, 40
+      breite = 160
+    elseif (64 - maxanzahl) >= anzahl and maxanzahl > 16 then
+      links, rechts = 0, 0
+      breite = 80
     end
-    if anzahl > 16 and AnzahlSchmal ~= vierteSpalteAnzahl and AnzahlSchmal > 0 then
-      vierteSpalteAnzahl = vierteSpalteAnzahl + 1
-    else
-      x, y, AnzahlSchmal = anzeigenLoop(i, x, y, #tankneu, anzahl - vierteSpalteAnzahl, AnzahlSchmal)
+    if anzahl == 17 or anzahl == 33 or anzahl == 49 then
+      if maxanzahl > 48 and anzahl > 48 then
+        x = 41
+        y = 1 + 3 * (64 - maxanzahl)
+        breite = 40
+      elseif maxanzahl > 32 and anzahl > 32 then
+        x = 121
+        y = 1 + 3 * (48 - maxanzahl)
+        breite = 40
+      else
+        x = 81
+        y = 1 + 3 * (32 - maxanzahl)
+      end
+      if y < 1 then
+        y = 1
+      end
     end
+    local name = string.gsub(tankneu[i].name, "%p", "")
+    local label = zeichenErsetzen(string.gsub(tankneu[i].label, "%p", ""))
+    local menge = tankneu[i].menge
+    local maxmenge = tankneu[i].maxmenge
+    local prozent = string.format("%.1f%%", menge / maxmenge * 100)
+    if label == "fluidhelium3" then
+      label = "Helium-3"
+    end
+    zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 28))
     leer = false
-    if debug then
-      gpu.set(1, 1, string.format("%s   %s   %s   %s   teil_1   ", anzahl, x, y, vierteSpalteAnzahl))
-      os.sleep(0.3)
-    end
-  end
-  if #tankneu > 48 then
-    anzahl, x, y = 0, 1, 1
-    for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
-      anzahl = anzahl + 1
-      if anzahl > 16 and AnzahlSchmal > 0 then
-        AnzahlSchmal = AnzahlSchmal - 1
-        x, y, AnzahlSchmal = anzeigenLoop(i, x, y, #tankneu, anzahl + 32, AnzahlSchmal)
-      elseif AnzahlSchmal == 0 then
-        break
-      end
-      if debug then
-        gpu.set(1, 1, string.format("%s   %s   %s  %s   teil_2   ", anzahl, x, y, vierteSpalteAnzahl))
-        os.sleep(0.3)
-      end
-    end
+    y = y + 3
   end
   Farben(0xFFFFFF, 0x000000)
   for i = anzahl, 33 do
@@ -196,50 +196,6 @@ function anzeigen(tankneu)
   if leer then
     keineDaten()
   end
-end
-
-function anzeigenLoop(i, x, y, maxanzahl, anzahl, AnzahlSchmal, schreiben)
-  local links, rechts, breite = -15, -25, 40
-  if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
-    links, rechts = 40, 40
-    breite = 160
-  elseif (64 - maxanzahl) >= anzahl and maxanzahl > 16 then
-    links, rechts = 0, 0
-    breite = 80
-  elseif anzahl <= 16 then
-    AnzahlSchmal = AnzahlSchmal + 1
-  end
-  if anzahl == 17 or anzahl == 33 or anzahl == 49 then
-    if maxanzahl > 48 and anzahl > 48 then
-      x = 41
-      y = 1 + 3 * (64 - maxanzahl)
-      breite = 40
-    elseif maxanzahl > 32 and anzahl > 32 then
-      x = 121
-      y = 1 + 3 * (48 - maxanzahl)
-      breite = 40
-    else
-      x = 81
-      y = 1 + 3 * (32 - maxanzahl)
-    end
-    if y < 1 then
-      y = 1
-    end
-  end
-  local name = string.gsub(tankneu[i].name, "%p", "")
-  local label = zeichenErsetzen(string.gsub(tankneu[i].label, "%p", ""))
-  local menge = tankneu[i].menge
-  local maxmenge = tankneu[i].maxmenge
-  local prozent = string.format("%.1f%%", menge / maxmenge * 100)
-  if label == "fluidhelium3" then
-    label = "Helium-3"
-  end
-  zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 28))
-  y = y + 3
-  if debug then
-    gpu.set(x, y - 1, string.format("%s   %s    ", anzahl, AnzahlSchmal))
-  end
-  return x, y, AnzahlSchmal
 end
 
 function zeichenErsetzen(...)
@@ -333,7 +289,5 @@ function main()
   end
   beenden() -- bisher nie
 end
-
-loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tank Server")
 
 main()
