@@ -23,6 +23,8 @@ return {
 ["fluidliquidsulfuricheavyfuel"] = "Sulfuric Heavy Fuel",
 ["fluidliquidsulfuriclightfuel"] = "Sulfuric Light Fuel",
 ["fluidliquidtoluene"]           = "Toluene",
+["fluidnitricacid"]              = "Nitric Acid",
+["fluidnitragtionmixture"]       = "Nitration Mixture",
 ["fluidmercury"]                 = "Mercury",
 ["fluidmoltenepoxid"]            = "Molten Epoxid",
 ["fluidmoltenplastic"]           = "Molten Polyethylene",
