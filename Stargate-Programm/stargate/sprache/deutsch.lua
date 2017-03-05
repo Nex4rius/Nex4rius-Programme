@@ -103,7 +103,7 @@ return {
   redstoneAusschalten       = "Redstone ausschalten: ",
   colorfulLampAusschalten   = "ColorfulLamp ausschalten: ",
   verarbeiteAdressen        = "Verarbeite Adressen: ",
-  Hilfetext                 = "Verwendung: autorun [...]\nja\t-> Aktualisierung zur stabilen Version\nnein\t-> keine Aktualisierung\nbeta\t-> Aktualisierung zur Beta-Version\nhilfe\t-> zeige diese Nachricht nochmal",
+  Hilfetext                 = "Verwendung: stargate [...]\nja\t-> Aktualisierung zur stabilen Version\nnein\t-> keine Aktualisierung\nbeta\t-> Aktualisierung zur Beta-Version\nhilfe\t-> zeige diese Nachricht nochmal",
   Sprachaenderung           = "Sprachänderung ab nächstem Neustart",
   entwicklerName            = "Entwickler:",
   IDCgesendet               = "sende IDC",
