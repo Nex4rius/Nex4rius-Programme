@@ -98,7 +98,6 @@ return {
   StatusNameVerbunden       = "Connected",
   StatusNameSchliessend     = "Closing",
   Neustart                  = "restart",
-  verfuegbareSprachen       = "deutsch / english / russian",
   IrisSteuerungName         = "Control",
   ausschaltenName           = "shutting down...",
   redstoneAusschalten       = "turn off redstone: ",
