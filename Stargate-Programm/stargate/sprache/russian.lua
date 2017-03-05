@@ -99,7 +99,6 @@ return {
   StatusNameVerbunden       = "Активный туннель",
   StatusNameSchliessend     = "Разрыв соединения",
   Neustart                  = "перезапуск",
-  verfuegbareSprachen       = "deutsch / english / russian",
   IrisSteuerungName         = "Управление",
   ausschaltenName           = "отключение...",
   redstoneAusschalten       = "выключить редстоун: ",
