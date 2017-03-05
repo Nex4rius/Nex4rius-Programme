@@ -9,12 +9,6 @@ local term                      = require("term")
 local event                     = require("event")
 local fs                        = require("filesystem")
 
-local standby                   = function() end
-
-if fs.exists("/lib/standby.lua") then
-  standby                       = require("standby")
-end
-
 local edit                      = loadfile("/bin/edit.lua")
 local schreibSicherungsdatei    = loadfile("/stargate/schreibSicherungsdatei.lua")
 local Sicherung                 = loadfile("/stargate/Sicherungsdatei.lua")()
@@ -1378,7 +1372,6 @@ function Funktion.eventLoop()
         Funktion.checken(f, e)
       end
     end
-    standby()
     Funktion.zeigeAnzeige()
   end
 end
