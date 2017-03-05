@@ -104,7 +104,7 @@ return {
   redstoneAusschalten       = "vypnout redstone: ",
   colorfulLampAusschalten   = "vypnout colorfulLamp: ",
   verarbeiteAdressen        = "Zpracovani adresy: ",
-  Hilfetext                 = "Usage: autorun [...]\nano\t-> aktualizuje na stabilni verzi\nne\t-> zadny update\nbeta\t-> aktualizace na beta verzi\npomoc\t-> zobrazi tuto zpravu znova",
+  Hilfetext                 = "Usage: stargate [...]\nano\t-> aktualizuje na stabilni verzi\nne\t-> zadny update\nbeta\t-> aktualizace na beta verzi\npomoc\t-> zobrazi tuto zpravu znova",
   Sprachaenderung           = "jazyk se zmeni po restartu",
   entwicklerName            = "Vyvojar:",
   IDCgesendet               = "odesilani IDC",
