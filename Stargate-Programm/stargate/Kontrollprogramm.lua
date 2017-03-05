@@ -314,7 +314,7 @@ function Funktion.Infoseite()
   print(sprachen.Steuerung)
   if iris == "Offline" then
   else
-    print("I " .. sprachen.IrisSteuerung .. sprachen.an_aus)
+    print("I " .. string.sub(string.gsub(sprachen.IrisSteuerung, "%s+", "") .. " " .. sprachen.an_aus, 1, 28))
     i = i + 1
     Taste.links[i] = Taste.i
   end
