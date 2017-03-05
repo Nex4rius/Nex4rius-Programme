@@ -1,6 +1,7 @@
 -- pastebin run -f YVqKFnsP
--- von DOOBW
+-- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
+-- translation by DOOBW
 
 return {
   pruefeKomponenten         = "Проверка компонентов\n",
