@@ -44,7 +44,7 @@ function Funktion.checkSprache()
     while weiter do
       print("Sprache? / Language?")
       for i in pairs(alleSprachen) do
-        io.write(alleSprachen[i] .. "\t")
+        io.write(alleSprachen[i] .. "   ")
       end
       io.write("\n\n")
       antwortFrageSprache = string.lower(tostring(io.read()))
