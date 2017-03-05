@@ -77,7 +77,7 @@ function Funktionen.installieren(versionTyp)
   update[10]= wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/sprache/russian.lua",       "/update/stargate/sprache/russian.lua")
   update[11]= wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/sprache/czech.lua",         "/update/stargate/sprache/czech.lua")
   update[12]= wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/sprache/ersetzen.lua",      "/update/stargate/sprache/ersetzen.lua")
-  for i = 1, 11 do
+  for i = 1, 12 do
     if update[i] then
       updateKomplett = true
     else
