@@ -19,7 +19,7 @@ return {
 ["fluidliquidlightfuel"]         = "Light Fuel",
 ["fluidliquidlpg"]               = "LPG",
 ["fluidliquidnaphtha"]           = "Naphtha",
-["fluidliquidnitragtionmixture"] = "Nitration Mixture",
+["fluidliquidnitrationmixture"]  = "Nitration Mixture",
 ["fluidliquidsulfuricgas"]       = "Sulfuric Gas",
 ["fluidliquidsulfuricheavyfuel"] = "Sulfuric Heavy Fuel",
 ["fluidliquidsulfuriclightfuel"] = "Sulfuric Light Fuel",
