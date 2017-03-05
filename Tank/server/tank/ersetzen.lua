@@ -51,6 +51,7 @@ return {
 ["fluidmoltensilicon"]           = "Molten Silicon",
 ["fluidmoltenmagnesium"]         = "Molten Magnesium",
 ["fluidnitrogendioxide"]         = "Nitrogen Dioxide",
+["fluidradon"]                   = "Radon",
 ["fluidsulfuricacid"]            = "Sulfuric Acid",
 ["lpg"]                          = "LPG",
 ["plastic"]                      = "Liquid Plastic",
