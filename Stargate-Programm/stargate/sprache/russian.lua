@@ -1,7 +1,6 @@
 -- pastebin run -f YVqKFnsP
--- von Nex4rius
+-- von DOOBW
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
--- translation by DOOBW
 
 return {
   pruefeKomponenten         = "Проверка компонентов\n",
@@ -99,12 +98,13 @@ return {
   StatusNameVerbunden       = "Активный туннель",
   StatusNameSchliessend     = "Разрыв соединения",
   Neustart                  = "перезапуск",
+  verfuegbareSprachen       = "deutsch / english / russian",
   IrisSteuerungName         = "Управление",
   ausschaltenName           = "отключение...",
   redstoneAusschalten       = "выключить редстоун: ",
   colorfulLampAusschalten   = "выключить цветную лампу: ",
   verarbeiteAdressen        = "Верификация адресов: ",
-  Hilfetext                 = "Использование: stargate [...]\nyes\t-> обновить до стабильной версии\nno\t-> не обновять\nbeta\t-> обновить до беты\nhelp\t-> показать это сообщение",
+  Hilfetext                 = "Использование: autorun [...]\nyes\t-> обновить до стабильной версии\nno\t-> не обновять\nbeta\t-> обновить до беты\nhelp\t-> показать это сообщение",
   Sprachaenderung           = "язык будет изменен при следующем запуске",
   entwicklerName            = "Разработчик:",
   IDCgesendet               = "отправка IDC",
