@@ -53,7 +53,7 @@ hilfe -> zeige diese Nachricht nochmal
 
 <a href="https://oc.cil.li/index.php?/topic/1062-sg-craft-stargate-control-program/">Forum</a>
 
-Macht pull request (zu beta) wenn ihr wollt :)
+Macht pull request wenn ihr wollt :)
 
 getestet mit:<br>
 OpenComputers-MC1.7.10-1.6.1.11-universal<br>
@@ -115,7 +115,7 @@ help  -> show this message again
 
 <a href="https://oc.cil.li/index.php?/topic/1062-sg-craft-stargate-control-program/">Forum</a>
 
-Make pull requests (to beta) if you want :)
+Make pull requests if you want :)
 
 tested with:<br>
 OpenComputers-MC1.7.10-1.6.1.11-universal<br>

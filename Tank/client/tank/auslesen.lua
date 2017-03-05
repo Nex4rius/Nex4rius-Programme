@@ -125,35 +125,28 @@ function senden(warten, nachricht)
   return warten
 end
 
-function loop()
-  zeit = maxzeit * tpsZeit
-  if senden(check()) then
-    zeit = maxzeit / 3
-  end
-  os.sleep(5)
-  empfangen = {event.pull(zeit, "modem_message")}
-  standby()
-  local a = tps()
-  if     a >= 15 then
-    tpsZeit = 1
-  elseif a >= 10 then
-    tpsZeit = 1.5
-  elseif a >= 5 then
-    tpsZeit = 2
-  else
-    tpsZeit = 3
-  end
-end
-
 function main()
   if m.isWireless() then
     m.setStrength(tonumber(reichweite + 5))
   end
   m.open(port + 1)
   while true do
-    if not pcall(loop) then
-      standby()
-      os.sleep(5)
+    zeit = maxzeit * tpsZeit
+    if senden(check()) then
+      zeit = maxzeit / 3
+    end
+    os.sleep(4)
+    empfangen = {event.pull(zeit, "modem_message")}
+    standby()
+    local a = tps()
+    if     a >= 15 then
+      tpsZeit = 1
+    elseif a >= 10 then
+      tpsZeit = 1.5
+    elseif a >= 5 then
+      tpsZeit = 2
+    else
+      tpsZeit = 3
     end
   end
 end
