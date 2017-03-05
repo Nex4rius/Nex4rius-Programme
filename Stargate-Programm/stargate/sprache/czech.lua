@@ -99,7 +99,6 @@ return {
   StatusNameVerbunden       = "Pripojeno",
   StatusNameSchliessend     = "Zavirani",
   Neustart                  = "restart",
-  verfuegbareSprachen       = "deutsch / english / russian / czech",
   IrisSteuerungName         = "Kontrola",
   ausschaltenName           = "vypinani...",
   redstoneAusschalten       = "vypnout redstone: ",
