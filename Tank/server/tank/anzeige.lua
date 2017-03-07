@@ -284,7 +284,9 @@ function main()
   gpu.set(1, 50, "Warte auf Daten")
   m.broadcast(port + 1, "update", version)
   while laeuft do
-    update()
+    if not pcall(update) then
+      os.sleep(5)
+    end
     standby()
   end
   beenden() -- bisher nie
