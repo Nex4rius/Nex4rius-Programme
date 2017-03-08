@@ -321,7 +321,7 @@ function Funktion.Infoseite()
   print(sprachen.Steuerung)
   if iris == "Offline" then
   else
-    print("I " .. string.sub(sprachen.IrisSteuerung .. " " .. string.gsub(sprachen.an_aus, "%s+", ""), 1, 28))
+    print("I " .. string.sub(sprachen.IrisSteuerung .. " " .. sprachen.an_aus, 1, 28))
     i = i + 1
     Taste.links[i] = Taste.i
     Taste.Koordinaten.Taste_i = i
@@ -420,9 +420,9 @@ end
 
 function Funktion.zeigeMenu()
   Funktion.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
-  --for P = 1, Bildschirmhoehe - 3 do
-  --  Funktion.zeigeHier(1, P, "", xVerschiebung - 3)
-  --end
+  for P = 1, Bildschirmhoehe - 3 do
+    Funktion.zeigeHier(1, P, "", xVerschiebung - 3)
+  end
   term.setCursor(1, 1)
   if seite == -1 then
     Funktion.Infoseite()
