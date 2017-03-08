@@ -9,13 +9,19 @@ local term                      = require("term")
 local event                     = require("event")
 local fs                        = require("filesystem")
 
+local edit                      = loadfile("/bin/edit.lua")
+local schreibSicherungsdatei    = loadfile("/stargate/schreibSicherungsdatei.lua")
+
+if not pcall(loadfile("/stargate/Sicherungsdatei.lua")) then
+  print("Fehler Sicherungsdatei.lua")
+end
+
+local Sicherung                 = loadfile("/stargate/Sicherungsdatei.lua")()
+
 if not pcall(loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")) then
   print(string.format("Fehler %s.lua", Sicherung.Sprache))
 end
 
-local edit                      = loadfile("/bin/edit.lua")
-local schreibSicherungsdatei    = loadfile("/stargate/schreibSicherungsdatei.lua")
-local Sicherung                 = loadfile("/stargate/Sicherungsdatei.lua")()
 local sprachen                  = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
 local ersetzen                  = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
 
