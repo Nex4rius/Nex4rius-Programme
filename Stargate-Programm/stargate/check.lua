@@ -226,7 +226,9 @@ function Funktion.mainCheck()
       loadfile("/bin/edit.lua")("-r", "/log")
       loadfile("/bin/rm.lua")("/log")
     end
-    loadfile("/stargate/Kontrollprogramm.lua")(Funktion.update, Funktion.checkServerVersion, version, graphicT3)
+    if not pcall(loadfile("/stargate/Kontrollprogramm.lua"), Funktion.update, Funktion.checkServerVersion, version, graphicT3) then
+      print("Kontrollprogramm.lua hat einen Fehler")
+    end
   else
     print(string.format("%s\n%s %s/%s", sprachen.fehlerName, sprachen.DateienFehlen, sprachen.ja, sprachen.nein) or "<FEHLER>\nDateien fehlen\nAlles neu herunterladen? ja/nein")
     if Sicherung.autoUpdate then
