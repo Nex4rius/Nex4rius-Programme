@@ -186,12 +186,12 @@ function Funktion.schreibeAdressen()
   f:close()
 end
 
-function Funktion.Farbe(background, foreground)
-  if background then
-    gpu.setBackground(background)
+function Funktion.Farbe(hintergrund, vordergrund)
+  if type(hintergrund) == "number" then
+    gpu.setBackground(hintergrund)
   end
-  if foreground then
-    gpu.setForeground(foreground)
+  if type(vordergrund) == "number" then
+    gpu.setForeground(vordergrund)
   end
 end
 
@@ -242,11 +242,12 @@ end
 
 function Funktion.zeigeHier(x, y, s, h)
   if type(x) == "number" and type(y) == "number" and type(s) == "string" then
-    term.setCursor(x, y)
+    --term.setCursor(x, y)
     if not h then
       h = Bildschirmbreite
     end
-    term.write(s .. string.rep(" ", h - string.len(s)), false)
+    --term.write(s .. string.rep(" ", h - string.len(s)), false)
+    gpu.set(s .. string.rep(" ", h - string.len(s)))
   end
 end
 
