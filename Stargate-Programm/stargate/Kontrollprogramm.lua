@@ -309,27 +309,33 @@ function Funktion.Infoseite()
   print(sprachen.Steuerung)
   if iris == "Offline" then
   else
-    print("I " .. string.sub(string.gsub(sprachen.IrisSteuerung, "%s+", "") .. " " .. sprachen.an_aus, 1, 28))
+    print("I " .. string.sub(sprachen.IrisSteuerung .. " " .. string.gsub(sprachen.an_aus, "%s+", ""), 1, 28))
     i = i + 1
     Taste.links[i] = Taste.i
+    Taste.Koordinaten.Taste-i = i
   end
   print("Z " .. sprachen.AdressenBearbeiten)
   i = i + 1
   Taste.links[i] = Taste.z
+  Taste.Koordinaten.Taste-z = i
   print("Q " .. sprachen.beenden)
   i = i + 1
   Taste.links[i] = Taste.q
+  Taste.Koordinaten.Taste-q = i
   print("L " .. sprachen.EinstellungenAendern)
   i = i + 1
   Taste.links[i] = Taste.l
+  Taste.Koordinaten.Taste-l = i
   print("U " .. sprachen.Update)
   i = i + 1
   Taste.links[i] = Taste.u
+  Taste.Koordinaten.Taste-u = i
   local version_Zeichenlaenge = string.len(version)
   if string.sub(version, version_Zeichenlaenge - 3, version_Zeichenlaenge) == "BETA" or Sicherung.debug then
     print("B " .. sprachen.UpdateBeta)
     i = i + 1
     Taste.links[i] = Taste.b
+    Taste.Koordinaten.Taste-b = i
   end
   print(sprachen.RedstoneSignale)
   Funktion.Farbe(Farben.weisseFarbe, Farben.schwarzeFarbe)
@@ -1150,10 +1156,10 @@ function Taste.c()
   end
 end
 
-function Taste.i(y)
+function Taste.i()
   if seite == -1 then
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-    Funktion.zeigeHier(1, y, "I " .. sprachen.IrisSteuerung .. sprachen.an_aus, 0)
+    Funktion.zeigeHier(1, Taste.Koordinaten.Taste-i, "I " .. string.sub(sprachen.IrisSteuerung .. " " .. string.gsub(sprachen.an_aus, "%s+", ""), 1, 28), 0)
     event.timer(2, Funktion.zeigeMenu)
     if iris == "Offline" then else
       send = true
@@ -1167,10 +1173,10 @@ function Taste.i(y)
   end
 end
 
-function Taste.z(y)
+function Taste.z()
   if seite == -1 then
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-    Funktion.zeigeHier(1, y, "Z " .. sprachen.AdressenBearbeiten, 0)
+    Funktion.zeigeHier(1, Taste.Koordinaten.Taste-z, "Z " .. sprachen.AdressenBearbeiten, 0)
     if Funktion.Tastatur() then
       Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
       screen.setTouchModeInverted(false)
@@ -1186,10 +1192,10 @@ function Taste.z(y)
   end
 end
 
-function Taste.l(y)
+function Taste.l()
   if seite == -1 then
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-    Funktion.zeigeHier(1, y, "L " .. sprachen.EinstellungenAendern, 0)
+    Funktion.zeigeHier(1, Taste.Koordinaten.Taste-l, "L " .. sprachen.EinstellungenAendern, 0)
     if Funktion.Tastatur() then
       Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
       schreibSicherungsdatei(Sicherung)
@@ -1216,11 +1222,11 @@ function Taste.l(y)
   end
 end
 
-function Taste.u(y)
+function Taste.u()
   if seite == -1 then
     Funktion.zeigeNachricht(sprachen.Update)
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-    Funktion.zeigeHier(1, y, "U " .. sprachen.Update, 0)
+    Funktion.zeigeHier(1, Taste.Koordinaten.Taste-u, "U " .. sprachen.Update, 0)
     if component.isAvailable("internet") then
       if version ~= Funktion.checkServerVersion() then
         running = false
@@ -1235,11 +1241,11 @@ function Taste.u(y)
   end
 end
 
-function Taste.b(y)
+function Taste.b()
   if seite == -1 then
     Funktion.zeigeNachricht(sprachen.UpdateBeta)
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-    Funktion.zeigeHier(1, y, "B " .. sprachen.UpdateBeta, 0)
+    Funktion.zeigeHier(1, Taste.Koordinaten.Taste-b, "B " .. sprachen.UpdateBeta, 0)
     if component.isAvailable("internet") then
       running = false
       Variablen.update = "beta"
