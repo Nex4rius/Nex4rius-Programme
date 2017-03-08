@@ -726,7 +726,7 @@ end
 function Funktion.zeigeEnergie()
   if energy == 0 then
     Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2, 0)
-    Funktion.SchreibInAndererFarben(xVerschiebung, zeile, sprachen.keineEnergie, Farben.FehlerFarbe)
+    Funktion.SchreibInAndererFarben(xVerschiebung + string.len("  " .. sprachen.energie1 .. energytype .. sprachen.energie2), zeile, sprachen.keineEnergie, Farben.FehlerFarbe)
   else
     if     energy > 10000000000 then
       energieMenge = string.format("%.3f", energy / 1000000000) .. " G"
