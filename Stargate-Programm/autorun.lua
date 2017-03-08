@@ -8,10 +8,12 @@ local args = shell.parse(...)[1]
 
 shell.setWorkingDirectory("/")
 
-if type(args) == "string" then
-  loadfile("/stargate/check.lua")(args)
-else
-  loadfile("/stargate/check.lua")()
+if type(args) ~= "string" then
+  args = nil
+end
+
+if not pcall(loadfile("/stargate/check.lua"), args) then
+  print("check.lua hat einen Fehler")
 end
 
 require("shell").setWorkingDirectory(alterPfad)

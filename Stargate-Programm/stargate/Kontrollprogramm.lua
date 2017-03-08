@@ -11,7 +11,17 @@ local fs                        = require("filesystem")
 
 local edit                      = loadfile("/bin/edit.lua")
 local schreibSicherungsdatei    = loadfile("/stargate/schreibSicherungsdatei.lua")
+
+if not pcall(loadfile("/stargate/Sicherungsdatei.lua")) then
+  print("Fehler Sicherungsdatei.lua")
+end
+
 local Sicherung                 = loadfile("/stargate/Sicherungsdatei.lua")()
+
+if not pcall(loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")) then
+  print(string.format("Fehler %s.lua", Sicherung.Sprache))
+end
+
 local sprachen                  = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
 local ersetzen                  = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
 
@@ -186,12 +196,12 @@ function Funktion.schreibeAdressen()
   f:close()
 end
 
-function Funktion.Farbe(background, foreground)
-  if background then
-    gpu.setBackground(background)
+function Funktion.Farbe(hintergrund, vordergrund)
+  if type(hintergrund) == "number" then
+    gpu.setBackground(hintergrund)
   end
-  if foreground then
-    gpu.setForeground(foreground)
+  if type(vordergrund) == "number" then
+    gpu.setForeground(vordergrund)
   end
 end
 
@@ -242,16 +252,15 @@ end
 
 function Funktion.zeigeHier(x, y, s, h)
   if type(x) == "number" and type(y) == "number" and type(s) == "string" then
-    term.setCursor(x, y)
     if not h then
       h = Bildschirmbreite
     end
-    term.write(s .. string.rep(" ", h - string.len(s)), false)
+    gpu.set(x, y, s .. string.rep(" ", h - string.len(s)))
   end
 end
 
 function Funktion.ErsetzePunktMitKomma(...)
-  if Sicherung.Sprache == "deutsch" then
+  if sprachen.dezimalkomma == true then
     local Punkt = string.find(..., "%.")
     if type(Punkt) == "number" then
       return string.sub(..., 0, Punkt - 1) .. "," .. string.sub(..., Punkt + 1)
@@ -300,6 +309,10 @@ function Funktion.AdressenLesen()
       Funktion.Farbe(Farben.Adressfarbe)
     end
   end
+  while y < Bildschirmhoehe - 3 do
+    gpu.fill(1, y, 30, 1, " ")
+    y = y + 1
+  end
 end
 
 function Funktion.Infoseite()
@@ -308,27 +321,33 @@ function Funktion.Infoseite()
   print(sprachen.Steuerung)
   if iris == "Offline" then
   else
-    print("I " .. string.sub(string.gsub(sprachen.IrisSteuerung, "%s+", "") .. " " .. sprachen.an_aus, 1, 28))
+    print("I " .. string.sub(sprachen.IrisSteuerung:match("^%s*(.-)%s*$")  .. " " .. sprachen.an_aus, 1, 28))
     i = i + 1
     Taste.links[i] = Taste.i
+    Taste.Koordinaten.Taste_i = i
   end
   print("Z " .. sprachen.AdressenBearbeiten)
   i = i + 1
   Taste.links[i] = Taste.z
+  Taste.Koordinaten.Taste_z = i
   print("Q " .. sprachen.beenden)
   i = i + 1
   Taste.links[i] = Taste.q
+  Taste.Koordinaten.Taste_q = i
   print("L " .. sprachen.EinstellungenAendern)
   i = i + 1
   Taste.links[i] = Taste.l
+  Taste.Koordinaten.Taste_l = i
   print("U " .. sprachen.Update)
   i = i + 1
   Taste.links[i] = Taste.u
+  Taste.Koordinaten.Taste_u = i
   local version_Zeichenlaenge = string.len(version)
   if string.sub(version, version_Zeichenlaenge - 3, version_Zeichenlaenge) == "BETA" or Sicherung.debug then
     print("B " .. sprachen.UpdateBeta)
     i = i + 1
     Taste.links[i] = Taste.b
+    Taste.Koordinaten.Taste_b = i
   end
   print(sprachen.RedstoneSignale)
   Funktion.Farbe(Farben.weisseFarbe, Farben.schwarzeFarbe)
@@ -1149,10 +1168,10 @@ function Taste.c()
   end
 end
 
-function Taste.i(y)
+function Taste.i()
   if seite == -1 then
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-    Funktion.zeigeHier(1, y, "I " .. sprachen.IrisSteuerung .. sprachen.an_aus, 0)
+    Funktion.zeigeHier(1, Taste.Koordinaten.Taste_i, "I " .. string.sub(sprachen.IrisSteuerung:match("^%s*(.-)%s*$") .. " " .. sprachen.an_aus, 1, 28), 0)
     event.timer(2, Funktion.zeigeMenu)
     if iris == "Offline" then else
       send = true
@@ -1166,10 +1185,10 @@ function Taste.i(y)
   end
 end
 
-function Taste.z(y)
+function Taste.z()
   if seite == -1 then
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-    Funktion.zeigeHier(1, y, "Z " .. sprachen.AdressenBearbeiten, 0)
+    Funktion.zeigeHier(1, Taste.Koordinaten.Taste_z, "Z " .. sprachen.AdressenBearbeiten, 0)
     if Funktion.Tastatur() then
       Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
       screen.setTouchModeInverted(false)
@@ -1185,10 +1204,10 @@ function Taste.z(y)
   end
 end
 
-function Taste.l(y)
+function Taste.l()
   if seite == -1 then
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-    Funktion.zeigeHier(1, y, "L " .. sprachen.EinstellungenAendern, 0)
+    Funktion.zeigeHier(1, Taste.Koordinaten.Taste_l, "L " .. sprachen.EinstellungenAendern, 0)
     if Funktion.Tastatur() then
       Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
       schreibSicherungsdatei(Sicherung)
@@ -1215,11 +1234,11 @@ function Taste.l(y)
   end
 end
 
-function Taste.u(y)
+function Taste.u()
   if seite == -1 then
     Funktion.zeigeNachricht(sprachen.Update)
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-    Funktion.zeigeHier(1, y, "U " .. sprachen.Update, 0)
+    Funktion.zeigeHier(1, Taste.Koordinaten.Taste_u, "U " .. sprachen.Update, 0)
     if component.isAvailable("internet") then
       if version ~= Funktion.checkServerVersion() then
         running = false
@@ -1234,11 +1253,11 @@ function Taste.u(y)
   end
 end
 
-function Taste.b(y)
+function Taste.b()
   if seite == -1 then
     Funktion.zeigeNachricht(sprachen.UpdateBeta)
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-    Funktion.zeigeHier(1, y, "B " .. sprachen.UpdateBeta, 0)
+    Funktion.zeigeHier(1, Taste.Koordinaten.Taste_b, "B " .. sprachen.UpdateBeta, 0)
     if component.isAvailable("internet") then
       running = false
       Variablen.update = "beta"
@@ -1497,7 +1516,11 @@ function Funktion.main()
   Funktion.AdressenSpeichern()
   seite = 0
   Funktion.zeigeMenu()
-  Funktion.eventLoop()
+  while running do
+    if not pcall(Funktion.eventLoop) then
+      os.sleep(5)
+    end
+  end
   os.sleep(2)
   Funktion.beendeAlles()
 end

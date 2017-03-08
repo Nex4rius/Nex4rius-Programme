@@ -4,6 +4,7 @@
 -- translation by DOOBW
 
 return {
+  dezimalkomma              = true,
   pruefeKomponenten         = "Проверка компонентов\n",
   redstoneOK                = "- Редстоун карта         есть - опционально",
   redstoneFehlt             = "- Редстоун карта         нет - опционально",

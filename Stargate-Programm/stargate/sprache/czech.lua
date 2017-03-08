@@ -4,6 +4,7 @@
 -- translation by iamceph
 
 return {
+  dezimalkomma              = true,
   pruefeKomponenten         = "Kontrola komponentu\n",
   redstoneOK                = "- Redstone Card        ok - voltene",
   redstoneFehlt             = "- Redstone Card        chybi - voltene",
