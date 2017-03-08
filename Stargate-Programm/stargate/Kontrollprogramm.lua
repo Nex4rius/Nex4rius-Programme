@@ -242,17 +242,15 @@ end
 
 function Funktion.zeigeHier(x, y, s, h)
   if type(x) == "number" and type(y) == "number" and type(s) == "string" then
-    --term.setCursor(x, y)
     if not h then
       h = Bildschirmbreite
     end
-    --term.write(s .. string.rep(" ", h - string.len(s)), false)
     gpu.set(x, y, s .. string.rep(" ", h - string.len(s)))
   end
 end
 
 function Funktion.ErsetzePunktMitKomma(...)
-  if Sicherung.Sprache == "deutsch" then
+  if sprachen.dezimalkomma == true then
     local Punkt = string.find(..., "%.")
     if type(Punkt) == "number" then
       return string.sub(..., 0, Punkt - 1) .. "," .. string.sub(..., Punkt + 1)
