@@ -3,6 +3,7 @@
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
 return {
+  dezimalkomma              = false,
   pruefeKomponenten         = "Checking Components\n",
   redstoneOK                = "- Redstone Card        ok - optional",
   redstoneFehlt             = "- Redstone Card        missing - optional",
