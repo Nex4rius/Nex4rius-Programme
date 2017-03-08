@@ -303,6 +303,10 @@ function Funktion.AdressenLesen()
       Funktion.Farbe(Farben.Adressfarbe)
     end
   end
+  while y < Bildschirmhoehe - 3 do
+    gpu.fill(1, y, 30, 1, " ")
+    y = y + 1
+  end
 end
 
 function Funktion.Infoseite()
@@ -410,9 +414,9 @@ end
 
 function Funktion.zeigeMenu()
   Funktion.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
-  for P = 1, Bildschirmhoehe - 3 do
-    Funktion.zeigeHier(1, P, "", xVerschiebung - 3)
-  end
+  --for P = 1, Bildschirmhoehe - 3 do
+  --  Funktion.zeigeHier(1, P, "", xVerschiebung - 3)
+  --end
   term.setCursor(1, 1)
   if seite == -1 then
     Funktion.Infoseite()
