@@ -9,6 +9,10 @@ local term                      = require("term")
 local event                     = require("event")
 local fs                        = require("filesystem")
 
+if not pcall(loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")) then
+  print(string.format("Fehler %s.lua", Sicherung.Sprache))
+end
+
 local edit                      = loadfile("/bin/edit.lua")
 local schreibSicherungsdatei    = loadfile("/stargate/schreibSicherungsdatei.lua")
 local Sicherung                 = loadfile("/stargate/Sicherungsdatei.lua")()
