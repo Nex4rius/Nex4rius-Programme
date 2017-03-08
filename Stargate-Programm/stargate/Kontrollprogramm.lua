@@ -247,7 +247,7 @@ function Funktion.zeigeHier(x, y, s, h)
       h = Bildschirmbreite
     end
     --term.write(s .. string.rep(" ", h - string.len(s)), false)
-    gpu.set(s .. string.rep(" ", h - string.len(s)))
+    gpu.set(x, y, s .. string.rep(" ", h - string.len(s)))
   end
 end
 
