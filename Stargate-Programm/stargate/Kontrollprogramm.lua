@@ -726,7 +726,7 @@ end
 function Funktion.zeigeEnergie()
   if energy == 0 then
     Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2, 0)
-    Funktion.SchreibInAndererFarben(sprachen.keineEnergie, Farben.FehlerFarbe)
+    Funktion.SchreibInAndererFarben(xVerschiebung + string.len("  " .. sprachen.energie1 .. energytype .. sprachen.energie2), zeile, sprachen.keineEnergie, Farben.FehlerFarbe)
   else
     if     energy > 10000000000 then
       energieMenge = string.format("%.3f", energy / 1000000000) .. " G"
@@ -923,7 +923,7 @@ function Funktion.zeigeStatus()
   Funktion.Colorful_Lamp_Steuerung()
 end
 
-function Funktion.SchreibInAndererFarben(text, textfarbe, hintergrundfarbe, h)
+function Funktion.SchreibInAndererFarben(x, y, text, textfarbe, hintergrundfarbe, h)
   if text then
     local ALT_hintergrundfarbe = gpu.getBackground()
     local ALT_textfarbe = gpu.getForeground()
@@ -931,7 +931,7 @@ function Funktion.SchreibInAndererFarben(text, textfarbe, hintergrundfarbe, h)
     if not h then
       h = Bildschirmbreite
     end
-    term.write(text .. string.rep(" ", h - string.len(text)))
+    gpu.set(x, y, text .. string.rep(" ", h - string.len(text)))
     Funktion.Farbe(ALT_hintergrundfarbe, ALT_textfarbe)
   end
   return " "
