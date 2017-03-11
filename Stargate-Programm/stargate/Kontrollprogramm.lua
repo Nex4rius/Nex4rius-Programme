@@ -1217,9 +1217,11 @@ function Taste.l()
       Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
       if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
         sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
+        ersetzen = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
       else
         print("\nUnbekannte Sprache\nStandardeinstellung = deutsch")
         sprachen = loadfile("/stargate/sprache/deutsch.lua")()
+        ersetzen = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
         os.sleep(1)
       end
       schreibSicherungsdatei(Sicherung)
