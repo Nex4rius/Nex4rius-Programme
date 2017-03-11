@@ -27,7 +27,7 @@ return {
   aktualisierenJa           = "\naktualizace: ano\n",
   aktualisierenNein         = "\nodpoved: ",
   aktualisierenJetzt        = "\n\n\naktualizuji..\n",
-  aktualisierenGleich       = "\nAutomaticka aktualizace, kdyz je stargate necinna.\n",
+  aktualisierenGleich       = "Automaticka aktualizace, kdyz je stargate necinna.",
   laden                     = "\nnacitani...",
   ja                        = "ano",
   nein                      = "ne",
