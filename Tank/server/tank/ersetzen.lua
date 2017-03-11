@@ -55,6 +55,7 @@ return {
 ["fluidnitrogendioxide"]         = "Nitrogen Dioxide",
 ["fluidradon"]                   = "Radon",
 ["fluidsulfuricacid"]            = "Sulfuric Acid",
+["fluidmoltenconcrete"]          = "Wet Concrete",
 ["lpg"]                          = "LPG",
 ["plastic"]                      = "Liquid Plastic",
 }
