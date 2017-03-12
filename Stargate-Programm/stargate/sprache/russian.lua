@@ -27,7 +27,7 @@ return {
   aktualisierenJa           = "\nобновить: да\n",
   aktualisierenNein         = "\nответ: ",
   aktualisierenJetzt        = "\n\n\nобновление...\n",
-  aktualisierenGleich       = "\nАвтоматическое обновление, если врата в режиме ожидания.\n",
+  aktualisierenGleich       = "Автоматическое обновление, если врата в режиме ожидания.",
   laden                     = "\nзагрузка...",
   ja                        = "да",
   nein                      = "нет",
