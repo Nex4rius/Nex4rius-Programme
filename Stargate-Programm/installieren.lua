@@ -73,8 +73,8 @@ function Funktionen.installieren(versionTyp)
   update[6] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/Kontrollprogramm.lua",      "/update/stargate/Kontrollprogramm.lua")
   update[7] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/schreibSicherungsdatei.lua","/update/stargate/schreibSicherungsdatei.lua")
   update[8] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/sprache/ersetzen.lua",      "/update/stargate/sprache/ersetzen.lua")
-  for s in pairs(Sprachliste) do
-    update[s] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/sprache/" .. Sprachliste[s] .. ".lua", "/update/stargate/sprache/" .. Sprachliste[s] .. ".lua")
+  for s, t in pairs(Sprachliste) do
+    update[s] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/sprache/" .. t .. ".lua", "/update/stargate/sprache/" .. t .. ".lua")
   end
   for i = 1, 8 + #Sprachliste do
     if update[i] then
@@ -102,8 +102,8 @@ function Funktionen.installieren(versionTyp)
     copy("/update/stargate/Kontrollprogramm.lua",       "/stargate/Kontrollprogramm.lua")
     copy("/update/stargate/schreibSicherungsdatei.lua", "/stargate/schreibSicherungsdatei.lua")
     copy("/update/stargate/sprache/ersetzen.lua",       "/stargate/sprache/ersetzen.lua")
-    for s in pairs(Sprachliste) do
-      copy("/update/stargate/sprache/" .. Sprachliste[s] .. ".lua", "/stargate/sprache/" .. Sprachliste[s] .. ".lua")
+    for s, t in pairs(Sprachliste) do
+      copy("/update/stargate/sprache/" .. t .. ".lua", "/stargate/sprache/" .. t .. ".lua")
     end
     f = io.open ("/stargate/version.txt", "r")
     version = f:read()
@@ -116,8 +116,6 @@ function Funktionen.installieren(versionTyp)
     Sicherung.installieren = true
     loadfile("/stargate/schreibSicherungsdatei.lua")(Sicherung)
     print()
-    updateKomplett = loadfile("/bin/rm.lua")("-v", "/update", "-r")
-    updateKomplett = loadfile("/bin/rm.lua")("-v", "/installieren.lua")
   end
   local f = io.open ("/bin/stargate.lua", "w")
   f:write('-- pastebin run -f YVqKFnsP\n')
@@ -127,6 +125,8 @@ function Funktionen.installieren(versionTyp)
   f:write('loadfile("/autorun.lua")(require("shell").parse(...)[1])\n')
   f:close()
   if updateKomplett then
+    loadfile("/bin/rm.lua")("-v", "/update", "-r")
+    loadfile("/bin/rm.lua")("-v", "/installieren.lua")
     print("\nUpdate komplett\n" .. version .. " " .. string.upper(tostring(versionTyp)))
     os.sleep(2)
     require("computer").shutdown(true)
