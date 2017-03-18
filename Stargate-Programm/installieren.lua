@@ -4,6 +4,7 @@
 
 require("shell").setWorkingDirectory("/")
 
+local Sprachliste = {"deutsch", "english", "russian", "czech"}
 local fs          = require("filesystem")
 local arg         = require("shell").parse(...)[1]
 local wget        = loadfile("/bin/wget.lua")
@@ -71,12 +72,11 @@ function Funktionen.installieren(versionTyp)
   update[5] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/Sicherungsdatei.lua",       "/update/stargate/Sicherungsdatei.lua")
   update[6] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/Kontrollprogramm.lua",      "/update/stargate/Kontrollprogramm.lua")
   update[7] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/schreibSicherungsdatei.lua","/update/stargate/schreibSicherungsdatei.lua")
-  update[8] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/sprache/deutsch.lua",       "/update/stargate/sprache/deutsch.lua")
-  update[9] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/sprache/english.lua",       "/update/stargate/sprache/english.lua")
-  update[10]= wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/sprache/russian.lua",       "/update/stargate/sprache/russian.lua")
-  update[11]= wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/sprache/czech.lua",         "/update/stargate/sprache/czech.lua")
-  update[12]= wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/sprache/ersetzen.lua",      "/update/stargate/sprache/ersetzen.lua")
-  for i = 1, 12 do
+  update[8] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/sprache/ersetzen.lua",      "/update/stargate/sprache/ersetzen.lua")
+  for s in pairs(Sprachliste) do
+    update[8 + s] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/sprache/" .. Sprachliste[s] .. ".lua", "/update/stargate/sprache/" .. Sprachliste[s] .. ".lua")
+  end
+  for i = 1, 8 + #Sprachliste do
     if update[i] then
       updateKomplett = true
     else
@@ -101,11 +101,10 @@ function Funktionen.installieren(versionTyp)
     end
     copy("/update/stargate/Kontrollprogramm.lua",       "/stargate/Kontrollprogramm.lua")
     copy("/update/stargate/schreibSicherungsdatei.lua", "/stargate/schreibSicherungsdatei.lua")
-    copy("/update/stargate/sprache/deutsch.lua",        "/stargate/sprache/deutsch.lua")
-    copy("/update/stargate/sprache/english.lua",        "/stargate/sprache/english.lua")
-    copy("/update/stargate/sprache/russian.lua",        "/stargate/sprache/russian.lua")
-    copy("/update/stargate/sprache/czech.lua",          "/stargate/sprache/czech.lua")
     copy("/update/stargate/sprache/ersetzen.lua",       "/stargate/sprache/ersetzen.lua")
+    for s in pairs(Sprachliste) do
+      copy("/update/stargate/sprache/" .. Sprachliste[s] .. ".lua", "/stargate/sprache/" .. Sprachliste[s] .. ".lua")
+    end
     f = io.open ("/stargate/version.txt", "r")
     version = f:read()
     f:close()
@@ -117,8 +116,6 @@ function Funktionen.installieren(versionTyp)
     Sicherung.installieren = true
     loadfile("/stargate/schreibSicherungsdatei.lua")(Sicherung)
     print()
-    updateKomplett = loadfile("/bin/rm.lua")("-v", "/update", "-r")
-    updateKomplett = loadfile("/bin/rm.lua")("-v", "/installieren.lua")
   end
   local f = io.open ("/bin/stargate.lua", "w")
   f:write('-- pastebin run -f YVqKFnsP\n')
@@ -128,6 +125,8 @@ function Funktionen.installieren(versionTyp)
   f:write('loadfile("/autorun.lua")(require("shell").parse(...)[1])\n')
   f:close()
   if updateKomplett then
+    loadfile("/bin/rm.lua")("-v", "/update", "-r")
+    loadfile("/bin/rm.lua")("-v", "/installieren.lua")
     print("\nUpdate komplett\n" .. version .. " " .. string.upper(tostring(versionTyp)))
     os.sleep(2)
     require("computer").shutdown(true)
