@@ -73,8 +73,8 @@ function Funktionen.installieren(versionTyp)
   update[6] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/Kontrollprogramm.lua",      "/update/stargate/Kontrollprogramm.lua")
   update[7] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/schreibSicherungsdatei.lua","/update/stargate/schreibSicherungsdatei.lua")
   update[8] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/sprache/ersetzen.lua",      "/update/stargate/sprache/ersetzen.lua")
-  for s, t in pairs(Sprachliste) do
-    update[s] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/sprache/" .. t .. ".lua", "/update/stargate/sprache/" .. t .. ".lua")
+  for s in pairs(Sprachliste) do
+    update[8 + s] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/sprache/" .. Sprachliste[s] .. ".lua", "/update/stargate/sprache/" .. Sprachliste[s] .. ".lua")
   end
   for i = 1, 8 + #Sprachliste do
     if update[i] then
@@ -102,8 +102,8 @@ function Funktionen.installieren(versionTyp)
     copy("/update/stargate/Kontrollprogramm.lua",       "/stargate/Kontrollprogramm.lua")
     copy("/update/stargate/schreibSicherungsdatei.lua", "/stargate/schreibSicherungsdatei.lua")
     copy("/update/stargate/sprache/ersetzen.lua",       "/stargate/sprache/ersetzen.lua")
-    for s, t in pairs(Sprachliste) do
-      copy("/update/stargate/sprache/" .. t .. ".lua", "/stargate/sprache/" .. t .. ".lua")
+    for s in pairs(Sprachliste) do
+      copy("/update/stargate/sprache/" .. Sprachliste[s] .. ".lua", "/stargate/sprache/" .. Sprachliste[s] .. ".lua")
     end
     f = io.open ("/stargate/version.txt", "r")
     version = f:read()
