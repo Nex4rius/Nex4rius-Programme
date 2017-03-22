@@ -1222,6 +1222,7 @@ function Taste.l()
         print("\nUnbekannte Sprache\nStandardeinstellung = deutsch")
         sprachen = loadfile("/stargate/sprache/deutsch.lua")()
         ersetzen = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
+        Sicherung.Sprache = ""
         os.sleep(1)
       end
       schreibSicherungsdatei(Sicherung)

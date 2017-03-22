@@ -11,6 +11,8 @@ return {
 ["fluidgasgas"]                  = "Refinery Gas",
 ["fluidglue"]                    = "Glue",
 ["fluidhelium3"]                 = "Helium-3",
+["fluidfluorine"]                = "Fluorine",
+["fluiddeuterium"]               = "Deuterium",
 ["fluidliquidcrackedheavyfuel"]  = "Cracked Heavy Fuel",
 ["fluidliquidcrackedlightfuel"]  = "Cracked Light Fuel",
 ["fluidliquidepichlorhydrin"]    = "Epichlorhydrin",
