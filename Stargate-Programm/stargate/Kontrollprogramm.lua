@@ -1098,10 +1098,10 @@ function Taste.Pfeil_rechts()
   end
 end
 
-function Taste.q(y)
+function Taste.q()
   if seite == -1 then
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-    Funktion.zeigeHier(1, y, "Q " .. sprachen.beenden, 0)
+    Funktion.zeigeHier(1, Taste.Koordinaten.Taste_q, "Q " .. sprachen.beenden, 0)
     running = false
   end
 end
