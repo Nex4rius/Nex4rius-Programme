@@ -234,13 +234,13 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, b
   end
   Farben(farben[name][1], farben[name][2])
   local ende = 0
-  for i = 1, math.floor(breite * menge / maxmenge) do
+  for i = 1, math.ceil(breite * menge / maxmenge) do
     gpu.set(x, y, string.format(" %s ", nachricht[i]), true)
     x = x + 1
     ende = i
   end
   Farben(farben[name][3], farben[name][4])
-  for i = 1, breite - math.floor(breite * menge / maxmenge) do
+  for i = 1, breite - math.ceil(breite * menge / maxmenge) do
     gpu.set(x, y, string.format(" %s ", nachricht[i + ende]), true)
     x = x + 1
   end
