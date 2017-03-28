@@ -19,9 +19,12 @@ Ein OpenComputer Computer mit folgenden Komponenten:
 
 <a href="https://www.youtube.com/embed/MgWY4es5oEs"><img src="https://i.imgur.com/h6VjgRe.jpg"></a>
 
-```
-pastebin run -f YVqKFnsP
-```
+<hr>
+<code>pastebin run -f YVqKFnsP</code>
+<hr>
+<code>wget -f https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Stargate-Programm/installieren.lua /installieren.lua</code>
+<code>/installieren.lua</code>
+<hr>
 
 Die Funktionen meines Programms:
 
@@ -81,9 +84,12 @@ Make an OpenComputer computer with:
 
 <a href="https://www.youtube.com/embed/MgWY4es5oEs"><img src="https://i.imgur.com/h6VjgRe.jpg"></a>
 
-```
-pastebin run -f YVqKFnsP
-```
+<hr>
+<code>pastebin run -f YVqKFnsP</code>
+<hr>
+<code>wget -f https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Stargate-Programm/installieren.lua /installieren.lua</code>
+<code>/installieren.lua</code>
+<hr>
 
 the features of my program:
 
@@ -143,9 +149,12 @@ ___
 
 <a href="https://www.youtube.com/embed/MgWY4es5oEs"><img src="https://i.imgur.com/h6VjgRe.jpg"></a>
 
-```
-pastebin run -f YVqKFnsP
-```
+<hr>
+<code>pastebin run -f YVqKFnsP</code>
+<hr>
+<code>wget -f https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Stargate-Programm/installieren.lua /installieren.lua</code>
+<code>/installieren.lua</code>
+<hr>
 
 особенности моей программы:
 
