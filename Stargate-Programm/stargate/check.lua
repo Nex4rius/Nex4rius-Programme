@@ -127,8 +127,7 @@ function Funktion.update(versionTyp)
       print(sprachen.fehlerName or "<FEHLER>")
     end
   elseif versionTyp == "master" then
-    --loadfile("/bin/pastebin.lua")("run", "-f", "YVqKFnsP")
-    loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Stargate-Programm/installieren.lua", "/installieren.lua")
+    wget("-f", Funktion.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua")
     loadfile("/installieren.lua")()
   end
   os.exit()
@@ -185,8 +184,7 @@ function Funktion.mainCheck()
       Funktion.update("master")
     elseif arg == "neu" then
       print(sprachen.neuinstallation or "\nNeuinstallation")
-      --loadfile("/bin/pastebin.lua")("run", "-f", "YVqKFnsP", "neu")
-      loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Stargate-Programm/installieren.lua", "/installieren.lua")
+      wget("-f", Funktion.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua")
       loadfile("/installieren.lua")("neu")
     elseif arg == sprachen.nein or arg == "nein" or arg == "no" then
       -- nichts
@@ -238,14 +236,12 @@ function Funktion.mainCheck()
     if Sicherung.autoUpdate then
       print(sprachen.autoUpdateAn or "automatische Aktualisierungen sind aktiviert")
       os.sleep(2)
-      --loadfile("/bin/pastebin.lua")("run", "-f", "YVqKFnsP")
-      loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Stargate-Programm/installieren.lua", "/installieren.lua")
+      wget("-f", Funktion.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua")
       loadfile("/installieren.lua")()
     else
       antwortFrage = io.read()
       if string.lower(antwortFrage) == sprachen.ja or string.lower(antwortFrage) == "ja" or string.lower(antwortFrage) == "yes" then
-        --loadfile("/bin/pastebin.lua")("run", "-f", "YVqKFnsP")
-        loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Stargate-Programm/installieren.lua", "/installieren.lua")
+        wget("-f", Funktion.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua")
         loadfile("/installieren.lua")()
       end
     end
