@@ -19,6 +19,7 @@ Ein OpenComputer Computer mit folgenden Komponenten:
 
 <a href="https://www.youtube.com/embed/MgWY4es5oEs"><img src="https://i.imgur.com/h6VjgRe.jpg"></a>
 
+<h2>Download</h2>
 <hr>
 <code>pastebin run -f YVqKFnsP</code>
 <hr>
@@ -84,6 +85,7 @@ Make an OpenComputer computer with:
 
 <a href="https://www.youtube.com/embed/MgWY4es5oEs"><img src="https://i.imgur.com/h6VjgRe.jpg"></a>
 
+<h2>Download</h2>
 <hr>
 <code>pastebin run -f YVqKFnsP</code>
 <hr>
@@ -149,6 +151,7 @@ ___
 
 <a href="https://www.youtube.com/embed/MgWY4es5oEs"><img src="https://i.imgur.com/h6VjgRe.jpg"></a>
 
+<h2>Download</h2>
 <hr>
 <code>pastebin run -f YVqKFnsP</code>
 <hr>
