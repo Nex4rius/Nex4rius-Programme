@@ -3,9 +3,14 @@
 
 <img src="http://i.imgur.com/gQ5rL3X.gif">
 
-```
-pastebin run -f cyF0yhXZ
-```
+<h2>Download</h2>
+<hr>
+<code>pastebin run -f cyF0yhXZ</code>
+<hr>
+<code>wget -f https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/installieren.lua</code><br />
+<code>/installieren.lua</code>
+<hr>
+
 <a href="https://www.youtube.com/watch?v=avvYO2xSxGw">installation instructions</a>
 
 server / display components:
