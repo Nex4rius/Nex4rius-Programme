@@ -59,8 +59,8 @@ hilfe -> zeige diese Nachricht nochmal
 
 Macht pull request (zu beta) wenn ihr wollt :)
 
-getestet mit:<br>
-OpenComputers-MC1.7.10-1.6.1.11-universal<br>
+getestet mit:<br />
+OpenComputers-MC1.7.10-1.6.2.12-universal<br />
 SGCraft-1.13.3-mc1.7.10
 
 ___
@@ -125,8 +125,8 @@ help  -> show this message again
 
 Make pull requests (to beta) if you want :)
 
-tested with:<br>
-OpenComputers-MC1.7.10-1.6.1.11-universal<br>
+tested with:<br />
+OpenComputers-MC1.7.10-1.6.2.12-universal<br />
 SGCraft-1.13.3-mc1.7.10
 
 ___
@@ -190,6 +190,6 @@ help -> показать это сообщение
 
 Предлагайте свои идеи.
 
-проверено с:<br>
-OpenComputers-MC1.7.10-1.6.1.11-universal<br>
+проверено с:<br />
+OpenComputers-MC1.7.10-1.6.2.12-universal<br />
 SGCraft-1.13.3-mc1.7.10
