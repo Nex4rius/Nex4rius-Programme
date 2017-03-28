@@ -22,7 +22,7 @@ Ein OpenComputer Computer mit folgenden Komponenten:
 <hr>
 <code>pastebin run -f YVqKFnsP</code>
 <hr>
-<code>wget -f https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Stargate-Programm/installieren.lua /installieren.lua</code>
+<code>wget -f https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Stargate-Programm/installieren.lua</code>
 <code>/installieren.lua</code>
 <hr>
 
@@ -87,7 +87,7 @@ Make an OpenComputer computer with:
 <hr>
 <code>pastebin run -f YVqKFnsP</code>
 <hr>
-<code>wget -f https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Stargate-Programm/installieren.lua /installieren.lua</code>
+<code>wget -f https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Stargate-Programm/installieren.lua</code>
 <code>/installieren.lua</code>
 <hr>
 
@@ -152,7 +152,7 @@ ___
 <hr>
 <code>pastebin run -f YVqKFnsP</code>
 <hr>
-<code>wget -f https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Stargate-Programm/installieren.lua /installieren.lua</code>
+<code>wget -f https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Stargate-Programm/installieren.lua</code>
 <code>/installieren.lua</code>
 <hr>
 
