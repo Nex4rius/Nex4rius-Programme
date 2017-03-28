@@ -147,7 +147,7 @@ if versionTyp == nil then
     f:write('-- von Nex4rius\n')
     f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n')
     f:write('\n')
-    f:write('loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Stargate-Programm/installieren.lua", "/installieren.lua")')
+    f:write('wget("-f", Funktionen.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua")')
     f:write('loadfile("/installieren.lua")()')
     f:close()
     Funktionen.installieren("master")
