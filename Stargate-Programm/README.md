@@ -19,9 +19,13 @@ Ein OpenComputer Computer mit folgenden Komponenten:
 
 <a href="https://www.youtube.com/embed/MgWY4es5oEs"><img src="https://i.imgur.com/h6VjgRe.jpg"></a>
 
-```
-pastebin run -f YVqKFnsP
-```
+<h2>Download</h2>
+<hr>
+<code>pastebin run -f YVqKFnsP</code>
+<hr>
+<code>wget -f https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Stargate-Programm/installieren.lua</code><br />
+<code>/installieren.lua</code>
+<hr>
 
 Die Funktionen meines Programms:
 
@@ -55,8 +59,8 @@ hilfe -> zeige diese Nachricht nochmal
 
 Macht pull request (zu beta) wenn ihr wollt :)
 
-getestet mit:<br>
-OpenComputers-MC1.7.10-1.6.1.11-universal<br>
+getestet mit:<br />
+OpenComputers-MC1.7.10-1.6.2.12-universal<br />
 SGCraft-1.13.3-mc1.7.10
 
 ___
@@ -81,9 +85,13 @@ Make an OpenComputer computer with:
 
 <a href="https://www.youtube.com/embed/MgWY4es5oEs"><img src="https://i.imgur.com/h6VjgRe.jpg"></a>
 
-```
-pastebin run -f YVqKFnsP
-```
+<h2>Download</h2>
+<hr>
+<code>pastebin run -f YVqKFnsP</code>
+<hr>
+<code>wget -f https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Stargate-Programm/installieren.lua</code><br />
+<code>/installieren.lua</code>
+<hr>
 
 the features of my program:
 
@@ -117,8 +125,8 @@ help  -> show this message again
 
 Make pull requests (to beta) if you want :)
 
-tested with:<br>
-OpenComputers-MC1.7.10-1.6.1.11-universal<br>
+tested with:<br />
+OpenComputers-MC1.7.10-1.6.2.12-universal<br />
 SGCraft-1.13.3-mc1.7.10
 
 ___
@@ -143,9 +151,13 @@ ___
 
 <a href="https://www.youtube.com/embed/MgWY4es5oEs"><img src="https://i.imgur.com/h6VjgRe.jpg"></a>
 
-```
-pastebin run -f YVqKFnsP
-```
+<h2>Download</h2>
+<hr>
+<code>pastebin run -f YVqKFnsP</code>
+<hr>
+<code>wget -f https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Stargate-Programm/installieren.lua</code><br />
+<code>/installieren.lua</code>
+<hr>
 
 особенности моей программы:
 
@@ -178,6 +190,6 @@ help -> показать это сообщение
 
 Предлагайте свои идеи.
 
-проверено с:<br>
-OpenComputers-MC1.7.10-1.6.1.11-universal<br>
+проверено с:<br />
+OpenComputers-MC1.7.10-1.6.2.12-universal<br />
 SGCraft-1.13.3-mc1.7.10
