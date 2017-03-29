@@ -65,11 +65,12 @@ end
 function Funktion.checkOpenOS()
   if _OSVERSION == "OpenOS 1.6.1" then
     gpu.setForeground(0x00FF00)
-    print("OpenOS Version:        " .. _OSVERSION)
+    print("\nOpenOS Version:        " .. _OSVERSION)
   else
     gpu.setForeground(0xFF0000)
-    print("OpenOS Version:        " .. _OSVERSION)
+    print("\nOpenOS Version:        " .. _OSVERSION)
   end
+  gpu.setForeground(0xFFFFFF)
 end
 
 function Funktion.checkKomponenten()
