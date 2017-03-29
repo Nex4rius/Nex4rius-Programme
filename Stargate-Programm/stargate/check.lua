@@ -103,6 +103,7 @@ function Funktion.checkKomponenten()
     sg = component.getPrimary("stargate")
     return true
   else
+    os.sleep(5)
     return false
   end
 end
