@@ -9,6 +9,8 @@ local term                      = require("term")
 local event                     = require("event")
 local fs                        = require("filesystem")
 
+local entfernen                 = loadfile("/bin/rm.lua")
+local kopieren                  = loadfile("/bin/cp.lua")
 local edit                      = loadfile("/bin/edit.lua")
 local schreibSicherungsdatei    = loadfile("/stargate/schreibSicherungsdatei.lua")
 
@@ -642,7 +644,7 @@ function Funktion.newAddress(neueAdresse, neuerName, ...)
 end
 
 function Funktion.destinationName()
-  if state == "Dialling" or state == "Connected" then
+  if state == "Dialling" or state == "Connected" and type(adressen) == "table" then
     if remoteName == "" and state == "Dialling" and wormhole == "in" then
       for j, na in pairs(adressen) do
         if remAddr == na[2] then
@@ -897,22 +899,25 @@ end
 function Funktion.zeigeStatus()
   Funktion.aktualisiereStatus()
   Funktion.Farbe(Farben.Statusfarbe, Farben.Statustextfarbe)
-  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.lokaleAdresse .. locAddr) Funktion.neueZeile(1)
-  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zielAdresseName .. zielAdresse) Funktion.neueZeile(1)
-  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zielName .. remoteName) Funktion.neueZeile(1)
-  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.statusName .. StatusName) Funktion.neueZeile(1)
-  Funktion.zeigeEnergie() Funktion.neueZeile(1)
-  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IrisName .. Funktion.zeichenErsetzen(iris)) Funktion.neueZeile(1)
+  local function ausgabe(a, b)
+    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. a .. b)
+    Funktion.neueZeile(1)
+  end
+  ausgabe(sprachen.lokaleAdresse, locAddr)
+  ausgabe(sprachen.zielAdresseName, zielAdresse)
+  ausgabe(sprachen.zielName, remoteName)
+  ausgabe(sprachen.statusName, StatusName)
+  ausgabe(sprachen.IrisName, Funktion.zeichenErsetzen(iris))
   if iris == "Offline" then else
-    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IrisSteuerung .. Funktion.zeichenErsetzen(Sicherung.control)) Funktion.neueZeile(1)
+    ausgabe(sprachen.IrisSteuerung, Funktion.zeichenErsetzen(Sicherung.control))
   end
   if IDCyes == true then
-    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IDCakzeptiert) Funktion.neueZeile(1)
+    ausgabe(sprachen.IDCakzeptiert, "")
   else
-    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IDCname .. incode) Funktion.neueZeile(1)
+    ausgabe(sprachen.IDCname, incode)
   end
-  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.chevronName .. chevrons) Funktion.neueZeile(1)
-  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.richtung .. RichtungName) Funktion.neueZeile(1)
+  ausgabe(sprachen.chevronName, chevrons)
+  ausgabe(sprachen.richtung, RichtungName)
   Funktion.activetime() Funktion.neueZeile(1)
   Funktion.autoclose()
   Funktion.atmosphere()
@@ -1192,7 +1197,16 @@ function Taste.z()
     if Funktion.Tastatur() then
       Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
       screen.setTouchModeInverted(false)
-      edit("stargate/adressen.lua")
+      kopieren("/stargate/adressen.lua", "/stargate/adressen-bearbeiten")
+      edit("/stargate/adressen-bearbeiten")
+      if pcall(loadfile("/stargate/adressen-bearbeiten")) then
+        entfernen("/stargate/adressen.lua")
+        kopieren("/stargate/adressen-bearbeiten", "/stargate/adressen.lua")
+      else
+        Funktion.zeigeNachricht("Syntax Fehler")
+        os.sleep(2)
+      end
+      entfernen("/stargate/adressen-bearbeiten")
       screen.setTouchModeInverted(true)
       seite = -1
       Funktion.zeigeAnzeige()
@@ -1212,7 +1226,16 @@ function Taste.l()
       Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
       schreibSicherungsdatei(Sicherung)
       screen.setTouchModeInverted(false)
-      edit("/stargate/Sicherungsdatei.lua")
+      kopieren("/stargate/Sicherungsdatei.lua", "/stargate/Sicherungsdatei-bearbeiten")
+      edit("/stargate/Sicherungsdatei-bearbeiten")
+      if pcall(loadfile("/stargate/Sicherungsdatei-bearbeiten")) then
+        entfernen("/stargate/Sicherungsdatei.lua")
+        kopieren("/stargate/Sicherungsdatei-bearbeiten", "/stargate/Sicherungsdatei.lua")
+      else
+        Funktion.zeigeNachricht("Syntax Fehler")
+        os.sleep(2)
+      end
+      entfernen("/stargate/Sicherungsdatei-bearbeiten")
       screen.setTouchModeInverted(true)
       Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
       if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then

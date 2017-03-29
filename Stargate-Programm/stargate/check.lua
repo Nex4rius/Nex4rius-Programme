@@ -62,52 +62,61 @@ function Funktion.checkSprache()
   end
 end
 
-function Funktion.checkKomponenten()
-  print(sprachen.pruefeKomponenten or "Prüfe Komponenten\n")
-  if component.isAvailable("redstone") then
+function Funktion.checkOpenOS()
+  local OpenOS_Version = "OpenOS 1.6.1"
+  if _OSVERSION == OpenOS_Version then
     gpu.setForeground(0x00FF00)
-    print(sprachen.redstoneOK or "- Redstone Card        ok - optional")
+    print("\nOpenOS Version:        " .. _OSVERSION)
+  else
+    gpu.setForeground(0xFF0000)
+    print("\nOpenOS Version:        " .. _OSVERSION .. " -> " .. OpenOS_Version)
+  end
+  gpu.setForeground(0xFFFFFF)
+end
+
+function Funktion.checkKomponenten()
+  require("term").clear()
+  print(sprachen.pruefeKomponenten or "Prüfe Komponenten\n")
+  local function check(eingabe)
+    if component.isAvailable(eingabe[1]) then
+      gpu.setForeground(0x00FF00)
+      print(eingabe[2])
+    else
+      gpu.setForeground(0xFF0000)
+      print(eingabe[3])
+    end
+  end
+  local alleKomponenten = {
+    {"internet",      sprachen.InternetOK,  sprachen.InternetFehlt},
+    {"world_sensor",  sprachen.SensorOK,    sprachen.SensorFehlt},
+    {"redstone",      sprachen.redstoneOK,  sprachen.redstoneFehlt},
+    {"stargate",      sprachen.StargateOK,  sprachen.StargateFehlt},
+  }
+  for i in pairs(alleKomponenten) do
+    check(alleKomponenten[i])
+  end
+  if component.isAvailable("redstone") then
     r = component.getPrimary("redstone")
   else
-    gpu.setForeground(0xFF0000)
-    print(sprachen.redstoneFehlt or "- Redstone Card        fehlt - optional")
     r = nil
-  end
-  if component.isAvailable("internet") then
-    gpu.setForeground(0x00FF00)
-    print(sprachen.InternetOK or "- Internet             ok - optional")
-  else
-    gpu.setForeground(0xFF0000)
-    print(sprachen.InternetFehlt or "- Internet             fehlt - optional")
-  end
-  if component.isAvailable("world_sensor") then
-    gpu.setForeground(0x00FF00)
-    print(sprachen.SensorOK or "- World Sensor         ok - optional")
-  else
-    gpu.setForeground(0xFF0000)
-    print(sprachen.SensorFehlt or "- World Sensor         fehlt - optional")
   end
   if gpu.maxResolution() == 80 then
     gpu.setForeground(0x00FF00)
-    print(sprachen.gpuOK2T or "- GPU Tier2            ok")
+    print(sprachen.gpuOK2T)
   elseif gpu.maxResolution() == 160 then
     graphicT3 = true
     gpu.setForeground(0xFF7F24)
-    print(sprachen.gpuOK3T or "- GPU Tier3            ok - Tier2 ist ausreichend")
+    print(sprachen.gpuOK3T)
   else
     gpu.setForeground(0xFF0000)
-    print(sprachen.gpuFehlt or "- GPU Tier2            fehlt")
+    print(sprachen.gpuFehlt)
   end
+  gpu.setForeground(0xFFFFFF)
   if component.isAvailable("stargate") then
-    gpu.setForeground(0x00FF00)
-    print(sprachen.StargateOK or "- Stargate             ok\n")
     sg = component.getPrimary("stargate")
-    gpu.setForeground(0xFFFFFF)
     return true
   else
-    gpu.setForeground(0xFF0000)
-    print(sprachen.StargateFehlt or "- Stargate             fehlt\n")
-    gpu.setForeground(0xFFFFFF)
+    os.sleep(5)
     return false
   end
 end
@@ -158,14 +167,41 @@ function Funktion.checkBetaServerVersion()
 end
 
 function Funktion.checkDateien()
-  if fs.exists("/autorun.lua") and fs.exists("/stargate/Kontrollprogramm.lua") then
-    if fs.exists("/stargate/Sicherungsdatei.lua") and fs.exists("/stargate/adressen.lua") then
-      if fs.exists("/stargate/check.lua") and fs.exists("/stargate/version.txt") then
-        if fs.exists("/stargate/sprache/deutsch.lua") and fs.exists("/stargate/sprache/english.lua") then
-          if fs.exists("/stargate/sprache/ersetzen.lua") and fs.exists("/stargate/schreibSicherungsdatei.lua") then
-            return true
-  end end end end end
-  return false
+  local dateien = {
+    "/autorun.lua",
+    "/bin/stargate.lua",
+    "/stargate/Kontrollprogramm.lua",
+    "/stargate/Sicherungsdatei.lua",
+    "/stargate/adressen.lua",
+    "/stargate/check.lua",
+    "/stargate/version.txt",
+    "/stargate/schreibSicherungsdatei.lua",
+    "/stargate/sprache/ersetzen.lua",
+    "/stargate/sprache/deutsch.lua",
+    "/stargate/sprache/english.lua",
+    "/stargate/sprache/russian.lua",
+    "/stargate/sprache/czech.lua",
+  }
+  for i in pairs(dateien) do
+    if not fs.exists(dateien[i]) then
+      print("<FEHLER> Datei fehlt: " .. dateien[i])
+      return false
+    end
+  end
+  local alleSprachen = {"deutsch", "english", "russian", "czech", tostring(Sicherung.Sprache)}
+  local Sprachdateien = false
+  for i in pairs(alleSprachen) do
+    if fs.exists("/stargate/sprache/" .. alleSprachen[i] .. ".lua") then
+      Sprachdateien = true
+      break
+    end
+  end
+  if Sprachdateien then
+    return true
+  else
+    print("<FEHLER> keine Sprachdatei gefunden")
+    return false
+  end
 end
 
 function Funktion.mainCheck()
@@ -232,7 +268,7 @@ function Funktion.mainCheck()
       print("Kontrollprogramm.lua hat einen Fehler")
     end
   else
-    print(string.format("%s\n%s %s/%s", sprachen.fehlerName, sprachen.DateienFehlen, sprachen.ja, sprachen.nein) or "<FEHLER>\nDateien fehlen\nAlles neu herunterladen? ja/nein")
+    print(string.format("%s\n%s %s/%s", sprachen.fehlerName, sprachen.DateienFehlen, sprachen.ja, sprachen.nein) or "\nAlles neu herunterladen? ja/nein")
     if Sicherung.autoUpdate then
       print(sprachen.autoUpdateAn or "automatische Aktualisierungen sind aktiviert")
       os.sleep(2)
@@ -289,6 +325,7 @@ function Funktion.main()
     print(sprachen.Hilfetext or "Verwendung: autorun [...]\nja\t-> Aktualisierung zur stabilen Version\nnein\t-> keine Aktualisierung\nbeta\t-> Aktualisierung zur Beta-Version\nhilfe\t-> zeige diese Nachricht nochmal")
   else
     if Funktion.checkKomponenten() then
+      Funktion.checkOpenOS()
       Funktion.mainCheck()
     end
   end
