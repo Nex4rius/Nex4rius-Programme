@@ -64,50 +64,45 @@ end
 
 function Funktion.checkKomponenten()
   print(sprachen.pruefeKomponenten or "Prüfe Komponenten\n")
+  local function check(eingabe)
+    if component.isAvailable(eingabe[1]) then
+      gpu.setForeground(0x00FF00)
+      print(eingabe[2])
+    else
+      gpu.setForeground(0xFF0000)
+      print(eingabe[3])
+    end
+  end
+  local alleKomponenten {
+    {"internet",      sprachen.InternetOK,  sprachen.InternetFehlt},
+    {"world_sensor",  sprachen.SensorOK,    sprachen.SensorFehlt},
+    {"redstone",      sprachen.redstoneOK,  sprachen.redstoneFehlt},
+    {"stargate",      sprachen.StargateOK,  sprachen.StargateFehlt},
+  }
+  for i in pairs(alleKomponenten) do
+    check(alleKomponenten[i])
+  end
   if component.isAvailable("redstone") then
-    gpu.setForeground(0x00FF00)
-    print(sprachen.redstoneOK or "- Redstone Card        ok - optional")
     r = component.getPrimary("redstone")
   else
-    gpu.setForeground(0xFF0000)
-    print(sprachen.redstoneFehlt or "- Redstone Card        fehlt - optional")
     r = nil
-  end
-  if component.isAvailable("internet") then
-    gpu.setForeground(0x00FF00)
-    print(sprachen.InternetOK or "- Internet             ok - optional")
-  else
-    gpu.setForeground(0xFF0000)
-    print(sprachen.InternetFehlt or "- Internet             fehlt - optional")
-  end
-  if component.isAvailable("world_sensor") then
-    gpu.setForeground(0x00FF00)
-    print(sprachen.SensorOK or "- World Sensor         ok - optional")
-  else
-    gpu.setForeground(0xFF0000)
-    print(sprachen.SensorFehlt or "- World Sensor         fehlt - optional")
   end
   if gpu.maxResolution() == 80 then
     gpu.setForeground(0x00FF00)
-    print(sprachen.gpuOK2T or "- GPU Tier2            ok")
+    print(sprachen.gpuOK2T)
   elseif gpu.maxResolution() == 160 then
     graphicT3 = true
     gpu.setForeground(0xFF7F24)
-    print(sprachen.gpuOK3T or "- GPU Tier3            ok - Tier2 ist ausreichend")
+    print(sprachen.gpuOK3T)
   else
     gpu.setForeground(0xFF0000)
-    print(sprachen.gpuFehlt or "- GPU Tier2            fehlt")
+    print(sprachen.gpuFehlt)
   end
+  gpu.setForeground(0xFFFFFF)
   if component.isAvailable("stargate") then
-    gpu.setForeground(0x00FF00)
-    print(sprachen.StargateOK or "- Stargate             ok\n")
     sg = component.getPrimary("stargate")
-    gpu.setForeground(0xFFFFFF)
     return true
   else
-    gpu.setForeground(0xFF0000)
-    print(sprachen.StargateFehlt or "- Stargate             fehlt\n")
-    gpu.setForeground(0xFFFFFF)
     return false
   end
 end
@@ -175,6 +170,7 @@ function Funktion.checkDateien()
   }
   for i in pairs(dateien) do
     if not fs.exists(dateien[i]) then
+      print("<FEHLER> Datei fehlt: " .. dateien[i])
       return false
     end
   end
