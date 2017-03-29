@@ -268,7 +268,7 @@ function Funktion.mainCheck()
       print("Kontrollprogramm.lua hat einen Fehler")
     end
   else
-    print(string.format("%s\n%s %s/%s", sprachen.fehlerName, sprachen.DateienFehlen, sprachen.ja, sprachen.nein) or "<FEHLER>\nDateien fehlen\nAlles neu herunterladen? ja/nein")
+    print(string.format("%s\n%s %s/%s", sprachen.fehlerName, sprachen.DateienFehlen, sprachen.ja, sprachen.nein) or "\nAlles neu herunterladen? ja/nein")
     if Sicherung.autoUpdate then
       print(sprachen.autoUpdateAn or "automatische Aktualisierungen sind aktiviert")
       os.sleep(2)
