@@ -62,7 +62,18 @@ function Funktion.checkSprache()
   end
 end
 
+function Funktion.checkOpenOS()
+  if _OSVERSION == "OpenOS 1.6.1" then
+    gpu.setForeground(0x00FF00)
+    print("OpenOS Version:        " .. _OSVERSION)
+  else
+    gpu.setForeground(0xFF0000)
+    print("OpenOS Version:        " .. _OSVERSION)
+  end
+end
+
 function Funktion.checkKomponenten()
+  require("term").clear()
   print(sprachen.pruefeKomponenten or "Prüfe Komponenten\n")
   local function check(eingabe)
     if component.isAvailable(eingabe[1]) then
@@ -312,6 +323,7 @@ function Funktion.main()
     print(sprachen.Hilfetext or "Verwendung: autorun [...]\nja\t-> Aktualisierung zur stabilen Version\nnein\t-> keine Aktualisierung\nbeta\t-> Aktualisierung zur Beta-Version\nhilfe\t-> zeige diese Nachricht nochmal")
   else
     if Funktion.checkKomponenten() then
+      Funktion.checkOpenOS()
       Funktion.mainCheck()
     end
   end
