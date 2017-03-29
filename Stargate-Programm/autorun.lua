@@ -14,6 +14,8 @@ end
 
 if not pcall(loadfile("/stargate/check.lua"), args) then
   print("check.lua hat einen Fehler")
+  wget("-f", Funktion.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua")
+  loadfile("/installieren.lua")()
 end
 
 require("shell").setWorkingDirectory(alterPfad)
