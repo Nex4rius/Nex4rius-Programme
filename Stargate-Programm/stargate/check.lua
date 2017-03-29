@@ -158,14 +158,27 @@ function Funktion.checkBetaServerVersion()
 end
 
 function Funktion.checkDateien()
-  if fs.exists("/autorun.lua") and fs.exists("/stargate/Kontrollprogramm.lua") then
-    if fs.exists("/stargate/Sicherungsdatei.lua") and fs.exists("/stargate/adressen.lua") then
-      if fs.exists("/stargate/check.lua") and fs.exists("/stargate/version.txt") then
-        if fs.exists("/stargate/sprache/deutsch.lua") and fs.exists("/stargate/sprache/english.lua") then
-          if fs.exists("/stargate/sprache/ersetzen.lua") and fs.exists("/stargate/schreibSicherungsdatei.lua") then
-            return true
-  end end end end end
-  return false
+  local dateien = {
+    "/autorun.lua",
+    "/bin/stargate.lua",
+    "/stargate/Kontrollprogramm.lua",
+    "/stargate/Sicherungsdatei.lua",
+    "/stargate/adressen.lua",
+    "/stargate/check.lua",
+    "/stargate/version.txt",
+    "/stargate/schreibSicherungsdatei.lua",
+    "/stargate/sprache/ersetzen.lua",
+    "/stargate/sprache/deutsch.lua",
+    "/stargate/sprache/english.lua",
+    "/stargate/sprache/russian.lua",
+    "/stargate/sprache/czech.lua",
+  }
+  for i in pairs(dateien) do
+    if not fs.exists(dateien[i]) then
+      return false
+    end
+  end
+  return true
 end
 
 function Funktion.mainCheck()
