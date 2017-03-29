@@ -1,5 +1,5 @@
 <a name="start">
-# Tank Display for OpenComputers</a>
+<h1>Tank Display for OpenComputers</h1></a>
 
 <img src="http://i.imgur.com/gQ5rL3X.gif">
 
