@@ -63,12 +63,13 @@ function Funktion.checkSprache()
 end
 
 function Funktion.checkOpenOS()
-  if _OSVERSION == "OpenOS 1.6.1" then
+  local OpenOS-Version = "OpenOS 1.6.1"
+  if _OSVERSION == OpenOS-Version then
     gpu.setForeground(0x00FF00)
     print("\nOpenOS Version:        " .. _OSVERSION)
   else
     gpu.setForeground(0xFF0000)
-    print("\nOpenOS Version:        " .. _OSVERSION)
+    print("\nOpenOS Version:        " .. _OSVERSION .. " -> " .. OpenOS-Version)
   end
   gpu.setForeground(0xFFFFFF)
 end
