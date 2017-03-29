@@ -14,7 +14,7 @@ end
 
 if not pcall(loadfile("/stargate/check.lua"), args) then
   print("check.lua hat einen Fehler")
-  wget("-f", Funktion.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua")
+  loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Stargate-Programm/installieren.lua", "/installieren.lua")
   loadfile("/installieren.lua")()
 end
 
