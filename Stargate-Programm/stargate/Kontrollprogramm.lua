@@ -897,22 +897,25 @@ end
 function Funktion.zeigeStatus()
   Funktion.aktualisiereStatus()
   Funktion.Farbe(Farben.Statusfarbe, Farben.Statustextfarbe)
-  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.lokaleAdresse .. locAddr) Funktion.neueZeile(1)
-  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zielAdresseName .. zielAdresse) Funktion.neueZeile(1)
-  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zielName .. remoteName) Funktion.neueZeile(1)
-  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.statusName .. StatusName) Funktion.neueZeile(1)
-  Funktion.zeigeEnergie() Funktion.neueZeile(1)
-  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IrisName .. Funktion.zeichenErsetzen(iris)) Funktion.neueZeile(1)
+  local function ausgabe(a, b)
+    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen[a] .. b)
+    Funktion.neueZeile(1)
+  end
+  ausgabe(lokaleAdresse, locAddr)
+  ausgabe(zielAdresseName, zielAdresse)
+  ausgabe(zielName, remoteName)
+  ausgabe(statusName, StatusName)
+  ausgabe(IrisName, Funktion.zeichenErsetzen(iris))
   if iris == "Offline" then else
-    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IrisSteuerung .. Funktion.zeichenErsetzen(Sicherung.control)) Funktion.neueZeile(1)
+    ausgabe(IrisSteuerung, Funktion.zeichenErsetzen(Sicherung.control))
   end
   if IDCyes == true then
-    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IDCakzeptiert) Funktion.neueZeile(1)
+    ausgabe(IDCakzeptiert, "")
   else
-    Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.IDCname .. incode) Funktion.neueZeile(1)
+    ausgabe(IDCname, incode)
   end
-  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.chevronName .. chevrons) Funktion.neueZeile(1)
-  Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.richtung .. RichtungName) Funktion.neueZeile(1)
+  ausgabe(chevronName, chevrons)
+  ausgabe(richtung, RichtungName)
   Funktion.activetime() Funktion.neueZeile(1)
   Funktion.autoclose()
   Funktion.atmosphere()
