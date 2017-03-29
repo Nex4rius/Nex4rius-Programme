@@ -73,7 +73,7 @@ function Funktion.checkKomponenten()
       print(eingabe[3])
     end
   end
-  local alleKomponenten {
+  local alleKomponenten = {
     {"internet",      sprachen.InternetOK,  sprachen.InternetFehlt},
     {"world_sensor",  sprachen.SensorOK,    sprachen.SensorFehlt},
     {"redstone",      sprachen.redstoneOK,  sprachen.redstoneFehlt},
