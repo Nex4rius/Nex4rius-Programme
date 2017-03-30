@@ -186,7 +186,7 @@ function Funktion.checkDateien()
     if not fs.exists("/" .. dateien[i]) then
       print("<FEHLER> Datei fehlt: " .. dateien[i])
       if component.isAvailable("internet") then
-        if not wget("-f", Funktion.Pfad(versionTyp) .. dateien[1], "/" .. dateien[1]) then#
+        if not wget("-f", Funktion.Pfad(versionTyp) .. dateien[1], "/" .. dateien[1]) then
           return false
         end
       else
