@@ -177,10 +177,6 @@ function Funktion.checkDateien()
     "stargate/version.txt",
     "stargate/schreibSicherungsdatei.lua",
     "stargate/sprache/ersetzen.lua",
-    "stargate/sprache/deutsch.lua",
-    "stargate/sprache/english.lua",
-    "stargate/sprache/russian.lua",
-    "stargate/sprache/czech.lua",
   }
   for i in pairs(dateien) do
     if not fs.exists("/" .. dateien[i]) then
@@ -205,6 +201,13 @@ function Funktion.checkDateien()
   if Sprachdateien then
     return true
   else
+    if component.isAvailable("internet") then
+      for i in pairs(alleSprachen) do
+        if wget("-f", Funktion.Pfad(versionTyp) .. "stargate/sprache/" .. alleSprachen[i] .. ".lua", "/stargate/sprache/" .. alleSprachen[i] .. ".lua") then
+          return true
+        end
+      end
+    end
     print("<FEHLER> keine Sprachdatei gefunden")
     return false
   end
