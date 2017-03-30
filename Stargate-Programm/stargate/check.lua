@@ -194,12 +194,11 @@ function Funktion.checkDateien()
   for i in pairs(alleSprachen) do
     if fs.exists("/stargate/sprache/" .. alleSprachen[i] .. ".lua") then
       return true
-    end
-  end
-  if component.isAvailable("internet") then
-    for i in pairs(alleSprachen) do
-      if wget("-f", Funktion.Pfad(versionTyp) .. "stargate/sprache/" .. alleSprachen[i] .. ".lua", "/stargate/sprache/" .. alleSprachen[i] .. ".lua") then
-        return true
+    elseif component.isAvailable("internet") then
+      for i in pairs(alleSprachen) do
+        if wget("-f", Funktion.Pfad(versionTyp) .. "stargate/sprache/" .. alleSprachen[i] .. ".lua", "/stargate/sprache/" .. alleSprachen[i] .. ".lua") then
+          return true
+        end
       end
     end
   end
