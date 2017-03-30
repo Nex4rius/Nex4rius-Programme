@@ -168,40 +168,42 @@ end
 
 function Funktion.checkDateien()
   local dateien = {
-    "/autorun.lua",
-    "/bin/stargate.lua",
-    "/stargate/Kontrollprogramm.lua",
-    "/stargate/Sicherungsdatei.lua",
-    "/stargate/adressen.lua",
-    "/stargate/check.lua",
-    "/stargate/version.txt",
-    "/stargate/schreibSicherungsdatei.lua",
-    "/stargate/sprache/ersetzen.lua",
-    "/stargate/sprache/deutsch.lua",
-    "/stargate/sprache/english.lua",
-    "/stargate/sprache/russian.lua",
-    "/stargate/sprache/czech.lua",
+    "autorun.lua",
+    "bin/stargate.lua",
+    "stargate/Kontrollprogramm.lua",
+    "stargate/Sicherungsdatei.lua",
+    "stargate/adressen.lua",
+    "stargate/check.lua",
+    "stargate/version.txt",
+    "stargate/schreibSicherungsdatei.lua",
+    "stargate/sprache/ersetzen.lua",
   }
   for i in pairs(dateien) do
-    if not fs.exists(dateien[i]) then
+    if not fs.exists("/" .. dateien[i]) then
       print("<FEHLER> Datei fehlt: " .. dateien[i])
-      return false
+      if component.isAvailable("internet") then
+        if not wget("-f", Funktion.Pfad(versionTyp) .. dateien[1], "/" .. dateien[1]) then
+          return false
+        end
+      else
+        return false
+      end
     end
   end
   local alleSprachen = {"deutsch", "english", "russian", "czech", tostring(Sicherung.Sprache)}
-  local Sprachdateien = false
   for i in pairs(alleSprachen) do
     if fs.exists("/stargate/sprache/" .. alleSprachen[i] .. ".lua") then
-      Sprachdateien = true
-      break
+      return true
+    elseif component.isAvailable("internet") then
+      for i in pairs(alleSprachen) do
+        if wget("-f", Funktion.Pfad(versionTyp) .. "stargate/sprache/" .. alleSprachen[i] .. ".lua", "/stargate/sprache/" .. alleSprachen[i] .. ".lua") then
+          return true
+        end
+      end
     end
   end
-  if Sprachdateien then
-    return true
-  else
-    print("<FEHLER> keine Sprachdatei gefunden")
-    return false
-  end
+  print("<FEHLER> keine Sprachdatei gefunden")
+  return false
 end
 
 function Funktion.mainCheck()
@@ -294,6 +296,7 @@ function Funktion.main()
   end
   gpu.fill(1, 1, 160, 80, " ")
   require("term").clear()
+  Funktion.checkDateien()
   if fs.exists("/stargate/version.txt") then
     local f = io.open ("/stargate/version.txt", "r")
     version = f:read()
