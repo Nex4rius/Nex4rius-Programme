@@ -330,8 +330,12 @@ function Funktion.main()
     if Funktion.checkKomponenten() then
       Funktion.checkOpenOS()
       Funktion.mainCheck()
+    else
+      print("<FEHLER> kein Stargate")
+      os.sleep(5)
     end
   end
+  require("term").clear()
   gpu.setBackground(0x000000)
   gpu.setForeground(0xFFFFFF)
   gpu.setResolution(gpu.maxResolution())
