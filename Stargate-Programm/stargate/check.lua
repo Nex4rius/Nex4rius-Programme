@@ -191,26 +191,20 @@ function Funktion.checkDateien()
     end
   end
   local alleSprachen = {"deutsch", "english", "russian", "czech", tostring(Sicherung.Sprache)}
-  local Sprachdateien = false
   for i in pairs(alleSprachen) do
     if fs.exists("/stargate/sprache/" .. alleSprachen[i] .. ".lua") then
-      Sprachdateien = true
-      break
+      return true
     end
   end
-  if Sprachdateien then
-    return true
-  else
-    if component.isAvailable("internet") then
-      for i in pairs(alleSprachen) do
-        if wget("-f", Funktion.Pfad(versionTyp) .. "stargate/sprache/" .. alleSprachen[i] .. ".lua", "/stargate/sprache/" .. alleSprachen[i] .. ".lua") then
-          return true
-        end
+  if component.isAvailable("internet") then
+    for i in pairs(alleSprachen) do
+      if wget("-f", Funktion.Pfad(versionTyp) .. "stargate/sprache/" .. alleSprachen[i] .. ".lua", "/stargate/sprache/" .. alleSprachen[i] .. ".lua") then
+        return true
       end
     end
-    print("<FEHLER> keine Sprachdatei gefunden")
-    return false
   end
+  print("<FEHLER> keine Sprachdatei gefunden")
+  return false
 end
 
 function Funktion.mainCheck()
