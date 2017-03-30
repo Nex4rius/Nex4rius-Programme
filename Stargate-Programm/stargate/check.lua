@@ -331,13 +331,13 @@ function Funktion.main()
       Funktion.checkOpenOS()
       Funktion.mainCheck()
     else
-      print("<FEHLER> kein Stargate")
+      print("\n\n<FEHLER> kein Stargate")
       os.sleep(5)
     end
   end
-  require("term").clear()
   gpu.setBackground(0x000000)
   gpu.setForeground(0xFFFFFF)
+  require("term").clear()
   gpu.setResolution(gpu.maxResolution())
 end
 
