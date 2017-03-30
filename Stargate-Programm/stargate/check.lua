@@ -296,6 +296,7 @@ function Funktion.main()
   end
   gpu.fill(1, 1, 160, 80, " ")
   require("term").clear()
+  Funktion.checkDateien()
   if fs.exists("/stargate/version.txt") then
     local f = io.open ("/stargate/version.txt", "r")
     version = f:read()
