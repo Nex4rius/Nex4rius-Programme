@@ -168,24 +168,28 @@ end
 
 function Funktion.checkDateien()
   local dateien = {
-    "/autorun.lua",
-    "/bin/stargate.lua",
-    "/stargate/Kontrollprogramm.lua",
-    "/stargate/Sicherungsdatei.lua",
-    "/stargate/adressen.lua",
-    "/stargate/check.lua",
-    "/stargate/version.txt",
-    "/stargate/schreibSicherungsdatei.lua",
-    "/stargate/sprache/ersetzen.lua",
-    "/stargate/sprache/deutsch.lua",
-    "/stargate/sprache/english.lua",
-    "/stargate/sprache/russian.lua",
-    "/stargate/sprache/czech.lua",
+    "autorun.lua",
+    "bin/stargate.lua",
+    "stargate/Kontrollprogramm.lua",
+    "stargate/Sicherungsdatei.lua",
+    "stargate/adressen.lua",
+    "stargate/check.lua",
+    "stargate/version.txt",
+    "stargate/schreibSicherungsdatei.lua",
+    "stargate/sprache/ersetzen.lua",
+    "stargate/sprache/deutsch.lua",
+    "stargate/sprache/english.lua",
+    "stargate/sprache/russian.lua",
+    "stargate/sprache/czech.lua",
   }
   for i in pairs(dateien) do
     if not fs.exists(dateien[i]) then
       print("<FEHLER> Datei fehlt: " .. dateien[i])
-      return false
+      if component.isAvailable("internet") then
+        wget("-f", Funktion.Pfad(versionTyp) .. dateien[1], "/" .. dateien[1]) then
+      else
+        return false
+      end
     end
   end
   local alleSprachen = {"deutsch", "english", "russian", "czech", tostring(Sicherung.Sprache)}
