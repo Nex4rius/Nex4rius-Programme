@@ -644,8 +644,8 @@ function Funktion.newAddress(neueAdresse, neuerName, ...)
 end
 
 function Funktion.destinationName()
-  if state == "Dialling" or state == "Connected" and type(adressen) == "table" then
-    if remoteName == "" and state == "Dialling" and wormhole == "in" then
+  if state == "Dialling" or state == "Connected" then
+    if remoteName == "" and wormhole == "in" and type(adressen) == "table" then
       for j, na in pairs(adressen) do
         if remAddr == na[2] then
           if na[1] == na[2] then
