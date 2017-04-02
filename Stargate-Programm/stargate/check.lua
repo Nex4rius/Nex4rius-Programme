@@ -114,7 +114,16 @@ function Funktion.checkKomponenten()
   gpu.setForeground(0xFFFFFF)
   if component.isAvailable("stargate") then
     sg = component.getPrimary("stargate")
-    return true
+    if sg.energyToDial(sg.localAddress()) then
+      return true
+    else
+      gpu.setForeground(0xFF0000)
+      print()
+      print(sprachen.StargateNichtKomplett or "Stargate ist funktionsunfähig")
+      gpu.setForeground(0xFFFFFF)
+      os.sleep(5)
+      return false
+    end
   else
     os.sleep(5)
     return false

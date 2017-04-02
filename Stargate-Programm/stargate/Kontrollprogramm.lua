@@ -1150,7 +1150,11 @@ function Taste.o()
     if wormhole == "in" then
       if iris == "Offline" then else
         os.sleep(2)
-        sg.sendMessage("Manual Override: Iris: Open .. Funktion.atmosphere(true)")
+        if Funktion.atmosphere(true) then
+          sg.sendMessage("Manual Override: Iris: Open" .. Funktion.atmosphere(true))
+        else
+          sg.sendMessage("Manual Override: Iris: Open")
+        end 
       end
     end
     if state == "Idle" then
@@ -1168,7 +1172,11 @@ function Taste.c()
     Funktion.irisClose()
     iriscontrol = "off"
     if wormhole == "in" then
-      sg.sendMessage("Manual Override: Iris: Closed .. Funktion.atmosphere(true)")
+      if Funktion.atmosphere(true) then
+        sg.sendMessage("Manual Override: Iris: Closed" .. Funktion.atmosphere(true))
+      else
+        sg.sendMessage("Manual Override: Iris: Closed")
+      end 
     end
   end
 end
@@ -1319,6 +1327,9 @@ function Taste.Zahl(c)
     wormhole = "out"
     if na then
       Funktion.dial(na[1], na[2])
+      if string.sub(na[4], 1, 1) == "<" and sg.energyToDial(na[2]) then
+        Funktion.AdressenSpeichern()
+      end
       if na[3] == "-" then
       else
         outcode = na[3]
