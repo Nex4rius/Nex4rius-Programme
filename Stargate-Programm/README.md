@@ -49,7 +49,7 @@ Die Funktionen meines Programms:
 Wichtig!
 Damit das Programm ordentlich funktioniert muss der Computer entweder im gleichen Chunk wie das Stargate sein oder einen Chunkloader haben.
 
-Verwendung: autorun [...]<br>
+Verwendung: stargate [...]<br>
 ja -> Aktualisierung zur stabilen Version<br>
 nein -> keine Aktualisierung<br>
 beta -> Aktualisierung zur Beta-Version<br>
@@ -115,7 +115,7 @@ the features of my program:
 important!
 This program either needs to be in the same chunk as the Stargate or there has to be a chunkloader nearby to function properly.
 
-Usage: autorun [...]<br>
+Usage: stargate [...]<br>
 yes   -> update to stable version<br>
 no    -> no update<br>
 beta  -> update to beta version<br>
@@ -180,7 +180,7 @@ ___
 
 Важно! Компьютер с этой программой должен быть размещен в том же чанке, что и врата, либо иметь рядом активный чанклоадер.
 
-Использование: autorun [...]<br>
+Использование: stargate [...]<br>
 yes -> обновить до стабильной версии<br>
 no -> не обновлять<br>
 beta -> обновить до беты<br>
