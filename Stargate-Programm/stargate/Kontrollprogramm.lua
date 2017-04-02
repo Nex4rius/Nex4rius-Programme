@@ -907,6 +907,8 @@ function Funktion.zeigeStatus()
   ausgabe(sprachen.zielAdresseName, zielAdresse)
   ausgabe(sprachen.zielName, remoteName)
   ausgabe(sprachen.statusName, StatusName)
+  Funktion.zeigeEnergie()
+  Funktion.neueZeile(1)
   ausgabe(sprachen.IrisName, Funktion.zeichenErsetzen(iris))
   if iris == "Offline" then else
     ausgabe(sprachen.IrisSteuerung, Funktion.zeichenErsetzen(Sicherung.control))
