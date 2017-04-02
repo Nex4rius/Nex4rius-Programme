@@ -117,9 +117,10 @@ function Funktion.checkKomponenten()
     if sg.energyToDial(sg.localAddress()) then
       return true
     else
-      gpu.setForeground(0x00FF00)
-      print(sprachen.StargateNichtKomplett or "Stargate ist funktionsunfähig")
       gpu.setForeground(0xFF0000)
+      print()
+      print(sprachen.StargateNichtKomplett or "Stargate ist funktionsunfähig")
+      gpu.setForeground(0xFFFFFF)
       os.sleep(5)
       return false
     end
