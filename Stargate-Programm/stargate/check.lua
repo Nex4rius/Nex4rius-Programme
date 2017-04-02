@@ -113,7 +113,7 @@ function Funktion.checkKomponenten()
   end
   gpu.setForeground(0xFFFFFF)
   if component.isAvailable("stargate") then
-    if sg.energyToDial(neueAdresse) then
+    if sg.energyToDial(sg.localAddress()) then
       sg = component.getPrimary("stargate")
       return true
     else
