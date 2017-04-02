@@ -130,4 +130,5 @@ return {
   FrageStargateName         = "Gib dem Stargate einen Namen",
   debug                     = "zum debuggen",
   keineEnergie              = "<keine Energie>",
+  StargateNichtKomplett     = "Stargate nicht funktionsfähig",
 }
