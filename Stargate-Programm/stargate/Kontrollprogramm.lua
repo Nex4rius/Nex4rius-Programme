@@ -1566,10 +1566,12 @@ Funktion.checken(Funktion.main)
 
 if Variablen.update == "ja" then
   print(sprachen.aktualisierenJetzt)
+  print(sprachen.schliesseIris)
   sg.closeIris()
   Funktion.update("master")
 elseif Variablen.update == "beta" then
   print(sprachen.aktualisierenJetzt)
+  print(sprachen.schliesseIris)
   sg.closeIris()
   Funktion.update("beta")
 end
