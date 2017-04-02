@@ -113,8 +113,8 @@ function Funktion.checkKomponenten()
   end
   gpu.setForeground(0xFFFFFF)
   if component.isAvailable("stargate") then
+    sg = component.getPrimary("stargate")
     if sg.energyToDial(sg.localAddress()) then
-      sg = component.getPrimary("stargate")
       return true
     else
       gpu.setForeground(0x00FF00)
@@ -122,6 +122,7 @@ function Funktion.checkKomponenten()
       gpu.setForeground(0xFF0000)
       os.sleep(5)
       return false
+    end
   else
     os.sleep(5)
     return false
