@@ -58,6 +58,8 @@ return {
 ["fluidradon"]                   = "Radon",
 ["fluidsulfuricacid"]            = "Sulfuric Acid",
 ["fluidmoltenconcrete"]          = "Wet Concrete",
+["fluiduuamplifier"]             = "UU-Amplifier",
+["UUMatter"]                     = "UU-Matter",
 ["lpg"]                          = "LPG",
 ["plastic"]                      = "Liquid Plastic",
 }
