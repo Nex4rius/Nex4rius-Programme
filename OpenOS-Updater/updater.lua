@@ -86,13 +86,14 @@ function Funktion.verarbeiten()
     local f = io.open("/updater/github-liste.txt", "r")
     a:write("return ")
     for zeile in f:lines() do
-        a:write(string.gsub(zeile, "%[", "{") .. "\n")
+        a:write(string.gsub(string.gsub(string.gsub(zeile, "%[", "{"), "%]", "}"), "%:", "=") .. "\n")
     end
     f:close()
     a:close()
     entfernen("/updater/github-liste.txt")
     if not pcall(loadfile("/updater/ausgabe.lua")) then
         print(Sprache.ausgabefalsch or "<FEHLER> ausgabe.lua")
+    end
     dateien = loadfile("/updater/ausgabe.lua")()
     fs.makeDirectory("/update")
     local komplett = true
