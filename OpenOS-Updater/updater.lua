@@ -84,20 +84,15 @@ end
 function Funktion.verarbeiten()
     local a = io.open("/updater/ausgabe.lua", "w")
     local f = io.open("/updater/github-liste.txt", "r")
-    zeichen = {
-        ["["] = [===[{]===],
-        [":"] = [===[=]===],
-    }
-    local function zeichenErsetzen(...)
-        return string.gsub(..., "%a+", function (str) return zeichen [str] end)
-    end
     a:write("return ")
     for zeile in f:lines() do
-        a:write(zeichenErsetzen(zeile) .. "\n")
+        a:write(string.gsub(zeile, "%[", "{") .. "\n")
     end
     f:close()
     a:close()
-    entfernen("/updater/github-list.txt")
+    entfernen("/updater/github-liste.txt")
+    if not pcall(loadfile("/updater/ausgabe.lua")) then
+        print(Sprache.ausgabefalsch or "<FEHLER> ausgabe.lua")
     dateien = loadfile("/updater/ausgabe.lua")()
     fs.makeDirectory("/update")
     local komplett = true
@@ -140,12 +135,12 @@ local function main()
         end
     end
     gpu.setForeground(0xFF0000)
-    print((Sprache.fehler .. " " .. Sprache.downloadfehlerGitHub) or "<FEHLER> GitHub Download")
+    print("<FEHLER> GitHub Download")
 end
 
 if not pcall(main) then
     gpu.setForeground(0xFF0000)
-    print((Sprache.fehler .. " " .. Sprache.funktion .. " main") or "<FEHLER> Funktion main")
+    print("<FEHLER> Funktion main")
 end
 
 gpu.setForeground(0xFFFFFF)
