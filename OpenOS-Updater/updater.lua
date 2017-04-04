@@ -95,7 +95,7 @@ function Funktion.verarbeiten()
     for zeile in f:lines() do
         a:write(zeichenErsetzen(zeile) .. "\n")
     end
-    io.open("/updater/github-liste.txt", "r"):close()
+    f:close()
     a:close()
     entfernen("/updater/github-list.txt")
     dateien = loadfile("/updater/ausgabe.lua")()
@@ -140,12 +140,12 @@ local function main()
         end
     end
     gpu.setForeground(0xFF0000)
-    print(string.format("%s %s", Sprache.fehler, Sprache.downloadfehlerGitHub) or "<FEHLER> GitHub Download")
+    print((Sprache.fehler .. " " .. Sprache.downloadfehlerGitHub) or "<FEHLER> GitHub Download")
 end
 
 if not pcall(main) then
     gpu.setForeground(0xFF0000)
-    print(string.format("%s %s main", Sprache.fehler, Sprache.funktion) or "<FEHLER> Funktion main")
+    print((Sprache.fehler .. " " .. Sprache.funktion .. " main") or "<FEHLER> Funktion main")
 end
 
 gpu.setForeground(0xFFFFFF)
