@@ -85,8 +85,8 @@ function Funktion.verarbeiten()
     local a = io.open("/updater/ausgabe.lua", "w")
     local f = io.open("/updater/github-liste.txt", "r")
     zeichen = {
-        "[" = "{",
-        ":" = "=",
+        ["["] = [===[{]===],
+        [":"] = [===[=]===],
     }
     local function zeichenErsetzen(...)
         return string.gsub(..., "%a+", function (str) return zeichen [str] end)
