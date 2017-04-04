@@ -124,7 +124,7 @@ function Funktion.verarbeiten()
         end
         entfernen("-rv", "/update")
         gpu.setForeground(0x00FF00)
-        print(Sprache.UpdateVollständig or "Update vollständig")
+        print(Sprache.UpdateVollstaendig or "Update vollständig")
         os.sleep(5)
         require("computer").shutdown(true)
     end
