@@ -5,6 +5,7 @@
 local fs            = require("filesystem")
 local component     = require("component")
 local term          = require("term")
+local gpu           = component.gpu
 
 local wget          = loadfile("/bin/wget.lua")
 local kopieren      = loadfile("/bin/cp.lua")
@@ -12,7 +13,6 @@ local entfernen     = loadfile("/bin/rm.lua")
 
 local Funktion      = {}
 local Sprache       = {}
-local gpu
 
 function Funktion.Pfad(api)
     if api then
