@@ -2,7 +2,7 @@
 
 <h2>Download</h2>
 <hr>
-<code>pastebin run -f XXXXXXXX</code>
+<code>pastebin run -f icKy25PF</code>
 <hr>
 <code>wget -f https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/installieren.lua</code><br />
 <code>/installieren.lua</code>
