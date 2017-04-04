@@ -116,6 +116,7 @@ function Funktion.verarbeiten()
     if dateien["truncated"] or not komplett then
         gpu.setForeground(0xFF0000)
         print((Sprache.fehler .. Sprache.unvollstaendig) or "<FEHLER> Download unvollständig")
+        return false
     else
         print(Sprache.alteErsetzen or "Ersetze alte Dateien")
         for i in fs.list("/update") do
@@ -133,11 +134,12 @@ local function main()
     --Funktion.checkSprache()
     Funktion.checkKomponenten()
     if wget("-f", Funktion.Pfad(true), "/updater/github-liste.txt") then
-        Funktion.verarbeiten()
-    else
-        gpu.setForeground(0xFF0000)
-        print(string.format("%s %s", Sprache.fehler, Sprache.downloadfehlerGitHub) or "<FEHLER> GitHub Download")
+        if Funktion.verarbeiten() then
+            return
+        end
     end
+    gpu.setForeground(0xFF0000)
+    print(string.format("%s %s", Sprache.fehler, Sprache.downloadfehlerGitHub) or "<FEHLER> GitHub Download")
 end
 
 if not pcall(main) then
