@@ -133,6 +133,7 @@ end
 local function main()
     --Funktion.checkSprache()
     Funktion.checkKomponenten()
+    fs.makeDirectory("/updater")
     if wget("-f", Funktion.Pfad(true), "/updater/github-liste.txt") then
         if Funktion.verarbeiten() then
             return
