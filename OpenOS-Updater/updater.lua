@@ -95,9 +95,9 @@ end
 local function main()
     Funktion.checkKomponenten()
     fs.makeDirectory("/OpenOS-Updater")
-    kopieren("-rv", "/updater.lua", "/OpenOS-Updater/updater.lua")
-    kopieren("-rv", "/updater.lua", "/bin/updater.lua")
-    entfernen("-rv", "/updater.lua")
+    kopieren("-r", "/updater.lua", "/OpenOS-Updater/updater.lua")
+    kopieren("-r", "/updater.lua", "/bin/updater.lua")
+    entfernen("-r", "/updater.lua")
     if wget("-f", Funktion.Pfad(true), "/OpenOS-Updater/github-liste.txt") and wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/json.lua", "/OpenOS-Updater/json.lua") then
         if Funktion.verarbeiten() then
             return
