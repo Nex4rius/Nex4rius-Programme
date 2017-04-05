@@ -62,7 +62,10 @@ function Funktion.verarbeiten()
     for i in pairs(dateien.tree) do
         if dateien.tree[i].type == "tree" then
             fs.makeDirectory("/update/" .. dateien.tree[i].path)
-        elseif dateien.tree[i].type == "blob" then
+        end
+    end
+    for i in pairs(dateien.tree) do
+        if dateien.tree[i].type == "blob" then
             if not wget("-f", Funktion.Pfad() .. dateien.tree[i].path, "/update/" .. dateien.tree[i].path) then
                 komplett = false
             end
@@ -80,6 +83,8 @@ function Funktion.verarbeiten()
             kopieren("-rv", "/update/" .. i, "/" .. i)
         end
         entfernen("-rv", "/update")
+        entfernen("-rv", "/OpenOS-Updater")
+        entfernen("-rv", "/bin/updater.lua")
         gpu.setForeground(0x00FF00)
         print("Update vollständig")
         os.sleep(5)
@@ -90,7 +95,10 @@ end
 local function main()
     Funktion.checkKomponenten()
     fs.makeDirectory("/OpenOS-Updater")
-    if wget("-f", Funktion.Pfad(true), "/OpenOS-Updater/github-liste.txt") then
+    kopieren("-rv", "/updater.lua", "/OpenOS-Updater/updater.lua")
+    kopieren("-rv", "/updater.lua", "/bin/updater.lua")
+    entfernen("-rv", "/updater.lua")
+    if wget("-f", Funktion.Pfad(true), "/OpenOS-Updater/github-liste.txt") and wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/json.lua", "/OpenOS-Updater/json.lua") then
         if Funktion.verarbeiten() then
             return
         end
