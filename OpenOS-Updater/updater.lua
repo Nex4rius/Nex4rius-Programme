@@ -52,8 +52,8 @@ function Funktion.checkKomponenten()
 end
 
 function Funktion.verarbeiten()
-    local f = io.open("/OpenOS-Updater/github-liste.txt", "r")
-    local dateien = loadfile("/OpenOS-Updater/json.lua")():decode(f:read("*all"))
+    local f = io.open("/github-liste.txt", "r")
+    local dateien = loadfile("/json.lua")():decode(f:read("*all"))
     f:close()
     fs.makeDirectory("/update")
     local komplett = true
@@ -74,6 +74,7 @@ function Funktion.verarbeiten()
         gpu.setForeground(0xFF0000)
         print("<FEHLER> Download unvollständig")
         entfernen("-rv", "/update")
+        entfernen("-rv", "/github-liste.txt")
         os.exit()
     else
         print("Ersetze alte Dateien")
@@ -81,8 +82,8 @@ function Funktion.verarbeiten()
             kopieren("-rv", "/update/" .. i, "/")
         end
         entfernen("-rv", "/update")
-        entfernen("-rv", "/OpenOS-Updater")
-        entfernen("-rv", "/bin/updater.lua")
+        entfernen("-rv", "/github-liste.txt")
+        entfernen("-rv", "/updater.lua")
         gpu.setForeground(0x00FF00)
         print("Update vollständig")
         os.sleep(5)
@@ -93,11 +94,6 @@ end
 local function main()
     Funktion.checkKomponenten()
     fs.makeDirectory("/OpenOS-Updater")
-    if fs.exists("/updater.lua") then
-        kopieren("-r", "/updater.lua", "/OpenOS-Updater/updater.lua")
-        kopieren("-r", "/updater.lua", "/bin/updater.lua")
-        entfernen("-r", "/updater.lua")
-    end
     gpu.setForeground(0xFFFFFF)
     print("Starte Download")
     if wget("-f", Funktion.Pfad(true), "/OpenOS-Updater/github-liste.txt") and wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/json.lua", "/OpenOS-Updater/json.lua") then
