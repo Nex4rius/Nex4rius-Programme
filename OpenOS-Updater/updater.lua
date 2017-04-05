@@ -66,6 +66,7 @@ function Funktion.verarbeiten()
         if dateien.tree[i].type == "blob" then
             if not wget("-f", Funktion.Pfad() .. dateien.tree[i].path, "/update/" .. dateien.tree[i].path) then
                 komplett = false
+                break
             end
         end
     end
