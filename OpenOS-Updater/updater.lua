@@ -89,7 +89,7 @@ end
 local function main()
     Funktion.checkKomponenten()
     fs.makeDirectory("/OpenOS-Updater")
-    if wget("-f", Funktion.Pfad(true), "/OpenOS-Updater/github-liste.txt") and wget("-f", Funktion.Pfad(), "/OpenOS-Updater/json.lua") then
+    if wget("-f", Funktion.Pfad(true), "/OpenOS-Updater/github-liste.txt") then
         if Funktion.verarbeiten() then
             return
         end
