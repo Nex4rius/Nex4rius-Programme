@@ -57,8 +57,6 @@ function Funktion.verarbeiten()
     f:close()
     fs.makeDirectory("/update")
     local komplett = true
-    gpu.setForeground(0xFFFFFF)
-    print("Starte Download")
     for i in pairs(dateien.tree) do
         if dateien.tree[i].type == "tree" then
             fs.makeDirectory("/update/" .. dateien.tree[i].path)
@@ -95,9 +93,13 @@ end
 local function main()
     Funktion.checkKomponenten()
     fs.makeDirectory("/OpenOS-Updater")
-    kopieren("-r", "/updater.lua", "/OpenOS-Updater/updater.lua")
-    kopieren("-r", "/updater.lua", "/bin/updater.lua")
-    entfernen("-r", "/updater.lua")
+    if fs.exists("/updater.lua") then
+        kopieren("-r", "/updater.lua", "/OpenOS-Updater/updater.lua")
+        kopieren("-r", "/updater.lua", "/bin/updater.lua")
+        entfernen("-r", "/updater.lua")
+    end
+    gpu.setForeground(0xFFFFFF)
+    print("Starte Download")
     if wget("-f", Funktion.Pfad(true), "/OpenOS-Updater/github-liste.txt") and wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/json.lua", "/OpenOS-Updater/json.lua") then
         if Funktion.verarbeiten() then
             return
