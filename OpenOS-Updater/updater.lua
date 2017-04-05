@@ -53,7 +53,7 @@ end
 
 function Funktion.verarbeiten()
     local f = io.open("/OpenOS-Updater/github-liste.txt", "r")
-    local dateien = loadfile("json.lua")():f:read("*all")
+    local dateien = loadfile("/OpenOS-Updater/json.lua")():decode(f:read("*all"))
     f:close()
     fs.makeDirectory("/update")
     local komplett = true
@@ -72,7 +72,8 @@ function Funktion.verarbeiten()
     if dateien["truncated"] or not komplett then
         gpu.setForeground(0xFF0000)
         print("<FEHLER> Download unvollständig")
-        return false
+        entfernen("-rv", "/update")
+        os.exit()
     else
         print("Ersetze alte Dateien")
         for i in fs.list("/update") do
