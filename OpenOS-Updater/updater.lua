@@ -71,7 +71,7 @@ function Funktion.verarbeiten()
             end
         end
     end
-    print("Download Beendet")
+    print("\nDownload Beendet\n")
     if dateien["truncated"] or not komplett then
         gpu.setForeground(0xFF0000)
         print("<FEHLER> Download unvollständig")
