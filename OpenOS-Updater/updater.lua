@@ -78,7 +78,7 @@ function Funktion.verarbeiten()
     else
         print("Ersetze alte Dateien")
         for i in fs.list("/update") do
-            kopieren("-rv", "/update/" .. i, "/" .. i)
+            kopieren("-rv", "/update/" .. i, "/")
         end
         entfernen("-rv", "/update")
         entfernen("-rv", "/OpenOS-Updater")
