@@ -2,6 +2,11 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme
 
+local shell = require("shell")
+local alterPfad = shell.getWorkingDirectory("/")
+
+shell.setWorkingDirectory("/")
+
 local fs            = require("filesystem")
 local component     = require("component")
 local term          = require("term")
@@ -76,6 +81,7 @@ function Funktion.verarbeiten()
         print("<FEHLER> Download unvollständig")
         entfernen("-rv", "/update")
         entfernen("-rv", "/github-liste.txt")
+        shell.setWorkingDirectory(alterPfad)
         os.exit()
     else
         print("Ersetze alte Dateien")
