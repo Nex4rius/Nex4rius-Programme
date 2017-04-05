@@ -93,10 +93,9 @@ end
 
 local function main()
     Funktion.checkKomponenten()
-    fs.makeDirectory("/OpenOS-Updater")
     gpu.setForeground(0xFFFFFF)
     print("Starte Download")
-    if wget("-f", Funktion.Pfad(true), "/OpenOS-Updater/github-liste.txt") and wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/json.lua", "/OpenOS-Updater/json.lua") then
+    if wget("-f", Funktion.Pfad(true), "/github-liste.txt") and wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/json.lua", "/json.lua") then
         if Funktion.verarbeiten() then
             return
         end
