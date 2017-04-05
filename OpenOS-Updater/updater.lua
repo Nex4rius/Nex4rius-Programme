@@ -12,7 +12,6 @@ local kopieren      = loadfile("/bin/cp.lua")
 local entfernen     = loadfile("/bin/rm.lua")
 
 local Funktion      = {}
-local Sprache       = {}
 
 function Funktion.Pfad(api)
     if api then
@@ -22,40 +21,10 @@ function Funktion.Pfad(api)
     end
 end
 
---[[
-function Funktion.checkSprache()
-    local alleSprachen = {}
-    local weiter = true
-    for i in fs.list("/updater/sprache") do
-        local Ende = string.len(i)
-        i = string.sub(i, 1, Ende - 4)
-    end
-    while weiter do
-        print("Sprache? / Language?")
-        for i in pairs(alleSprachen) do
-            io.write(alleSprachen[i] .. "   ")
-        end
-        io.write("\n\n")
-        antwortFrageSprache = string.lower(tostring(io.read()))
-        for i in pairs(alleSprachen) do
-            if antwortFrageSprache == alleSprachen[i] then
-                weiter = false
-                break
-            end
-        end
-    end
-    SpracheAuswahl = antwortFrageSprache
-    print("")
-    if pcall(loadfile("/updater/sprache/" .. SpracheAuswahl .. ".lua")) then
-        Sprache = loadfile("/updater/sprache/" .. SpracheAuswahl .. ".lua")()
-    end
-end
-]]
-
 function Funktion.checkKomponenten()
     term.clear()
     local weiter = true
-    print(Sprache.pruefeKomponenten or "Prüfe Komponenten\n")
+    print("Prüfe Komponenten\n")
     local function check(eingabe)
         if component.isAvailable(eingabe[1]) then
             gpu.setForeground(0x00FF00)
@@ -69,12 +38,13 @@ function Funktion.checkKomponenten()
         end
     end
     local alleKomponenten = {
-        {"internet", Sprache.InternetOK or "- Internet             ok", Sprache.InternetFehlt or "- Internet             fehlt", true},
-        {"gpu",      Sprache.GpuOK      or "- GPU                  ok", Sprache.GpuFehlt      or "- GPU                  fehlt"},
+        {"internet", "- Internet             ok", "- Internet             fehlt", true},
+        {"gpu",      "- GPU                  ok", "- GPU                  fehlt"},
     }
     for i in pairs(alleKomponenten) do
         check(alleKomponenten[i])
     end
+    print()
     gpu.setForeground(0xFFFFFF)
     if not weiter then
         os.exit()
@@ -82,55 +52,50 @@ function Funktion.checkKomponenten()
 end
 
 function Funktion.verarbeiten()
-    local a = io.open("/updater/ausgabe.lua", "w")
-    local f = io.open("/updater/github-liste.txt", "r")
-    a:write("return ")
-    for zeile in f:lines() do
-        a:write(string.gsub(string.gsub(string.gsub(zeile, "%[", "{"), "%]", "}"), "%:", "=") .. "\n")
-    end
+    local f = io.open("/github-liste.txt", "r")
+    local dateien = loadfile("/json.lua")():decode(f:read("*all"))
     f:close()
-    a:close()
-    entfernen("/updater/github-liste.txt")
-    if not pcall(loadfile("/updater/ausgabe.lua")) then
-        print(Sprache.ausgabefalsch or "<FEHLER> ausgabe.lua")
-    end
-    dateien = loadfile("/updater/ausgabe.lua")()
     fs.makeDirectory("/update")
     local komplett = true
-    gpu.setForeground(0xFFFFFF)
-    print(Sprache.starteDownload or "Starte Download")
     for i in pairs(dateien.tree) do
         if dateien.tree[i].type == "tree" then
             fs.makeDirectory("/update/" .. dateien.tree[i].path)
-        elseif dateien.tree[i].type == "blob" then
+        end
+    end
+    for i in pairs(dateien.tree) do
+        if dateien.tree[i].type == "blob" then
             if not wget("-f", Funktion.Pfad() .. dateien.tree[i].path, "/update/" .. dateien.tree[i].path) then
                 komplett = false
             end
         end
     end
-    print(Sprache.DownloadBeendet or "Download Beendet")
+    print("\nDownload Beendet\n")
     if dateien["truncated"] or not komplett then
         gpu.setForeground(0xFF0000)
-        print((Sprache.fehler .. Sprache.unvollstaendig) or "<FEHLER> Download unvollständig")
-        return false
+        print("<FEHLER> Download unvollständig")
+        entfernen("-rv", "/update")
+        entfernen("-rv", "/github-liste.txt")
+        os.exit()
     else
-        print(Sprache.alteErsetzen or "Ersetze alte Dateien")
+        print("Ersetze alte Dateien")
         for i in fs.list("/update") do
-            kopieren("-rv", "/update/" .. i, "/" .. i)
+            kopieren("-rv", "/update/" .. i, "/")
         end
         entfernen("-rv", "/update")
+        entfernen("-rv", "/github-liste.txt")
+        entfernen("-rv", "/updater.lua")
         gpu.setForeground(0x00FF00)
-        print(Sprache.UpdateVollstaendig or "Update vollständig")
+        print("Update vollständig")
         os.sleep(5)
         require("computer").shutdown(true)
     end
 end
 
 local function main()
-    --Funktion.checkSprache()
     Funktion.checkKomponenten()
-    fs.makeDirectory("/updater")
-    if wget("-f", Funktion.Pfad(true), "/updater/github-liste.txt") then
+    gpu.setForeground(0xFFFFFF)
+    print("Starte Download")
+    if wget("-f", Funktion.Pfad(true), "/github-liste.txt") and wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/json.lua", "/json.lua") then
         if Funktion.verarbeiten() then
             return
         end
