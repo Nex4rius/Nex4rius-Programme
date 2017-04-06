@@ -8,6 +8,7 @@ local fs          = require("filesystem")
 local arg         = require("shell").parse(...)[1]
 local wget        = loadfile("/bin/wget.lua")
 local copy        = loadfile("/bin/cp.lua")
+local Sprachliste = {"deutsch", "english", "russian", "czech"}
 local Sicherung   = {}
 local Funktionen  = {}
 local sprachen
@@ -24,7 +25,6 @@ else
   Sicherung.installieren = false
 end
 
-local Sprachliste = {"deutsch", "english", "russian", "czech", Sicherung.Sprache}
 
 if Sicherung.Sprache then
   if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
