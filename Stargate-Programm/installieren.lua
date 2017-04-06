@@ -76,7 +76,6 @@ function Funktionen.installieren(versionTyp)
   update[6] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/Kontrollprogramm.lua",      "/update/stargate/Kontrollprogramm.lua")
   update[7] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/schreibSicherungsdatei.lua","/update/stargate/schreibSicherungsdatei.lua")
   update[8] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/sprache/ersetzen.lua",      "/update/stargate/sprache/ersetzen.lua")
-  update[9] = false
   for s in pairs(Sprachliste) do
     if Spachliste{s] ~= "" then
       if wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/sprache/" .. Sprachliste[s] .. ".lua", "/update/stargate/sprache/" .. Sprachliste[s] .. ".lua") then
@@ -84,7 +83,7 @@ function Funktionen.installieren(versionTyp)
       end
     end
   end
-  for i = 1, 8 + #Sprachliste do
+  for i = 1, 9 do
     if update[i] then
       updateKomplett = true
     else
