@@ -18,6 +18,11 @@ local entfernen     = loadfile("/bin/rm.lua")
 
 local Funktion      = {}
 
+local adressen = {
+    openos = {user = "MightyPirates", repo = "OpenComputers", tree = "master-MC1.7.10", id = "41acf2fa06990dcc4d740490cccd9d2bcec97edd"}
+    stargate = {user = "Nex4rius", repo = "Nex4rius-Programme", tree = "master", id = ""}
+}
+
 function Funktion.Pfad(api)
     if api then
         return "https://api.github.com/repos/MightyPirates/OpenComputers/git/trees/41acf2fa06990dcc4d740490cccd9d2bcec97edd?recursive=1"
