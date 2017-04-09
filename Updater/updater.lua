@@ -84,7 +84,7 @@ function Funktion.verarbeiten()
         shell.setWorkingDirectory(alterPfad)
         os.exit()
     else
-        print("Ersetze alte Dateien")
+        print("Ersetze alte Dateien\n")
         for i in fs.list("/update") do
             kopieren("-rv", "/update/" .. i, "/")
         end
