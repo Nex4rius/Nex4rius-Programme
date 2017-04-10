@@ -68,6 +68,8 @@ function Funktion.Pfad(nummer)
         return string.format("https://api.github.com/repos/%s/%s/git/trees/%s?recursive=1", name, repo, sha)
     elseif nummer == "3" then
         return string.format("https://raw.githubusercontent.com/%s/%s/%s/%s", name, repo, tree, link)
+    elseif nummer == "4" then
+        return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/"
     end
 end
 
@@ -153,7 +155,7 @@ local function main()
     Funktion.checkKomponenten()
     gpu.setForeground(0xFFFFFF)
     print("Starte Download\n")
-    if wget("-f", Funktion.Pfad("3") .. "Updater/json.lua", "/json.lua") then
+    if wget("-f", Funktion.Pfad("4") .. "Updater/json.lua", "/json.lua") then
         if Funktion.verarbeiten() then
             return
         end
