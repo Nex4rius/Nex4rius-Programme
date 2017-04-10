@@ -7,7 +7,10 @@ local fs            = require("filesystem")
 local component     = require("component")
 local term          = require("term")
 local gpu           = component.gpu
-local args          = shell.parse(...)
+local args1         = shell.parse(...)[1]
+local args2         = shell.parse(...)[2]
+local args3         = shell.parse(...)[3]
+local args4         = shell.parse(...)[4]
 
 local wget          = loadfile("/bin/wget.lua")
 local kopieren      = loadfile("/bin/cp.lua")
@@ -36,33 +39,25 @@ local adressen = {
 
 shell.setWorkingDirectory("/")
 
-if string.lower(adressen.args[1]) then
-    name = adressen.args[1].name
-    repo = adressen.args[1].repo
-    tree = adressen.args[1].tree
-    link = adressen.args[1].link
-elseif type(args[1]) == "string" and type(args[2]) == "string" and type(args[3]) == "string" then
-    name = args[1]
-    repo = args[2]
-    tree = args[3]
-    if args[4] then
-        link = args[4]
+if string.lower(adressen.args1) then
+    name = adressen.args1.name
+    repo = adressen.args1.repo
+    tree = adressen.args1.tree
+    link = adressen.args1.link
+elseif type(args1) == "string" and type(args2) == "string" and type(args3) == "string" then
+    name = args1
+    repo = args2
+    tree = args3
+    if args4 then
+        link = args4
     else
         link = ""
     end
-elseif args[1] == "hilfe" or args[1] == "help" or args[1] == "?" then
+elseif args1 == "hilfe" or args1 == "help" or args1 == "?" then
     hilfe = true
 else
     print("<FEHLER> falsche Eingabe")
     hilfe = true
-end
-
-function Funktion.Pfad(api)
-    if api then
-        return "https://api.github.com/repos/MightyPirates/OpenComputers/git/trees/41acf2fa06990dcc4d740490cccd9d2bcec97edd?recursive=1"
-    else
-        return "https://raw.githubusercontent.com/MightyPirates/OpenComputers/master-MC1.7.10/src/main/resources/assets/opencomputers/loot/openos/"
-    end
 end
 
 --https://api.github.com/repos/Nex4rius/Nex4rius-Programme/branches/master
