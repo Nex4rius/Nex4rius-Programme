@@ -24,14 +24,14 @@ local adressen = {
         name = "MightyPirates",
         repo = "OpenComputers",
         tree = "master-MC1.7.10",
-        link = "src/main/resources/assets/opencomputers/loot/openos/"
-    }
+        link = "src/main/resources/assets/opencomputers/loot/openos/",
+    },
     stargate = {
         name = "Nex4rius",
         repo = "Nex4rius-Programme",
         tree = "master"
-        link = "Stargate-Programm/"
-    }
+        link = "Stargate-Programm/",
+    },
 }
 
 shell.setWorkingDirectory("/")
