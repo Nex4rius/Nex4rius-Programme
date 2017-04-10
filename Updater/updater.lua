@@ -36,7 +36,7 @@ local adressen = {
 
 shell.setWorkingDirectory("/")
 
-if adressen.args[1] then
+if string.lower(adressen.args[1]) then
     name = adressen.args[1].name
     repo = adressen.args[1].repo
     tree = adressen.args[1].tree
