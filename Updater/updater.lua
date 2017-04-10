@@ -20,7 +20,7 @@ local alterPfad     = shell.getWorkingDirectory("/")
 
 local Funktion      = {}
 local hilfe         = false
-local link, name, repo, tree  = ""
+local link, name, repo, tree = ""
 
 local adressen = {
     openos = {
@@ -64,9 +64,9 @@ end
 function Funktion.Pfad(nummer)
     if nummer == "1" then
         return string.format("https://api.github.com/repos/%s/%s/branches/%s", name, repo, tree)
-    elseif nummber == "2" then
+    elseif nummer == "2" then
         return string.format("https://api.github.com/repos/%s/%s/git/trees/%s?recursive=1", name, repo, sha)
-    elseif nummber == "3" then
+    elseif nummer == "3" then
         return string.format("https://raw.githubusercontent.com/%s/%s/%s/%s", name, repo, tree, link)
     end
 end
