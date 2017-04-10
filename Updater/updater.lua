@@ -2,21 +2,22 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme
 
-local shell = require("shell")
-local alterPfad = shell.getWorkingDirectory("/")
-
-shell.setWorkingDirectory("/")
-
+local shell         = require("shell")
 local fs            = require("filesystem")
 local component     = require("component")
 local term          = require("term")
 local gpu           = component.gpu
+local args          = shell.parse(...)
 
 local wget          = loadfile("/bin/wget.lua")
 local kopieren      = loadfile("/bin/cp.lua")
 local entfernen     = loadfile("/bin/rm.lua")
 
+local alterPfad     = shell.getWorkingDirectory("/")
+
 local Funktion      = {}
+local hilfe         = false
+local name, repo, tree, link
 
 local adressen = {
     openos = {
@@ -32,6 +33,29 @@ local adressen = {
         link = "Stargate-Programm/"
     }
 }
+
+shell.setWorkingDirectory("/")
+
+if adressen.args[1] then
+    name = adressen.args[1].name
+    repo = adressen.args[1].repo
+    tree = adressen.args[1].tree
+    link = adressen.args[1].link
+elseif args[1] and args[2] and args[3] then
+    name = args[1]
+    repo = args[2]
+    tree = args[3]
+    if args[4] then
+        link = args[4]
+    else
+        link = ""
+    end
+elseif args[1] == "hilfe" or args[1] == "help" or args[1] == "?" then
+    hilfe = true
+else
+    print("<FEHLER> falsche Eingabe")
+    hilfe = true
+end
 
 function Funktion.Pfad(api)
     if api then
