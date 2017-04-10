@@ -39,11 +39,11 @@ local adressen = {
 
 shell.setWorkingDirectory("/")
 
-if adressen.args1 then
-    name = adressen.args1.name
-    repo = adressen.args1.repo
-    tree = adressen.args1.tree
-    link = adressen.args1.link
+if adressen[args1] then
+    name = adressen[args1].name
+    repo = adressen[args1].repo
+    tree = adressen[args1].tree
+    link = adressen[args1].link
 elseif type(args1) == "string" and type(args2) == "string" and type(args3) == "string" then
     name = args1
     repo = args2
