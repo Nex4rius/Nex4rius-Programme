@@ -10,7 +10,7 @@ shell.setWorkingDirectory("/")
 local fs            = require("filesystem")
 local component     = require("component")
 local term          = require("term")
-local gpudirekt     = component.gpu
+local gpu           = component.gpu
 
 local wget          = loadfile("/bin/wget.lua")
 local kopieren      = loadfile("/bin/cp.lua")
@@ -19,15 +19,19 @@ local entfernen     = loadfile("/bin/rm.lua")
 local Funktion      = {}
 
 local adressen = {
-    openos = {user = "MightyPirates", repo = "OpenComputers", tree = "master-MC1.7.10", id = "41acf2fa06990dcc4d740490cccd9d2bcec97edd"}
-    stargate = {user = "Nex4rius", repo = "Nex4rius-Programme", tree = "master", id = ""}
+    openos = {
+        name = "MightyPirates",
+        repo = "OpenComputers",
+        tree = "master-MC1.7.10",
+        link = "src/main/resources/assets/opencomputers/loot/openos/"
+    }
+    stargate = {
+        name = "Nex4rius",
+        repo = "Nex4rius-Programme",
+        tree = "master"
+        link = "Stargate-Programm/"
+    }
 }
-
-local function gpu(arg, ...)
-    if component.isAvailable("gpu") then
-        gpudirekt[arg](...)
-    end
-end
 
 function Funktion.Pfad(api)
     if api then
@@ -36,6 +40,13 @@ function Funktion.Pfad(api)
         return "https://raw.githubusercontent.com/MightyPirates/OpenComputers/master-MC1.7.10/src/main/resources/assets/opencomputers/loot/openos/"
     end
 end
+
+--https://api.github.com/repos/Nex4rius/Nex4rius-Programme/branches/master
+--https://api.github.com/repos/Nex4rius/Nex4rius-Programme/git/trees/3e24c5cfe4824cdecfb0641cefff8ecacb4bc28e?recursive=1
+local Pfad = {}
+Pfad[1] = string.format("https://api.github.com/repos/%s/%s/branches/%s", name, repo, tree)
+Pfad[2] = string.format("https://api.github.com/repos/%s/%s/git/trees/%s?recursive=1", name, repo)
+Pfad[3] = string.format("https://raw.githubusercontent.com/%s/%s/%s/%s", name, repo, tree, link)
 
 function Funktion.checkKomponenten()
     term.clear()
