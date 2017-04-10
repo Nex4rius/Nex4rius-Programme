@@ -67,10 +67,16 @@ end
 
 --https://api.github.com/repos/Nex4rius/Nex4rius-Programme/branches/master
 --https://api.github.com/repos/Nex4rius/Nex4rius-Programme/git/trees/3e24c5cfe4824cdecfb0641cefff8ecacb4bc28e?recursive=1
-local Pfad = {}
-Pfad[1] = string.format("https://api.github.com/repos/%s/%s/branches/%s", name, repo, tree)
-Pfad[2] = string.format("https://api.github.com/repos/%s/%s/git/trees/%s?recursive=1", name, repo)
-Pfad[3] = string.format("https://raw.githubusercontent.com/%s/%s/%s/%s", name, repo, tree, link)
+
+function Funktion.Pfad(nummer)
+    if nummer == 1 then
+        return string.format("https://api.github.com/repos/%s/%s/branches/%s", name, repo, tree)
+    elseif nummber == 2 then
+        return string.format("https://api.github.com/repos/%s/%s/git/trees/%s?recursive=1", name, repo, sha)
+    elseif nummber == 3 then
+        return string.format("https://raw.githubusercontent.com/%s/%s/%s/%s", name, repo, tree, link)
+    end
+end
 
 function Funktion.checkKomponenten()
     term.clear()
@@ -103,6 +109,11 @@ function Funktion.checkKomponenten()
 end
 
 function Funktion.verarbeiten()
+    if not wget("-f", Funktion.Pfad(1), "/github-liste.txt") then return end
+    local f = io.open("/github-liste.txt", "r")
+    sha = loadfile("/json.lua")():decode(f:read("*all")).commit.sha
+    f:close()
+    if not wget("-f", Funktion.Pfad(2), "/github-liste.txt") then return end
     local f = io.open("/github-liste.txt", "r")
     local dateien = loadfile("/json.lua")():decode(f:read("*all"))
     f:close()
@@ -115,7 +126,7 @@ function Funktion.verarbeiten()
     end
     for i in pairs(dateien.tree) do
         if dateien.tree[i].type == "blob" then
-            if not wget("-f", Funktion.Pfad() .. dateien.tree[i].path, "/update/" .. dateien.tree[i].path) then
+            if not wget("-f", Funktion.Pfad(3) .. dateien.tree[i].path, "/update/" .. dateien.tree[i].path) then
                 komplett = false
                 break
             end
@@ -148,8 +159,8 @@ end
 local function main()
     Funktion.checkKomponenten()
     gpu.setForeground(0xFFFFFF)
-    print("Starte Download")
-    if wget("-f", Funktion.Pfad(true), "/github-liste.txt") and wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/json.lua", "/json.lua") then
+    print("Starte Download\n")
+    if wget("-f", Funktion.Pfad(3) .. "Updater/json.lua", "/json.lua") then
         if Funktion.verarbeiten() then
             return
         end
