@@ -10,7 +10,7 @@ shell.setWorkingDirectory("/")
 local fs            = require("filesystem")
 local component     = require("component")
 local term          = require("term")
-local gpu           = component.gpu
+local gpudirekt     = component.gpu
 
 local wget          = loadfile("/bin/wget.lua")
 local kopieren      = loadfile("/bin/cp.lua")
@@ -22,6 +22,12 @@ local adressen = {
     openos = {user = "MightyPirates", repo = "OpenComputers", tree = "master-MC1.7.10", id = "41acf2fa06990dcc4d740490cccd9d2bcec97edd"}
     stargate = {user = "Nex4rius", repo = "Nex4rius-Programme", tree = "master", id = ""}
 }
+
+local function gpu(arg, ...)
+    if component.isAvailable("gpu") then
+        gpudirekt[arg](...)
+    end
+end
 
 function Funktion.Pfad(api)
     if api then
