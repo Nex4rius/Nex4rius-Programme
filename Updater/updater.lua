@@ -41,7 +41,7 @@ if adressen.args[1] then
     repo = adressen.args[1].repo
     tree = adressen.args[1].tree
     link = adressen.args[1].link
-elseif args[1] and args[2] and args[3] then
+elseif type(args[1]) == "string" and type(args[2]) == "string" and type(args[3]) == "string" then
     name = args[1]
     repo = args[2]
     tree = args[3]
