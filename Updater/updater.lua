@@ -132,7 +132,7 @@ function Funktion.verarbeiten()
         gpu.setForeground(0xFF0000)
         print("<FEHLER> Download unvollständig")
         entfernen("-rv", "/update")
-        entfernen("-rv", "/github-liste.txt")
+        --entfernen("-rv", "/github-liste.txt")
         shell.setWorkingDirectory(alterPfad)
         os.exit()
     else
