@@ -20,7 +20,7 @@ local alterPfad     = shell.getWorkingDirectory("/")
 
 local Funktion      = {}
 local hilfe         = false
-local name, repo, tree, link
+local link, name, repo, tree  = ""
 
 local adressen = {
     openos = {
@@ -50,8 +50,6 @@ elseif type(args1) == "string" and type(args2) == "string" and type(args3) == "s
     tree = args3
     if args4 then
         link = args4
-    else
-        link = ""
     end
 elseif args1 == "hilfe" or args1 == "help" or args1 == "?" then
     hilfe = true
