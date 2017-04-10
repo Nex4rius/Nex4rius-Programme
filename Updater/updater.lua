@@ -21,16 +21,16 @@ local name, repo, tree, link
 
 local adressen = {
     openos = {
-        name = "MightyPirates",
-        repo = "OpenComputers",
-        tree = "master-MC1.7.10",
-        link = "src/main/resources/assets/opencomputers/loot/openos/",
+        name = [[MightyPirates]],
+        repo = [[OpenComputers]],
+        tree = [[master-MC1.7.10]],
+        link = [[src/main/resources/assets/opencomputers/loot/openos/]],
     },
     stargate = {
-        name = "Nex4rius",
-        repo = "Nex4rius-Programme",
-        tree = "master"
-        link = "Stargate-Programm/",
+        name = [[Nex4rius]],
+        repo = [[Nex4rius-Programme]],
+        tree = [[master]],
+        link = [[Stargate-Programm/]],
     },
 }
 
