@@ -5,7 +5,6 @@
 local shell         = require("shell")
 local fs            = require("filesystem")
 local component     = require("component")
-local term          = require("term")
 local args1         = shell.parse(...)[1]
 local args2         = shell.parse(...)[2]
 local args3         = shell.parse(...)[3]
@@ -35,7 +34,7 @@ elseif type(args1) == "string" and type(args2) == "string" and type(args3) == "s
     name = args1
     repo = args2
     tree = args3
-    if args4 then
+    if type(args4) == "string" then
         link = args4
     end
 else
@@ -70,7 +69,7 @@ function Funktion.Hilfe()
 end
 
 function Funktion.checkKomponenten()
-    term.clear()
+    require("term").clear()
     local weiter = true
     print("Prüfe Komponenten\n")
     local function check(eingabe)
