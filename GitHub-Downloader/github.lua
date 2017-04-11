@@ -65,7 +65,7 @@ function Funktion.Hilfe()
     print()
     print("Einbindung in Programme:")
     print([[loadfile("/bin/github.lua")([name], [repo], [tree], [link])]])
-    print([[os.execute("github [name] [repo] [tree] [link]")]]
+    print([[os.execute("github [name] [repo] [tree] [link]")]])
 end
 
 function Funktion.checkKomponenten()
@@ -160,7 +160,7 @@ local function main()
     else
         fs.makeDirectory("/temp")
         print("Download Verzeichnisliste\n")
-        if wget("-f", Funktion.Pfad("1") .. "GitHub-Downloaderu/json.lua", "/temp/json.lua") then
+        if wget("-f", Funktion.Pfad("1") .. "GitHub-Downloader/json.lua", "/temp/json.lua") then
             if Funktion.verarbeiten() then return end
         end
         gpu.setForeground(0xFF0000)
