@@ -6,7 +6,6 @@ local shell         = require("shell")
 local fs            = require("filesystem")
 local component     = require("component")
 local term          = require("term")
-local gpu           = component.gpu
 local args1         = shell.parse(...)[1]
 local args2         = shell.parse(...)[2]
 local args3         = shell.parse(...)[3]
@@ -20,31 +19,18 @@ local alterPfad     = shell.getWorkingDirectory()
 
 local Funktion      = {}
 local hilfe         = false
-local link, name, repo, tree = "."
+local link, name, repo, tree, gpu = "."
 
-local adressen = {
-    openos = {
-        name = [[MightyPirates]],
-        repo = [[OpenComputers]],
-        tree = [[master-MC1.7.10]],
-        link = [[src/main/resources/assets/opencomputers/loot/openos/]],
-    },
-    stargate = {
-        name = [[Nex4rius]],
-        repo = [[Nex4rius-Programme]],
-        tree = [[master]],
-        link = [[Stargate-Programm/]],
-    },
-}
+if component.isAvailable("gpu") then
+    gpu = component.gpu
+else
+    gpu = {}
+    gpu.setForeground = function() end
+end
 
 shell.setWorkingDirectory("/")
 
-if adressen[args1] then
-    name = adressen[args1].name
-    repo = adressen[args1].repo
-    tree = adressen[args1].tree
-    link = adressen[args1].link
-elseif type(args1) == "string" and type(args2) == "string" and type(args3) == "string" then
+if type(args1) == "string" and type(args2) == "string" and type(args3) == "string" then
     name = args1
     repo = args2
     tree = args3
@@ -77,10 +63,6 @@ function Funktion.Hilfe()
     print("github Nex4rius Nex4rius-Programme master Stargate-Programm/")
     print("github MightyPirates OpenComputers master-MC1.7.10 src/main/resources/assets/opencomputers/loot/openos/")
     print()
-    print("integrierte Befehle:")
-    print("github stargate")
-    print("github openos")
-    print()
     print("Hilfetext:")
     print("github hilfe")
     print()
@@ -107,7 +89,7 @@ function Funktion.checkKomponenten()
     end
     local alleKomponenten = {
         {"internet", "- Internet   ok", "- Internet   fehlt", true},
-        {"gpu",      "- GPU        ok", "- GPU        fehlt"},
+        {"gpu",      "- GPU        ok - optional", "- GPU        fehlt - optional"},
     }
     for i in pairs(alleKomponenten) do
         check(alleKomponenten[i])
