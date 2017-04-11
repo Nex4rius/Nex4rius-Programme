@@ -105,21 +105,21 @@ function Funktion.verarbeiten()
         return 
     end
     local f = io.open("/temp/github-liste.txt", "r")
-    print("Konvertiere: JSON -> Lua table\n")
+    print("\nKonvertiere: JSON -> Lua table\n")
     local dateien = loadfile("/temp/json.lua")():decode(f:read("*all"))
     f:close()
     fs.makeDirectory("/update")
     local komplett = true
     print("Erstelle Verzeichnisse\n")
     for i in pairs(dateien.tree) do
-        if dateien.tree[i].type == "tree" and link:find(dateien.tree[i].path) then
+        if dateien.tree[i].type == "tree" and string.sub(link, 1, string.len(link) - 1) == string.sub(dateien.tree[i].path, 1, string.len(link) - 1) then
             fs.makeDirectory("/update/" .. dateien.tree[i].path)
             print("/update/" .. dateien.tree[i].path)
         end
     end
     print("\nStarte Download\n")
     for i in pairs(dateien.tree) do
-        if dateien.tree[i].type == "blob" and link:find(dateien.tree[i].path) then
+        if dateien.tree[i].type == "blob" and string.sub(link, 1, string.len(link) - 1) == string.sub(dateien.tree[i].path, 1, string.len(link) - 1) then
             if not wget("-f", Funktion.Pfad("3") .. dateien.tree[i].path, "/update/" .. dateien.tree[i].path) then
                 komplett = false
                 break
