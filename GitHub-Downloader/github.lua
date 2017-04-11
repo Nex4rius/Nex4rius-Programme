@@ -71,19 +71,22 @@ end
 
 function Funktion.Hilfe()
     require("term").clear()
-    print("Benutzung: /updater [name] [repo] [tree] [link]")
-    print("name, repo, tree, link von GitHub")
+    print("Benutzung: github [name] [repo] [tree] [link]")
     print()
     print("Beispiele:")
-    print("/updater Nex4rius Nex4rius-Programme master Stargate-Programm/")
-    print("/updater MightyPirates OpenComputers master-MC1.7.10 src/main/resources/assets/opencomputers/loot/openos/")
+    print("github Nex4rius Nex4rius-Programme master Stargate-Programm/")
+    print("github MightyPirates OpenComputers master-MC1.7.10 src/main/resources/assets/opencomputers/loot/openos/")
     print()
     print("integrierte Befehle:")
-    print("/updater stargate")
-    print("/updater openos")
+    print("github stargate")
+    print("github openos")
     print()
-    print("Hilfetext")
-    print("/updater hilfe")
+    print("Hilfetext:")
+    print("github hilfe")
+    print()
+    print("Einbindung in Programme:")
+    print([[loadfile("/bin/github.lua")([name], [repo], [tree], [link])]])
+    print([[os.execute("github [name] [repo] [tree] [link]")]]
 end
 
 function Funktion.checkKomponenten()
@@ -160,8 +163,10 @@ function Funktion.verarbeiten()
         for i in fs.list("/update") do
             kopieren("-rv", "/update/" .. i, "/")
         end
-        for k, v in pairs({"/update", "/github-liste.txt", "/updater.lua", "/json.lua"}) do
-            entfernen("-rv", v)
+        for k, v in pairs({"/update", "/github-liste.txt", "/json.lua"}) do
+            if fs.exists(v) then
+                entfernen("-rv", v)
+            end
         end
         gpu.setForeground(0x00FF00)
         print("\nUpdate vollständig")
@@ -178,7 +183,7 @@ local function main()
         Funktion.Hilfe()
     else
         print("Download Verzeichnisliste\n")
-        if wget("-f", Funktion.Pfad("1") .. "Updater/json.lua", "/json.lua") then
+        if wget("-f", Funktion.Pfad("1") .. "GitHub-Downloaderu/json.lua", "/json.lua") then
             if Funktion.verarbeiten() then
                 return
             end
