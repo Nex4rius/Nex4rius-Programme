@@ -30,15 +30,15 @@ end
 
 shell.setWorkingDirectory("/")
 
-if type(args1) == "string" and type(args2) == "string" and type(args3) == "string" then
+if args1 == "hilfe" or args1 == "help" or args1 == "?" then
+    hilfe = true
+elseif type(args1) == "string" and type(args2) == "string" and type(args3) == "string" then
     name = args1
     repo = args2
     tree = args3
     if args4 then
         link = args4
     end
-elseif args1 == "hilfe" or args1 == "help" or args1 == "?" or not args1 then
-    hilfe = true
 else
     gpu.setForeground(0xFF0000)
     print("<FEHLER> falsche Eingabe")
@@ -56,7 +56,6 @@ function Funktion.Pfad(nummer)
 end
 
 function Funktion.Hilfe()
-    require("term").clear()
     print("Benutzung: github [name] [repo] [tree] [link]")
     print()
     print("Beispiele:")
@@ -176,4 +175,5 @@ if not pcall(main) then
     print("<FEHLER> main")
 end
 
+shell.setWorkingDirectory(alterPfad)
 gpu.setForeground(0xFFFFFF)
