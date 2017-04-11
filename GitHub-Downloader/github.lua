@@ -18,8 +18,7 @@ local entfernen     = loadfile("/bin/rm.lua")
 local alterPfad     = shell.getWorkingDirectory()
 
 local Funktion      = {}
-local hilfe         = false
-local link, name, repo, tree, gpu = "."
+local link, name, repo, tree, hilfe, gpu = "."
 
 if component.isAvailable("gpu") then
     gpu = component.gpu
@@ -30,7 +29,7 @@ end
 
 shell.setWorkingDirectory("/")
 
-if args1 == "hilfe" or args1 == "help" or args1 == "?" then
+if args1 == "?" or args1 == "" then
     hilfe = true
 elseif type(args1) == "string" and type(args2) == "string" and type(args3) == "string" then
     name = args1
@@ -63,7 +62,7 @@ function Funktion.Hilfe()
     print("github MightyPirates OpenComputers master-MC1.7.10 src/main/resources/assets/opencomputers/loot/openos/")
     print()
     print("Hilfetext:")
-    print("github hilfe")
+    print("github ?")
     print()
     print("Einbindung in Programme:")
     print([[loadfile("/bin/github.lua")([name], [repo], [tree], [link])]])
