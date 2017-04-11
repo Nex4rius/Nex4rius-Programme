@@ -102,14 +102,14 @@ function Funktion.checkKomponenten()
 end
 
 function Funktion.verarbeiten()
-    if not wget("-f", Funktion.Pfad("2"), "/github-liste.txt") then
+    if not wget("-f", Funktion.Pfad("2"), "/temp/github-liste.txt") then
         gpu.setForeground(0xFF0000)
         print("<FEHLER> GitHub Download")
         return 
     end
-    local f = io.open("/github-liste.txt", "r")
+    local f = io.open("/temp/github-liste.txt", "r")
     print("Konvertiere: JSON -> Lua table\n")
-    local dateien = loadfile("/json.lua")():decode(f:read("*all"))
+    local dateien = loadfile("/temp/json.lua")():decode(f:read("*all"))
     f:close()
     fs.makeDirectory("/update")
     local komplett = true
@@ -136,7 +136,7 @@ function Funktion.verarbeiten()
         print("<FEHLER> Download unvollständig")
         gpu.setForeground(0xFFFFFF)
         entfernen("-rv", "/update")
-        entfernen("-rv", "/github-liste.txt")
+        entfernen("-rv", "/temp")
         shell.setWorkingDirectory(alterPfad)
         os.exit()
     else
@@ -145,11 +145,8 @@ function Funktion.verarbeiten()
         for i in fs.list("/update") do
             kopieren("-rv", "/update/" .. i, "/")
         end
-        for k, v in pairs({"/update", "/github-liste.txt", "/json.lua"}) do
-            if fs.exists(v) then
-                entfernen("-rv", v)
-            end
-        end
+        entfernen("-rv", "/update")
+        entfernen("-rv", "/temp")
         gpu.setForeground(0x00FF00)
         print("\nUpdate vollständig")
         print("\nNeustart in 3s")
@@ -164,11 +161,10 @@ local function main()
     if hilfe then
         Funktion.Hilfe()
     else
+        fs.makeDirectory("/temp")
         print("Download Verzeichnisliste\n")
-        if wget("-f", Funktion.Pfad("1") .. "GitHub-Downloaderu/json.lua", "/json.lua") then
-            if Funktion.verarbeiten() then
-                return
-            end
+        if wget("-f", Funktion.Pfad("1") .. "GitHub-Downloaderu/json.lua", "/temp/json.lua") then
+            if Funktion.verarbeiten() then return end
         end
         gpu.setForeground(0xFF0000)
         print("<FEHLER> Download")
