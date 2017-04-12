@@ -102,6 +102,7 @@ function Funktion.checkKomponenten()
 end
 
 function Funktion.verarbeiten()
+    print("Download Verzeichnisliste\n")
     if not wget("-f", Funktion.Pfad("2"), "/temp/github-liste.txt") then
         gpu.setForeground(0xFF0000)
         print("<FEHLER> GitHub Download")
@@ -185,7 +186,8 @@ local function main()
         Funktion.Hilfe()
     else
         fs.makeDirectory("/temp")
-        print("Download Verzeichnisliste\n")
+        wget("-fQ", Funktion.Pfad("1") .. "GitHub-Downloader/github.lua", "/bin/github.lua")
+        print("Download Dekodierer\n")
         if wget("-f", Funktion.Pfad("1") .. "GitHub-Downloader/json.lua", "/temp/json.lua") then
             if Funktion.verarbeiten() then return end
         end
