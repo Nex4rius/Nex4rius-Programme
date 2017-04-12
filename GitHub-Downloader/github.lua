@@ -56,17 +56,17 @@ function Funktion.Pfad(nummer)
 end
 
 function Funktion.Hilfe()
-    print([==[Benutzung: github name repo tree [link]]==])
+    print([=[Benutzung: github name repo tree [link]]=])
     print()
-    print([==[Beispiele:]==])
-    print([==[github Nex4rius Nex4rius-Programme master Stargate-Programm]==])
-    print([==[github MightyPirates OpenComputers master-MC1.7.10 src/main/resources/assets/opencomputers/loot/openos]==])
+    print([=[Beispiele:]=])
+    print([=[github Nex4rius Nex4rius-Programme master Stargate-Programm]=])
+    print([=[github MightyPirates OpenComputers master-MC1.7.10 src/main/resources/assets/opencomputers/loot/openos]=])
     print()
-    print([==[Hilfetext:]==])
-    print([==[github ?]==])
+    print([=[Hilfetext:]=])
+    print([=[github ?]=])
     print()
-    print([==[Einbindung in Programme:]==])
-    print([==[loadfile("/bin/github.lua")(name: string, repo: string, tree: string[, link: string])]==])
+    print([=[Einbindung in Programme:]=])
+    print([=[loadfile("/bin/github.lua")(name: string, repo: string, tree: string[, link: string])]=])
 end
 
 function Funktion.checkKomponenten()
@@ -98,9 +98,6 @@ function Funktion.checkKomponenten()
         os.exit()
     end
 end
-
---https://api.github.com/repos/Nex4rius/Nex4rius-Programme/git/trees/master?recursive=1
---https://api.github.com/repos/Nex4rius/Nex4rius-Programme/git/trees/2df9d02f57c55e4d4e35acdd8fc29783e913ab12?recursive=1
 
 function Funktion.verarbeiten()
     if link then
@@ -153,6 +150,9 @@ function Funktion.verarbeiten()
     if dateien["truncated"] or not komplett then
         gpu.setForeground(0xFF0000)
         print("<FEHLER> Download unvollständig\n")
+        if dateien["truncated"] then
+            print("<FEHLER> GitHub Dateiliste unvollständig\n")
+        end
         gpu.setForeground(0xFFFFFF)
         entfernen("-rv", "/update")
         entfernen("-rv", "/temp")
