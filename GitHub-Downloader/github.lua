@@ -97,6 +97,8 @@ function Funktion.checkKomponenten()
     end
 end
 
+--https://api.github.com/repos/Nex4rius/Nex4rius-Programme/git/trees/master?recursive=1
+
 function Funktion.verarbeiten()
     if not wget("-f", Funktion.Pfad("2"), "/temp/github-liste.txt") then
         gpu.setForeground(0xFF0000)
@@ -112,14 +114,14 @@ function Funktion.verarbeiten()
     print("Erstelle Verzeichnisse\n")
     for i in pairs(dateien.tree) do
         if dateien.tree[i].type == "tree" and string.sub(link, 1, string.len(link)) == string.sub(dateien.tree[i].path, 1, string.len(link)) then
-            fs.makeDirectory("/update/" .. string.sub(dateien.tree[i].path, string.len(link) + 1, ""))
-            print("/update/" .. string.sub(dateien.tree[i].path, string.len(link) + 1, ""))
+            fs.makeDirectory("/update/" .. string.sub(dateien.tree[i].path, 1, string.len(link) + 1))
+            print("/update/" .. string.sub(dateien.tree[i].path, 1, string.len(link) + 1))
         end
     end
     print("\nStarte Download\n")
     for i in pairs(dateien.tree) do
         if dateien.tree[i].type == "blob" and string.sub(link, 1, string.len(link)) == string.sub(dateien.tree[i].path, 1, string.len(link)) then
-            if not wget("-f", Funktion.Pfad("3") .. dateien.tree[i].path, "/update/" .. string.sub(dateien.tree[i].path, string.len(link) + 1, "")) then
+            if not wget("-f", Funktion.Pfad("3") .. dateien.tree[i].path, "/update/" .. string.sub(dateien.tree[i].path, 1, string.len(link) + 1)) then
                 komplett = false
                 break
             end
