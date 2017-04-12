@@ -19,7 +19,7 @@ local alterPfad     = shell.getWorkingDirectory()
 
 local Funktion      = {}
 
-local link, name, repo, tree, hilfe, gpu
+local link, name, repo, tree, hilfe, gpu, sha
 
 if component.isAvailable("gpu") then
     gpu = component.gpu
@@ -51,7 +51,9 @@ function Funktion.Pfad(nummer)
     elseif nummer == "2" then
         return string.format("https://api.github.com/repos/%s/%s/git/trees/%s?recursive=1", name, repo, tree)
     elseif nummer == "3" then
-        return string.format("https://raw.githubusercontent.com/%s/%s/%s/", name, repo, tree)
+        return string.format("https://raw.githubusercontent.com/%s/%s/%s/%s", name, repo, tree, link)
+    elseif nummer == "4" then
+        return string.format("https://api.github.com/repos/%s/%s/git/trees/%s?recursive=1", name, repo, sha)
     end
 end
 
@@ -100,23 +102,6 @@ function Funktion.checkKomponenten()
 end
 
 function Funktion.verarbeiten()
-    if link then
-        if not wget("-f", Funktion.Pfad("2"), "/temp/github-liste-komplett.txt") then
-            gpu.setForeground(0xFF0000)
-            print("<FEHLER> GitHub Download")
-            return 
-        end
-        local f = io.open("/temp/github-liste-komplett.txt", "r")
-        print("\nKonvertiere: JSON -> Lua table\n")
-        local dateien = loadfile("/temp/json.lua")():decode(f:read("*all"))
-        f:close()
-        for i in pairs(dateien.tree) do
-            if dateien.tree[i].path == link then
-                tree = dateien.tree[i].sha
-                break
-            end
-        end
-    end
     if not wget("-f", Funktion.Pfad("2"), "/temp/github-liste.txt") then
         gpu.setForeground(0xFF0000)
         print("<FEHLER> GitHub Download")
@@ -126,6 +111,24 @@ function Funktion.verarbeiten()
     print("\nKonvertiere: JSON -> Lua table\n")
     local dateien = loadfile("/temp/json.lua")():decode(f:read("*all"))
     f:close()
+    if link then
+        for i in pairs(dateien.tree) do
+            if dateien.tree[i].path == link then
+                sha = dateien.tree[i].sha
+                break
+            end
+        end
+        if not wget("-f", Funktion.Pfad("4"), "/temp/github-liste-kurz.txt") then
+            gpu.setForeground(0xFF0000)
+            print("<FEHLER> GitHub Download")
+            return 
+        end
+        f = io.open("/temp/github-liste-kurz.txt", "r")
+        print("\nKonvertiere: JSON -> Lua table\n")
+        dateien = loadfile("/temp/json.lua")():decode(f:read("*all"))
+        f:close()
+    end
+    link = link .. "/"
     fs.makeDirectory("/update")
     local komplett = true
     print("Erstelle Verzeichnisse\n")
