@@ -17,7 +17,7 @@ local entfernen     = loadfile("/bin/rm.lua")
 local alterPfad     = shell.getWorkingDirectory()
 
 local Funktion      = {}
-local link, name, repo, tree, hilfe, gpu = "/"
+local link, name, repo, tree, hilfe, gpu = ""
 
 if component.isAvailable("gpu") then
     gpu = component.gpu
@@ -26,7 +26,7 @@ else
     gpu.setForeground = function() end
 end
 
-shell.setWorkingDirectory("/")
+shell.setWorkingDirectory([[/]])
 
 if args1 == "?" or args1 == "" then
     hilfe = true
@@ -57,8 +57,8 @@ function Funktion.Hilfe()
     print("Benutzung: github [name] [repo] [tree] [link]")
     print()
     print("Beispiele:")
-    print("github Nex4rius Nex4rius-Programme master Stargate-Programm/")
-    print("github MightyPirates OpenComputers master-MC1.7.10 src/main/resources/assets/opencomputers/loot/openos/")
+    print("github Nex4rius Nex4rius-Programme master Stargate-Programm")
+    print("github MightyPirates OpenComputers master-MC1.7.10 src/main/resources/assets/opencomputers/loot/openos")
     print()
     print("Hilfetext:")
     print("github ?")
@@ -111,15 +111,15 @@ function Funktion.verarbeiten()
     local komplett = true
     print("Erstelle Verzeichnisse\n")
     for i in pairs(dateien.tree) do
-        if dateien.tree[i].type == "tree" and string.sub(link, 1, string.len(link) - 1) == string.sub(dateien.tree[i].path, 1, string.len(link) - 1) then
-            fs.makeDirectory("/update/" .. dateien.tree[i].path:gsub(link, ""))
-            print("/update/" .. dateien.tree[i].path:gsub(link, ""))
+        if dateien.tree[i].type == "tree" and string.sub(link, 1, string.len(link)) == string.sub(dateien.tree[i].path, 1, string.len(link)) then
+            fs.makeDirectory("/update/" .. string.sub(dateien.tree[i].path, string.len(link) + 1, ""))
+            print("/update/" .. string.sub(dateien.tree[i].path, string.len(link) + 1, ""))
         end
     end
     print("\nStarte Download\n")
     for i in pairs(dateien.tree) do
-        if dateien.tree[i].type == "blob" and string.sub(link, 1, string.len(link) - 1) == string.sub(dateien.tree[i].path, 1, string.len(link) - 1) then
-            if not wget("-f", Funktion.Pfad("3") .. dateien.tree[i].path, "/update/" .. dateien.tree[i].path:gsub(link, "")) then
+        if dateien.tree[i].type == "blob" and string.sub(link, 1, string.len(link)) == string.sub(dateien.tree[i].path, 1, string.len(link)) then
+            if not wget("-f", Funktion.Pfad("3") .. dateien.tree[i].path, "/update/" .. string.sub(dateien.tree[i].path, string.len(link) + 1, "")) then
                 komplett = false
                 break
             end
@@ -129,7 +129,7 @@ function Funktion.verarbeiten()
     print("\nDownload Beendet\n")
     if dateien["truncated"] or not komplett then
         gpu.setForeground(0xFF0000)
-        print("<FEHLER> Download unvollständig")
+        print("<FEHLER> Download unvollständig\n")
         gpu.setForeground(0xFFFFFF)
         entfernen("-rv", "/update")
         entfernen("-rv", "/temp")
@@ -141,6 +141,7 @@ function Funktion.verarbeiten()
         for i in fs.list("/update") do
             kopieren("-rv", "/update/" .. i, "/")
         end
+        print()
         entfernen("-rv", "/update")
         entfernen("-rv", "/temp")
         gpu.setForeground(0x00FF00)
