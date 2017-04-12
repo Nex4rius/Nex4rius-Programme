@@ -134,6 +134,7 @@ function Funktion.verarbeiten()
         if dateien.tree[i].type == "tree" then
             fs.makeDirectory("/update/" .. dateien.tree[i].path)
             print("/update/" .. dateien.tree[i].path)
+            os.sleep(0.1)
         end
     end
     print("\nStarte Download\n")
