@@ -51,7 +51,7 @@ function Funktion.Pfad(nummer)
     elseif nummer == "2" then
         return string.format("https://api.github.com/repos/%s/%s/git/trees/%s?recursive=1", name, repo, tree)
     elseif nummer == "3" then
-        return string.format("https://raw.githubusercontent.com/%s/%s/%s/%s", name, repo, tree, link)
+        return string.format("https://raw.githubusercontent.com/%s/%s/%s%s", name, repo, tree, link)
     elseif nummer == "4" then
         return string.format("https://api.github.com/repos/%s/%s/git/trees/%s?recursive=1", name, repo, sha)
     end
@@ -128,8 +128,8 @@ function Funktion.verarbeiten()
         print("\nKonvertiere: JSON -> Lua table\n")
         dateien = loadfile("/temp/json.lua")():decode(f:read("*all"))
         f:close()
+        link = "/" .. link
     end
-    link = link .. "/"
     fs.makeDirectory("/update")
     local komplett = true
     print("Erstelle Verzeichnisse\n")
@@ -143,7 +143,7 @@ function Funktion.verarbeiten()
     print("\nStarte Download\n")
     for i in pairs(dateien.tree) do
         if dateien.tree[i].type == "blob" then
-            if not wget("-f", Funktion.Pfad("3") .. dateien.tree[i].path, "/update/" .. dateien.tree[i].path) then
+            if not wget("-f", Funktion.Pfad("3") .. "/" .. dateien.tree[i].path, "/update/" .. dateien.tree[i].path) then
                 komplett = false
                 break
             end
