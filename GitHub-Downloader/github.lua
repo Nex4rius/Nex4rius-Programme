@@ -17,7 +17,7 @@ local entfernen     = loadfile("/bin/rm.lua")
 local alterPfad     = shell.getWorkingDirectory()
 
 local Funktion      = {}
-local link, name, repo, tree, hilfe, gpu = ""
+local link, name, repo, tree, hilfe, gpu
 
 if component.isAvailable("gpu") then
     gpu = component.gpu
@@ -26,9 +26,9 @@ else
     gpu.setForeground = function() end
 end
 
-shell.setWorkingDirectory([[/]])
+shell.setWorkingDirectory("/")
 
-if args1 == "?" or args1 == "" then
+if args1 == "?" then
     hilfe = true
 elseif type(args1) == "string" and type(args2) == "string" and type(args3) == "string" then
     name = args1
@@ -54,17 +54,17 @@ function Funktion.Pfad(nummer)
 end
 
 function Funktion.Hilfe()
-    print("Benutzung: github [name] [repo] [tree] [link]")
+    print([==[Benutzung: github name repo tree [link]]==])
     print()
-    print("Beispiele:")
-    print("github Nex4rius Nex4rius-Programme master Stargate-Programm")
-    print("github MightyPirates OpenComputers master-MC1.7.10 src/main/resources/assets/opencomputers/loot/openos")
+    print([==[Beispiele:]==])
+    print([==[github Nex4rius Nex4rius-Programme master Stargate-Programm]==])
+    print([==[github MightyPirates OpenComputers master-MC1.7.10 src/main/resources/assets/opencomputers/loot/openos]==])
     print()
-    print("Hilfetext:")
-    print("github ?")
+    print([==[Hilfetext:]==])
+    print([==[github ?]==])
     print()
-    print("Einbindung in Programme:")
-    print([[loadfile("/bin/github.lua")([name], [repo], [tree], [link])]])
+    print([==[Einbindung in Programme:]==])
+    print([==[loadfile("/bin/github.lua")(name: string, repo: string, tree: string[, link: string])]==])
 end
 
 function Funktion.checkKomponenten()
@@ -84,8 +84,8 @@ function Funktion.checkKomponenten()
         end
     end
     local alleKomponenten = {
-        {"internet", "- Internet   ok", "- Internet   fehlt", true},
-        {"gpu",      "- GPU        ok - optional", "- GPU        fehlt - optional"},
+        {"internet", "- Internet   ok"           , "- Internet   fehlt"           , true},
+        {"gpu"     , "- GPU        ok - optional", "- GPU        fehlt - optional", },
     }
     for i in pairs(alleKomponenten) do
         check(alleKomponenten[i])
@@ -98,8 +98,26 @@ function Funktion.checkKomponenten()
 end
 
 --https://api.github.com/repos/Nex4rius/Nex4rius-Programme/git/trees/master?recursive=1
+--https://api.github.com/repos/Nex4rius/Nex4rius-Programme/git/trees/2df9d02f57c55e4d4e35acdd8fc29783e913ab12?recursive=1
 
 function Funktion.verarbeiten()
+    if link then
+        if not wget("-f", Funktion.Pfad("2"), "/temp/github-liste-komplett.txt") then
+            gpu.setForeground(0xFF0000)
+            print("<FEHLER> GitHub Download")
+            return 
+        end
+        local f = io.open("/temp/github-liste-komplett.txt", "r")
+        print("\nKonvertiere: JSON -> Lua table\n")
+        local dateien = loadfile("/temp/json.lua")():decode(f:read("*all"))
+        f:close()
+        for i in pairs(dateien.tree) do
+            if dateien.tree[i].path == link then
+                tree = dateien.tree[i].sha
+                break
+            end
+        end
+    end
     if not wget("-f", Funktion.Pfad("2"), "/temp/github-liste.txt") then
         gpu.setForeground(0xFF0000)
         print("<FEHLER> GitHub Download")
@@ -113,15 +131,15 @@ function Funktion.verarbeiten()
     local komplett = true
     print("Erstelle Verzeichnisse\n")
     for i in pairs(dateien.tree) do
-        if dateien.tree[i].type == "tree" and string.sub(link, 1, string.len(link)) == string.sub(dateien.tree[i].path, 1, string.len(link)) then
-            fs.makeDirectory("/update/" .. string.sub(dateien.tree[i].path, 1, string.len(link) + 1))
-            print("/update/" .. string.sub(dateien.tree[i].path, 1, string.len(link) + 1))
+        if dateien.tree[i].type == "tree" then
+            fs.makeDirectory("/update/" .. dateien.tree[i].path)
+            print("/update/" .. dateien.tree[i].path)
         end
     end
     print("\nStarte Download\n")
     for i in pairs(dateien.tree) do
-        if dateien.tree[i].type == "blob" and string.sub(link, 1, string.len(link)) == string.sub(dateien.tree[i].path, 1, string.len(link)) then
-            if not wget("-f", Funktion.Pfad("3") .. dateien.tree[i].path, "/update/" .. string.sub(dateien.tree[i].path, 1, string.len(link) + 1)) then
+        if dateien.tree[i].type == "blob" then
+            if not wget("-f", Funktion.Pfad("3") .. dateien.tree[i].path, "/update/" .. dateien.tree[i].path) then
                 komplett = false
                 break
             end
