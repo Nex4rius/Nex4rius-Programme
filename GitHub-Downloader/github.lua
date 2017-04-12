@@ -5,6 +5,7 @@
 local shell         = require("shell")
 local fs            = require("filesystem")
 local component     = require("component")
+
 local args1         = shell.parse(...)[1]
 local args2         = shell.parse(...)[2]
 local args3         = shell.parse(...)[3]
@@ -17,6 +18,7 @@ local entfernen     = loadfile("/bin/rm.lua")
 local alterPfad     = shell.getWorkingDirectory()
 
 local Funktion      = {}
+
 local link, name, repo, tree, hilfe, gpu
 
 if component.isAvailable("gpu") then
