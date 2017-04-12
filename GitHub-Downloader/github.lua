@@ -17,7 +17,7 @@ local entfernen     = loadfile("/bin/rm.lua")
 local alterPfad     = shell.getWorkingDirectory()
 
 local Funktion      = {}
-local link, name, repo, tree, hilfe, gpu = "."
+local link, name, repo, tree, hilfe, gpu = "/"
 
 if component.isAvailable("gpu") then
     gpu = component.gpu
@@ -65,7 +65,6 @@ function Funktion.Hilfe()
     print()
     print("Einbindung in Programme:")
     print([[loadfile("/bin/github.lua")([name], [repo], [tree], [link])]])
-    print([[os.execute("github [name] [repo] [tree] [link]")]])
 end
 
 function Funktion.checkKomponenten()
@@ -113,14 +112,14 @@ function Funktion.verarbeiten()
     print("Erstelle Verzeichnisse\n")
     for i in pairs(dateien.tree) do
         if dateien.tree[i].type == "tree" and string.sub(link, 1, string.len(link) - 1) == string.sub(dateien.tree[i].path, 1, string.len(link) - 1) then
-            fs.makeDirectory("/update/" .. dateien.tree[i].path)
-            print("/update/" .. dateien.tree[i].path)
+            fs.makeDirectory("/update/" .. dateien.tree[i].path:gsub(link, ""))
+            print("/update/" .. dateien.tree[i].path:gsub(link, ""))
         end
     end
     print("\nStarte Download\n")
     for i in pairs(dateien.tree) do
         if dateien.tree[i].type == "blob" and string.sub(link, 1, string.len(link) - 1) == string.sub(dateien.tree[i].path, 1, string.len(link) - 1) then
-            if not wget("-f", Funktion.Pfad("3") .. dateien.tree[i].path, "/update/" .. dateien.tree[i].path) then
+            if not wget("-f", Funktion.Pfad("3") .. dateien.tree[i].path, "/update/" .. dateien.tree[i].path:gsub(link, "")) then
                 komplett = false
                 break
             end
