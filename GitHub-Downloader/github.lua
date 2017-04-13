@@ -45,18 +45,6 @@ else
     hilfe = true
 end
 
-function Funktion.Pfad(nummer)
-    if nummer == "1" then
-        return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/"
-    elseif nummer == "2" then
-        return string.format("https://api.github.com/repos/%s/%s/git/trees/%s?recursive=1", name, repo, tree)
-    elseif nummer == "3" then
-        return string.format("https://raw.githubusercontent.com/%s/%s/%s%s", name, repo, tree, link)
-    elseif nummer == "4" then
-        return string.format("https://api.github.com/repos/%s/%s/git/trees/%s?recursive=1", name, repo, sha)
-    end
-end
-
 function Funktion.Hilfe()
     print([=[Benutzung: github name repo tree [link]]=])
     print()
@@ -103,7 +91,7 @@ end
 
 function Funktion.verarbeiten()
     print("Download Verzeichnisliste\n")
-    if not wget("-f", Funktion.Pfad("2"), "/temp/github-liste.txt") then
+    if not wget("-f", string.format("https://api.github.com/repos/%s/%s/git/trees/%s?recursive=1", name, repo, tree), "/temp/github-liste.txt") then
         gpu.setForeground(0xFF0000)
         print("<FEHLER> GitHub Download")
         return 
@@ -119,7 +107,7 @@ function Funktion.verarbeiten()
                 break
             end
         end
-        if not wget("-f", Funktion.Pfad("4"), "/temp/github-liste-kurz.txt") then
+        if not wget("-f", string.format("https://api.github.com/repos/%s/%s/git/trees/%s?recursive=1", name, repo, sha), "/temp/github-liste-kurz.txt") then
             gpu.setForeground(0xFF0000)
             print("<FEHLER> GitHub Download")
             return 
@@ -128,7 +116,9 @@ function Funktion.verarbeiten()
         print("\nKonvertiere: JSON -> Lua table\n")
         dateien = loadfile("/temp/json.lua")():decode(f:read("*all"))
         f:close()
-        link = "/" .. link
+        link = link .. "/"
+    else
+        link = ""
     end
     fs.makeDirectory("/update")
     local komplett = true
@@ -143,7 +133,7 @@ function Funktion.verarbeiten()
     print("\nStarte Download\n")
     for i in pairs(dateien.tree) do
         if dateien.tree[i].type == "blob" then
-            if not wget("-f", Funktion.Pfad("3") .. "/" .. dateien.tree[i].path, "/update/" .. dateien.tree[i].path) then
+            if not wget("-f", string.format("https://raw.githubusercontent.com/%s/%s/%s/%s", name, repo, tree, link) .. dateien.tree[i].path, "/update/" .. dateien.tree[i].path) then
                 komplett = false
                 break
             end
@@ -186,9 +176,10 @@ local function main()
         Funktion.Hilfe()
     else
         fs.makeDirectory("/temp")
-        wget("-fQ", Funktion.Pfad("1") .. "GitHub-Downloader/github.lua", "/bin/github.lua")
+        local a = "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/"
+        wget("-fQ", a .. "github.lua", "/bin/github.lua")
         print("Download Dekodierer\n")
-        if wget("-f", Funktion.Pfad("1") .. "GitHub-Downloader/json.lua", "/temp/json.lua") then
+        if wget("-f", a .. "json.lua", "/temp/json.lua") then
             if Funktion.verarbeiten() then return end
         end
         gpu.setForeground(0xFF0000)
