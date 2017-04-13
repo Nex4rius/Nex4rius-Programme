@@ -91,7 +91,7 @@ function Funktion.checkKomponenten()
 end
 
 function Funktion.verarbeiten()
-    print("Download Verzeichnisliste\n")
+    print("\nDownload Verzeichnisliste\n")
     if not wget("-f", string.format("https://api.github.com/repos/%s/%s/git/trees/%s?recursive=1", name, repo, tree), "/temp/github-liste.txt") then
         gpu.setForeground(0xFF0000)
         print("<FEHLER> GitHub Download")
@@ -133,7 +133,7 @@ function Funktion.verarbeiten()
     end
     print("\nStarte Download\n")
     for i in pairs(dateien.tree) do
-        if dateien.tree[i].type == "blob" then
+        if dateien.tree[i].type == "blob" and dateien.tree[i].path ~= "README.md" then
             if not wget("-f", string.format("https://raw.githubusercontent.com/%s/%s/%s/%s", name, repo, tree, link) .. dateien.tree[i].path, "/update/" .. dateien.tree[i].path) then
                 komplett = false
                 break
