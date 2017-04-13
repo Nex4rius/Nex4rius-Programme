@@ -171,9 +171,7 @@ function Funktion.verarbeiten()
         entfernen("-rv", "/temp")
         gpu.setForeground(0x00FF00)
         print("\nUpdate vollständig")
-        print("\nNeustart in 3s")
-        os.sleep(3)
-        require("computer").shutdown(true)
+        return true
     end
 end
 
@@ -190,7 +188,9 @@ local function main()
         end
         print("Downloade Konverter\n")
         if wget("-f", a .. "json.lua", "/temp/json.lua") then
-            if Funktion.verarbeiten() then return end
+            if Funktion.verarbeiten() then
+                return true
+            end
         end
         gpu.setForeground(0xFF0000)
         print("<FEHLER> Download")
@@ -207,3 +207,4 @@ end
 
 shell.setWorkingDirectory(alterPfad)
 gpu.setForeground(0xFFFFFF)
+return ergebnis
