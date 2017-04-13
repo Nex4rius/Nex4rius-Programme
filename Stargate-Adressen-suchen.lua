@@ -50,6 +50,7 @@ function Funktion.check(eingabe)
   local Adresse = table.concat(eingabe)
   if sg.energyToDial(Adresse) then
     require("component").getPrimary("gpu").setForeground(0xFF0000)
+    require("component").getPrimary("gpu").setBackground(0x006633)
     print("\n" .. Adresse .. " GEFUNDEN\n")
     f = io.open("ergebnis_suche", "a")
     f:write(Adresse .. "\n")
