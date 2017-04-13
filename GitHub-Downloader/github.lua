@@ -13,6 +13,7 @@ local args4         = shell.parse(...)[4]
 
 local wget          = loadfile("/bin/wget.lua")
 local kopieren      = loadfile("/bin/cp.lua")
+local verschieben   = loadfile("/bin/mv.lua")
 local entfernen     = loadfile("/bin/rm.lua")
 
 local alterPfad     = shell.getWorkingDirectory()
@@ -156,7 +157,10 @@ function Funktion.verarbeiten()
         gpu.setForeground(0xFFFFFF)
         print("Ersetze alte Dateien\n")
         for i in fs.list("/update") do
-            kopieren("-rv", "/update/" .. i, "/")
+            if not verschieben("-fv", "/update/" .. i, "/") then
+                entfernen("-r", "/" .. i)
+                kopieren("-rv", "/update/" .. i, "/")
+            end
         end
         print()
         entfernen("-rv", "/update")
