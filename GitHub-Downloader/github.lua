@@ -56,7 +56,10 @@ function Funktion.Hilfe()
     print([=[github ?]=])
     print()
     print([=[Einbindung in Programme:]=])
-    print([=[loadfile("/bin/github.lua")(name: string, repo: string, tree: string[, link: string])]=])
+    print([=[1) loadfile("/bin/github.lua")(name:string, repo:string, tree:string[, link:string])]=])
+    print([=[2) os.execute("github name:string, repo:string, tree:string[, link:string]")]=])
+    print([=[3) loadfile("/bin/pastebin.lua")("-f", "run", "MHq2tN5B", name:string, repo:string, tree:string[, link:string])]=])
+    print([=[4) os.execute("pastebin run -f MHq2tN5B name:string repo:string tree:string [link:string]")]=])
 end
 
 function Funktion.checkKomponenten()
