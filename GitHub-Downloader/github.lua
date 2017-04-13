@@ -100,6 +100,7 @@ function Funktion.verarbeiten()
     print("\nKonvertiere: JSON -> Lua table\n")
     local dateien = loadfile("/temp/json.lua")():decode(f:read("*all"))
     f:close()
+    entfernen("-rv", "/temp/github-liste.txt")
     if link then
         for i in pairs(dateien.tree) do
             if dateien.tree[i].path == link then
@@ -116,6 +117,7 @@ function Funktion.verarbeiten()
         print("\nKonvertiere: JSON -> Lua table\n")
         dateien = loadfile("/temp/json.lua")():decode(f:read("*all"))
         f:close()
+        entfernen("-rv", "/temp/github-liste-kurz.txt")
         link = link .. "/"
     else
         link = ""
