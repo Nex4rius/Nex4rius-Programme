@@ -10,9 +10,10 @@
 Benutzung: github name repo tree [link]<br />
 Beispiele:<br />
 github Nex4rius Nex4rius-Programme master Stargate-Programm<br />
+github Nex4rius Nex4rius-Programme master<br />
 <br />
 Hilfetext:<br />
 github ?<br />
 <br />
 Einbindung in Programme:<br />
-[loadfile("/bin/github.lua")(name: string, repo: string, tree: string[, link: string])
+loadfile("/bin/github.lua")(name: string, repo: string, tree: string[, link: string])
