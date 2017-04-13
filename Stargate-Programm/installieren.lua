@@ -149,7 +149,7 @@ function Funktionen.installieren(versionTyp)
     print("Updating OpenOS")
     os.execute("pastebin run -f icKy25PF")
     os.sleep(2)
-    loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/updater.lua" "/updater.lua")
+    loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/updater.lua", "/updater.lua")
     loadfile("/updater.lua")()
   end
   require("computer").shutdown(true)
