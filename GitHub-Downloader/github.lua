@@ -90,7 +90,7 @@ function Funktion.checkKomponenten()
 end
 
 function Funktion.verarbeiten()
-    print("\nDownload Verzeichnisliste\n")
+    print("\nDownloade Verzeichnisliste\n")
     if not wget("-f", string.format("https://api.github.com/repos/%s/%s/git/trees/%s?recursive=1", name, repo, tree), "/temp/github-liste.txt") then
         gpu.setForeground(0xFF0000)
         print("<FEHLER> GitHub Download")
@@ -141,11 +141,9 @@ function Funktion.verarbeiten()
             end
         end
     end
-    gpu.setForeground(0x00FF00)
-    print("\nDownload Beendet\n")
     if dateien["truncated"] or not komplett then
         gpu.setForeground(0xFF0000)
-        print("<FEHLER> Download unvollständig\n")
+        print("\n<FEHLER> Download unvollständig\n")
         if dateien["truncated"] then
             print("<FEHLER> GitHub Dateiliste unvollständig\n")
         end
@@ -155,6 +153,8 @@ function Funktion.verarbeiten()
         shell.setWorkingDirectory(alterPfad)
         os.exit()
     else
+        gpu.setForeground(0x00FF00)
+        print("\nDownload Beendet\n")
         gpu.setForeground(0xFFFFFF)
         print("Ersetze alte Dateien\n")
         for i in fs.list("/update") do
@@ -185,7 +185,7 @@ local function main()
         if wget("-fQ", a .. "github.lua", "/temp/github.lua") then
             verschieben("-f", "/temp/github.lua", "/bin/github.lua")
         end
-        print("Download Dekodierer\n")
+        print("Downloade Konverter\n")
         if wget("-f", a .. "json.lua", "/temp/json.lua") then
             if Funktion.verarbeiten() then return end
         end
@@ -194,9 +194,12 @@ local function main()
     end
 end
 
-if not pcall(main) then
+local ergebnis, grund = pcall(main)
+
+if not ergebnis then
     gpu.setForeground(0xFF0000)
     print("<FEHLER> main")
+    print(grund)
 end
 
 shell.setWorkingDirectory(alterPfad)
