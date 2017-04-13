@@ -142,6 +142,8 @@ function Funktion.update(versionTyp)
   end
   if loadfile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", versionTyp, "Stargate-Programm") then
     require("computer").shutdown(true)
+  else
+    loadfile("/autorun.lua")()
   end
 end
 
