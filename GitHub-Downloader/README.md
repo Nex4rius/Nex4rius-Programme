@@ -9,11 +9,14 @@
 <hr><br />
 Benutzung: github name repo tree [link]<br />
 Beispiele:<br />
-github Nex4rius Nex4rius-Programme master Stargate-Programm<br />
-github Nex4rius Nex4rius-Programme master<br />
+<code>github Nex4rius Nex4rius-Programme master Stargate-Programm</code><br />
+<code>github Nex4rius Nex4rius-Programme master</code><br />
 <br />
 Hilfetext:<br />
 github ?<br />
 <br />
 Einbindung in Programme:<br />
-loadfile("/bin/github.lua")(name: string, repo: string, tree: string[, link: string])
+1) <code>loadfile("/bin/github.lua")(name:string, repo:string, tree:string[, link:string])</code><br />
+2) <code>os.execute("github name:string, repo:string, tree:string[, link:string]")</code><br />
+3) <code>loadfile("/bin/pastebin.lua")("-f", "run", "MHq2tN5B", name:string, repo:string, tree:string[, link:string])</code><br />
+4) <code>os.execute("pastebin run -f MHq2tN5B name:string repo:string tree:string [link:string]")</code><br />
