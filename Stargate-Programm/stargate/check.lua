@@ -139,20 +139,7 @@ function Funktion.update(versionTyp)
     if not schreibSicherungsdatei(Sicherung) then
       print(sprachen.fehlerName or "<FEHLER>")
     end
-    if _OSVERSION ~= "OpenOS 1.6.1" then
-      os.execute("mv /stargate/adressen.lua /bin/adressen.lua")
-      os.execute("mv /stargate/Sicherungsdatei.lua /bin/Sicherungsdatei.lua")
-      os.execute("del /stargate -r")
-      os.execute("del /autorun.lua")
-    end
     if loadfile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", versionTyp, "Stargate-Programm") then
-      if _OSVERSION ~= "OpenOS 1.6.1" then
-        os.execute("del /stargate/adressen.lua")
-        os.execute("del /stargate/Sicherungsdatei.lua")
-        os.execute("mv /bin/adressen.lua /stargate/adressen.lua")
-        os.execute("mv /bin/Sicherungsdatei.lua /stargate/Sicherungsdatei.lua")
-        os.execute("pastebin run -f icKy25PF")
-      end
       require("computer").shutdown(true)
     end
   end
