@@ -136,19 +136,13 @@ function Funktion.update(versionTyp)
   end
   if wget("-f", Funktion.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua") then
     Sicherung.installieren = true
-    if schreibSicherungsdatei(Sicherung) then
-      local f = io.open ("/autorun.lua", "w")
-      f:write('loadfile("/installieren.lua")("' .. versionTyp .. '")')
-      f:close()
-      loadfile("/autorun.lua")()
-    else
+    if not schreibSicherungsdatei(Sicherung) then
       print(sprachen.fehlerName or "<FEHLER>")
     end
-  elseif versionTyp == "master" then
-    wget("-f", Funktion.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua")
-    loadfile("/installieren.lua")()
   end
-  os.exit()
+  if loadfile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", versionTyp, "Stargate-Programm") then
+    require("computer").shutdown(true)
+  end
 end
 
 function Funktion.checkServerVersion()
