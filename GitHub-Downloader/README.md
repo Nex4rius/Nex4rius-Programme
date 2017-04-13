@@ -6,14 +6,13 @@
 <hr>
 <code>wget -f https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/github-downloader/GitHub-Downloader/github.lua /bin/github.lua</code><br />
 <code>github name repo tree [link]</code>
-<hr>
-
-Benutzung: github name repo tree [link]
-Beispiele:
-github Nex4rius Nex4rius-Programme master Stargate-Programm
-
-Hilfetext:
-github ?
-    
-Einbindung in Programme:
+<hr><br />
+Benutzung: github name repo tree [link]<br />
+Beispiele:<br />
+github Nex4rius Nex4rius-Programme master Stargate-Programm<br />
+<br />
+Hilfetext:<br />
+github ?<br />
+<br />
+Einbindung in Programme:<br />
 [loadfile("/bin/github.lua")(name: string, repo: string, tree: string[, link: string])
