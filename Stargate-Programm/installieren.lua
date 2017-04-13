@@ -147,7 +147,6 @@ function Funktionen.installieren(versionTyp)
   end  
   if _OSVERSION ~= "OpenOS 1.6.1" then
     print("Updating OpenOS")
-    os.execute("pastebin run -f icKy25PF")
     os.sleep(2)
     loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/updater.lua", "/updater.lua")
     loadfile("/updater.lua")()
