@@ -104,6 +104,7 @@ function Funktion.verarbeiten()
     local dateien = loadfile("/temp/json.lua")():decode(f:read("*all"))
     f:close()
     entfernen("-rv", "/temp/github-liste.txt")
+    print()
     if link then
         for i in pairs(dateien.tree) do
             if dateien.tree[i].path == link then
@@ -121,6 +122,7 @@ function Funktion.verarbeiten()
         dateien = loadfile("/temp/json.lua")():decode(f:read("*all"))
         f:close()
         entfernen("-rv", "/temp/github-liste-kurz.txt")
+        print()
         link = link .. "/"
     else
         link = ""
@@ -171,6 +173,7 @@ function Funktion.verarbeiten()
         entfernen("-rv", "/temp")
         gpu.setForeground(0x00FF00)
         print("\nUpdate vollständig")
+        os.sleep(2)
         return true
     end
 end
