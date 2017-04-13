@@ -140,13 +140,19 @@ function Funktionen.installieren(versionTyp)
     loadfile("/bin/rm.lua")("-v", "/installieren.lua")
     print("\nUpdate komplett\n" .. version .. " " .. string.upper(tostring(versionTyp)))
     os.sleep(2)
-    require("computer").shutdown(true)
   else
     print("\nERROR install / update failed\n")
     print("10s bis Neustart")
     os.sleep(10)
-    require("computer").shutdown(true)
+  end  
+  if _OSVERSION ~= "OpenOS 1.6.1" then
+    print("Updating OpenOS")
+    os.execute("pastebin run -f icKy25PF")
+    os.sleep(2)
+    loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/updater.lua" "/updater.lua")
+    loadfile("/updater.lua")()
   end
+  require("computer").shutdown(true)
 end
 
 if versionTyp == nil then
