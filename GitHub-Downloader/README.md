@@ -16,4 +16,7 @@ Hilfetext:<br />
 github ?<br />
 <br />
 Einbindung in Programme:<br />
-loadfile("/bin/github.lua")(name: string, repo: string, tree: string[, link: string])
+1) loadfile("/bin/github.lua")(name: string, repo: string, tree: string[, link: string])
+2) os.execute("github name: string, repo: string, tree: string[, link: string]")
+3) loadfile("/bin/pastebin.lua")("-f", "run", "MHq2tN5B", name: string, repo: string, tree: string[, link: string])
+4) os.execute("pastebin run -f MHq2tN5B name: string, repo: string, tree: string[, link: string]")
