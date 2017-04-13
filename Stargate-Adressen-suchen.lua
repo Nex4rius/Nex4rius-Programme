@@ -56,7 +56,7 @@ function Funktion.check(eingabe)
     f:write(Adresse .. "\n")
     f:close ()
     require("component").getPrimary("gpu").setForeground(0xFFFFFF)
-    os.sleep(10)
+    io.read()
   else
     print(Adresse)
   end
