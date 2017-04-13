@@ -173,6 +173,7 @@ function Funktion.verarbeiten()
         entfernen("-rv", "/temp")
         gpu.setForeground(0x00FF00)
         print("\nUpdate vollständig")
+        os.sleep(2)
         return true
     end
 end
