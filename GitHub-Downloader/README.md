@@ -4,7 +4,7 @@
 <hr>
 <code>pastebin run -f MHq2tN5B name repo tree [link]</code>
 <hr>
-<code>wget -f https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/github-downloader/GitHub-Downloader/github.lua /bin/github.lua</code><br />
+<code>wget -f https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua /bin/github.lua</code><br />
 <code>github name repo tree [link]</code>
 <hr><br />
 Benutzung: github name repo tree [link]<br />
