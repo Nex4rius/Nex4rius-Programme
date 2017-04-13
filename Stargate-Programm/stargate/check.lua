@@ -140,11 +140,13 @@ function Funktion.update(versionTyp)
       print(sprachen.fehlerName or "<FEHLER>")
     end
   end
-  if loadfile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", versionTyp, "Stargate-Programm") then
-    require("computer").shutdown(true)
-  else
-    loadfile("/autorun.lua")()
+  if fs.exists("/bin/github.lua") or loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua") then
+    if loadfile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", versionTyp, "Stargate-Programm") then
+      require("computer").shutdown(true)
+    end
   end
+  print(sprachen.fehlerName or "<FEHLER>")
+  loadfile("/autorun.lua")()
 end
 
 function Funktion.checkServerVersion()
