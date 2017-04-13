@@ -180,7 +180,9 @@ local function main()
     else
         fs.makeDirectory("/temp")
         local a = "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/"
-        wget("-fQ", a .. "github.lua", "/bin/github.lua")
+        if wget("-fQ", a .. "github.lua", "/temp/github.lua") then
+            verschieben("-f", "/temp/github.lua", "/bin/github.lua")
+        end
         print("Download Dekodierer\n")
         if wget("-f", a .. "json.lua", "/temp/json.lua") then
             if Funktion.verarbeiten() then return end
