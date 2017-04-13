@@ -19,4 +19,4 @@ Einbindung in Programme:<br />
 1) <code>loadfile("/bin/github.lua")(name:string, repo:string, tree:string[, link:string])</code><br />
 2) <code>os.execute("github name:string, repo:string, tree:string[, link:string]")</code><br />
 3) <code>loadfile("/bin/pastebin.lua")("-f", "run", "MHq2tN5B", name:string, repo:string, tree:string[, link:string])</code><br />
-4) <code>os.execute("pastebin run -f MHq2tN5B name:string, repo:string, tree:string[, link:string]")</code><br />
+4) <code>os.execute("pastebin run -f MHq2tN5B name:string repo:string tree:string [link:string]")</code><br />
