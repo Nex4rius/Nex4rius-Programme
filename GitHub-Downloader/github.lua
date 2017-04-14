@@ -6,10 +6,7 @@ local shell         = require("shell")
 local fs            = require("filesystem")
 local component     = require("component")
 
-local args1         = shell.parse(...)[1]
-local args2         = shell.parse(...)[2]
-local args3         = shell.parse(...)[3]
-local args4         = shell.parse(...)[4]
+local args, options = shell.parse(...)
 
 local wget          = loadfile("/bin/wget.lua")
 local kopieren      = loadfile("/bin/cp.lua")
@@ -33,12 +30,16 @@ shell.setWorkingDirectory("/")
 
 if args1 == "?" then
     hilfe = true
-elseif type(args1) == "string" and type(args2) == "string" and type(args3) == "string" then
-    name = args1
-    repo = args2
-    tree = args3
-    if type(args4) == "string" then
-        link = args4
+elseif type(args[1]) == "string" and type(args[2]) == "string" and type(args[3]) == "string" then
+    name = args[1]
+    repo = args[2]
+    tree = args[3]
+    if type(args[4]) == "string" then
+        if options.s then
+            sha = args[4]
+        else
+            link = args[4]
+        end
     end
 else
     gpu.setForeground(0xFF0000)
@@ -47,19 +48,21 @@ else
 end
 
 function Funktion.Hilfe()
-    print([=[Benutzung: github name repo tree [link]]=])
-    print()
-    print([=[Beispiele:]=])
-    print([=[github Nex4rius Nex4rius-Programme master Stargate-Programm]=])
-    print()
-    print([=[Hilfetext:]=])
-    print([=[github ?]=])
-    print()
-    print([=[Einbindung in Programme:]=])
-    print([=[1) loadfile("/bin/github.lua")(name:string, repo:string, tree:string[, link:string])]=])
-    print([=[2) os.execute("github name:string, repo:string, tree:string[, link:string]")]=])
-    print([=[3) loadfile("/bin/pastebin.lua")("-f", "run", "MHq2tN5B", name:string, repo:string, tree:string[, link:string])]=])
-    print([=[4) os.execute("pastebin run -f MHq2tN5B name:string repo:string tree:string [link:string]")]=])
+    print([==[Benutzung: github [-s] name repo tree [link/sha]]==])
+    print([==[-s   Ändere link zu sha Eingabe]==])
+    print([==[]==])
+    print([==[Beispiele:]==])
+    print([==[github Nex4rius Nex4rius-Programme master Stargate-Programm]==])
+    print([==[github -s MightyPirates OpenComputers master-MC1.7.10 41acf2fa06990dcc4d740490cccd9d2bcec97edd]==])
+    print([==[]==])
+    print([==[Hilfetext:]==])
+    print([==[github ?]==])
+    print([==[]==])
+    print([==[Einbindung in Programme:]==])
+    print([==[1) loadfile("/bin/github.lua")(["-s", ]name:string, repo:string, tree:string[, link/sha:string])]==])
+    print([==[2) os.execute("github [-s] name:string, repo:string, tree:string[, link/sha:string]")]==])
+    print([==[3) loadfile("/bin/pastebin.lua")("-f", "run", "MHq2tN5B", ["-s", ]name:string, repo:string, tree:string[, link/sha:string])]==])
+    print([==[4) os.execute("pastebin run -f MHq2tN5B [-s] name:string repo:string tree:string [link/sha:string]")]==])
 end
 
 function Funktion.checkKomponenten()
@@ -94,10 +97,18 @@ end
 
 function Funktion.verarbeiten()
     print("\nDownloade Verzeichnisliste\n")
-    if not wget("-f", string.format("https://api.github.com/repos/%s/%s/git/trees/%s?recursive=1", name, repo, tree), "/temp/github-liste.txt") then
-        gpu.setForeground(0xFF0000)
-        print("<FEHLER> GitHub Download")
-        return 
+    if sha then
+        if not wget("-f", string.format("https://api.github.com/repos/%s/%s/git/trees/%s?recursive=1", name, repo, sha), "/temp/github-liste.txt") then
+            gpu.setForeground(0xFF0000)
+            print("<FEHLER> GitHub Download")
+            return 
+        end
+    else
+        if not wget("-f", string.format("https://api.github.com/repos/%s/%s/git/trees/%s?recursive=1", name, repo, tree), "/temp/github-liste.txt") then
+            gpu.setForeground(0xFF0000)
+            print("<FEHLER> GitHub Download")
+            return 
+        end
     end
     local f = io.open("/temp/github-liste.txt", "r")
     print("\nKonvertiere: JSON -> Lua table\n")
