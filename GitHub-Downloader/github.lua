@@ -60,7 +60,7 @@ function Funktion.Hilfe()
     print([==[]==])
     print([==[Einbindung in Programme:]==])
     print([==[1) loadfile("/bin/github.lua")(["-s",] name:string, repo:string, tree:string[, link/sha:string])]==])
-    print([==[2) loadfile("/bin/pastebin.lua")("-f", "run", "MHq2tN5B", ["-s", ]name:string, repo:string, tree:string[, link/sha:string])]==])
+    print([==[2) loadfile("/bin/pastebin.lua")("-f", "run", "MHq2tN5B", ["-s",] name:string, repo:string, tree:string[, link/sha:string])]==])
 end
 
 function Funktion.checkKomponenten()
