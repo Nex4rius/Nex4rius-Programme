@@ -1,4 +1,4 @@
--- pastebin run -f MHq2tN5B [-s] name repo tree [sha] [link]
+-- pastebin run -f MHq2tN5B name repo tree [link [sha]]
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme
 
@@ -34,17 +34,11 @@ elseif type(args[1]) == "string" and type(args[2]) == "string" and type(args[3])
     name = args[1]
     repo = args[2]
     tree = args[3]
-    if options.s then
-        if type(args[4]) == "string" then
-            sha = args[4]
-        end
-        if type(args[5]) == "string" then
-            link = args[5]
-        end
-    else
-        if type(args[4]) == "string" then
-            link = args[4]
-        end
+    if type(args[4]) == "string" then
+        link = args[4]
+    end
+    if type(args[5]) == "string" then
+        sha = args[5]
     end
 else
     gpu.setForeground(0xFF0000)
@@ -53,19 +47,19 @@ else
 end
 
 function Funktion.Hilfe()
-    print([==[Benutzung: github [-s] name repo tree [sha] [link]]==])
+    print([==[Benutzung: github name repo tree [link [sha]]]==])
     print([==[-s   erlaube sha Eingabe]==])
     print([==[]==])
     print([==[Beispiele:]==])
     print([==[github Nex4rius Nex4rius-Programme master Stargate-Programm]==])
-    print([==[github -s MightyPirates OpenComputers master-MC1.7.10 41acf2fa06990dcc4d740490cccd9d2bcec97edd src/main/resources/assets/opencomputers/loot/openos/]==])
+    print([==[github -s MightyPirates OpenComputers master-MC1.7.10 src/main/resources/assets/opencomputers/loot/openos/ 41acf2fa06990dcc4d740490cccd9d2bcec97edd]==])
     print([==[]==])
     print([==[Hilfetext:]==])
     print([==[github ?]==])
     print([==[]==])
     print([==[Einbindung in Programme:]==])
-    print([==[1) loadfile("/bin/github.lua")(["-s",] name:string, repo:string, tree:string[, sha:string][, link:string])]==])
-    print([==[2) loadfile("/bin/pastebin.lua")("-f", "run", "MHq2tN5B", ["-s",] name:string, repo:string, tree:string[, sha:string][, link:string])]==])
+    print([==[1) loadfile("/bin/github.lua")(name:string, repo:string, tree:string[, link:string[, sha:string]])]==])
+    print([==[2) loadfile("/bin/pastebin.lua")("-f", "run", "MHq2tN5B", name:string, repo:string, tree:string[, link:string[, sha:string]])]==])
 end
 
 function Funktion.checkKomponenten()
