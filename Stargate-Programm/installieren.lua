@@ -127,13 +127,14 @@ function Funktionen.installieren(versionTyp)
     print()
   end
   local f = io.open ("/bin/stargate.lua", "w")
-  f:write([[
-    -- pastebin run -f YVqKFnsP
-    -- von Nex4rius
-    -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
-    
-    loadfile("/autorun.lua")(require("shell").parse(...)[1])
-  ]])
+  f:write('-- pastebin run -f YVqKFnsP\n')
+  f:write('-- von Nex4rius\n')
+  f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n')
+  f:write('\n')
+  f:write('if not pcall(loadfile, "/autorun.lua", require("shell").parse(...)[1]) then\n')
+  f:write('   loadfile("/bin/wget-lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua"\n')
+  f:write('   loadfile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", "master", "Stargate-Programm")\n')
+  f:write('end\n')
   f:close()
   if updateKomplett then
     loadfile("/bin/rm.lua")("-v", "/update", "-r")
