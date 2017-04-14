@@ -48,11 +48,11 @@ end
 
 function Funktion.Hilfe()
     print([==[Benutzung: github name repo tree [link [sha]]]==])
-    print([==[-s   erlaube sha Eingabe]==])
+    print([==[sha nur benötigt bei sehr großen Repositories]==])
     print([==[]==])
     print([==[Beispiele:]==])
     print([==[github Nex4rius Nex4rius-Programme master Stargate-Programm]==])
-    print([==[github -s MightyPirates OpenComputers master-MC1.7.10 src/main/resources/assets/opencomputers/loot/openos/ 41acf2fa06990dcc4d740490cccd9d2bcec97edd]==])
+    print([==[github MightyPirates OpenComputers master-MC1.7.10 src/main/resources/assets/opencomputers/loot/openos/ 41acf2fa06990dcc4d740490cccd9d2bcec97edd]==])
     print([==[]==])
     print([==[Hilfetext:]==])
     print([==[github ?]==])
