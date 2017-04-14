@@ -1,4 +1,4 @@
--- pastebin run -f MHq2tN5B Nex4rius Nex4rius-Programme master Stargate-Programm
+-- pastebin run -f YVqKFnsP
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
@@ -177,7 +177,7 @@ end
 
 function Funktion.checkDateien()
   local f = io.open ("/bin/stargate.lua", "w")
-  f:write('-- pastebin run -f MHq2tN5B Nex4rius Nex4rius-Programme master Stargate-Programm\n')
+  f:write('-- pastebin run -f YVqKFnsP\n')
   f:write('-- von Nex4rius\n')
   f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n')
   f:write('\n')
