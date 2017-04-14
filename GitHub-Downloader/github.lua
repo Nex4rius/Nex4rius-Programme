@@ -34,11 +34,17 @@ elseif type(args[1]) == "string" and type(args[2]) == "string" and type(args[3])
     name = args[1]
     repo = args[2]
     tree = args[3]
-    if type(args[4]) == "string" then
-        link = args[4]
-    end
-    if type(args[5]) == "string" then
-        sha = args[5]
+    if options.s then
+        if type(args[4]) == "string" then
+            sha = args[4]
+        end
+        if type(args[5]) == "string" then
+            link = args[5]
+        end
+    else
+        if type(args[4]) == "string" then
+            link = args[4]
+        end
     end
 else
     gpu.setForeground(0xFF0000)
