@@ -1209,10 +1209,14 @@ function Taste.z()
       screen.setTouchModeInverted(false)
       kopieren("/stargate/adressen.lua", "/stargate/adressen-bearbeiten")
       edit("/stargate/adressen-bearbeiten")
+      local a = Funktion
+      Funktion = nil
       if pcall(loadfile("/stargate/adressen-bearbeiten")) then
         entfernen("/stargate/adressen.lua")
         kopieren("/stargate/adressen-bearbeiten", "/stargate/adressen.lua")
+        Funktion = a
       else
+        Funktion = a
         Funktion.zeigeNachricht("Syntax Fehler")
         os.sleep(2)
       end
@@ -1238,10 +1242,14 @@ function Taste.l()
       screen.setTouchModeInverted(false)
       kopieren("/stargate/Sicherungsdatei.lua", "/stargate/Sicherungsdatei-bearbeiten")
       edit("/stargate/Sicherungsdatei-bearbeiten")
+      local a = Funktion
+      Funktion = nil
       if pcall(loadfile("/stargate/Sicherungsdatei-bearbeiten")) then
         entfernen("/stargate/Sicherungsdatei.lua")
         kopieren("/stargate/Sicherungsdatei-bearbeiten", "/stargate/Sicherungsdatei.lua")
+        Funktion = a
       else
+        Funktion = a
         Funktion.zeigeNachricht("Syntax Fehler")
         os.sleep(2)
       end
@@ -1566,14 +1574,17 @@ end
 
 Funktion.checken(Funktion.main)
 
+local update = Funktion.update
+Funktion = nil
+
 if Variablen.update == "ja" then
   print(sprachen.aktualisierenJetzt)
   print(sprachen.schliesseIris .. "...\n")
   sg.closeIris()
-  Funktion.update("master")
+  update("master")
 elseif Variablen.update == "beta" then
   print(sprachen.aktualisierenJetzt)
   print(sprachen.schliesseIris .. "...\n")
   sg.closeIris()
-  Funktion.update("beta")
+  update("beta")
 end
