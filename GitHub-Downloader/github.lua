@@ -35,11 +35,10 @@ elseif type(args[1]) == "string" and type(args[2]) == "string" and type(args[3])
     repo = args[2]
     tree = args[3]
     if type(args[4]) == "string" then
-        if options.s then
-            sha = args[4]
-        else
-            link = args[4]
-        end
+        link = args[4]
+    end
+    if type(args[5]) == "string" then
+        sha = args[5]
     end
 else
     gpu.setForeground(0xFF0000)
@@ -48,8 +47,8 @@ else
 end
 
 function Funktion.Hilfe()
-    print([==[Benutzung: github [-s] name repo tree [link/sha]]==])
-    print([==[-s   Ändere link zu sha Eingabe]==])
+    print([==[Benutzung: github [-s] name repo tree [sha] [link]]==])
+    print([==[-s   erlaube sha Eingabe]==])
     print([==[]==])
     print([==[Beispiele:]==])
     print([==[github Nex4rius Nex4rius-Programme master Stargate-Programm]==])
@@ -59,8 +58,8 @@ function Funktion.Hilfe()
     print([==[github ?]==])
     print([==[]==])
     print([==[Einbindung in Programme:]==])
-    print([==[1) loadfile("/bin/github.lua")(["-s",] name:string, repo:string, tree:string[, link/sha:string])]==])
-    print([==[2) loadfile("/bin/pastebin.lua")("-f", "run", "MHq2tN5B", ["-s",] name:string, repo:string, tree:string[, link/sha:string])]==])
+    print([==[1) loadfile("/bin/github.lua")(["-s",] name:string, repo:string, tree:string[, sha:string][, link:string])]==])
+    print([==[2) loadfile("/bin/pastebin.lua")("-f", "run", "MHq2tN5B", ["-s",] name:string, repo:string, tree:string[, sha:string][, link:string])]==])
 end
 
 function Funktion.checkKomponenten()
