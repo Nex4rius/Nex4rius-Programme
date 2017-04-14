@@ -1,4 +1,4 @@
--- pastebin run -f YVqKFnsP
+-- pastebin run -f MHq2tN5B Nex4rius Nex4rius-Programme master Stargate-Programm
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
@@ -176,9 +176,18 @@ function Funktion.checkBetaServerVersion()
 end
 
 function Funktion.checkDateien()
+  local f = io.open ("/bin/stargate.lua", "w")
+  f:write('-- pastebin run -f MHq2tN5B Nex4rius Nex4rius-Programme master Stargate-Programm\n')
+  f:write('-- von Nex4rius\n')
+  f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n')
+  f:write('\n')
+  f:write('if not pcall(loadfile, "/autorun.lua", require("shell").parse(...)[1]) then\n')
+  f:write('   loadfile("/bin/wget-lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua"\n')
+  f:write('   loadfile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", "master", "Stargate-Programm")\n')
+  f:write('end\n')
+  f:close()
   local dateien = {
     "autorun.lua",
-    "bin/stargate.lua",
     "stargate/Kontrollprogramm.lua",
     "stargate/Sicherungsdatei.lua",
     "stargate/adressen.lua",
