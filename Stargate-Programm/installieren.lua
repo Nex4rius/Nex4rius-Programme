@@ -17,10 +17,10 @@ if not fs.exists("/einstellungen") then
     fs.makeDirectory("/einstellungen")
 end
 if not fs.exists("/einstellungen/adressen.lua") then
-    kopieren("/stargate/adressen.lua", "/einstellungen/adressen.lua")
+    kopieren("-n", "/stargate/adressen.lua", "/einstellungen/adressen.lua")
 end
 if not fs.exists("/einstellungen/Sicherungsdatei.lua") then
-    kopieren("/stargate/Sicherungsdatei.lua", "/einstellungen/Sicherungsdatei.lua")
+    kopieren("-n", "/stargate/Sicherungsdatei.lua", "/einstellungen/Sicherungsdatei.lua")
 end
 
 if fs.exists("/stargate/Sicherungsdatei.lua") then
