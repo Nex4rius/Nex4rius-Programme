@@ -172,7 +172,7 @@ function Funktion.verarbeiten()
         print("Ersetze alte Dateien\n")
         for i in fs.list("/update") do
             entfernen("-r", "/" .. i)
-            verschieben("-fv", "/update/" .. i, "/")
+            verschieben("/update/" .. i, "/")
         end
         print()
         entfernen("-rv", "/update")
