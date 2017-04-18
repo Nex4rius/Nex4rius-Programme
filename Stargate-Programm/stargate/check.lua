@@ -2,6 +2,8 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
+os.sleep(1)
+
 require("shell").setWorkingDirectory("/")
 
 local component               = require("component")
@@ -135,21 +137,28 @@ function Funktion.update(versionTyp)
   if versionTyp == nil then
     versionTyp = "master"
   end
-  if wget("-f", Funktion.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua") then
+  if fs.exists("/bin/github.lua") or wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua") then
     Sicherung.installieren = true
     if schreibSicherungsdatei(Sicherung) then
       local f = io.open ("/autorun.lua", "w")
-      f:write('loadfile("/installieren.lua")("' .. versionTyp .. '")')
+      f:write([==[-- pastebin run -f YVqKFnsP]==] .. "\n")
+      f:write([==[-- von Nex4rius]==] .. "\n")
+      f:write([==[-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm]==] .. "\n")
+      f:write("\n")
+      f:write([==[if loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua") then]==] .. "\n")
+      f:write([==[  loafile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", ""]==] .. versionTyp .. [==[", "Stargate-Programm")]==] .. "\n")
+      f:write([==[end]==] .. "\n")
       f:close()
       loadfile("/autorun.lua")()
     else
-      print(sprachen.fehlerName or "<FEHLER>")
+      io.write(sprachen.fehlerName or "<FEHLER>")
+      print(" /stargate/schreibSicherungsdatei.lua")
     end
-  elseif versionTyp == "master" then
-    wget("-f", Funktion.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua")
-    loadfile("/installieren.lua")()
+  else
+    io.write(sprachen.fehlerName or "<FEHLER>")
+    print(" /bin/github.lua and GitHub download")
   end
-  os.exit()
+  require("computer").shutdown(true)
 end
 
 function Funktion.checkServerVersion()
@@ -353,13 +362,20 @@ function Funktion.main()
   if arg == sprachen.hilfe or arg == "hilfe" or arg == "help" or arg == "?" then
     gpu.setBackground(0x000000)
     gpu.setForeground(0xFFFFFF)
-    print(sprachen.Hilfetext or "Verwendung: autorun [...]\nja\t-> Aktualisierung zur stabilen Version\nnein\t-> keine Aktualisierung\nbeta\t-> Aktualisierung zur Beta-Version\nhilfe\t-> zeige diese Nachricht nochmal")
+    print(sprachen.Hilfetext or [==[
+      Verwendung: autorun [...]
+      ja    -> Aktualisierung zur stabilen Version
+      nein  -> keine Aktualisierung
+      beta  -> Aktualisierung zur Beta-Version
+      hilfe -> zeige diese Nachricht nochmal]==])
   else
     if Funktion.checkKomponenten() then
       Funktion.checkOpenOS()
       Funktion.mainCheck()
     else
-      print("\n\n<FEHLER> kein Stargate")
+      print("\n")
+      io.write(sprachen.fehlerName or "<FEHLER>")
+      print(" kein Stargate")
       os.sleep(5)
     end
   end
