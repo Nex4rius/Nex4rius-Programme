@@ -171,10 +171,8 @@ function Funktion.verarbeiten()
         gpu.setForeground(0xFFFFFF)
         print("Ersetze alte Dateien\n")
         for i in fs.list("/update") do
-            if not verschieben("-fv", "/update/" .. i, "/") then
-                entfernen("-r", "/" .. i)
-                kopieren("-rv", "/update/" .. i, "/")
-            end
+            entfernen("-r", "/" .. i)
+            verschieben("-fv", "/update/" .. i, "/")
         end
         print()
         entfernen("-rv", "/update")
