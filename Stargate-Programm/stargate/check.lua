@@ -209,7 +209,8 @@ function Funktion.checkDateien()
   }
   for i in pairs(dateien) do
     if not fs.exists("/" .. dateien[i]) then
-      print("<FEHLER> Datei fehlt: " .. dateien[i])
+      io.write(sprachen.fehlerName or "<FEHLER>")
+      print(" Datei fehlt: " .. dateien[i])
       if component.isAvailable("internet") then
         if not wget("-f", Funktion.Pfad(versionTyp) .. dateien[1], "/" .. dateien[1]) then
           return
