@@ -10,6 +10,7 @@ local arg                     = string.lower(tostring(require("shell").parse(...
 local gpu                     = component.getPrimary("gpu")
 local wget                    = loadfile("/bin/wget.lua")
 local schreibSicherungsdatei  = loadfile("/stargate/schreibSicherungsdatei.lua")
+local verschieben             = loadfile("/bin/mv.lua")
 local betaVersionName         = ""
 local Sicherung               = {}
 local Funktion                = {}
@@ -122,11 +123,11 @@ function Funktion.checkKomponenten()
       print(sprachen.StargateNichtKomplett or "Stargate ist funktionsunfähig")
       gpu.setForeground(0xFFFFFF)
       os.sleep(5)
-      return false
+      return
     end
   else
     os.sleep(5)
-    return false
+    return
   end
 end
 
@@ -201,12 +202,21 @@ function Funktion.checkDateien()
       print("<FEHLER> Datei fehlt: " .. dateien[i])
       if component.isAvailable("internet") then
         if not wget("-f", Funktion.Pfad(versionTyp) .. dateien[1], "/" .. dateien[1]) then
-          return false
+          return
         end
       else
-        return false
+        return
       end
     end
+  end
+  if not fs.exists("/einstellungen") then
+    fs.makeDirectory("/einstellungen")
+  end
+  if not fs.exists("/einstellungen/adressen.lua") then
+    verschieben("/stargate/adressen.lua", "/einstellungen/adressen.lua")
+  end
+  if not fs.exists("/einstellungen/Sicherungsdatei.lua") then
+   verschieben("/stargate/Sicherungsdatei.lua", "/einstellungen/Sicherungsdatei.lua")
   end
   local alleSprachen = {"deutsch", "english", "russian", "czech", tostring(Sicherung.Sprache)}
   for i in pairs(alleSprachen) do
@@ -221,7 +231,7 @@ function Funktion.checkDateien()
     end
   end
   print("<FEHLER> keine Sprachdatei gefunden")
-  return false
+  return
 end
 
 function Funktion.mainCheck()
