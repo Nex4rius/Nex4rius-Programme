@@ -1247,6 +1247,7 @@ function Taste.l()
       end
       entfernen("/stargate/Sicherungsdatei-bearbeiten")
       screen.setTouchModeInverted(true)
+      local a = Sicherung.RF
       Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
       if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
         sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
@@ -1261,6 +1262,11 @@ function Taste.l()
       if Sicherung.RF then
         energytype          = "RF"
         energymultiplicator = 80
+      else
+        energytype          = "EU"
+        energymultiplicator = 20
+      end
+      if a ~= Sicherung.RF then
         Funktion.AdressenSpeichern()
       end
       schreibSicherungsdatei(Sicherung)
