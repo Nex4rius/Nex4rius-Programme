@@ -12,7 +12,7 @@ local arg                     = string.lower(tostring(require("shell").parse(...
 local gpu                     = component.getPrimary("gpu")
 local wget                    = loadfile("/bin/wget.lua")
 local schreibSicherungsdatei  = loadfile("/stargate/schreibSicherungsdatei.lua")
-local verschieben             = loadfile("/bin/mv.lua")
+local kopieren                = loadfile("/bin/cp.lua")
 local betaVersionName         = ""
 local Sicherung               = {}
 local Funktion                = {}
@@ -224,10 +224,10 @@ function Funktion.checkDateien()
     fs.makeDirectory("/einstellungen")
   end
   if not fs.exists("/einstellungen/adressen.lua") then
-    verschieben("/stargate/adressen.lua", "/einstellungen/adressen.lua")
+    kopieren("/stargate/adressen.lua", "/einstellungen/adressen.lua")
   end
   if not fs.exists("/einstellungen/Sicherungsdatei.lua") then
-   verschieben("/stargate/Sicherungsdatei.lua", "/einstellungen/Sicherungsdatei.lua")
+    kopieren("/stargate/Sicherungsdatei.lua", "/einstellungen/Sicherungsdatei.lua")
   end
   local alleSprachen = {"deutsch", "english", "russian", "czech", tostring(Sicherung.Sprache)}
   for i in pairs(alleSprachen) do
