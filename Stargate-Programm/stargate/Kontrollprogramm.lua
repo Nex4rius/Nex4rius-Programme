@@ -14,11 +14,11 @@ local kopieren                  = loadfile("/bin/cp.lua")
 local edit                      = loadfile("/bin/edit.lua")
 local schreibSicherungsdatei    = loadfile("/stargate/schreibSicherungsdatei.lua")
 
-if not pcall(loadfile("/stargate/Sicherungsdatei.lua")) then
+if not pcall(loadfile("/einstellungen/Sicherungsdatei.lua")) then
   print("Fehler Sicherungsdatei.lua")
 end
 
-local Sicherung                 = loadfile("/stargate/Sicherungsdatei.lua")()
+local Sicherung                 = loadfile("/einstellungen/Sicherungsdatei.lua")()
 
 if not pcall(loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")) then
   print(string.format("Fehler %s.lua", Sicherung.Sprache))
@@ -181,7 +181,7 @@ if component.isAvailable("redstone") then
 end
 
 function Funktion.schreibeAdressen()
-  local f = io.open("/stargate/adressen.lua", "w")
+  local f = io.open("/einstellungen/adressen.lua", "w")
   f:write('-- pastebin run -f YVqKFnsP\n')
   f:write('-- von Nex4rius\n')
   f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n--\n')
@@ -368,7 +368,7 @@ function Funktion.Infoseite()
 end
 
 function Funktion.AdressenSpeichern()
-  adressen = loadfile("/stargate/adressen.lua")()
+  adressen = loadfile("/einstellungen/adressen.lua")()
   gespeicherteAdressen = {}
   sendeAdressen = {}
   local k = 0
@@ -1207,16 +1207,16 @@ function Taste.z()
     if Funktion.Tastatur() then
       Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
       screen.setTouchModeInverted(false)
-      kopieren("/stargate/adressen.lua", "/stargate/adressen-bearbeiten")
-      edit("/stargate/adressen-bearbeiten")
-      if pcall(loadfile("/stargate/adressen-bearbeiten")) then
-        entfernen("/stargate/adressen.lua")
-        kopieren("/stargate/adressen-bearbeiten", "/stargate/adressen.lua")
+      kopieren("/einstellungen/adressen.lua", "/einstellungen/adressen-bearbeiten")
+      edit("/einstellungen/adressen-bearbeiten")
+      if pcall(loadfile("/einstellungen/adressen-bearbeiten")) then
+        entfernen("/einstellungen/adressen.lua")
+        kopieren("/einstellungen/adressen-bearbeiten", "/einstellungen/adressen.lua")
       else
         Funktion.zeigeNachricht("Syntax Fehler")
         os.sleep(2)
       end
-      entfernen("/stargate/adressen-bearbeiten")
+      entfernen("/einstellungen/adressen-bearbeiten")
       screen.setTouchModeInverted(true)
       seite = -1
       Funktion.zeigeAnzeige()
@@ -1236,19 +1236,19 @@ function Taste.l()
       Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
       schreibSicherungsdatei(Sicherung)
       screen.setTouchModeInverted(false)
-      kopieren("/stargate/Sicherungsdatei.lua", "/stargate/Sicherungsdatei-bearbeiten")
-      edit("/stargate/Sicherungsdatei-bearbeiten")
-      if pcall(loadfile("/stargate/Sicherungsdatei-bearbeiten")) then
-        entfernen("/stargate/Sicherungsdatei.lua")
-        kopieren("/stargate/Sicherungsdatei-bearbeiten", "/stargate/Sicherungsdatei.lua")
+      kopieren("/einstellungen/Sicherungsdatei.lua", "/einstellungen/Sicherungsdatei-bearbeiten")
+      edit("/einstellungen/Sicherungsdatei-bearbeiten")
+      if pcall(loadfile("/einstellungen/Sicherungsdatei-bearbeiten")) then
+        entfernen("/einstellungen/Sicherungsdatei.lua")
+        kopieren("/einstellungen/Sicherungsdatei-bearbeiten", "/einstellungen/Sicherungsdatei.lua")
       else
         Funktion.zeigeNachricht("Syntax Fehler")
         os.sleep(2)
       end
-      entfernen("/stargate/Sicherungsdatei-bearbeiten")
+      entfernen("/einstellungen/Sicherungsdatei-bearbeiten")
       screen.setTouchModeInverted(true)
       local a = Sicherung.RF
-      Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
+      Sicherung = loadfile("/einstellungen/Sicherungsdatei.lua")()
       if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
         sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
         ersetzen = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)

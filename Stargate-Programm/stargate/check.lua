@@ -2,6 +2,8 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
+os.sleep(1)
+
 require("shell").setWorkingDirectory("/")
 
 local component               = require("component")
@@ -10,6 +12,7 @@ local arg                     = string.lower(tostring(require("shell").parse(...
 local gpu                     = component.getPrimary("gpu")
 local wget                    = loadfile("/bin/wget.lua")
 local schreibSicherungsdatei  = loadfile("/stargate/schreibSicherungsdatei.lua")
+local kopieren                = loadfile("/bin/cp.lua")
 local betaVersionName         = ""
 local Sicherung               = {}
 local Funktion                = {}
@@ -122,11 +125,11 @@ function Funktion.checkKomponenten()
       print(sprachen.StargateNichtKomplett or "Stargate ist funktionsunfähig")
       gpu.setForeground(0xFFFFFF)
       os.sleep(5)
-      return false
+      return
     end
   else
     os.sleep(5)
-    return false
+    return
   end
 end
 
@@ -134,21 +137,28 @@ function Funktion.update(versionTyp)
   if versionTyp == nil then
     versionTyp = "master"
   end
-  if wget("-f", Funktion.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua") then
+  if fs.exists("/bin/github.lua") or wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua") then
     Sicherung.installieren = true
     if schreibSicherungsdatei(Sicherung) then
       local f = io.open ("/autorun.lua", "w")
-      f:write('loadfile("/installieren.lua")("' .. versionTyp .. '")')
+      f:write([==[-- pastebin run -f YVqKFnsP]==] .. "\n")
+      f:write([==[-- von Nex4rius]==] .. "\n")
+      f:write([==[-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm]==] .. "\n")
+      f:write("\n")
+      f:write([==[if loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua") then]==] .. "\n")
+      f:write([==[  loadfile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", "]==] .. versionTyp .. [==[", "Stargate-Programm")]==] .. "\n")
+      f:write([==[end]==] .. "\n")
       f:close()
       loadfile("/autorun.lua")()
     else
-      print(sprachen.fehlerName or "<FEHLER>")
+      io.write(sprachen.fehlerName or "<FEHLER>")
+      print(" /stargate/schreibSicherungsdatei.lua")
     end
-  elseif versionTyp == "master" then
-    wget("-f", Funktion.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua")
-    loadfile("/installieren.lua")()
+  else
+    io.write(sprachen.fehlerName or "<FEHLER>")
+    print(" /bin/github.lua and GitHub download")
   end
-  os.exit()
+  require("computer").shutdown(true)
 end
 
 function Funktion.checkServerVersion()
@@ -177,14 +187,15 @@ end
 
 function Funktion.checkDateien()
   local f = io.open ("/bin/stargate.lua", "w")
-  f:write('-- pastebin run -f YVqKFnsP\n')
-  f:write('-- von Nex4rius\n')
-  f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n')
-  f:write('\n')
-  f:write('if not pcall(loadfile("/autorun.lua"), require("shell").parse(...)[1]) then\n')
-  f:write('   loadfile("/bin/wget-lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua")\n')
-  f:write('   loadfile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", "master", "Stargate-Programm")\n')
-  f:write('end\n')
+  f:write([==[-- pastebin run -f YVqKFnsP]==] .. "\n")
+  f:write([==[-- von Nex4rius]==] .. "\n")
+  f:write([==[-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm]==] .. "\n")
+  f:write("\n")
+  f:write([==[if not pcall(loadfile("/autorun.lua"), require("shell").parse(...)[1]) then]==] .. "\n")
+  f:write([==[    if loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua") then]==] .. "\n")
+  f:write([==[        loafile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", "master", "Stargate-Programm")]==] .. "\n")
+  f:write([==[    end]==] .. "\n")
+  f:write([==[end]==])
   f:close()
   local dateien = {
     "autorun.lua",
@@ -198,15 +209,25 @@ function Funktion.checkDateien()
   }
   for i in pairs(dateien) do
     if not fs.exists("/" .. dateien[i]) then
-      print("<FEHLER> Datei fehlt: " .. dateien[i])
+      io.write(sprachen.fehlerName or "<FEHLER>")
+      print(" Datei fehlt: " .. dateien[i])
       if component.isAvailable("internet") then
         if not wget("-f", Funktion.Pfad(versionTyp) .. dateien[1], "/" .. dateien[1]) then
-          return false
+          return
         end
       else
-        return false
+        return
       end
     end
+  end
+  if not fs.exists("/einstellungen") then
+    fs.makeDirectory("/einstellungen")
+  end
+  if not fs.exists("/einstellungen/adressen.lua") then
+    kopieren("/stargate/adressen.lua", "/einstellungen/adressen.lua")
+  end
+  if not fs.exists("/einstellungen/Sicherungsdatei.lua") then
+    kopieren("/stargate/Sicherungsdatei.lua", "/einstellungen/Sicherungsdatei.lua")
   end
   local alleSprachen = {"deutsch", "english", "russian", "czech", tostring(Sicherung.Sprache)}
   for i in pairs(alleSprachen) do
@@ -221,7 +242,7 @@ function Funktion.checkDateien()
     end
   end
   print("<FEHLER> keine Sprachdatei gefunden")
-  return false
+  return
 end
 
 function Funktion.mainCheck()
@@ -343,13 +364,20 @@ function Funktion.main()
   if arg == sprachen.hilfe or arg == "hilfe" or arg == "help" or arg == "?" then
     gpu.setBackground(0x000000)
     gpu.setForeground(0xFFFFFF)
-    print(sprachen.Hilfetext or "Verwendung: autorun [...]\nja\t-> Aktualisierung zur stabilen Version\nnein\t-> keine Aktualisierung\nbeta\t-> Aktualisierung zur Beta-Version\nhilfe\t-> zeige diese Nachricht nochmal")
+    print(sprachen.Hilfetext or [==[
+      Verwendung: autorun [...]
+      ja    -> Aktualisierung zur stabilen Version
+      nein  -> keine Aktualisierung
+      beta  -> Aktualisierung zur Beta-Version
+      hilfe -> zeige diese Nachricht nochmal]==])
   else
     if Funktion.checkKomponenten() then
       Funktion.checkOpenOS()
       Funktion.mainCheck()
     else
-      print("\n\n<FEHLER> kein Stargate")
+      print("\n")
+      io.write(sprachen.fehlerName or "<FEHLER>")
+      print(" kein Stargate")
       os.sleep(5)
     end
   end
