@@ -343,8 +343,8 @@ function Funktion.main()
   else
     version = sprachen.fehlerName
   end
-  if fs.exists("/stargate/Sicherungsdatei.lua") then
-    Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
+  if fs.exists("/einstellungen/Sicherungsdatei.lua") then
+    Sicherung = loadfile("/einstellungen/Sicherungsdatei.lua")()
   else
     Sicherung.installieren = false
   end
