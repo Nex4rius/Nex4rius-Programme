@@ -1245,7 +1245,7 @@ function Taste.l()
         Funktion.zeigeNachricht("Syntax Fehler")
         os.sleep(2)
       end
-      entfernen("/stargate/Sicherungsdatei-bearbeiten")
+      entfernen("/einstellungen/Sicherungsdatei-bearbeiten")
       screen.setTouchModeInverted(true)
       local a = Sicherung.RF
       Sicherung = loadfile("/einstellungen/Sicherungsdatei.lua")()
