@@ -146,10 +146,14 @@ function Funktion.update(versionTyp)
       f:write([==[-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm]==] .. "\n")
       f:write("\n")
       f:write([==[if loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua") then]==] .. "\n")
-      f:write([==[  loadfile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", "]==] .. versionTyp .. [==[", "Stargate-Programm")]==] .. "\n")
+      f:write([==[  return loadfile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", "]==] .. versionTyp .. [==[", "Stargate-Programm")]==] .. "\n")
       f:write([==[end]==] .. "\n")
       f:close()
-      loadfile("/autorun.lua")()
+      if loadfile("/autorun.lua")() and version and versionTyp == "BETA" then
+        local f = io.open ("/stargate/version.txt", "a")
+        f:write(" BETA")
+        f:close()
+      end
     else
       io.write(sprachen.fehlerName or "<FEHLER>")
       print(" /stargate/schreibSicherungsdatei.lua")
