@@ -25,8 +25,8 @@ local function reset()
 end
 
 if type(NEU) == "table" then
-  if fs.exists("/stargate/Sicherungsdatei.lua") then
-    ALT = loadfile("/stargate/Sicherungsdatei.lua")()
+  if fs.exists("/einstellungen/Sicherungsdatei.lua") then
+    ALT = loadfile("/einstellungen/Sicherungsdatei.lua")()
   end
   if fs.exists("/stargate/sprache/" .. tostring(NEU.Sprache) .. ".lua") then
     sprachen = loadfile("/stargate/sprache/" .. tostring(NEU.Sprache) .. ".lua")()
@@ -50,7 +50,7 @@ if type(NEU) == "table" then
   if type(NEU.debug)         == "boolean"then Sicherung.debug        = NEU.debug        else Sicherung.debug        = ALT.debug        end
   if type(NEU.control)       == "string" then Sicherung.control      = NEU.control      else Sicherung.control      = ALT.control      end
   if type(NEU.installieren)  == "boolean"then Sicherung.installieren = NEU.installieren else Sicherung.installieren = ALT.installieren end
-  local f = io.open ("/stargate/Sicherungsdatei.lua", "w")
+  local f = io.open ("/einstellungen/Sicherungsdatei.lua", "w")
   f:write('-- pastebin run -f YVqKFnsP\n')
   f:write('-- von Nex4rius\n')
   f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n--\n')
