@@ -1258,6 +1258,11 @@ function Taste.l()
         Sicherung.Sprache = ""
         os.sleep(1)
       end
+      if Sicherung.RF then
+        energytype          = "RF"
+        energymultiplicator = 80
+        Funktion.AdressenSpeichern()
+      end
       schreibSicherungsdatei(Sicherung)
       Funktion.sides()
       gpu.setBackground(Farben.Nachrichtfarbe)
