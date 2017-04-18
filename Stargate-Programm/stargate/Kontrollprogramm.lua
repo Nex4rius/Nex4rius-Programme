@@ -1126,7 +1126,7 @@ function Taste.d()
       Funktion.zeigeNachricht(sprachen.stargateAbschalten .. " " .. sprachen.stargateName)
     end
   end
-  event.timer(1, Funktion.zeigeMenu)
+  event.timer(1, Funktion.zeigeMenu, 1)
 end
 
 function Taste.e()
@@ -1187,7 +1187,7 @@ function Taste.i()
   if seite == -1 then
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
     Funktion.zeigeHier(1, Taste.Koordinaten.Taste_i, "I " .. string.sub(sprachen.IrisSteuerung:match("^%s*(.-)%s*$") .. " " .. sprachen.an_aus, 1, 28), 0)
-    event.timer(2, Funktion.zeigeMenu)
+    event.timer(2, Funktion.zeigeMenu, 1)
     if iris == "Offline" then else
       send = true
       if Sicherung.control == "On" then
@@ -1209,14 +1209,10 @@ function Taste.z()
       screen.setTouchModeInverted(false)
       kopieren("/stargate/adressen.lua", "/stargate/adressen-bearbeiten")
       edit("/stargate/adressen-bearbeiten")
-      local a = Funktion
-      Funktion = nil
       if pcall(loadfile("/stargate/adressen-bearbeiten")) then
         entfernen("/stargate/adressen.lua")
         kopieren("/stargate/adressen-bearbeiten", "/stargate/adressen.lua")
-        Funktion = a
       else
-        Funktion = a
         Funktion.zeigeNachricht("Syntax Fehler")
         os.sleep(2)
       end
@@ -1227,7 +1223,7 @@ function Taste.z()
       seite = 0
       Funktion.AdressenSpeichern()
     else
-      event.timer(2, Funktion.zeigeMenu)
+      event.timer(2, Funktion.zeigeMenu, 1)
     end
   end
 end
@@ -1242,19 +1238,16 @@ function Taste.l()
       screen.setTouchModeInverted(false)
       kopieren("/stargate/Sicherungsdatei.lua", "/stargate/Sicherungsdatei-bearbeiten")
       edit("/stargate/Sicherungsdatei-bearbeiten")
-      local a = Funktion
-      Funktion = nil
       if pcall(loadfile("/stargate/Sicherungsdatei-bearbeiten")) then
         entfernen("/stargate/Sicherungsdatei.lua")
         kopieren("/stargate/Sicherungsdatei-bearbeiten", "/stargate/Sicherungsdatei.lua")
-        Funktion = a
       else
-        Funktion = a
         Funktion.zeigeNachricht("Syntax Fehler")
         os.sleep(2)
       end
       entfernen("/stargate/Sicherungsdatei-bearbeiten")
       screen.setTouchModeInverted(true)
+      local a = Sicherung.RF
       Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
       if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
         sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
@@ -1266,6 +1259,16 @@ function Taste.l()
         Sicherung.Sprache = ""
         os.sleep(1)
       end
+      if Sicherung.RF then
+        energytype          = "RF"
+        energymultiplicator = 80
+      else
+        energytype          = "EU"
+        energymultiplicator = 20
+      end
+      if a ~= Sicherung.RF then
+        Funktion.AdressenSpeichern()
+      end
       schreibSicherungsdatei(Sicherung)
       Funktion.sides()
       gpu.setBackground(Farben.Nachrichtfarbe)
@@ -1273,7 +1276,7 @@ function Taste.l()
       seite = 0
       Funktion.zeigeAnzeige()
     else
-      event.timer(2, Funktion.zeigeMenu)
+      event.timer(2, Funktion.zeigeMenu, 1)
     end
   end
 end
@@ -1289,10 +1292,10 @@ function Taste.u()
         Variablen.update = "ja"
       else
         Funktion.zeigeNachricht(sprachen.bereitsNeusteVersion)
-        event.timer(2, Funktion.zeigeMenu)
+        event.timer(2, Funktion.zeigeMenu, 1)
       end
     else
-      event.timer(2, Funktion.zeigeMenu)
+      event.timer(2, Funktion.zeigeMenu, 1)
     end
   end
 end
@@ -1310,7 +1313,7 @@ function Taste.b()
 end
 
 function Taste.Zahl(c)
-  event.timer(2, Funktion.zeigeMenu)
+  event.timer(2, Funktion.zeigeMenu, 1)
   Funktion.Farbe(Farben.mittelblau, Farben.Adresstextfarbe)
   if c == "0" then
     c = 10
