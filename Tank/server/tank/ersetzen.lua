@@ -55,6 +55,7 @@ return {
 ["fluidmoltensilicon"]           = "Molten Silicon",
 ["fluidmoltenmagnesium"]         = "Molten Magnesium",
 ["fluidnitrogendioxide"]         = "Nitrogen Dioxide",
+["fluidplasmairon"]              = "Iron Plasma",
 ["fluidradon"]                   = "Radon",
 ["fluidsulfuricacid"]            = "Sulfuric Acid",
 ["fluidmoltenconcrete"]          = "Wet Concrete",
