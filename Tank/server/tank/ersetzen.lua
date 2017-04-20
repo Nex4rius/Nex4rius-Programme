@@ -58,6 +58,7 @@ return {
 ["fluidplasmairon"]              = "Iron Plasma",
 ["fluidradon"]                   = "Radon",
 ["fluidsulfuricacid"]            = "Sulfuric Acid",
+["fluidtritium"]                 = "Tritium",
 ["fluidmoltenconcrete"]          = "Wet Concrete",
 ["fluiduuamplifier"]             = "UU-Amplifier",
 ["UUMatter"]                     = "UU-Matter",
