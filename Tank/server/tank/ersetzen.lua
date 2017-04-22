@@ -56,6 +56,7 @@ return {
 ["fluidmoltenmagnesium"]         = "Molten Magnesium",
 ["fluidnitrogendioxide"]         = "Nitrogen Dioxide",
 ["fluidplasmairon"]              = "Iron Plasma",
+["fluidplasmahelium"]            = "Helium Plasma",
 ["fluidradon"]                   = "Radon",
 ["fluidsulfuricacid"]            = "Sulfuric Acid",
 ["fluidtritium"]                 = "Tritium",
