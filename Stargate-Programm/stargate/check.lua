@@ -137,6 +137,7 @@ function Funktion.update(versionTyp)
   if versionTyp == nil then
     versionTyp = "master"
   end
+  --[[
   if fs.exists("/bin/github.lua") or wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua") then
     Sicherung.installieren = true
     if schreibSicherungsdatei(Sicherung) then
@@ -163,6 +164,22 @@ function Funktion.update(versionTyp)
     print(" /bin/github.lua and GitHub download")
   end
   require("computer").shutdown(true)
+  ]]
+  if wget("-f", Funktion.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua") then
+    Sicherung.installieren = true
+    if schreibSicherungsdatei(Sicherung) then
+      local f = io.open ("/autorun.lua", "w")
+      f:write('loadfile("/installieren.lua")("' .. versionTyp .. '")')
+      f:close()
+      loadfile("/autorun.lua")()
+    else
+      print(sprachen.fehlerName or "<FEHLER>")
+    end
+  elseif versionTyp == "master" then
+    wget("-f", Funktion.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua")
+    loadfile("/installieren.lua")()
+  end
+  os.exit()
 end
 
 function Funktion.checkServerVersion()
