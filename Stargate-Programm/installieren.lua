@@ -159,8 +159,10 @@ function Funktionen.installieren(versionTyp)
   if _OSVERSION ~= "OpenOS 1.6.1" then
     print("\nUpdating OpenOS\n")
     os.sleep(5)
-    loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua")
-    loadfile("/bin/github.lua")("MightyPirates", "OpenComputers", "master-MC1.7.10", "src/main/resources/assets/opencomputers/loot/openos/", "41acf2fa06990dcc4d740490cccd9d2bcec97edd")
+    loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/updater.lua", "/updater.lua")
+    loadfile("/updater.lua")()
+    --loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua")
+    --loadfile("/bin/github.lua")("MightyPirates", "OpenComputers", "master-MC1.7.10", "src/main/resources/assets/opencomputers/loot/openos/", "41acf2fa06990dcc4d740490cccd9d2bcec97edd")
   end
   require("computer").shutdown(true)
 end
