@@ -7,11 +7,21 @@ require("shell").setWorkingDirectory("/")
 local fs          = require("filesystem")
 local arg         = require("shell").parse(...)[1]
 local wget        = loadfile("/bin/wget.lua")
-local copy        = loadfile("/bin/cp.lua")
+local kopieren    = loadfile("/bin/cp.lua")
 local Sicherung   = {}
 local Funktionen  = {}
 local sprachen
 local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate
+
+if not fs.exists("/einstellungen") then
+    fs.makeDirectory("/einstellungen")
+end
+if not fs.exists("/einstellungen/adressen.lua") then
+    kopieren("-n", "/stargate/adressen.lua", "/einstellungen/adressen.lua")
+end
+if not fs.exists("/einstellungen/Sicherungsdatei.lua") then
+    kopieren("-n", "/stargate/Sicherungsdatei.lua", "/einstellungen/Sicherungsdatei.lua")
+end
 
 if fs.exists("/stargate/Sicherungsdatei.lua") then
   Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
@@ -97,21 +107,21 @@ function Funktionen.installieren(versionTyp)
   end
   if updateKomplett then
     fs.makeDirectory("/stargate/sprache")
-    copy("/update/autorun.lua",                         "/autorun.lua")
-    copy("/update/stargate/check.lua",                  "/stargate/check.lua")
-    copy("/update/stargate/version.txt",                "/stargate/version.txt")
+    kopieren("/update/autorun.lua",                         "/autorun.lua")
+    kopieren("/update/stargate/check.lua",                  "/stargate/check.lua")
+    kopieren("/update/stargate/version.txt",                "/stargate/version.txt")
     if fs.exists("/stargate/adressen.lua") == false then
-      copy("/update/stargate/adressen.lua",              "/stargate/adressen.lua", "-n")
+      kopieren("/update/stargate/adressen.lua",              "/stargate/adressen.lua", "-n")
     end
     if fs.exists("/stargate/Sicherungsdatei.lua") == false then
-      copy("/update/stargate/Sicherungsdatei.lua",       "/stargate/Sicherungsdatei.lua", "-n")
+      kopieren("/update/stargate/Sicherungsdatei.lua",       "/stargate/Sicherungsdatei.lua", "-n")
     end
-    copy("/update/stargate/Kontrollprogramm.lua",       "/stargate/Kontrollprogramm.lua")
-    copy("/update/stargate/schreibSicherungsdatei.lua", "/stargate/schreibSicherungsdatei.lua")
-    copy("/update/stargate/sprache/ersetzen.lua",       "/stargate/sprache/ersetzen.lua")
+    kopieren("/update/stargate/Kontrollprogramm.lua",       "/stargate/Kontrollprogramm.lua")
+    kopieren("/update/stargate/schreibSicherungsdatei.lua", "/stargate/schreibSicherungsdatei.lua")
+    kopieren("/update/stargate/sprache/ersetzen.lua",       "/stargate/sprache/ersetzen.lua")
     for s in pairs(Sprachliste) do
       if Sprachliste[s] ~= "" then
-        copy("/update/stargate/sprache/" .. Sprachliste[s] .. ".lua", "/stargate/sprache/" .. Sprachliste[s] .. ".lua")
+        kopieren("/update/stargate/sprache/" .. Sprachliste[s] .. ".lua", "/stargate/sprache/" .. Sprachliste[s] .. ".lua")
       end
     end
     f = io.open ("/stargate/version.txt", "r")
@@ -147,10 +157,13 @@ function Funktionen.installieren(versionTyp)
     os.sleep(10)
   end  
   if _OSVERSION ~= "OpenOS 1.6.1" then
-    print("\nUpdating OpenOS\n")
-    os.sleep(5)
-    loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/updater.lua", "/updater.lua")
-    loadfile("/updater.lua")()
+    --print("\nUpdating OpenOS\n")
+    --os.sleep(5)
+    --loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/updater.lua", "/updater.lua")
+    --loadfile("/updater.lua")()
+    --
+    --loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua")
+    --loadfile("/bin/github.lua")("MightyPirates", "OpenComputers", "master-MC1.7.10", "src/main/resources/assets/opencomputers/loot/openos/", "41acf2fa06990dcc4d740490cccd9d2bcec97edd")
   end
   require("computer").shutdown(true)
 end
