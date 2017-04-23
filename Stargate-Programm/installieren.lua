@@ -7,7 +7,7 @@ require("shell").setWorkingDirectory("/")
 local fs          = require("filesystem")
 local arg         = require("shell").parse(...)[1]
 local wget        = loadfile("/bin/wget.lua")
-local copy        = loadfile("/bin/cp.lua")
+local kopieren    = loadfile("/bin/cp.lua")
 local Sicherung   = {}
 local Funktionen  = {}
 local sprachen
@@ -107,21 +107,21 @@ function Funktionen.installieren(versionTyp)
   end
   if updateKomplett then
     fs.makeDirectory("/stargate/sprache")
-    copy("/update/autorun.lua",                         "/autorun.lua")
-    copy("/update/stargate/check.lua",                  "/stargate/check.lua")
-    copy("/update/stargate/version.txt",                "/stargate/version.txt")
+    kopieren("/update/autorun.lua",                         "/autorun.lua")
+    kopieren("/update/stargate/check.lua",                  "/stargate/check.lua")
+    kopieren("/update/stargate/version.txt",                "/stargate/version.txt")
     if fs.exists("/stargate/adressen.lua") == false then
-      copy("/update/stargate/adressen.lua",              "/stargate/adressen.lua", "-n")
+      kopieren("/update/stargate/adressen.lua",              "/stargate/adressen.lua", "-n")
     end
     if fs.exists("/stargate/Sicherungsdatei.lua") == false then
-      copy("/update/stargate/Sicherungsdatei.lua",       "/stargate/Sicherungsdatei.lua", "-n")
+      kopieren("/update/stargate/Sicherungsdatei.lua",       "/stargate/Sicherungsdatei.lua", "-n")
     end
-    copy("/update/stargate/Kontrollprogramm.lua",       "/stargate/Kontrollprogramm.lua")
-    copy("/update/stargate/schreibSicherungsdatei.lua", "/stargate/schreibSicherungsdatei.lua")
-    copy("/update/stargate/sprache/ersetzen.lua",       "/stargate/sprache/ersetzen.lua")
+    kopieren("/update/stargate/Kontrollprogramm.lua",       "/stargate/Kontrollprogramm.lua")
+    kopieren("/update/stargate/schreibSicherungsdatei.lua", "/stargate/schreibSicherungsdatei.lua")
+    kopieren("/update/stargate/sprache/ersetzen.lua",       "/stargate/sprache/ersetzen.lua")
     for s in pairs(Sprachliste) do
       if Sprachliste[s] ~= "" then
-        copy("/update/stargate/sprache/" .. Sprachliste[s] .. ".lua", "/stargate/sprache/" .. Sprachliste[s] .. ".lua")
+        kopieren("/update/stargate/sprache/" .. Sprachliste[s] .. ".lua", "/stargate/sprache/" .. Sprachliste[s] .. ".lua")
       end
     end
     f = io.open ("/stargate/version.txt", "r")
