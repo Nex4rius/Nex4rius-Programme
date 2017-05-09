@@ -6,6 +6,7 @@
 
 return {
 --Beispiel                = {schriftAN, hintenAN, schriftAUS, hintenAUS},
+--example                 = {fontON,    backON,    fontOFF,   backOFF},
 air                       = {0x000000,  0xFFFFFF,  0x000000,  0xCDCDCD},
 argon                     = {0xFFFFFF,  0x9300B1,  0xFFFFFF,  0x69007D},
 bioethanol                = {0x000000,  0xFC7600,  0x000000,  0xCA5E00},
