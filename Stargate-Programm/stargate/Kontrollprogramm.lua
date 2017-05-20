@@ -158,7 +158,7 @@ if sg.irisState() == "Offline" then
   Trennlinienhoehe    = 13
 end
 
-screen.setTouchModeInverted(true)
+pcall(screen.setTouchModeInverted, true)
 
 if component.isAvailable("redstone") then
   r = component.getPrimary("redstone")
@@ -1206,7 +1206,7 @@ function Taste.z()
     Funktion.zeigeHier(1, Taste.Koordinaten.Taste_z, "Z " .. sprachen.AdressenBearbeiten, 0)
     if Funktion.Tastatur() then
       Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
-      screen.setTouchModeInverted(false)
+      pcall(screen.setTouchModeInverted, false)
       kopieren("/einstellungen/adressen.lua", "/einstellungen/adressen-bearbeiten")
       edit("/einstellungen/adressen-bearbeiten")
       if pcall(loadfile("/einstellungen/adressen-bearbeiten")) then
@@ -1217,7 +1217,7 @@ function Taste.z()
         os.sleep(2)
       end
       entfernen("/einstellungen/adressen-bearbeiten")
-      screen.setTouchModeInverted(true)
+      pcall(screen.setTouchModeInverted, true)
       seite = -1
       Funktion.zeigeAnzeige()
       seite = 0
@@ -1235,7 +1235,7 @@ function Taste.l()
     if Funktion.Tastatur() then
       Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
       schreibSicherungsdatei(Sicherung)
-      screen.setTouchModeInverted(false)
+      pcall(screen.setTouchModeInverted, false)
       kopieren("/einstellungen/Sicherungsdatei.lua", "/einstellungen/Sicherungsdatei-bearbeiten")
       edit("/einstellungen/Sicherungsdatei-bearbeiten")
       if pcall(loadfile("/einstellungen/Sicherungsdatei-bearbeiten")) then
@@ -1246,7 +1246,7 @@ function Taste.l()
         os.sleep(2)
       end
       entfernen("/einstellungen/Sicherungsdatei-bearbeiten")
-      screen.setTouchModeInverted(true)
+      pcall(screen.setTouchModeInverted, true)
       local a = Sicherung.RF
       Sicherung = loadfile("/einstellungen/Sicherungsdatei.lua")()
       if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
@@ -1545,7 +1545,7 @@ function Funktion.beendeAlles()
     Funktion.redstoneAbschalten(sideNum, Farben.red, "red")
     Funktion.redstoneAbschalten(sideNum, Farben.black, "black")
   end
-  screen.setTouchModeInverted(false)
+  pcall(screen.setTouchModeInverted, false)
 end
 
 function Funktion.main()
