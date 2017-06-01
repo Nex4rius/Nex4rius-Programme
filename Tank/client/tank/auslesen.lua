@@ -42,7 +42,8 @@ end
 function check()
   tank, tankalt = {}, tank
   local i = 1
-  for adresse, name in pairs(component.list("tank_controller")) do
+  for CompName in pairs({"tank_controller", "transposer"}) do
+  for adresse, name in pairs(component.list(CompName) do
     for side = 0, 5 do
       if type(component.proxy(adresse).getFluidInTank(side)) == "table" then
         for a, b in pairs(component.proxy(adresse).getFluidInTank(side)) do
@@ -71,6 +72,7 @@ function check()
         end
       end
     end
+  end
   end
   term.clear()
   for i in pairs(tank) do
