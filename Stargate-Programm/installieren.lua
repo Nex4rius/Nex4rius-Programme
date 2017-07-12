@@ -6,8 +6,8 @@ require("shell").setWorkingDirectory("/")
 
 local fs          = require("filesystem")
 local arg         = require("shell").parse(...)[1]
-local wget        = loadfile("/bin/wget.lua")
-local kopieren    = loadfile("/bin/cp.lua")
+local wget        = loadfile("/bin/wget.lua") or loadfile("/rom/programs/wget")
+local kopieren    = loadfile("/bin/cp.lua") or loadfile("/rom/programs/copy")
 local Sicherung   = {}
 local Funktionen  = {}
 local sprachen
@@ -17,10 +17,10 @@ if not fs.exists("/einstellungen") then
     fs.makeDirectory("/einstellungen")
 end
 if not fs.exists("/einstellungen/adressen.lua") then
-    kopieren("-n", "/stargate/adressen.lua", "/einstellungen/adressen.lua")
+    kopieren("/stargate/adressen.lua", "/einstellungen/adressen.lua")
 end
 if not fs.exists("/einstellungen/Sicherungsdatei.lua") then
-    kopieren("-n", "/stargate/Sicherungsdatei.lua", "/einstellungen/Sicherungsdatei.lua")
+    kopieren("/stargate/Sicherungsdatei.lua", "/einstellungen/Sicherungsdatei.lua")
 end
 
 if fs.exists("/stargate/Sicherungsdatei.lua") then
