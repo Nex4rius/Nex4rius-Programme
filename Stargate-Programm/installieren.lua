@@ -2,25 +2,39 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
-require("shell").setWorkingDirectory("/")
-
-local fs          = require("filesystem")
-local arg         = require("shell").parse(...)[1]
+if require then
+  OC = true
+  CC = false
+  require("shell").setWorkingDirectory("/")
+else
+  OC = false
+  CC = true
+end
+local arg         = ...
 local wget        = loadfile("/bin/wget.lua") or loadfile("/rom/programs/wget")
 local kopieren    = loadfile("/bin/cp.lua") or loadfile("/rom/programs/copy")
 local Sicherung   = {}
 local Funktionen  = {}
-local sprachen
-local IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate
+local sprachen, IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate
+local fs          = fs
+if not fs then
+  fs = require("filesystem")
+else
+  fs.makeDirectory = fs.makeDira
+end
 
 if not fs.exists("/einstellungen") then
-    fs.makeDirectory("/einstellungen")
+  fs.makeDirectory("/einstellungen")
 end
 if not fs.exists("/einstellungen/adressen.lua") then
+  if fs.exists("/stargate/adressen.lua") then
     kopieren("/stargate/adressen.lua", "/einstellungen/adressen.lua")
+  end
 end
 if not fs.exists("/einstellungen/Sicherungsdatei.lua") then
+  if fs.exists("/stargate/Sicherungsdatei.lua") then
     kopieren("/stargate/Sicherungsdatei.lua", "/einstellungen/Sicherungsdatei.lua")
+  end
 end
 
 if fs.exists("/stargate/Sicherungsdatei.lua") then
