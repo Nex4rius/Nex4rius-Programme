@@ -19,9 +19,8 @@ local sprachen, IDC, autoclosetime, RF, Sprache, side, installieren, control, au
 local fs          = fs
 if not fs then
   fs = require("filesystem")
-else
-  fs.makeDirectory = fs.makeDira
 end
+fs.makeDirectory = fs.makeDirectory or fs.makeDir
 
 if not fs.exists("/einstellungen") then
   fs.makeDirectory("/einstellungen")
