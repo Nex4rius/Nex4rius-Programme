@@ -31,7 +31,7 @@ local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
   end
   if http.checkURL(url) then
     if fs.exists(ziel) and option ~= "-f" then
-      print("<Fehler> Ziel existiert bereits")
+      printError("<Fehler> Ziel existiert bereits")
       return
     else
       term.write("Starte Download ... ")
@@ -48,17 +48,17 @@ local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
           print("Gespeichert unter " .. ziel)
           return true
         elseif event == "timer" and timer == id then
-          print("<Fehler> Zeitueberschreitung")
+          printError("<Fehler> Zeitueberschreitung")
           return
         elseif event == "http_failure" then
-          print("<Fehler> Download")
+          printError("<Fehler> Download")
           os.cancelAlarm(timer)
           return
         end
       end
     end
   else
-    print("<Fehler> URL")
+    printError("<Fehler> URL")
     return
   end
 end
