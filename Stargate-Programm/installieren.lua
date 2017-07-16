@@ -2,6 +2,8 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
+OC = nil
+CC = nil
 if require then
   OC = true
   require("shell").setWorkingDirectory("/")
