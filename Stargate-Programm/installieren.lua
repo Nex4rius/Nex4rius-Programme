@@ -11,7 +11,6 @@ else
   CC = true
 end
 local arg         = ...
-local wget        = loadfile("/bin/wget.lua") or loadfile("/rom/programs/wget")
 local kopieren    = loadfile("/bin/cp.lua") or loadfile("/rom/programs/copy")
 local Sicherung   = {}
 local Funktionen  = {}
@@ -21,6 +20,48 @@ if not fs then
   fs = require("filesystem")
 end
 fs.makeDirectory = fs.makeDirectory or fs.makeDir
+local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
+  if type(url) ~= "string" and type(ziel) ~= "string" then
+    --print("Benutzung:")
+    --print("wget [-f] <URL> <Ziel>")
+    return
+  elseif type(option) == "string" and option ~= "-f" and type(url) == "string" then
+    ziel = url
+    url = option
+  end
+  if http.checkURL(url) then
+    if fs.exists(ziel) and option ~= "-f" then
+      print("<Fehler> Ziel existiert bereits")
+      return
+    else
+      term.write("Starte Download ... ")
+      local timer = os.startTimer(30)
+      http.request(url)
+      while true do
+        local event, id, data = os.pullEvent()
+        if event == "http_success" then
+          print("erfolgreich")
+          local f = io.open(ziel, "w")
+          f:write(data.readAll())
+          f:close()
+          data:close()
+          print("Gespeichert unter " .. ziel)
+          return true
+        elseif event == "timer" and timer == id then
+          print("<Fehler> Zeitueberschreitung")
+          return
+        elseif event == "http_failure" then
+          print("<Fehler> Download")
+          os.cancelAlarm(timer)
+          return
+        end
+      end
+    end
+  else
+    print("<Fehler> URL")
+    return
+  end
+end
 
 if not fs.exists("/einstellungen") then
   fs.makeDirectory("/einstellungen")
