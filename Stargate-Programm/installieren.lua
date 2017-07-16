@@ -14,10 +14,7 @@ local arg         = ...
 local Sicherung   = {}
 local Funktionen  = {}
 local sprachen, IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate
-local fs          = fs
-if not fs then
-  fs = require("filesystem")
-end
+local fs          = fs or require("filesystem")
 fs.makeDirectory = fs.makeDirectory or fs.makeDir
 --local kopieren    = loadfile("/bin/cp.lua") or loadfile("/rom/programs/copy")
 local kopieren    = loadfile("/bin/cp.lua") or function(a, b) shell.run("delete " .. a) shell.run(string.format("copy %s %s", a, b)) end
