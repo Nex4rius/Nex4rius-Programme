@@ -2,8 +2,8 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
-local fs        = require("filesystem")
-local NEU       = require("shell").parse(...)[1]
+local fs        = fs or require("filesystem")
+local NEU       = ...
 local ALT       = {}
 local Sicherung = {}
 local sprachen  = {}
