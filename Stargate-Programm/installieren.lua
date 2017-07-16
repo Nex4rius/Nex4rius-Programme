@@ -11,7 +11,6 @@ else
   CC = true
 end
 local arg         = ...
-local kopieren    = loadfile("/bin/cp.lua") or loadfile("/rom/programs/copy")
 local Sicherung   = {}
 local Funktionen  = {}
 local sprachen, IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate
@@ -20,6 +19,8 @@ if not fs then
   fs = require("filesystem")
 end
 fs.makeDirectory = fs.makeDirectory or fs.makeDir
+--local kopieren    = loadfile("/bin/cp.lua") or loadfile("/rom/programs/copy")
+local kopieren    = loadfile("/bin/cp.lua") or function(a, b) shell.run(string.format("copy %s %s", a, b)) end
 local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
   if type(url) ~= "string" and type(ziel) ~= "string" then
     --print("Benutzung:")
