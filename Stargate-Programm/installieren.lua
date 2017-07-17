@@ -18,10 +18,13 @@ local fs          = fs or require("filesystem")
 fs.makeDirectory = fs.makeDirectory or fs.makeDir
 --local kopieren    = loadfile("/bin/cp.lua") or loadfile("/rom/programs/copy")
 local kopieren    = loadfile("/bin/cp.lua") or function(a, b)
-  if fs.exists(b) then
-    shell.run("delete " .. b)
+  if type(a) == "string" and type(b) == "string" then
+    if fs.exists(b) then
+      shell.run("delete " .. b)
+    end
+    shell.run(string.format("copy %s %s", a, b))
+    return true
   end
-  shell.run(string.format("copy %s %s", a, b))
 end
 local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
   if type(url) ~= "string" and type(ziel) ~= "string" then
