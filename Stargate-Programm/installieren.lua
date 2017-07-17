@@ -16,7 +16,6 @@ local Funktionen  = {}
 local sprachen, IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate
 local fs          = fs or require("filesystem")
 fs.makeDirectory = fs.makeDirectory or fs.makeDir
---local kopieren    = loadfile("/bin/cp.lua") or loadfile("/rom/programs/copy")
 local kopieren    = loadfile("/bin/cp.lua") or function(a, b)
   if type(a) == "string" and type(b) == "string" then
     if fs.exists(b) then
@@ -30,8 +29,6 @@ local kopieren    = loadfile("/bin/cp.lua") or function(a, b)
 end
 local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
   if type(url) ~= "string" and type(ziel) ~= "string" then
-    --print("Benutzung:")
-    --print("wget [-f] <URL> <Ziel>")
     return
   elseif type(option) == "string" and option ~= "-f" and type(url) == "string" then
     ziel = url
