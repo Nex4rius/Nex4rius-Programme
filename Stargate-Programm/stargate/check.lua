@@ -29,6 +29,12 @@ if OC then
   gpu = component.getPrimary("gpu")
 elseif CC then
   component.getPrimary = peripheral.find
+  gpu = component.getPrimary("monitor")
+  gpu.setResolution = function() gpu.setTextScale(0.5) end
+  gpu.setForeground = gpu.setTextColor
+  gpu.setBackground = gpu.setBackgroundColor
+  gpu.maxResolution = gpu.getSize
+  gpu.fill = function(startX, startY, endX, endY) paintutils.drawFilledBox(startX, StartY, endX, endY) end
 end
 
 local kopieren = loadfile("/bin/cp.lua") or function(a, b)
