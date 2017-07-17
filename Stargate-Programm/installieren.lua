@@ -209,6 +209,8 @@ function Funktionen.installieren(versionTyp)
     f:write('   os.execute("pastebin run -f YVqKFnsP"\n')
     --f:write('   loadfile("/bin/wget-lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua")\n')
     --f:write('   loadfile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", "master", "Stargate-Programm")\n')
+    f:write('end\n')
+    f:close()
   elseif CC then
     local f = io.open("/start", "w")
     f:write('-- pastebin run -f YVqKFnsP\n')
@@ -217,9 +219,9 @@ function Funktionen.installieren(versionTyp)
     f:write('\n')
     f:write('if not pcall(loadfile("/startup"), ...) then\n')
     f:write('   shell.run("pastebin run -f YVqKFnsP")\n')
+    f:write('end\n')
+    f:close()
   end
-  f:write('end\n')
-  f:close()
   if updateKomplett then
     if OC then
       loadfile("/bin/rm.lua")("-v", "/update", "-r")
