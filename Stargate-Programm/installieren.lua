@@ -22,7 +22,9 @@ local kopieren    = loadfile("/bin/cp.lua") or function(a, b)
     if fs.exists(b) then
       shell.run("delete " .. b)
     end
-    shell.run(string.format("copy %s %s", a, b))
+    if fs.exists(a) then
+      shell.run(string.format("copy %s %s", a, b))
+    end
     return true
   end
 end
