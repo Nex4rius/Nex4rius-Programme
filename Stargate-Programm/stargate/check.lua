@@ -34,7 +34,7 @@ elseif CC then
   gpu.setForeground = gpu.setTextColor
   gpu.setBackground = gpu.setBackgroundColor
   gpu.maxResolution = gpu.getSize
-  gpu.fill = function(startX, startY, endX, endY) paintutils.drawFilledBox(startX, StartY, endX, endY) end
+  gpu.fill = function(startX, startY, endX, endY) paintutils.drawFilledBox(startX, StartY, endX, endY, gpu.getBackgroundColor()) end
 end
 
 local kopieren = loadfile("/bin/cp.lua") or function(a, b)
@@ -433,13 +433,13 @@ function Funktion.main()
     gpu.setForeground(0xFFFFFF)
     gpu.setBackground(6684774)
   elseif CC then
-    gpu.setForeground(0xF0F0F0)
-    gpu.setBackground(0x999999)
+    gpu.setForeground(1)
+    gpu.setBackground(256)
   end
   if gpu.maxResolution() == 160 then
     gpu.setBackground(0x333333)
   end
-  gpu.fill(1, 1, 160, 80, " ")
+  gpu.fill(1, 1, 70, 25, " ")
   term.clear()
   Funktion.checkDateien()
   if fs.exists("/stargate/version.txt") then
@@ -472,8 +472,8 @@ function Funktion.main()
       gpu.setForeground(0x000000)
       gpu.setBackground(0xFFFFFF)
     elseif CC then
-      gpu.setForeground(0x191919)
-      gpu.setBackground(0xF0F0F0)
+      gpu.setForeground(32768)
+      gpu.setBackground(1)
     end
     print(sprachen.Hilfetext or [==[
       Verwendung: autorun [...]
@@ -496,8 +496,8 @@ function Funktion.main()
     gpu.setForeground(0x000000)
     gpu.setBackground(0xFFFFFF)
   elseif CC then
-    gpu.setForeground(0x191919)
-    gpu.setBackground(0xF0F0F0)
+    gpu.setForeground(32768)
+    gpu.setBackground(1)
   end
   term.clear()
   gpu.setResolution(gpu.maxResolution())
