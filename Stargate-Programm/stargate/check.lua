@@ -429,8 +429,13 @@ end
 function Funktion.main()
   os.sleep(0.5)
   gpu.setResolution(70, 25)
-  gpu.setForeground(0xFFFFFF)
-  gpu.setBackground(6684774)
+  if OC then
+    gpu.setForeground(0xFFFFFF)
+    gpu.setBackground(6684774)
+  elseif CC then
+    gpu.setForeground(0xF0F0F0)
+    gpu.setBackground(0x999999)
+  end
   if gpu.maxResolution() == 160 then
     gpu.setBackground(0x333333)
   end
@@ -463,8 +468,13 @@ function Funktion.main()
     end
   end
   if arg == sprachen.hilfe or arg == "hilfe" or arg == "help" or arg == "?" then
-    gpu.setBackground(0x000000)
-    gpu.setForeground(0xFFFFFF)
+    if OC then
+      gpu.setForeground(0x000000)
+      gpu.setBackground(0xFFFFFF)
+    elseif CC then
+      gpu.setForeground(0x191919)
+      gpu.setBackground(0xF0F0F0)
+    end
     print(sprachen.Hilfetext or [==[
       Verwendung: autorun [...]
       ja    -> Aktualisierung zur stabilen Version
@@ -482,8 +492,13 @@ function Funktion.main()
       os.sleep(5)
     end
   end
-  gpu.setBackground(0x000000)
-  gpu.setForeground(0xFFFFFF)
+  if OC then
+    gpu.setForeground(0x000000)
+    gpu.setBackground(0xFFFFFF)
+  elseif CC then
+    gpu.setForeground(0x191919)
+    gpu.setBackground(0xF0F0F0)
+  end
   term.clear()
   gpu.setResolution(gpu.maxResolution())
 end
