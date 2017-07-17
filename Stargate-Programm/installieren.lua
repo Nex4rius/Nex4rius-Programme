@@ -18,6 +18,14 @@ local fs          = fs or require("filesystem")
 fs.makeDirectory = fs.makeDirectory or fs.makeDir
 local kopieren    = loadfile("/bin/cp.lua") or function(a, b)
   if type(a) == "string" and type(b) == "string" then
+    print()
+    print(a)
+    print(type(a))
+    print(b)
+    print(type(b))
+    io.read()
+    
+    
     if fs.exists(b) then
       shell.run("delete " .. b)
     end
