@@ -20,11 +20,15 @@ local schreibSicherungsdatei  = loadfile("/stargate/schreibSicherungsdatei.lua")
 local betaVersionName         = ""
 local Sicherung               = {}
 local Funktion                = {}
-local version, component, gpu
+local component               = {}
+local gpu                     = {}
+local version
 
 if OC then
   component = require("component")
   gpu = component.getPrimary("gpu")
+elseif CC then
+  component.getPrimary = peripheral.find
 end
 
 local kopieren = loadfile("/bin/cp.lua") or function(a, b)
