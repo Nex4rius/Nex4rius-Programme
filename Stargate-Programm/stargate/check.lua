@@ -14,6 +14,7 @@ else
 end
 
 local fs                      = fs or require("filesystem")
+local term                    = term or require("term")
 local arg                     = string.lower(tostring(...))
 local schreibSicherungsdatei  = loadfile("/stargate/schreibSicherungsdatei.lua")
 local betaVersionName         = ""
@@ -137,7 +138,7 @@ function Funktion.checkOpenOS()
 end
 
 function Funktion.checkKomponenten()
-  require("term").clear()
+  term.clear()
   print(sprachen.pruefeKomponenten or "Prüfe Komponenten\n")
   local function check(eingabe)
     if component.isAvailable(eingabe[1]) then
@@ -424,7 +425,7 @@ function Funktion.main()
     gpu.setBackground(0x333333)
   end
   gpu.fill(1, 1, 160, 80, " ")
-  require("term").clear()
+  term.clear()
   Funktion.checkDateien()
   if fs.exists("/stargate/version.txt") then
     local f = io.open ("/stargate/version.txt", "r")
@@ -473,7 +474,7 @@ function Funktion.main()
   end
   gpu.setBackground(0x000000)
   gpu.setForeground(0xFFFFFF)
-  require("term").clear()
+  term.clear()
   gpu.setResolution(gpu.maxResolution())
 end
 
