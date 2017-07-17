@@ -17,7 +17,12 @@ local sprachen, IDC, autoclosetime, RF, Sprache, side, installieren, control, au
 local fs          = fs or require("filesystem")
 fs.makeDirectory = fs.makeDirectory or fs.makeDir
 --local kopieren    = loadfile("/bin/cp.lua") or loadfile("/rom/programs/copy")
-local kopieren    = loadfile("/bin/cp.lua") or function(a, b) shell.run("delete " .. a) shell.run(string.format("copy %s %s", a, b)) end
+local kopieren    = loadfile("/bin/cp.lua") or function(a, b)
+  if fs.exists(a) then
+    shell.run("delete " .. a)
+  end
+  shell.run(string.format("copy %s %s", a, b))
+end
 local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
   if type(url) ~= "string" and type(ziel) ~= "string" then
     --print("Benutzung:")
@@ -180,13 +185,15 @@ function Funktionen.installieren(versionTyp)
         kopieren("/update/stargate/sprache/" .. Sprachliste[s] .. ".lua", "/stargate/sprache/" .. Sprachliste[s] .. ".lua")
       end
     end
-    f = io.open("/stargate/version.txt", "r")
-    version = f:read()
-    f:close()
-    if versionTyp == "beta" then
-      f = io.open("/stargate/version.txt", "w")
-      f:write(version .. " BETA")
+    local f = io.open("/stargate/version.txt", "r")
+    if f then
+      version = f:read()
       f:close()
+      if versionTyp == "beta" then
+        local f = io.open("/stargate/version.txt", "w")
+        f:write(version .. " BETA")
+        f:close()
+      end
     end
     Sicherung.installieren = true
     loadfile("/stargate/schreibSicherungsdatei.lua")(Sicherung)
