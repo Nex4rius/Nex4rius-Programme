@@ -15,8 +15,10 @@ if type(args) ~= "string" then
     args = nil
 end
 
-if not pcall(loadfile("/stargate/check.lua"), args) then
+local ergebnis, grund = pcall(loadfile("/stargate/check.lua"), args)
+if not ergebnis then
     print("check.lua hat einen Fehler")
+    print(grund)
     os.sleep(2)
     if require then
         if loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Stargate-Programm/installieren.lua", "/installieren.lua") then
