@@ -4,19 +4,74 @@
 
 os.sleep(1)
 
-require("shell").setWorkingDirectory("/")
+OC = nil
+CC = nil
+if require then
+  OC = true
+  require("shell").setWorkingDirectory("/")
+else
+  CC = true
+end
 
-local component               = require("component")
-local fs                      = require("filesystem")
-local arg                     = string.lower(tostring(require("shell").parse(...)[1]))
-local gpu                     = component.getPrimary("gpu")
-local wget                    = loadfile("/bin/wget.lua")
+local fs                      = fs or require("filesystem")
+local arg                     = string.lower(tostring(...))
 local schreibSicherungsdatei  = loadfile("/stargate/schreibSicherungsdatei.lua")
-local kopieren                = loadfile("/bin/cp.lua")
 local betaVersionName         = ""
 local Sicherung               = {}
 local Funktion                = {}
-local version
+local version, component, gpu
+
+if OC then
+  component = require("component")
+  gpu = component.getPrimary("gpu")
+end
+
+local kopieren = loadfile("/bin/cp.lua") or function(a, b)
+  if fs.exists(b) then
+    shell.run("delete " .. b)
+  end
+  shell.run(string.format("copy %s %s", a, b))
+end
+local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
+  if type(url) ~= "string" and type(ziel) ~= "string" then
+    return
+  elseif type(option) == "string" and option ~= "-f" and type(url) == "string" then
+    ziel = url
+    url = option
+  end
+  if http.checkURL(url) then
+    if fs.exists(ziel) and option ~= "-f" then
+      printError("<Fehler> Ziel existiert bereits")
+      return
+    else
+      term.write("Starte Download ... ")
+      local timer = os.startTimer(30)
+      http.request(url)
+      while true do
+        local event, id, data = os.pullEvent()
+        if event == "http_success" then
+          print("erfolgreich")
+          local f = io.open(ziel, "w")
+          f:write(data.readAll())
+          f:close()
+          data:close()
+          print("Gespeichert unter " .. ziel)
+          return true
+        elseif event == "timer" and timer == id then
+          printError("<Fehler> Zeitueberschreitung")
+          return
+        elseif event == "http_failure" then
+          printError("<Fehler> Download")
+          os.cancelAlarm(timer)
+          return
+        end
+      end
+    end
+  else
+    printError("<Fehler> URL")
+    return
+  end
+end
 
 function Funktion.Pfad(versionTyp)
   if versionTyp == nil then
@@ -66,15 +121,19 @@ function Funktion.checkSprache()
 end
 
 function Funktion.checkOpenOS()
-  local OpenOS_Version = "OpenOS 1.6.1"
-  if _OSVERSION == OpenOS_Version then
-    gpu.setForeground(0x00FF00)
-    print("\nOpenOS Version:        " .. _OSVERSION)
-  else
-    gpu.setForeground(0xFF0000)
-    print("\nOpenOS Version:        " .. _OSVERSION .. " -> " .. OpenOS_Version)
+  if OC then
+    local OpenOS_Version = "OpenOS 1.6.1"
+   if _OSVERSION == OpenOS_Version then
+      gpu.setForeground(0x00FF00)
+      print("\nOpenOS Version:        " .. _OSVERSION)
+    else
+      gpu.setForeground(0xFF0000)
+      print("\nOpenOS Version:        " .. _OSVERSION .. " -> " .. OpenOS_Version)
+    end
+    gpu.setForeground(0xFFFFFF)
+  elseif CC then
+    print("\nCraftOS Version:       " .. os.version())
   end
-  gpu.setForeground(0xFFFFFF)
 end
 
 function Funktion.checkKomponenten()
