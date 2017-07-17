@@ -18,8 +18,8 @@ local fs          = fs or require("filesystem")
 fs.makeDirectory = fs.makeDirectory or fs.makeDir
 --local kopieren    = loadfile("/bin/cp.lua") or loadfile("/rom/programs/copy")
 local kopieren    = loadfile("/bin/cp.lua") or function(a, b)
-  if fs.exists(a) then
-    shell.run("delete " .. a)
+  if fs.exists(b) then
+    shell.run("delete " .. b)
   end
   shell.run(string.format("copy %s %s", a, b))
 end
