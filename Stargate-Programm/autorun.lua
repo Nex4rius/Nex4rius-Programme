@@ -3,6 +3,7 @@
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
 local shell = shell or require("shell")
+_G.shell = shell
 local alterPfad
 local args = ...
 
