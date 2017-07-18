@@ -10,6 +10,7 @@ if require then
 else
   CC = true
 end
+
 local arg         = ...
 local Sicherung   = {}
 local Funktionen  = {}
