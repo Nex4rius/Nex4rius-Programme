@@ -17,7 +17,6 @@ local shell                   = shell or require("shell")
 _G.shell = shell
 local fs                      = fs or require("filesystem")
 local term                    = term or require("term")
-local arg                     = string.lower(tostring(...))
 local schreibSicherungsdatei  = loadfile("/stargate/schreibSicherungsdatei.lua")
 local betaVersionName         = ""
 local Sicherung               = {}
@@ -25,6 +24,11 @@ local Funktion                = {}
 local component               = {}
 local gpu                     = {}
 local version
+local arg                     = ...
+
+if arg then
+  arg                     = string.lower(tostring(arg))
+end
 
 if OC then
   component = require("component")
