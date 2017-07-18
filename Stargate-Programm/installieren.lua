@@ -16,6 +16,7 @@ local Sicherung   = {}
 local Funktionen  = {}
 local sprachen, IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate
 local shell       = shell or require("shell")
+_G.shell = shell
 local fs          = fs or require("filesystem")
 fs.makeDirectory  = fs.makeDirectory or fs.makeDir
 local kopieren    = loadfile("/bin/cp.lua") or function(a, b, c)
