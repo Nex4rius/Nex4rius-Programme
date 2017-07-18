@@ -14,8 +14,9 @@ local arg         = ...
 local Sicherung   = {}
 local Funktionen  = {}
 local sprachen, IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate
+local shell       = shell or require("shell")
 local fs          = fs or require("filesystem")
-fs.makeDirectory = fs.makeDirectory or fs.makeDir
+fs.makeDirectory  = fs.makeDirectory or fs.makeDir
 local kopieren    = loadfile("/bin/cp.lua") or function(a, b, c)
   if type(a) == "string" and type(b) == "string" then
     if c == "-n" then
@@ -116,19 +117,36 @@ function Funktionen.schreibAutorun()
   -- von Nex4rius
   -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
-  local shell = require("shell")
-  local alterPfad = shell.getWorkingDirectory("/")
-  local args = shell.parse(...)[1]
-
-  shell.setWorkingDirectory("/")
+  local shell = shell or require("shell")
+  local alterPfad
+  local args = ...
   
-  if type(args) == "string" then
-    loadfile("/stargate/check.lua")(args)
-  else
-    loadfile("/stargate/check.lua")()
+  if require then
+      alterPfad = shell.getWorkingDirectory()
+      shell.setWorkingDirectory("/")
   end
-
-  require("shell").setWorkingDirectory(alterPfad)
+  
+  if type(args) ~= "string" then
+      args = nil
+  end
+  
+  local ergebnis, grund = pcall(loadfile("/stargate/check.lua"), args)
+  if not ergebnis then
+      print("<Fehler>")
+      print(grund)
+      os.sleep(2)
+      if require then
+          if loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Stargate-Programm/installieren.lua", "/installieren.lua") then
+              loadfile("/installieren.lua")()
+          end
+      else
+          shell.run("pastebin run -f YVqKFnsP")
+      end
+  end
+  
+  if require then
+      require("shell").setWorkingDirectory(alterPfad)
+  end
   ]])
   f:close()
 end
