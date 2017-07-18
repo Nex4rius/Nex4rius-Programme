@@ -5,7 +5,7 @@
 local fs        = fs or require("filesystem")
 local NEU       = ...
 local ALT       = loadfile("/einstellungen/Sicherungsdatei.lua")() or {}
-local standard  = loadfile("/stargate/Sicherungsdatei.lua"() or {autoclosetime = 60, IDC = "", RF = false, Sprache = "", side = "unten", autoUpdate = true, StargateName = "", debug = false, control = "On", installieren = false}
+local standard  = loadfile("/stargate/Sicherungsdatei.lua")() or {autoclosetime = 60, IDC = "", RF = false, Sprache = "", side = "unten", autoUpdate = true, StargateName = "", debug = false, control = "On", installieren = false}
 local Sicherung = {}
 local sprachen  = {}
 
