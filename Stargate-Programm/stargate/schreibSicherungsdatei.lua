@@ -42,7 +42,7 @@ if type(NEU) == "table" then
   local function check(typ, name)
     if type(NEU[name]) == typ then
       Sicherung[name] = NEU[name]
-    elseif type(ALT[name]) == typ" then
+    elseif type(ALT[name]) == typ then
       Sicherung[name] = ALT[name] 
     else
       Sicherung[name] = standard[name]
