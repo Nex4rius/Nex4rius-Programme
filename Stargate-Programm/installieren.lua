@@ -83,11 +83,11 @@ if not fs.exists("/einstellungen/Sicherungsdatei.lua") then
   end
 end
 
-if fs.exists("/stargate/Sicherungsdatei.lua") then
-  Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
+if fs.exists("/einstellungen/Sicherungsdatei.lua") then
+  Sicherung = loadfile("/einstellungen/Sicherungsdatei.lua")()
   if type(Sicherung) == "string" then
     Sicherung = {}
-    Sicherung.IDC, Sicherung.autoclosetime, Sicherung.RF, Sicherung.Sprache, Sicherung.side, Sicherung.installieren, Sicherung.control, Sicherung.autoUpdate = loadfile("/stargate/Sicherungsdatei.lua")()
+    Sicherung.IDC, Sicherung.autoclosetime, Sicherung.RF, Sicherung.Sprache, Sicherung.side, Sicherung.installieren, Sicherung.control, Sicherung.autoUpdate = loadfile("/einstellungen/Sicherungsdatei.lua")()
   end
 else
   Sicherung.Sprache = ""
