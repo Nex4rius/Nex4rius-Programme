@@ -321,6 +321,7 @@ function Funktion.checkDateien()
     "stargate/schreibSicherungsdatei.lua",
     "stargate/sprache/ersetzen.lua",
   }
+  local sprachen = sprachen or {}
   for i in pairs(dateien) do
     if not fs.exists("/" .. dateien[i]) then
       io.write(sprachen.fehlerName or "<FEHLER>")
