@@ -44,7 +44,7 @@ local sprachen                  = loadfile("/stargate/sprache/" .. Sicherung.Spr
 local ersetzen                  = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
 
 local sg                        = component.getPrimary("stargate")
-local screen                    = component.getPrimary("screen") or {"setTouchModeInverted" = function() end}
+local screen                    = component.getPrimary("screen") or {}
 
 local gpu                       = component.getPrimary("gpu") or component.getPrimary("monitor")
 gpu.getResolution               = gpu.getResolution or gpu.getSize
