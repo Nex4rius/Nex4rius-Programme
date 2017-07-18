@@ -37,12 +37,12 @@ elseif CC then
   gpu.fill = function(startX, startY, endX, endY) paintutils.drawFilledBox(startX, StartY, endX, endY, gpu.getBackgroundColor()) end
 end
 
-local kopieren = loadfile("/bin/cp.lua") or function(a, b)
-  if fs.exists(b) then
-    shell.run("delete " .. b)
-  end
-  shell.run(string.format("copy %s %s", a, b))
-end
+local kopieren = loadfile("/bin/cp.lua") or fs.copy --function(a, b)
+--  if fs.exists(b) then
+--   shell.run("delete " .. b)
+--  end
+--  shell.run(string.format("copy %s %s", a, b))
+--end
 local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
   if type(url) ~= "string" and type(ziel) ~= "string" then
     return
