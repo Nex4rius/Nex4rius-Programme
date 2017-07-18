@@ -2,16 +2,30 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
-require("shell").setWorkingDirectory("/")
+OC = nil
+CC = nil
+if require then
+  OC = true
+  require("shell").setWorkingDirectory("/")
+else
+  CC = true
+end
 
-local component                 = require("component")
-local term                      = require("term")
-local event                     = require("event")
-local fs                        = require("filesystem")
+local component                 = {}
+local event                     = {}
+local term                      = term or require("term")
+local fs                        = fs or require("filesystem")
 
-local entfernen                 = loadfile("/bin/rm.lua")
-local kopieren                  = loadfile("/bin/cp.lua")
-local edit                      = loadfile("/bin/edit.lua")
+if OC then
+  component = require("component")
+  event = require("event")
+elseif CC then
+  component.getPrimary = peripheral.find
+end
+
+local entfernen                 = fs.remove or fs.delete
+local kopieren                  = fs.copy
+local edit                      = loadfile("/bin/edit.lua") or function(datei) shell.run("edit " .. datei) end
 local schreibSicherungsdatei    = loadfile("/stargate/schreibSicherungsdatei.lua")
 
 if not pcall(loadfile("/einstellungen/Sicherungsdatei.lua")) then
@@ -27,12 +41,16 @@ end
 local sprachen                  = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
 local ersetzen                  = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
 
-local gpu                       = component.getPrimary("gpu")
 local sg                        = component.getPrimary("stargate")
-local screen                    = component.getPrimary("screen")
+local screen                    = component.getPrimary("screen") or {"setTouchModeInverted" = function() end}
+
+local gpu                       = component.getPrimary("gpu") or component.getPrimary("monitor")
+gpu.getResolution               = gpu.getResolution or gpu.getSize
+gpu.maxResolution               = gpu.maxResolution or gpu.getSize
 
 local Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
 local max_Bildschirmbreite, max_Bildschirmhoehe = gpu.maxResolution()
+
 local enteridc                  = ""
 local showidc                   = ""
 local remoteName                = ""
@@ -103,7 +121,7 @@ do
   sectime                       = sectime - os.time()
   letzteNachrichtZeit           = os.time()
   letzterAdressCheck            = os.time() / sectime
-  local args                    = require("shell").parse(...)
+  local args                    = ...
   Funktion.update               = args[1]
   Funktion.checkServerVersion   = args[2]
   version                       = tostring(args[3])
