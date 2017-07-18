@@ -498,11 +498,11 @@ function Funktion.main()
     end
   end
   if OC then
-    gpu.setForeground(0x000000)
-    gpu.setBackground(0xFFFFFF)
+    gpu.setForeground(0xFFFFFF)
+    gpu.setBackground(0x000000)
   elseif CC then
-    gpu.setForeground(32768)
-    gpu.setBackground(1)
+    gpu.setForeground(1)
+    gpu.setBackground(32768)
   end
   term.clear()
   gpu.setResolution(gpu.maxResolution())
