@@ -40,7 +40,7 @@ elseif CC then
   gpu.setForeground = gpu.setTextColor
   gpu.setBackground = gpu.setBackgroundColor
   gpu.maxResolution = gpu.getSize
-  gpu.fill = function(startX, startY, endX, endY) paintutils.drawFilledBox(startX, StartY, endX, endY, gpu.getBackgroundColor()) end
+  gpu.fill = function() term.clear() end
 end
 
 local kopieren = loadfile("/bin/cp.lua") or function(a, b, c)
