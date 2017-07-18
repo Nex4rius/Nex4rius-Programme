@@ -38,7 +38,8 @@ local function reset()
 end
 
 if type(NEU) == "table" then
-  sprachen = loadfile("/stargate/sprache/" .. tostring(NEU.Sprache) .. ".lua")() or loadfile("/stargate/sprache/" .. tostring(ALT.Sprache) .. ".lua")() or loadfile("/stargate/sprache/deutsch.lua")() or reset()
+  sprachen = loadfile("/stargate/sprache/" .. tostring(NEU.Sprache) .. ".lua") or loadfile("/stargate/sprache/" .. tostring(ALT.Sprache) .. ".lua") or loadfile("/stargate/sprache/deutsch.lua") or reset
+  local _, sprachen = pcall(sprachen)
   if type(sprachen) ~= "table" then
     sprachen = reset()
   end
