@@ -15,6 +15,8 @@ local component                 = {}
 local event                     = {}
 local term                      = term or require("term")
 local fs                        = fs or require("filesystem")
+local shell                     = shell or require("shell")
+_G.shell = shell
 
 if OC then
   component = require("component")
