@@ -13,6 +13,8 @@ else
   CC = true
 end
 
+local io                      = io
+_G.io = io
 local shell                   = shell or require("shell")
 _G.shell = shell
 local fs                      = fs or require("filesystem")
