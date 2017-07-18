@@ -123,7 +123,7 @@ do
   sectime                       = sectime - os.time()
   letzteNachrichtZeit           = os.time()
   letzterAdressCheck            = os.time() / sectime
-  local args                    = ...
+  local args                    = {...}
   Funktion.update               = args[1]
   Funktion.checkServerVersion   = args[2]
   version                       = tostring(args[3])
