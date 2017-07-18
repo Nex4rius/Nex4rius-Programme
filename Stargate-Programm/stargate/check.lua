@@ -13,6 +13,8 @@ else
   CC = true
 end
 
+local shell                   = shell or require("shell")
+_G.shell = shell
 local fs                      = fs or require("filesystem")
 local term                    = term or require("term")
 local arg                     = string.lower(tostring(...))
