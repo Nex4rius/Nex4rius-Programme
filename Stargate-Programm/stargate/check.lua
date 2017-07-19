@@ -20,17 +20,21 @@ _G.shell = shell
 local fs                      = fs or require("filesystem")
 local term                    = term or require("term")
 local schreibSicherungsdatei  = loadfile("/stargate/schreibSicherungsdatei.lua")
-local _, Farben               = pcall(loadfile("/stargate/farben.lua"), OC, CC)
 local betaVersionName         = ""
 local Sicherung               = {}
 local Funktion                = {}
 local component               = {}
 local gpu                     = {}
+local Farben                  = {}
 local version
 local arg                     = ...
 
 if arg then
   arg                         = string.lower(tostring(arg))
+end
+
+if fs.exists("/stargate/farben.lua") then
+  Farben = loadfile("/stargate/farben.lua")(OC, CC)
 end
 
 if OC then
