@@ -312,7 +312,6 @@ function Funktion.checkDateien()
 --]]
   f:close()
   local dateien = {
-    "autorun.lua",
     "stargate/Kontrollprogramm.lua",
     "stargate/Sicherungsdatei.lua",
     "stargate/adressen.lua",
@@ -321,6 +320,12 @@ function Funktion.checkDateien()
     "stargate/schreibSicherungsdatei.lua",
     "stargate/sprache/ersetzen.lua",
   }
+  if OC then
+    table.insert(dateien, "autorun.lua")
+    table.insert(dateien, "bin/stargate.lua")
+  elseif CC then
+    table.insert(dateien, "startup")
+  end
   local sprachen = sprachen or {}
   for i in pairs(dateien) do
     if not fs.exists("/" .. dateien[i]) then
