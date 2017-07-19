@@ -18,7 +18,7 @@ end
 
 local ergebnis, grund = pcall(loadfile("/stargate/check.lua"), args)
 if not ergebnis then
-    print("<Fehler>")
+    print("<Fehler> check.lua")
     print(grund)
     os.sleep(2)
     if require then
