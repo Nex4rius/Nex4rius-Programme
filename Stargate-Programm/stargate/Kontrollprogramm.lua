@@ -63,7 +63,6 @@ local codeaccepted              = "-"
 local wormhole                  = "in"
 local iriscontrol               = "on"
 local energytype                = "EU"
-local Farben                    = {}
 local Funktion                  = {}
 local Taste                     = {}
 local Variablen                 = {}
