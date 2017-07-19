@@ -353,6 +353,7 @@ function Funktion.checkDateien()
     "stargate/check.lua",
     "stargate/version.txt",
     "stargate/schreibSicherungsdatei.lua",
+    "stargate/farben.lua",
     "stargate/sprache/ersetzen.lua",
   }
   if OC then
