@@ -36,10 +36,10 @@ end
 if OC then
   component = require("component")
   gpu = component.getPrimary("gpu")
-  local a = gpu.setForeground
-  local b = gpu.setBackground
-  gpu.setForeground = function(code) if code then a(code) end
-  gpu.setBackground = function(code) if code then b(code) end
+  local function a(code) if code then gpu.setForeground(code) end
+  local function b(code) if code then gpu.setBackground(code) end
+  gpu.setForeground = a
+  gpu.setBackground = b
 elseif CC then
   component.getPrimary = peripheral.find
   component.isAvailable = function(name)
