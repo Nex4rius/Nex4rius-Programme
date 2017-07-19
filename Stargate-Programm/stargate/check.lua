@@ -167,7 +167,7 @@ end
 function Funktion.checkOpenOS()
   if OC then
     local OpenOS_Version = "OpenOS 1.6.1"
-   if _OSVERSION == OpenOS_Version then
+    if _OSVERSION == OpenOS_Version then
       gpu.setForeground(0x00FF00)
       print("\nOpenOS Version:        " .. _OSVERSION)
     else
@@ -182,7 +182,17 @@ end
 
 function Funktion.checkKomponenten()
   term.clear()
+  print("1")
+  io.read()
+  print(type(sprachen.pruefeKomponenten))
+  print("2")
+  io.read()
+  print(sprachen.pruefeKomponenten)
+  print("3")
+  io.read()
   print(sprachen.pruefeKomponenten or "Prüfe Komponenten\n")
+  print("4")
+  io.read()
   local function check(eingabe)
     if component.isAvailable(eingabe[1]) then
       gpu.setForeground(0x00FF00)
