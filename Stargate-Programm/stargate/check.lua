@@ -29,7 +29,7 @@ local version
 local arg                     = ...
 
 if arg then
-  arg                     = string.lower(tostring(arg))
+  arg                         = string.lower(tostring(arg))
 end
 
 if OC then
