@@ -12,6 +12,7 @@ if OC then
   Farben.gelbeFarbe        = 16750899
   Farben.brauenFarbe       = 10046464
   Farben.grueneFarbe       = 39168
+  Farben.orangeFarbe       = 0xFF7F24
   if graphicT3 then
     Farben.graueFarbe      = 0x333333
     Farben.hellblau        = 0x336699
@@ -23,6 +24,7 @@ if OC then
     Farben.gelbeFarbe      = 0xFFCC33
     Farben.brauenFarbe     = 0x663300
     Farben.grueneFarbe     = 0x336600
+    Farben.orangeFarbe     = 0xFF7F24
   end
 elseif CC then
   Farben.graueFarbe        = 128
@@ -35,6 +37,7 @@ elseif CC then
   Farben.gelbeFarbe        = 16
   Farben.brauenFarbe       = 4096
   Farben.grueneFarbe       = 8192
+  Farben.orangeFarbe       = 2
 end
 
 Farben.FehlerFarbe         = Farben.roteFarbe
