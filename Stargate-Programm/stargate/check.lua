@@ -53,8 +53,8 @@ elseif CC then
   end
   gpu = component.getPrimary("monitor")
   gpu.setResolution = function() gpu.setTextScale(0.5) end
-  gpu.setForeground = function(code) if code then gpu.setTextColor(code) end
-  gpu.setBackground = function(code) if code then gpu.setBackgroundColor(code) end
+  gpu.setForeground = function(code) if code then gpu.setTextColor(code) end end
+  gpu.setBackground = function(code) if code then gpu.setBackgroundColor(code) end end
   gpu.maxResolution = gpu.getSize
   gpu.fill = function() term.clear() end
 end
