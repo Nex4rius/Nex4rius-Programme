@@ -20,6 +20,7 @@ _G.shell = shell
 local fs                      = fs or require("filesystem")
 local term                    = term or require("term")
 local schreibSicherungsdatei  = loadfile("/stargate/schreibSicherungsdatei.lua")
+local _, Farben               = pcall(loadfile("/stargate/farben.lua"), OC, CC)
 local betaVersionName         = ""
 local Sicherung               = {}
 local Funktion                = {}
@@ -35,6 +36,10 @@ end
 if OC then
   component = require("component")
   gpu = component.getPrimary("gpu")
+  local a = gpu.setForeground
+  local b = gpu.setBackground
+  gpu.setForeground = function(code) if code then a(code) end
+  gpu.setBackground = function(code) if code then b(code) end
 elseif CC then
   component.getPrimary = peripheral.find
   component.isAvailable = function(name)
@@ -48,8 +53,8 @@ elseif CC then
   end
   gpu = component.getPrimary("monitor")
   gpu.setResolution = function() gpu.setTextScale(0.5) end
-  gpu.setForeground = gpu.setTextColor
-  gpu.setBackground = gpu.setBackgroundColor
+  gpu.setForeground = function(code) if code then gpu.setTextColor(code) end
+  gpu.setBackground = function(code) if code then gpu.setBackgroundColor(code) end
   gpu.maxResolution = gpu.getSize
   gpu.fill = function() term.clear() end
 end
