@@ -36,7 +36,15 @@ if OC then
   component = require("component")
   gpu = component.getPrimary("gpu")
 elseif CC then
-  component.getPrimary = peripheral.find
+  component.getPrimary = function(name)
+    cc_immer = {}
+    cc_immer.internet = function() return http end
+    cc_immer.redstone = function() return true end
+    if cc_immer[name] then
+      return cc_immer[name]()
+    end
+    return peripheral.find(name)
+  end
   gpu = component.getPrimary("monitor")
   gpu.setResolution = function() gpu.setTextScale(0.5) end
   gpu.setForeground = gpu.setTextColor
