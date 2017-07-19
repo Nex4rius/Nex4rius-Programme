@@ -122,12 +122,23 @@ function Funktion.checkSprache()
   else
     local alleSprachen = {}
     local j = 1
-    for i in fs.list("/stargate/sprache") do
-      local Ende = string.len(i)
-      i = string.sub(i, 1, Ende - 4)
-      if i ~= "ersetzen" then
-        alleSprachen[j] = i
-        j = j + 1
+    if OC then
+      for i in fs.list("/stargate/sprache") do
+        local Ende = string.len(i)
+        i = string.sub(i, 1, Ende - 4)
+        if i ~= "ersetzen" then
+          alleSprachen[j] = i
+          j = j + 1
+        end
+      end
+    elseif CC then
+      for k, i in pairs(fs.list("/stargate/sprache")) do
+        local Ende = string.len(i)
+        i = string.sub(i, 1, Ende - 4)
+        if i ~= "ersetzen" then
+          alleSprachen[j] = i
+          j = j + 1
+        end
       end
     end
     local weiter = true
