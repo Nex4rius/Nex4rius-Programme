@@ -36,7 +36,8 @@ if OC then
   component = require("component")
   gpu = component.getPrimary("gpu")
 elseif CC then
-  component.getPrimary = function(name)
+  component.getPrimary = peripheral.find
+  component.isAvailable = function(name)
     cc_immer = {}
     cc_immer.internet = function() return http end
     cc_immer.redstone = function() return true end
