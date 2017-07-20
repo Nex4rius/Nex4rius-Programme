@@ -14,6 +14,7 @@ local gpu           = component.gpu
 
 local wget          = loadfile("/bin/wget.lua")
 local kopieren      = function(von, nach) fs.copy(von, nach) print(string.format("%s → %s", von, nach)) end
+local verschieben   = function(von, nach) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", von, nach)) end
 local entfernen     = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
 
 local Funktion      = {}
@@ -86,7 +87,7 @@ function Funktion.verarbeiten()
     else
         print("Ersetze alte Dateien")
         for i in fs.list("/update") do
-            kopieren("/update/" .. i, "/")
+            verschieben("/update/" .. i, "/")
         end
         entfernen("/update")
         entfernen("/github-liste.txt")
