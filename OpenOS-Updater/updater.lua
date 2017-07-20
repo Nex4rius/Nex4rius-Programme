@@ -64,7 +64,7 @@ function Funktion.status()
     gpu.set(x, 1, string.rep(" ", 30))
     gpu.set(x, 2, string.format("Speicher: %s / %s", computer.freeMemory(), computer.totalMemory()))
     gpu.set(x, 3, string.rep(" ", 30))
-    gpu.set(x, 4, string.format("Energie:   %.1f / %.1f", computer.energy(), computer.maxEnergy()))
+    gpu.set(x, 4, string.format("Energie: %.1f / %.1f", computer.energy(), computer.maxEnergy()))
 end
 
 function Funktion.verarbeiten()
