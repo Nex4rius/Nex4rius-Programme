@@ -175,7 +175,7 @@ end
 
 function Funktion.checkOpenOS()
   if OC then
-    local OpenOS_Version = "OpenOS 1.6.1"
+    local OpenOS_Version = "OpenOS 1.6.7"
     if _OSVERSION == OpenOS_Version then
       gpu.setForeground(Farben.grueneFarbe)
       print("\nOpenOS Version:        " .. _OSVERSION)
