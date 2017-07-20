@@ -13,8 +13,8 @@ local term          = require("term")
 local gpu           = component.gpu
 
 local wget          = loadfile("/bin/wget.lua")
-local kopieren      = loadfile("/bin/cp.lua")
-local entfernen     = loadfile("/bin/rm.lua")
+local kopieren      = fs.copy --loadfile("/bin/cp.lua")
+local entfernen     = fs.delete --loadfile("/bin/rm.lua")
 
 local Funktion      = {}
 
