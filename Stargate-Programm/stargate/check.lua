@@ -29,13 +29,96 @@ local Farben                  = {}
 local version
 local arg                     = ...
 
+
+if OC then
+  Farben.graueFarbe        = 6684774
+  Farben.hellblau          = 0x606060
+  Farben.mittelblau        = 8421504
+  Farben.roteFarbe         = 0xFF0000
+  Farben.weisseFarbe       = 0xFFFFFF
+  Farben.blaueFarbe        = 0x0000FF
+  Farben.schwarzeFarbe     = 0x000000
+  Farben.gelbeFarbe        = 16750899
+  Farben.brauenFarbe       = 10046464
+  Farben.grueneFarbe       = 39168
+  Farben.orangeFarbe       = 0xFF7F24
+  if graphicT3 then
+    Farben.graueFarbe      = 0x333333
+    Farben.hellblau        = 0x336699
+    Farben.mittelblau      = 0x6699FF
+    Farben.roteFarbe       = 0xFF3333
+    Farben.weisseFarbe     = 0xFFFFFF
+    Farben.blaueFarbe      = 0x333399
+    Farben.schwarzeFarbe   = 0x000000
+    Farben.gelbeFarbe      = 0xFFCC33
+    Farben.brauenFarbe     = 0x663300
+    Farben.grueneFarbe     = 0x336600
+    Farben.orangeFarbe     = 0xFF7F24
+  end
+elseif CC then
+  Farben.graueFarbe        = 128
+  Farben.hellblau          = 8
+  Farben.mittelblau        = 512
+  Farben.roteFarbe         = 16384
+  Farben.weisseFarbe       = 1
+  Farben.blaueFarbe        = 2048
+  Farben.schwarzeFarbe     = 32768
+  Farben.gelbeFarbe        = 16
+  Farben.brauenFarbe       = 4096
+  Farben.grueneFarbe       = 8192
+  Farben.orangeFarbe       = 2
+end
+
+Farben.FehlerFarbe         = Farben.roteFarbe
+Farben.Hintergrundfarbe    = Farben.graueFarbe
+Farben.Trennlinienfarbe    = Farben.blaueFarbe
+Farben.Textfarbe           = Farben.weisseFarbe
+
+Farben.Adressfarbe         = Farben.brauenFarbe
+Farben.AdressfarbeAktiv    = Farben.hellblau
+Farben.Adresstextfarbe     = Farben.Textfarbe
+Farben.Nachrichtfarbe      = Farben.graueFarbe
+Farben.Nachrichttextfarbe  = Farben.Textfarbe
+Farben.Steuerungsfarbe     = Farben.gelbeFarbe
+Farben.Steuerungstextfarbe = Farben.schwarzeFarbe
+Farben.Statusfarbe         = Farben.grueneFarbe
+Farben.Statustextfarbe     = Farben.Textfarbe
+
+Farben.white               = 0
+--Farben.orange              = 1
+--Farben.magenta             = 2
+--Farben.lightblue           = 3
+Farben.yellow              = 4
+--Farben.lime                = 5
+--Farben.pink                = 6
+--Farben.gray                = 7
+--Farben.silver              = 8
+--Farben.cyan                = 9
+--Farben.purple              = 10
+--Farben.blue                = 11
+--Farben.brown               = 12
+Farben.green               = 13
+Farben.red                 = 14
+Farben.black = 15
+
+---
+local abcdefg = 0
+computer = require("computer")
+function debug()
+  abcdefg = abcdefg + 1
+  print(abcdefg, computer.freeMemory(), computer.totalMemory())
+  io.read()
+end
+
+---
+
 if arg then
   arg                         = string.lower(tostring(arg))
 end
 
-if fs.exists("/stargate/farben.lua") then
-  Farben = loadfile("/stargate/farben.lua")(OC, CC)
-end
+--if fs.exists("/stargate/farben.lua") then
+--  Farben = loadfile("/stargate/farben.lua")(OC, CC)
+--end
 
 if OC then
   component = require("component")
@@ -62,7 +145,7 @@ elseif CC then
   gpu.maxResolution = gpu.getSize
   gpu.fill = function() term.clear() end
 end
-
+debug()
 local kopieren = loadfile("/bin/cp.lua") or function(a, b, c)
   if type(a) == "string" and type(b) == "string" then
     if c == "-n" then
@@ -114,14 +197,14 @@ local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
     return
   end
 end
-
+debug()
 function Funktion.Pfad(versionTyp)
   if versionTyp == nil then
     versionTyp = "master"
   end
   return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/" .. versionTyp .. "/Stargate-Programm/"
 end
-
+debug()
 function Funktion.checkSprache()
   if Sicherung.Sprache and Sicherung.Sprache ~= "" then
     if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
@@ -172,7 +255,7 @@ function Funktion.checkSprache()
     return true
   end
 end
-
+debug()
 function Funktion.checkOpenOS()
   if OC then
     local OpenOS_Version = "OpenOS 1.6.7"
@@ -188,8 +271,8 @@ function Funktion.checkOpenOS()
     print("\nCraftOS Version:       " .. os.version())
   end
 end
-
-function Funktion.checkKomponenten()
+debug()
+function Funktion.checkKomponenten() debug()
   term.clear()
   print("1")
   io.read()
@@ -275,7 +358,7 @@ function Funktion.update(versionTyp)
   end
   os.exit()
 end
-
+debug()
 function Funktion.checkServerVersion()
   if wget("-fQ", Funktion.Pfad("master") .. "stargate/version.txt", "/serverVersion.txt") then
     local f = io.open ("/serverVersion.txt", "r")
@@ -287,7 +370,7 @@ function Funktion.checkServerVersion()
   end
   return serverVersion
 end
-
+debug()
 function Funktion.checkBetaServerVersion()
   if wget("-fQ", Funktion.Pfad("beta") .. "stargate/version.txt", "/betaVersion.txt") then
     local f = io.open ("/betaVersion.txt", "r")
@@ -367,6 +450,7 @@ function Funktion.checkDateien()
 end
 
 function Funktion.mainCheck()
+  debug()
   if component.isAvailable("internet") then
     local serverVersion = Funktion.checkServerVersion()
     local betaServerVersion = Funktion.checkBetaServerVersion()
@@ -456,6 +540,7 @@ function Funktion.main()
   end
   gpu.fill(1, 1, 70, 25, " ")
   term.clear()
+  debug()
   Funktion.checkDateien()
   if fs.exists("/stargate/version.txt") then
     local f = io.open ("/stargate/version.txt", "r")
@@ -464,6 +549,7 @@ function Funktion.main()
   else
     version = sprachen.fehlerName
   end
+  debug()
   if fs.exists("/einstellungen/Sicherungsdatei.lua") then
     Sicherung = loadfile("/einstellungen/Sicherungsdatei.lua")()
   else
