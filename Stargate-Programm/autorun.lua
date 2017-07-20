@@ -2,6 +2,10 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
+if io.read() ~= "ja" then
+    os.exit()
+end
+
 local shell = shell or require("shell")
 _G.shell = shell
 local alterPfad
