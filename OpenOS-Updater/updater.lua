@@ -14,7 +14,7 @@ local gpu           = component.gpu
 
 local wget          = loadfile("/bin/wget.lua")
 --local kopieren      = function(von, nach) fs.copy(von, nach) print(string.format("%s → %s", von, nach)) end
-local verschieben   = function(von, nach) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", von, nach)) end
+local verschieben   = function(von, nach) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach))) end
 local entfernen     = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
 
 local Funktion      = {}
