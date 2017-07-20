@@ -29,6 +29,8 @@ local Farben                  = {}
 local version
 local arg                     = ...
 
+term.clear()
+
 if arg then
   arg                         = string.lower(tostring(arg))
 end
