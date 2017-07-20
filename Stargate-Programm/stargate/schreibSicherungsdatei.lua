@@ -9,9 +9,10 @@ local standard  = loadfile("/stargate/Sicherungsdatei.lua")
 local Sicherung = {}
 local sprachen  = {}
 
-if ALT then
+if type(ALT) == "function" then
   AlT = ALT()
-else
+end
+if type(ALT) ~= "table" then
   ALT = {}
 end
 
