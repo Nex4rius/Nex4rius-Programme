@@ -2,6 +2,8 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
+os.sleep(1)
+print("ja zum weitermachen")
 if io.read() ~= "ja" then
     os.exit()
 end
