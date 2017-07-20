@@ -89,6 +89,7 @@ function Funktion.verarbeiten()
         end
     end
     print("\nDownload Beendet\n")
+    Funktion.status()
     if dateien["truncated"] or not komplett then
         gpu.setForeground(0xFF0000)
         print("<FEHLER> Download unvollständig")
@@ -114,6 +115,7 @@ function Funktion.verarbeiten()
         entfernen("/json.lua")
         gpu.setForeground(0x00FF00)
         print("Update vollständig")
+        Funktion.status()
         os.sleep(5)
         require("computer").shutdown(true)
     end
