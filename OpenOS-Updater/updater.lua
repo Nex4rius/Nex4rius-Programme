@@ -13,8 +13,8 @@ local term          = require("term")
 local gpu           = component.gpu
 
 local wget          = loadfile("/bin/wget.lua")
-local kopieren      = fs.copy --loadfile("/bin/cp.lua")
-local entfernen     = fs.remove --loadfile("/bin/rm.lua")
+local kopieren      = function(von, nach) fs.copy(von, nach) print(string.format("%s → %s", von, nach)) end
+local entfernen     = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
 
 local Funktion      = {}
 
