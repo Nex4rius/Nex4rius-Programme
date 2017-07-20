@@ -112,9 +112,11 @@ local function main()
     print("<FEHLER> GitHub Download")
 end
 
-if not pcall(main) then
+local ergebnis, grund = pcall(main)
+if not ergebnis then
     gpu.setForeground(0xFF0000)
     print("<FEHLER> Funktion main")
+    print(grund)
 end
 
 gpu.setForeground(0xFFFFFF)
