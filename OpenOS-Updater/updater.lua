@@ -13,8 +13,7 @@ local computer      = require("computer")
 local term          = require("term")
 local gpu           = component.gpu
 local x, y          = gpu.getResolution()
-y                   = 2
-x                   = x - 26
+x                   = x - 28
 
 local wget          = loadfile("/bin/wget.lua")
 --local kopieren      = function(von, nach) fs.copy(von, nach) print(string.format("%s → %s", von, nach)) end
@@ -61,7 +60,15 @@ function Funktion.checkKomponenten()
     end
 end
 
+function Funktion.status()
+    gpu.set(x, 1, string.rep(" ", 30))
+    gpu.set(x, 2, string.format("Speicher: %s / %s", computer.freeMemory(), computer.totalMemory()))
+    gpu.set(x, 3, string.rep(" ", 30))
+    gpu.set(x, 4, string.format("Energie:   %.1f / %.1f", computer.energy(), computer.maxEnergy()))
+end
+
 function Funktion.verarbeiten()
+    Funktion.status()
     local f = io.open("/github-liste.txt", "r")
     local dateien = loadfile("/json.lua")():decode(f:read("*all"))
     f:close()
@@ -78,7 +85,7 @@ function Funktion.verarbeiten()
                 komplett = false
                 break
             end
-            gpu.set(x, y, string.format("Memory: %s / %s", computer.freeMemory(), computer.totalMemory()))
+            Funktion.status()
         end
     end
     print("\nDownload Beendet\n")
@@ -97,7 +104,7 @@ function Funktion.verarbeiten()
                     kopieren(i)
                 end
                 verschieben("/update/" .. i, "/" .. i)
-                gpu.set(x, y, string.format("Memory: %s / %s", computer.freeMemory(), computer.totalMemory()))
+                Funktion.status()
             end
         end
         kopieren("/update")
@@ -115,6 +122,7 @@ end
 local function main()
     Funktion.checkKomponenten()
     gpu.setForeground(0xFFFFFF)
+    Funktion.status()
     print("Starte Download")
     if wget("-f", Funktion.Pfad(true), "/github-liste.txt") and wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/json.lua", "/json.lua") then
         if Funktion.verarbeiten() then
