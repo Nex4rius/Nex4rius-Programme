@@ -34,7 +34,8 @@ if arg then
 end
 
 if fs.exists("/stargate/farben.lua") then
-  Farben = loadfile("/stargate/farben.lua")(OC, CC)
+  --Farben = loadfile("/stargate/farben.lua")(OC, CC)
+  Farben = {}
 end
 
 if OC then
@@ -61,13 +62,14 @@ elseif CC then
   gpu.setBackground = function(code) if code then gpu.setBackgroundColor(code) end end
   gpu.maxResolution = gpu.getSize
   gpu.fill = function() term.clear() end
+  fs.remove = fs.remove or fs.delete
 end
 print("1")
 io.read()
-local kopieren = loadfile("/bin/cp.lua") or function(a, b, c)
+local function kopieren(a, b, c)
   if type(a) == "string" and type(b) == "string" then
     if c == "-n" then
-      fs.delete(b)
+      fs.remove(b)
     end
     if fs.exists(a) and not fs.exists(b) then
       fs.copy(a, b)
