@@ -13,7 +13,7 @@ local computer      = require("computer")
 local term          = require("term")
 local gpu           = component.gpu
 local x, y          = gpu.getResolution()
-x                   = x - 28
+x                   = x - 30
 
 local wget          = loadfile("/bin/wget.lua")
 --local kopieren      = function(von, nach) fs.copy(von, nach) print(string.format("%s → %s", von, nach)) end
@@ -62,9 +62,9 @@ end
 
 function Funktion.status()
     gpu.set(x, 1, string.rep(" ", 30))
-    gpu.set(x, 2, string.format("Speicher: %s / %s%s", computer.freeMemory(), computer.totalMemory(), string.rep(" ", 30)))
+    gpu.set(x, 2, string.format("  Speicher: %s / %s%s", computer.freeMemory(), computer.totalMemory(), string.rep(" ", 30)))
     gpu.set(x, 3, string.rep(" ", 30))
-    gpu.set(x, 4, string.format("Energie: %.1f / %.1f%s", computer.energy(), computer.maxEnergy(), string.rep(" ", 30)))
+    gpu.set(x, 4, string.format("  Energie: %.1f / %.1f%s", computer.energy(), computer.maxEnergy(), string.rep(" ", 30)))
 end
 
 function Funktion.verarbeiten()
