@@ -9,8 +9,12 @@ shell.setWorkingDirectory("/")
 
 local fs            = require("filesystem")
 local component     = require("component")
+local computer      = require("computer")
 local term          = require("term")
 local gpu           = component.gpu
+local x, y          = gpu.getResolution()
+y                   = 2
+x                   = x - 26
 
 local wget          = loadfile("/bin/wget.lua")
 --local kopieren      = function(von, nach) fs.copy(von, nach) print(string.format("%s → %s", von, nach)) end
@@ -74,6 +78,7 @@ function Funktion.verarbeiten()
                 komplett = false
                 break
             end
+            gpu.set(x, y, string.format("Memory: %s / %s", computer.freeMemory(), computer.totalMemory()))
         end
     end
     print("\nDownload Beendet\n")
@@ -92,6 +97,7 @@ function Funktion.verarbeiten()
                     kopieren(i)
                 end
                 verschieben("/update/" .. i, "/" .. i)
+                gpu.set(x, y, string.format("Memory: %s / %s", computer.freeMemory(), computer.totalMemory()))
             end
         end
         kopieren("/update")
