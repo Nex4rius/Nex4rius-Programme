@@ -86,7 +86,7 @@ function Funktion.verarbeiten()
     else
         print("Ersetze alte Dateien")
         for i in fs.list("/update") do
-            kopieren("-rv", "/update/" .. i, "/")
+            kopieren("/update/" .. i, "/")
         end
         entfernen("-rv", "/update")
         entfernen("-rv", "/github-liste.txt")
