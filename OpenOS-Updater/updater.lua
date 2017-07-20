@@ -14,7 +14,7 @@ local gpu           = component.gpu
 
 local wget          = loadfile("/bin/wget.lua")
 local kopieren      = fs.copy --loadfile("/bin/cp.lua")
-local entfernen     = fs.delete --loadfile("/bin/rm.lua")
+local entfernen     = fs.remove --loadfile("/bin/rm.lua")
 
 local Funktion      = {}
 
@@ -79,8 +79,8 @@ function Funktion.verarbeiten()
     if dateien["truncated"] or not komplett then
         gpu.setForeground(0xFF0000)
         print("<FEHLER> Download unvollständig")
-        entfernen("-rv", "/update")
-        entfernen("-rv", "/github-liste.txt")
+        entfernen("/update")
+        entfernen("/github-liste.txt")
         shell.setWorkingDirectory(alterPfad)
         os.exit()
     else
@@ -88,10 +88,10 @@ function Funktion.verarbeiten()
         for i in fs.list("/update") do
             kopieren("/update/" .. i, "/")
         end
-        entfernen("-rv", "/update")
-        entfernen("-rv", "/github-liste.txt")
-        entfernen("-rv", "/updater.lua")
-        entfernen("-rv", "/json.lua")
+        entfernen("/update")
+        entfernen("/github-liste.txt")
+        entfernen("/updater.lua")
+        entfernen("/json.lua")
         gpu.setForeground(0x00FF00)
         print("Update vollständig")
         os.sleep(5)
