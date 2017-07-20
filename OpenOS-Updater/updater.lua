@@ -91,7 +91,7 @@ function Funktion.verarbeiten()
                 if fs.isDirectory(i) then
                     kopieren(i)
                 end
-                verschieben("/update/" .. i, "/")
+                verschieben("/update/" .. i, "/" .. i)
             end
         end
         kopieren("/update")
