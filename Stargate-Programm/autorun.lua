@@ -3,10 +3,10 @@
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
 os.sleep(1)
-print("ja zum weitermachen")
-if io.read() ~= "ja" then
-    os.exit()
-end
+--print("ja zum weitermachen")
+--if io.read() ~= "ja" then
+--    os.exit()
+--end
 
 local shell = shell or require("shell")
 _G.shell = shell
@@ -41,4 +41,4 @@ if require then
 end
 
 print("ende ioread")
-io.read()
+--io.read()
