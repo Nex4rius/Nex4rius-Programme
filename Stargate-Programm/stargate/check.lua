@@ -36,8 +36,8 @@ if arg then
 end
 
 if fs.exists("/stargate/farben.lua") then
-  --Farben = loadfile("/stargate/farben.lua")(OC, CC)
-  Farben = {}
+  Farben = loadfile("/stargate/farben.lua")(OC, CC)
+  --Farben = {}
 end
 
 if OC then
@@ -67,7 +67,7 @@ elseif CC then
   fs.remove = fs.remove or fs.delete
 end
 print("1")
-io.read()
+--io.read()
 local function kopieren(a, b, c)
   if type(a) == "string" and type(b) == "string" then
     if c == "-n" then
@@ -80,7 +80,7 @@ local function kopieren(a, b, c)
   end
 end
 print("2")
-io.read()
+--io.read()
 local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
   if type(url) ~= "string" and type(ziel) ~= "string" then
     return
@@ -122,7 +122,7 @@ local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
   end
 end
 print("3")
-io.read()
+--io.read()
 function Funktion.Pfad(versionTyp)
   if versionTyp == nil then
     versionTyp = "master"
@@ -130,7 +130,7 @@ function Funktion.Pfad(versionTyp)
   return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/" .. versionTyp .. "/Stargate-Programm/"
 end
 print("4")
-io.read()
+--io.read()
 function Funktion.checkSprache()
   if Sicherung.Sprache and Sicherung.Sprache ~= "" then
     if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
@@ -199,16 +199,16 @@ end
 function Funktion.checkKomponenten()
   term.clear()
   print("1")
-  io.read()
+  --io.read()
   print(type(sprachen.pruefeKomponenten))
   print("2")
-  io.read()
+  --io.read()
   print(sprachen.pruefeKomponenten)
   print("3")
-  io.read()
+  --io.read()
   print(sprachen.pruefeKomponenten or "Prüfe Komponenten\n")
   print("4")
-  io.read()
+  --io.read()
   local function check(eingabe)
     if component.isAvailable(eingabe[1]) then
       gpu.setForeground(Farben.grueneFarbe)
