@@ -1,4 +1,4 @@
--- pastebin run -f MHq2tN5B name repo tree [link [sha]]
+-- pastebin run -f MHq2tN5B [-f] name repo tree [link [sha]]
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme
 
@@ -9,9 +9,8 @@ local component     = require("component")
 local args, options = shell.parse(...)
 
 local wget          = loadfile("/bin/wget.lua")
-local kopieren      = loadfile("/bin/cp.lua")
-local verschieben   = loadfile("/bin/mv.lua")
-local entfernen     = loadfile("/bin/rm.lua")
+local verschieben   = function(von, nach) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach))) end
+local entfernen     = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
 
 local alterPfad     = shell.getWorkingDirectory()
 
@@ -46,9 +45,17 @@ else
     hilfe = true
 end
 
+function Funktion.status()
+    gpu.set(x, 1, string.rep(" ", 30))
+    gpu.set(x, 2, string.format("  Speicher: %s / %s%s", computer.freeMemory(), computer.totalMemory(), string.rep(" ", 30)))
+    gpu.set(x, 3, string.rep(" ", 30))
+    gpu.set(x, 4, string.format("  Energie: %.1f / %.1f%s", computer.energy(), computer.maxEnergy(), string.rep(" ", 30)))
+end
+
 function Funktion.Hilfe()
-    print([==[Benutzung: github name repo tree [link [sha]]]==])
+    print([==[Benutzung: github [-f] name repo tree [link [sha]]]==])
     print([==[sha nur benötigt bei sehr großen Repositories]==])
+    print([==[Bei "-f" werden die Dateien immer sofort überschrieben, nur erforderlich bei geringer Festplattenkapazität. >>>WARNUNG<<< Ein Downloadfehler beim updaten von OpenOS mit "-f" wird dafür sorgen das der Computer nicht mehr bootet.]==])
     print()
     print([==[Beispiele:]==])
     print([==[github Nex4rius Nex4rius-Programme master Stargate-Programm]==])
@@ -67,6 +74,7 @@ function Funktion.checkKomponenten()
     local weiter = true
     print("Prüfe Komponenten\n")
     local function check(eingabe)
+        Funktion.status()
         if component.isAvailable(eingabe[1]) then
             gpu.setForeground(0x00FF00)
             print(eingabe[2])
@@ -94,6 +102,7 @@ end
 
 function Funktion.verarbeiten()
     print("\nDownloade Verzeichnisliste\n")
+    Funktion.status()
     if sha then
         if not wget("-f", string.format("https://api.github.com/repos/%s/%s/git/trees/%s?recursive=1", name, repo, sha), "/temp/github-liste.txt") then
             gpu.setForeground(0xFF0000)
@@ -107,14 +116,16 @@ function Funktion.verarbeiten()
             return 
         end
     end
+    Funktion.status()
     local f = io.open("/temp/github-liste.txt", "r")
     print("\nKonvertiere: JSON -> Lua table\n")
     local dateien = loadfile("/temp/json.lua")():decode(f:read("*all"))
     f:close()
-    entfernen("-rv", "/temp/github-liste.txt")
+    entfernen("/temp/github-liste.txt")
     print()
     if link then
         for i in pairs(dateien.tree) do
+            Funktion.status()
             if dateien.tree[i].path == link then
                 sha = dateien.tree[i].sha
                 break
@@ -129,7 +140,7 @@ function Funktion.verarbeiten()
         print("\nKonvertiere: JSON -> Lua table\n")
         dateien = loadfile("/temp/json.lua")():decode(f:read("*all"))
         f:close()
-        entfernen("-rv", "/temp/github-liste-kurz.txt")
+        entfernen("/temp/github-liste-kurz.txt")
         print()
         link = link .. "/"
     else
@@ -139,6 +150,7 @@ function Funktion.verarbeiten()
     local komplett = true
     print("Erstelle Verzeichnisse\n")
     for i in pairs(dateien.tree) do
+        Funktion.status()
         if dateien.tree[i].type == "tree" then
             fs.makeDirectory("/update/" .. dateien.tree[i].path)
             print("/update/" .. dateien.tree[i].path)
@@ -146,9 +158,14 @@ function Funktion.verarbeiten()
         end
     end
     print("\nStarte Download\n")
+    local pfad = "/update"
+    if options.o then
+        pfad = ""
+    end
     for i in pairs(dateien.tree) do
+        Funktion.status()
         if dateien.tree[i].type == "blob" and dateien.tree[i].path ~= "README.md" then
-            if not wget("-f", string.format("https://raw.githubusercontent.com/%s/%s/%s/%s", name, repo, tree, link) .. dateien.tree[i].path, "/update/" .. dateien.tree[i].path) then
+            if not wget("-f", string.format("https://raw.githubusercontent.com/%s/%s/%s/%s", name, repo, tree, link) .. dateien.tree[i].path, pfad .. "/" .. dateien.tree[i].path) then
                 komplett = false
                 break
             end
@@ -161,24 +178,26 @@ function Funktion.verarbeiten()
             print("<FEHLER> GitHub Dateiliste unvollständig\n")
         end
         gpu.setForeground(0xFFFFFF)
-        entfernen("-rv", "/update")
-        entfernen("-rv", "/temp")
+        entfernen("/update")
+        entfernen("/temp")
         shell.setWorkingDirectory(alterPfad)
         os.exit()
     else
         gpu.setForeground(0x00FF00)
         print("\nDownload Beendet\n")
         gpu.setForeground(0xFFFFFF)
-        print("Ersetze alte Dateien\n")
-        for i in fs.list("/update") do
-            if not verschieben("-fv", "/update/" .. i, "/") then
-                entfernen("-r", "/" .. i)
-                kopieren("-rv", "/update/" .. i, "/")
+        print("Ersetze alte Dateien")
+        local function kopieren(...)
+            for i in fs.list(...) do
+                if fs.isDirectory(i) then
+                    kopieren(i)
+                end
+                verschieben("/update/" .. i, "/" .. i)
+                Funktion.status()
             end
         end
-        print()
-        entfernen("-rv", "/update")
-        entfernen("-rv", "/temp")
+        entfernen("/update")
+        entfernen("/temp")
         gpu.setForeground(0x00FF00)
         print("\nUpdate vollständig")
         os.sleep(2)
@@ -195,7 +214,7 @@ local function main()
         fs.makeDirectory("/temp")
         local a = "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/"
         if wget("-fQ", a .. "github.lua", "/temp/github.lua") then
-            verschieben("-f", "/temp/github.lua", "/bin/github.lua")
+            verschieben("/temp/github.lua", "/bin/github.lua")
         end
         print("Downloade Konverter\n")
         if wget("-f", a .. "json.lua", "/temp/json.lua") then
@@ -208,12 +227,18 @@ local function main()
     end
 end
 
+Funktion.status()
 local ergebnis, grund = pcall(main)
 
 if not ergebnis then
     gpu.setForeground(0xFF0000)
     print("<FEHLER> main")
     print(grund)
+    if grund == "not enough memory" and option.f then
+        if not link then link = "" end
+        if not sha then sha = "" end
+        os.execute(string.format("pastebin run -f MHq2tN5B -o %s %s %s %s", name, repo, tree, link, sha))
+    end
 end
 
 shell.setWorkingDirectory(alterPfad)
