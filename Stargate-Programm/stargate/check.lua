@@ -13,85 +13,85 @@ else
   CC = true
 end
 
-local io                      = io
+local io                     = io
 _G.io = io
-local shell                   = shell or require("shell")
+local shell                  = shell or require("shell")
 _G.shell = shell
-local fs                      = fs or require("filesystem")
-local term                    = term or require("term")
-local schreibSicherungsdatei  = loadfile("/stargate/schreibSicherungsdatei.lua")
-local betaVersionName         = ""
-local Sicherung               = {}
-local Funktion                = {}
-local component               = {}
-local gpu                     = {}
-local Farben                  = {}
+local fs                     = fs or require("filesystem")
+local term                   = term or require("term")
+local schreibSicherungsdatei = loadfile("/stargate/schreibSicherungsdatei.lua")
+local betaVersionName        = ""
+local Sicherung              = {}
+local Funktion               = {}
+local component              = {}
+local gpu                    = {}
+local Farben                 = {}
 local version
-local arg                     = ...
+local arg                    = ...
 
 term.clear()
 
 if arg then
-  arg                         = string.lower(tostring(arg))
+  arg                        = string.lower(tostring(arg))
 end
 
 if OC then
-  Farben.graueFarbe        = 6684774
-  Farben.hellblau          = 0x606060
-  Farben.mittelblau        = 8421504
-  Farben.roteFarbe         = 0xFF0000
-  Farben.weisseFarbe       = 0xFFFFFF
-  Farben.blaueFarbe        = 0x0000FF
-  Farben.schwarzeFarbe     = 0x000000
-  Farben.gelbeFarbe        = 16750899
-  Farben.brauenFarbe       = 10046464
-  Farben.grueneFarbe       = 39168
-  Farben.orangeFarbe       = 0xFF7F24
+  Farben.graueFarbe          = 6684774
+  Farben.hellblau            = 0x606060
+  Farben.mittelblau          = 8421504
+  Farben.roteFarbe           = 0xFF0000
+  Farben.weisseFarbe         = 0xFFFFFF
+  Farben.blaueFarbe          = 0x0000FF
+  Farben.schwarzeFarbe       = 0x000000
+  Farben.gelbeFarbe          = 16750899
+  Farben.brauenFarbe         = 10046464
+  Farben.grueneFarbe         = 39168
+  Farben.orangeFarbe         = 0xFF7F24
 elseif CC then
-  Farben.graueFarbe        = 128
-  Farben.hellblau          = 8
-  Farben.mittelblau        = 512
-  Farben.roteFarbe         = 16384
-  Farben.weisseFarbe       = 1
-  Farben.blaueFarbe        = 2048
-  Farben.schwarzeFarbe     = 32768
-  Farben.gelbeFarbe        = 16
-  Farben.brauenFarbe       = 4096
-  Farben.grueneFarbe       = 8192
-  Farben.orangeFarbe       = 2
+  Farben.graueFarbe          = 128
+  Farben.hellblau            = 8
+  Farben.mittelblau          = 512
+  Farben.roteFarbe           = 16384
+  Farben.weisseFarbe         = 1
+  Farben.blaueFarbe          = 2048
+  Farben.schwarzeFarbe       = 32768
+  Farben.gelbeFarbe          = 16
+  Farben.brauenFarbe         = 4096
+  Farben.grueneFarbe         = 8192
+  Farben.orangeFarbe         = 2
 end
 
-Farben.FehlerFarbe         = Farben.roteFarbe
-Farben.Hintergrundfarbe    = Farben.graueFarbe
-Farben.Trennlinienfarbe    = Farben.blaueFarbe
-Farben.Textfarbe           = Farben.weisseFarbe
+Farben.FehlerFarbe           = Farben.roteFarbe
+Farben.Hintergrundfarbe      = Farben.graueFarbe
+Farben.Trennlinienfarbe      = Farben.blaueFarbe
+Farben.Textfarbe             = Farben.weisseFarbe
 
-Farben.Adressfarbe         = Farben.brauenFarbe
-Farben.AdressfarbeAktiv    = Farben.hellblau
-Farben.Adresstextfarbe     = Farben.Textfarbe
-Farben.Nachrichtfarbe      = Farben.graueFarbe
-Farben.Nachrichttextfarbe  = Farben.Textfarbe
-Farben.Steuerungsfarbe     = Farben.gelbeFarbe
-Farben.Steuerungstextfarbe = Farben.schwarzeFarbe
-Farben.Statusfarbe         = Farben.grueneFarbe
-Farben.Statustextfarbe     = Farben.Textfarbe
+Farben.Adressfarbe           = Farben.brauenFarbe
+Farben.AdressfarbeAktiv      = Farben.hellblau
+Farben.Adresstextfarbe       = Farben.Textfarbe
+Farben.Nachrichtfarbe        = Farben.graueFarbe
+Farben.Nachrichttextfarbe    = Farben.Textfarbe
+Farben.Steuerungsfarbe       = Farben.gelbeFarbe
+Farben.Steuerungstextfarbe   = Farben.schwarzeFarbe
+Farben.Statusfarbe           = Farben.grueneFarbe
+Farben.Statustextfarbe       = Farben.Textfarbe
 
-Farben.white               = 0
---Farben.orange              = 1
---Farben.magenta             = 2
---Farben.lightblue           = 3
-Farben.yellow              = 4
---Farben.lime                = 5
---Farben.pink                = 6
---Farben.gray                = 7
---Farben.silver              = 8
---Farben.cyan                = 9
---Farben.purple              = 10
---Farben.blue                = 11
---Farben.brown               = 12
-Farben.green               = 13
-Farben.red                 = 14
-Farben.black = 15
+Farben.white                 = 0
+Farben.orange                = 1
+Farben.magenta               = 2
+Farben.lightblue             = 3
+Farben.yellow                = 4
+Farben.lime                  = 5
+Farben.pink                  = 6
+Farben.gray                  = 7
+Farben.silver                = 8
+Farben.cyan                  = 9
+Farben.purple                = 10
+Farben.blue                  = 11
+Farben.brown                 = 12
+Farben.green                 = 13
+Farben.red                   = 14
+Farben.black                 = 15
 
 if OC then
   component = require("component")
