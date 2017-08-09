@@ -249,17 +249,9 @@ end
 
 function Funktion.checkKomponenten()
   term.clear()
-  print("1b")
-  --io.read()
   print(type(sprachen.pruefeKomponenten))
-  print("2b")
-  --io.read()
   print(sprachen.pruefeKomponenten)
-  print("3b")
-  --io.read()
   print(sprachen.pruefeKomponenten or "Prüfe Komponenten\n")
-  print("4b")
-  --io.read()
   local function check(eingabe)
     if component.isAvailable(eingabe[1]) then
       gpu.setForeground(Farben.grueneFarbe)
@@ -287,18 +279,30 @@ function Funktion.checkKomponenten()
     gpu.setForeground(Farben.grueneFarbe)
     print(sprachen.gpuOK2T)
   elseif gpu.maxResolution() == 160 then
-    graphicT3 = true
-    Farben.graueFarbe      = 0x333333
-    Farben.hellblau        = 0x336699
-    Farben.mittelblau      = 0x6699FF
-    Farben.roteFarbe       = 0xFF3333
-    Farben.weisseFarbe     = 0xFFFFFF
-    Farben.blaueFarbe      = 0x333399
-    Farben.schwarzeFarbe   = 0x000000
-    Farben.gelbeFarbe      = 0xFFCC33
-    Farben.brauenFarbe     = 0x663300
-    Farben.grueneFarbe     = 0x336600
-    Farben.orangeFarbe     = 0xFF7F24
+    Farben.graueFarbe          = 0x333333
+    Farben.hellblau            = 0x336699
+    Farben.mittelblau          = 0x6699FF
+    Farben.roteFarbe           = 0xFF3333
+    Farben.weisseFarbe         = 0xFFFFFF
+    Farben.blaueFarbe          = 0x333399
+    Farben.schwarzeFarbe       = 0x000000
+    Farben.gelbeFarbe          = 0xFFCC33
+    Farben.brauenFarbe         = 0x663300
+    Farben.grueneFarbe         = 0x336600
+    Farben.orangeFarbe         = 0xFF7F24
+    Farben.FehlerFarbe         = Farben.roteFarbe
+    Farben.Hintergrundfarbe    = Farben.graueFarbe
+    Farben.Trennlinienfarbe    = Farben.blaueFarbe
+    Farben.Textfarbe           = Farben.weisseFarbe
+    Farben.Adressfarbe         = Farben.brauenFarbe
+    Farben.AdressfarbeAktiv    = Farben.hellblau
+    Farben.Adresstextfarbe     = Farben.Textfarbe
+    Farben.Nachrichtfarbe      = Farben.graueFarbe
+    Farben.Nachrichttextfarbe  = Farben.Textfarbe
+    Farben.Steuerungsfarbe     = Farben.gelbeFarbe
+    Farben.Steuerungstextfarbe = Farben.schwarzeFarbe
+    Farben.Statusfarbe         = Farben.grueneFarbe
+    Farben.Statustextfarbe     = Farben.Textfarbe
     gpu.setForeground(Farben.orangeFarbe)
     print(sprachen.gpuOK3T)
   else
