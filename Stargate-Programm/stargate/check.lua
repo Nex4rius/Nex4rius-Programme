@@ -96,10 +96,10 @@ Farben.black                 = 15
 if OC then
   component = require("component")
   gpu = component.getPrimary("gpu")
-  local function a(code) if code then gpu.setForeground(code) end end
-  local function b(code) if code then gpu.setBackground(code) end end
-  gpu.setForeground = a
-  gpu.setBackground = b
+  local a = gpu.setForeground
+  local b = gpu.setBackground
+  gpu.setForeground = function(code) if code then a(code) end end
+  gpu.setBackground = function(code) if code then b(code) end end
 elseif CC then
   component.getPrimary = peripheral.find
   component.isAvailable = function(name)
