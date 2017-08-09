@@ -254,7 +254,7 @@ function Funktion.checkKomponenten()
   print(sprachen.pruefeKomponenten or "Prüfe Komponenten\n")
   local function check(eingabe)
     if component.isAvailable(eingabe[1]) then
-      gpu.setForeground(Farben.grueneFarbe)
+      gpu.setForeground(Farben.hellgrueneFarbe)
       print(eingabe[2])
     else
       gpu.setForeground(Farben.roteFarbe)
