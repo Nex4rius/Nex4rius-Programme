@@ -119,7 +119,7 @@ elseif CC then
   gpu.fill = function() term.clear() end
   fs.remove = fs.remove or fs.delete
 end
-print("1")
+print("1a")
 --io.read()
 local function kopieren(a, b, c)
   if type(a) == "string" and type(b) == "string" then
@@ -132,7 +132,7 @@ local function kopieren(a, b, c)
     return true
   end
 end
-print("2")
+print("2a")
 --io.read()
 local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
   if type(url) ~= "string" and type(ziel) ~= "string" then
@@ -174,7 +174,7 @@ local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
     return
   end
 end
-print("3")
+print("3a")
 --io.read()
 function Funktion.Pfad(versionTyp)
   if versionTyp == nil then
@@ -182,7 +182,7 @@ function Funktion.Pfad(versionTyp)
   end
   return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/" .. versionTyp .. "/Stargate-Programm/"
 end
-print("4")
+print("4a")
 --io.read()
 function Funktion.checkSprache()
   if Sicherung.Sprache and Sicherung.Sprache ~= "" then
@@ -251,16 +251,16 @@ function Funktion.checkOpenOS()
 end
 function Funktion.checkKomponenten()
   term.clear()
-  print("1")
+  print("1b")
   --io.read()
   print(type(sprachen.pruefeKomponenten))
-  print("2")
+  print("2b")
   --io.read()
   print(sprachen.pruefeKomponenten)
-  print("3")
+  print("3b")
   --io.read()
   print(sprachen.pruefeKomponenten or "Prüfe Komponenten\n")
-  print("4")
+  print("4b")
   --io.read()
   local function check(eingabe)
     if component.isAvailable(eingabe[1]) then
