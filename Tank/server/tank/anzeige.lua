@@ -70,7 +70,12 @@ function update()
       anzeigen(verarbeiten(tank), screenid)
     end
   else
-    keineDaten()
+    for screenid in component.list("screen") do
+      if i > 1 then
+        gpu.bind(screenid)
+      end
+      keineDaten()
+    end
   end
   for i in pairs(tank) do
     if c.uptime() - tank[i].zeit > Wartezeit * 2 then
