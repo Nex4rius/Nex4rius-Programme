@@ -14,18 +14,22 @@ shell.setWorkingDirectory("/")
 
 local fs            = require("filesystem")
 local component     = require("component")
+local computer      = require("computer")
 local term          = require("term")
 local gpu           = component.gpu
+local x, y          = gpu.getResolution()
+x                   = x - 30
 
 local wget          = loadfile("/bin/wget.lua")
-local kopieren      = loadfile("/bin/cp.lua")
-local entfernen     = loadfile("/bin/rm.lua")
+--local kopieren      = function(von, nach) fs.copy(von, nach) print(string.format("%s → %s", von, nach)) end
+local verschieben   = function(von, nach) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach))) end
+local entfernen     = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
 
 local Funktion      = {}
 
 function Funktion.Pfad(api)
     if api then
-        return "https://api.github.com/repos/MightyPirates/OpenComputers/git/trees/41acf2fa06990dcc4d740490cccd9d2bcec97edd?recursive=1"
+        return "https://api.github.com/repos/MightyPirates/OpenComputers/git/trees/285f9c8fa60abf54dd6b199c895c9e07943c6d1d?recursive=1"
     else
         return "https://raw.githubusercontent.com/MightyPirates/OpenComputers/master-MC1.7.10/src/main/resources/assets/opencomputers/loot/openos/"
     end
@@ -61,7 +65,15 @@ function Funktion.checkKomponenten()
     end
 end
 
+function Funktion.status()
+    gpu.set(x, 1, string.rep(" ", 30))
+    gpu.set(x, 2, string.format("  Speicher: %s / %s%s", computer.freeMemory(), computer.totalMemory(), string.rep(" ", 30)))
+    gpu.set(x, 3, string.rep(" ", 30))
+    gpu.set(x, 4, string.format("  Energie: %.1f / %.1f%s", computer.energy(), computer.maxEnergy(), string.rep(" ", 30)))
+end
+
 function Funktion.verarbeiten()
+    Funktion.status()
     local f = io.open("/github-liste.txt", "r")
     local dateien = loadfile("/json.lua")():decode(f:read("*all"))
     f:close()
@@ -78,27 +90,37 @@ function Funktion.verarbeiten()
                 komplett = false
                 break
             end
+            Funktion.status()
         end
     end
     print("\nDownload Beendet\n")
+    Funktion.status()
     if dateien["truncated"] or not komplett then
         gpu.setForeground(0xFF0000)
         print("<FEHLER> Download unvollständig")
-        entfernen("-rv", "/update")
-        entfernen("-rv", "/github-liste.txt")
+        entfernen("/update")
+        entfernen("/github-liste.txt")
         shell.setWorkingDirectory(alterPfad)
         os.exit()
     else
         print("Ersetze alte Dateien")
-        for i in fs.list("/update") do
-            kopieren("-rv", "/update/" .. i, "/")
+        local function kopieren(...)
+            for i in fs.list(...) do
+                if fs.isDirectory(i) then
+                    kopieren(i)
+                end
+                verschieben("/update/" .. i, "/" .. i)
+                Funktion.status()
+            end
         end
-        entfernen("-rv", "/update")
-        entfernen("-rv", "/github-liste.txt")
-        entfernen("-rv", "/updater.lua")
-        entfernen("-rv", "/json.lua")
+        kopieren("/update")
+        entfernen("/update")
+        entfernen("/github-liste.txt")
+        entfernen("/updater.lua")
+        entfernen("/json.lua")
         gpu.setForeground(0x00FF00)
         print("Update vollständig")
+        Funktion.status()
         os.sleep(5)
         require("computer").shutdown(true)
     end
@@ -107,6 +129,7 @@ end
 local function main()
     Funktion.checkKomponenten()
     gpu.setForeground(0xFFFFFF)
+    Funktion.status()
     print("Starte Download")
     if wget("-f", Funktion.Pfad(true), "/github-liste.txt") and wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/json.lua", "/json.lua") then
         if Funktion.verarbeiten() then
@@ -117,9 +140,11 @@ local function main()
     print("<FEHLER> GitHub Download")
 end
 
-if not pcall(main) then
+local ergebnis, grund = pcall(main)
+if not ergebnis then
     gpu.setForeground(0xFF0000)
     print("<FEHLER> Funktion main")
+    print(grund)
 end
 
 gpu.setForeground(0xFFFFFF)

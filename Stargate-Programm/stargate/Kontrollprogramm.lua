@@ -2,16 +2,32 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
-require("shell").setWorkingDirectory("/")
+OC = nil
+CC = nil
+if require then
+  OC = true
+  require("shell").setWorkingDirectory("/")
+else
+  CC = true
+end
 
-local component                 = require("component")
-local term                      = require("term")
-local event                     = require("event")
-local fs                        = require("filesystem")
+local component                 = {}
+local event                     = {}
+local term                      = term or require("term")
+local fs                        = fs or require("filesystem")
+local shell                     = shell or require("shell")
+_G.shell = shell
 
-local entfernen                 = loadfile("/bin/rm.lua")
-local kopieren                  = loadfile("/bin/cp.lua")
-local edit                      = loadfile("/bin/edit.lua")
+if OC then
+  component = require("component")
+  event = require("event")
+elseif CC then
+  component.getPrimary = peripheral.find
+end
+
+local entfernen                 = fs.remove or fs.delete
+local kopieren                  = fs.copy
+local edit                      = loadfile("/bin/edit.lua") or function(datei) shell.run("edit " .. datei) end
 local schreibSicherungsdatei    = loadfile("/stargate/schreibSicherungsdatei.lua")
 
 if not pcall(loadfile("/einstellungen/Sicherungsdatei.lua")) then
@@ -27,12 +43,16 @@ end
 local sprachen                  = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
 local ersetzen                  = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
 
-local gpu                       = component.getPrimary("gpu")
 local sg                        = component.getPrimary("stargate")
-local screen                    = component.getPrimary("screen")
+local screen                    = component.getPrimary("screen") or {}
+
+local gpu                       = component.getPrimary("gpu") or component.getPrimary("monitor")
+gpu.getResolution               = gpu.getResolution or gpu.getSize
+gpu.maxResolution               = gpu.maxResolution or gpu.getSize
 
 local Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
 local max_Bildschirmbreite, max_Bildschirmhoehe = gpu.maxResolution()
+
 local enteridc                  = ""
 local showidc                   = ""
 local remoteName                = ""
@@ -43,7 +63,6 @@ local codeaccepted              = "-"
 local wormhole                  = "in"
 local iriscontrol               = "on"
 local energytype                = "EU"
-local Farben                    = {}
 local Funktion                  = {}
 local Taste                     = {}
 local Variablen                 = {}
@@ -73,29 +92,12 @@ local LampenGruen               = false
 local LampenRot                 = false
 local VersionUpdate             = false
 
-Farben.white                    = 0
---Farben.orange                   = 1
---Farben.magenta                  = 2
---Farben.lightblue                = 3
-Farben.yellow                   = 4
---Farben.lime                     = 5
---Farben.pink                     = 6
---Farben.gray                     = 7
---Farben.silver                   = 8
---Farben.cyan                     = 9
---Farben.purple                   = 10
---Farben.blue                     = 11
---Farben.brown                    = 12
-Farben.green                    = 13
-Farben.red                      = 14
-Farben.black                    = 15
-
 Taste.Koordinaten               = {}
 Taste.Steuerunglinks            = {}
 Taste.Steuerungrechts           = {}
 
 local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit
-local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, f, k, r, graphicT3
+local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, f, k, r, Farben
 
 do
   sectime                       = os.time()
@@ -103,59 +105,20 @@ do
   sectime                       = sectime - os.time()
   letzteNachrichtZeit           = os.time()
   letzterAdressCheck            = os.time() / sectime
-  local args                    = require("shell").parse(...)
+  local args                    = {...}
   Funktion.update               = args[1]
   Funktion.checkServerVersion   = args[2]
   version                       = tostring(args[3])
-  graphicT3                     = args[4]
+  Farben                        = args[4]
 end
-
-Farben.graueFarbe               = 6684774
-Farben.hellblau                 = 0x606060
-Farben.mittelblau               = 8421504
-Farben.roteFarbe                = 0xFF0000
-Farben.weisseFarbe              = 0xFFFFFF
-Farben.blaueFarbe               = 0x0000FF
-Farben.schwarzeFarbe            = 0x000000
-Farben.gelbeFarbe               = 16750899
-Farben.brauenFarbe              = 10046464
-Farben.grueneFarbe              = 39168
-
-if graphicT3 then
-  Farben.graueFarbe             = 0x333333
-  Farben.hellblau               = 0x336699
-  Farben.mittelblau             = 0x6699FF
-  Farben.roteFarbe              = 0xFF3333
-  Farben.weisseFarbe            = 0xFFFFFF
-  Farben.blaueFarbe             = 0x333399
-  Farben.schwarzeFarbe          = 0x000000
-  Farben.gelbeFarbe             = 0xFFCC33
-  Farben.brauenFarbe            = 0x663300
-  Farben.grueneFarbe            = 0x336600
-end
-
-Farben.FehlerFarbe              = Farben.roteFarbe
-Farben.Hintergrundfarbe         = Farben.graueFarbe
-Farben.Trennlinienfarbe         = Farben.blaueFarbe
-Farben.Textfarbe                = Farben.weisseFarbe
-
-Farben.Adressfarbe              = Farben.brauenFarbe
-Farben.AdressfarbeAktiv         = Farben.hellblau
-Farben.Adresstextfarbe          = Farben.Textfarbe
-Farben.Nachrichtfarbe           = Farben.graueFarbe
-Farben.Nachrichttextfarbe       = Farben.Textfarbe
-Farben.Steuerungsfarbe          = Farben.gelbeFarbe
-Farben.Steuerungstextfarbe      = Farben.schwarzeFarbe
-Farben.Statusfarbe              = Farben.grueneFarbe
-Farben.Statustextfarbe          = Farben.Textfarbe
 
 if Sicherung.RF then
-  energytype          = "RF"
-  energymultiplicator = 80
+  energytype                    = "RF"
+  energymultiplicator           = 80
 end
 
 if sg.irisState() == "Offline" then
-  Trennlinienhoehe    = 13
+  Trennlinienhoehe              = 13
 end
 
 pcall(screen.setTouchModeInverted, true)

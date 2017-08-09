@@ -4,19 +4,176 @@
 
 os.sleep(1)
 
-require("shell").setWorkingDirectory("/")
+OC = nil
+CC = nil
+if require then
+  OC = true
+  require("shell").setWorkingDirectory("/")
+else
+  CC = true
+end
 
-local component               = require("component")
-local fs                      = require("filesystem")
-local arg                     = string.lower(tostring(require("shell").parse(...)[1]))
-local gpu                     = component.getPrimary("gpu")
-local wget                    = loadfile("/bin/wget.lua")
-local schreibSicherungsdatei  = loadfile("/stargate/schreibSicherungsdatei.lua")
-local kopieren                = loadfile("/bin/cp.lua")
-local betaVersionName         = ""
-local Sicherung               = {}
-local Funktion                = {}
+local io                     = io
+_G.io = io
+local shell                  = shell or require("shell")
+_G.shell = shell
+local fs                     = fs or require("filesystem")
+local term                   = term or require("term")
+local schreibSicherungsdatei = loadfile("/stargate/schreibSicherungsdatei.lua")
+local betaVersionName        = ""
+local Sicherung              = {}
+local Funktion               = {}
+local component              = {}
+local gpu                    = {}
+local Farben                 = {}
 local version
+local arg                    = ...
+
+term.clear()
+
+if arg then
+  arg                        = string.lower(tostring(arg))
+end
+
+if OC then
+  Farben.graueFarbe          = 0x333333
+  Farben.hellblau            = 0x336699
+  Farben.mittelblau          = 0x6699FF
+  Farben.roteFarbe           = 0xFF0000
+  Farben.weisseFarbe         = 0xFFFFFF
+  Farben.blaueFarbe          = 0x333399
+  Farben.schwarzeFarbe       = 0x000000
+  Farben.gelbeFarbe          = 0xFFCC33
+  Farben.brauenFarbe         = 0x663300
+  Farben.hellgrueneFarbe     = 0x00FF00
+  Farben.grueneFarbe         = 0x336600
+  Farben.orangeFarbe         = 0xFF7F24
+elseif CC then
+  Farben.graueFarbe          = 128
+  Farben.hellblau            = 8
+  Farben.mittelblau          = 512
+  Farben.roteFarbe           = 16384
+  Farben.weisseFarbe         = 1
+  Farben.blaueFarbe          = 2048
+  Farben.schwarzeFarbe       = 32768
+  Farben.gelbeFarbe          = 16
+  Farben.brauenFarbe         = 4096
+  Farben.hellgrueneFarbe     = 32
+  Farben.grueneFarbe         = 8192
+  Farben.orangeFarbe         = 2
+end
+
+Farben.FehlerFarbe           = Farben.roteFarbe
+Farben.Hintergrundfarbe      = Farben.graueFarbe
+Farben.Trennlinienfarbe      = Farben.blaueFarbe
+Farben.Textfarbe             = Farben.weisseFarbe
+
+Farben.Adressfarbe           = Farben.brauenFarbe
+Farben.AdressfarbeAktiv      = Farben.hellblau
+Farben.Adresstextfarbe       = Farben.Textfarbe
+Farben.Nachrichtfarbe        = Farben.graueFarbe
+Farben.Nachrichttextfarbe    = Farben.Textfarbe
+Farben.Steuerungsfarbe       = Farben.gelbeFarbe
+Farben.Steuerungstextfarbe   = Farben.schwarzeFarbe
+Farben.Statusfarbe           = Farben.grueneFarbe
+Farben.Statustextfarbe       = Farben.Textfarbe
+
+Farben.white                 = 0
+Farben.orange                = 1
+Farben.magenta               = 2
+Farben.lightblue             = 3
+Farben.yellow                = 4
+Farben.lime                  = 5
+Farben.pink                  = 6
+Farben.gray                  = 7
+Farben.silver                = 8
+Farben.cyan                  = 9
+Farben.purple                = 10
+Farben.blue                  = 11
+Farben.brown                 = 12
+Farben.green                 = 13
+Farben.red                   = 14
+Farben.black                 = 15
+
+if OC then
+  component = require("component")
+  gpu = component.getPrimary("gpu")
+  local a = gpu.setForeground
+  local b = gpu.setBackground
+  gpu.setForeground = function(code) if code then a(code) end end
+  gpu.setBackground = function(code) if code then b(code) end end
+elseif CC then
+  component.getPrimary = peripheral.find
+  component.isAvailable = function(name)
+    cc_immer = {}
+    cc_immer.internet = function() return http end
+    cc_immer.redstone = function() return true end
+    if cc_immer[name] then
+      return cc_immer[name]()
+    end
+    return peripheral.find(name)
+  end
+  gpu = component.getPrimary("monitor")
+  gpu.setResolution = function() gpu.setTextScale(0.5) end
+  gpu.setForeground = function(code) if code then gpu.setTextColor(code) end end
+  gpu.setBackground = function(code) if code then gpu.setBackgroundColor(code) end end
+  gpu.maxResolution = gpu.getSize
+  gpu.fill = function() term.clear() end
+  fs.remove = fs.remove or fs.delete
+end
+
+local function kopieren(a, b, c)
+  if type(a) == "string" and type(b) == "string" then
+    if c == "-n" then
+      fs.remove(b)
+    end
+    if fs.exists(a) and not fs.exists(b) then
+      fs.copy(a, b)
+    end
+    return true
+  end
+end
+
+local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
+  if type(url) ~= "string" and type(ziel) ~= "string" then
+    return
+  elseif type(option) == "string" and option ~= "-f" and type(url) == "string" then
+    ziel = url
+    url = option
+  end
+  if http.checkURL(url) then
+    if fs.exists(ziel) and option ~= "-f" then
+      printError("<Fehler> Ziel existiert bereits")
+      return
+    else
+      term.write("Starte Download ... ")
+      local timer = os.startTimer(30)
+      http.request(url)
+      while true do
+        local event, id, data = os.pullEvent()
+        if event == "http_success" then
+          print("erfolgreich")
+          local f = io.open(ziel, "w")
+          f:write(data.readAll())
+          f:close()
+          data:close()
+          print("Gespeichert unter " .. ziel)
+          return true
+        elseif event == "timer" and timer == id then
+          printError("<Fehler> Zeitueberschreitung")
+          return
+        elseif event == "http_failure" then
+          printError("<Fehler> Download")
+          os.cancelAlarm(timer)
+          return
+        end
+      end
+    end
+  else
+    printError("<Fehler> URL")
+    return
+  end
+end
 
 function Funktion.Pfad(versionTyp)
   if versionTyp == nil then
@@ -35,12 +192,23 @@ function Funktion.checkSprache()
   else
     local alleSprachen = {}
     local j = 1
-    for i in fs.list("/stargate/sprache") do
-      local Ende = string.len(i)
-      i = string.sub(i, 1, Ende - 4)
-      if i ~= "ersetzen" then
-        alleSprachen[j] = i
-        j = j + 1
+    if OC then
+      for i in fs.list("/stargate/sprache") do
+        local Ende = string.len(i)
+        i = string.sub(i, 1, Ende - 4)
+        if i ~= "ersetzen" then
+          alleSprachen[j] = i
+          j = j + 1
+        end
+      end
+    elseif CC then
+      for k, i in pairs(fs.list("/stargate/sprache")) do
+        local Ende = string.len(i)
+        i = string.sub(i, 1, Ende - 4)
+        if i ~= "ersetzen" then
+          alleSprachen[j] = i
+          j = j + 1
+        end
       end
     end
     local weiter = true
@@ -66,26 +234,30 @@ function Funktion.checkSprache()
 end
 
 function Funktion.checkOpenOS()
-  local OpenOS_Version = "OpenOS 1.6.1"
-  if _OSVERSION == OpenOS_Version then
-    gpu.setForeground(0x00FF00)
-    print("\nOpenOS Version:        " .. _OSVERSION)
-  else
-    gpu.setForeground(0xFF0000)
-    print("\nOpenOS Version:        " .. _OSVERSION .. " -> " .. OpenOS_Version)
+  if OC then
+    local OpenOS_Version = "OpenOS 1.6.7"
+    if _OSVERSION == OpenOS_Version then
+      gpu.setForeground(Farben.hellgrueneFarbe)
+      print("\nOpenOS Version:        " .. _OSVERSION)
+    else
+      gpu.setForeground(Farben.roteFarbe)
+      print("\nOpenOS Version:        " .. _OSVERSION .. " -> " .. OpenOS_Version)
+    end
+    gpu.setForeground(Farben.weisseFarbe)
+  elseif CC then
+    print("\nCraftOS Version:       " .. os.version())
   end
-  gpu.setForeground(0xFFFFFF)
 end
 
 function Funktion.checkKomponenten()
-  require("term").clear()
+  term.clear()
   print(sprachen.pruefeKomponenten or "Prüfe Komponenten\n")
   local function check(eingabe)
     if component.isAvailable(eingabe[1]) then
-      gpu.setForeground(0x00FF00)
+      gpu.setForeground(Farben.hellgrueneFarbe)
       print(eingabe[2])
     else
-      gpu.setForeground(0xFF0000)
+      gpu.setForeground(Farben.roteFarbe)
       print(eingabe[3])
     end
   end
@@ -104,26 +276,25 @@ function Funktion.checkKomponenten()
     r = nil
   end
   if gpu.maxResolution() == 80 then
-    gpu.setForeground(0x00FF00)
+    gpu.setForeground(Farben.hellgrueneFarbe)
     print(sprachen.gpuOK2T)
   elseif gpu.maxResolution() == 160 then
-    graphicT3 = true
-    gpu.setForeground(0xFF7F24)
+    gpu.setForeground(Farben.orangeFarbe)
     print(sprachen.gpuOK3T)
   else
-    gpu.setForeground(0xFF0000)
+    gpu.setForeground(Farben.roteFarbe)
     print(sprachen.gpuFehlt)
   end
-  gpu.setForeground(0xFFFFFF)
+  gpu.setForeground(Farben.weisseFarbe)
   if component.isAvailable("stargate") then
     sg = component.getPrimary("stargate")
     if sg.energyToDial(sg.localAddress()) then
       return true
     else
-      gpu.setForeground(0xFF0000)
+      gpu.setForeground(Farben.roteFarbe)
       print()
       print(sprachen.StargateNichtKomplett or "Stargate ist funktionsunfähig")
-      gpu.setForeground(0xFFFFFF)
+      gpu.setForeground(Farben.weisseFarbe)
       os.sleep(5)
       return
     end
@@ -137,34 +308,6 @@ function Funktion.update(versionTyp)
   if versionTyp == nil then
     versionTyp = "master"
   end
-  --[[
-  if fs.exists("/bin/github.lua") or wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua") then
-    Sicherung.installieren = true
-    if schreibSicherungsdatei(Sicherung) then
-      local f = io.open ("/autorun.lua", "w")
-      f:write([==[-- pastebin run -f YVqKFnsP]==] .. "\n")
-      f:write([==[-- von Nex4rius]==] .. "\n")
-      f:write([==[-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm]==] .. "\n")
-      f:write("\n")
-      f:write([==[if loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua") then]==] .. "\n")
-      f:write([==[  return loadfile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", "]==] .. versionTyp .. [==[", "Stargate-Programm")]==] .. "\n")
-      f:write([==[end]==] .. "\n")
-      f:close()
-      if loadfile("/autorun.lua")() and version and versionTyp == "BETA" then
-        local f = io.open ("/stargate/version.txt", "a")
-        f:write(" BETA")
-        f:close()
-      end
-    else
-      io.write(sprachen.fehlerName or "<FEHLER>")
-      print(" /stargate/schreibSicherungsdatei.lua")
-    end
-  else
-    io.write(sprachen.fehlerName or "<FEHLER>")
-    print(" /bin/github.lua and GitHub download")
-  end
-  require("computer").shutdown(true)
-  ]]
   if wget("-f", Funktion.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua") then
     Sicherung.installieren = true
     if schreibSicherungsdatei(Sicherung) then
@@ -216,20 +359,8 @@ function Funktion.checkDateien()
   f:write('   loadfile("/bin/wget-lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua")\n')
   f:write('   loadfile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", "master", "Stargate-Programm")\n')
   f:write('end\n')
---[[
-  f:write([==[-- pastebin run -f YVqKFnsP]==] .. "\n")
-  f:write([==[-- von Nex4rius]==] .. "\n")
-  f:write([==[-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm]==] .. "\n")
-  f:write("\n")
-  f:write([==[if not pcall(loadfile("/autorun.lua"), require("shell").parse(...)[1]) then]==] .. "\n")
-  f:write([==[    if loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua") then]==] .. "\n")
-  f:write([==[        loafile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", "master", "Stargate-Programm")]==] .. "\n")
-  f:write([==[    end]==] .. "\n")
-  f:write([==[end]==])
---]]
   f:close()
   local dateien = {
-    "autorun.lua",
     "stargate/Kontrollprogramm.lua",
     "stargate/Sicherungsdatei.lua",
     "stargate/adressen.lua",
@@ -238,6 +369,13 @@ function Funktion.checkDateien()
     "stargate/schreibSicherungsdatei.lua",
     "stargate/sprache/ersetzen.lua",
   }
+  if OC then
+    table.insert(dateien, "autorun.lua")
+    table.insert(dateien, "bin/stargate.lua")
+  elseif CC then
+    table.insert(dateien, "startup")
+  end
+  local sprachen = sprachen or {}
   for i in pairs(dateien) do
     if not fs.exists("/" .. dateien[i]) then
       io.write(sprachen.fehlerName or "<FEHLER>")
@@ -260,7 +398,16 @@ function Funktion.checkDateien()
   if not fs.exists("/einstellungen/Sicherungsdatei.lua") then
     kopieren("-n", "/stargate/Sicherungsdatei.lua", "/einstellungen/Sicherungsdatei.lua")
   end
-  local alleSprachen = {"deutsch", "english", "russian", "czech", tostring(Sicherung.Sprache)}
+  local alleSprachen = {"deutsch", "english", "russian", "czech"}
+  local neueSprache
+  for k, v in pairs(alleSprachen) do
+    if v == tostring(Sicherung.Sprache) then
+      neueSprache = true
+    end
+  end
+  if neueSprache then
+    table.insert(alleSprachen, tostring(Sicherung.Sprache))
+  end
   for i in pairs(alleSprachen) do
     if fs.exists("/stargate/sprache/" .. alleSprachen[i] .. ".lua") then
       return true
@@ -336,7 +483,7 @@ function Funktion.mainCheck()
       loadfile("/bin/edit.lua")("-r", "/log")
       loadfile("/bin/rm.lua")("/log")
     end
-    if not pcall(loadfile("/stargate/Kontrollprogramm.lua"), Funktion.update, Funktion.checkServerVersion, version, graphicT3) then
+    if not pcall(loadfile("/stargate/Kontrollprogramm.lua"), Funktion.update, Funktion.checkServerVersion, version, Farben) then
       print("Kontrollprogramm.lua hat einen Fehler")
     end
   else
@@ -359,13 +506,13 @@ end
 function Funktion.main()
   os.sleep(0.5)
   gpu.setResolution(70, 25)
-  gpu.setForeground(0xFFFFFF)
-  gpu.setBackground(6684774)
+  gpu.setForeground(Farben.weisseFarbe)
+  gpu.setBackground(Farben.graueFarbe)
   if gpu.maxResolution() == 160 then
-    gpu.setBackground(0x333333)
+    gpu.setBackground(Farben.graueFarbe)
   end
-  gpu.fill(1, 1, 160, 80, " ")
-  require("term").clear()
+  gpu.fill(1, 1, 70, 25, " ")
+  term.clear()
   Funktion.checkDateien()
   if fs.exists("/stargate/version.txt") then
     local f = io.open ("/stargate/version.txt", "r")
@@ -393,8 +540,8 @@ function Funktion.main()
     end
   end
   if arg == sprachen.hilfe or arg == "hilfe" or arg == "help" or arg == "?" then
-    gpu.setBackground(0x000000)
-    gpu.setForeground(0xFFFFFF)
+    gpu.setForeground(Farben.schwarzeFarbe)
+    gpu.setBackground(Farben.weisseFarbe)
     print(sprachen.Hilfetext or [==[
       Verwendung: autorun [...]
       ja    -> Aktualisierung zur stabilen Version
@@ -412,9 +559,9 @@ function Funktion.main()
       os.sleep(5)
     end
   end
-  gpu.setBackground(0x000000)
-  gpu.setForeground(0xFFFFFF)
-  require("term").clear()
+  gpu.setForeground(Farben.weisseFarbe)
+  gpu.setBackground(Farben.schwarzeFarbe)
+  term.clear()
   gpu.setResolution(gpu.maxResolution())
 end
 
