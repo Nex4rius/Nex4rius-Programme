@@ -1,7 +1,10 @@
 <a name="start">
 <h1>Tank Display for OpenComputers</h1></a>
 
-<img src="http://i.imgur.com/gQ5rL3X.gif">
+<img src="http://i.imgur.com/gQ5rL3X.gif" />
+<img src="http://imgur.com/dl1WOE5.png" />
+
+Allowed sizes: 4x1; 8x2; 8x5
 
 <h2>Download</h2>
 <hr>
