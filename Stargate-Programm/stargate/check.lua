@@ -276,7 +276,7 @@ function Funktion.checkKomponenten()
     r = nil
   end
   if gpu.maxResolution() == 80 then
-    gpu.setForeground(Farben.grueneFarbe)
+    gpu.setForeground(Farben.hellgrueneFarbe)
     print(sprachen.gpuOK2T)
   elseif gpu.maxResolution() == 160 then
     gpu.setForeground(Farben.orangeFarbe)
