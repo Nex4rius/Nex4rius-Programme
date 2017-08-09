@@ -97,7 +97,7 @@ Taste.Steuerunglinks            = {}
 Taste.Steuerungrechts           = {}
 
 local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit
-local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, f, k, r, graphicT3
+local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, f, k, r, Farben
 
 do
   sectime                       = os.time()
@@ -109,18 +109,16 @@ do
   Funktion.update               = args[1]
   Funktion.checkServerVersion   = args[2]
   version                       = tostring(args[3])
-  graphicT3                     = args[4]
+  Farben                        = args[4]
 end
 
-local Farben = loadfile("/stargate/farben.lua")(OC, CC, graphicT3)
-
 if Sicherung.RF then
-  energytype          = "RF"
-  energymultiplicator = 80
+  energytype                    = "RF"
+  energymultiplicator           = 80
 end
 
 if sg.irisState() == "Offline" then
-  Trennlinienhoehe    = 13
+  Trennlinienhoehe              = 13
 end
 
 pcall(screen.setTouchModeInverted, true)
