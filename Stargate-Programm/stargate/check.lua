@@ -35,10 +35,63 @@ if arg then
   arg                         = string.lower(tostring(arg))
 end
 
-if fs.exists("/stargate/farben.lua") then
-  Farben = loadfile("/stargate/farben.lua")(OC, CC)
-  --Farben = {}
+if OC then
+  Farben.graueFarbe        = 6684774
+  Farben.hellblau          = 0x606060
+  Farben.mittelblau        = 8421504
+  Farben.roteFarbe         = 0xFF0000
+  Farben.weisseFarbe       = 0xFFFFFF
+  Farben.blaueFarbe        = 0x0000FF
+  Farben.schwarzeFarbe     = 0x000000
+  Farben.gelbeFarbe        = 16750899
+  Farben.brauenFarbe       = 10046464
+  Farben.grueneFarbe       = 39168
+  Farben.orangeFarbe       = 0xFF7F24
+elseif CC then
+  Farben.graueFarbe        = 128
+  Farben.hellblau          = 8
+  Farben.mittelblau        = 512
+  Farben.roteFarbe         = 16384
+  Farben.weisseFarbe       = 1
+  Farben.blaueFarbe        = 2048
+  Farben.schwarzeFarbe     = 32768
+  Farben.gelbeFarbe        = 16
+  Farben.brauenFarbe       = 4096
+  Farben.grueneFarbe       = 8192
+  Farben.orangeFarbe       = 2
 end
+
+Farben.FehlerFarbe         = Farben.roteFarbe
+Farben.Hintergrundfarbe    = Farben.graueFarbe
+Farben.Trennlinienfarbe    = Farben.blaueFarbe
+Farben.Textfarbe           = Farben.weisseFarbe
+
+Farben.Adressfarbe         = Farben.brauenFarbe
+Farben.AdressfarbeAktiv    = Farben.hellblau
+Farben.Adresstextfarbe     = Farben.Textfarbe
+Farben.Nachrichtfarbe      = Farben.graueFarbe
+Farben.Nachrichttextfarbe  = Farben.Textfarbe
+Farben.Steuerungsfarbe     = Farben.gelbeFarbe
+Farben.Steuerungstextfarbe = Farben.schwarzeFarbe
+Farben.Statusfarbe         = Farben.grueneFarbe
+Farben.Statustextfarbe     = Farben.Textfarbe
+
+Farben.white               = 0
+--Farben.orange              = 1
+--Farben.magenta             = 2
+--Farben.lightblue           = 3
+Farben.yellow              = 4
+--Farben.lime                = 5
+--Farben.pink                = 6
+--Farben.gray                = 7
+--Farben.silver              = 8
+--Farben.cyan                = 9
+--Farben.purple              = 10
+--Farben.blue                = 11
+--Farben.brown               = 12
+Farben.green               = 13
+Farben.red                 = 14
+Farben.black = 15
 
 if OC then
   component = require("component")
@@ -237,6 +290,17 @@ function Funktion.checkKomponenten()
     print(sprachen.gpuOK2T)
   elseif gpu.maxResolution() == 160 then
     graphicT3 = true
+    Farben.graueFarbe      = 0x333333
+    Farben.hellblau        = 0x336699
+    Farben.mittelblau      = 0x6699FF
+    Farben.roteFarbe       = 0xFF3333
+    Farben.weisseFarbe     = 0xFFFFFF
+    Farben.blaueFarbe      = 0x333399
+    Farben.schwarzeFarbe   = 0x000000
+    Farben.gelbeFarbe      = 0xFFCC33
+    Farben.brauenFarbe     = 0x663300
+    Farben.grueneFarbe     = 0x336600
+    Farben.orangeFarbe     = 0xFF7F24
     gpu.setForeground(Farben.orangeFarbe)
     print(sprachen.gpuOK3T)
   else
@@ -323,7 +387,6 @@ function Funktion.checkDateien()
     "stargate/check.lua",
     "stargate/version.txt",
     "stargate/schreibSicherungsdatei.lua",
-    "stargate/farben.lua",
     "stargate/sprache/ersetzen.lua",
   }
   if OC then
@@ -355,7 +418,16 @@ function Funktion.checkDateien()
   if not fs.exists("/einstellungen/Sicherungsdatei.lua") then
     kopieren("-n", "/stargate/Sicherungsdatei.lua", "/einstellungen/Sicherungsdatei.lua")
   end
-  local alleSprachen = {"deutsch", "english", "russian", "czech", tostring(Sicherung.Sprache)}
+  local alleSprachen = {"deutsch", "english", "russian", "czech"}
+  local neueSprache
+  for k, v in pairs(alleSprachen) do
+    if v == tostring(Sicherung.Sprache) then
+      neueSprache = true
+    end
+  end
+  if neueSprache then
+    table.insert(alleSprachen, tostring(Sicherung.Sprache))
+  end
   for i in pairs(alleSprachen) do
     if fs.exists("/stargate/sprache/" .. alleSprachen[i] .. ".lua") then
       return true
@@ -431,7 +503,7 @@ function Funktion.mainCheck()
       loadfile("/bin/edit.lua")("-r", "/log")
       loadfile("/bin/rm.lua")("/log")
     end
-    if not pcall(loadfile("/stargate/Kontrollprogramm.lua"), Funktion.update, Funktion.checkServerVersion, version, graphicT3) then
+    if not pcall(loadfile("/stargate/Kontrollprogramm.lua"), Funktion.update, Funktion.checkServerVersion, version, Farben) then
       print("Kontrollprogramm.lua hat einen Fehler")
     end
   else
