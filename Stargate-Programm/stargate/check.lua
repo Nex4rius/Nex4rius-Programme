@@ -119,8 +119,7 @@ elseif CC then
   gpu.fill = function() term.clear() end
   fs.remove = fs.remove or fs.delete
 end
-print("1a")
---io.read()
+
 local function kopieren(a, b, c)
   if type(a) == "string" and type(b) == "string" then
     if c == "-n" then
@@ -132,8 +131,7 @@ local function kopieren(a, b, c)
     return true
   end
 end
-print("2a")
---io.read()
+
 local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
   if type(url) ~= "string" and type(ziel) ~= "string" then
     return
@@ -174,16 +172,14 @@ local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
     return
   end
 end
-print("3a")
---io.read()
+
 function Funktion.Pfad(versionTyp)
   if versionTyp == nil then
     versionTyp = "master"
   end
   return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/" .. versionTyp .. "/Stargate-Programm/"
 end
-print("4a")
---io.read()
+
 function Funktion.checkSprache()
   if Sicherung.Sprache and Sicherung.Sprache ~= "" then
     if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
@@ -234,6 +230,7 @@ function Funktion.checkSprache()
     return true
   end
 end
+
 function Funktion.checkOpenOS()
   if OC then
     local OpenOS_Version = "OpenOS 1.6.7"
@@ -249,6 +246,7 @@ function Funktion.checkOpenOS()
     print("\nCraftOS Version:       " .. os.version())
   end
 end
+
 function Funktion.checkKomponenten()
   term.clear()
   print("1b")
@@ -346,6 +344,7 @@ function Funktion.update(versionTyp)
   end
   os.exit()
 end
+
 function Funktion.checkServerVersion()
   if wget("-fQ", Funktion.Pfad("master") .. "stargate/version.txt", "/serverVersion.txt") then
     local f = io.open ("/serverVersion.txt", "r")
@@ -357,6 +356,7 @@ function Funktion.checkServerVersion()
   end
   return serverVersion
 end
+
 function Funktion.checkBetaServerVersion()
   if wget("-fQ", Funktion.Pfad("beta") .. "stargate/version.txt", "/betaVersion.txt") then
     local f = io.open ("/betaVersion.txt", "r")
@@ -531,9 +531,11 @@ function Funktion.main()
   if gpu.maxResolution() == 160 then
     gpu.setBackground(Farben.graueFarbe)
   end
+  print("2a")
   gpu.fill(1, 1, 70, 25, " ")
   term.clear()
   Funktion.checkDateien()
+  print("3a")
   if fs.exists("/stargate/version.txt") then
     local f = io.open ("/stargate/version.txt", "r")
     version = f:read()
@@ -541,14 +543,17 @@ function Funktion.main()
   else
     version = sprachen.fehlerName
   end
+  print("4a")
   if fs.exists("/einstellungen/Sicherungsdatei.lua") then
     Sicherung = loadfile("/einstellungen/Sicherungsdatei.lua")()
   else
     Sicherung.installieren = false
   end
+  print("5a")
   if arg == "master" or arg == "beta" then
     versionTyp = arg
   end
+  print("6a")
   if Funktion.checkSprache() then
     sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
   else
@@ -559,6 +564,7 @@ function Funktion.main()
       print(sprachen.fehlerName or "<FEHLER>")
     end
   end
+  print("7a")
   if arg == sprachen.hilfe or arg == "hilfe" or arg == "help" or arg == "?" then
     gpu.setForeground(Farben.schwarzeFarbe)
     gpu.setBackground(Farben.weisseFarbe)
@@ -579,10 +585,12 @@ function Funktion.main()
       os.sleep(5)
     end
   end
+  print("8a")
   gpu.setForeground(Farben.weisseFarbe)
   gpu.setBackground(Farben.schwarzeFarbe)
   term.clear()
   gpu.setResolution(gpu.maxResolution())
 end
 
+print("1a")
 Funktion.main()
