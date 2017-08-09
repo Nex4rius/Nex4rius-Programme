@@ -524,11 +524,17 @@ function Funktion.mainCheck()
 end
 
 function Funktion.main()
+  print("1c")
   os.sleep(0.5)
+  print("2c")
   gpu.setResolution(70, 25)
+  print("3c")
   gpu.setForeground(Farben.weisseFarbe)
+  print("4c")
   gpu.setBackground(Farben.graueFarbe)
+  print("5c")
   if gpu.maxResolution() == 160 then
+    print("6c")
     gpu.setBackground(Farben.graueFarbe)
   end
   print("2a")
