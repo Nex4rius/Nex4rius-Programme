@@ -249,8 +249,6 @@ end
 
 function Funktion.checkKomponenten()
   term.clear()
-  print(type(sprachen.pruefeKomponenten))
-  print(sprachen.pruefeKomponenten)
   print(sprachen.pruefeKomponenten or "Prüfe Komponenten\n")
   local function check(eingabe)
     if component.isAvailable(eingabe[1]) then
