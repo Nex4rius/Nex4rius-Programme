@@ -70,10 +70,7 @@ function update()
       anzeigen(verarbeiten(tank), screenid)
     end
   else
-    for screenid in component.list("screen") do
-      gpu.bind(screenid)
-      keineDaten()
-    end
+    keineDaten()
   end
   for i in pairs(tank) do
     if c.uptime() - tank[i].zeit > Wartezeit * 2 then
@@ -85,9 +82,13 @@ end
 function keineDaten()
   m.broadcast(port + 1, "update", version)
   if c.uptime() - letzteNachricht > Wartezeit then
-    gpu.setResolution(gpu.maxResolution())
-    gpu.fill(1, 1, 160, 80, " ")
-    gpu.set(1, 50, "Keine Daten vorhanden")
+    for screenid in component.list("screen") do
+      gpu.bind(screenid)
+      gpu.setResolution(21, 1)
+      os.sleep(0.1)
+      term.clear()
+      gpu.set(1, 1, "Keine Daten vorhanden")
+    end
   end
 end
 
@@ -147,8 +148,8 @@ end
 function anzeigen(tankneu, screenid)
   local klein = false
   local screenid = screenid or gpu.getScreen()
-  local a, b = component.proxy(screenid).getAspectRatio()
-  if b <= 2 then
+  local _, hoch = component.proxy(screenid).getAspectRatio()
+  if hoch <= 2 then
     klein = true
   end
   local x = 1
@@ -158,17 +159,26 @@ function anzeigen(tankneu, screenid)
   for i in pairs(tankneu) do
     maxanzahl = maxanzahl + 1
   end
+  local a, b = gpu.getResolution()
   if maxanzahl <= 16 and maxanzahl ~= 0 then
     if klein then
-      gpu.setResolution(160, maxanzahl)
+      if a ~= 160 or b ~= maxanzahl then
+        gpu.setResolution(160, maxanzahl)
+      end
     else
-      gpu.setResolution(160, maxanzahl * 3)
+      if a ~= 160 or b ~= maxanzahl * 3 then
+        gpu.setResolution(160, maxanzahl * 3)
+      end
     end
   else
     if klein then
+      if a ~= 160 or b ~= 16 then
       gpu.setResolution(160, 16)
+      end
     else
+      if a ~= 160 or b ~= 48 then
       gpu.setResolution(160, 48)
+      end
     end
   end
   os.sleep(0.1)
@@ -324,9 +334,8 @@ function split(...)
 end
 
 function beenden()
-  laeuft = false
   Farben(0xFFFFFF, 0x000000)
-  gpu.setResolution(gpu.maxResoltution())
+  gpu.setResolution(gpu.maxResolution())
   os.sleep(0.1)
   term.clear()
 end
@@ -335,17 +344,23 @@ function main()
   gpu.setBackground(0x000000)
   term.setCursor(1, 50)
   m.open(port)
-  gpu.setResolution(gpu.maxResolution())
-  gpu.fill(1, 1, 160, 80, " ")
-  gpu.set(1, 50, "Warte auf Daten")
+  for screenid in component.list("screen") do
+    gpu.bind(screenid)
+    gpu.setResolution(15, 1)
+    os.sleep(0.1)
+    term.clear()
+    gpu.set(1, 1, "Warte auf Daten")
+  end
   m.broadcast(port + 1, "update", version)
-  while laeuft do
+  while true do
     if not pcall(update) then
       os.sleep(5)
     end
     standby()
   end
-  beenden() -- bisher nie
 end
 
-main()
+if not pcall(main) then
+  print("Ausschalten")
+  beenden()
+end
