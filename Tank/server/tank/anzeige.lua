@@ -59,9 +59,23 @@ function update()
       tank[ende].zeit = c.uptime()
       tank[ende].inhalt = require("serialization").unserialize(nachricht)
     end
-    anzeigen(verarbeiten(tank))
+    local i = 0
+    for screenid in component.list("screen") do
+      i = i + 1
+    end
+    for screenid in component.list("screen") do
+      if i > 1 then
+        gpu.bind(screenid)
+      end
+      anzeigen(verarbeiten(tank), screenid)
+    end
   else
-    keineDaten()
+    for screenid in component.list("screen") do
+      if i > 1 then
+        gpu.bind(screenid)
+      end
+      keineDaten()
+    end
   end
   for i in pairs(tank) do
     if c.uptime() - tank[i].zeit > Wartezeit * 2 then
@@ -132,7 +146,13 @@ function spairs(t, order)
   end
 end
 
-function anzeigen(tankneu)
+function anzeigen(tankneu, screenid)
+  local klein = false
+  local screenid = screenid or gpu.getScreen()
+  local a, b = component.proxy(screenid).getAspectRatio()
+  if b <= 2 then
+    klein = true
+  end
   local x = 1
   local y = 1
   local leer = true
@@ -141,9 +161,17 @@ function anzeigen(tankneu)
     maxanzahl = maxanzahl + 1
   end
   if maxanzahl <= 16 and maxanzahl ~= 0 then
-    gpu.setResolution(160, maxanzahl * 3)
+    if klein then
+      gpu.setResolution(160, maxanzahl)
+    else
+      gpu.setResolution(160, maxanzahl * 3)
+    end
   else
-    gpu.setResolution(160, 48)
+    if klein then
+      gpu.setResolution(160, 16)
+    else
+      gpu.setResolution(160, 48)
+    end
   end
   os.sleep(0.1)
   local anzahl = 0
@@ -160,15 +188,27 @@ function anzeigen(tankneu)
     if anzahl == 17 or anzahl == 33 or anzahl == 49 then
       if maxanzahl > 48 and anzahl > 48 then
         x = 41
-        y = 1 + 3 * (64 - maxanzahl)
+        if klein then
+          y = 1 + (64 - maxanzahl)
+        else
+          y = 1 + 3 * (64 - maxanzahl)
+        end
         breite = 40
       elseif maxanzahl > 32 and anzahl > 32 then
         x = 121
-        y = 1 + 3 * (48 - maxanzahl)
+        if klein then
+          y = 1 + (48 - maxanzahl)
+        else
+          y = 1 + 3 * (48 - maxanzahl)
+        end
         breite = 40
       else
         x = 81
-        y = 1 + 3 * (32 - maxanzahl)
+        if klein then
+          y = 1 + (32 - maxanzahl)
+        else
+          y = 1 + 3 * (32 - maxanzahl)
+        end
       end
       if y < 1 then
         y = 1
@@ -182,16 +222,26 @@ function anzeigen(tankneu)
     if label == "fluidhelium3" then
       label = "Helium-3"
     end
-    zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31))
+    zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein)
     leer = false
-    y = y + 3
+    if klein then
+      y = y + 1
+    else
+      y = y + 3
+    end
   end
   Farben(0xFFFFFF, 0x000000)
   for i = anzahl, 33 do
     gpu.set(x, y    , string.rep(" ", 80))
-    gpu.set(x, y + 1, string.rep(" ", 80))
-    gpu.set(x, y + 2, string.rep(" ", 80))
-    y = y + 3
+    if not klein then
+      gpu.set(x, y + 1, string.rep(" ", 80))
+      gpu.set(x, y + 2, string.rep(" ", 80))
+    end
+    if klein then
+      y = y + 1
+    else
+      y = y + 3
+    end
   end
   if leer then
     keineDaten()
@@ -202,7 +252,7 @@ function zeichenErsetzen(...)
   return string.gsub(..., "%a+", function (str) return ersetzen[str] end)
 end
 
-function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht)
+function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein)
   if farben[name] == nil and debug then
     nachricht = string.format("%s  %s  >>report this liquid<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
     nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
@@ -235,13 +285,21 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, b
   Farben(farben[name][1], farben[name][2])
   local ende = 0
   for i = 1, math.ceil(breite * menge / maxmenge) do
-    gpu.set(x, y, string.format(" %s ", nachricht[i]), true)
+    if klein then
+      gpu.set(x, y, string.format("%s", nachricht[i]), true)
+    else
+      gpu.set(x, y, string.format(" %s ", nachricht[i]), true)
+    end
     x = x + 1
     ende = i
   end
   Farben(farben[name][3], farben[name][4])
   for i = 1, breite - math.ceil(breite * menge / maxmenge) do
-    gpu.set(x, y, string.format(" %s ", nachricht[i + ende]), true)
+    if klein then
+      gpu.set(x, y, string.format("%s", nachricht[i + ende]), true)
+    else
+      gpu.set(x, y, string.format(" %s ", nachricht[i + ende]), true)
+    end
     x = x + 1
   end
 end

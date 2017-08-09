@@ -15,7 +15,7 @@ local tps        = function() return 20 end
 local port       = 70
 local maxzeit    = 30
 local tpsZeit    = 1
-local reichweite = 400
+local reichweite
 local zeit       = maxzeit
 local tank       = {}
 
@@ -37,6 +37,16 @@ if fs.exists("/tank/version.txt") then
     f:close()
   else
     version = "<FEHLER>"
+end
+
+do
+  print("Set wireless network card range (default: 400)")
+  io.write("Range: ")
+  local lesen = io.read()
+  if lesen == "" then
+    lesen = nil
+  end
+  reichweite = lesen or 400
 end
 
 function check()
