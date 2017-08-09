@@ -528,24 +528,16 @@ function Funktion.mainCheck()
 end
 
 function Funktion.main()
-  print("1c")
   os.sleep(0.5)
-  print("2c")
   gpu.setResolution(70, 25)
-  print("3c")
   gpu.setForeground(Farben.weisseFarbe)
-  print("4c")
   gpu.setBackground(Farben.graueFarbe)
-  print("5c")
   if gpu.maxResolution() == 160 then
-    print("6c")
     gpu.setBackground(Farben.graueFarbe)
   end
-  print("2a")
   gpu.fill(1, 1, 70, 25, " ")
   term.clear()
   Funktion.checkDateien()
-  print("3a")
   if fs.exists("/stargate/version.txt") then
     local f = io.open ("/stargate/version.txt", "r")
     version = f:read()
@@ -553,17 +545,14 @@ function Funktion.main()
   else
     version = sprachen.fehlerName
   end
-  print("4a")
   if fs.exists("/einstellungen/Sicherungsdatei.lua") then
     Sicherung = loadfile("/einstellungen/Sicherungsdatei.lua")()
   else
     Sicherung.installieren = false
   end
-  print("5a")
   if arg == "master" or arg == "beta" then
     versionTyp = arg
   end
-  print("6a")
   if Funktion.checkSprache() then
     sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
   else
@@ -574,7 +563,6 @@ function Funktion.main()
       print(sprachen.fehlerName or "<FEHLER>")
     end
   end
-  print("7a")
   if arg == sprachen.hilfe or arg == "hilfe" or arg == "help" or arg == "?" then
     gpu.setForeground(Farben.schwarzeFarbe)
     gpu.setBackground(Farben.weisseFarbe)
@@ -595,12 +583,10 @@ function Funktion.main()
       os.sleep(5)
     end
   end
-  print("8a")
   gpu.setForeground(Farben.weisseFarbe)
   gpu.setBackground(Farben.schwarzeFarbe)
   term.clear()
   gpu.setResolution(gpu.maxResolution())
 end
 
-print("1a")
 Funktion.main()
