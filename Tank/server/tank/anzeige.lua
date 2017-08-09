@@ -14,7 +14,7 @@ local ersetzen        = loadfile("/tank/ersetzen.lua")()
 local gpu             = component.getPrimary("gpu")
 local m               = component.modem
 
-local version, tankneu, energie
+local version, tankneu, energie, MehrAlsEinBildschirm
 
 local port            = 70
 local tank            = {}
@@ -34,6 +34,14 @@ if fs.exists("/tank/version.txt") then
     f:close()
   else
     version = "<FEHLER>"
+end
+
+local i = 0
+for screenid in component.list("screen") do
+  i = i + 1
+end
+if i > 1 then
+  MehrAlsEinBildschirm = true
 end
 
 function update()
@@ -59,7 +67,14 @@ function update()
       tank[ende].zeit = c.uptime()
       tank[ende].inhalt = require("serialization").unserialize(nachricht)
     end
-    anzeigen(verarbeiten(tank))
+    if MehrAlsEinBildschirm then
+      for screenid in component.list("screen") do
+        gpu.bind(screenid)
+        anzeigen(verarbeiten(tank))
+      end
+    else
+      anzeigen(verabeiten(tank))
+    end
   else
     keineDaten()
   end
