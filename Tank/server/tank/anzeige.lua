@@ -71,9 +71,7 @@ function update()
     end
   else
     for screenid in component.list("screen") do
-      if i > 1 then
-        gpu.bind(screenid)
-      end
+      gpu.bind(screenid)
       keineDaten()
     end
   end
