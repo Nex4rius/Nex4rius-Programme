@@ -45,7 +45,8 @@ if OC then
   Farben.schwarzeFarbe       = 0x000000
   Farben.gelbeFarbe          = 0xFFCC33
   Farben.brauenFarbe         = 0x663300
-  Farben.grueneFarbe         = 0x00FF00
+  Farben.hellgrueneFarbe     = 0x00FF00
+  Farben.grueneFarbe         = 0x336600
   Farben.orangeFarbe         = 0xFF7F24
 elseif CC then
   Farben.graueFarbe          = 128
@@ -57,6 +58,7 @@ elseif CC then
   Farben.schwarzeFarbe       = 32768
   Farben.gelbeFarbe          = 16
   Farben.brauenFarbe         = 4096
+  Farben.hellgrueneFarbe     = 32
   Farben.grueneFarbe         = 8192
   Farben.orangeFarbe         = 2
 end
@@ -235,10 +237,10 @@ function Funktion.checkOpenOS()
   if OC then
     local OpenOS_Version = "OpenOS 1.6.7"
     if _OSVERSION == OpenOS_Version then
-      gpu.setForeground(Farben.grueneFarbe)
+      gpu.setForeground(Farben.hellgrueneFarbe)
       print("\nOpenOS Version:        " .. _OSVERSION)
     else
-      gpu.setForeground(roteFarbe)
+      gpu.setForeground(Farben.roteFarbe)
       print("\nOpenOS Version:        " .. _OSVERSION .. " -> " .. OpenOS_Version)
     end
     gpu.setForeground(Farben.weisseFarbe)
