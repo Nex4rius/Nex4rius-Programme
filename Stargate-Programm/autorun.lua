@@ -39,6 +39,3 @@ end
 if require then
     require("shell").setWorkingDirectory(alterPfad)
 end
-
-print("ende ioread")
---io.read()
