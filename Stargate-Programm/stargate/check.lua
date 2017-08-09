@@ -39,13 +39,13 @@ if OC then
   Farben.graueFarbe          = 0x333333
   Farben.hellblau            = 0x336699
   Farben.mittelblau          = 0x6699FF
-  Farben.roteFarbe           = 0xFF3333
+  Farben.roteFarbe           = 0xFF0000
   Farben.weisseFarbe         = 0xFFFFFF
   Farben.blaueFarbe          = 0x333399
   Farben.schwarzeFarbe       = 0x000000
   Farben.gelbeFarbe          = 0xFFCC33
   Farben.brauenFarbe         = 0x663300
-  Farben.grueneFarbe         = 0x336600
+  Farben.grueneFarbe         = 0x00FF00
   Farben.orangeFarbe         = 0xFF7F24
 elseif CC then
   Farben.graueFarbe          = 128
