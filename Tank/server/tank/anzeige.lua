@@ -65,7 +65,7 @@ function update()
     end
     for screenid in component.list("screen") do
       if i > 1 then
-        gpu.bind(screenid)
+        gpu.bind(screenid, false)
       end
       anzeigen(verarbeiten(tank), screenid)
     end
@@ -83,7 +83,7 @@ function keineDaten()
   m.broadcast(port + 1, "update", version)
   if c.uptime() - letzteNachricht > Wartezeit then
     for screenid in component.list("screen") do
-      gpu.bind(screenid)
+      gpu.bind(screenid, false)
       gpu.setResolution(21, 1)
       os.sleep(0.1)
       term.clear()
@@ -345,7 +345,7 @@ function main()
   term.setCursor(1, 50)
   m.open(port)
   for screenid in component.list("screen") do
-    gpu.bind(screenid)
+    gpu.bind(screenid, false)
     gpu.setResolution(15, 1)
     os.sleep(0.1)
     term.clear()
