@@ -2,6 +2,11 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme
 
+--[[
+loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua")
+loadfile("/bin/github.lua")("MightyPirates", "OpenComputers", "master-MC1.7.10", "src/main/resources/assets/opencomputers/loot/openos/", "41acf2fa06990dcc4d740490cccd9d2bcec97edd")
+--]]
+
 local shell = require("shell")
 local alterPfad = shell.getWorkingDirectory("/")
 

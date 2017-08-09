@@ -60,8 +60,13 @@ hilfe -> zeige diese Nachricht nochmal
 Macht pull request (zu beta) wenn ihr wollt :)
 
 getestet mit:<br />
+MC 1.7.10<br />
 OpenComputers-MC1.7.10-1.6.2.12-universal<br />
-SGCraft-1.13.3-mc1.7.10
+SGCraft-1.13.3-mc1.7.10<br /><br />
+
+MC 1.10.2<br />
+OpenComputers-MC1.10.2-1.6.2.7<br />
+SGCraft-1.13.2-mc1.10.2
 
 ___
 <a href="#english">english</a>/<a href="#deutsch">deutsch</a>/<a href="#russian">russian</a><a name="english">
@@ -126,8 +131,13 @@ help  -> show this message again
 Make pull requests (to beta) if you want :)
 
 tested with:<br />
+MC 1.7.10<br />
 OpenComputers-MC1.7.10-1.6.2.12-universal<br />
-SGCraft-1.13.3-mc1.7.10
+SGCraft-1.13.3-mc1.7.10<br /><br />
+
+MC 1.10.2<br />
+OpenComputers-MC1.10.2-1.6.2.7<br />
+SGCraft-1.13.2-mc1.10.2
 
 ___
 <a href="#english">english</a>/<a href="#deutsch">deutsch</a>/<a href="#russian">russian</a><a name="russian">
@@ -191,5 +201,10 @@ help -> показать это сообщение
 Предлагайте свои идеи.
 
 проверено с:<br />
+MC 1.7.10<br />
 OpenComputers-MC1.7.10-1.6.2.12-universal<br />
-SGCraft-1.13.3-mc1.7.10
+SGCraft-1.13.3-mc1.7.10<br /><br />
+
+MC 1.10.2<br />
+OpenComputers-MC1.10.2-1.6.2.7<br />
+SGCraft-1.13.2-mc1.10.2

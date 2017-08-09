@@ -182,7 +182,7 @@ function anzeigen(tankneu)
     if label == "fluidhelium3" then
       label = "Helium-3"
     end
-    zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 28))
+    zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31))
     leer = false
     y = y + 3
   end
