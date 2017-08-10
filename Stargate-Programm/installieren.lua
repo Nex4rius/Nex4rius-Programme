@@ -239,21 +239,11 @@ function Funktionen.installieren(versionTyp)
     f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n')
     f:write('\n')
     f:write('if not pcall(loadfile("/autorun.lua"), require("shell").parse(...)[1]) then\n')
-    f:write('   os.execute("pastebin run -f YVqKFnsP"\n')
+    f:write('   os.execute("pastebin run -f YVqKFnsP")\n')
     --f:write('   loadfile("/bin/wget-lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua")\n')
     --f:write('   loadfile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", "master", "Stargate-Programm")\n')
     f:write('end\n')
     f:close()
-  --elseif CC then
-  --  local f = io.open("/start", "w")
-  --  f:write('-- pastebin run -f YVqKFnsP\n')
-  --  f:write('-- von Nex4rius\n')
-  --  f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n')
-  --  f:write('\n')
-  --  f:write('if not pcall(loadfile("/startup"), ...) then\n')
-  --  f:write('   shell.run("pastebin run -f YVqKFnsP")\n')
-  --  f:write('end\n')
-  --  f:close()
   end
   if updateKomplett then
     if OC then
