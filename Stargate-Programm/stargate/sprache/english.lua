@@ -7,6 +7,8 @@ return {
   pruefeKomponenten         = "Checking Components\n",
   redstoneOK                = "- Redstone Card        ok - optional",
   redstoneFehlt             = "- Redstone Card        missing - optional",
+  modemOK                   = "- Wi-Fi-Card           ok - optional",
+  modemFehlt                = "- Wi-Fi-Card           missing - optional",
   InternetOK                = "- Internet             ok - optional",
   InternetFehlt             = "- Internet             missing - optional",
   SensorOK                  = "- World Sensor         ok - optional",
