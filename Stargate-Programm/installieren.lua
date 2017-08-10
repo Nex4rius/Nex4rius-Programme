@@ -105,7 +105,7 @@ do
     end
   end
   if dazu then
-    table.insert(Spracheliste, Sicherung.Sprache)
+    table.insert(Sprachliste, Sicherung.Sprache)
   end
 end
 
