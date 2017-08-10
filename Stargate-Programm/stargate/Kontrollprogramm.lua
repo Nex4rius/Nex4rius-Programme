@@ -96,8 +96,6 @@ Taste.Koordinaten               = {}
 Taste.Steuerunglinks            = {}
 Taste.Steuerungrechts           = {}
 
-Variablen.WLAN_Anzahl           = 0
-
 local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, f, k, r, Farben
 
@@ -649,10 +647,6 @@ function Funktion.aktualisiereStatus()
   Funktion.wormholeDirection()
   Funktion.iriscontroller()
   if state == "Idle" then
-    if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-      component.modem.open(Sicherung.Port)
-      Variablen.WLAN_Anzahl = 0
-    end
     RichtungName = ""
   else
     if wormhole == "out" then
@@ -1346,15 +1340,6 @@ function Funktion.sgChevronEngaged(e)
   Funktion.zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
 end
 
-function Funktion.modem_message(e)
-  Variablen.WLAN_Anzahl = Variablen.WLAN_Anzahl + 1
-  if Variablen.WLAN_Anzahl < 5 then
-    Funktion.sgMessageReceived({e[1], e[2], e[6]})
-  else
-    component.modem.close()
-  end
-end
-
 function Funktion.sgMessageReceived(e)
   if direction == "Outgoing" then
     codeaccepted = e[3]
@@ -1531,6 +1516,21 @@ function Funktion.beendeAlles()
   pcall(screen.setTouchModeInverted, false)
 end
 
+function Funktion.modem()
+  if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
+    component.modem.open(Sicherung.Port)
+  end
+  event.listen("modem_message", function(e)
+    component.modem.close()
+    Funktion.sgMessageReceived({e[1], e[2], e[6]})
+    event.timer(5, function()
+      if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
+        component.modem.open(Sicherung.Port)
+      end
+    end, 0)
+  end)
+end
+
 function Funktion.main()
   loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Stargate OS")
   if sg.stargateState() == "Idle" and Funktion.getIrisState() == "Closed" then
@@ -1546,6 +1546,7 @@ function Funktion.main()
   Funktion.AdressenSpeichern()
   seite = 0
   Funktion.zeigeMenu()
+  Funktion.modem()
   while running do
     if not pcall(Funktion.eventLoop) then
       os.sleep(5)
