@@ -1335,6 +1335,10 @@ function Funktion.sgChevronEngaged(e)
   Funktion.zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
 end
 
+function Funktion.modem_message(e)
+  Funktion.sgMessageReceived({e[1], e[2], e[6]})
+end
+
 function Funktion.sgMessageReceived(e)
   if direction == "Outgoing" then
     codeaccepted = e[3]
@@ -1526,6 +1530,9 @@ function Funktion.main()
   Funktion.AdressenSpeichern()
   seite = 0
   Funktion.zeigeMenu()
+  if component.isAvailable("modem") then
+    component.modem.open(Sicherung.Port)
+  end
   while running do
     if not pcall(Funktion.eventLoop) then
       os.sleep(5)
