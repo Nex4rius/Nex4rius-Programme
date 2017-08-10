@@ -1229,6 +1229,10 @@ function Taste.l()
         energytype          = "EU"
         energymultiplicator = 20
       end
+      if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
+        component.modem.close()
+        component.modem.open(Sicherung.Port)
+      end
       if a ~= Sicherung.RF then
         Funktion.AdressenSpeichern()
       end
@@ -1530,7 +1534,7 @@ function Funktion.main()
   Funktion.AdressenSpeichern()
   seite = 0
   Funktion.zeigeMenu()
-  if component.isAvailable("modem") then
+  if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
     component.modem.open(Sicherung.Port)
   end
   while running do
