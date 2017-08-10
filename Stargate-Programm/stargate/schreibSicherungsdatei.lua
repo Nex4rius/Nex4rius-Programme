@@ -88,7 +88,7 @@ if type(NEU) == "table" then
   f:write('  side          = "' .. tostring(Sicherung.side)         .. '", -- ' .. tostring(sprachen.side)          .. '\n')
   f:write('  autoUpdate    = '  .. tostring(Sicherung.autoUpdate)   ..  ', -- ' .. tostring(sprachen.autoUpdate)    .. '\n')
   f:write('  StargateName  = "' .. tostring(Sicherung.StargateName) .. '", -- ' .. tostring(sprachen.StargateName)  .. '\n')
-  f:write('  Port          = "' .. tostring(Sicherung.Port)         .. '", -- ' .. tostring(sprachen.Port)  .. '\n')
+  f:write('  Port          = '  .. tostring(Sicherung.Port)         ..  ', -- ' .. tostring(sprachen.Port)          .. '\n')
   f:write('\n')
   f:write(string.rep("-", 10)   .. tostring(sprachen.nichtsAendern) .. string.rep("-", 60 - string.len(tostring(sprachen.nichtsAendern))) .. '\n')
   f:write('\n')
