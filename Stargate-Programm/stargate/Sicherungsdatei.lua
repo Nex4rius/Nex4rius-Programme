@@ -14,6 +14,7 @@ return {
   side          = "unten", -- bottom, top, back, front, right or left
   autoUpdate    = true, -- enable automated updates
   StargateName  = "", -- the name of this stargate
+  Port          = 800,
 
 ----------don't change anything below---------------------------------
 
