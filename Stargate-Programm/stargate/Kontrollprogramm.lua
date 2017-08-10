@@ -96,6 +96,8 @@ Taste.Koordinaten               = {}
 Taste.Steuerunglinks            = {}
 Taste.Steuerungrechts           = {}
 
+Variablen.WLAN_Anzahl           = 0
+
 local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, f, k, r, Farben
 
@@ -195,22 +197,23 @@ end
 function Funktion.checkReset()
   if type(time) == "number" then
     if time > 500 then
-      zielAdresse     = ""
-      remoteName      = ""
-      showidc         = ""
-      incode          = "-"
-      codeaccepted    = "-"
-      wormhole        = "in"
-      iriscontrol     = "on"
-      k               = "open"
-      LampenGruen     = false
-      IDCyes          = false
-      entercode       = false
-      messageshow     = true
-      send            = true
-      AddNewAddress   = true
-      activationtime  = 0
-      time            = 0
+      zielAdresse           = ""
+      remoteName            = ""
+      showidc               = ""
+      incode                = "-"
+      codeaccepted          = "-"
+      wormhole              = "in"
+      iriscontrol           = "on"
+      k                     = "open"
+      LampenGruen           = false
+      IDCyes                = false
+      entercode             = false
+      messageshow           = true
+      send                  = true
+      AddNewAddress         = true
+      activationtime        = 0
+      time                  = 0
+      Variablen.WLAN_Anzahl = 0
     end
   end
 end
@@ -646,6 +649,10 @@ function Funktion.aktualisiereStatus()
   Funktion.wormholeDirection()
   Funktion.iriscontroller()
   if state == "Idle" then
+    if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
+      component.modem.open(Sicherung.Port)
+      Variablen.WLAN_Anzahl = 0
+    end
     RichtungName = ""
   else
     if wormhole == "out" then
@@ -1340,7 +1347,12 @@ function Funktion.sgChevronEngaged(e)
 end
 
 function Funktion.modem_message(e)
-  Funktion.sgMessageReceived({e[1], e[2], e[6]})
+  Variablen.WLAN_Anzahl = Variablen.WLAN_Anzahl + 1
+  if Variablen.WLAN_Anzahl < 5 then
+    Funktion.sgMessageReceived({e[1], e[2], e[6]})
+  else
+    component.modem.close()
+  end
 end
 
 function Funktion.sgMessageReceived(e)
@@ -1534,9 +1546,6 @@ function Funktion.main()
   Funktion.AdressenSpeichern()
   seite = 0
   Funktion.zeigeMenu()
-  if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-    component.modem.open(Sicherung.Port)
-  end
   while running do
     if not pcall(Funktion.eventLoop) then
       os.sleep(5)
