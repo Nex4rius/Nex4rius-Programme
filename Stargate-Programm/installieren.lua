@@ -96,7 +96,18 @@ else
   Sicherung.installieren = false
 end
 
-local Sprachliste = {"deutsch", "english", "russian", "czech", Sicherung.Sprache}
+local Sprachliste = {"deutsch", "english", "russian", "czech")
+do
+  local dazu = true
+  for i in pairs(Sprachliste) do
+    if Sprachliste[i] == Sicherung.Sprache then
+      dazu = false
+    end
+  end
+  if dazu then
+    table.insert(Spracheliste, Sicherung.Sprache)
+  end
+end
 
 if Sicherung.Sprache then
   if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
