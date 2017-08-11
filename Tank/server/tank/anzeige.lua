@@ -83,11 +83,9 @@ function keineDaten()
   m.broadcast(port + 1, "update", version)
   if c.uptime() - letzteNachricht > Wartezeit then
     for screenid in component.list("screen") do
-      gpu.bind(screenid, false)
-      gpu.setResolution(21, 1)
-      os.sleep(0.1)
-      term.clear()
+      gpu.bind(screenid)
       gpu.set(1, 1, "Keine Daten vorhanden")
+      gpu.setResolution(21, 1)
     end
   end
 end
@@ -345,11 +343,9 @@ function main()
   term.setCursor(1, 50)
   m.open(port)
   for screenid in component.list("screen") do
-    gpu.bind(screenid, false)
-    gpu.setResolution(15, 1)
-    os.sleep(0.1)
-    term.clear()
+    gpu.bind(screenid)
     gpu.set(1, 1, "Warte auf Daten")
+    gpu.setResolution(15, 1)
   end
   m.broadcast(port + 1, "update", version)
   while true do
