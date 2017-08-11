@@ -230,7 +230,12 @@ function Funktion.zeigeHier(x, y, s, h)
     if not h then
       h = Bildschirmbreite
     end
-    gpu.set(x, y, s .. string.rep(" ", h - string.len(s)))
+    if OC then
+      gpu.set(x, y, s .. string.rep(" ", h - string.len(s)))
+    elseif CC then
+      term.setCursorPos(x, y)
+      term.write(s .. string.rep(" ", h - string.len(s)))
+    end
   end
 end
 
