@@ -151,18 +151,18 @@ local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
       printError("<Fehler> Ziel existiert bereits")
       return
     else
-      term.write("Starte Download ... ")
+      --term.write("Starte Download ... ")
       local timer = os.startTimer(30)
       http.request(url)
       while true do
         local event, id, data = os.pullEvent()
         if event == "http_success" then
-          print("erfolgreich")
+          --print("erfolgreich")
           local f = io.open(ziel, "w")
           f:write(data.readAll())
           f:close()
           data:close()
-          print("Gespeichert unter " .. ziel)
+          --print("Gespeichert unter " .. ziel)
           return true
         elseif event == "timer" and timer == id then
           printError("<Fehler> Zeitueberschreitung")
@@ -497,8 +497,10 @@ function Funktion.mainCheck()
       loadfile("/bin/edit.lua")("-r", "/log")
       loadfile("/bin/rm.lua")("/log")
     end
-    if not pcall(loadfile("/stargate/Kontrollprogramm.lua"), Funktion.update, Funktion.checkServerVersion, version, Farben) then
+    local erfolgreich, grund = pcall(loadfile("/stargate/Kontrollprogramm.lua"), Funktion.update, Funktion.checkServerVersion, version, Farben)
+    if not erfolgreich then
       print("Kontrollprogramm.lua hat einen Fehler")
+      print(grund)
     end
   else
     print(string.format("%s\n%s %s/%s", sprachen.fehlerName, sprachen.DateienFehlen, sprachen.ja, sprachen.nein) or "\nAlles neu herunterladen? ja/nein")
