@@ -1241,10 +1241,6 @@ function Taste.l()
         energytype          = "EU"
         energymultiplicator = 20
       end
-      if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-        component.modem.close()
-        component.modem.open(Sicherung.Port)
-      end
       if a ~= Sicherung.RF then
         Funktion.AdressenSpeichern()
       end
@@ -1352,7 +1348,14 @@ function Funktion.sgChevronEngaged(e)
 end
 
 function Funktion.modem_message(e)
-  component.modem.close()
+  if OC then
+    component.modem.close()
+  elseif CC then
+    local modem = peripheral.find("modem")
+    if modem then
+      modem.closeAll()
+    end
+  end
   Variablen.WLAN_Anzahl = Variablen.WLAN_Anzahl + 1
   if Variablen.WLAN_Anzahl < 5 then
     Funktion.sgMessageReceived({e[1], e[2], e[6]})
@@ -1557,6 +1560,7 @@ function Funktion.main()
   Funktion.AdressenSpeichern()
   seite = 0
   Funktion.zeigeMenu()
+  Funktion.openModem()
   while running do
     if not pcall(Funktion.eventLoop) then
       os.sleep(5)
