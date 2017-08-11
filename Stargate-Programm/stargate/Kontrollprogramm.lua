@@ -9,11 +9,6 @@ if require then
 else
   OC = nil
   CC = true
-  local monitor = peripheral.find("monitor")
-  term.redirect(monitor)
-  term.clear()
-  monitor.setTextScale(0.5)
-  monitor.setCursorPos(1, 1)
 end
 
 local component                 = {}
