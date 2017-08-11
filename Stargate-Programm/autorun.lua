@@ -3,10 +3,6 @@
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
 os.sleep(1)
---print("ja zum weitermachen")
---if io.read() ~= "ja" then
---    os.exit()
---end
 
 local shell = shell or require("shell")
 _G.shell = shell
@@ -16,6 +12,9 @@ local args = ...
 if require then
     alterPfad = shell.getWorkingDirectory()
     shell.setWorkingDirectory("/")
+else
+    term.redirect(peripheral.find("monitor"))
+    peripheral.find("monitor").setTextScale(0.5)
 end
 
 if type(args) ~= "string" then
