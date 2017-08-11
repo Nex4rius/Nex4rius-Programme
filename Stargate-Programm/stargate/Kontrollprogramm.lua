@@ -255,7 +255,11 @@ function Funktion.zeigeHier(x, y, s, h)
       gpu.set(x, y, s .. string.rep(" ", h - string.len(s)))
     elseif CC then
       term.setCursorPos(x, y)
-      term.write(s .. string.rep(" ", h - string.len(s)))
+      local wiederholanzahl = h - string.len(s)
+      if wiederholanzahl < 0 then
+        wiederholanzahl = 0
+      end
+      term.write(s .. string.rep(" ", wiederholanzahl))
     end
   end
 end
