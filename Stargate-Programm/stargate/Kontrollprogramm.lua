@@ -1254,7 +1254,7 @@ function Taste.l()
       schreibSicherungsdatei(Sicherung)
       Funktion.sides()
       gpu.setBackground(Farben.Nachrichtfarbe)
-      term.clear()
+      --term.clear()
       seite = 0
       Funktion.zeigeAnzeige()
     else
@@ -1434,8 +1434,6 @@ function Funktion.sgDialOut()
 end
 
 function Funktion.eventLoop()
-  print("1")
-  io.read()
   while running do
     Funktion.checken(Funktion.zeigeStatus)
     e = Funktion.pull_event()
@@ -1487,7 +1485,7 @@ end
 function Funktion.checkStargateName()
   if Sicherung.StargateName ~= "string" or Sicherung.StargateName == "" then
     Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
-    term.clear()
+    --term.clear()
     print(sprachen.FrageStargateName .. "\n")
     Sicherung.StargateName = io.read()
     schreibSicherungsdatei(Sicherung)
@@ -1559,22 +1557,17 @@ function Funktion.main()
   if sg.stargateState() == "Idle" and Funktion.getIrisState() == "Closed" then
     Funktion.irisOpen()
   end
-  io.read()
-  term.clear()
+  --term.clear()
   gpu.setResolution(70, 25)
   Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
   Funktion.zeigeFarben()
   Funktion.zeigeStatus()
   seite = -1
-  io.read()
   Funktion.zeigeMenu()
   Funktion.AdressenSpeichern()
   seite = 0
-  io.read()
   Funktion.zeigeMenu()
-  io.read()
   Funktion.openModem()
-  io.read()
   while running do
     if not pcall(Funktion.eventLoop) then
       os.sleep(5)
