@@ -1422,6 +1422,8 @@ function Funktion.sgDialOut()
 end
 
 function Funktion.eventLoop()
+  print("1")
+  io.read()
   while running do
     Funktion.checken(Funktion.zeigeStatus)
     e = Funktion.pull_event()
@@ -1545,17 +1547,22 @@ function Funktion.main()
   if sg.stargateState() == "Idle" and Funktion.getIrisState() == "Closed" then
     Funktion.irisOpen()
   end
+  io.read()
   term.clear()
   gpu.setResolution(70, 25)
   Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
   Funktion.zeigeFarben()
   Funktion.zeigeStatus()
   seite = -1
+  io.read()
   Funktion.zeigeMenu()
   Funktion.AdressenSpeichern()
   seite = 0
+  io.read()
   Funktion.zeigeMenu()
+  io.read()
   Funktion.openModem()
+  io.read()
   while running do
     if not pcall(Funktion.eventLoop) then
       os.sleep(5)
