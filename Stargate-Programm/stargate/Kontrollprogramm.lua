@@ -45,6 +45,7 @@ elseif CC then
   gpu.setForeground = function(code) if code then gpu.setTextColor(code) end end
   gpu.setBackground = function(code) if code then gpu.setBackgroundColor(code) end end
   gpu.maxResolution = gpu.getSize
+  gpu.getResolution = gpu.getSize
   gpu.fill = function() term.clear() end
   fs.remove = fs.remove or fs.delete
 end
