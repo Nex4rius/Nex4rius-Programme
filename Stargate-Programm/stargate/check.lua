@@ -12,6 +12,9 @@ if require then
 else
   CC = true
   local monitor = peripheral.find("monitor")
+  if not monitor then
+    print("keinen >Advanced Monitor< gefunden")
+  end
   term.redirect(monitor)
   monitor.setTextScale(0.5)
   monitor.setCursorPos(1, 1)
