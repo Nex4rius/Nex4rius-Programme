@@ -23,7 +23,7 @@ local fs          = fs or require("filesystem")
 fs.makeDirectory  = fs.makeDirectory or fs.makeDir
 local kopieren    = loadfile("/bin/cp.lua") or function(a, b, c)
   if type(a) == "string" and type(b) == "string" then
-    if c == "-n" then
+    if c ~= "-n" then
       fs.delete(b)
     end
     if fs.exists(a) and not fs.exists(b) then
