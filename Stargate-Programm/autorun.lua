@@ -13,8 +13,10 @@ if require then
     alterPfad = shell.getWorkingDirectory()
     shell.setWorkingDirectory("/")
 else
-    term.redirect(peripheral.find("monitor"))
-    peripheral.find("monitor").setTextScale(0.5)
+    local monitor = peripheral.find("monitor")
+    term.redirect(monitor)
+    term.clear()
+    monitor.setTextScale(0.5)
 end
 
 if type(args) ~= "string" then
