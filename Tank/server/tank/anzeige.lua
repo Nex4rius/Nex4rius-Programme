@@ -159,7 +159,7 @@ function anzeigen(tankneu, screenid)
   end
   local a, b = gpu.getResolution()
   if maxanzahl <= 16 and maxanzahl ~= 0 then
-    if klein and maxanzahl > 16 then
+    if klein and maxanzahl > 5 then
       if a ~= 160 or b ~= maxanzahl then
         gpu.setResolution(160, maxanzahl)
       end
@@ -169,7 +169,7 @@ function anzeigen(tankneu, screenid)
       end
     end
   else
-    if klein and maxanzahl > 16 then
+    if klein and maxanzahl > 5 then
       if a ~= 160 or b ~= 16 then
       gpu.setResolution(160, 16)
       end
@@ -194,7 +194,7 @@ function anzeigen(tankneu, screenid)
     if anzahl == 17 or anzahl == 33 or anzahl == 49 then
       if maxanzahl > 48 and anzahl > 48 then
         x = 41
-        if klein and maxanzahl > 16 then
+        if klein and maxanzahl > 5 then
           y = 1 + (64 - maxanzahl)
         else
           y = 1 + 3 * (64 - maxanzahl)
@@ -202,7 +202,7 @@ function anzeigen(tankneu, screenid)
         breite = 40
       elseif maxanzahl > 32 and anzahl > 32 then
         x = 121
-        if klein and maxanzahl > 16 then
+        if klein and maxanzahl > 5 then
           y = 1 + (48 - maxanzahl)
         else
           y = 1 + 3 * (48 - maxanzahl)
@@ -210,7 +210,7 @@ function anzeigen(tankneu, screenid)
         breite = 40
       else
         x = 81
-        if klein and maxanzahl > 16 then
+        if klein and maxanzahl > 5 then
           y = 1 + (32 - maxanzahl)
         else
           y = 1 + 3 * (32 - maxanzahl)
@@ -230,7 +230,7 @@ function anzeigen(tankneu, screenid)
     end
     zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl)
     leer = false
-    if klein and maxanzahl > 16 then
+    if klein and maxanzahl > 5 then
       y = y + 1
     else
       y = y + 3
@@ -239,11 +239,11 @@ function anzeigen(tankneu, screenid)
   Farben(0xFFFFFF, 0x000000)
   for i = anzahl, 33 do
     gpu.set(x, y    , string.rep(" ", 80))
-    if not (klein and maxanzahl > 16) then
+    if not (klein and maxanzahl > 5) then
       gpu.set(x, y + 1, string.rep(" ", 80))
       gpu.set(x, y + 2, string.rep(" ", 80))
     end
-    if klein and maxanzahl > 16 then
+    if klein and maxanzahl > 5 then
       y = y + 1
     else
       y = y + 3
@@ -291,7 +291,7 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, b
   Farben(farben[name][1], farben[name][2])
   local ende = 0
   for i = 1, math.ceil(breite * menge / maxmenge) do
-    if klein and maxanzahl > 16 then
+    if klein and maxanzahl > 5 then
       gpu.set(x, y, string.format("%s", nachricht[i]), true)
     else
       gpu.set(x, y, string.format(" %s ", nachricht[i]), true)
@@ -301,7 +301,7 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, b
   end
   Farben(farben[name][3], farben[name][4])
   for i = 1, breite - math.ceil(breite * menge / maxmenge) do
-    if klein and maxanzahl > 16  then
+    if klein and maxanzahl > 5  then
       gpu.set(x, y, string.format("%s", nachricht[i + ende]), true)
     else
       gpu.set(x, y, string.format(" %s ", nachricht[i + ende]), true)
