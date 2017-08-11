@@ -36,6 +36,34 @@ if arg then
 end
 
 if OC then
+  component = require("component")
+  gpu = component.getPrimary("gpu")
+  local a = gpu.setForeground
+  local b = gpu.setBackground
+  gpu.setForeground = function(code) if code then a(code) end end
+  gpu.setBackground = function(code) if code then b(code) end end
+elseif CC then
+  component.getPrimary = peripheral.find
+  component.isAvailable = function(name)
+    cc_immer = {}
+    cc_immer.internet = function() return http end
+    cc_immer.redstone = function() return true end
+    if cc_immer[name] then
+      return cc_immer[name]()
+    end
+    return peripheral.find(name)
+  end
+  gpu = component.getPrimary("monitor")
+  term.redirect(gpu)
+  gpu.setResolution = function() gpu.setTextScale(0.5) end
+  gpu.setForeground = function(code) if code then gpu.setTextColor(code) end end
+  gpu.setBackground = function(code) if code then gpu.setBackgroundColor(code) end end
+  gpu.maxResolution = gpu.getSize
+  gpu.fill = function() term.clear() end
+  fs.remove = fs.remove or fs.delete
+end
+
+if OC then
   Farben.graueFarbe          = 0x333333
   Farben.hellblau            = 0x336699
   Farben.mittelblau          = 0x6699FF
@@ -94,33 +122,6 @@ Farben.brown                 = 12
 Farben.green                 = 13
 Farben.red                   = 14
 Farben.black                 = 15
-
-if OC then
-  component = require("component")
-  gpu = component.getPrimary("gpu")
-  local a = gpu.setForeground
-  local b = gpu.setBackground
-  gpu.setForeground = function(code) if code then a(code) end end
-  gpu.setBackground = function(code) if code then b(code) end end
-elseif CC then
-  component.getPrimary = peripheral.find
-  component.isAvailable = function(name)
-    cc_immer = {}
-    cc_immer.internet = function() return http end
-    cc_immer.redstone = function() return true end
-    if cc_immer[name] then
-      return cc_immer[name]()
-    end
-    return peripheral.find(name)
-  end
-  gpu = component.getPrimary("monitor")
-  gpu.setResolution = function() gpu.setTextScale(0.5) end
-  gpu.setForeground = function(code) if code then gpu.setTextColor(code) end end
-  gpu.setBackground = function(code) if code then gpu.setBackgroundColor(code) end end
-  gpu.maxResolution = gpu.getSize
-  gpu.fill = function() term.clear() end
-  fs.remove = fs.remove or fs.delete
-end
 
 local function kopieren(a, b, c)
   if type(a) == "string" and type(b) == "string" then
