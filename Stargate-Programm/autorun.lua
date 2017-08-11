@@ -17,6 +17,7 @@ else
     term.redirect(monitor)
     term.clear()
     monitor.setTextScale(0.5)
+    monitor.setCursorPos(1, 1)
 end
 
 if type(args) ~= "string" then
