@@ -82,6 +82,7 @@ end
 function keineDaten()
   m.broadcast(port + 1, "update", version)
   if c.uptime() - letzteNachricht > Wartezeit then
+    test()
     for screenid in component.list("screen") do
       gpu.bind(screenid)
       gpu.set(1, 1, "Keine Daten vorhanden")
@@ -338,13 +339,15 @@ function beenden()
   term.clear()
 end
 
-local function test()
+function test()
   gpu.setForeground(0x000000)
-  for k, v in pairs({0xFFFFFF, 0xFF0000, 0x00FF00, 0x0000FF, 0x000000}) do
-    gpu.setBackground(v)
-    for screenid in component.list("screen") do
+  for screenid in component.list("screen") do
+    for k, v in pairs({0xFF0000, 0x00FF00, 0x0000FF, 0xFFFFFF}) do
       gpu.bind(screenid)
+      os.sleep(0.1)
+      gpu.setBackground(v)
       term.clear()
+      os.sleep(0.1)
     end
   end
 end
