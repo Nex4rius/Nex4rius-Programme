@@ -825,8 +825,9 @@ function Funktion.RedstoneAenderung(a, b)
   if sideNum == nil then
     Funktion.sides()
   end
-  if component.isAvailable("redstone") then
-    component.getPrimary("redstone").setBundledOutput(sideNum, a, b)
+  if component.isAvailable("redstone") and OC then
+    r = component.getPrimary("redstone")
+    r.setBundledOutput(sideNum, a, b)
   end
 end
 
