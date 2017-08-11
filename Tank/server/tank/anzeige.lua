@@ -338,10 +338,22 @@ function beenden()
   term.clear()
 end
 
+local function test()
+  gpu.setForeground(0x000000)
+  for k, v in pairs({0xFFFFFF, 0xFF0000, 0x00FF00, 0x0000FF, 0x000000}) do
+    gpu.setBackground(v)
+    for screenid in component.list("screen") do
+      gpu.bind(screenid)
+      term.clear()
+    end
+  end
+end
+
 function main()
   gpu.setBackground(0x000000)
   term.setCursor(1, 50)
   m.open(port)
+  test()
   for screenid in component.list("screen") do
     gpu.bind(screenid)
     gpu.set(1, 1, "Warte auf Daten")
