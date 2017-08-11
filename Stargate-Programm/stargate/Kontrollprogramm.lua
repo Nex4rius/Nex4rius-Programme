@@ -21,8 +21,11 @@ _G.shell = shell
 if OC then
   component = require("component")
   event = require("event")
-elseif CC then
-  component.getPrimary = peripheral.find
+  gpu = component.getPrimary("gpu")
+  local a = gpu.setForeground
+  local b = gpu.setBackground
+  gpu.setForeground = function(code) if code then a(code) end end
+  gpu.setBackground = function(code) if code then b(code) end end
 end
 
 local entfernen                 = fs.remove or fs.delete
@@ -112,6 +115,27 @@ do
   Funktion.checkServerVersion   = args[2]
   version                       = tostring(args[3])
   Farben                        = args[4] or {}
+end
+
+if CC then
+  component.getPrimary = peripheral.find
+  component.isAvailable = function(name)
+    cc_immer = {}
+    cc_immer.internet = function() return http end
+    cc_immer.redstone = function() return true end
+    if cc_immer[name] then
+      return cc_immer[name]()
+    end
+    return peripheral.find(name)
+  end
+  gpu = component.getPrimary("monitor")
+  term.redirect(gpu)
+  gpu.setResolution = function() gpu.setTextScale(0.5) end
+  gpu.setForeground = function(code) if code then gpu.setTextColor(code) end end
+  gpu.setBackground = function(code) if code then gpu.setBackgroundColor(code) end end
+  gpu.maxResolution = gpu.getSize
+  gpu.fill = function() term.clear() end
+  fs.remove = fs.remove or fs.delete
 end
 
 if Sicherung.RF then
