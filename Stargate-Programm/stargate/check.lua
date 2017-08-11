@@ -13,7 +13,6 @@ else
   CC = true
   local monitor = peripheral.find("monitor")
   term.redirect(monitor)
-  term.clear()
   monitor.setTextScale(0.5)
   monitor.setCursorPos(1, 1)
 end
@@ -256,7 +255,7 @@ function Funktion.checkOpenOS()
 end
 
 function Funktion.checkKomponenten()
-  term.clear()
+  --term.clear()
   print(sprachen.pruefeKomponenten or "Prüfe Komponenten\n")
   local function check(eingabe)
     if component.isAvailable(eingabe[1]) then
@@ -524,8 +523,8 @@ function Funktion.main()
   if gpu.maxResolution() == 160 then
     gpu.setBackground(Farben.graueFarbe)
   end
-  gpu.fill(1, 1, 70, 25, " ")
-  term.clear()
+  --gpu.fill(1, 1, 70, 25, " ")
+  --term.clear()
   Funktion.checkDateien()
   if fs.exists("/stargate/version.txt") then
     local f = io.open ("/stargate/version.txt", "r")
@@ -574,7 +573,7 @@ function Funktion.main()
   end
   gpu.setForeground(Farben.weisseFarbe)
   gpu.setBackground(Farben.schwarzeFarbe)
-  term.clear()
+  --term.clear()
   gpu.setResolution(gpu.maxResolution())
 end
 
