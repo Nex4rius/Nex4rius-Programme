@@ -11,6 +11,8 @@ if require then
   require("shell").setWorkingDirectory("/")
 else
   CC = true
+  term.redirect(peripheral.find("monitor"))
+  peripheral.find("monitor").setTextScale(0.5)
 end
 
 local io                     = io
