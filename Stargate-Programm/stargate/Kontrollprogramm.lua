@@ -125,8 +125,15 @@ end
 
 pcall(screen.setTouchModeInverted, true)
 
-if component.isAvailable("redstone") then
-  r = component.getPrimary("redstone")
+if OC then
+  if component.isAvailable("redstone") then
+    r = component.getPrimary("redstone")
+  end
+elseif CC then
+  --r = peripheral.find("redstone")
+end
+
+if r then
   r.setBundledOutput(0, Farben.white, 0)
 --  r.setBundledOutput(0, Farben.orange, 0)
 --  r.setBundledOutput(0, Farben.magenta, 0)
