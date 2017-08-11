@@ -342,7 +342,8 @@ function Funktion.checkServerVersion()
     local f = io.open ("/serverVersion.txt", "r")
     serverVersion = f:read()
     f:close()
-    loadfile("/bin/rm.lua")("/serverVersion.txt")
+    local a = loadfile("/bin/rm.lua") or fs.delete
+    a("/serverVersion.txt")
   else
     serverVersion = sprachen.fehlerName
   end
@@ -354,7 +355,8 @@ function Funktion.checkBetaServerVersion()
     local f = io.open ("/betaVersion.txt", "r")
     betaServerVersion = f:read()
     f:close()
-    loadfile("/bin/rm.lua")("/betaVersion.txt")
+    local a = loadfile("/bin/rm.lua") or fs.delete
+    a("/betaVersion.txt")
   else
     betaServerVersion = sprachen.fehlerName
   end
