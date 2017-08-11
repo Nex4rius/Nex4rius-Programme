@@ -1353,7 +1353,13 @@ function Funktion.modem_message(e)
   Variablen.WLAN_Anzahl = Variablen.WLAN_Anzahl + 1
   if Variablen.WLAN_Anzahl < 5 then
     Funktion.sgMessageReceived({e[1], e[2], e[6]})
-    event.timer(5 function() if component.isAvailable("modem") and type(Sicherung.Port) == "number" then component.modem.open(Sicherung.Port) end end, 0)
+    event.timer(5 Funktion.openModem, 0)
+  end
+end
+
+function Funktion.openModem()
+  if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
+    component.modem.open(Sicherung.Port)
   end
 end
 
