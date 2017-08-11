@@ -48,6 +48,7 @@ elseif CC then
   gpu.getResolution = gpu.getSize
   gpu.fill = function() term.clear() end
   fs.remove = fs.remove or fs.delete
+  term.setCursor = term.setCursorPos
 end
 
 local entfernen                 = fs.remove or fs.delete
