@@ -614,7 +614,11 @@ end
 function Funktion.sendeAdressliste()
   if einmalAdressenSenden then
     einmalAdressenSenden = false
-    return "Adressliste", require("serialization").serialize(sendeAdressen), version
+    if OC then
+      return "Adressliste", require("serialization").serialize(sendeAdressen), version
+    elseif CC then --CC fehlt
+      return "Adressliste", "", version
+    end
   else
     return ""
   end
