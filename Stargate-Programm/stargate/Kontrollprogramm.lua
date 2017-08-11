@@ -18,6 +18,8 @@ local fs                        = fs or require("filesystem")
 local shell                     = shell or require("shell")
 _G.shell = shell
 
+local gpu
+
 if OC then
   component = require("component")
   event = require("event")
@@ -26,6 +28,25 @@ if OC then
   local b = gpu.setBackground
   gpu.setForeground = function(code) if code then a(code) end end
   gpu.setBackground = function(code) if code then b(code) end end
+elseif CC then
+  component.getPrimary = peripheral.find
+  component.isAvailable = function(name)
+    cc_immer = {}
+    cc_immer.internet = function() return http end
+    cc_immer.redstone = function() return true end
+    if cc_immer[name] then
+      return cc_immer[name]()
+    end
+    return peripheral.find(name)
+  end
+  gpu = component.getPrimary("monitor")
+  term.redirect(gpu)
+  gpu.setResolution = function() gpu.setTextScale(0.5) end
+  gpu.setForeground = function(code) if code then gpu.setTextColor(code) end end
+  gpu.setBackground = function(code) if code then gpu.setBackgroundColor(code) end end
+  gpu.maxResolution = gpu.getSize
+  gpu.fill = function() term.clear() end
+  fs.remove = fs.remove or fs.delete
 end
 
 local entfernen                 = fs.remove or fs.delete
@@ -48,10 +69,6 @@ local ersetzen                  = loadfile("/stargate/sprache/ersetzen.lua")(spr
 
 local sg                        = component.getPrimary("stargate")
 local screen                    = component.getPrimary("screen") or {}
-
-local gpu                       = component.getPrimary("gpu") or component.getPrimary("monitor")
-gpu.getResolution               = gpu.getResolution or gpu.getSize
-gpu.maxResolution               = gpu.maxResolution or gpu.getSize
 
 local Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
 local max_Bildschirmbreite, max_Bildschirmhoehe = gpu.maxResolution()
@@ -115,27 +132,6 @@ do
   Funktion.checkServerVersion   = args[2]
   version                       = tostring(args[3])
   Farben                        = args[4] or {}
-end
-
-if CC then
-  component.getPrimary = peripheral.find
-  component.isAvailable = function(name)
-    cc_immer = {}
-    cc_immer.internet = function() return http end
-    cc_immer.redstone = function() return true end
-    if cc_immer[name] then
-      return cc_immer[name]()
-    end
-    return peripheral.find(name)
-  end
-  gpu = component.getPrimary("monitor")
-  term.redirect(gpu)
-  gpu.setResolution = function() gpu.setTextScale(0.5) end
-  gpu.setForeground = function(code) if code then gpu.setTextColor(code) end end
-  gpu.setBackground = function(code) if code then gpu.setBackgroundColor(code) end end
-  gpu.maxResolution = gpu.getSize
-  gpu.fill = function() term.clear() end
-  fs.remove = fs.remove or fs.delete
 end
 
 if Sicherung.RF then
