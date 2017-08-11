@@ -255,7 +255,7 @@ function Funktion.checkOpenOS()
 end
 
 function Funktion.checkKomponenten()
-  --term.clear()
+  term.clear()
   print(sprachen.pruefeKomponenten or "Prüfe Komponenten\n")
   local function check(eingabe)
     if component.isAvailable(eingabe[1]) then
