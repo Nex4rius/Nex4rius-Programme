@@ -339,7 +339,7 @@ function Funktion.update(versionTyp)
 end
 
 function Funktion.checkServerVersion()
-  if wget("-fQ", Funktion.Pfad("master") .. "stargate/version.txt", "/serverVersion.txt") then
+  if wget("-f", Funktion.Pfad("master") .. "stargate/version.txt", "/serverVersion.txt") then
     local f = io.open ("/serverVersion.txt", "r")
     serverVersion = f:read()
     f:close()
@@ -351,7 +351,7 @@ function Funktion.checkServerVersion()
 end
 
 function Funktion.checkBetaServerVersion()
-  if wget("-fQ", Funktion.Pfad("beta") .. "stargate/version.txt", "/betaVersion.txt") then
+  if wget("-f", Funktion.Pfad("beta") .. "stargate/version.txt", "/betaVersion.txt") then
     local f = io.open ("/betaVersion.txt", "r")
     betaServerVersion = f:read()
     f:close()
