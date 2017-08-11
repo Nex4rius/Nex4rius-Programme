@@ -111,7 +111,7 @@ do
   Funktion.update               = args[1]
   Funktion.checkServerVersion   = args[2]
   version                       = tostring(args[3])
-  Farben                        = args[4]
+  Farben                        = args[4] or {}
 end
 
 if Sicherung.RF then
