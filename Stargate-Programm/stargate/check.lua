@@ -145,12 +145,12 @@ end
 local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
   if type(url) ~= "string" and type(ziel) ~= "string" then
     return
-  elseif type(option) == "string" and (option ~= "-f" or option ~= "-fQ") and type(url) == "string" then
+  elseif type(option) == "string" and option ~= "-f" and type(url) == "string" then
     ziel = url
     url = option
   end
   if http.checkURL(url) then
-    if fs.exists(ziel) and (option ~= "-f" or option ~= "-fQ") then
+    if fs.exists(ziel) and option ~= "-f" then
       printError("<Fehler> Ziel existiert bereits")
       return
     else
@@ -341,7 +341,7 @@ function Funktion.update(versionTyp)
 end
 
 function Funktion.checkServerVersion()
-  if wget("-fQ", Funktion.Pfad("master") .. "stargate/version.txt", "/serverVersion.txt") then
+  if wget("-f", Funktion.Pfad("master") .. "stargate/version.txt", "/serverVersion.txt") then
     local f = io.open ("/serverVersion.txt", "r")
     serverVersion = f:read()
     f:close()
@@ -350,11 +350,18 @@ function Funktion.checkServerVersion()
   else
     serverVersion = sprachen.fehlerName
   end
+  if OC then
+    local x, y = term.getCursor()
+    term.setCursor(x, y - 1)
+    term.clearLine()
+    term.setCursor(x, y - 2)
+    term.clearLine()
+  end
   return serverVersion
 end
 
 function Funktion.checkBetaServerVersion()
-  if wget("-fQ", Funktion.Pfad("beta") .. "stargate/version.txt", "/betaVersion.txt") then
+  if wget("-f", Funktion.Pfad("beta") .. "stargate/version.txt", "/betaVersion.txt") then
     local f = io.open ("/betaVersion.txt", "r")
     betaServerVersion = f:read()
     f:close()
@@ -362,6 +369,13 @@ function Funktion.checkBetaServerVersion()
     a("/betaVersion.txt")
   else
     betaServerVersion = sprachen.fehlerName
+  end
+  if OC then
+    local x, y = term.getCursor()
+    term.setCursor(x, y - 1)
+    term.clearLine()
+    term.setCursor(x, y - 2)
+    term.clearLine()
   end
   return betaServerVersion
 end
