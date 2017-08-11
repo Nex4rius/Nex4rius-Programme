@@ -281,14 +281,14 @@ function Funktion.checkKomponenten()
   else
     r = nil
   end
-  if component.isAvailable("modem") and component.modem.isWireless() then
+  if component.isAvailable("modem") and component.getPrimary("modem").isWireless() then
     gpu.setForeground(Farben.hellgrueneFarbe)
     print(sprachen.modemOK)
   else
     gpu.setForeground(Farben.roteFarbe)
     print(sprachen.modemFehlt)
   end
-  if gpu.maxResolution() == 80 then
+  if gpu.maxResolution() == 80 or gpu.maxResolution() == 79 then
     gpu.setForeground(Farben.hellgrueneFarbe)
     print(sprachen.gpuOK2T)
   elseif gpu.maxResolution() == 160 then
