@@ -1574,7 +1574,11 @@ function Funktion.beendeAlles()
 end
 
 function Funktion.main()
-  loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Stargate OS")
+  if OC then
+    loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Stargate OS")
+  elseif CC then
+    shell.run("label set Stargate-OS")
+  end
   if sg.stargateState() == "Idle" and Funktion.getIrisState() == "Closed" then
     Funktion.irisOpen()
   end
