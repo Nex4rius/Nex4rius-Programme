@@ -3,10 +3,6 @@
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
 os.sleep(1)
---print("ja zum weitermachen")
---if io.read() ~= "ja" then
---    os.exit()
---end
 
 local shell = shell or require("shell")
 _G.shell = shell
@@ -16,6 +12,15 @@ local args = ...
 if require then
     alterPfad = shell.getWorkingDirectory()
     shell.setWorkingDirectory("/")
+else
+    local monitor = peripheral.find("monitor")
+    if not monitor then
+        print("keinen >Advanced Monitor< gefunden")
+    end
+    term.redirect(monitor)
+    term.clear()
+    monitor.setTextScale(0.5)
+    monitor.setCursorPos(1, 1)
 end
 
 if type(args) ~= "string" then

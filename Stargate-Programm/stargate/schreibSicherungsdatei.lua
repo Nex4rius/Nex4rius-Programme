@@ -19,7 +19,7 @@ end
 if standard then
   standard = standard()
 else
-  standard = {autoclosetime = 60, IDC = "", RF = false, Sprache = "", side = "unten", autoUpdate = true, StargateName = "", debug = false, control = "On", installieren = false}
+  standard = {autoclosetime = 60, IDC = "", RF = false, Sprache = "", side = "unten", autoUpdate = true, StargateName = "", Port = 800, debug = false, control = "On", installieren = false}
 end
 
 local function reset()
@@ -32,6 +32,7 @@ local function reset()
     Sprache        = "deutsch / english / russian / czech",
     side           = "unten, oben, hinten, vorne, rechts oder links",
     autoUpdate     = "aktiviere automatische Aktualisierungen",
+    Port           = "standard 800",
     debug          = "zum debuggen",
     nichtsAendern  = "verändere nichts ab hier",
     StargateName   = "der Name dieses Stargates",
@@ -68,19 +69,11 @@ if type(NEU) == "table" then
   check("string" , "Sprache")
   check("string" , "side")
   check("boolean", "autoUpdate")
+  check("number" , "Port")
   check("boolean", "debug")
   check("string" , "control")
   check("boolean", "installieren")
-  --if type(NEU.StargateName)  == "string" then Sicherung.StargateName = NEU.StargateName elseif type(ALT.StargateName) == "string" then Sicherung.StargateName = ALT.StargateName else Sicherung.StargateName = standard.StargateName end
-  --if type(NEU.IDC)           == "string" then Sicherung.IDC          = NEU.IDC          elseif type(ALT.IDC)          == "string" then Sicherung.IDC          = ALT.IDC          else Sicherung.IDC          = standard.IDC          end
-  --if type(NEU.RF)            == "boolean"then Sicherung.RF           = NEU.RF           elseif type(ALT.RF)           == "boolean"then Sicherung.RF           = ALT.RF           else Sicherung.RF           = standard.RF           end
-  --if type(NEU.Sprache)       == "string" then Sicherung.Sprache      = NEU.Sprache      elseif type(ALT.Sprache)      == "string" then Sicherung.Sprache      = ALT.Sprache      else Sicherung.Sprache      = standard.Sprache      end
-  --if type(NEU.side)          == "string" then Sicherung.side         = NEU.side         elseif type(ALT.side)         == "string" then Sicherung.side         = ALT.side         else Sicherung.side         = standard.side         end
-  --if type(NEU.autoUpdate)    == "boolean"then Sicherung.autoUpdate   = NEU.autoUpdate   elseif type(ALT.autoUpdate)   == "boolean"then Sicherung.autoUpdate   = ALT.autoUpdate   else Sicherung.autoUpdate   = standard.autoUpdate   end
-  --if type(NEU.debug)         == "boolean"then Sicherung.debug        = NEU.debug        elseif type(ALT.debug)        == "boolean"then Sicherung.debug        = ALT.debug        else Sicherung.debug        = standard.debug        end
-  --if type(NEU.control)       == "string" then Sicherung.control      = NEU.control      elseif type(ALT.control)      == "string" then Sicherung.control      = ALT.control      else Sicherung.control      = standard.control      end
-  --if type(NEU.installieren)  == "boolean"then Sicherung.installieren = NEU.installieren elseif type(ALT.installieren) == "boolean"then Sicherung.installieren = ALT.installieren else Sicherung.installieren = standard.installieren end
-    
+  
   local f = io.open ("/einstellungen/Sicherungsdatei.lua", "w")
   f:write('-- pastebin run -f YVqKFnsP\n')
   f:write('-- von Nex4rius\n')
@@ -95,6 +88,7 @@ if type(NEU) == "table" then
   f:write('  side          = "' .. tostring(Sicherung.side)         .. '", -- ' .. tostring(sprachen.side)          .. '\n')
   f:write('  autoUpdate    = '  .. tostring(Sicherung.autoUpdate)   ..  ', -- ' .. tostring(sprachen.autoUpdate)    .. '\n')
   f:write('  StargateName  = "' .. tostring(Sicherung.StargateName) .. '", -- ' .. tostring(sprachen.StargateName)  .. '\n')
+  f:write('  Port          = '  .. tostring(Sicherung.Port)         ..  ', -- ' .. tostring(sprachen.Port)          .. '\n')
   f:write('\n')
   f:write(string.rep("-", 10)   .. tostring(sprachen.nichtsAendern) .. string.rep("-", 60 - string.len(tostring(sprachen.nichtsAendern))) .. '\n')
   f:write('\n')

@@ -9,6 +9,14 @@ if require then
   require("shell").setWorkingDirectory("/")
 else
   CC = true
+  local monitor = peripheral.find("monitor")
+  if not monitor then
+    print("keinen >Advanced Monitor< gefunden")
+  end
+  term.redirect(monitor)
+  term.clear()
+  monitor.setTextScale(0.5)
+  monitor.setCursorPos(1, 1)
 end
 
 local arg         = ...
@@ -21,7 +29,7 @@ local fs          = fs or require("filesystem")
 fs.makeDirectory  = fs.makeDirectory or fs.makeDir
 local kopieren    = loadfile("/bin/cp.lua") or function(a, b, c)
   if type(a) == "string" and type(b) == "string" then
-    if c == "-n" then
+    if c ~= "-n" then
       fs.delete(b)
     end
     if fs.exists(a) and not fs.exists(b) then
@@ -96,7 +104,18 @@ else
   Sicherung.installieren = false
 end
 
-local Sprachliste = {"deutsch", "english", "russian", "czech", Sicherung.Sprache}
+local Sprachliste = {"deutsch", "english", "russian", "czech"}
+do
+  local dazu = true
+  for i in pairs(Sprachliste) do
+    if Sprachliste[i] == Sicherung.Sprache then
+      dazu = false
+    end
+  end
+  if dazu then
+    table.insert(Sprachliste, Sicherung.Sprache)
+  end
+end
 
 if Sicherung.Sprache then
   if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
@@ -228,21 +247,11 @@ function Funktionen.installieren(versionTyp)
     f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n')
     f:write('\n')
     f:write('if not pcall(loadfile("/autorun.lua"), require("shell").parse(...)[1]) then\n')
-    f:write('   os.execute("pastebin run -f YVqKFnsP"\n')
+    f:write('   os.execute("pastebin run -f YVqKFnsP")\n')
     --f:write('   loadfile("/bin/wget-lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua")\n')
     --f:write('   loadfile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", "master", "Stargate-Programm")\n')
     f:write('end\n')
     f:close()
-  --elseif CC then
-  --  local f = io.open("/start", "w")
-  --  f:write('-- pastebin run -f YVqKFnsP\n')
-  --  f:write('-- von Nex4rius\n')
-  --  f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n')
-  --  f:write('\n')
-  --  f:write('if not pcall(loadfile("/startup"), ...) then\n')
-  --  f:write('   shell.run("pastebin run -f YVqKFnsP")\n')
-  --  f:write('end\n')
-  --  f:close()
   end
   if updateKomplett then
     if OC then

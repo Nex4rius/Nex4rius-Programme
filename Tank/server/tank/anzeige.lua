@@ -83,10 +83,10 @@ function keineDaten()
   m.broadcast(port + 1, "update", version)
   if c.uptime() - letzteNachricht > Wartezeit then
     for screenid in component.list("screen") do
-      gpu.bind(screenid, false)
+      gpu.bind(screenid)
+      test(screenid)
       gpu.setResolution(21, 1)
       os.sleep(0.1)
-      term.clear()
       gpu.set(1, 1, "Keine Daten vorhanden")
     end
   end
@@ -161,7 +161,7 @@ function anzeigen(tankneu, screenid)
   end
   local a, b = gpu.getResolution()
   if maxanzahl <= 16 and maxanzahl ~= 0 then
-    if klein then
+    if klein and maxanzahl > 5 then
       if a ~= 160 or b ~= maxanzahl then
         gpu.setResolution(160, maxanzahl)
       end
@@ -171,13 +171,13 @@ function anzeigen(tankneu, screenid)
       end
     end
   else
-    if klein then
+    if klein and maxanzahl > 5 then
       if a ~= 160 or b ~= 16 then
-      gpu.setResolution(160, 16)
+        gpu.setResolution(160, 16)
       end
     else
       if a ~= 160 or b ~= 48 then
-      gpu.setResolution(160, 48)
+        gpu.setResolution(160, 48)
       end
     end
   end
@@ -196,7 +196,7 @@ function anzeigen(tankneu, screenid)
     if anzahl == 17 or anzahl == 33 or anzahl == 49 then
       if maxanzahl > 48 and anzahl > 48 then
         x = 41
-        if klein then
+        if klein and maxanzahl > 5 then
           y = 1 + (64 - maxanzahl)
         else
           y = 1 + 3 * (64 - maxanzahl)
@@ -204,7 +204,7 @@ function anzeigen(tankneu, screenid)
         breite = 40
       elseif maxanzahl > 32 and anzahl > 32 then
         x = 121
-        if klein then
+        if klein and maxanzahl > 5 then
           y = 1 + (48 - maxanzahl)
         else
           y = 1 + 3 * (48 - maxanzahl)
@@ -212,7 +212,7 @@ function anzeigen(tankneu, screenid)
         breite = 40
       else
         x = 81
-        if klein then
+        if klein and maxanzahl > 5 then
           y = 1 + (32 - maxanzahl)
         else
           y = 1 + 3 * (32 - maxanzahl)
@@ -230,9 +230,9 @@ function anzeigen(tankneu, screenid)
     if label == "fluidhelium3" then
       label = "Helium-3"
     end
-    zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein)
+    zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl)
     leer = false
-    if klein then
+    if klein and maxanzahl > 5 then
       y = y + 1
     else
       y = y + 3
@@ -241,11 +241,11 @@ function anzeigen(tankneu, screenid)
   Farben(0xFFFFFF, 0x000000)
   for i = anzahl, 33 do
     gpu.set(x, y    , string.rep(" ", 80))
-    if not klein then
+    if not (klein and maxanzahl > 5) then
       gpu.set(x, y + 1, string.rep(" ", 80))
       gpu.set(x, y + 2, string.rep(" ", 80))
     end
-    if klein then
+    if klein and maxanzahl > 5 then
       y = y + 1
     else
       y = y + 3
@@ -260,7 +260,7 @@ function zeichenErsetzen(...)
   return string.gsub(..., "%a+", function (str) return ersetzen[str] end)
 end
 
-function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein)
+function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl)
   if farben[name] == nil and debug then
     nachricht = string.format("%s  %s  >>report this liquid<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
     nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
@@ -293,7 +293,7 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, b
   Farben(farben[name][1], farben[name][2])
   local ende = 0
   for i = 1, math.ceil(breite * menge / maxmenge) do
-    if klein then
+    if klein and maxanzahl > 5 then
       gpu.set(x, y, string.format("%s", nachricht[i]), true)
     else
       gpu.set(x, y, string.format(" %s ", nachricht[i]), true)
@@ -303,7 +303,7 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, b
   end
   Farben(farben[name][3], farben[name][4])
   for i = 1, breite - math.ceil(breite * menge / maxmenge) do
-    if klein then
+    if klein and maxanzahl > 5  then
       gpu.set(x, y, string.format("%s", nachricht[i + ende]), true)
     else
       gpu.set(x, y, string.format(" %s ", nachricht[i + ende]), true)
@@ -334,21 +334,47 @@ function split(...)
 end
 
 function beenden()
+  for screenid in component.list("screen") do
+    gpu.bind(screenid)
+  end
   Farben(0xFFFFFF, 0x000000)
-  gpu.setResolution(gpu.maxResolution())
   os.sleep(0.1)
   term.clear()
 end
 
-function main()
+function test(screenid)
+  os.sleep(0.1)
+  local _, hoch = component.proxy(screenid).getAspectRatio()
+  term.clear()
+  if hoch <= 2 then
+    gpu.setResolution(160, 16)
+  else
+    gpu.setResolution(160, 48)
+  end
+  os.sleep(0.1)
+  local hex = {0x000000, 0x1F1F1F, 0x3F3F3F, 0x5F5F5F, 0x7F7F7F, 0x9F9F9F, 0xBFBFBF, 0xDFDFDF,
+               0xFFFFFF, 0xDFFFDF, 0xBFFFBF, 0x9FFF9F, 0x7FFF7F, 0x5FFF5F, 0x3FFF3F, 0x1FFF1F,
+               0x00FF00, 0x1FDF00, 0x3FBF00, 0x5F9F00, 0x7F7F00, 0x9F5F00, 0xBF3700, 0xDF1F00,
+               0xFF0000, 0xDF001F, 0xBF003F, 0x9F005F, 0x7F007F, 0x5F009F, 0x3F00BF, 0x1F00DF,
+               0x0000FF, 0x0000DF, 0x0000BF, 0x00009F, 0x00007F, 0x00005F, 0x00003F, 0x00001F,
+               0x000000}
+  for _, farbe in pairs(hex) do
+    gpu.setBackground(farbe)
+    os.sleep(0.1)
+    term.clear()
+  end
   gpu.setBackground(0x000000)
+end
+
+function main()
+  gpu.setForeground(0xFFFFFF)
   term.setCursor(1, 50)
   m.open(port)
   for screenid in component.list("screen") do
-    gpu.bind(screenid, false)
+    gpu.bind(screenid)
+    test(screenid)
     gpu.setResolution(15, 1)
     os.sleep(0.1)
-    term.clear()
     gpu.set(1, 1, "Warte auf Daten")
   end
   m.broadcast(port + 1, "update", version)
@@ -359,6 +385,8 @@ function main()
     standby()
   end
 end
+
+os.sleep(2)
 
 if not pcall(main) then
   print("Ausschalten")

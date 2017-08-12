@@ -115,7 +115,6 @@ return {
   IDC                       = "Iris Deactivation Code",
   autoclosetime             = "v sekundach -- false -> nezavirat automaticky",
   RF                        = "show energy in RF instead of EU",
-  Sprache                   = "deutsch / english / russian / czech",
   side                      = "spodek, vrch, zadek, predek, z prava nebo z leva",
   autoUpdate                = "zapnout automaticke aktualizace",
   iris                      = "Zadejte Vasi Stargate adresu zde",

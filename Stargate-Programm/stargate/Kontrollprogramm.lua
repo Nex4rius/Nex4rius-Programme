@@ -2,12 +2,12 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
-OC = nil
-CC = nil
 if require then
   OC = true
+  CC = nil
   require("shell").setWorkingDirectory("/")
 else
+  OC = nil
   CC = true
 end
 
@@ -17,12 +17,39 @@ local term                      = term or require("term")
 local fs                        = fs or require("filesystem")
 local shell                     = shell or require("shell")
 _G.shell = shell
+local print                     = print
+
+local gpu
 
 if OC then
   component = require("component")
   event = require("event")
+  gpu = component.getPrimary("gpu")
+  local a = gpu.setForeground
+  local b = gpu.setBackground
+  gpu.setForeground = function(code) if code then a(code) end end
+  gpu.setBackground = function(code) if code then b(code) end end
 elseif CC then
   component.getPrimary = peripheral.find
+  component.isAvailable = function(name)
+    cc_immer = {}
+    cc_immer.internet = function() return http end
+    cc_immer.redstone = function() return true end
+    if cc_immer[name] then
+      return cc_immer[name]()
+    end
+    return peripheral.find(name)
+  end
+  gpu = component.getPrimary("monitor")
+  term.redirect(gpu)
+  gpu.setResolution = function() gpu.setTextScale(0.5) end
+  gpu.setForeground = function(code) if code then gpu.setTextColor(code) end end
+  gpu.setBackground = function(code) if code then gpu.setBackgroundColor(code) end end
+  gpu.maxResolution = gpu.getSize
+  gpu.getResolution = gpu.getSize
+  gpu.fill = function() term.clear() end
+  fs.remove = fs.remove or fs.delete
+  term.setCursor = term.setCursorPos
 end
 
 local entfernen                 = fs.remove or fs.delete
@@ -45,10 +72,6 @@ local ersetzen                  = loadfile("/stargate/sprache/ersetzen.lua")(spr
 
 local sg                        = component.getPrimary("stargate")
 local screen                    = component.getPrimary("screen") or {}
-
-local gpu                       = component.getPrimary("gpu") or component.getPrimary("monitor")
-gpu.getResolution               = gpu.getResolution or gpu.getSize
-gpu.maxResolution               = gpu.maxResolution or gpu.getSize
 
 local Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
 local max_Bildschirmbreite, max_Bildschirmhoehe = gpu.maxResolution()
@@ -96,6 +119,8 @@ Taste.Koordinaten               = {}
 Taste.Steuerunglinks            = {}
 Taste.Steuerungrechts           = {}
 
+Variablen.WLAN_Anzahl           = 0
+
 local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, f, k, r, Farben
 
@@ -109,7 +134,7 @@ do
   Funktion.update               = args[1]
   Funktion.checkServerVersion   = args[2]
   version                       = tostring(args[3])
-  Farben                        = args[4]
+  Farben                        = args[4] or {}
 end
 
 if Sicherung.RF then
@@ -123,8 +148,15 @@ end
 
 pcall(screen.setTouchModeInverted, true)
 
-if component.isAvailable("redstone") then
-  r = component.getPrimary("redstone")
+if OC then
+  if component.isAvailable("redstone") then
+    r = component.getPrimary("redstone")
+  end
+elseif CC then
+  --r = peripheral.find("redstone")
+end
+
+if r then
   r.setBundledOutput(0, Farben.white, 0)
 --  r.setBundledOutput(0, Farben.orange, 0)
 --  r.setBundledOutput(0, Farben.magenta, 0)
@@ -195,22 +227,23 @@ end
 function Funktion.checkReset()
   if type(time) == "number" then
     if time > 500 then
-      zielAdresse     = ""
-      remoteName      = ""
-      showidc         = ""
-      incode          = "-"
-      codeaccepted    = "-"
-      wormhole        = "in"
-      iriscontrol     = "on"
-      k               = "open"
-      LampenGruen     = false
-      IDCyes          = false
-      entercode       = false
-      messageshow     = true
-      send            = true
-      AddNewAddress   = true
-      activationtime  = 0
-      time            = 0
+      zielAdresse           = ""
+      remoteName            = ""
+      showidc               = ""
+      incode                = "-"
+      codeaccepted          = "-"
+      wormhole              = "in"
+      iriscontrol           = "on"
+      k                     = "open"
+      LampenGruen           = false
+      IDCyes                = false
+      entercode             = false
+      messageshow           = true
+      send                  = true
+      AddNewAddress         = true
+      activationtime        = 0
+      time                  = 0
+      Variablen.WLAN_Anzahl = 0
     end
   end
 end
@@ -220,7 +253,16 @@ function Funktion.zeigeHier(x, y, s, h)
     if not h then
       h = Bildschirmbreite
     end
-    gpu.set(x, y, s .. string.rep(" ", h - string.len(s)))
+    if OC then
+      gpu.set(x, y, s .. string.rep(" ", h - string.len(s)))
+    elseif CC then
+      term.setCursorPos(x, y)
+      local wiederholanzahl = h - string.len(s)
+      if wiederholanzahl < 0 then
+        wiederholanzahl = 0
+      end
+      term.write(s .. string.rep(" ", wiederholanzahl))
+    end
   end
 end
 
@@ -573,7 +615,11 @@ end
 function Funktion.sendeAdressliste()
   if einmalAdressenSenden then
     einmalAdressenSenden = false
-    return "Adressliste", require("serialization").serialize(sendeAdressen), version
+    if OC then
+      return "Adressliste", require("serialization").serialize(sendeAdressen), version
+    elseif CC then --CC fehlt
+      return "Adressliste", "", version
+    end
   else
     return ""
   end
@@ -646,6 +692,10 @@ function Funktion.aktualisiereStatus()
   Funktion.wormholeDirection()
   Funktion.iriscontroller()
   if state == "Idle" then
+    if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
+      component.modem.open(Sicherung.Port)
+      Variablen.WLAN_Anzahl = 0
+    end
     RichtungName = ""
   else
     if wormhole == "out" then
@@ -781,8 +831,9 @@ function Funktion.RedstoneAenderung(a, b)
   if sideNum == nil then
     Funktion.sides()
   end
-  if component.isAvailable("redstone") then
-    component.getPrimary("redstone").setBundledOutput(sideNum, a, b)
+  if component.isAvailable("redstone") and OC then
+    r = component.getPrimary("redstone")
+    r.setBundledOutput(sideNum, a, b)
   end
 end
 
@@ -827,10 +878,18 @@ end
 
 function Funktion.Colorful_Lamp_Farben(eingabe, ausgabe)
   if alte_eingabe == eingabe then else
-    for k in component.list("colorful_lamp") do
-      component.proxy(k).setLampColor(eingabe)
-      if ausgabe then
-        print(sprachen.colorfulLampAusschalten .. k)
+    if OC then
+      for k in component.list("colorful_lamp") do
+        component.proxy(k).setLampColor(eingabe)
+        if ausgabe then
+          print(sprachen.colorfulLampAusschalten .. k)
+        end
+      end
+    elseif CC then
+      for k, v in pairs(peripheral.getNames()) do
+        if peripheral.getType(v) == "colorful_lamp" then
+          peripheral.call(v, "setLampColor", eingabe)
+        end
       end
     end
     alte_eingabe = eingabe
@@ -1235,7 +1294,6 @@ function Taste.l()
       schreibSicherungsdatei(Sicherung)
       Funktion.sides()
       gpu.setBackground(Farben.Nachrichtfarbe)
-      term.clear()
       seite = 0
       Funktion.zeigeAnzeige()
     else
@@ -1335,13 +1393,35 @@ function Funktion.sgChevronEngaged(e)
   Funktion.zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
 end
 
+function Funktion.modem_message(e)
+  if OC then
+    component.modem.close()
+  elseif CC then
+    local modem = peripheral.find("modem")
+    if modem then
+      modem.closeAll()
+    end
+  end
+  Variablen.WLAN_Anzahl = Variablen.WLAN_Anzahl + 1
+  if Variablen.WLAN_Anzahl < 5 then
+    Funktion.sgMessageReceived({e[1], e[2], e[6]})
+    event.timer(5, Funktion.openModem, 0)
+  end
+end
+
+function Funktion.openModem()
+  if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
+    component.modem.open(Sicherung.Port)
+  end
+end
+
 function Funktion.sgMessageReceived(e)
   if direction == "Outgoing" then
     codeaccepted = e[3]
   elseif direction == "Incoming" and wormhole == "in" then
     if e[3] == "Adressliste" then
     else
-      incode = e[3]
+      incode = tostring(e[3])
     end
   end
   if e[4] == "Adressliste" then
@@ -1444,7 +1524,6 @@ end
 function Funktion.checkStargateName()
   if Sicherung.StargateName ~= "string" or Sicherung.StargateName == "" then
     Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
-    term.clear()
     print(sprachen.FrageStargateName .. "\n")
     Sicherung.StargateName = io.read()
     schreibSicherungsdatei(Sicherung)
@@ -1512,11 +1591,14 @@ function Funktion.beendeAlles()
 end
 
 function Funktion.main()
-  loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Stargate OS")
+  if OC then
+    loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Stargate OS")
+  elseif CC then
+    shell.run("label set Stargate-OS")
+  end
   if sg.stargateState() == "Idle" and Funktion.getIrisState() == "Closed" then
     Funktion.irisOpen()
   end
-  term.clear()
   gpu.setResolution(70, 25)
   Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
   Funktion.zeigeFarben()
@@ -1526,6 +1608,7 @@ function Funktion.main()
   Funktion.AdressenSpeichern()
   seite = 0
   Funktion.zeigeMenu()
+  Funktion.openModem()
   while running do
     if not pcall(Funktion.eventLoop) then
       os.sleep(5)

@@ -11,6 +11,13 @@ if require then
   require("shell").setWorkingDirectory("/")
 else
   CC = true
+  local monitor = peripheral.find("monitor")
+  if not monitor then
+    print("keinen >Advanced Monitor< gefunden")
+  end
+  term.redirect(monitor)
+  monitor.setTextScale(0.5)
+  monitor.setCursorPos(1, 1)
 end
 
 local io                     = io
@@ -33,6 +40,34 @@ term.clear()
 
 if arg then
   arg                        = string.lower(tostring(arg))
+end
+
+if OC then
+  component = require("component")
+  gpu = component.getPrimary("gpu")
+  local a = gpu.setForeground
+  local b = gpu.setBackground
+  gpu.setForeground = function(code) if code then a(code) end end
+  gpu.setBackground = function(code) if code then b(code) end end
+elseif CC then
+  component.getPrimary = peripheral.find
+  component.isAvailable = function(name)
+    cc_immer = {}
+    cc_immer.internet = function() return http end
+    cc_immer.redstone = function() return true end
+    if cc_immer[name] then
+      return cc_immer[name]()
+    end
+    return peripheral.find(name)
+  end
+  gpu = component.getPrimary("monitor")
+  term.redirect(gpu)
+  gpu.setResolution = function() gpu.setTextScale(0.5) end
+  gpu.setForeground = function(code) if code then gpu.setTextColor(code) end end
+  gpu.setBackground = function(code) if code then gpu.setBackgroundColor(code) end end
+  gpu.maxResolution = gpu.getSize
+  gpu.fill = function() term.clear() end
+  fs.remove = fs.remove or fs.delete
 end
 
 if OC then
@@ -95,33 +130,6 @@ Farben.green                 = 13
 Farben.red                   = 14
 Farben.black                 = 15
 
-if OC then
-  component = require("component")
-  gpu = component.getPrimary("gpu")
-  local a = gpu.setForeground
-  local b = gpu.setBackground
-  gpu.setForeground = function(code) if code then a(code) end end
-  gpu.setBackground = function(code) if code then b(code) end end
-elseif CC then
-  component.getPrimary = peripheral.find
-  component.isAvailable = function(name)
-    cc_immer = {}
-    cc_immer.internet = function() return http end
-    cc_immer.redstone = function() return true end
-    if cc_immer[name] then
-      return cc_immer[name]()
-    end
-    return peripheral.find(name)
-  end
-  gpu = component.getPrimary("monitor")
-  gpu.setResolution = function() gpu.setTextScale(0.5) end
-  gpu.setForeground = function(code) if code then gpu.setTextColor(code) end end
-  gpu.setBackground = function(code) if code then gpu.setBackgroundColor(code) end end
-  gpu.maxResolution = gpu.getSize
-  gpu.fill = function() term.clear() end
-  fs.remove = fs.remove or fs.delete
-end
-
 local function kopieren(a, b, c)
   if type(a) == "string" and type(b) == "string" then
     if c == "-n" then
@@ -146,18 +154,18 @@ local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
       printError("<Fehler> Ziel existiert bereits")
       return
     else
-      term.write("Starte Download ... ")
+      --term.write("Starte Download ... ")
       local timer = os.startTimer(30)
       http.request(url)
       while true do
         local event, id, data = os.pullEvent()
         if event == "http_success" then
-          print("erfolgreich")
+          --print("erfolgreich")
           local f = io.open(ziel, "w")
           f:write(data.readAll())
           f:close()
           data:close()
-          print("Gespeichert unter " .. ziel)
+          --print("Gespeichert unter " .. ziel)
           return true
         elseif event == "timer" and timer == id then
           printError("<Fehler> Zeitueberschreitung")
@@ -275,7 +283,14 @@ function Funktion.checkKomponenten()
   else
     r = nil
   end
-  if gpu.maxResolution() == 80 then
+  if component.isAvailable("modem") and component.getPrimary("modem").isWireless() then
+    gpu.setForeground(Farben.hellgrueneFarbe)
+    print(sprachen.modemOK)
+  else
+    gpu.setForeground(Farben.roteFarbe)
+    print(sprachen.modemFehlt)
+  end
+  if gpu.maxResolution() == 80 or gpu.maxResolution() == 79 then
     gpu.setForeground(Farben.hellgrueneFarbe)
     print(sprachen.gpuOK2T)
   elseif gpu.maxResolution() == 160 then
@@ -326,26 +341,46 @@ function Funktion.update(versionTyp)
 end
 
 function Funktion.checkServerVersion()
-  if wget("-fQ", Funktion.Pfad("master") .. "stargate/version.txt", "/serverVersion.txt") then
+  gpu.setForeground(Farben.Hintergrundfarbe)
+  if wget("-f", Funktion.Pfad("master") .. "stargate/version.txt", "/serverVersion.txt") then
     local f = io.open ("/serverVersion.txt", "r")
     serverVersion = f:read()
     f:close()
-    loadfile("/bin/rm.lua")("/serverVersion.txt")
+    local a = loadfile("/bin/rm.lua") or fs.delete
+    a("/serverVersion.txt")
   else
     serverVersion = sprachen.fehlerName
   end
+  if OC then
+    local x, y = term.getCursor()
+    term.setCursor(x, y - 1)
+    term.clearLine()
+    term.setCursor(x, y - 2)
+    term.clearLine()
+  end
+  gpu.setForeground(Farben.weisseFarbe)
   return serverVersion
 end
 
 function Funktion.checkBetaServerVersion()
-  if wget("-fQ", Funktion.Pfad("beta") .. "stargate/version.txt", "/betaVersion.txt") then
+  gpu.setForeground(Farben.Hintergrundfarbe)
+  if wget("-f", Funktion.Pfad("beta") .. "stargate/version.txt", "/betaVersion.txt") then
     local f = io.open ("/betaVersion.txt", "r")
     betaServerVersion = f:read()
     f:close()
-    loadfile("/bin/rm.lua")("/betaVersion.txt")
+    local a = loadfile("/bin/rm.lua") or fs.delete
+    a("/betaVersion.txt")
   else
     betaServerVersion = sprachen.fehlerName
   end
+  if OC then
+    local x, y = term.getCursor()
+    term.setCursor(x, y - 1)
+    term.clearLine()
+    term.setCursor(x, y - 2)
+    term.clearLine()
+  end
+  gpu.setForeground(Farben.weisseFarbe)
   return betaServerVersion
 end
 
@@ -483,8 +518,10 @@ function Funktion.mainCheck()
       loadfile("/bin/edit.lua")("-r", "/log")
       loadfile("/bin/rm.lua")("/log")
     end
-    if not pcall(loadfile("/stargate/Kontrollprogramm.lua"), Funktion.update, Funktion.checkServerVersion, version, Farben) then
+    local erfolgreich, grund = pcall(loadfile("/stargate/Kontrollprogramm.lua"), Funktion.update, Funktion.checkServerVersion, version, Farben)
+    if not erfolgreich then
       print("Kontrollprogramm.lua hat einen Fehler")
+      print(grund)
     end
   else
     print(string.format("%s\n%s %s/%s", sprachen.fehlerName, sprachen.DateienFehlen, sprachen.ja, sprachen.nein) or "\nAlles neu herunterladen? ja/nein")
@@ -511,8 +548,8 @@ function Funktion.main()
   if gpu.maxResolution() == 160 then
     gpu.setBackground(Farben.graueFarbe)
   end
-  gpu.fill(1, 1, 70, 25, " ")
-  term.clear()
+  --gpu.fill(1, 1, 70, 25, " ")
+  --term.clear()
   Funktion.checkDateien()
   if fs.exists("/stargate/version.txt") then
     local f = io.open ("/stargate/version.txt", "r")
@@ -561,7 +598,7 @@ function Funktion.main()
   end
   gpu.setForeground(Farben.weisseFarbe)
   gpu.setBackground(Farben.schwarzeFarbe)
-  term.clear()
+  --term.clear()
   gpu.setResolution(gpu.maxResolution())
 end
 
