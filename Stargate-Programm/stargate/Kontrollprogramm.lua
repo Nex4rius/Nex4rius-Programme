@@ -421,14 +421,23 @@ function Funktion.AdressenSpeichern()
         sendeAdressen[i] = {}
         sendeAdressen[i][1] = na[1]
         sendeAdressen[i][2] = na[2]
-        if     anwahlEnergie > 10000000000 then
-          anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000) .. " G"
-        elseif anwahlEnergie > 10000000 then
-          anwahlEnergie = string.format("%.2f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000) .. " M"
+        if     anwahlEnergie <= 10000 then
+          anwahlEnergie = string.format("%.f" , (sg.energyToDial(na[2]) * energymultiplicator))
         elseif anwahlEnergie > 10000 then
           anwahlEnergie = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000) .. " k"
+        elseif anwahlEnergie > 10000000 then
+          anwahlEnergie = string.format("%.2f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000) .. " M"
+        elseif anwahlEnergie > 10000000000 then
+          anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000) .. " G"
+        elseif anwahlEnergie > 10000000000000 then
+          anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000000) .. " T"
+        elseif anwahlEnergie > 10000000000000000 then
+          anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000000000) .. " P"
+        elseif anwahlEnergie > 10000000000000000000 then
+          anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000000000000) .. " E"
+        elseif anwahlEnergie > 10000000000000000000000 then
+          anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000000000000000) .. " Z"
         else
-          anwahlEnergie = string.format("%.f" , (sg.energyToDial(na[2]) * energymultiplicator))
         end
       end
       gespeicherteAdressen[i + k] = {}
@@ -838,7 +847,7 @@ function Funktion.zeigeSteuerung()
     elseif seite == 0 then
       Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "  ← " .. sprachen.SteuerungName)
     else
-      Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "  ←             ")
+      Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "                ")
       --Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "  ← " .. sprachen.logbuch)
     end
   else
