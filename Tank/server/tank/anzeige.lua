@@ -2,6 +2,8 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/
 
+os.sleep(1)
+
 local component       = require("component")
 local fs              = require("filesystem")
 local c               = require("computer")
