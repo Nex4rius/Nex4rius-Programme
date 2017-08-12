@@ -4,14 +4,20 @@
 
 local shell = require("shell")
 local alterPfad = shell.getWorkingDirectory("/")
-local args = shell.parse(...)[1]
+local args = ...
 
 shell.setWorkingDirectory("/")
 
-if type(args) == "string" then
-  loadfile("/tank/anzeige.lua")(args)
-else
-  loadfile("/tank/anzeige.lua")()
+if type(args) ~= "string" then
+  args = ""
+end
+
+local ergebnis, grund = pcall(loadfile("/tank/anzeige.lua"), args)
+
+if not ergebnis then
+  print("<FEHLER>")
+  print(grund)
+  os.sleep(10)
 end
 
 shell.setWorkingDirectory(alterPfad)
