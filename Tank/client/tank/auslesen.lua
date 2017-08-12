@@ -40,13 +40,22 @@ if fs.exists("/tank/version.txt") then
 end
 
 do
-  print("Set wireless network card range (default: 400)")
-  io.write("Range: ")
-  local lesen = io.read()
-  if lesen == "" then
-    lesen = nil
+  if fs.exists("/tank/reichweite") then
+    local f = io.open("/tank/reichweite", "r")
+    reichweite = f:read()
+    f:close()
+  else
+    print("Set wireless network card range (default: 400)")
+    io.write("Range: ")
+    local lesen = io.read()
+    if lesen == "" then
+      lesen = nil
+    end
+    local f = io.open("/tank/reichweite", "w")
+    f:write(lesen)
+    f:close()
+    reichweite = lesen or 400
   end
-  reichweite = lesen or 400
 end
 
 function check()

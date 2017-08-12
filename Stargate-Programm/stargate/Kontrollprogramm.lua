@@ -89,6 +89,7 @@ local energytype                = "EU"
 local Funktion                  = {}
 local Taste                     = {}
 local Variablen                 = {}
+local Logbuch                   = {}
 local activationtime            = 0
 local energy                    = 0
 local seite                     = 0
@@ -175,6 +176,23 @@ if r then
   r.setBundledOutput(0, Farben.black, 0)
 end
 
+function Logbuch.eingehend(name, adresse, dauer)
+end
+
+function Logbuch.ausgehend(name, adresse, dauer)
+end
+
+function Logbuch.neueAdresse(name, adresse)
+end
+
+function Logbuch.neuerName(name, adresse)
+end
+
+function Funktion.Logbuch_schreiben(...)
+end
+
+--Logbuch[id](...)
+
 function Funktion.schreibeAdressen()
   local f = io.open("/einstellungen/adressen.lua", "w")
   f:write('-- pastebin run -f YVqKFnsP\n')
@@ -249,7 +267,8 @@ function Funktion.checkReset()
 end
 
 function Funktion.zeigeHier(x, y, s, h)
-  if type(x) == "number" and type(y) == "number" and type(s) == "string" then
+  s = tostring(s)
+  if type(x) == "number" and type(y) == "number" then
     if not h then
       h = Bildschirmbreite
     end
@@ -319,6 +338,14 @@ function Funktion.AdressenLesen()
   while y < Bildschirmhoehe - 3 do
     gpu.fill(1, y, 30, 1, " ")
     y = y + 1
+  end
+end
+
+function Funktion.Logbuchseite()
+  print(sprachen.logbuchTitel)
+  if not fs.exists("/stargate/logbuch") then
+    print("\n--keine Daten--")
+    print("\n--no data--")
   end
 end
 
@@ -394,14 +421,23 @@ function Funktion.AdressenSpeichern()
         sendeAdressen[i] = {}
         sendeAdressen[i][1] = na[1]
         sendeAdressen[i][2] = na[2]
-        if     anwahlEnergie > 10000000000 then
-          anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000) .. " G"
-        elseif anwahlEnergie > 10000000 then
-          anwahlEnergie = string.format("%.2f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000) .. " M"
+        if     anwahlEnergie <= 10000 then
+          anwahlEnergie = string.format("%.f" , (sg.energyToDial(na[2]) * energymultiplicator))
         elseif anwahlEnergie > 10000 then
           anwahlEnergie = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000) .. " k"
+        elseif anwahlEnergie > 10000000 then
+          anwahlEnergie = string.format("%.2f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000) .. " M"
+        elseif anwahlEnergie > 10000000000 then
+          anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000) .. " G"
+        elseif anwahlEnergie > 10000000000000 then
+          anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000000) .. " T"
+        elseif anwahlEnergie > 10000000000000000 then
+          anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000000000) .. " P"
+        elseif anwahlEnergie > 10000000000000000000 then
+          anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000000000000) .. " E"
+        elseif anwahlEnergie > 10000000000000000000000 then
+          anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000000000000000) .. " Z"
         else
-          anwahlEnergie = string.format("%.f" , (sg.energyToDial(na[2]) * energymultiplicator))
         end
       end
       gespeicherteAdressen[i + k] = {}
@@ -433,6 +469,8 @@ function Funktion.zeigeMenu()
   term.setCursor(1, 1)
   if seite == -1 then
     Funktion.Infoseite()
+  elseif seite == -2 then
+    Funktion.Logbuchseite()
   else
     if (os.time() / sectime) - letzterAdressCheck > 21600 then
       letzterAdressCheck = os.time() / sectime
@@ -800,14 +838,17 @@ function Funktion.zeigeSteuerung()
     Taste.Koordinaten.c_X = xVerschiebung + 20
     Funktion.zeigeHier(Taste.Koordinaten.c_X, Taste.Koordinaten.c_Y, "C " .. sprachen.schliesseIris) Funktion.neueZeile(1)
   end
-  if seite >= 0 then
+  if seite >= -1 then
     Taste.Steuerunglinks[zeile] = Taste.Pfeil_links
     Taste.Koordinaten.Pfeil_links_Y = zeile
     Taste.Koordinaten.Pfeil_links_X = xVerschiebung
     if seite >= 1 then
       Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "  ← " .. sprachen.vorherigeSeite)
-    else
+    elseif seite == 0 then
       Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "  ← " .. sprachen.SteuerungName)
+    else
+      Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "                ")
+      --Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "  ← " .. sprachen.logbuch)
     end
   else
     Funktion.zeigeHier(xVerschiebung, zeile, "")
@@ -815,7 +856,9 @@ function Funktion.zeigeSteuerung()
   Taste.Steuerungrechts[zeile] = Taste.Pfeil_rechts
   Taste.Koordinaten.Pfeil_rechts_Y = zeile
   Taste.Koordinaten.Pfeil_rechts_X = xVerschiebung + 20
-  if seite == -1 then
+  if seite == -2 then
+    Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.SteuerungName)
+  elseif seite == -1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.zeigeAdressen)
   elseif maxseiten > seite + 1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.naechsteSeite)
@@ -1096,11 +1139,12 @@ function Taste.Pfeil_links()
   Funktion.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
   if seite >= 1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.vorherigeSeite, 0)
-  elseif seite == -1 then
-  else
+  elseif seite == 0 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.SteuerungName, 0)
+  elseif seite == -1 then
+    Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.logbuch, 0)
   end
-  if seite <= -1 then else
+  if seite <= -2 then else
     seite = seite - 1
     Funktion.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
     for P = 1, Bildschirmhoehe - 3 do
@@ -1114,6 +1158,8 @@ function Taste.Pfeil_rechts()
   Funktion.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
   if seite == -1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.zeigeAdressen, 0)
+  elseif seite == -2 then
+    Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.SteuerungName, 0)
   elseif maxseiten > seite + 1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.naechsteSeite, 0)
   end
