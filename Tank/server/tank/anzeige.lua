@@ -88,6 +88,9 @@ function keineDaten()
       gpu.setResolution(21, 1)
       os.sleep(0.1)
       gpu.set(1, 1, "Keine Daten vorhanden")
+      gpu.setResolution(21, 1)
+      os.sleep(0.1)
+      gpu.set(1, 1, "Keine Daten vorhanden")
     end
   end
 end
@@ -367,6 +370,9 @@ function main()
   for screenid in component.list("screen") do
     gpu.bind(screenid)
     test(screenid)
+    gpu.setResolution(15, 1)
+    os.sleep(0.1)
+    gpu.set(1, 1, "Warte auf Daten")
     gpu.setResolution(15, 1)
     os.sleep(0.1)
     gpu.set(1, 1, "Warte auf Daten")
