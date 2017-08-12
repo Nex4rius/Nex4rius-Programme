@@ -172,11 +172,11 @@ function anzeigen(tankneu, screenid)
   else
     if klein and maxanzahl > 5 then
       if a ~= 160 or b ~= 16 then
-      gpu.setResolution(160, 16)
+        gpu.setResolution(160, 16)
       end
     else
       if a ~= 160 or b ~= 48 then
-      gpu.setResolution(160, 48)
+        gpu.setResolution(160, 48)
       end
     end
   end
@@ -341,9 +341,15 @@ end
 
 function test()
   gpu.setForeground(0x000000)
-  for screenid in component.list("screen") do
-    for k, v in pairs({0xFF0000, 0x00FF00, 0x0000FF, 0xFFFFFF}) do
-      gpu.bind(screenid)
+  for k, v in pairs({0xFF0000, 0x00FF00, 0x0000FF, 0xFFFFFF}) do
+    for screenid in component.list("screen") do
+      gpu.bind(screenid, false)
+      local _, hoch = component.proxy(screenid).getAspectRatio()
+      if hoch <= 2 then
+        gpu.setResolution(160, 16)
+      else
+        gpu.setResolution(160, 48)
+      end
       os.sleep(0.1)
       gpu.setBackground(v)
       term.clear()
