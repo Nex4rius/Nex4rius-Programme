@@ -2,8 +2,6 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/
 
-os.sleep(1)
-
 local component       = require("component")
 local fs              = require("filesystem")
 local c               = require("computer")
@@ -354,8 +352,9 @@ function test(screenid)
     gpu.setResolution(160, 48)
   end
   os.sleep(0.1)
-  for k, v in pairs({0x3F3F3F, 0x7F7F7F, 0xBFBFBF, 0xFFFFFF, 0xBFFFBF, 0x7FFF7F, 0x3FFF3F, 0x00FF00, 0x3FBF00, 0x7F7F00, 0xBF3700, 0xFF0000, 0xBF003F, 0x7F007F, 0x3F00BF, 0x0000FF, 0x0000BF, 0x00007F, 0x00003F, 0x000000}) do
-    gpu.setBackground(v)
+  for _, farbe in pairs({0x000000, 0x3F3F3F, 0x7F7F7F, 0xBFBFBF, 0xFFFFFF, 0xBFFFBF, 0x7FFF7F, 0x3FFF3F, 0x00FF00, 0x3FBF00, 0x7F7F00, 0xBF3700, 0xFF0000, 0xBF003F, 0x7F007F, 0x3F00BF, 0x0000FF, 0x0000BF, 0x00007F, 0x00003F, 0x000000}) do
+    gpu.setBackground(farbe)
+    os.sleep(0.1)
     term.clear()
   end
   gpu.setBackground(0x000000)
@@ -380,6 +379,8 @@ function main()
     standby()
   end
 end
+
+os.sleep(2)
 
 if not pcall(main) then
   print("Ausschalten")
