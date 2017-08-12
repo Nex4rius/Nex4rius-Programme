@@ -4,7 +4,7 @@
 
 local shell = require("shell")
 local alterPfad = shell.getWorkingDirectory("/")
-local args = shell.parse(...)[1]
+local args = ...
 
 shell.setWorkingDirectory("/")
 
