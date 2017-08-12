@@ -434,6 +434,8 @@ function Funktion.zeigeMenu()
   term.setCursor(1, 1)
   if seite == -1 then
     Funktion.Infoseite()
+  if seite == -2 then
+    Funktion.Logbuch()
   else
     if (os.time() / sectime) - letzterAdressCheck > 21600 then
       letzterAdressCheck = os.time() / sectime
@@ -447,6 +449,10 @@ end
 
 function Funktion.neueZeile(...)
   zeile = zeile + ...
+end
+
+function Funktion.Logbuch()
+  print(sprachen.logbuchTitel)
 end
 
 function Funktion.zeigeFarben()
@@ -801,14 +807,16 @@ function Funktion.zeigeSteuerung()
     Taste.Koordinaten.c_X = xVerschiebung + 20
     Funktion.zeigeHier(Taste.Koordinaten.c_X, Taste.Koordinaten.c_Y, "C " .. sprachen.schliesseIris) Funktion.neueZeile(1)
   end
-  if seite >= 0 then
+  if seite >= -1 then
     Taste.Steuerunglinks[zeile] = Taste.Pfeil_links
     Taste.Koordinaten.Pfeil_links_Y = zeile
     Taste.Koordinaten.Pfeil_links_X = xVerschiebung
     if seite >= 1 then
       Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "  ← " .. sprachen.vorherigeSeite)
-    else
+    elseif seite == 0 then
       Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "  ← " .. sprachen.SteuerungName)
+    else
+      Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "  ← " .. sprachen.logbuch)
     end
   else
     Funktion.zeigeHier(xVerschiebung, zeile, "")
@@ -816,7 +824,9 @@ function Funktion.zeigeSteuerung()
   Taste.Steuerungrechts[zeile] = Taste.Pfeil_rechts
   Taste.Koordinaten.Pfeil_rechts_Y = zeile
   Taste.Koordinaten.Pfeil_rechts_X = xVerschiebung + 20
-  if seite == -1 then
+  if seite == -2 then
+    Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.SteuerungName)
+  elseif seite == -1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.zeigeAdressen)
   elseif maxseiten > seite + 1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.naechsteSeite)
