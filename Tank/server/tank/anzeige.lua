@@ -82,9 +82,9 @@ end
 function keineDaten()
   m.broadcast(port + 1, "update", version)
   if c.uptime() - letzteNachricht > Wartezeit then
-    test()
     for screenid in component.list("screen") do
       gpu.bind(screenid)
+      test(screenid)
       gpu.set(1, 1, "Keine Daten vorhanden")
       gpu.setResolution(21, 1)
     end
@@ -341,23 +341,20 @@ function beenden()
   term.clear()
 end
 
-function test()
+function test(screenid)
   os.sleep(0.1)
-  for screenid in component.list("screen") do
-    gpu.bind(screenid, false)
-    local _, hoch = component.proxy(screenid).getAspectRatio()
+  local _, hoch = component.proxy(screenid).getAspectRatio()
+  term.clear()
+  if hoch <= 2 then
+    gpu.setResolution(160, 16)
+  else
+    gpu.setResolution(160, 48)
+  end
+  os.sleep(0.1)
+  for k, v in pairs({0xFF0000, 0x000000, 0x00FF00, 0xFFFFFF, 0x0000FF}) do
+    gpu.setBackground(v)
     term.clear()
-    if hoch <= 2 then
-      gpu.setResolution(160, 16)
-    else
-      gpu.setResolution(160, 48)
-    end
     os.sleep(0.1)
-    for k, v in pairs({0xFF0000, 0x000000, 0x00FF00, 0xFFFFFF, 0x0000FF}) do
-      gpu.setBackground(v)
-      term.clear()
-      os.sleep(0.1)
-    end
   end
 end
 
@@ -365,9 +362,9 @@ function main()
   gpu.setBackground(0x000000)
   term.setCursor(1, 50)
   m.open(port)
-  test()
   for screenid in component.list("screen") do
     gpu.bind(screenid)
+    test(screenid)
     gpu.set(1, 1, "Warte auf Daten")
     gpu.setResolution(15, 1)
   end
