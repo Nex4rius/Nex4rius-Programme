@@ -226,9 +226,7 @@ function Funktion.pull_event()
     if Nachrichtleer == true then
       if VersionUpdate == true then
         event.cancel(_G.ID)
-        running = false
-        Variablen.update = "ja"
-        Taste.q()
+        Taste.u()
       end
       Wartezeit = 600
     else
