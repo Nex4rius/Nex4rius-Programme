@@ -133,4 +133,5 @@ return {
   keineEnergie              = "<no energy>",
   StargateNichtKomplett     = "Stargate is non-functional",
   logbuch                   = "show logbook",
+  logbuchTitel              = "Logbook",
 }
