@@ -86,6 +86,7 @@ function keineDaten()
       gpu.bind(screenid)
       test(screenid)
       gpu.set(1, 1, "Keine Daten vorhanden")
+      os.sleep(0.1)
       gpu.setResolution(21, 1)
     end
   end
@@ -367,6 +368,7 @@ function main()
     gpu.bind(screenid)
     test(screenid)
     gpu.set(1, 1, "Warte auf Daten")
+    os.sleep(0.1)
     gpu.setResolution(15, 1)
   end
   m.broadcast(port + 1, "update", version)
