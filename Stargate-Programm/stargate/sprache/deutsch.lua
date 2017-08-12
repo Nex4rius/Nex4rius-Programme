@@ -33,7 +33,7 @@ return {
   ja                        = "ja",
   nein                      = "nein",
   hilfe                     = "hilfe",
-  Adressseite               = "Adressseite ",
+  Adressseite               = "Adressseite #",
   Unbekannt                 = "Unbekannt",
   waehlen                   = "Wähle ",
   energie1                  = "Energie ",
@@ -132,4 +132,5 @@ return {
   debug                     = "zum debuggen",
   keineEnergie              = "<keine Energie>",
   StargateNichtKomplett     = "Stargate ist funktionsunfähig",
+  logbuch                   = "zeige Logbuch",
 }
