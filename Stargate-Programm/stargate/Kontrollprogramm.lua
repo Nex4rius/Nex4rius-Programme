@@ -344,7 +344,8 @@ end
 function Funktion.Logbuchseite()
   print(sprachen.logbuchTitel)
   if not fs.exists("/stargate/logbuch") then
-    print("Zurzeit keine Daten")
+    print("\n--keine Daten--")
+    print("\n--no data--")
   end
 end
 
