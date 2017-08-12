@@ -17,6 +17,7 @@ local term                      = term or require("term")
 local fs                        = fs or require("filesystem")
 local shell                     = shell or require("shell")
 _G.shell = shell
+local print                     = print
 
 local gpu
 
@@ -120,7 +121,7 @@ Taste.Steuerungrechts           = {}
 
 Variablen.WLAN_Anzahl           = 0
 
-local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit, print
+local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, f, k, r, Farben
 
 do
@@ -1296,7 +1297,6 @@ function Taste.l()
       schreibSicherungsdatei(Sicherung)
       Funktion.sides()
       gpu.setBackground(Farben.Nachrichtfarbe)
-      --term.clear()
       seite = 0
       Funktion.zeigeAnzeige()
     else
@@ -1477,7 +1477,10 @@ end
 
 function Funktion.eventLoop()
   while running do
-    Funktion.checken(Funktion.zeigeStatus)
+    for screenid in component.list("screen") do
+      gpu.bind(screenid, false)
+      Funktion.checken(Funktion.zeigeStatus)
+    end
     e = Funktion.pull_event()
     if not e then
     elseif not e[1] then
@@ -1487,7 +1490,10 @@ function Funktion.eventLoop()
         Funktion.checken(f, e)
       end
     end
-    Funktion.zeigeAnzeige()
+    for screenid in component.list("screen") do
+      gpu.bind(screenid, false)
+      Funktion.zeigeAnzeige()
+    end
   end
 end
 
@@ -1527,7 +1533,6 @@ end
 function Funktion.checkStargateName()
   if Sicherung.StargateName ~= "string" or Sicherung.StargateName == "" then
     Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
-    --term.clear()
     print(sprachen.FrageStargateName .. "\n")
     Sicherung.StargateName = io.read()
     schreibSicherungsdatei(Sicherung)
@@ -1606,8 +1611,10 @@ function Funktion.main()
   if sg.stargateState() == "Idle" and Funktion.getIrisState() == "Closed" then
     Funktion.irisOpen()
   end
-  --term.clear()
-  gpu.setResolution(70, 25)
+  for screenid in component.list("screen") do
+    gpu.bind(screenid, false)
+    gpu.setResolution(70, 25)
+  end
   Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
   Funktion.zeigeFarben()
   Funktion.zeigeStatus()
