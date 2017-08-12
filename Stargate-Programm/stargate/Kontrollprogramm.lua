@@ -222,14 +222,17 @@ end
 
 function Funktion.pull_event()
   local Wartezeit = 1
-  if state == "Idle" and checkEnergy == energy then
-    if Nachrichtleer == true then
-      Wartezeit = 600
-    else
-      Wartezeit = 50
+  if state == "Idle" then
+    if checkEnergy == energy then
+      if Nachrichtleer == true then
+        Wartezeit = 600
+      else
+        Wartezeit = 50
+      end
     end
-    if state == "Idle" and VersionUpdate then
-      Taste.u()
+    if VersionUpdate then
+      running = false
+      Variablen.update = "ja"
     end
   end
   checkEnergy = energy
