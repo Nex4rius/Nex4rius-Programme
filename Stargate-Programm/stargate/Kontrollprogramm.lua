@@ -249,7 +249,8 @@ function Funktion.checkReset()
 end
 
 function Funktion.zeigeHier(x, y, s, h)
-  if type(x) == "number" and type(y) == "number" and type(s) == "string" then
+  s = tostring(s)
+  if type(x) == "number" and type(y) == "number" then
     if not h then
       h = Bildschirmbreite
     end
@@ -1096,11 +1097,12 @@ function Taste.Pfeil_links()
   Funktion.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
   if seite >= 1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.vorherigeSeite, 0)
-  elseif seite == -1 then
-  else
+  elseif seite == 0 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.SteuerungName, 0)
+  elseif seite == -1 then
+    Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.logbuch, 0)
   end
-  if seite <= -1 then else
+  if seite <= -2 then else
     seite = seite - 1
     Funktion.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
     for P = 1, Bildschirmhoehe - 3 do
@@ -1114,6 +1116,8 @@ function Taste.Pfeil_rechts()
   Funktion.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
   if seite == -1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.zeigeAdressen, 0)
+  elseif seite == -2 then
+    Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.SteuerungName, 0)
   elseif maxseiten > seite + 1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.naechsteSeite, 0)
   end
