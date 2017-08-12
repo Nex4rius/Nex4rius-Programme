@@ -88,9 +88,6 @@ function keineDaten()
       gpu.setResolution(21, 1)
       os.sleep(0.1)
       gpu.set(1, 1, "Keine Daten vorhanden")
-      gpu.setResolution(21, 1)
-      os.sleep(0.1)
-      gpu.set(1, 1, "Keine Daten vorhanden")
     end
   end
 end
@@ -355,7 +352,7 @@ function test(screenid)
     gpu.setResolution(160, 48)
   end
   os.sleep(0.1)
-  for k, v in pairs({0xFF0000, 0x000000, 0x00FF00, 0xFFFFFF, 0x0000FF, 0x000000}) do
+  for k, v in pairs({0x880000, 0x000000, 0x008800, 0x888888, 0x000088, 0x000000}) do
     gpu.setBackground(v)
     term.clear()
     os.sleep(0.1)
@@ -370,9 +367,6 @@ function main()
   for screenid in component.list("screen") do
     gpu.bind(screenid)
     test(screenid)
-    gpu.setResolution(15, 1)
-    os.sleep(0.1)
-    gpu.set(1, 1, "Warte auf Daten")
     gpu.setResolution(15, 1)
     os.sleep(0.1)
     gpu.set(1, 1, "Warte auf Daten")
