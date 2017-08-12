@@ -228,6 +228,9 @@ function Funktion.pull_event()
     else
       Wartezeit = 50
     end
+    if state == "Idle" and VersionUpdate then
+      Taste.u()
+    end
   end
   checkEnergy = energy
   return {event.pull(Wartezeit)}
@@ -1579,8 +1582,6 @@ function Funktion.angekommeneVersion(...)
     if component.isAvailable("internet") then
       if version ~= Funktion.checkServerVersion() then
         VersionUpdate = true
-        state, chevrons, direction = sg.stargateState()
-        _G.ID = event.timer(10, function() if state == "Idle" then Taste.u() end end, 1000)
       end
     end
   end
