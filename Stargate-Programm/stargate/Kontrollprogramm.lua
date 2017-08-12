@@ -1048,6 +1048,7 @@ function Funktion.zeigeNachricht(...)
   Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
   if VersionUpdate == true then
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, sprachen.aktualisierenGleich, Bildschirmbreite)
+    event.timer(10, function() event.push("test") end, math.huge)
   elseif fs.exists("/log") and Sicherung.debug then
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, sprachen.fehlerName .. " /log", Bildschirmbreite)
   else
