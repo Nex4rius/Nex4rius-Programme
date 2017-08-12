@@ -184,7 +184,7 @@ local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
 end
 
 function Funktion.Pfad(versionTyp)
-  if versionTyp == nil or type(versionTyp) ~= "string" then
+  if type(versionTyp) ~= "string" then
     versionTyp = "master"
   end
   return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/" .. versionTyp .. "/Stargate-Programm/"
