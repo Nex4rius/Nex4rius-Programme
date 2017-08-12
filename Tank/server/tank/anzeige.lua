@@ -333,24 +333,27 @@ function split(...)
 end
 
 function beenden()
+  for screenid in component.list("screen") do
+    gpu.bind(screenid)
+  end
   Farben(0xFFFFFF, 0x000000)
-  gpu.setResolution(gpu.maxResolution())
   os.sleep(0.1)
   term.clear()
 end
 
 function test()
-  gpu.setForeground(0x000000)
-  for k, v in pairs({0xFF0000, 0x00FF00, 0x0000FF, 0xFFFFFF}) do
-    for screenid in component.list("screen") do
-      gpu.bind(screenid, false)
-      local _, hoch = component.proxy(screenid).getAspectRatio()
-      if hoch <= 2 then
-        gpu.setResolution(160, 16)
-      else
-        gpu.setResolution(160, 48)
-      end
-      os.sleep(0.1)
+  os.sleep(0.1)
+  for screenid in component.list("screen") do
+    gpu.bind(screenid, false)
+    local _, hoch = component.proxy(screenid).getAspectRatio()
+    term.clear()
+    if hoch <= 2 then
+      gpu.setResolution(160, 16)
+    else
+      gpu.setResolution(160, 48)
+    end
+    os.sleep(0.1)
+    for k, v in pairs({0xFF0000, 0x000000, 0x00FF00, 0xFFFFFF, 0x0000FF}) do
       gpu.setBackground(v)
       term.clear()
       os.sleep(0.1)
