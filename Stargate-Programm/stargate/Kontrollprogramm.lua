@@ -89,6 +89,7 @@ local energytype                = "EU"
 local Funktion                  = {}
 local Taste                     = {}
 local Variablen                 = {}
+local Logbuch                   = {}
 local activationtime            = 0
 local energy                    = 0
 local seite                     = 0
@@ -174,6 +175,23 @@ if r then
   r.setBundledOutput(0, Farben.red, 0)
   r.setBundledOutput(0, Farben.black, 0)
 end
+
+function Logbuch.eingehend(name, adresse, dauer)
+end
+
+function Logbuch.ausgehend(name, adresse, dauer)
+end
+
+function Logbuch.neueAdresse(name, adresse)
+end
+
+function Logbuch.neuerName(name, adresse)
+end
+
+function Funktion.Logbuch_schreiben(...)
+end
+
+--Logbuch[id](...)
 
 function Funktion.schreibeAdressen()
   local f = io.open("/einstellungen/adressen.lua", "w")
@@ -323,6 +341,10 @@ function Funktion.AdressenLesen()
   end
 end
 
+function Funktion.Logbuchseite()
+  print(sprachen.logbuchTitel)
+end
+
 function Funktion.Infoseite()
   local i = 1
   Taste.links = {}
@@ -435,7 +457,7 @@ function Funktion.zeigeMenu()
   if seite == -1 then
     Funktion.Infoseite()
   elseif seite == -2 then
-    Funktion.Logbuch()
+    Funktion.Logbuchseite()
   else
     if (os.time() / sectime) - letzterAdressCheck > 21600 then
       letzterAdressCheck = os.time() / sectime
@@ -449,10 +471,6 @@ end
 
 function Funktion.neueZeile(...)
   zeile = zeile + ...
-end
-
-function Funktion.Logbuch()
-  print(sprachen.logbuchTitel)
 end
 
 function Funktion.zeigeFarben()
@@ -816,7 +834,7 @@ function Funktion.zeigeSteuerung()
     elseif seite == 0 then
       Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "  ← " .. sprachen.SteuerungName)
     else
-      --Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "  ← " .. sprachen.logbuch)
+      Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "  ← " .. sprachen.logbuch)
     end
   else
     Funktion.zeigeHier(xVerschiebung, zeile, "")
