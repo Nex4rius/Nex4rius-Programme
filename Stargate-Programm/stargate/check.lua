@@ -341,6 +341,7 @@ function Funktion.update(versionTyp)
 end
 
 function Funktion.checkServerVersion()
+  gpu.setForeground(Farben.Hintergrundfarbe)
   if wget("-f", Funktion.Pfad("master") .. "stargate/version.txt", "/serverVersion.txt") then
     local f = io.open ("/serverVersion.txt", "r")
     serverVersion = f:read()
@@ -357,10 +358,12 @@ function Funktion.checkServerVersion()
     term.setCursor(x, y - 2)
     term.clearLine()
   end
+  gpu.setForeground(Farben.weisseFarbe)
   return serverVersion
 end
 
 function Funktion.checkBetaServerVersion()
+  gpu.setForeground(Farben.Hintergrundfarbe)
   if wget("-f", Funktion.Pfad("beta") .. "stargate/version.txt", "/betaVersion.txt") then
     local f = io.open ("/betaVersion.txt", "r")
     betaServerVersion = f:read()
@@ -377,6 +380,7 @@ function Funktion.checkBetaServerVersion()
     term.setCursor(x, y - 2)
     term.clearLine()
   end
+  gpu.setForeground(Farben.weisseFarbe)
   return betaServerVersion
 end
 
