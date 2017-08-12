@@ -225,6 +225,7 @@ function Funktion.pull_event()
   if state == "Idle" and checkEnergy == energy then
     if Nachrichtleer == true then
       if VersionUpdate == true then
+        event.cancel(_G.ID)
         running = false
         Variablen.update = "ja"
         Taste.q()
@@ -1584,6 +1585,7 @@ function Funktion.angekommeneVersion(...)
     if component.isAvailable("internet") then
       if version ~= Funktion.checkServerVersion() then
         VersionUpdate = true
+        _G.ID = event.timer(10, function() event.push("update") end, math.huge)
       end
     end
   end
