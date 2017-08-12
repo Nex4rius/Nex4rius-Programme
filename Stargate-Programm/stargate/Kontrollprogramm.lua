@@ -253,10 +253,7 @@ function Funktion.zeigeHier(x, y, s, h)
       h = Bildschirmbreite
     end
     if OC then
-      for screenid in component.list("screen") do
-        gpu.bind(screenid, false)
-        gpu.set(x, y, s .. string.rep(" ", h - string.len(s)))
-      end
+      gpu.set(x, y, s .. string.rep(" ", h - string.len(s)))
     elseif CC then
       term.setCursorPos(x, y)
       local wiederholanzahl = h - string.len(s)
@@ -1568,17 +1565,6 @@ function Funktion.redstoneAbschalten(sideNum, Farbe, printAusgabe)
   print(sprachen.redstoneAusschalten .. printAusgabe)
 end
 
-function printneu()
-  _G.print_alt = print
-  local print_alt = print_alt
-  function print(...)
-    for screenid in component.list("screen") do
-      gpu.bind(screenid, false)
-      print_alt(...)
-    end
-  end
-end
-
 function Funktion.beendeAlles()
   for screenid in component.list("screen") do
     gpu.bind(screenid, false)
@@ -1613,7 +1599,6 @@ end
 
 function Funktion.main()
   if OC then
-    printneu()
     loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Stargate OS")
   elseif CC then
     shell.run("label set Stargate-OS")
