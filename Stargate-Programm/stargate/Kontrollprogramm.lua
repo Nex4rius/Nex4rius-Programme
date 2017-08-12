@@ -1579,7 +1579,8 @@ function Funktion.angekommeneVersion(...)
     if component.isAvailable("internet") then
       if version ~= Funktion.checkServerVersion() then
         VersionUpdate = true
-        _G.ID = event.timer(10, function() if state == "Idle" then Taste.u() end end, math.huge)
+        state, chevrons, direction = sg.stargateState()
+        _G.ID = event.timer(10, function() if state == "Idle" then Taste.u() end end, 1000)
       end
     end
   end
