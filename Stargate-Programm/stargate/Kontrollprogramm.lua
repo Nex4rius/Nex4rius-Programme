@@ -682,10 +682,7 @@ function Funktion.wormholeDirection()
 end
 
 function Funktion.aktualisiereStatus()
-  for screenid in component.list("screen") do
-    gpu.bind(screenid, false)
-    gpu.setResolution(70, 25)
-  end
+  gpu.setResolution(70, 25)
   sg = component.getPrimary("stargate")
   locAddr = Funktion.getAddress(sg.localAddress())
   remAddr = Funktion.getAddress(sg.remoteAddress())
@@ -1477,10 +1474,7 @@ end
 
 function Funktion.eventLoop()
   while running do
-    for screenid in component.list("screen") do
-      gpu.bind(screenid, false)
-      Funktion.checken(Funktion.zeigeStatus)
-    end
+    Funktion.checken(Funktion.zeigeStatus)
     e = Funktion.pull_event()
     if not e then
     elseif not e[1] then
@@ -1490,10 +1484,7 @@ function Funktion.eventLoop()
         Funktion.checken(f, e)
       end
     end
-    for screenid in component.list("screen") do
-      gpu.bind(screenid, false)
-      Funktion.zeigeAnzeige()
-    end
+    Funktion.zeigeAnzeige()
   end
 end
 
@@ -1571,13 +1562,10 @@ function Funktion.redstoneAbschalten(sideNum, Farbe, printAusgabe)
 end
 
 function Funktion.beendeAlles()
-  for screenid in component.list("screen") do
-    gpu.bind(screenid, false)
-    gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
-    Funktion.Farbe(Farben.schwarzeFarbe, Farben.weisseFarbe)
-    gpu.fill(1, 1, 160, 80, " ")
-    term.setCursor(1, 1)
-  end
+  gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
+  Funktion.Farbe(Farben.schwarzeFarbe, Farben.weisseFarbe)
+  gpu.fill(1, 1, 160, 80, " ")
+  term.setCursor(1, 1)
   print(sprachen.ausschaltenName .. "\n")
   Funktion.Colorful_Lamp_Farben(0, true)
   if component.isAvailable("redstone") then
@@ -1611,10 +1599,7 @@ function Funktion.main()
   if sg.stargateState() == "Idle" and Funktion.getIrisState() == "Closed" then
     Funktion.irisOpen()
   end
-  for screenid in component.list("screen") do
-    gpu.bind(screenid, false)
-    gpu.setResolution(70, 25)
-  end
+  gpu.setResolution(70, 25)
   Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
   Funktion.zeigeFarben()
   Funktion.zeigeStatus()
