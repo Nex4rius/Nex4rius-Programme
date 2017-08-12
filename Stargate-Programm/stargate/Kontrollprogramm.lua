@@ -223,7 +223,7 @@ end
 function Funktion.pull_event()
   local Wartezeit = 1
   if state == "Idle" then
-    if checkEnergy == energy then
+    if checkEnergy == energy and not VersionUpdate then
       if Nachrichtleer == true then
         Wartezeit = 600
       else
