@@ -357,10 +357,10 @@ function test(screenid)
     term.clear()
     os.sleep(0.1)
   end
+  gpu.setBackground(0x000000)
 end
 
 function main()
-  gpu.setBackground(0x000000)
   gpu.setForeground(0xFFFFFF)
   term.setCursor(1, 50)
   m.open(port)
