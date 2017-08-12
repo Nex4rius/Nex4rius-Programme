@@ -351,7 +351,7 @@ function test(screenid)
     gpu.setResolution(160, 48)
   end
   os.sleep(0.1)
-  for k, v in pairs({0xFF0000, 0x000000, 0x00FF00, 0xFFFFFF, 0x0000FF}) do
+  for k, v in pairs({0xFF0000, 0x000000, 0x00FF00, 0xFFFFFF, 0x0000FF, 0x000000}) do
     gpu.setBackground(v)
     term.clear()
     os.sleep(0.1)
@@ -360,6 +360,7 @@ end
 
 function main()
   gpu.setBackground(0x000000)
+  gpu.setForeground(0xFFFFFF)
   term.setCursor(1, 50)
   m.open(port)
   for screenid in component.list("screen") do
