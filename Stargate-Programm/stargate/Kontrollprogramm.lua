@@ -224,10 +224,6 @@ function Funktion.pull_event()
   local Wartezeit = 1
   if state == "Idle" and checkEnergy == energy then
     if Nachrichtleer == true then
-      if VersionUpdate == true then
-        event.cancel(_G.ID)
-        Taste.u()
-      end
       Wartezeit = 600
     else
       Wartezeit = 50
@@ -1583,7 +1579,7 @@ function Funktion.angekommeneVersion(...)
     if component.isAvailable("internet") then
       if version ~= Funktion.checkServerVersion() then
         VersionUpdate = true
-        _G.ID = event.timer(10, function() event.push("update") end, math.huge)
+        _G.ID = event.timer(10, function() if state == "Idle" then Taste.u() end end, math.huge)
       end
     end
   end
