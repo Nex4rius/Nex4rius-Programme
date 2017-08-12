@@ -434,7 +434,7 @@ function Funktion.zeigeMenu()
   term.setCursor(1, 1)
   if seite == -1 then
     Funktion.Infoseite()
-  if seite == -2 then
+  elseif seite == -2 then
     Funktion.Logbuch()
   else
     if (os.time() / sectime) - letzterAdressCheck > 21600 then
