@@ -120,7 +120,7 @@ Taste.Steuerungrechts           = {}
 
 Variablen.WLAN_Anzahl           = 0
 
-local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit
+local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit, print
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, f, k, r, Farben
 
 do
@@ -253,7 +253,10 @@ function Funktion.zeigeHier(x, y, s, h)
       h = Bildschirmbreite
     end
     if OC then
-      gpu.set(x, y, s .. string.rep(" ", h - string.len(s)))
+      for screenid in component.list("screen") do
+        gpu.bind(screenid, false)
+        gpu.set(x, y, s .. string.rep(" ", h - string.len(s)))
+      end
     elseif CC then
       term.setCursorPos(x, y)
       local wiederholanzahl = h - string.len(s)
@@ -681,7 +684,10 @@ function Funktion.wormholeDirection()
 end
 
 function Funktion.aktualisiereStatus()
-  gpu.setResolution(70, 25)
+  for screenid in component.list("screen") do
+    gpu.bind(screenid, false)
+    gpu.setResolution(70, 25)
+  end
   sg = component.getPrimary("stargate")
   locAddr = Funktion.getAddress(sg.localAddress())
   remAddr = Funktion.getAddress(sg.remoteAddress())
@@ -1562,11 +1568,25 @@ function Funktion.redstoneAbschalten(sideNum, Farbe, printAusgabe)
   print(sprachen.redstoneAusschalten .. printAusgabe)
 end
 
+function printneu()
+  _G.print_alt = print
+  local print_alt = print_alt
+  function print(...)
+    for screenid in component.list("screen") do
+      gpu.bind(screenid, false)
+      print_alt(...)
+    end
+  end
+end
+
 function Funktion.beendeAlles()
-  gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
-  Funktion.Farbe(Farben.schwarzeFarbe, Farben.weisseFarbe)
-  gpu.fill(1, 1, 160, 80, " ")
-  term.setCursor(1, 1)
+  for screenid in component.list("screen") do
+    gpu.bind(screenid, false)
+    gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
+    Funktion.Farbe(Farben.schwarzeFarbe, Farben.weisseFarbe)
+    gpu.fill(1, 1, 160, 80, " ")
+    term.setCursor(1, 1)
+  end
   print(sprachen.ausschaltenName .. "\n")
   Funktion.Colorful_Lamp_Farben(0, true)
   if component.isAvailable("redstone") then
@@ -1593,6 +1613,7 @@ end
 
 function Funktion.main()
   if OC then
+    printneu()
     loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Stargate OS")
   elseif CC then
     shell.run("label set Stargate-OS")
