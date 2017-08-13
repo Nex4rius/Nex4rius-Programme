@@ -1063,7 +1063,7 @@ function Funktion.zeigeNachricht(...)
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, "", Bildschirmbreite)
   end
   if ... then
-    Funktion.zeigeHier(1, Bildschirmhoehe, Funktion.zeichenErsetzen(Funktion.zeichenErsetzen(...)), Bildschirmbreite)
+    Funktion.zeigeHier(1, Bildschirmhoehe, Funktion.zeichenErsetzen(Funktion.zeichenErsetzen(...)), Bildschirmbreite + 1)
   else
     Funktion.zeigeHier(1, Bildschirmhoehe, "", Bildschirmbreite)
   end
@@ -1200,8 +1200,9 @@ function Taste.e()
     if state == "Connected" and direction == "Outgoing" then
       term.setCursor(1, Bildschirmhoehe)
       Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
+      term.clearLine()
       term.write(sprachen.IDCeingabe .. ":")
-      local timerID = event.timer(1, Funktion.zeigeStatus(), math.huge)
+      local timerID = event.timer(1, Funktion.zeigeStatus, math.huge)
       sg.sendMessage(term.read(nil, false, nil, "*"))
       event.cancel(timerID)
       Funktion.zeigeNachricht(sprachen.IDCgesendet)
