@@ -510,7 +510,8 @@ function Funktion.mainCheck()
       end
     end
   end
-  print(sprachen.laden or "\nLaden...")
+  term.write(sprachen.laden or "\nLaden...")
+  print(" nexDHD")
   Sicherung.installieren = false
   schreibSicherungsdatei(Sicherung)
   if Funktion.checkDateien() then
