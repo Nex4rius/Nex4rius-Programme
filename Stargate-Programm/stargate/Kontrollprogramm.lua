@@ -1204,7 +1204,7 @@ function Taste.e()
   Funktion.zeigeHier(Taste.Koordinaten.e_X, Taste.Koordinaten.e_Y, "E " .. sprachen.IDCeingabe, 0)
   if Funktion.Tastatur() then
     if state == "Connected" and direction == "Outgoing" then
-      -enteridc = ""
+      enteridc = ""
       showidc = ""
       entercode = true
       
