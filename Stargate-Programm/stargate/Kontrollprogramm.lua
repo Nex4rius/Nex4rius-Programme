@@ -370,10 +370,17 @@ function Funktion.Infoseite()
   i = i + 1
   Taste.links[i] = Taste.q
   Taste.Koordinaten.Taste_q = i
-  print("L " .. sprachen.EinstellungenAendern)
+  print("S " .. sprachen.EinstellungenAendern)
   i = i + 1
   Taste.links[i] = Taste.l
   Taste.Koordinaten.Taste_l = i
+  if fs.exists("/log") then
+    term.write("L ")
+    print(sprachen.zeigeLog or "Zeige Fehlerlog")
+    i = i + 1
+    Taste.links[i] = Taste.l
+    Taste.Koordinaten.Taste_l = i
+  end
   print("U " .. sprachen.Update)
   i = i + 1
   Taste.links[i] = Taste.u
@@ -1288,7 +1295,7 @@ function Taste.z()
   end
 end
 
-function Taste.l()
+function Taste.s()
   if seite == -1 then
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
     Funktion.zeigeHier(1, Taste.Koordinaten.Taste_l, "L " .. sprachen.EinstellungenAendern, 0)
@@ -1337,6 +1344,12 @@ function Taste.l()
     else
       event.timer(2, Funktion.zeigeMenu, 1)
     end
+  end
+end
+
+function Taste.l()
+  if seite == -1 then
+    edit("-r", "/log")
   end
 end
 
