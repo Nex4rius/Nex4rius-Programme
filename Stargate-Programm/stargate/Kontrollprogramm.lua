@@ -376,7 +376,7 @@ function Funktion.Infoseite()
   Taste.Koordinaten.Taste_l = i
   if fs.exists("/log") then
     term.write("L ")
-    print(sprachen.zeigeLog or "Zeige Fehlerlog")
+    print(sprachen.zeigeLog or "zeige Fehlerlog")
     i = i + 1
     Taste.links[i] = Taste.l
     Taste.Koordinaten.Taste_l = i
