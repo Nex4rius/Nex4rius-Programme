@@ -366,7 +366,7 @@ function Funktion.Logbuchseite()
       else
         Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
       end
-      Funktion.zeigeHier(1, 1 + i, string.sub(string.format("%s - %s%s", rest[i][2], rest[i][1], string.rep(" ", 30)), 1, 30), 0)
+      Funktion.zeigeHier(1, 1 + i, string.sub(string.format("%s  %s%s", rest[i][2], rest[i][1], string.rep(" ", 50)), 1, 31), 0)
     end
   end
 end
