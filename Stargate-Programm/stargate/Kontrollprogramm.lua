@@ -1435,16 +1435,17 @@ end
 
 function Funktion.sgChevronEngaged(e)
   chevron = e[3]
-  if sg.remoteAddress() then
+  local remAdr = sg.remoteAddress()
+  if remAdr then
     if chevron <= 4 then
-      zielAdresse = string.sub(sg.remoteAddress(), 1, chevron)
+      zielAdresse = string.sub(remAdr, 1, chevron)
     elseif chevron <= 7 then
-      zielAdresse = string.sub(sg.remoteAddress(), 1, 4) .. "-" .. string.sub(sg.remoteAddress(), 5, chevron)
+      zielAdresse = string.sub(remAdr, 1, 4) .. "-" .. string.sub(remAdr, 5, chevron)
     else
-      zielAdresse = string.sub(sg.remoteAddress(), 1, 4) .. "-" .. string.sub(sg.remoteAddress(), 5, 7) .. "-" .. string.sub(sg.remoteAddress(), 8, chevron)
+      zielAdresse = string.sub(remAdr, 1, 4) .. "-" .. string.sub(remAdr, 5, 7) .. "-" .. string.sub(remAdr, 8, chevron)
     end
   else
-    zielAdresse = "<FEHLER>"
+    zielAdresse = sprachen.fehlerName
   end
   Funktion.zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
 end
