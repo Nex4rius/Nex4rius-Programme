@@ -1195,7 +1195,7 @@ function Taste.e()
       Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
       term.write(sprachen.IDCeingabe .. ":")
       local timerID = event.timer(1, Funktion.zeigeStatus(), math.huge)
-      sg.sendMessage(term.read(nil, nil, nil, "*"))
+      sg.sendMessage(term.read(nil, false, nil, "*"))
       event.cancel(timerID)
       Funktion.zeigeNachricht(sprachen.IDCgesendet)
     else
