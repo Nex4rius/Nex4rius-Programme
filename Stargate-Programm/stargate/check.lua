@@ -580,6 +580,7 @@ function Funktion.main()
         end
         if dazu then
           sprachen[k] = v
+        end
       end
     end
   else
