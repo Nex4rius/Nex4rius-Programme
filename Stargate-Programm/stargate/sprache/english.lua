@@ -136,5 +136,5 @@ return {
   logbuchTitel              = "Logbook",
   zeigeLog                  = "show error log",
   Legende                   = "legend",
-  neueAdresse               = "new addresse",
+  neueAdresse               = "new address",
 }
