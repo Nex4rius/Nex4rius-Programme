@@ -1,5 +1,5 @@
 -- pastebin run -f YVqKFnsP
--- von Nex4rius
+-- nexDHD von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
 os.sleep(1)
@@ -510,7 +510,7 @@ function Funktion.mainCheck()
       end
     end
   end
-  term.write("nexDHD - ")
+  print("\nnexDHD")
   print(sprachen.laden or "\nLaden...")
   Sicherung.installieren = false
   schreibSicherungsdatei(Sicherung)
