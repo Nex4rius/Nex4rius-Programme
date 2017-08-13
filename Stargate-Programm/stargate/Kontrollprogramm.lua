@@ -366,7 +366,7 @@ function Funktion.Logbuchseite()
       else
         Funktion.Farbe(Farben.hellblau)
       end
-      print(string.format("%s %s", rest[i][2], rest[i][1], string.rep(" ", 30 - string.len(rest[i][2] .. rest[i][1])))
+      print(string.sub(string.format("%s %s", rest[i][2], rest[i][1], string.rep(" ", 30 - string.len(rest[i][2] .. rest[i][1])), 1, 30)
     end
   end
 end
@@ -1080,6 +1080,13 @@ function Funktion.zeigeNachricht(...)
     event.timer(10, function() event.push("test") end, math.huge)
   elseif fs.exists("/log") and Sicherung.debug then
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, sprachen.fehlerName .. " /log", Bildschirmbreite)
+  elseif seite == -2 then
+    Funktion.Farbe(Farben.roteFarbe, Farben.schwarzeFarbe)
+    Funktion.zeigeHier(1, Bildschirmhoehe - 1, "in", Bildschirmbreite)
+    Funktion.Farbe(Farben.grueneFarbe, Farben.weisseFarbe)
+    Funktion.zeigeHier(3, Bildschirmhoehe - 1, "out", Bildschirmbreite)
+    Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
+    Funktion.zeigeHier(7, Bildschirmhoehe - 1, "neue Adresse", Bildschirmbreite)
   else
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, "", Bildschirmbreite)
   end
