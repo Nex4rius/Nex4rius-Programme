@@ -135,4 +135,6 @@ return {
   logbuch                   = "zeige Logbuch",
   logbuchTitel              = "Logbuch",
   zeigeLog                  = "zeige Fehlerlog",
+  Legende                   = "Legende",
+  neueAdresse               = "neue Adresse",
 }
