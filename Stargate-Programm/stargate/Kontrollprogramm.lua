@@ -185,7 +185,7 @@ function Funktion.Logbuch_schreiben(name, adresse, richtung)
       rest = {}
     end
   end
-  for i = 20, 2, -1 do
+  for i = 20, 1, -1 do
     rest[i + 1] = rest[i]
   end
   rest[1] = {name, adresse, richtung}
@@ -360,17 +360,14 @@ function Funktion.Logbuchseite()
     local rest = loadfile("/einstellungen/logbuch.lua")()
     for i in pairs(rest) do
       if rest[i][3] == "in" then
-        Funktion.Farbe(Farben.roteFarbe)
+        Funktion.Farbe(Farben.roteFarbe, Farben.schwarzeFarbe)
       elseif rest[i][3] == "out" then
         Funktion.Farbe(Farben.grueneFarbe)
       else
         Funktion.Farbe(Farben.hellblau)
       end
-      print(rest[i][1], rest[i][2])
+      print(string.format("%s %s", rest[i][2], rest[i][1], string.rep(" ", 30 - string.len(rest[i][2] .. rest[i][1])))
     end
-  else
-    print("\n--keine Daten--")
-    print("\n--no data--")
   end
 end
 
@@ -1561,7 +1558,7 @@ end
 
 function Funktion.sgDialIn()
   wormhole = "in"
-  Funktion.Logbuch_schreiben(remoteName , tostring(sg.remoteAddress()), wormhole)
+  Funktion.Logbuch_schreiben(remoteName , Funktion.getAddress(sg.remoteAddress()), wormhole)
 end
 
 function Funktion.sgDialOut()
