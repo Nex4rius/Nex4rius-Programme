@@ -1,5 +1,5 @@
 -- pastebin run -f YVqKFnsP
--- von Nex4rius
+-- nexDHD von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
 OC = nil
@@ -135,7 +135,7 @@ function Funktionen.schreibAutorun()
   local f = io.open("/autorun.lua", "w")
   f:write([[
   -- pastebin run -f YVqKFnsP
-  -- von Nex4rius
+  -- nexDHD von Nex4rius
   -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
   local shell = shell or require("shell")
@@ -243,7 +243,7 @@ function Funktionen.installieren(versionTyp)
   if OC then
     local f = io.open("/bin/stargate.lua", "w")
     f:write('-- pastebin run -f YVqKFnsP\n')
-    f:write('-- von Nex4rius\n')
+    f:write('-- nexDHD von Nex4rius\n')
     f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n')
     f:write('\n')
     f:write('if not pcall(loadfile("/autorun.lua"), require("shell").parse(...)[1]) then\n')
@@ -285,7 +285,7 @@ if versionTyp == nil then
       local f = io.open("/autorun.lua", "w")
       f:write([[
         -- pastebin run -f YVqKFnsP
-        -- von Nex4rius
+        -- nexDHD von Nex4rius
         -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
         
         wget("-f", Funktionen.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua")
@@ -297,7 +297,7 @@ if versionTyp == nil then
       local f = io.open("/startup", "w")
       f:write([[
         -- pastebin run -f YVqKFnsP
-        -- von Nex4rius
+        -- nexDHD von Nex4rius
         -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
         
         shell.run("pastebin run -f YVqKFnsP")
