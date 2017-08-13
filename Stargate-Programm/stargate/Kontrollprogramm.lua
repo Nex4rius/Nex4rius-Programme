@@ -185,7 +185,10 @@ function Funktion.Logbuch_schreiben(name, adresse, richtung)
       rest = {}
     end
   end
-  rest[#rest + 1] = {name, adresse, richtung}
+  for i = 50, 2, -1 do
+    rest[i + 1] = rest[i]
+  end
+  rest[1] = {name, adresse, richtung}
   local f = io.open("/einstellungen/logbuch.lua", "w")
   f:write('-- pastebin run -f YVqKFnsP\n')
   f:write('-- nexDHD von Nex4rius\n')
