@@ -19,9 +19,10 @@ local shell                     = shell or require("shell")
 _G.shell = shell
 local print                     = print
 
-local gpu
+local gpu, serialization
 
 if OC then
+  serialization = require("serialization")
   component = require("component")
   event = require("event")
   gpu = component.getPrimary("gpu")
@@ -655,7 +656,7 @@ function Funktion.sendeAdressliste()
   if einmalAdressenSenden then
     einmalAdressenSenden = false
     if OC then
-      return "Adressliste", require("serialization").serialize(sendeAdressen), version
+      return "Adressliste", serialization.serialize(sendeAdressen), version
     elseif CC then --CC fehlt
       return "Adressliste", "", version
     end
@@ -1074,9 +1075,9 @@ function Funktion.schreibFehlerLog(...)
     if type(...) == "string" then
       f:write(...)
     elseif type(...) == "table" then
-      f:write(require("serialization").serialize(...))
+      f:write(serialization.serialize(...))
     end
-    f:write("\n\n" .. os.time() .. string.rep("-", max_Bildschirmbreite - string.len(os.time())) .. "\n\n")
+    f:write("\n" .. os.time() .. string.rep("-", max_Bildschirmbreite - string.len(os.time())) .. "\n")
     f:close()
   end
   letzteEingabe = ...
@@ -1466,7 +1467,7 @@ function Funktion.sgMessageReceived(e)
     end
   end
   if e[4] == "Adressliste" then
-    local inAdressen = require("serialization").unserialize(e[5])
+    local inAdressen = serialization.unserialize(e[5])
     if type(inAdressen) == "table" then
       Funktion.angekommeneAdressen(inAdressen)
     end
