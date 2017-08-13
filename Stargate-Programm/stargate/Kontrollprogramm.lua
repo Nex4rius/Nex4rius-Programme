@@ -366,7 +366,8 @@ function Funktion.Logbuchseite()
       else
         Funktion.Farbe(Farben.hellblau)
       end
-      print(string.sub(string.format("%s %s", rest[i][2], rest[i][1], string.rep(" ", 30 - string.len(rest[i][2] .. rest[i][1])), 1, 30)
+      Funktion.zeigeHier(1, 1 + i, string.sub(string.format("%s %s", rest[i][2], rest[i][1], string.rep(" ", 30 - string.len(rest[i][2] .. rest[i][1])), 1, 30)
+      --print(string.sub(string.format("%s %s", rest[i][2], rest[i][1], string.rep(" ", 30 - string.len(rest[i][2] .. rest[i][1])), 1, 30)
     end
   end
 end
