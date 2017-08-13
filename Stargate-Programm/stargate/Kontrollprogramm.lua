@@ -185,7 +185,7 @@ function Funktion.Logbuch_schreiben(name, adresse, richtung)
       rest = {}
     end
   end
-  for i = 50, 2, -1 do
+  for i = 20, 2, -1 do
     rest[i + 1] = rest[i]
   end
   rest[1] = {name, adresse, richtung}
@@ -356,7 +356,19 @@ end
 
 function Funktion.Logbuchseite()
   print(sprachen.logbuchTitel)
-  if not fs.exists("/stargate/logbuch") then
+  if fs.exists("/einstellungen/logbuch.lua") then
+    rest = loadfile("/einstellungen/logbuch.lua")()
+    for i = 1, 20 do
+      if rest[i][3] == "in" then
+        Funktion.Farbe(Farben.roteFarbe)
+      elseif rest[i][3] == "out" then
+        Funktion.Farbe(Farben.grueneFarbe)
+      else
+        Funktion.Farbe(Farben.hellblau)
+      end
+      print(rest[i][1], rest[i][2])
+    end
+  else
     print("\n--keine Daten--")
     print("\n--no data--")
   end
