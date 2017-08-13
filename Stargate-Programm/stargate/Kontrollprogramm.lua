@@ -362,12 +362,11 @@ function Funktion.Logbuchseite()
       if rest[i][3] == "in" then
         Funktion.Farbe(Farben.roteFarbe, Farben.schwarzeFarbe)
       elseif rest[i][3] == "out" then
-        Funktion.Farbe(Farben.grueneFarbe)
+        Funktion.Farbe(Farben.grueneFarbe, Farben.weisseFarbe)
       else
-        Funktion.Farbe(Farben.hellblau)
+        Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
       end
-      Funktion.zeigeHier(1, 1 + i, string.sub(string.format("%s %s", rest[i][2], rest[i][1], string.rep(" ", 30 - string.len(rest[i][2] .. rest[i][1]))), 1, 30))
-      --print(string.sub(string.format("%s %s", rest[i][2], rest[i][1], string.rep(" ", 30 - string.len(rest[i][2] .. rest[i][1]))), 1, 30))
+      Funktion.zeigeHier(1, 1 + i, string.sub(string.format("%s %s", rest[i][2], rest[i][1], string.rep(" ", 30 - string.len(rest[i][2] .. rest[i][1]))), 1, 30), 0)
     end
   end
 end
@@ -1083,11 +1082,12 @@ function Funktion.zeigeNachricht(...)
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, sprachen.fehlerName .. " /log", Bildschirmbreite)
   elseif seite == -2 then
     Funktion.Farbe(Farben.roteFarbe, Farben.schwarzeFarbe)
-    Funktion.zeigeHier(1, Bildschirmhoehe - 1, "in", Bildschirmbreite)
+    Funktion.zeigeHier(1, Bildschirmhoehe - 1, "in", 0)
     Funktion.Farbe(Farben.grueneFarbe, Farben.weisseFarbe)
-    Funktion.zeigeHier(3, Bildschirmhoehe - 1, "out", Bildschirmbreite)
+    Funktion.zeigeHier(5, Bildschirmhoehe - 1, "out", 0)
     Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
-    Funktion.zeigeHier(7, Bildschirmhoehe - 1, "neue Adresse", Bildschirmbreite)
+    Funktion.zeigeHier(9, Bildschirmhoehe - 1, "neue Adresse", 0)
+    Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
   else
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, "", Bildschirmbreite)
   end
