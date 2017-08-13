@@ -177,27 +177,32 @@ if r then
   r.setBundledOutput(0, Farben.black, 0)
 end
 
-function Logbuch.eingehend(name, adresse, dauer)
+function Funktion.Logbuch_schreiben(name, adr, richtung)
+  local rest = {}
+  if fs.exists("/einstellungen/logbuch.lua") then
+    rest = loadfile("/einstellungen/logbuch.lua")()
+  end
+  rest[#rest] = {name, adr, richtung}
+  local f = io.open("/einstellungen/logbuch.lua", "w")
+  f:write('-- pastebin run -f YVqKFnsP\n')
+  f:write('-- nexDHD von Nex4rius\n')
+  f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n--\n')
+  f:write('return {\n')
+  for k, v in pairs(adressen) do
+    if rest[k][3] then
+      f:write(string.format('  {"%s", "%s", "%s"},\n', rest[k][1], rest[k][2], rest[k][3]))
+    else
+      f:write(string.format('  {"%s", "%s"},\n', rest[k][1], rest[k][2]))
+    end
+  end
+  f:write('}')
+  f:close()
 end
-
-function Logbuch.ausgehend(name, adresse, dauer)
-end
-
-function Logbuch.neueAdresse(name, adresse)
-end
-
-function Logbuch.neuerName(name, adresse)
-end
-
-function Funktion.Logbuch_schreiben(...)
-end
-
---Logbuch[id](...)
 
 function Funktion.schreibeAdressen()
   local f = io.open("/einstellungen/adressen.lua", "w")
   f:write('-- pastebin run -f YVqKFnsP\n')
-  f:write('-- von Nex4rius\n')
+  f:write('-- nexDHD von Nex4rius\n')
   f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n--\n')
   f:write('-- ' .. sprachen.speichern .. '\n')
   f:write('-- ' .. sprachen.schliessen .. '\n--\n')
@@ -685,6 +690,7 @@ function Funktion.newAddress(neueAdresse, neuerName, ...)
     end
     adressen[AdressenAnzahl][2] = neueAdresse
     adressen[AdressenAnzahl][3] = ""
+    Funktion.Logbuch_schreiben(adressen[AdressenAnzahl][1] , adressen[AdressenAnzahl][2])
     if ... == nil then
       Funktion.schreibeAdressen()
       if nichtmehr then
@@ -1535,12 +1541,14 @@ end
 
 function Funktion.sgDialIn()
   wormhole = "in"
+  Funktion.Logbuch_schreiben(remoteName , tostring(sg.remoteAddress()), wormhole)
 end
 
 function Funktion.sgDialOut()
   state = "Dialling"
   wormhole = "out"
   direction = "Outgoing"
+  Funktion.Logbuch_schreiben(remoteName , tostring(sg.remoteAddress()), wormhole)
 end
 
 function Funktion.eventLoop()
