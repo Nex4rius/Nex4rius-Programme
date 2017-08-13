@@ -877,8 +877,7 @@ function Funktion.zeigeSteuerung()
     elseif seite == 0 then
       Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "  ← " .. sprachen.SteuerungName)
     else
-      Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "                ")
-      --Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "  ← " .. sprachen.logbuch)
+      Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X, Taste.Koordinaten.Pfeil_links_Y, "  ← " .. sprachen.logbuch)
     end
   else
     Funktion.zeigeHier(xVerschiebung, zeile, "")
@@ -1175,7 +1174,7 @@ function Taste.Pfeil_links()
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.SteuerungName, 0)
   elseif seite == -1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.logbuch, 0)
-    event.timer(5, Funktion.zeigeNachricht, 0)
+    event.timer(1, Funktion.zeigeNachricht, 0)
   end
   if seite <= -2 then else
     seite = seite - 1
@@ -1193,7 +1192,7 @@ function Taste.Pfeil_rechts()
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.zeigeAdressen, 0)
   elseif seite == -2 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.SteuerungName, 0)
-    event.timer(5, Funktion.zeigeNachricht, 0)
+    event.timer(1, Funktion.zeigeNachricht, 0)
   elseif maxseiten > seite + 1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.naechsteSeite, 0)
   end
