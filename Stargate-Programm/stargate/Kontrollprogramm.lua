@@ -398,6 +398,7 @@ function Funktion.Infoseite()
   Funktion.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
   print(sprachen.versionName .. version)
   print("\n" .. sprachen.entwicklerName .. " Nex4rius")
+  print(string.format("\nnexDHD: %sNex4rius", sprachen.entwicklerName))
 end
 
 function Funktion.AdressenSpeichern()
