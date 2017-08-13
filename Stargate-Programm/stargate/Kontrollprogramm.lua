@@ -1443,8 +1443,10 @@ function Funktion.sgChevronEngaged(e)
     else
       zielAdresse = string.sub(sg.remoteAddress(), 1, 4) .. "-" .. string.sub(sg.remoteAddress(), 5, 7) .. "-" .. string.sub(sg.remoteAddress(), 8, chevron)
     end
-    Funktion.zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
+  else
+    zielAdresse = "<FEHLER>"
   end
+  Funktion.zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
 end
 
 function Funktion.modem_message(e)
