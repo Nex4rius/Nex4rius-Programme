@@ -177,22 +177,25 @@ if r then
   r.setBundledOutput(0, Farben.black, 0)
 end
 
-function Funktion.Logbuch_schreiben(name, adr, richtung)
+function Funktion.Logbuch_schreiben(name, adresse, richtung)
   local rest = {}
   if fs.exists("/einstellungen/logbuch.lua") then
     rest = loadfile("/einstellungen/logbuch.lua")()
+    if type(rest) ~= "table" then
+      rest = {}
+    end
   end
-  rest[#rest] = {name, adr, richtung}
+  rest[#rest + 1] = {name, adresse, richtung}
   local f = io.open("/einstellungen/logbuch.lua", "w")
   f:write('-- pastebin run -f YVqKFnsP\n')
   f:write('-- nexDHD von Nex4rius\n')
   f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n--\n')
   f:write('return {\n')
-  for k, v in pairs(adressen) do
-    if rest[k][3] then
-      f:write(string.format('  {"%s", "%s", "%s"},\n', rest[k][1], rest[k][2], rest[k][3]))
+  for i = 1, #rest do
+    if rest[i][3] then
+      f:write(string.format('  {"%s", "%s", "%s"},\n', rest[i][1], rest[i][2], rest[i][3]))
     else
-      f:write(string.format('  {"%s", "%s"},\n', rest[k][1], rest[k][2]))
+     f:write(string.format('  {"%s", "%s"},\n', rest[i][1], rest[i][2]))
     end
   end
   f:write('}')
