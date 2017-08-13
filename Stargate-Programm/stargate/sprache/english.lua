@@ -134,4 +134,5 @@ return {
   StargateNichtKomplett     = "Stargate is non-functional",
   logbuch                   = "show logbook",
   logbuchTitel              = "Logbook",
+  zeigeLog                  = "show error log",
 }
