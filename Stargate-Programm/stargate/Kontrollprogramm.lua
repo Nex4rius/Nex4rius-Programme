@@ -1109,9 +1109,7 @@ end
 
 function Funktion.key_down(e)
   c = string.char(e[3])
-  if entercode == true then
-    Taste.eingabe_enter()
-  elseif e[3] == 0 and e[4] == 203 then
+  if e[3] == 0 and e[4] == 203 then
     Taste.Pfeil_links()
   elseif e[3] == 0 and e[4] == 205 then
     Taste.Pfeil_rechts()
@@ -1187,30 +1185,16 @@ function Taste.d()
   event.timer(1, Funktion.zeigeMenu, 1)
 end
 
-function Taste.eingabe_enter() --veraltet
-  if e[3] == 13 then
-    entercode = false
-    sg.sendMessage(enteridc)
-    Funktion.zeigeNachricht(sprachen.IDCgesendet)
-  else
-    enteridc = enteridc .. c
-    showidc = showidc .. "*"
-    Funktion.zeigeNachricht(sprachen.IDCeingabe .. ": " .. showidc)
-  end
-end
-
 function Taste.e()
   Funktion.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
   Funktion.zeigeHier(Taste.Koordinaten.e_X, Taste.Koordinaten.e_Y, "E " .. sprachen.IDCeingabe, 0)
   if Funktion.Tastatur() then
     if state == "Connected" and direction == "Outgoing" then
-      enteridc = ""
-      showidc = ""
-      entercode = true
-      
-      
-      Funktion.zeigeNachricht(sprachen.IDCeingabe .. ":")
-      --sg.sendMessage(term.read(nil, nil, nil, "*"))
+      term.setCursor(1, Bildschirmhoehe)
+      term.write(sprachen.IDCeingabe .. ":")
+      local timerID = event.timer(1, Funktion.zeigeStatus(), math.huge)
+      sg.sendMessage(term.read(nil, nil, nil, "*"))
+      event.cancel(timerID)
       Funktion.zeigeNachricht(sprachen.IDCgesendet)
     else
       Funktion.zeigeNachricht(sprachen.keineVerbindung)
