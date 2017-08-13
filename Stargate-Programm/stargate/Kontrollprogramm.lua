@@ -366,7 +366,7 @@ function Funktion.Logbuchseite()
       else
         Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
       end
-      Funktion.zeigeHier(1, 1 + i, string.sub(string.format("%s %s", rest[i][2], rest[i][1], string.rep(" ", 30 - string.len(rest[i][2] .. rest[i][1]))), 1, 30), 0)
+      Funktion.zeigeHier(1, 1 + i, string.sub(string.format("%s - %s%s", rest[i][2], rest[i][1], string.rep(" ", 28 - string.len(rest[i][2] .. rest[i][1]))), 1, 30), 0)
     end
   end
 end
@@ -1086,7 +1086,7 @@ function Funktion.zeigeNachricht(...)
     Funktion.Farbe(Farben.grueneFarbe, Farben.weisseFarbe)
     Funktion.zeigeHier(5, Bildschirmhoehe - 1, "out", 0)
     Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
-    Funktion.zeigeHier(9, Bildschirmhoehe - 1, "neue Adresse", 0)
+    Funktion.zeigeHier(10, Bildschirmhoehe - 1, "neue Adresse", 0)
     Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
   else
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, "", Bildschirmbreite)
@@ -1170,6 +1170,7 @@ function Taste.Pfeil_links()
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.SteuerungName, 0)
   elseif seite == -1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.logbuch, 0)
+    Funktion.zeigeNachricht()
   end
   if seite <= -2 then else
     seite = seite - 1
