@@ -1125,18 +1125,6 @@ function Funktion.key_down(e)
   end
 end
 
-function Taste.eingabe_enter()
-  if e[3] == 13 then
-    entercode = false
-    sg.sendMessage(enteridc)
-    Funktion.zeigeNachricht(sprachen.IDCgesendet)
-  else
-    enteridc = enteridc .. c
-    showidc = showidc .. "*"
-    Funktion.zeigeNachricht(sprachen.IDCeingabe .. ": " .. showidc)
-  end
-end
-
 function Taste.Pfeil_links()
   Funktion.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
   if seite >= 1 then
@@ -1199,15 +1187,29 @@ function Taste.d()
   event.timer(1, Funktion.zeigeMenu, 1)
 end
 
+function Taste.eingabe_enter() --veraltet
+  if e[3] == 13 then
+    entercode = false
+    sg.sendMessage(enteridc)
+    Funktion.zeigeNachricht(sprachen.IDCgesendet)
+  else
+    enteridc = enteridc .. c
+    showidc = showidc .. "*"
+    Funktion.zeigeNachricht(sprachen.IDCeingabe .. ": " .. showidc)
+  end
+end
+
 function Taste.e()
   Funktion.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
   Funktion.zeigeHier(Taste.Koordinaten.e_X, Taste.Koordinaten.e_Y, "E " .. sprachen.IDCeingabe, 0)
   if Funktion.Tastatur() then
     if state == "Connected" and direction == "Outgoing" then
-      enteridc = ""
-      showidc = ""
-      entercode = true
+      --enteridc = ""
+      --showidc = ""
+      --entercode = true
       Funktion.zeigeNachricht(sprachen.IDCeingabe .. ":")
+      sg.sendMessage(term.read(nil, nil, nil, "*"))
+      Funktion.zeigeNachricht(sprachen.IDCgesendet)
     else
       Funktion.zeigeNachricht(sprachen.keineVerbindung)
     end
