@@ -397,8 +397,7 @@ function Funktion.Infoseite()
   print(sprachen.RedstoneGruen)
   Funktion.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
   print(sprachen.versionName .. version)
-  print("\n" .. sprachen.entwicklerName .. " Nex4rius")
-  print(string.format("\nnexDHD: %sNex4rius", sprachen.entwicklerName))
+  print(string.format("\nnexDHD: %s Nex4rius", sprachen.entwicklerName))
 end
 
 function Funktion.AdressenSpeichern()
@@ -1205,11 +1204,13 @@ function Taste.e()
   Funktion.zeigeHier(Taste.Koordinaten.e_X, Taste.Koordinaten.e_Y, "E " .. sprachen.IDCeingabe, 0)
   if Funktion.Tastatur() then
     if state == "Connected" and direction == "Outgoing" then
-      --enteridc = ""
-      --showidc = ""
-      --entercode = true
+      -enteridc = ""
+      showidc = ""
+      entercode = true
+      
+      
       Funktion.zeigeNachricht(sprachen.IDCeingabe .. ":")
-      sg.sendMessage(term.read(nil, nil, nil, "*"))
+      --sg.sendMessage(term.read(nil, nil, nil, "*"))
       Funktion.zeigeNachricht(sprachen.IDCgesendet)
     else
       Funktion.zeigeNachricht(sprachen.keineVerbindung)
@@ -1434,14 +1435,16 @@ end
 
 function Funktion.sgChevronEngaged(e)
   chevron = e[3]
-  if chevron <= 4 then
-    zielAdresse = string.sub(sg.remoteAddress(), 1, chevron)
-  elseif chevron <= 7 then
-    zielAdresse = string.sub(sg.remoteAddress(), 1, 4) .. "-" .. string.sub(sg.remoteAddress(), 5, chevron)
-  else
-    zielAdresse = string.sub(sg.remoteAddress(), 1, 4) .. "-" .. string.sub(sg.remoteAddress(), 5, 7) .. "-" .. string.sub(sg.remoteAddress(), 8, chevron)
+  if sg.remoteAddress() then
+    if chevron <= 4 then
+      zielAdresse = string.sub(sg.remoteAddress(), 1, chevron)
+    elseif chevron <= 7 then
+      zielAdresse = string.sub(sg.remoteAddress(), 1, 4) .. "-" .. string.sub(sg.remoteAddress(), 5, chevron)
+    else
+      zielAdresse = string.sub(sg.remoteAddress(), 1, 4) .. "-" .. string.sub(sg.remoteAddress(), 5, 7) .. "-" .. string.sub(sg.remoteAddress(), 8, chevron)
+    end
+    Funktion.zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
   end
-  Funktion.zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
 end
 
 function Funktion.modem_message(e)
