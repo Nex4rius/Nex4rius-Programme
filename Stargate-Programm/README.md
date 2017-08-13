@@ -1,5 +1,5 @@
 <a href="#english">english</a>/<a href="#deutsch">deutsch</a>/<a href="#russian">russian</a><a name="deutsch">
-<h1>Stargate-Programm für SG-Craft und OpenComputers</h1></a>
+<h1>Stargate-Programm für SG-Craft und OpenComputers - nexDHD</h1></a>
 
 <img src="https://i.imgur.com/XtCzDAs.png">
 <img src="https://i.imgur.com/jWwlBNI.png" width="700px">
@@ -70,7 +70,7 @@ SGCraft-1.13.2-mc1.10.2
 
 ___
 <a href="#english">english</a>/<a href="#deutsch">deutsch</a>/<a href="#russian">russian</a><a name="english">
-<h1>Stargate-Program for SG-Craft and OpenComputers</h1></a>
+<h1>Stargate-Program for SG-Craft and OpenComputers - nexDHD</h1></a>
 
 <img src="https://i.imgur.com/E5JAcS5.png">
 <img src="https://i.imgur.com/jWwlBNI.png" width="700px">
@@ -141,7 +141,7 @@ SGCraft-1.13.2-mc1.10.2
 
 ___
 <a href="#english">english</a>/<a href="#deutsch">deutsch</a>/<a href="#russian">russian</a><a name="russian">
-<h1>Stargate-Program для SG-Craft и OpenComputers</h1></a>
+<h1>Stargate-Program для SG-Craft и OpenComputers - nexDHD</h1></a>
 
 <img src="https://i.imgur.com/XtCzDAs.png">
 <img src="https://i.imgur.com/jWwlBNI.png" width="700px">
