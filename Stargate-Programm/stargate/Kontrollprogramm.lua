@@ -1120,6 +1120,8 @@ function Funktion.dial(name, adresse)
       ergebnis = string.sub(ergebnis, 0, 20) .. "<" .. Funktion.getAddress(string.sub(ergebnis, 21, AdressEnde - 1)) .. ">" .. string.sub(ergebnis, AdressEnde)
     end
     Funktion.zeigeNachricht(ergebnis)
+  else
+    Funktion.Logbuch_schreiben(name , adresse, wormhole)
   end
   os.sleep(1)
 end
@@ -1551,7 +1553,6 @@ function Funktion.sgDialOut()
   state = "Dialling"
   wormhole = "out"
   direction = "Outgoing"
-  Funktion.Logbuch_schreiben(remoteName , tostring(sg.remoteAddress()), wormhole)
 end
 
 function Funktion.eventLoop()
