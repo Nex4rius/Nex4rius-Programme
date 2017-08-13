@@ -357,8 +357,8 @@ end
 function Funktion.Logbuchseite()
   print(sprachen.logbuchTitel)
   if fs.exists("/einstellungen/logbuch.lua") then
-    rest = loadfile("/einstellungen/logbuch.lua")()
-    for i = 1, 20 do
+    local rest = loadfile("/einstellungen/logbuch.lua")()
+    for i in pairs(rest) do
       if rest[i][3] == "in" then
         Funktion.Farbe(Farben.roteFarbe)
       elseif rest[i][3] == "out" then
