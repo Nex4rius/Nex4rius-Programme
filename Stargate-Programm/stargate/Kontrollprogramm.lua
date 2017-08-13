@@ -372,8 +372,8 @@ function Funktion.Infoseite()
   Taste.Koordinaten.Taste_q = i
   print("S " .. sprachen.EinstellungenAendern)
   i = i + 1
-  Taste.links[i] = Taste.l
-  Taste.Koordinaten.Taste_l = i
+  Taste.links[i] = Taste.s
+  Taste.Koordinaten.Taste_s = i
   if fs.exists("/log") then
     term.write("L ")
     print(sprachen.zeigeLog or "zeige Fehlerlog")
@@ -1298,7 +1298,7 @@ end
 function Taste.s()
   if seite == -1 then
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-    Funktion.zeigeHier(1, Taste.Koordinaten.Taste_l, "L " .. sprachen.EinstellungenAendern, 0)
+    Funktion.zeigeHier(1, Taste.Koordinaten.Taste_s, "L " .. sprachen.EinstellungenAendern, 0)
     if Funktion.Tastatur() then
       Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
       schreibSicherungsdatei(Sicherung)
@@ -1349,7 +1349,13 @@ end
 
 function Taste.l()
   if seite == -1 then
-    edit("-r", "/log")
+    Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
+    Funktion.zeigeHier(1, Taste.Koordinaten.Taste_l, "L " .. sprachen.EinstellungenAendern, 0)
+    if Funktion.Tastatur() then
+      edit("-r", "/log")
+    else
+      event.timer(2, Funktion.zeigeMenu, 1)
+    end
   end
 end
 
