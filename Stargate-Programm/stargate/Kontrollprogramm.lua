@@ -1300,7 +1300,7 @@ end
 function Taste.s()
   if seite == -1 then
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-    Funktion.zeigeHier(1, Taste.Koordinaten.Taste_s, "L " .. sprachen.EinstellungenAendern, 0)
+    Funktion.zeigeHier(1, Taste.Koordinaten.Taste_s, "S " .. sprachen.EinstellungenAendern, 0)
     if Funktion.Tastatur() then
       Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
       schreibSicherungsdatei(Sicherung)
@@ -1352,9 +1352,13 @@ end
 function Taste.l()
   if seite == -1 then
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-    Funktion.zeigeHier(1, Taste.Koordinaten.Taste_l, "L " .. sprachen.EinstellungenAendern, 0)
+    Funktion.zeigeHier(1, Taste.Koordinaten.Taste_l, "L " .. sprachen.zeigeLog, 0)
     if Funktion.Tastatur() then
+      pcall(screen.setTouchModeInverted, false)
+      Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
+      os.sleep(1)
       edit("-r", "/log")
+      pcall(screen.setTouchModeInverted, true)
     else
       event.timer(2, Funktion.zeigeMenu, 1)
     end
