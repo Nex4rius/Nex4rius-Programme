@@ -1081,12 +1081,17 @@ function Funktion.zeigeNachricht(...)
   elseif fs.exists("/log") and Sicherung.debug then
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, sprachen.fehlerName .. " /log", Bildschirmbreite)
   elseif seite == -2 then
+    local x = 1
+    Funktion.zeigeHier(x, Bildschirmhoehe - 1, string.format("%s:  ", sprachen.Legende), 0)
     Funktion.Farbe(Farben.roteFarbe, Farben.schwarzeFarbe)
-    Funktion.zeigeHier(1, Bildschirmhoehe - 1, "in", 0)
+    x = x + string.len(sprachen.Legende) + 3
+    Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.RichtungNameEin, 0)
     Funktion.Farbe(Farben.grueneFarbe, Farben.weisseFarbe)
-    Funktion.zeigeHier(5, Bildschirmhoehe - 1, "out", 0)
+    x = x + string.len(sprachen.RichtungNameEin) + 2
+    Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.RichtungNameAus, 0)
     Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
-    Funktion.zeigeHier(10, Bildschirmhoehe - 1, "neue Adresse", 0)
+    x = x + string.len(sprachen.RichtungNameAus) + 2
+    Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.neueAdresse, 0)
     Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
   else
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, "", Bildschirmbreite)
