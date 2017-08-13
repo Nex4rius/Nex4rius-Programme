@@ -1203,7 +1203,9 @@ function Taste.e()
       term.clearLine()
       term.write(sprachen.IDCeingabe .. ":")
       local timerID = event.timer(1, function() Funktion.zeigeStatus() Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe) end, math.huge)
+      pcall(screen.setTouchModeInverted, false)
       local eingabe = term.read(nil, false, nil, "*")
+      pcall(screen.setTouchModeInverted, true)
       sg.sendMessage(string.sub(eingabe, 1, string.len(eingabe) - 1))
       event.cancel(timerID)
       Funktion.zeigeNachricht(sprachen.IDCgesendet)
@@ -1356,9 +1358,10 @@ function Taste.l()
     if Funktion.Tastatur() then
       pcall(screen.setTouchModeInverted, false)
       Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
-      os.sleep(1)
+      os.sleep(0.1)
       edit("-r", "/log")
       pcall(screen.setTouchModeInverted, true)
+      seite = 0
     else
       event.timer(2, Funktion.zeigeMenu, 1)
     end
