@@ -366,7 +366,7 @@ function Funktion.Logbuchseite()
       else
         Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
       end
-      Funktion.zeigeHier(1, 1 + i, string.sub(string.format("%s  %s%s", rest[i][2], rest[i][1], string.rep(" ", 50)), 1, 30), 0)
+      Funktion.zeigeHier(1, 1 + i, string.sub(string.format("%s  %s%s  ", rest[i][2], rest[i][1], string.rep(" ", 50)), 1, 30), 0)
     end
   end
 end
@@ -702,10 +702,10 @@ function Funktion.newAddress(neueAdresse, neuerName, ...)
     else
       adressen[AdressenAnzahl][1] = neuerName
       nichtmehr = true
+      Funktion.Logbuch_schreiben(neuerName , neueAdresse)
     end
     adressen[AdressenAnzahl][2] = neueAdresse
     adressen[AdressenAnzahl][3] = ""
-    Funktion.Logbuch_schreiben(adressen[AdressenAnzahl][1] , adressen[AdressenAnzahl][2])
     if ... == nil then
       Funktion.schreibeAdressen()
       if nichtmehr then
