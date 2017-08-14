@@ -568,29 +568,12 @@ function Funktion.main()
     versionTyp = arg
   end
   if Funktion.checkSprache() then
-    --sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
-    --if not Sicherung.Sprache == "deutsch" and not Sicherung.Sprache == "english" then
-    --  local deutsch = loadfile("/stargate/sprache/deutsch.lua")()
-    --  for k, v in pairs(deutsch) do
-    --    local dazu = true
-    --    for a in pairs(sprachen) do
-    --      if k == a then
-    --        dazu = false
-    --      end
-    --    end
-    --    if dazu then
-    --      sprachen[k] = v
-    --    end
-    --  end
-    --end
-    
-    
     local neu = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
     if not Sicherung.Sprache == "deutsch" and not Sicherung.Sprache == "english" then
       sprachen = loadfile("/stargate/sprache/deutsch.lua")()
-      for k, v in pairs(sprachen) do
-        if neu[k] then
-          sprachen[k] = v
+      for i in pairs(sprachen) do
+        if neu[i] then
+          sprachen[i] = neu[i]
         end
       end
     end
