@@ -212,12 +212,8 @@ function Funktionen.installieren(versionTyp)
     end
     kopieren("/update/stargate/check.lua",                  "/stargate/check.lua")
     kopieren("/update/stargate/version.txt",                "/stargate/version.txt")
-    if fs.exists("/stargate/adressen.lua") == false then
-      kopieren("/update/stargate/adressen.lua",             "/stargate/adressen.lua", "-n")
-    end
-    if fs.exists("/stargate/Sicherungsdatei.lua") == false then
-      kopieren("/update/stargate/Sicherungsdatei.lua",      "/stargate/Sicherungsdatei.lua", "-n")
-    end
+    kopieren("/update/stargate/adressen.lua",               "/stargate/adressen.lua")
+    kopieren("/update/stargate/Sicherungsdatei.lua",        "/stargate/Sicherungsdatei.lua")
     kopieren("/update/stargate/Kontrollprogramm.lua",       "/stargate/Kontrollprogramm.lua")
     kopieren("/update/stargate/schreibSicherungsdatei.lua", "/stargate/schreibSicherungsdatei.lua")
     kopieren("/update/stargate/sprache/ersetzen.lua",       "/stargate/sprache/ersetzen.lua")
