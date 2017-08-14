@@ -585,6 +585,14 @@ function Funktion.main()
       print(sprachen.fehlerName or "<FEHLER>")
     end
   end
+  
+  
+  print(type(sprachen))
+  print(sprachen)
+  _G.sprachen = sprachen
+  io.read()
+  
+  
   if arg == sprachen.hilfe or arg == "hilfe" or arg == "help" or arg == "?" then
     gpu.setForeground(Farben.schwarzeFarbe)
     gpu.setBackground(Farben.weisseFarbe)
