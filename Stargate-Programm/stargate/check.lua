@@ -549,8 +549,6 @@ function Funktion.main()
   if gpu.maxResolution() == 160 then
     gpu.setBackground(Farben.graueFarbe)
   end
-  --gpu.fill(1, 1, 70, 25, " ")
-  --term.clear()
   Funktion.checkDateien()
   if fs.exists("/stargate/version.txt") then
     local f = io.open ("/stargate/version.txt", "r")
@@ -569,14 +567,13 @@ function Funktion.main()
   end
   if Funktion.checkSprache() then
     local neu = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
-    if not Sicherung.Sprache == "deutsch" and not Sicherung.Sprache == "english" then
-      sprachen = loadfile("/stargate/sprache/deutsch.lua")()
-      for i in pairs(sprachen) do
-        if neu[i] then
-          sprachen[i] = neu[i]
-        end
+    sprachen = loadfile("/stargate/sprache/deutsch.lua")()
+    for i in pairs(sprachen) do
+      if neu[i] then
+        sprachen[i] = neu[i]
       end
     end
+    sprachen = sprachen or neu
   else
     print("\nUnbekannte Sprache\nStandardeinstellung = deutsch")
     if fs.exists("/stargate/sprache/deutsch.lua") then
@@ -585,14 +582,6 @@ function Funktion.main()
       print(sprachen.fehlerName or "<FEHLER>")
     end
   end
-  
-  
-  print(type(sprachen))
-  print(sprachen)
-  _G.sprachen = sprachen
-  io.read()
-  
-  
   if arg == sprachen.hilfe or arg == "hilfe" or arg == "help" or arg == "?" then
     gpu.setForeground(Farben.schwarzeFarbe)
     gpu.setBackground(Farben.weisseFarbe)
@@ -615,7 +604,7 @@ function Funktion.main()
   end
   gpu.setForeground(Farben.weisseFarbe)
   gpu.setBackground(Farben.schwarzeFarbe)
-  --term.clear()
+  term.clear()
   gpu.setResolution(gpu.maxResolution())
 end
 
