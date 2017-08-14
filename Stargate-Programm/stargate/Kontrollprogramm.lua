@@ -19,7 +19,7 @@ local shell                     = shell or require("shell")
 _G.shell = shell
 local print                     = print
 
-local gpu, serialization
+local gpu, serialization, sprachen
 
 if OC then
   serialization = require("serialization")
@@ -68,7 +68,17 @@ if not pcall(loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")) then
   print(string.format("Fehler %s.lua", Sicherung.Sprache))
 end
 
-local sprachen                  = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
+do
+  local neu = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
+  sprachen = loadfile("/stargate/sprache/deutsch.lua")()
+  for i in pairs(sprachen) do
+    if neu[i] then
+      sprachen[i] = neu[i]
+    end
+  end
+  sprachen = sprachen or neu
+end
+
 local ersetzen                  = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
 
 local sg                        = component.getPrimary("stargate")
@@ -1358,7 +1368,14 @@ function Taste.s()
       local a = Sicherung.RF
       Sicherung = loadfile("/einstellungen/Sicherungsdatei.lua")()
       if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
-        sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
+        local neu = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
+        sprachen = loadfile("/stargate/sprache/deutsch.lua")()
+        for i in pairs(sprachen) do
+          if neu[i] then
+            sprachen[i] = neu[i]
+          end
+        end
+        sprachen = sprachen or neu
         ersetzen = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
       else
         print("\nUnbekannte Sprache\nStandardeinstellung = deutsch")
