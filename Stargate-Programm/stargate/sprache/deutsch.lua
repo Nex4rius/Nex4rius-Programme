@@ -137,5 +137,5 @@ return {
   zeigeLog                  = "zeige Fehlerlog",
   Legende                   = "Legende",
   neueAdresse               = "neue Adresse",
-  zuvielEnergie             = "<FEHLER> Energiemenge zu groß",
+  zuvielEnergie             = "<Energie zu groß>",
 }
