@@ -2,63 +2,35 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/
 
-local component  = require("component")
-local term       = require("term")
-local event      = require("event")
-local c          = require("computer")
-local fs         = require("filesystem")
+local component   = require("component")
+local term        = require("term")
+local event       = require("event")
+local c           = require("computer")
+local fs          = require("filesystem")
 
-local m          = component.modem
+local m           = component.modem
 
-local standby    = function() end
-local tps        = function() return 20 end
-local port       = 70
-local maxzeit    = 30
-local tpsZeit    = 1
-local reichweite
-local zeit       = maxzeit
-local tank       = {}
+local verschieben = function(von, nach) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach))) end
+local entfernen   = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
 
-local tankalt, adresse, empfangen, version
+local port        = 987
+local tank        = {}
+local f           = {}
+local o           = {}
 
-tank[1]          = {}
+local tankalt, adresse, empfangen, version, reichweite
 
-if fs.exists("/bin/standby.lua") then
-  standby        = require("standby")
-end
-
-if fs.exists("/bin/tps.lua") then
-  tps            = require("tps")
-end
+tank[1]           = {}
 
 if fs.exists("/tank/version.txt") then
-    local f = io.open ("/tank/version.txt", "r")
-    version = f:read()
-    f:close()
+    local d = io.open ("/tank/version.txt", "r")
+    version = d:read()
+    d:close()
   else
     version = "<FEHLER>"
 end
 
-do
-  if fs.exists("/tank/reichweite") then
-    local f = io.open("/tank/reichweite", "r")
-    reichweite = f:read()
-    f:close()
-  else
-    print("Set wireless network card range (default: 400)")
-    io.write("Range: ")
-    local lesen = io.read()
-    if lesen == "" then
-      lesen = nil
-    end
-    local f = io.open("/tank/reichweite", "w")
-    f:write(lesen)
-    f:close()
-    reichweite = lesen or 400
-  end
-end
-
-function check()
+function f.check()
   tank, tankalt = {}, tank
   local i = 1
   for _, CompName in pairs({"tank_controller", "transposer"}) do
@@ -99,23 +71,23 @@ function check()
       print(string.format("%s - %s: %s/%s %.1f%%", tank[i].name, tank[i].label, tank[i].menge, tank[i].maxmenge, tank[i].menge / tank[i].maxmenge))
     end
   end
-  return anders(tank, tankalt), tank
+  return f.anders(tank, tankalt)
 end
 
-function anders(tank, tankalt)
+function f.anders(tank, tankalt)
   for i in pairs(tank) do
     if type(tank[i]) == "table" and type(tankalt[i]) == "table" then
       if tank[i].menge ~= tankalt[i].menge then
-        return true
+        return tank
       end
     else
-      return true
+      return tank
     end
   end
   return false
 end
 
-function serialize(a)
+function f.serialize(a)
   if type(a) == "table" then
     local ausgabe = ""
     for k in pairs(a) do
@@ -124,55 +96,70 @@ function serialize(a)
       end
     end
     return "{" .. ausgabe .. "}"
+  elseif type(a) == "function" then
+    --nichts
+  else
+    return a
   end
 end
 
-function aktualisieren()
-end
-
-function senden(warten, nachricht)
-  if type(empfangen) == "table" then
-    if empfangen[6] == "update" then
-      adresse = empfangen[3]
-      if type(empfangen[5]) == "number" and m.isWireless() then
-        m.setStrength(tonumber(empfangen[5] + 5))
-      end
-      if tostring(version) ~= tostring(empfangen[7]) then
-        aktualisieren()
+function o.aktualisieren(empfangen)
+  if not fs.exists("/update") then
+    fs.makeDirectory("/update")
+  end
+  print("Empfange Datei ... " .. empfangen[7])
+  local d = io.open("/update" .. empfangen[7], "w")
+  d:write(empfangen[8])
+  d:close()
+  f.send(empfangen, "speichern", true)
+  if empfangen[9] then
+    print("Ersetze alte Dateien")
+    local function kopieren(...)
+      for i in fs.list(...) do
+        if fs.isDirectory(i) then
+          kopieren(i)
+        end
+        verschieben("/update/" .. i, "/" .. i)
+        Funktion.status()
       end
     end
-  end
-  m.broadcast(port, serialize(nachricht))
-  return warten
-end
-
-function loop()
-  zeit = maxzeit * tpsZeit
-  if senden(check()) then
-    zeit = maxzeit / 3
-  end
-  os.sleep(5)
-  empfangen = {event.pull(zeit, "modem_message")}
-  standby()
-  local a = tps()
-  if     a >= 15 then
-    tpsZeit = 1
-  elseif a >= 10 then
-    tpsZeit = 1.5
-  elseif a >= 5 then
-    tpsZeit = 2
-  else
-    tpsZeit = 3
+    kopieren("/update")
+    entfernen("/update")
+    print("Update vollständig")
+    f.send(empfangen, "update", true)
+    print("Neustarten in 5s")
+    require("computer").shutdown(true)
   end
 end
 
-function main()
-  if m.isWireless() then
-    m.setStrength(tonumber(reichweite + 5))
+function o.version(empfangen)
+  f.send(empfangen, version)
+end
+
+function o.senden(empfangen)
+  f.send(empfangen, f.serialize(f.check()))
+end
+
+function f.send(empfangen, nachricht, ...)
+  if type(empfangen[5]) == "number" and m.isWireless() then
+    m.setStrength(tonumber(empfangen[5]) + 10)
   end
-  m.open(port + 1)
+  m.send(empfangen[3], port, f.serialize(f.check()), ...)
+end
+
+function f.loop()
+  empfangen = {event.pull("modem_message")}
+  if o[empfangen[6]] then
+    o[empfangen[6]](empfangen)
+  end
+end
+
+function f.main()
+  m.open(port)
   while true do
-    if not pcall(loop) then
+    local ergebnis, grund = pcall(f.loop)
+    if not ergebnis then
+      print(grund)
       standby()
       os.sleep(5)
     end
@@ -181,4 +168,4 @@ end
 
 loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tank Client")
 
-main()
+f.main()
