@@ -111,7 +111,7 @@ function o.aktualisieren(empfangen)
   local d = io.open("/update" .. empfangen[7], "w")
   d:write(empfangen[8])
   d:close()
-  f.send(empfangen, "speichern", true)
+  f.senden(empfangen, "speichern", true)
   if empfangen[9] then
     print("Ersetze alte Dateien")
     local function kopieren(...)
@@ -126,21 +126,21 @@ function o.aktualisieren(empfangen)
     kopieren("/update")
     entfernen("/update")
     print("Update vollständig")
-    f.send(empfangen, "update", true)
+    f.senden(empfangen, "update", true)
     print("Neustarten in 5s")
     require("computer").shutdown(true)
   end
 end
 
 function o.version(empfangen)
-  f.send(empfangen, version)
+  f.senden(empfangen, version)
 end
 
-function o.senden(empfangen)
-  f.send(empfangen, f.serialize(f.check()))
+function o.tank(empfangen)
+  f.senden(empfangen, f.serialize(f.check()))
 end
 
-function f.send(empfangen, nachricht, ...)
+function f.senden(empfangen, nachricht, ...)
   if type(empfangen[5]) == "number" and m.isWireless() then
     m.setStrength(tonumber(empfangen[5]) + 10)
   end
