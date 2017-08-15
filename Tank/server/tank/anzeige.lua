@@ -30,9 +30,9 @@ if fs.exists("/bin/standby.lua") then
 end
 
 if fs.exists("/tank/version.txt") then
-    local f = io.open ("/tank/version.txt", "r")
-    version = f:read()
-    f:close()
+    local d = io.open ("/tank/version.txt", "r")
+    version = d:read()
+    d:close()
   else
     version = "<FEHLER>"
 end
