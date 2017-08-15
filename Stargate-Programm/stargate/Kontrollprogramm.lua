@@ -370,7 +370,8 @@ function Funktion.Logbuchseite()
   local function ausgabe(max, Logbuch, bedingung)
     for i = 1, max do
       if Logbuch[i][3] == bedingung then
-        Funktion.zeigeHier(1, 1 + i, string.sub(string.format("%s  %s%s  ", Logbuch[i][2], Logbuch[i][1], string.rep(" ", 50)), 1, 30), 0)
+        gpu.set(1, 1 + i, string.rep(" ", 30))
+        Funktion.zeigeHier(1, 1 + i, string.sub(string.format("%s  %s", Logbuch[i][2], Logbuch[i][1]), 1, 30), 0)
       end
     end
   end
