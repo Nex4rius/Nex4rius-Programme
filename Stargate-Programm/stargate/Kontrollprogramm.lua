@@ -137,6 +137,12 @@ local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, di
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, f, k, r, Farben
 
 do
+  if fs.exists("/einstellungen/logbuch.lua") then
+    local neu = loadfile("/einstellungen/logbuch.lua")()
+    if type(neu) == "table" then
+      Logbuch = neu
+    end
+  end
   sectime                       = os.time()
   os.sleep(1)
   sectime                       = sectime - os.time()
@@ -363,11 +369,6 @@ end
 
 function Funktion.Logbuchseite()
   print(sprachen.logbuchTitel)
-  if Logbuch == {} then
-    if fs.exists("/einstellungen/logbuch.lua") then
-      Logbuch = loadfile("/einstellungen/logbuch.lua")()
-    end
-  end
   local function ausgabe(max, Logbuch, bedingung)
     for i = 1, max do
       if Logbuch[i][3] == bedingung then
