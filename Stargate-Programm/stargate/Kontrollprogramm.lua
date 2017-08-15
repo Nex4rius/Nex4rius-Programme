@@ -366,20 +366,30 @@ end
 
 function Funktion.Logbuchseite()
   print(sprachen.logbuchTitel)
-  if not Logbuch or state ~= "Idle" then
+  if not Logbuch or Logbuch == {} or state ~= "Idle" then
     if fs.exists("/einstellungen/logbuch.lua") then
       Logbuch = loadfile("/einstellungen/logbuch.lua")()
     end
   end
-  for i in pairs(Logbuch) do
+  local function ausgabe(i, a, b)
+    Funktion.zeigeHier(1, 1 + i, string.sub(string.format("%s  %s%s  ", a, b, string.rep(" ", 50)), 1, 30), 0)
+  end
+  local max = #Logbuch
+  Funktion.Farbe(Farben.roteFarbe, Farben.schwarzeFarbe)
+  for i = 1, max do
     if Logbuch[i][3] == "in" then
-      Funktion.Farbe(Farben.roteFarbe, Farben.schwarzeFarbe)
-    elseif Logbuch[i][3] == "out" then
-      Funktion.Farbe(Farben.grueneFarbe, Farben.weisseFarbe)
-    else
-      Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
+      ausgabe(i, Logbuch[i][2], Logbuch[i][1])
     end
-    Funktion.zeigeHier(1, 1 + i, string.sub(string.format("%s  %s%s  ", Logbuch[i][2], Logbuch[i][1], string.rep(" ", 50)), 1, 30), 0)
+  end
+  Funktion.Farbe(Farben.grueneFarbe, Farben.weisseFarbe)
+  for i = 1, max do
+    if Logbuch[i][3] == "out" then
+      ausgabe(i, Logbuch[i][2], Logbuch[i][1])
+    end
+  end
+  Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
+  for i = 1, max do
+    ausgabe(i, Logbuch[i][2], Logbuch[i][1])
   end
 end
 
