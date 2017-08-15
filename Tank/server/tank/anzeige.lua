@@ -16,8 +16,9 @@ local m               = component.modem
 
 local version, tankneu, energie
 
-local port            = 70
+local port            = 918
 local tank            = {}
+local f               = {}
 local laeuft          = true
 local debug           = false
 local Wartezeit       = 150
@@ -36,7 +37,7 @@ if fs.exists("/tank/version.txt") then
     version = "<FEHLER>"
 end
 
-function update()
+function f.update()
   local dazu = true
   local ende = 0
   local hier, _, id, _, _, nachricht = event.pull(Wartezeit, "modem_message")
@@ -67,10 +68,10 @@ function update()
       if i > 1 then
         gpu.bind(screenid, false)
       end
-      anzeigen(verarbeiten(tank), screenid)
+      f.anzeigen(f.verarbeiten(tank), screenid)
     end
   else
-    keineDaten()
+    f.keineDaten()
   end
   for i in pairs(tank) do
     if c.uptime() - tank[i].zeit > Wartezeit * 2 then
@@ -79,20 +80,7 @@ function update()
   end
 end
 
-function keineDaten()
-  m.broadcast(port + 1, "update", version)
-  if c.uptime() - letzteNachricht > Wartezeit then
-    for screenid in component.list("screen") do
-      gpu.bind(screenid)
-      test(screenid)
-      gpu.setResolution(21, 1)
-      os.sleep(0.1)
-      gpu.set(1, 1, "Keine Daten vorhanden")
-    end
-  end
-end
-
-function hinzu(name, label, menge, maxmenge)
+function f.hinzu(name, label, menge, maxmenge)
   local weiter = true
   if name ~= "nil" then
     for i in pairs(tankneu) do
@@ -112,7 +100,7 @@ function hinzu(name, label, menge, maxmenge)
   end
 end
 
-function verarbeiten(tank)
+function f.verarbeiten(tank)
   tankneu = {}
   tanknr = 0
   for i in pairs(tank) do
@@ -120,7 +108,7 @@ function verarbeiten(tank)
       if type(tank[i].inhalt) == "table" then
         for j in pairs(tank[i].inhalt) do
           tanknr = tanknr + 1
-          hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge)
+          f.hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge)
         end
       end
     end
@@ -128,7 +116,7 @@ function verarbeiten(tank)
   return tankneu
 end
 
-function spairs(t, order)
+local function spairs(t, order)
   local keys = {}
   for k in pairs(t) do keys[#keys+1] = k end
   if order then
@@ -145,7 +133,7 @@ function spairs(t, order)
   end
 end
 
-function anzeigen(tankneu, screenid)
+function f.anzeigen(tankneu, screenid)
   local klein = false
   local screenid = screenid or gpu.getScreen()
   local _, hoch = component.proxy(screenid).getAspectRatio()
@@ -223,14 +211,14 @@ function anzeigen(tankneu, screenid)
       end
     end
     local name = string.gsub(tankneu[i].name, "%p", "")
-    local label = zeichenErsetzen(string.gsub(tankneu[i].label, "%p", ""))
+    local label = f.zeichenErsetzen(string.gsub(tankneu[i].label, "%p", ""))
     local menge = tankneu[i].menge
     local maxmenge = tankneu[i].maxmenge
     local prozent = string.format("%.1f%%", menge / maxmenge * 100)
     if label == "fluidhelium3" then
       label = "Helium-3"
     end
-    zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl)
+    f.zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl)
     leer = false
     if klein and maxanzahl > 5 then
       y = y + 1
@@ -238,7 +226,7 @@ function anzeigen(tankneu, screenid)
       y = y + 3
     end
   end
-  Farben(0xFFFFFF, 0x000000)
+  f.Farben(0xFFFFFF, 0x000000)
   for i = anzahl, 33 do
     gpu.set(x, y    , string.rep(" ", 80))
     if not (klein and maxanzahl > 5) then
@@ -256,11 +244,11 @@ function anzeigen(tankneu, screenid)
   end
 end
 
-function zeichenErsetzen(...)
+function f.zeichenErsetzen(...)
   return string.gsub(..., "%a+", function (str) return ersetzen[str] end)
 end
 
-function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl)
+function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl)
   if farben[name] == nil and debug then
     nachricht = string.format("%s  %s  >>report this liquid<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
     nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
@@ -290,7 +278,7 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, b
   if farben[name] == nil then
    name = "unbekannt"
   end
-  Farben(farben[name][1], farben[name][2])
+  f.Farben(farben[name][1], farben[name][2])
   local ende = 0
   for i = 1, math.ceil(breite * menge / maxmenge) do
     if klein and maxanzahl > 5 then
@@ -301,7 +289,7 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, b
     x = x + 1
     ende = i
   end
-  Farben(farben[name][3], farben[name][4])
+  f.Farben(farben[name][3], farben[name][4])
   for i = 1, breite - math.ceil(breite * menge / maxmenge) do
     if klein and maxanzahl > 5  then
       gpu.set(x, y, string.format("%s", nachricht[i + ende]), true)
@@ -312,7 +300,7 @@ function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, b
   end
 end
 
-function Farben(vorne, hinten)
+function f.Farben(vorne, hinten)
   if type(vorne) == "number" then
     gpu.setForeground(vorne)
   else
@@ -337,7 +325,7 @@ function beenden()
   for screenid in component.list("screen") do
     gpu.bind(screenid)
   end
-  Farben(0xFFFFFF, 0x000000)
+  f.Farben(0xFFFFFF, 0x000000)
   os.sleep(0.1)
   term.clear()
 end
@@ -366,20 +354,31 @@ function test(screenid)
   gpu.setBackground(0x000000)
 end
 
-function main()
+function f.text(a)
+  if c.uptime() - letzteNachricht > Wartezeit then
+    for screenid in component.list("screen") do
+      gpu.bind(screenid)
+      test(screenid)
+      gpu.setResolution(string.len(a), 1)
+      os.sleep(0.1)
+      gpu.set(1, 1, "Keine Daten vorhanden")
+    end
+  end
+end
+
+function f.keineDaten()
+  m.broadcast(port, "update", version)
+  f.text("Keine Daten vorhanden")
+end
+
+function f.main()
   gpu.setForeground(0xFFFFFF)
   term.setCursor(1, 50)
   m.open(port)
-  for screenid in component.list("screen") do
-    gpu.bind(screenid)
-    test(screenid)
-    gpu.setResolution(15, 1)
-    os.sleep(0.1)
-    gpu.set(1, 1, "Warte auf Daten")
-  end
-  m.broadcast(port + 1, "update", version)
+  f.text("Warte auf Daten")
+  m.broadcast(port, "update", version)
   while true do
-    if not pcall(update) then
+    if not pcall(f.update) then
       os.sleep(5)
     end
     standby()
@@ -388,7 +387,7 @@ end
 
 os.sleep(2)
 
-if not pcall(main) then
+if not pcall(f.main) then
   print("Ausschalten")
   beenden()
 end
