@@ -137,4 +137,5 @@ return {
   zeigeLog                  = "show error log",
   Legende                   = "legend",
   neueAdresse               = "new address",
+  zuvielEnergie             = "<Energy too big>",
 }
