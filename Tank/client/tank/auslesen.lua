@@ -141,7 +141,7 @@ function o.tank(empfangen)
 end
 
 function f.senden(empfangen, nachricht, ...)
-  if type(empfangen[5]) == "number" and m.isWireless() then
+  if m.isWireless() then
     m.setStrength(tonumber(empfangen[5]) + 10)
   end
   m.send(empfangen[3], port, f.serialize(f.check()), ...)
@@ -156,6 +156,9 @@ end
 
 function f.main()
   m.open(port)
+  if  m.isWireless() then
+    m.setStrength(math.huge)
+  end
   m.broadcast(port, "anmelden")
   while true do
     local ergebnis, grund = pcall(f.loop)
