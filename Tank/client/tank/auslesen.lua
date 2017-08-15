@@ -13,7 +13,7 @@ local m           = component.modem
 local verschieben = function(von, nach) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach))) end
 local entfernen   = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
 
-local port        = 987
+local port        = 918
 local tank        = {}
 local f           = {}
 local o           = {}
@@ -156,6 +156,7 @@ end
 
 function f.main()
   m.open(port)
+  m.broadcast(port, "anmelden")
   while true do
     local ergebnis, grund = pcall(f.loop)
     if not ergebnis then
