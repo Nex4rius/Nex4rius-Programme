@@ -209,6 +209,7 @@ function Funktion.Logbuch_schreiben(name, adresse, richtung)
   end
   f:write('}')
   f:close()
+  Logbuch = loadfile("/einstellungen/logbuch.lua")()
 end
 
 function Funktion.schreibeAdressen()
@@ -362,7 +363,7 @@ end
 
 function Funktion.Logbuchseite()
   print(sprachen.logbuchTitel)
-  if not Logbuch or Logbuch == {} or state ~= "Idle" then
+  if Logbuch == {} then
     if fs.exists("/einstellungen/logbuch.lua") then
       Logbuch = loadfile("/einstellungen/logbuch.lua")()
     end
