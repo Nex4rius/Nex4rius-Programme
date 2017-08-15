@@ -367,20 +367,19 @@ function Funktion.Logbuchseite()
       Logbuch = loadfile("/einstellungen/logbuch.lua")()
     end
   end
-  local function ausgabe(i, max, a, b, c, bedingung)
+  local function ausgabe(max, Logbuch, bedingung)
     for i = 1, max do
-      if c == bedingung then
-        Funktion.zeigeHier(1, 1 + i, string.sub(string.format("%s  %s%s  ", a, b, string.rep(" ", 50)), 1, 30), 0)
+      if Logbuch[i][3] == bedingung then
+        Funktion.zeigeHier(1, 1 + i, string.sub(string.format("%s  %s%s  ", Logbuch[i][2], Logbuch[i][1], string.rep(" ", 50)), 1, 30), 0)
       end
     end
   end
-  local max = #Logbuch
   Funktion.Farbe(Farben.roteFarbe, Farben.schwarzeFarbe)
-  ausgabe(i, max, Logbuch[i][2], Logbuch[i][1], Logbuch[i][3], "in")
+  ausgabe(#Logbuch, Logbuch, "in")
   Funktion.Farbe(Farben.grueneFarbe, Farben.weisseFarbe)
-  ausgabe(i, max, Logbuch[i][2], Logbuch[i][1], Logbuch[i][3], "out")
+  ausgabe(#Logbuch, Logbuch, "out")
   Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
-  ausgabe(i, max, Logbuch[i][2], Logbuch[i][1], Logbuch[i][3], "neu")
+  ausgabe(#Logbuch, Logbuch, "neu")
 end
 
 function Funktion.Infoseite()
