@@ -843,7 +843,7 @@ function Funktion.zeigeEnergie()
     elseif energy < 10000000000000000000000000 then
       energieMenge = string.format("%.3f", energy / 1000000000000000000000) .. " Z"
     else
-      anwahlEnergie = sprachen.zuvielEnergie
+      energieMenge = sprachen.zuvielEnergie
     end
     Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2 .. Funktion.ErsetzePunktMitKomma(energieMenge))
   end
