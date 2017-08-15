@@ -826,21 +826,21 @@ function Funktion.zeigeEnergie()
     Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2, 0)
     Funktion.SchreibInAndererFarben(xVerschiebung + string.len("  " .. sprachen.energie1 .. energytype .. sprachen.energie2), zeile, sprachen.keineEnergie, Farben.FehlerFarbe)
   else
-    if     anwahlEnergie <= 10000 then
+    if     energy <= 10000 then
       energieMenge = string.format("%.f",  energy)
-    elseif anwahlEnergie > 10000 then
+    elseif energy > 10000 then
       energieMenge = string.format("%.1f", energy / 1000) .. " k"
-    elseif anwahlEnergie > 10000000 then
+    elseif energy > 10000000 then
       energieMenge = string.format("%.2f", energy / 1000000) .. " M"
-    elseif anwahlEnergie > 10000000000 then
+    elseif energy > 10000000000 then
       energieMenge = string.format("%.3f", energy / 1000000000) .. " G"
-    elseif anwahlEnergie > 10000000000000 then
+    elseif energy > 10000000000000 then
       energieMenge = string.format("%.3f", energy / 1000000000000) .. " T"
-    elseif anwahlEnergie > 10000000000000000 then
+    elseif energy > 10000000000000000 then
       energieMenge = string.format("%.3f", energy / 1000000000000000) .. " P"
-    elseif anwahlEnergie > 10000000000000000000 then
+    elseif energy > 10000000000000000000 then
       energieMenge = string.format("%.3f", energy / 1000000000000000000) .. " E"
-    elseif anwahlEnergie > 10000000000000000000000 then
+    elseif energy > 10000000000000000000000 then
       energieMenge = string.format("%.3f", energy / 1000000000000000000000) .. " Z"
     else
       anwahlEnergie = sprachen.zuvielEnergie
