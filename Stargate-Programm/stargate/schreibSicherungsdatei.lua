@@ -1,5 +1,5 @@
 -- pastebin run -f YVqKFnsP
--- von Nex4rius
+-- nexDHD von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
 local fs        = fs or require("filesystem")
@@ -76,7 +76,7 @@ if type(NEU) == "table" then
   
   local f = io.open ("/einstellungen/Sicherungsdatei.lua", "w")
   f:write('-- pastebin run -f YVqKFnsP\n')
-  f:write('-- von Nex4rius\n')
+  f:write('-- nexDHD von Nex4rius\n')
   f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n--\n')
   f:write('-- ' .. tostring(sprachen.speichern) .. '\n')
   f:write('-- ' .. tostring(sprachen.schliessen) .. '\n--\n\n')
@@ -84,7 +84,7 @@ if type(NEU) == "table" then
   f:write('  autoclosetime = '  .. tostring(Sicherung.autoclosetime)..  ', -- ' .. tostring(sprachen.autoclosetime) .. '\n')
   f:write('  IDC           = "' .. tostring(Sicherung.IDC)          .. '", -- ' .. tostring(sprachen.IDC)           .. '\n')
   f:write('  RF            = '  .. tostring(Sicherung.RF)           ..  ', -- ' .. tostring(sprachen.RF)            .. '\n')
-  f:write('  Sprache       = "' .. tostring(Sicherung.Sprache)      .. '", -- ' .. tostring(sprachen.Sprache)       .. '\n')
+  f:write('  Sprache       = "' .. tostring(Sicherung.Sprache)      .. '", -- deutsch / english / russian / czech\n')
   f:write('  side          = "' .. tostring(Sicherung.side)         .. '", -- ' .. tostring(sprachen.side)          .. '\n')
   f:write('  autoUpdate    = '  .. tostring(Sicherung.autoUpdate)   ..  ', -- ' .. tostring(sprachen.autoUpdate)    .. '\n')
   f:write('  StargateName  = "' .. tostring(Sicherung.StargateName) .. '", -- ' .. tostring(sprachen.StargateName)  .. '\n')

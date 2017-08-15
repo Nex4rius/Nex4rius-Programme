@@ -1,5 +1,5 @@
 -- pastebin run -f YVqKFnsP
--- von Nex4rius
+-- nexDHD von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
 if require then
@@ -19,9 +19,10 @@ local shell                     = shell or require("shell")
 _G.shell = shell
 local print                     = print
 
-local gpu
+local gpu, serialization, sprachen
 
 if OC then
+  serialization = require("serialization")
   component = require("component")
   event = require("event")
   gpu = component.getPrimary("gpu")
@@ -67,7 +68,17 @@ if not pcall(loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")) then
   print(string.format("Fehler %s.lua", Sicherung.Sprache))
 end
 
-local sprachen                  = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
+do
+  local neu = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
+  sprachen = loadfile("/stargate/sprache/deutsch.lua")()
+  for i in pairs(sprachen) do
+    if neu[i] then
+      sprachen[i] = neu[i]
+    end
+  end
+  sprachen = sprachen or neu
+end
+
 local ersetzen                  = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
 
 local sg                        = component.getPrimary("stargate")
@@ -126,6 +137,12 @@ local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, di
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, f, k, r, Farben
 
 do
+  if fs.exists("/einstellungen/logbuch.lua") then
+    local neu = loadfile("/einstellungen/logbuch.lua")()
+    if type(neu) == "table" then
+      Logbuch = neu
+    end
+  end
   sectime                       = os.time()
   os.sleep(1)
   sectime                       = sectime - os.time()
@@ -176,27 +193,35 @@ if r then
   r.setBundledOutput(0, Farben.black, 0)
 end
 
-function Logbuch.eingehend(name, adresse, dauer)
+function Funktion.Logbuch_schreiben(name, adresse, richtung)
+  local rest = {}
+  if fs.exists("/einstellungen/logbuch.lua") then
+    rest = loadfile("/einstellungen/logbuch.lua")()
+    if type(rest) ~= "table" then
+      rest = {}
+    end
+  end
+  for i = 20, 1, -1 do
+    rest[i + 1] = rest[i]
+  end
+  rest[1] = {name, adresse, richtung}
+  local f = io.open("/einstellungen/logbuch.lua", "w")
+  f:write('-- pastebin run -f YVqKFnsP\n')
+  f:write('-- nexDHD von Nex4rius\n')
+  f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n--\n')
+  f:write('return {\n')
+  for i = 1, #rest do
+    f:write(string.format('  {"%s", "%s", "%s"},\n', rest[i][1], rest[i][2], rest[i][3]))
+  end
+  f:write('}')
+  f:close()
+  Logbuch = loadfile("/einstellungen/logbuch.lua")()
 end
-
-function Logbuch.ausgehend(name, adresse, dauer)
-end
-
-function Logbuch.neueAdresse(name, adresse)
-end
-
-function Logbuch.neuerName(name, adresse)
-end
-
-function Funktion.Logbuch_schreiben(...)
-end
-
---Logbuch[id](...)
 
 function Funktion.schreibeAdressen()
   local f = io.open("/einstellungen/adressen.lua", "w")
   f:write('-- pastebin run -f YVqKFnsP\n')
-  f:write('-- von Nex4rius\n')
+  f:write('-- nexDHD von Nex4rius\n')
   f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n--\n')
   f:write('-- ' .. sprachen.speichern .. '\n')
   f:write('-- ' .. sprachen.schliessen .. '\n--\n')
@@ -344,10 +369,20 @@ end
 
 function Funktion.Logbuchseite()
   print(sprachen.logbuchTitel)
-  if not fs.exists("/stargate/logbuch") then
-    print("\n--keine Daten--")
-    print("\n--no data--")
+  local function ausgabe(max, Logbuch, bedingung)
+    for i = 1, max do
+      if Logbuch[i][3] == bedingung then
+        gpu.set(1, 1 + i, string.rep(" ", 30))
+        Funktion.zeigeHier(1, 1 + i, string.sub(string.format("%s  %s", Logbuch[i][2], Logbuch[i][1]), 1, 30), 0)
+      end
+    end
   end
+  Funktion.Farbe(Farben.roteFarbe, Farben.schwarzeFarbe)
+  ausgabe(#Logbuch, Logbuch, "in")
+  Funktion.Farbe(Farben.grueneFarbe, Farben.weisseFarbe)
+  ausgabe(#Logbuch, Logbuch, "out")
+  Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
+  ausgabe(#Logbuch, Logbuch, "neu")
 end
 
 function Funktion.Infoseite()
@@ -369,10 +404,17 @@ function Funktion.Infoseite()
   i = i + 1
   Taste.links[i] = Taste.q
   Taste.Koordinaten.Taste_q = i
-  print("L " .. sprachen.EinstellungenAendern)
+  print("S " .. sprachen.EinstellungenAendern)
   i = i + 1
-  Taste.links[i] = Taste.l
-  Taste.Koordinaten.Taste_l = i
+  Taste.links[i] = Taste.s
+  Taste.Koordinaten.Taste_s = i
+  if fs.exists("/log") then
+    term.write("L ")
+    print(sprachen.zeigeLog or "zeige Fehlerlog")
+    i = i + 1
+    Taste.links[i] = Taste.l
+    Taste.Koordinaten.Taste_l = i
+  end
   print("U " .. sprachen.Update)
   i = i + 1
   Taste.links[i] = Taste.u
@@ -397,7 +439,7 @@ function Funktion.Infoseite()
   print(sprachen.RedstoneGruen)
   Funktion.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
   print(sprachen.versionName .. version)
-  print("\n" .. sprachen.entwicklerName .. " Nex4rius")
+  print(string.format("\nnexDHD: %s Nex4rius", sprachen.entwicklerName))
 end
 
 function Funktion.AdressenSpeichern()
@@ -422,23 +464,24 @@ function Funktion.AdressenSpeichern()
         sendeAdressen[i] = {}
         sendeAdressen[i][1] = na[1]
         sendeAdressen[i][2] = na[2]
-        if     anwahlEnergie <= 10000 then
+        if     anwahlEnergie < 10000 then
           anwahlEnergie = string.format("%.f" , (sg.energyToDial(na[2]) * energymultiplicator))
-        elseif anwahlEnergie > 10000 then
+        elseif anwahlEnergie < 10000000 then
           anwahlEnergie = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000) .. " k"
-        elseif anwahlEnergie > 10000000 then
+        elseif anwahlEnergie < 10000000000 then
           anwahlEnergie = string.format("%.2f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000) .. " M"
-        elseif anwahlEnergie > 10000000000 then
+        elseif anwahlEnergie < 10000000000000 then
           anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000) .. " G"
-        elseif anwahlEnergie > 10000000000000 then
+        elseif anwahlEnergie < 10000000000000000 then
           anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000000) .. " T"
-        elseif anwahlEnergie > 10000000000000000 then
+        elseif anwahlEnergie < 10000000000000000000 then
           anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000000000) .. " P"
-        elseif anwahlEnergie > 10000000000000000000 then
+        elseif anwahlEnergie < 10000000000000000000000 then
           anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000000000000) .. " E"
-        elseif anwahlEnergie > 10000000000000000000000 then
+        elseif anwahlEnergie < 10000000000000000000000000 then
           anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000000000000000) .. " Z"
         else
+          anwahlEnergie = sprachen.zuvielEnergie
         end
       end
       gespeicherteAdressen[i + k] = {}
@@ -655,7 +698,7 @@ function Funktion.sendeAdressliste()
   if einmalAdressenSenden then
     einmalAdressenSenden = false
     if OC then
-      return "Adressliste", require("serialization").serialize(sendeAdressen), version
+      return "Adressliste", serialization.serialize(sendeAdressen), version
     elseif CC then --CC fehlt
       return "Adressliste", "", version
     end
@@ -674,6 +717,7 @@ function Funktion.newAddress(neueAdresse, neuerName, ...)
     else
       adressen[AdressenAnzahl][1] = neuerName
       nichtmehr = true
+      Funktion.Logbuch_schreiben(neuerName , neueAdresse, "neu")
     end
     adressen[AdressenAnzahl][2] = neueAdresse
     adressen[AdressenAnzahl][3] = ""
@@ -782,14 +826,24 @@ function Funktion.zeigeEnergie()
     Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2, 0)
     Funktion.SchreibInAndererFarben(xVerschiebung + string.len("  " .. sprachen.energie1 .. energytype .. sprachen.energie2), zeile, sprachen.keineEnergie, Farben.FehlerFarbe)
   else
-    if     energy > 10000000000 then
-      energieMenge = string.format("%.3f", energy / 1000000000) .. " G"
-    elseif energy > 10000000 then
-      energieMenge = string.format("%.2f", energy / 1000000) .. " M"
-    elseif energy > 10000 then
-      energieMenge = string.format("%.1f", energy / 1000) .. " k"
-    else
+    if     energy < 10000 then
       energieMenge = string.format("%.f",  energy)
+    elseif energy < 10000000 then
+      energieMenge = string.format("%.1f", energy / 1000) .. " k"
+    elseif energy < 10000000000 then
+      energieMenge = string.format("%.2f", energy / 1000000) .. " M"
+    elseif energy < 10000000000000 then
+      energieMenge = string.format("%.3f", energy / 1000000000) .. " G"
+    elseif energy < 10000000000000000 then
+      energieMenge = string.format("%.3f", energy / 1000000000000) .. " T"
+    elseif energy < 10000000000000000000 then
+      energieMenge = string.format("%.3f", energy / 1000000000000000) .. " P"
+    elseif energy < 10000000000000000000000 then
+      energieMenge = string.format("%.3f", energy / 1000000000000000000) .. " E"
+    elseif energy < 10000000000000000000000000 then
+      energieMenge = string.format("%.3f", energy / 1000000000000000000000) .. " Z"
+    else
+      energieMenge = sprachen.zuvielEnergie
     end
     Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2 .. Funktion.ErsetzePunktMitKomma(energieMenge))
   end
@@ -1051,11 +1105,24 @@ function Funktion.zeigeNachricht(...)
     event.timer(10, function() event.push("test") end, math.huge)
   elseif fs.exists("/log") and Sicherung.debug then
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, sprachen.fehlerName .. " /log", Bildschirmbreite)
+  elseif seite == -2 then
+    local x = 1
+    Funktion.zeigeHier(x, Bildschirmhoehe - 1, string.format("%s:  ", sprachen.Legende), 0)
+    Funktion.Farbe(Farben.roteFarbe, Farben.schwarzeFarbe)
+    x = x + string.len(sprachen.Legende) + 3
+    Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.RichtungNameEin, 0)
+    Funktion.Farbe(Farben.grueneFarbe, Farben.weisseFarbe)
+    x = x + string.len(sprachen.RichtungNameEin) + 2
+    Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.RichtungNameAus, 0)
+    Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
+    x = x + string.len(sprachen.RichtungNameAus) + 2
+    Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.neueAdresse, 0)
+    Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
   else
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, "", Bildschirmbreite)
   end
   if ... then
-    Funktion.zeigeHier(1, Bildschirmhoehe, Funktion.zeichenErsetzen(Funktion.zeichenErsetzen(...)), Bildschirmbreite)
+    Funktion.zeigeHier(1, Bildschirmhoehe, Funktion.zeichenErsetzen(Funktion.zeichenErsetzen(...)), Bildschirmbreite + 1)
   else
     Funktion.zeigeHier(1, Bildschirmhoehe, "", Bildschirmbreite)
   end
@@ -1074,9 +1141,9 @@ function Funktion.schreibFehlerLog(...)
     if type(...) == "string" then
       f:write(...)
     elseif type(...) == "table" then
-      f:write(require("serialization").serialize(...))
+      f:write(serialization.serialize(...))
     end
-    f:write("\n\n" .. os.time() .. string.rep("-", max_Bildschirmbreite - string.len(os.time())) .. "\n\n")
+    f:write("\n" .. os.time() .. string.rep("-", max_Bildschirmbreite - string.len(os.time())) .. "\n")
     f:close()
   end
   letzteEingabe = ...
@@ -1103,15 +1170,15 @@ function Funktion.dial(name, adresse)
       ergebnis = string.sub(ergebnis, 0, 20) .. "<" .. Funktion.getAddress(string.sub(ergebnis, 21, AdressEnde - 1)) .. ">" .. string.sub(ergebnis, AdressEnde)
     end
     Funktion.zeigeNachricht(ergebnis)
+  else
+    Funktion.Logbuch_schreiben(name , adresse, wormhole)
   end
   os.sleep(1)
 end
 
 function Funktion.key_down(e)
   c = string.char(e[3])
-  if entercode == true then
-    Taste.eingabe_enter()
-  elseif e[3] == 0 and e[4] == 203 then
+  if e[3] == 0 and e[4] == 203 then
     Taste.Pfeil_links()
   elseif e[3] == 0 and e[4] == 205 then
     Taste.Pfeil_rechts()
@@ -1125,18 +1192,6 @@ function Funktion.key_down(e)
   end
 end
 
-function Taste.eingabe_enter()
-  if e[3] == 13 then
-    entercode = false
-    sg.sendMessage(enteridc)
-    Funktion.zeigeNachricht(sprachen.IDCgesendet)
-  else
-    enteridc = enteridc .. c
-    showidc = showidc .. "*"
-    Funktion.zeigeNachricht(sprachen.IDCeingabe .. ": " .. showidc)
-  end
-end
-
 function Taste.Pfeil_links()
   Funktion.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
   if seite >= 1 then
@@ -1145,6 +1200,7 @@ function Taste.Pfeil_links()
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.SteuerungName, 0)
   elseif seite == -1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.logbuch, 0)
+    event.timer(1, function() Funktion.zeigeNachricht() end, 0)
   end
   if seite <= -2 then else
     seite = seite - 1
@@ -1162,6 +1218,7 @@ function Taste.Pfeil_rechts()
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.zeigeAdressen, 0)
   elseif seite == -2 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.SteuerungName, 0)
+    event.timer(1, function() Funktion.zeigeNachricht() end, 0)
   elseif maxseiten > seite + 1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.naechsteSeite, 0)
   end
@@ -1204,10 +1261,17 @@ function Taste.e()
   Funktion.zeigeHier(Taste.Koordinaten.e_X, Taste.Koordinaten.e_Y, "E " .. sprachen.IDCeingabe, 0)
   if Funktion.Tastatur() then
     if state == "Connected" and direction == "Outgoing" then
-      enteridc = ""
-      showidc = ""
-      entercode = true
-      Funktion.zeigeNachricht(sprachen.IDCeingabe .. ":")
+      term.setCursor(1, Bildschirmhoehe)
+      Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
+      term.clearLine()
+      term.write(sprachen.IDCeingabe .. ":")
+      local timerID = event.timer(1, function() Funktion.zeigeStatus() Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe) end, math.huge)
+      pcall(screen.setTouchModeInverted, false)
+      local eingabe = term.read(nil, false, nil, "*")
+      pcall(screen.setTouchModeInverted, true)
+      sg.sendMessage(string.sub(eingabe, 1, string.len(eingabe) - 1))
+      event.cancel(timerID)
+      Funktion.zeigeNachricht(sprachen.IDCgesendet)
     else
       Funktion.zeigeNachricht(sprachen.keineVerbindung)
     end
@@ -1298,10 +1362,10 @@ function Taste.z()
   end
 end
 
-function Taste.l()
+function Taste.s()
   if seite == -1 then
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
-    Funktion.zeigeHier(1, Taste.Koordinaten.Taste_l, "L " .. sprachen.EinstellungenAendern, 0)
+    Funktion.zeigeHier(1, Taste.Koordinaten.Taste_s, "S " .. sprachen.EinstellungenAendern, 0)
     if Funktion.Tastatur() then
       Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
       schreibSicherungsdatei(Sicherung)
@@ -1320,7 +1384,14 @@ function Taste.l()
       local a = Sicherung.RF
       Sicherung = loadfile("/einstellungen/Sicherungsdatei.lua")()
       if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
-        sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
+        local neu = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
+        sprachen = loadfile("/stargate/sprache/deutsch.lua")()
+        for i in pairs(sprachen) do
+          if neu[i] then
+            sprachen[i] = neu[i]
+          end
+        end
+        sprachen = sprachen or neu
         ersetzen = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
       else
         print("\nUnbekannte Sprache\nStandardeinstellung = deutsch")
@@ -1344,6 +1415,23 @@ function Taste.l()
       gpu.setBackground(Farben.Nachrichtfarbe)
       seite = 0
       Funktion.zeigeAnzeige()
+    else
+      event.timer(2, Funktion.zeigeMenu, 1)
+    end
+  end
+end
+
+function Taste.l()
+  if seite == -1 then
+    Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
+    Funktion.zeigeHier(1, Taste.Koordinaten.Taste_l, "L " .. sprachen.zeigeLog, 0)
+    if Funktion.Tastatur() then
+      pcall(screen.setTouchModeInverted, false)
+      Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
+      os.sleep(0.1)
+      edit("-r", "/log")
+      pcall(screen.setTouchModeInverted, true)
+      seite = 0
     else
       event.timer(2, Funktion.zeigeMenu, 1)
     end
@@ -1431,12 +1519,17 @@ end
 
 function Funktion.sgChevronEngaged(e)
   chevron = e[3]
-  if chevron <= 4 then
-    zielAdresse = string.sub(sg.remoteAddress(), 1, chevron)
-  elseif chevron <= 7 then
-    zielAdresse = string.sub(sg.remoteAddress(), 1, 4) .. "-" .. string.sub(sg.remoteAddress(), 5, chevron)
+  local remAdr = sg.remoteAddress()
+  if remAdr then
+    if chevron <= 4 then
+      zielAdresse = string.sub(remAdr, 1, chevron)
+    elseif chevron <= 7 then
+      zielAdresse = string.sub(remAdr, 1, 4) .. "-" .. string.sub(remAdr, 5, chevron)
+    else
+      zielAdresse = string.sub(remAdr, 1, 4) .. "-" .. string.sub(remAdr, 5, 7) .. "-" .. string.sub(remAdr, 8, chevron)
+    end
   else
-    zielAdresse = string.sub(sg.remoteAddress(), 1, 4) .. "-" .. string.sub(sg.remoteAddress(), 5, 7) .. "-" .. string.sub(sg.remoteAddress(), 8, chevron)
+    zielAdresse = sprachen.fehlerName
   end
   Funktion.zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
 end
@@ -1473,7 +1566,7 @@ function Funktion.sgMessageReceived(e)
     end
   end
   if e[4] == "Adressliste" then
-    local inAdressen = require("serialization").unserialize(e[5])
+    local inAdressen = serialization.unserialize(e[5])
     if type(inAdressen) == "table" then
       Funktion.angekommeneAdressen(inAdressen)
     end
@@ -1512,6 +1605,7 @@ end
 
 function Funktion.sgDialIn()
   wormhole = "in"
+  Funktion.Logbuch_schreiben(remoteName , Funktion.getAddress(sg.remoteAddress()), wormhole)
 end
 
 function Funktion.sgDialOut()

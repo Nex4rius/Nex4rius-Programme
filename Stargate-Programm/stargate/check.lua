@@ -1,5 +1,5 @@
 -- pastebin run -f YVqKFnsP
--- von Nex4rius
+-- nexDHD von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
 os.sleep(1)
@@ -510,6 +510,7 @@ function Funktion.mainCheck()
       end
     end
   end
+  print("\nnexDHD")
   print(sprachen.laden or "\nLaden...")
   Sicherung.installieren = false
   schreibSicherungsdatei(Sicherung)
@@ -548,8 +549,6 @@ function Funktion.main()
   if gpu.maxResolution() == 160 then
     gpu.setBackground(Farben.graueFarbe)
   end
-  --gpu.fill(1, 1, 70, 25, " ")
-  --term.clear()
   Funktion.checkDateien()
   if fs.exists("/stargate/version.txt") then
     local f = io.open ("/stargate/version.txt", "r")
@@ -567,7 +566,14 @@ function Funktion.main()
     versionTyp = arg
   end
   if Funktion.checkSprache() then
-    sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
+    local neu = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
+    sprachen = loadfile("/stargate/sprache/deutsch.lua")()
+    for i in pairs(sprachen) do
+      if neu[i] then
+        sprachen[i] = neu[i]
+      end
+    end
+    sprachen = sprachen or neu
   else
     print("\nUnbekannte Sprache\nStandardeinstellung = deutsch")
     if fs.exists("/stargate/sprache/deutsch.lua") then
@@ -598,7 +604,7 @@ function Funktion.main()
   end
   gpu.setForeground(Farben.weisseFarbe)
   gpu.setBackground(Farben.schwarzeFarbe)
-  --term.clear()
+  term.clear()
   gpu.setResolution(gpu.maxResolution())
 end
 

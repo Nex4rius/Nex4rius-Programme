@@ -1,5 +1,5 @@
 -- pastebin run -f YVqKFnsP
--- von Nex4rius
+-- nexDHD von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
 
 return {
@@ -134,4 +134,8 @@ return {
   StargateNichtKomplett     = "Stargate is non-functional",
   logbuch                   = "show logbook",
   logbuchTitel              = "Logbook",
+  zeigeLog                  = "show error log",
+  Legende                   = "legend",
+  neueAdresse               = "new address",
+  zuvielEnergie             = "<Energy too big>",
 }
