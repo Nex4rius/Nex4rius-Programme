@@ -205,11 +205,7 @@ function Funktion.Logbuch_schreiben(name, adresse, richtung)
   f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n--\n')
   f:write('return {\n')
   for i = 1, #rest do
-    if rest[i][3] then
-      f:write(string.format('  {"%s", "%s", "%s"},\n', rest[i][1], rest[i][2], rest[i][3]))
-    else
-     f:write(string.format('  {"%s", "%s"},\n', rest[i][1], rest[i][2]))
-    end
+    f:write(string.format('  {"%s", "%s", "%s"},\n', rest[i][1], rest[i][2], rest[i][3]))
   end
   f:write('}')
   f:close()
@@ -371,26 +367,20 @@ function Funktion.Logbuchseite()
       Logbuch = loadfile("/einstellungen/logbuch.lua")()
     end
   end
-  local function ausgabe(i, a, b)
-    Funktion.zeigeHier(1, 1 + i, string.sub(string.format("%s  %s%s  ", a, b, string.rep(" ", 50)), 1, 30), 0)
+  local function ausgabe(i, max, a, b, c, bedingung)
+    for i = 1, max do
+      if c == bedingung then
+        Funktion.zeigeHier(1, 1 + i, string.sub(string.format("%s  %s%s  ", a, b, string.rep(" ", 50)), 1, 30), 0)
+      end
+    end
   end
   local max = #Logbuch
   Funktion.Farbe(Farben.roteFarbe, Farben.schwarzeFarbe)
-  for i = 1, max do
-    if Logbuch[i][3] == "in" then
-      ausgabe(i, Logbuch[i][2], Logbuch[i][1])
-    end
-  end
+  ausgabe(i, max, Logbuch[i][2], Logbuch[i][1], Logbuch[i][3], "in")
   Funktion.Farbe(Farben.grueneFarbe, Farben.weisseFarbe)
-  for i = 1, max do
-    if Logbuch[i][3] == "out" then
-      ausgabe(i, Logbuch[i][2], Logbuch[i][1])
-    end
-  end
+  ausgabe(i, max, Logbuch[i][2], Logbuch[i][1], Logbuch[i][3], "out")
   Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
-  for i = 1, max do
-    ausgabe(i, Logbuch[i][2], Logbuch[i][1])
-  end
+  ausgabe(i, max, Logbuch[i][2], Logbuch[i][1], Logbuch[i][3], "neu")
 end
 
 function Funktion.Infoseite()
@@ -724,7 +714,7 @@ function Funktion.newAddress(neueAdresse, neuerName, ...)
     else
       adressen[AdressenAnzahl][1] = neuerName
       nichtmehr = true
-      Funktion.Logbuch_schreiben(neuerName , neueAdresse)
+      Funktion.Logbuch_schreiben(neuerName , neueAdresse, "neu")
     end
     adressen[AdressenAnzahl][2] = neueAdresse
     adressen[AdressenAnzahl][3] = ""
