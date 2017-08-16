@@ -185,9 +185,12 @@ end
 
 function Funktion.Pfad(versionTyp)
   if type(versionTyp) ~= "string" then
-    versionTyp = "master"
+    return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/nexDHD/"
+  elseif versionTyp == "beta" then
+    return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/nexDHD/nexDHD/"
+  else
+    return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/" .. versionTyp .. "/nexDHD/"
   end
-  return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/" .. versionTyp .. "/nexDHD/"
 end
 
 function Funktion.checkSprache()
