@@ -45,6 +45,7 @@ Die Funktionen meines Programms:
 - erlaubt die Schließung eines eingehenden Wurmloch wenns es in den Einstellungen ausgeschaltet ist UND ein Computer mit diesem Programm auf beiden Seiten des Stargates ist
 - automatisches senden und empfangen der gesamten Adressliste bei einem offenen Wurmloch (natürlich ohne den IDC) und automatisches hinzufügen von den neuen Adressen
 - mit Touchscreenfunktion !
+- Logbuch mit den letzten Verbindungen
 
 Wichtig!
 Damit das Programm ordentlich funktioniert muss der Computer entweder im gleichen Chunk wie das Stargate sein oder einen Chunkloader haben.
@@ -116,6 +117,7 @@ the features of my program:
 - allows closing of incoming wormholes if its disabled in config AND there is a computer at either end
 - automatically sends and receives entire address list on an open wormhole (without the IDC of course) and automatically adds the new addresses
 - with touchscreen functionalities
+- logbook with the last connections
 
 important!
 This program either needs to be in the same chunk as the Stargate or there has to be a chunkloader nearby to function properly.
@@ -187,6 +189,7 @@ ___
 - возможность закрывать входящие туннели, если отключено в конфиге на обоих концах
 - автоматическая передача (разумеется, без IDC) и прием списка адресов, по открытому туннелю
 - визуальный сенсорный интерфейс
+- logbook with the last connections
 
 Важно! Компьютер с этой программой должен быть размещен в том же чанке, что и врата, либо иметь рядом активный чанклоадер.
 
