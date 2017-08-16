@@ -1091,13 +1091,13 @@ function Funktion.atmosphere(...)
   end
 end
 
-function Funktion.zeigeNachricht(...)
-  if ... == "" then
+function Funktion.zeigeNachricht(inhalt, oben)
+  if inhalt == nil then
     Nachrichtleer = true
   else
     Nachrichtleer = false
   end
-  letzteNachricht = ...
+  letzteNachricht = inhalt
   letzteNachrichtZeit = os.time()
   Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
   if VersionUpdate == true then
@@ -1121,9 +1121,9 @@ function Funktion.zeigeNachricht(...)
   else
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, "", Bildschirmbreite)
   end
-  if ... then
-    Funktion.zeigeHier(1, Bildschirmhoehe, Funktion.zeichenErsetzen(Funktion.zeichenErsetzen(...)), Bildschirmbreite + 1)
-  else
+  if not Nachrichtleer then
+    Funktion.zeigeHier(1, Bildschirmhoehe, Funktion.zeichenErsetzen(Funktion.zeichenErsetzen(inhalt)), Bildschirmbreite + 1)
+  elseif not oben then
     Funktion.zeigeHier(1, Bildschirmhoehe, "", Bildschirmbreite)
   end
   Funktion.Farbe(Farben.Statusfarbe)
@@ -1200,7 +1200,7 @@ function Taste.Pfeil_links()
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.SteuerungName, 0)
   elseif seite == -1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.logbuch, 0)
-    event.timer(1, function() Funktion.zeigeNachricht() end, 0)
+    event.timer(0.1, function() Funktion.zeigeNachricht(nil, true) end, 0)
   end
   if seite <= -2 then else
     seite = seite - 1
@@ -1218,7 +1218,7 @@ function Taste.Pfeil_rechts()
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.zeigeAdressen, 0)
   elseif seite == -2 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.SteuerungName, 0)
-    event.timer(1, function() Funktion.zeigeNachricht() end, 0)
+    event.timer(0.1, function() Funktion.zeigeNachricht(nil, true) end, 0)
   elseif maxseiten > seite + 1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.naechsteSeite, 0)
   end
