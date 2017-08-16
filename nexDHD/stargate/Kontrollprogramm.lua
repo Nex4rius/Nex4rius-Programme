@@ -1679,7 +1679,8 @@ function Funktion.angekommeneVersion(...)
     if component.isAvailable("internet") then
       if version ~= Funktion.checkServerVersion() then
         VersionUpdate = true
-        event.timer(5, function() event.push("test") end, math.huge)
+        Funktion.zeigeNachricht(nil, true)
+        event.timer(10, function() event.push("test") end, math.huge)
       end
     end
   end
