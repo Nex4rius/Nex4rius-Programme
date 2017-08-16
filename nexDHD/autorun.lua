@@ -1,6 +1,6 @@
 -- pastebin run -f YVqKFnsP
 -- nexDHD von Nex4rius
--- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
+-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD
 
 os.sleep(1)
 
@@ -33,7 +33,7 @@ if not ergebnis then
     print(grund)
     os.sleep(2)
     if require then
-        if loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Stargate-Programm/installieren.lua", "/installieren.lua") then
+        if loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/nexDHD/installieren.lua", "/installieren.lua") then
             loadfile("/installieren.lua")()
         end
     else

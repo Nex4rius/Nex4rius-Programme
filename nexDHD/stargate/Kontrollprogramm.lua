@@ -1,6 +1,6 @@
 -- pastebin run -f YVqKFnsP
 -- nexDHD von Nex4rius
--- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
+-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD
 
 if require then
   OC = true
@@ -208,7 +208,7 @@ function Funktion.Logbuch_schreiben(name, adresse, richtung)
   local f = io.open("/einstellungen/logbuch.lua", "w")
   f:write('-- pastebin run -f YVqKFnsP\n')
   f:write('-- nexDHD von Nex4rius\n')
-  f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n--\n')
+  f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD\n--\n')
   f:write('return {\n')
   for i = 1, #rest do
     f:write(string.format('  {"%s", "%s", "%s"},\n', rest[i][1], rest[i][2], rest[i][3]))
@@ -222,7 +222,7 @@ function Funktion.schreibeAdressen()
   local f = io.open("/einstellungen/adressen.lua", "w")
   f:write('-- pastebin run -f YVqKFnsP\n')
   f:write('-- nexDHD von Nex4rius\n')
-  f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n--\n')
+  f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD\n--\n')
   f:write('-- ' .. sprachen.speichern .. '\n')
   f:write('-- ' .. sprachen.schliessen .. '\n--\n')
   f:write('-- ' .. sprachen.iris .. '\n')

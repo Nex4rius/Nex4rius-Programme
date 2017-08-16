@@ -1,6 +1,6 @@
 -- pastebin run -f YVqKFnsP
 -- nexDHD von Nex4rius
--- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
+-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD
 -- translation by iamceph
 
 return {

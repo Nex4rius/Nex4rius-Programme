@@ -1,6 +1,6 @@
 -- pastebin run -f YVqKFnsP
 -- nexDHD von Nex4rius
--- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm
+-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD
 
 local fs        = fs or require("filesystem")
 local NEU       = ...
@@ -77,7 +77,7 @@ if type(NEU) == "table" then
   local f = io.open ("/einstellungen/Sicherungsdatei.lua", "w")
   f:write('-- pastebin run -f YVqKFnsP\n')
   f:write('-- nexDHD von Nex4rius\n')
-  f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/Stargate-Programm\n--\n')
+  f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD\n--\n')
   f:write('-- ' .. tostring(sprachen.speichern) .. '\n')
   f:write('-- ' .. tostring(sprachen.schliessen) .. '\n--\n\n')
   f:write('return {\n')
