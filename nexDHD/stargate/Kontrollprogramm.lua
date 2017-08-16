@@ -1102,7 +1102,6 @@ function Funktion.zeigeNachricht(inhalt, oben)
   Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
   if VersionUpdate == true then
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, sprachen.aktualisierenGleich, Bildschirmbreite)
-    event.timer(10, function() event.push("test") end, math.huge)
   elseif fs.exists("/log") and Sicherung.debug then
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, sprachen.fehlerName .. " /log", Bildschirmbreite)
   elseif seite == -2 then
@@ -1680,6 +1679,7 @@ function Funktion.angekommeneVersion(...)
     if component.isAvailable("internet") then
       if version ~= Funktion.checkServerVersion() then
         VersionUpdate = true
+        event.timer(5, function() event.push("test") end, math.huge)
       end
     end
   end
