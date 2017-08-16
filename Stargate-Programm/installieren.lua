@@ -124,7 +124,9 @@ if Sicherung.Sprache then
 end
 
 function Funktionen.Pfad(versionTyp)
-  if versionTyp then
+  if versionTyp == "beta" then
+    return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/nexDHD/nexDHD/"
+  elseif versionTyp then
     return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/" .. versionTyp .. "/nexDHD/"
   else
     return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/nexDHD/"
