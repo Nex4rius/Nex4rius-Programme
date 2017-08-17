@@ -5,7 +5,7 @@
 require("shell").setWorkingDirectory("/")
 
 local fs          = require("filesystem")
-local arg         = require("shell").parse(...)[1]
+local arg         = string.lower(...)
 local wget        = loadfile("/bin/wget.lua")
 local copy        = loadfile("/bin/cp.lua")
 local component   = require("component")
@@ -28,7 +28,9 @@ if Sicherung.Sprache then
 end
 
 function Funktionen.Pfad(versionTyp)
-  if versionTyp then
+  if versionTyp == "beta" then
+    return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/Tank/Tank/"
+  elseif versionTyp then
     return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/" .. versionTyp .. "/Tank/"
   else
     return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/"
