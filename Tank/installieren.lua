@@ -190,6 +190,13 @@ function Funktionen.Komponenten(typ)
       gpu.setForeground(0xFF0000)
       print("Adapter + Tank Controller Upgrade - ERROR")
     end
+    if component.isAvailable("transposer") then
+      gpu.setForeground(0x00FF00)
+      print("Transposer - OK")
+    else
+      gpu.setForeground(0xFF0000)
+      print("Transposer - ERROR")
+    end
   end
   gpu.setForeground(0xFFFFFF)
   print("\npress enter to continue\n")
