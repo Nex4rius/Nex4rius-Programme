@@ -167,7 +167,12 @@ function Funktionen.Komponenten(typ)
   end
   if component.isAvailable("modem") then
     gpu.setForeground(0x00FF00)
-    print("Network Card - OK")
+    if component.modem.isWireless() then
+      print("Wireless Network Card - OK")
+    else
+      print("Wireless Network Card - ERROR")
+      print("Network Card - OK")
+    end
   else
     gpu.setForeground(0xFF0000)
     print("Network Card - ERROR")
