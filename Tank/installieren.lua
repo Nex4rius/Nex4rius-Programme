@@ -5,6 +5,7 @@
 require("shell").setWorkingDirectory("/")
 
 local fs          = require("filesystem")
+local term        = require("term")
 local arg         = string.lower(...)
 local wget        = loadfile("/bin/wget.lua")
 local copy        = loadfile("/bin/cp.lua")
@@ -12,20 +13,6 @@ local component   = require("component")
 local gpu         = component.gpu
 local Sicherung   = {}
 local Funktionen  = {}
-local sprachen
-
-if fs.exists("/stargate/Sicherungsdatei.lua") then
-  Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
-else
-  Sicherung.Sprache = ""
-  Sicherung.installieren = false
-end
-
-if Sicherung.Sprache then
-  if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
-    sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
-  end
-end
 
 function Funktionen.Pfad(versionTyp)
   if versionTyp == "beta" then
@@ -40,8 +27,26 @@ end
 function Funktionen.installieren(versionTyp)
   gpu.setBackground(0x000000)
   gpu.setForeground(0xFFFFFF)
-  require("term").clear()
+  term.clear()
   local weiter = true
+  if component.isAvailable("tank_controller") then
+    print("Tank Controller detected downloading client (sensor).")
+    typ = "client"
+    weiter = false
+  end
+  if component.isAvailable("transposer") then
+    print("Transposer detected downloading client (sensor).")
+    typ = "client"
+    weiter = false
+  end
+  if gpu.maxResolution() == 160 then
+    print("Tier III GPU and Screen detected downloading server (display).")
+    typ = "server"
+    weiter = false
+  end
+  if weiter then
+    print("Could not detect a Tier III GPU, a Tier III Screen, a Tank Controller or a Transposer")
+  end
   while weiter do
     print("\n\nserver (display) / client (adapter + tank)?\n")
     typ = io.read()
@@ -125,7 +130,6 @@ function Funktionen.installieren(versionTyp)
       f:close()
     end
     Sicherung.installieren = true
-    --loadfile("/stargate/schreibSicherungsdatei.lua")(Sicherung)
     print()
     updateKomplett = loadfile("/bin/rm.lua")("-v", "/update", "-r")
     updateKomplett = loadfile("/bin/rm.lua")("-v", "/installieren.lua")
@@ -144,13 +148,15 @@ function Funktionen.installieren(versionTyp)
   else
     print("\nERROR install / update failed\n")
   end
-  print("10s bis Neustart")
-  os.sleep(10)
+  for i = 10, 0, -1 do
+    print(i .. "s bis Neustart")
+    os.sleep(1)
+  end
   require("computer").shutdown(true)
 end
 
 function Funktionen.Komponenten(typ)
-  require("term").clear()
+  term.clear()
   print("check components\n")
   if component.isAvailable("internet") then
     gpu.setForeground(0x00FF00)
@@ -187,7 +193,7 @@ function Funktionen.Komponenten(typ)
   end
   gpu.setForeground(0xFFFFFF)
   print("\npress enter to continue\n")
-  require("term").read()
+  term.read()
 end
 
 if versionTyp == nil then
