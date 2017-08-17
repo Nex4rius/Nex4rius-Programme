@@ -6,7 +6,7 @@ require("shell").setWorkingDirectory("/")
 
 local fs          = require("filesystem")
 local term        = require("term")
-local arg         = string.lower(...)
+local arg         = ...
 local wget        = loadfile("/bin/wget.lua")
 local copy        = loadfile("/bin/cp.lua")
 local component   = require("component")
@@ -45,7 +45,7 @@ function Funktionen.installieren(versionTyp)
     weiter = false
   end
   if weiter then
-    print("Could not detect a Tier III GPU, a Tier III Screen, a Tank Controller or a Transposer")
+    print("Unable to detect a Tier III GPU, a Tier III Screen, a Tank Controller or a Transposer.")
   end
   while weiter do
     print("\n\nserver (display) / client (adapter + tank)?\n")
