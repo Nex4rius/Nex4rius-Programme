@@ -257,7 +257,7 @@ function Funktion.pull_event()
       end
     end
     if VersionUpdate then
-      Funktion.Logbuch_schreiben(Funktion.checkServerVersion(), "Update: " , "update")
+      Funktion.Logbuch_schreiben(Funktion.checkServerVersion(), "Update:    " , "update")
       running = false
       Variablen.update = "ja"
     end
@@ -1455,7 +1455,7 @@ function Taste.u()
     if component.isAvailable("internet") then
       local serverVersion = Funktion.checkServerVersion()
       if version ~= serverVersion then
-        Funktion.Logbuch_schreiben(serverVersion, "Update: " , "update")
+        Funktion.Logbuch_schreiben(serverVersion, "Update:    " , "update")
         running = false
         Variablen.update = "ja"
       else
@@ -1474,7 +1474,7 @@ function Taste.b()
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
     Funktion.zeigeHier(1, Taste.Koordinaten.Taste_b, "B " .. sprachen.UpdateBeta, 0)
     if component.isAvailable("internet") then
-      Funktion.Logbuch_schreiben(serverVersion .. " BETA", "Update: " , "update")
+      Funktion.Logbuch_schreiben(serverVersion .. " BETA", "Update:    " , "update")
       running = false
       Variablen.update = "beta"
     end
