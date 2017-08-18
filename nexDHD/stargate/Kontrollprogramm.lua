@@ -213,6 +213,9 @@ function Funktion.Logbuch_schreiben(name, adresse, richtung)
   f:write('return {\n')
   for i = 1, #rest do
     f:write(string.format('  {"%s", "%s", "%s"},\n', rest[i][1], rest[i][2], rest[i][3]))
+    if i > 20 then
+      break
+    end
   end
   f:write('}')
   f:close()
@@ -257,6 +260,7 @@ function Funktion.pull_event()
       end
     end
     if VersionUpdate then
+      Funktion.Logbuch_schreiben(Funktion.checkServerVersion(), "Update:    " , "update")
       running = false
       Variablen.update = "ja"
     end
@@ -378,12 +382,15 @@ function Funktion.Logbuchseite()
       end
     end
   end
+  local max = #Logbuch
   Funktion.Farbe(Farben.roteFarbe, Farben.schwarzeFarbe)
-  ausgabe(#Logbuch, Logbuch, "in")
+  ausgabe(max, Logbuch, "in")
   Funktion.Farbe(Farben.grueneFarbe, Farben.weisseFarbe)
-  ausgabe(#Logbuch, Logbuch, "out")
+  ausgabe(max, Logbuch, "out")
   Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
-  ausgabe(#Logbuch, Logbuch, "neu")
+  ausgabe(max, Logbuch, "neu")
+  Funktion.Farbe(Farben.gelbeFarbe, Farben.schwarzeFarbe)
+  ausgabe(max, Logbuch, "update")
 end
 
 function Funktion.Infoseite()
@@ -1105,17 +1112,7 @@ function Funktion.zeigeNachricht(inhalt, oben)
   elseif fs.exists("/log") and Sicherung.debug then
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, sprachen.fehlerName .. " /log", Bildschirmbreite)
   elseif seite == -2 then
-    local x = 1
-    Funktion.zeigeHier(x, Bildschirmhoehe - 1, string.format("%s:  ", sprachen.Legende), 0)
-    Funktion.Farbe(Farben.roteFarbe, Farben.schwarzeFarbe)
-    x = x + unicode.len(sprachen.Legende) + 3
-    Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.RichtungNameEin, 0)
-    Funktion.Farbe(Farben.grueneFarbe, Farben.weisseFarbe)
-    x = x + unicode.len(sprachen.RichtungNameEin) + 2
-    Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.RichtungNameAus, 0)
-    Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
-    x = x + unicode.len(sprachen.RichtungNameAus) + 2
-    Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.neueAdresse, 0)
+    Funktion.Legende()
     Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
   else
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, "", Bildschirmbreite)
@@ -1126,6 +1123,24 @@ function Funktion.zeigeNachricht(inhalt, oben)
     Funktion.zeigeHier(1, Bildschirmhoehe, "", Bildschirmbreite)
   end
   Funktion.Farbe(Farben.Statusfarbe)
+end
+
+function Funktion.Legende()
+  Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
+  local x = 1
+  Funktion.zeigeHier(x, Bildschirmhoehe - 1, string.format("%s:  ", sprachen.Legende), 0)
+  Funktion.Farbe(Farben.roteFarbe, Farben.schwarzeFarbe)
+  x = x + unicode.len(sprachen.Legende) + 3
+  Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.RichtungNameEin, 0)
+  Funktion.Farbe(Farben.grueneFarbe, Farben.weisseFarbe)
+  x = x + unicode.len(sprachen.RichtungNameEin) + 2
+  Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.RichtungNameAus, 0)
+  Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
+  x = x + unicode.len(sprachen.RichtungNameAus) + 2
+  Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.neueAdresse, 0)
+  Funktion.Farbe(Farben.gelbeFarbe, Farben.schwarzeFarbe)
+  x = x + unicode.len(sprachen.neueAdresse) + 2
+  Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.LegendeUpdate, 0)
 end
 
 function Funktion.schreibFehlerLog(...)
@@ -1199,7 +1214,7 @@ function Taste.Pfeil_links()
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.SteuerungName, 0)
   elseif seite == -1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.logbuch, 0)
-    event.timer(0.1, function() Funktion.zeigeNachricht(nil, true) end, 0)
+    Funktion.Legende()
   end
   if seite <= -2 then else
     seite = seite - 1
@@ -1443,7 +1458,9 @@ function Taste.u()
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
     Funktion.zeigeHier(1, Taste.Koordinaten.Taste_u, "U " .. sprachen.Update, 0)
     if component.isAvailable("internet") then
-      if version ~= Funktion.checkServerVersion() then
+      local serverVersion = Funktion.checkServerVersion()
+      if version ~= serverVersion then
+        Funktion.Logbuch_schreiben(serverVersion, "Update:    " , "update")
         running = false
         Variablen.update = "ja"
       else
@@ -1462,6 +1479,7 @@ function Taste.b()
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
     Funktion.zeigeHier(1, Taste.Koordinaten.Taste_b, "B " .. sprachen.UpdateBeta, 0)
     if component.isAvailable("internet") then
+      Funktion.Logbuch_schreiben(serverVersion .. " BETA", "Update:    " , "update")
       running = false
       Variablen.update = "beta"
     end
