@@ -211,7 +211,7 @@ function Funktion.Logbuch_schreiben(name, adresse, richtung)
   f:write('-- nexDHD von Nex4rius\n')
   f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD\n--\n')
   f:write('return {\n')
-  for i = 1, #rest do
+  for i = 1, #neu do
     f:write(string.format('  {"%s", "%s", "%s"},\n', neu[i][1], neu[i][2], neu[i][3]))
   end
   f:write('}')
