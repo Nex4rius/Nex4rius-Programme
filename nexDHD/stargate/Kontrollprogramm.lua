@@ -195,7 +195,7 @@ if r then
 end
 
 function Funktion.Logbuch_schreiben(name, adresse, richtung)
-  local neu, rest = {}, {}
+  local rest = {}
   if fs.exists("/einstellungen/logbuch.lua") then
     rest = loadfile("/einstellungen/logbuch.lua")()
     if type(rest) ~= "table" then
@@ -203,16 +203,19 @@ function Funktion.Logbuch_schreiben(name, adresse, richtung)
     end
   end
   for i = 20, 1, -1 do
-    neu[i + 1] = rest[i]
+    rest[i + 1] = rest[i]
   end
-  neu[1] = {name, adresse, richtung}
+  rest[1] = {name, adresse, richtung}
   local f = io.open("/einstellungen/logbuch.lua", "w")
   f:write('-- pastebin run -f YVqKFnsP\n')
   f:write('-- nexDHD von Nex4rius\n')
   f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD\n--\n')
   f:write('return {\n')
-  for i = 1, #neu do
-    f:write(string.format('  {"%s", "%s", "%s"},\n', neu[i][1], neu[i][2], neu[i][3]))
+  for i = 1, #rest do
+    if i > 20 then
+      break
+    end
+    f:write(string.format('  {"%s", "%s", "%s"},\n', rest[i][1], rest[i][2], rest[i][3]))
   end
   f:write('}')
   f:close()
