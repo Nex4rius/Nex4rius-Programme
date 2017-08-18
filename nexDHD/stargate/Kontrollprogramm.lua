@@ -205,6 +205,7 @@ function Funktion.Logbuch_schreiben(name, adresse, richtung)
   for i = 20, 1, -1 do
     rest[i + 1] = rest[i]
   end
+  rest[21] = nil
   rest[1] = {name, adresse, richtung}
   local f = io.open("/einstellungen/logbuch.lua", "w")
   f:write('-- pastebin run -f YVqKFnsP\n')
