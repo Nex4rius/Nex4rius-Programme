@@ -202,7 +202,7 @@ function Funktion.Logbuch_schreiben(name, adresse, richtung)
       rest = {}
     end
   end
-  for i = 20, 1, -1 do
+  for i = 30, 1, -1 do
     rest[i + 1] = rest[i]
   end
   rest[1] = {name, adresse, richtung}
@@ -257,6 +257,7 @@ function Funktion.pull_event()
       end
     end
     if VersionUpdate then
+      Funktion.Logbuch_schreiben("Update: " , Funktion.checkServerVersion(), "update")
       running = false
       Variablen.update = "ja"
     end
@@ -384,6 +385,8 @@ function Funktion.Logbuchseite()
   ausgabe(#Logbuch, Logbuch, "out")
   Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
   ausgabe(#Logbuch, Logbuch, "neu")
+  Funktion.Farbe(Farben.orangeFarbe, Farben.schwarzeFarbe)
+  ausgabe(#Logbuch, Logbuch, "update")
 end
 
 function Funktion.Infoseite()
@@ -1443,7 +1446,9 @@ function Taste.u()
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
     Funktion.zeigeHier(1, Taste.Koordinaten.Taste_u, "U " .. sprachen.Update, 0)
     if component.isAvailable("internet") then
-      if version ~= Funktion.checkServerVersion() then
+      local serverVersion = Funktion.checkServerVersion()
+      if version ~= serverVersion then
+        Funktion.Logbuch_schreiben("Update: " , serverVersion, "update")
         running = false
         Variablen.update = "ja"
       else
@@ -1462,6 +1467,7 @@ function Taste.b()
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
     Funktion.zeigeHier(1, Taste.Koordinaten.Taste_b, "B " .. sprachen.UpdateBeta, 0)
     if component.isAvailable("internet") then
+      Funktion.Logbuch_schreiben("Update: " , serverVersion .. " BETA", "update")
       running = false
       Variablen.update = "beta"
     end
