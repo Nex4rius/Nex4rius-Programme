@@ -1058,7 +1058,7 @@ function Funktion.SchreibInAndererFarben(x, y, text, textfarbe, hintergrundfarbe
     if not h then
       h = Bildschirmbreite
     end
-    gpu.set(x, y, text .. string.rep(" ", h - string.len(text)))
+    gpu.set(x, y, text .. string.rep(" ", h - unicode.len(text)))
     Funktion.Farbe(ALT_hintergrundfarbe, ALT_textfarbe)
   end
   return " "
