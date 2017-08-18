@@ -79,7 +79,7 @@ if OC then
   Farben.blaueFarbe          = 0x333399
   Farben.schwarzeFarbe       = 0x000000
   Farben.gelbeFarbe          = 0xFFCC33
-  Farben.brauenFarbe         = 0x663300
+  Farben.brauneFarbe         = 0x663300
   Farben.hellgrueneFarbe     = 0x00FF00
   Farben.grueneFarbe         = 0x336600
   Farben.orangeFarbe         = 0xFF7F24
@@ -92,7 +92,7 @@ elseif CC then
   Farben.blaueFarbe          = 2048
   Farben.schwarzeFarbe       = 32768
   Farben.gelbeFarbe          = 16
-  Farben.brauenFarbe         = 4096
+  Farben.brauneFarbe         = 4096
   Farben.hellgrueneFarbe     = 32
   Farben.grueneFarbe         = 8192
   Farben.orangeFarbe         = 2
@@ -103,7 +103,7 @@ Farben.Hintergrundfarbe      = Farben.graueFarbe
 Farben.Trennlinienfarbe      = Farben.blaueFarbe
 Farben.Textfarbe             = Farben.weisseFarbe
 
-Farben.Adressfarbe           = Farben.brauenFarbe
+Farben.Adressfarbe           = Farben.brauneFarbe
 Farben.AdressfarbeAktiv      = Farben.hellblau
 Farben.Adresstextfarbe       = Farben.Textfarbe
 Farben.Nachrichtfarbe        = Farben.graueFarbe
