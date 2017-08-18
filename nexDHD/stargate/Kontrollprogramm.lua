@@ -19,12 +19,13 @@ local shell                     = shell or require("shell")
 _G.shell = shell
 local print                     = print
 
-local gpu, serialization, sprachen
+local gpu, serialization, sprachen, unicode
 
 if OC then
   serialization = require("serialization")
   component = require("component")
   event = require("event")
+  unicode = require("unicode")
   gpu = component.getPrimary("gpu")
   local a = gpu.setForeground
   local b = gpu.setBackground
@@ -822,9 +823,9 @@ function Funktion.autoclose()
 end
 
 function Funktion.zeigeEnergie()
-  if energy == 0 then
+  if energy < 1000 then
     Funktion.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2, 0)
-    Funktion.SchreibInAndererFarben(xVerschiebung + string.len("  " .. sprachen.energie1 .. energytype .. sprachen.energie2), zeile, sprachen.keineEnergie, Farben.FehlerFarbe)
+    Funktion.SchreibInAndererFarben(xVerschiebung + unicode.len("  " .. sprachen.energie1 .. energytype .. sprachen.energie2), zeile, sprachen.keineEnergie, Farben.FehlerFarbe)
   else
     if     energy < 10000 then
       energieMenge = string.format("%.f",  energy)
@@ -1107,13 +1108,13 @@ function Funktion.zeigeNachricht(inhalt, oben)
     local x = 1
     Funktion.zeigeHier(x, Bildschirmhoehe - 1, string.format("%s:  ", sprachen.Legende), 0)
     Funktion.Farbe(Farben.roteFarbe, Farben.schwarzeFarbe)
-    x = x + string.len(sprachen.Legende) + 3
+    x = x + unicode.len(sprachen.Legende) + 3
     Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.RichtungNameEin, 0)
     Funktion.Farbe(Farben.grueneFarbe, Farben.weisseFarbe)
-    x = x + string.len(sprachen.RichtungNameEin) + 2
+    x = x + unicode.len(sprachen.RichtungNameEin) + 2
     Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.RichtungNameAus, 0)
     Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
-    x = x + string.len(sprachen.RichtungNameAus) + 2
+    x = x + unicode.len(sprachen.RichtungNameAus) + 2
     Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.neueAdresse, 0)
     Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
   else

@@ -28,7 +28,7 @@ return {
   aktualisierenJa           = "\nAktualisieren: Ja\n",
   aktualisierenNein         = "\nAntwort: ",
   aktualisierenJetzt        = "\n\n\nAktualisieren...\n",
-  aktualisierenGleich       = "Automatische Aktualisierung wenn Stargate untätig ist.",
+  aktualisierenGleich       = "Stargate wird automatisch aktualisiert, sobald es untätig ist.",
   laden                     = "\nLaden...",
   ja                        = "ja",
   nein                      = "nein",
