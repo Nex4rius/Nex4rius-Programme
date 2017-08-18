@@ -1108,20 +1108,7 @@ function Funktion.zeigeNachricht(inhalt, oben)
   elseif fs.exists("/log") and Sicherung.debug then
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, sprachen.fehlerName .. " /log", Bildschirmbreite)
   elseif seite == -2 then
-    local x = 1
-    Funktion.zeigeHier(x, Bildschirmhoehe - 1, string.format("%s:  ", sprachen.Legende), 0)
-    Funktion.Farbe(Farben.roteFarbe, Farben.schwarzeFarbe)
-    x = x + unicode.len(sprachen.Legende) + 3
-    Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.RichtungNameEin, 0)
-    Funktion.Farbe(Farben.grueneFarbe, Farben.weisseFarbe)
-    x = x + unicode.len(sprachen.RichtungNameEin) + 2
-    Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.RichtungNameAus, 0)
-    Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
-    x = x + unicode.len(sprachen.RichtungNameAus) + 2
-    Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.neueAdresse, 0)
-    Funktion.Farbe(Farben.gelbeFarbe, Farben.schwarzeFarbe)
-    x = x + unicode.len(sprachen.neueAdresse) + 2
-    Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.LegendeUpdate, 0)
+    Funktion.Legende()
     Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
   else
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, "", Bildschirmbreite)
@@ -1132,6 +1119,23 @@ function Funktion.zeigeNachricht(inhalt, oben)
     Funktion.zeigeHier(1, Bildschirmhoehe, "", Bildschirmbreite)
   end
   Funktion.Farbe(Farben.Statusfarbe)
+end
+
+function Funktion.Legende()
+  local x = 1
+  Funktion.zeigeHier(x, Bildschirmhoehe - 1, string.format("%s:  ", sprachen.Legende), 0)
+  Funktion.Farbe(Farben.roteFarbe, Farben.schwarzeFarbe)
+  x = x + unicode.len(sprachen.Legende) + 3
+  Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.RichtungNameEin, 0)
+  Funktion.Farbe(Farben.grueneFarbe, Farben.weisseFarbe)
+  x = x + unicode.len(sprachen.RichtungNameEin) + 2
+  Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.RichtungNameAus, 0)
+  Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
+  x = x + unicode.len(sprachen.RichtungNameAus) + 2
+  Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.neueAdresse, 0)
+  Funktion.Farbe(Farben.gelbeFarbe, Farben.schwarzeFarbe)
+  x = x + unicode.len(sprachen.neueAdresse) + 2
+  Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.LegendeUpdate, 0)
 end
 
 function Funktion.schreibFehlerLog(...)
@@ -1205,7 +1209,7 @@ function Taste.Pfeil_links()
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.SteuerungName, 0)
   elseif seite == -1 then
     Funktion.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.logbuch, 0)
-    event.timer(0.1, function() Funktion.zeigeNachricht(nil, true) end, 0)
+    Funktion.Legende()
   end
   if seite <= -2 then else
     seite = seite - 1
