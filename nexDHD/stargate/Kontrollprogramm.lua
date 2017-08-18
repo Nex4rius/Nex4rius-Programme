@@ -195,7 +195,7 @@ if r then
 end
 
 function Funktion.Logbuch_schreiben(name, adresse, richtung)
-  local rest = {}
+  local neu, rest = {}, {}
   if fs.exists("/einstellungen/logbuch.lua") then
     rest = loadfile("/einstellungen/logbuch.lua")()
     if type(rest) ~= "table" then
@@ -203,17 +203,16 @@ function Funktion.Logbuch_schreiben(name, adresse, richtung)
     end
   end
   for i = 20, 1, -1 do
-    rest[i + 1] = rest[i]
+    neu[i + 1] = rest[i]
   end
-  rest[21] = nil
-  rest[1] = {name, adresse, richtung}
+  neu[1] = {name, adresse, richtung}
   local f = io.open("/einstellungen/logbuch.lua", "w")
   f:write('-- pastebin run -f YVqKFnsP\n')
   f:write('-- nexDHD von Nex4rius\n')
   f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD\n--\n')
   f:write('return {\n')
   for i = 1, #rest do
-    f:write(string.format('  {"%s", "%s", "%s"},\n', rest[i][1], rest[i][2], rest[i][3]))
+    f:write(string.format('  {"%s", "%s", "%s"},\n', neu[i][1], neu[i][2], neu[i][3]))
   end
   f:write('}')
   f:close()
@@ -380,14 +379,15 @@ function Funktion.Logbuchseite()
       end
     end
   end
+  local max = #Logbuch
   Funktion.Farbe(Farben.roteFarbe, Farben.schwarzeFarbe)
-  ausgabe(#Logbuch, Logbuch, "in")
+  ausgabe(max, Logbuch, "in")
   Funktion.Farbe(Farben.grueneFarbe, Farben.weisseFarbe)
-  ausgabe(#Logbuch, Logbuch, "out")
+  ausgabe(max, Logbuch, "out")
   Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
-  ausgabe(#Logbuch, Logbuch, "neu")
+  ausgabe(max, Logbuch, "neu")
   Funktion.Farbe(Farben.gelbeFarbe, Farben.schwarzeFarbe)
-  ausgabe(#Logbuch, Logbuch, "update")
+  ausgabe(max, Logbuch, "update")
 end
 
 function Funktion.Infoseite()
@@ -1123,6 +1123,7 @@ function Funktion.zeigeNachricht(inhalt, oben)
 end
 
 function Funktion.Legende()
+  Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
   local x = 1
   Funktion.zeigeHier(x, Bildschirmhoehe - 1, string.format("%s:  ", sprachen.Legende), 0)
   Funktion.Farbe(Farben.roteFarbe, Farben.schwarzeFarbe)
