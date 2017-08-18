@@ -202,7 +202,7 @@ function Funktion.Logbuch_schreiben(name, adresse, richtung)
       rest = {}
     end
   end
-  for i = 30, 1, -1 do
+  for i = 20, 1, -1 do
     rest[i + 1] = rest[i]
   end
   rest[1] = {name, adresse, richtung}
@@ -257,7 +257,7 @@ function Funktion.pull_event()
       end
     end
     if VersionUpdate then
-      Funktion.Logbuch_schreiben("Update: " , Funktion.checkServerVersion(), "update")
+      Funktion.Logbuch_schreiben(Funktion.checkServerVersion(), "Update: " , "update")
       running = false
       Variablen.update = "ja"
     end
@@ -385,7 +385,7 @@ function Funktion.Logbuchseite()
   ausgabe(#Logbuch, Logbuch, "out")
   Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
   ausgabe(#Logbuch, Logbuch, "neu")
-  Funktion.Farbe(Farben.orangeFarbe, Farben.schwarzeFarbe)
+  Funktion.Farbe(Farben.gelbeFarbe, Farben.schwarzeFarbe)
   ausgabe(#Logbuch, Logbuch, "update")
 end
 
@@ -1119,6 +1119,9 @@ function Funktion.zeigeNachricht(inhalt, oben)
     Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
     x = x + unicode.len(sprachen.RichtungNameAus) + 2
     Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.neueAdresse, 0)
+    Funktion.Farbe(Farben.gelbeFarbe, Farben.schwarzeFarbe)
+    x = x + unicode.len(sprachen.neueAdresse) + 2
+    Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.LegendeUpdate, 0)
     Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
   else
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, "", Bildschirmbreite)
@@ -1448,7 +1451,7 @@ function Taste.u()
     if component.isAvailable("internet") then
       local serverVersion = Funktion.checkServerVersion()
       if version ~= serverVersion then
-        Funktion.Logbuch_schreiben("Update: " , serverVersion, "update")
+        Funktion.Logbuch_schreiben(serverVersion, "Update: " , "update")
         running = false
         Variablen.update = "ja"
       else
@@ -1467,7 +1470,7 @@ function Taste.b()
     Funktion.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
     Funktion.zeigeHier(1, Taste.Koordinaten.Taste_b, "B " .. sprachen.UpdateBeta, 0)
     if component.isAvailable("internet") then
-      Funktion.Logbuch_schreiben("Update: " , serverVersion .. " BETA", "update")
+      Funktion.Logbuch_schreiben(serverVersion .. " BETA", "Update: " , "update")
       running = false
       Variablen.update = "beta"
     end
