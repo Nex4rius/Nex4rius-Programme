@@ -212,10 +212,10 @@ function Funktion.Logbuch_schreiben(name, adresse, richtung)
   f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD\n--\n')
   f:write('return {\n')
   for i = 1, #rest do
+    f:write(string.format('  {"%s", "%s", "%s"},\n', rest[i][1], rest[i][2], rest[i][3]))
     if i > 20 then
       break
     end
-    f:write(string.format('  {"%s", "%s", "%s"},\n', rest[i][1], rest[i][2], rest[i][3]))
   end
   f:write('}')
   f:close()
