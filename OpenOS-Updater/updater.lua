@@ -16,17 +16,17 @@ local fs            = require("filesystem")
 local component     = require("component")
 local computer      = require("computer")
 local term          = require("term")
+local event         = require("event")
 local gpu           = component.gpu
 local x, y          = gpu.getResolution()
 x                   = x - 35
 
-local wget          = loadfile("/bin/wget.lua")
 local verschieben   = function(von, nach) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach))) end
 local entfernen     = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
 
 local disk          = component.proxy(fs.get("/").address)
 
-local ersetzen, id
+local ersetzen, id, wgetDATA, wget
 
 local Funktion      = {}
 
@@ -72,7 +72,7 @@ function Funktion.status()
     gpu.set(x, 1, string.rep(" ", 35))
     gpu.set(x, 2, string.format("   RAM: %.1fkB / %.1fkB%s", (computer.totalMemory() - computer.freeMemory()) / 1024, computer.totalMemory() / 1024, string.rep(" ", 35)))
     gpu.set(x, 3, string.rep(" ", 35))
-    gpu.set(x, 4, string.format("   Energie: %.1f / %.1f%s", computer.energy(), computer.maxEnergy(), string.rep(" ", 35)))
+    gpu.set(x, 4, string.format("   Energie: %.1f / %s%s", computer.energy(), computer.maxEnergy(), string.rep(" ", 35)))
     gpu.set(x, 5, string.rep(" ", 35))
     gpu.set(x, 6, string.format("   Speicher: %.1fkB / %.1fkB%s", disk.spaceUsed() / 1024, disk.spaceTotal() / 1024, string.rep(" ", 35)))
     gpu.set(x, 7, string.rep(" ", 35))
@@ -109,7 +109,7 @@ function Funktion.verarbeiten()
                     print("\n\n<FEHLER> Festplatte voll\n")
                     print("Ersetze Dateien sofort? [j/N]")
                     gpu.setForeground(0xFF0000)
-                    print("Jedes Problem beim Download hat jetzt eine hohe Chance OpenOS zu zerstören.")
+                    print("Jedes Problem hier hat jetzt eine hohe Chance OpenOS zu zerstören.")
                     gpu.setForeground(0xFFFFFF)
                     term.write("Eingabe: ")
                     if ersetzen or string.lower(io.read()) == "j" then
@@ -132,6 +132,7 @@ function Funktion.verarbeiten()
         end
     end
     print("\nDownload Beendet\n")
+    os.exit()
     if dateien["truncated"] or not komplett then
         gpu.setForeground(0xFF0000)
         print("<FEHLER> Download unvollständig")
@@ -155,11 +156,15 @@ function Funktion.verarbeiten()
 end
 
 local function main()
+    local d = io.open("/bin/wget.lua", "r")
+    wgetDATA = d:read("*a")
+    d:close()
+    wget = loadstring(wgetDATA)
     Funktion.checkKomponenten()
     gpu.setForeground(0xFFFFFF)
     Funktion.status()
     print("Starte Download")
-    id = require("event").timer(0.1, Funktion.status, math.huge)
+    id = event.timer(0.1, Funktion.status, math.huge)
     if wget("-f", Funktion.Pfad(true), "/github-liste.txt") and wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/json.lua", "/json.lua") then
         if Funktion.verarbeiten() then
             return
@@ -177,5 +182,5 @@ if not ergebnis then
     print(grund)
 end
 
-require("event").cancel(id)
+event.cancel(id)
 gpu.setForeground(0xFFFFFF)
