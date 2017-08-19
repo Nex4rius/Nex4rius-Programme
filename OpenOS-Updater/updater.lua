@@ -118,7 +118,6 @@ function Funktion.verarbeiten()
         print("<FEHLER> Download unvollständig")
         entfernen("/update")
         entfernen("/github-liste.txt")
-        shell.setWorkingDirectory(alterPfad)
         gpu.setForeground(0xFFFFFF)
         return true
     else
@@ -166,4 +165,5 @@ if not ergebnis then
     print(grund)
 end
 
+shell.setWorkingDirectory(alterPfad)
 gpu.setForeground(0xFFFFFF)
