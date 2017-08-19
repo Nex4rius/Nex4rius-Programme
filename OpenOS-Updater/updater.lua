@@ -18,17 +18,20 @@ local computer      = require("computer")
 local term          = require("term")
 local event         = require("event")
 local gpu           = component.gpu
+local disk          = component.proxy(fs.get("/").address)
 local x, y          = gpu.getResolution()
-x                   = x - 35
 
 local verschieben   = function(von, nach) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach))) end
 local entfernen     = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
 
-local disk          = component.proxy(fs.get("/").address)
+local wget          = loadfile("/bin/wget.lua")
 
-local ersetzen, id, wgetDATA, wget
 
 local Funktion      = {}
+
+local ersetzen, id
+
+x = x - 35
 
 function Funktion.Pfad(api)
     if api then
@@ -104,35 +107,12 @@ function Funktion.verarbeiten()
             local ergebnis, grund = wget("-f", Funktion.Pfad() .. dateien.tree[i].path, "/update/" .. dateien.tree[i].path)
             Funktion.status()
             if not ergebnis then
-                if grund == "failed opening file for writing: not enough space" then
-                    gpu.setForeground(0xFFFFFF)
-                    print("\n\n<FEHLER> Festplatte voll\n")
-                    print("Ersetze Dateien sofort? [j/N]")
-                    gpu.setForeground(0xFF0000)
-                    print("Jedes Problem hier hat jetzt eine hohe Chance OpenOS zu zerstören.")
-                    gpu.setForeground(0xFFFFFF)
-                    term.write("Eingabe: ")
-                    if ersetzen or string.lower(io.read()) == "j" then
-                        ersetzen = true
-                        print("Ersetze alte Dateien")
-                        kopieren("/update")
-                        if not wget("-f", Funktion.Pfad() .. dateien.tree[i].path, "/update/" .. dateien.tree[i].path) then
-                            komplett = false
-                            break
-                        end
-                    else
-                        komplett = false
-                        break
-                    end
-                else
-                    komplett = false
-                    break
-                end
+                komplett = false
+                break
             end
         end
     end
     print("\nDownload Beendet\n")
-    os.exit()
     if dateien["truncated"] or not komplett then
         gpu.setForeground(0xFF0000)
         print("<FEHLER> Download unvollständig")
@@ -150,16 +130,19 @@ function Funktion.verarbeiten()
         entfernen("/json.lua")
         gpu.setForeground(0x00FF00)
         print("Update vollständig")
+        print("Neustart in 5s")
         os.sleep(5)
         require("computer").shutdown(true)
     end
 end
 
 local function main()
-    local d = io.open("/bin/wget.lua", "r")
-    wgetDATA = d:read("*a")
-    d:close()
-    wget = loadstring(wgetDATA)
+    if disk.spaceUsed() / 1024 < 500 then
+        gpu.setForeground(0xFF0000)
+        print(string.format("Speicher: %.1fkB / %.1fkB", disk.spaceUsed() / 1024, disk.spaceTotal() / 1024))
+        print("Nicht genügend Speicherplatz vorhanden (min. 500kB)")
+        return
+    end
     Funktion.checkKomponenten()
     gpu.setForeground(0xFFFFFF)
     Funktion.status()
@@ -170,6 +153,7 @@ local function main()
             return
         end
     end
+    event.cancel(id)
     gpu.setForeground(0xFF0000)
     print("<FEHLER> GitHub Download")
 end
@@ -182,5 +166,4 @@ if not ergebnis then
     print(grund)
 end
 
-event.cancel(id)
 gpu.setForeground(0xFFFFFF)
