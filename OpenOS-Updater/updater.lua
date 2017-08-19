@@ -18,12 +18,13 @@ local computer      = require("computer")
 local term          = require("term")
 local gpu           = component.gpu
 local x, y          = gpu.getResolution()
-x                   = x - 30
+x                   = x - 35
 
 local wget          = loadfile("/bin/wget.lua")
---local kopieren      = function(von, nach) fs.copy(von, nach) print(string.format("%s → %s", von, nach)) end
 local verschieben   = function(von, nach) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach))) end
 local entfernen     = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
+
+local disk          = component.proxy(fs.get("/").address)
 
 local Funktion      = {}
 
@@ -66,10 +67,13 @@ function Funktion.checkKomponenten()
 end
 
 function Funktion.status()
-    gpu.set(x, 1, string.rep(" ", 30))
-    gpu.set(x, 2, string.format("  Speicher: %s / %s%s", computer.freeMemory(), computer.totalMemory(), string.rep(" ", 30)))
-    gpu.set(x, 3, string.rep(" ", 30))
-    gpu.set(x, 4, string.format("  Energie: %.1f / %.1f%s", computer.energy(), computer.maxEnergy(), string.rep(" ", 30)))
+    gpu.set(x, 1, string.rep(" ", 35))
+    gpu.set(x, 2, string.format("  RAM: %.1fkB / %.1fkB%s", computer.freeMemory() / 1024, computer.totalMemory() / 1024, string.rep(" ", 35)))
+    gpu.set(x, 3, string.rep(" ", 35))
+    gpu.set(x, 4, string.format("  Energie: %.1f / %.1f%s", computer.energy(), computer.maxEnergy(), string.rep(" ", 35)))
+    gpu.set(x, 5, string.rep(" ", 35))
+    gpu.set(x, 6, string.format("  Speicher: %.1fkB / %.1fkB%s", disk.spaceUsed() / 1024, disk.spaceTotal() / 1024, string.rep(" ", 35)))
+    gpu.set(x, 7, string.rep(" ", 35))
 end
 
 function Funktion.verarbeiten()
