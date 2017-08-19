@@ -136,11 +136,11 @@ function Funktion.verarbeiten()
 end
 
 local function main()
-    if (disk.spaceTotal() - disk.spaceUsed()) / 1024 < 500 then
+    if (disk.spaceTotal() - disk.spaceUsed()) / 1024 < 550 then
         gpu.setForeground(0xFFFFFF)
         print(string.format("Festplatte: %.1fkB / %.1fkB", disk.spaceUsed() / 1024, disk.spaceTotal() / 1024))
         gpu.setForeground(0xFF0000)
-        print("Nicht genügend Speicherplatz vorhanden (min. 500kB)")
+        print("Nicht genügend Speicherplatz vorhanden (min. 550kB)")
         gpu.setForeground(0xFFFFFF)
         print(string.format("freier Speicherplatz: %.1fkB", (disk.spaceTotal() - disk.spaceUsed()) / 1024))
         return
