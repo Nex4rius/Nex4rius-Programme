@@ -279,8 +279,8 @@ function Funktion.checkOpenOS()
       print("\nOpenOS Version:        " .. _OSVERSION .. " -> " .. OpenOS_Version .. "\n")
       if neuer then
         if Sicherung.autoUpdate then
-          print("\nUpdate OpenOS")
-          os.sleep(1)
+          print("Update OpenOS")
+          os.sleep(3)
           wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/updater.lua", "/updater.lua")
           loadfile("/updater.lua")()
           return
