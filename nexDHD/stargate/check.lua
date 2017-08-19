@@ -244,7 +244,7 @@ end
 function Funktion.checkOpenOS()
   if OC then
     local OpenOS_Version = "OpenOS 1.6.7"
-    if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Version", "/einstellungen/OpenOS-Version") then
+    if wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Version", "/einstellungen/OpenOS-Version") then
       local d = io.open("/einstellungen/OpenOS-Version", "r")
       OpenOS_Version = d:read()
       d:close()
@@ -279,7 +279,7 @@ function Funktion.checkOpenOS()
       os.sleep(2)
       if neuer then
         if Sicherung.autoUpdate then
-          wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/updater.lua", "/updater.lua")
+          wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/updater.lua", "/updater.lua")
           loadfile("/updater.lua")()
           return
         end
@@ -287,7 +287,7 @@ function Funktion.checkOpenOS()
         term.write("Input: ")
         local eingabe = string.lower(io.read())
         if eingabe == sprachen.ja or eingabe == "ja" or eingabe == "yes" or eingabe == "y" or eingabe == "j" then
-          wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/updater.lua", "/updater.lua")
+          wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/updater.lua", "/updater.lua")
           loadfile("/updater.lua")()
         end
       end
