@@ -249,10 +249,11 @@ function Funktion.checkOpenOS()
       OpenOS_Version = d:read()
       d:close()
     end
+    local disk = component.proxy(fs.get("/").address)
     if _OSVERSION == OpenOS_Version then
       gpu.setForeground(Farben.hellgrueneFarbe)
       print("\nOpenOS Version:        " .. _OSVERSION)
-    else
+    elseif (disk.spaceTotal() - disk.spaceUsed()) / 1024 < 550 then
       local function split(...)
         local output = {}
         for i = 1, string.len(...) do
@@ -291,6 +292,9 @@ function Funktion.checkOpenOS()
           loadfile("/updater.lua")()
         end
       end
+    else
+      gpu.setForeground(Farben.roteFarbe)
+      print("\nOpenOS Version:        " .. _OSVERSION .. " -> " .. OpenOS_Version)
     end
     gpu.setForeground(Farben.weisseFarbe)
   elseif CC then
