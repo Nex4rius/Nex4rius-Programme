@@ -244,6 +244,11 @@ end
 function Funktion.checkOpenOS()
   if OC then
     local OpenOS_Version = "OpenOS 1.6.7"
+    if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Version", "/einstellungen/OpenOS-Version") then
+      local d = io.open("/einstellungen/OpenOS-Version", "r")
+      OpenOS_Version = d:read()
+      d:close
+    end
     if _OSVERSION == OpenOS_Version then
       gpu.setForeground(Farben.hellgrueneFarbe)
       print("\nOpenOS Version:        " .. _OSVERSION)
@@ -258,7 +263,7 @@ function Funktion.checkOpenOS()
       local Version_neu = split(OpenOS_Version)
       local Version_alt = split(_OSVERSION)
       local neuer
-      for i in pairs(Version_alt) do
+      for i in pairs(Version_neu) do
         if Version_alt[i] ~= Version_neu[i] then
           if type(Version_alt[i]) == "number" and type(Version_neu[i]) == "number" then
             if Version_neu[i] > Version_alt[i] then
