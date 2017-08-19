@@ -154,18 +154,15 @@ local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
       printError("<Fehler> Ziel existiert bereits")
       return
     else
-      --term.write("Starte Download ... ")
       local timer = os.startTimer(30)
       http.request(url)
       while true do
         local event, id, data = os.pullEvent()
         if event == "http_success" then
-          --print("erfolgreich")
           local f = io.open(ziel, "w")
           f:write(data.readAll())
           f:close()
           data:close()
-          --print("Gespeichert unter " .. ziel)
           return true
         elseif event == "timer" and timer == id then
           printError("<Fehler> Zeitueberschreitung")
@@ -247,9 +244,54 @@ end
 function Funktion.checkOpenOS()
   if OC then
     local OpenOS_Version = "OpenOS 1.6.7"
+    if wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Version", "/einstellungen/OpenOS-Version") then
+      local d = io.open("/einstellungen/OpenOS-Version", "r")
+      OpenOS_Version = d:read()
+      d:close()
+    end
+    local disk = component.proxy(fs.get("/").address)
     if _OSVERSION == OpenOS_Version then
       gpu.setForeground(Farben.hellgrueneFarbe)
       print("\nOpenOS Version:        " .. _OSVERSION)
+    elseif (disk.spaceTotal() - disk.spaceUsed()) / 1024 < 550 then
+      local function split(...)
+        local output = {}
+        for i = 1, string.len(...) do
+          output[i] = string.sub(..., i, i)
+        end
+        return output
+      end
+      local Version_neu = split(OpenOS_Version)
+      local Version_alt = split(_OSVERSION)
+      local neuer
+      for i in pairs(Version_neu) do
+        if Version_alt[i] ~= Version_neu[i] then
+          if type(Version_alt[i]) == "number" and type(Version_neu[i]) == "number" then
+            if Version_neu[i] > Version_alt[i] then
+              neuer = true
+            end
+          else
+            neuer = true
+          end
+        end
+      end
+      gpu.setForeground(Farben.roteFarbe)
+      print("\nOpenOS Version:        " .. _OSVERSION .. " -> " .. OpenOS_Version .. "\n")
+      os.sleep(2)
+      if neuer then
+        if Sicherung.autoUpdate then
+          wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/updater.lua", "/updater.lua")
+          loadfile("/updater.lua")()
+          return
+        end
+        print("Update OpenOS? [y/N]")
+        term.write("Input: ")
+        local eingabe = string.lower(io.read())
+        if eingabe == sprachen.ja or eingabe == "ja" or eingabe == "yes" or eingabe == "y" or eingabe == "j" then
+          wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/updater.lua", "/updater.lua")
+          loadfile("/updater.lua")()
+        end
+      end
     else
       gpu.setForeground(Farben.roteFarbe)
       print("\nOpenOS Version:        " .. _OSVERSION .. " -> " .. OpenOS_Version)

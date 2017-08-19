@@ -451,7 +451,8 @@ function Funktion.Infoseite()
 end
 
 function Funktion.AdressenSpeichern()
-  adressen = loadfile("/einstellungen/adressen.lua")()
+  local a = loadfile("/einstellungen/adressen.lua") or loadfile("/stargate/adressen.lua")
+  adressen = a()
   gespeicherteAdressen = {}
   sendeAdressen = {}
   local k = 0
@@ -1683,8 +1684,12 @@ end
 function Funktion.checkStargateName()
   if Sicherung.StargateName ~= "string" or Sicherung.StargateName == "" then
     Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
-    print(sprachen.FrageStargateName .. "\n")
-    Sicherung.StargateName = io.read()
+    gpu.set(1, Bildschirmhoehe - 1, sprachen.FrageStargateName)
+    term.setCursor(1, Bildschirmhoehe)
+    term.clearLine()
+    term.write(sprachen.neuerName .. ": ")
+    local eingabe = term.read(nil, false)
+    Sicherung.StargateName = string.sub(eingabe, 1, string.len(eingabe) - 1)
     schreibSicherungsdatei(Sicherung)
     Funktion.newAddress(Funktion.getAddress(sg.localAddress()), Sicherung.StargateName)
   end
