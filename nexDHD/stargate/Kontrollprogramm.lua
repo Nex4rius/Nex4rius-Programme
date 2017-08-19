@@ -1683,7 +1683,7 @@ end
 
 function Funktion.checkStargateName()
   Sicherung = loadfile("/einstellungen/Sicherungsdatei.lua")()
-  if Sicherung.StargateName ~= "string" or Sicherung.StargateName == "" then
+  if type(Sicherung.StargateName) ~= "string" or Sicherung.StargateName == "" then
     Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
     gpu.set(1, Bildschirmhoehe - 1, sprachen.FrageStargateName)
     term.setCursor(1, Bildschirmhoehe)
