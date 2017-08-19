@@ -1684,7 +1684,10 @@ end
 function Funktion.checkStargateName()
   if Sicherung.StargateName ~= "string" or Sicherung.StargateName == "" then
     Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
-    print(sprachen.FrageStargateName .. "\n")
+    gpu.set(1, Bildschirmhoehe - 1, sprachen.FrageStargateName)
+    term.setCursor(1, Bildschirmhoehe)
+    term.clearLine()
+    term.write(sprachen.IDCeingabe .. ": ")
     Sicherung.StargateName = io.read()
     schreibSicherungsdatei(Sicherung)
     Funktion.newAddress(Funktion.getAddress(sg.localAddress()), Sicherung.StargateName)
