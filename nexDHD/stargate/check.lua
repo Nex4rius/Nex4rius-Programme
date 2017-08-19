@@ -253,7 +253,7 @@ function Funktion.checkOpenOS()
     if _OSVERSION == OpenOS_Version then
       gpu.setForeground(Farben.hellgrueneFarbe)
       print("\nOpenOS Version:        " .. _OSVERSION)
-    elseif (disk.spaceTotal() - disk.spaceUsed()) / 1024 < 550 then
+    elseif (disk.spaceTotal() - disk.spaceUsed()) / 1024 > 550 and not (arg == sprachen.nein or arg == "nein" or arg == "no") then
       local function split(...)
         local output = {}
         for i = 1, string.len(...) do
@@ -277,9 +277,10 @@ function Funktion.checkOpenOS()
       end
       gpu.setForeground(Farben.roteFarbe)
       print("\nOpenOS Version:        " .. _OSVERSION .. " -> " .. OpenOS_Version .. "\n")
-      os.sleep(2)
       if neuer then
         if Sicherung.autoUpdate then
+          print("Update OpenOS")
+          os.sleep(3)
           wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/updater.lua", "/updater.lua")
           loadfile("/updater.lua")()
           return
