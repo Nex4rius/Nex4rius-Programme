@@ -451,7 +451,8 @@ function Funktion.Infoseite()
 end
 
 function Funktion.AdressenSpeichern()
-  adressen = loadfile("/einstellungen/adressen.lua")()
+  local a = loadfile("/einstellungen/adressen.lua") or loadfile("/stargate/adressen.lua")
+  adressen = a()
   gespeicherteAdressen = {}
   sendeAdressen = {}
   local k = 0
