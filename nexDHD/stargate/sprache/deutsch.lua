@@ -139,4 +139,5 @@ return {
   neueAdresse               = "neue Adresse",
   zuvielEnergie             = "<Energie zu groß>",
   LegendeUpdate             = "Update",
+  neuerName                 = "neuer Name",
 }
