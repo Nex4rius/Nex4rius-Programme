@@ -247,7 +247,7 @@ function Funktion.checkOpenOS()
     if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Version", "/einstellungen/OpenOS-Version") then
       local d = io.open("/einstellungen/OpenOS-Version", "r")
       OpenOS_Version = d:read()
-      d:close
+      d:close()
     end
     if _OSVERSION == OpenOS_Version then
       gpu.setForeground(Farben.hellgrueneFarbe)
