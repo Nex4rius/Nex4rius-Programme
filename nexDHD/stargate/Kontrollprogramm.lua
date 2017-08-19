@@ -1688,7 +1688,7 @@ function Funktion.checkStargateName()
     term.setCursor(1, Bildschirmhoehe)
     term.clearLine()
     term.write(sprachen.neuerName .. ": ")
-    Sicherung.StargateName = io.read()
+    Sicherung.StargateName = term.read(nil, false)
     schreibSicherungsdatei(Sicherung)
     Funktion.newAddress(Funktion.getAddress(sg.localAddress()), Sicherung.StargateName)
   end
