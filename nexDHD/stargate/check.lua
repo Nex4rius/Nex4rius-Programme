@@ -275,7 +275,7 @@ function Funktion.checkOpenOS()
         end
       end
       gpu.setForeground(Farben.roteFarbe)
-      print("\nOpenOS Version:        " .. _OSVERSION .. " -> " .. OpenOS_Version)
+      print("\nOpenOS Version:        " .. _OSVERSION .. " -> " .. OpenOS_Version .. "\n")
       os.sleep(2)
       if neuer then
         if Sicherung.autoUpdate then
