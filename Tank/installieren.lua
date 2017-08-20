@@ -10,22 +10,7 @@ local wget        = loadfile("/bin/wget.lua")
 local copy        = loadfile("/bin/cp.lua")
 local component   = require("component")
 local gpu         = component.gpu
-local Sicherung   = {}
 local Funktionen  = {}
-local sprachen
-
-if fs.exists("/stargate/Sicherungsdatei.lua") then
-  Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
-else
-  Sicherung.Sprache = ""
-  Sicherung.installieren = false
-end
-
-if Sicherung.Sprache then
-  if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
-    sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
-  end
-end
 
 function Funktionen.Pfad(versionTyp)
   if versionTyp then
@@ -50,33 +35,31 @@ function Funktionen.installieren(versionTyp)
     end
   end
   Funktionen.Komponenten(typ)
-  fs.makeDirectory("/tank")
+  fs.makeDirectory("/tank/client")
   fs.makeDirectory("/update/tank")
+  fs.makeDirectory("/update/client/tank")
   local updateKomplett = false
   local anzahl = 3
   local update = {}
-  loadfile("/bin/pastebin.lua")("run", "-f", "63v6mQtK", versionTyp)
   update[1]   = wget("-f", Funktionen.Pfad(versionTyp) .. typ .. "/autorun.lua",       "/update/autorun.lua")
   update[2]   = wget("-f", Funktionen.Pfad(versionTyp) ..        "/version.txt",       "/update/tank/version.txt")
   if typ == "client" then
     update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. typ .. "/tank/auslesen.lua", "/update/tank/auslesen.lua")
-    loadfile("/bin/pastebin.lua")("run", "-f", "ZbxDmMeC", versionTyp)
   else
     update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. typ .. "/tank/farben.lua",   "/update/tank/farben.lua")
     update[4] = wget("-f", Funktionen.Pfad(versionTyp) .. typ .. "/tank/anzeige.lua",  "/update/tank/anzeige.lua")
     update[5] = wget("-f", Funktionen.Pfad(versionTyp) .. typ .. "/tank/ersetzen.lua", "/update/tank/ersetzen.lua")
-    anzahl = 5
+    local typ = "client"
+    update[6] = wget("-f", Funktionen.Pfad(versionTyp) .. typ .. "/autorun.lua",       "/update/client/autorun.lua")
+    update[7] = wget("-f", Funktionen.Pfad(versionTyp) .. typ .. "/tank/auslesen.lua", "/update/client/tank/auslesen.lua")
+    anzahl = 7
   end
   for i = 1, anzahl do
     if update[i] then
       updateKomplett = true
     else
       updateKomplett = false
-      if sprachen then
-        print(sprachen.fehlerName .. " " .. i)
-      else
-        print("Fehler " ..i)
-      end
+      print("<Fehler> " ..i)
       local f = io.open ("/autorun.lua", "w")
       f:write('-- pastebin run -f cyF0yhXZ\n')
       f:write('-- von Nex4rius\n')
@@ -106,15 +89,18 @@ function Funktionen.installieren(versionTyp)
     end
   end
   if updateKomplett then
-    copy("/update/autorun.lua",         "/autorun.lua")
-    copy("/update/tank/version.txt",    "/tank/version.txt")
-    if typ == "client" then
-      copy("/update/tank/auslesen.lua", "/tank/auslesen.lua")
-    else
-      copy("/update/tank/anzeige.lua",  "/tank/anzeige.lua")
-      copy("/update/tank/farben.lua",   "/tank/farben.lua")
-      copy("/update/tank/ersetzen.lua", "/tank/ersetzen.lua")
+    print("Ersetze alte Dateien")
+    local function kopieren(...)
+      for i in fs.list(...) do
+        if fs.isDirectory(i) then
+          kopieren(i)
+        end
+        verschieben("/update/" .. i, "/" .. i)
+      end
     end
+    kopieren("/update")
+    entfernen("/update")
+    print("Update vollständig")
     f = io.open ("/tank/version.txt", "r")
     version = f:read()
     f:close()
@@ -123,8 +109,6 @@ function Funktionen.installieren(versionTyp)
       f:write(version .. " BETA")
       f:close()
     end
-    Sicherung.installieren = true
-    --loadfile("/stargate/schreibSicherungsdatei.lua")(Sicherung)
     print()
     updateKomplett = loadfile("/bin/rm.lua")("-v", "/update", "-r")
     updateKomplett = loadfile("/bin/rm.lua")("-v", "/installieren.lua")
