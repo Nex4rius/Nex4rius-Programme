@@ -107,7 +107,7 @@ function o.aktualisieren(empfangen)
   if not fs.exists("/update") then
     fs.makeDirectory("/update")
   end
-  if type(empfangen[7] == "string" and type(empfangen[8]) == "string" then
+  if type(empfangen[7]) == "string" and type(empfangen[8]) == "string" then
     print("Empfange Datei ... " .. empfangen[7])
     local d = io.open("/update" .. empfangen[7], "w")
     d:write(empfangen[8])
