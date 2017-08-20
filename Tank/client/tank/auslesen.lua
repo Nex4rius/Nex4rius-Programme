@@ -2,6 +2,8 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/
 
+os.sleep(1)
+
 local component   = require("component")
 local term        = require("term")
 local event       = require("event")
@@ -143,7 +145,7 @@ end
 
 function f.senden(empfangen, nachricht, ...)
   if m.isWireless() then
-    m.setStrength(tonumber(empfangen[5]) + 50)
+    m.setStrength(tonumber(empfangen[5]) + 30)
   end
   m.send(empfangen[3], empfangen[4], f.serialize(nachricht), ...)
 end
