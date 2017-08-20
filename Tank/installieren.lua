@@ -204,8 +204,7 @@ function Funktionen.Komponenten(typ)
     end
   end
   gpu.setForeground(0xFFFFFF)
-  print("\npress enter to continue\n")
-  term.read()
+  os.sleep(2)
 end
 
 if versionTyp == nil then
