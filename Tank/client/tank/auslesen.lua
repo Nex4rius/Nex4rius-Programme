@@ -165,6 +165,9 @@ function o.aktualisieren(empfangen)
   for k, v in pairs(daten) do
     if not fs.exists("/update" .. v) then
       weiter = false
+      print("<FEHLER>")
+      print("Aktualisierung abgebrochen")
+      print("Datei fehlt: " .. tostring(v))
       f.senden(empfangen, "update", false, v)
       break
     end
