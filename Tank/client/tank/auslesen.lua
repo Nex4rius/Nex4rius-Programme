@@ -97,7 +97,7 @@ function f.serialize(a)
     end
     return "{" .. ausgabe .. "}"
   elseif type(a) == "function" then
-    --nichts
+    return "test" --nichts
   else
     return a
   end
@@ -140,18 +140,18 @@ function o.tank(empfangen)
   f.senden(empfangen, f.serialize(f.check()))
 end
 
-function f.senden(empfangen, nachricht, ...)
-  if m.isWireless() then
-    m.setStrength(tonumber(empfangen[5]) + 50)
-  end
-  m.send(empfangen[3], port, f.serialize(f.check()), ...)
-end
-
 function f.loop()
   empfangen = {event.pull("modem_message")}
   if o[empfangen[6]] then
     o[empfangen[6]](empfangen)
   end
+end
+
+function f.senden(empfangen, nachricht, ...)
+  if m.isWireless() then
+    m.setStrength(tonumber(empfangen[5]) + 50)
+  end
+  m.send(empfangen[3], empfangen[4], f.serialize(f.check()), ...)
 end
 
 function f.main()
