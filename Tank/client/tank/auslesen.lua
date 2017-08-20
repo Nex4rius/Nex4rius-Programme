@@ -120,8 +120,8 @@ function o.aktualisieren(empfangen)
     end
   else
     print("<FEHLER>")
-    print("empfangen[7] " .. tostring(empfangen[7])
-    print("empfangen[8] " .. tostring(empfangen[8])
+    print("empfangen[7] " .. tostring(empfangen[7]))
+    print("empfangen[8] " .. tostring(empfangen[8]))
     f.senden(empfangen, "speichern", false)
   end
 end
