@@ -71,21 +71,8 @@ function f.check()
       print(string.format("%s - %s: %s/%s %.1f%%", tank[i].name, tank[i].label, tank[i].menge, tank[i].maxmenge, tank[i].menge / tank[i].maxmenge))
     end
   end
-  return tank --f.anders(tank, tankalt)
+  return tank
 end
-
---function f.anders(tank, tankalt)
---  for i in pairs(tank) do
---    if type(tank[i]) == "table" and type(tankalt[i]) == "table" then
---      if tank[i].menge ~= tankalt[i].menge then
---        return tank
---      end
---    else
---      return tank
---    end
---  end
---  return false
---end
 
 function f.serialize(a)
   if type(a) == "table" then
@@ -132,6 +119,9 @@ function o.aktualisieren(empfangen)
       require("computer").shutdown(true)
     end
   else
+    print("<FEHLER>")
+    print("empfangen[7] " .. tostring(empfangen[7])
+    print("empfangen[8] " .. tostring(empfangen[8])
     f.senden(empfangen, "speichern", false)
   end
 end
@@ -146,6 +136,7 @@ end
 
 function f.loop()
   empfangen = {event.pull("modem_message")}
+  print(empfangen[6])
   if o[empfangen[6]] then
     o[empfangen[6]](empfangen)
   end
