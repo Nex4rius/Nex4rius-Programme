@@ -5,7 +5,8 @@
 require("shell").setWorkingDirectory("/")
 
 local fs          = require("filesystem")
-local arg         = require("shell").parse(...)[1]
+local term        = require("term")
+local arg         = ...
 local wget        = loadfile("/bin/wget.lua")
 local copy        = loadfile("/bin/cp.lua")
 local component   = require("component")
@@ -23,7 +24,7 @@ end
 function Funktionen.installieren(versionTyp)
   gpu.setBackground(0x000000)
   gpu.setForeground(0xFFFFFF)
-  require("term").clear()
+  term.clear()
   local weiter = true
   while weiter do
     print("\n\nserver (display) / client (adapter + tank)?\n")
@@ -133,7 +134,7 @@ function Funktionen.installieren(versionTyp)
 end
 
 function Funktionen.Komponenten(typ)
-  require("term").clear()
+  term.clear()
   print("check components\n")
   if component.isAvailable("internet") then
     gpu.setForeground(0x00FF00)
@@ -170,7 +171,7 @@ function Funktionen.Komponenten(typ)
   end
   gpu.setForeground(0xFFFFFF)
   print("\npress enter to continue\n")
-  require("term").read()
+  term.read()
 end
 
 if versionTyp == nil then
