@@ -20,16 +20,33 @@ local tank        = {}
 local f           = {}
 local o           = {}
 
-local tankalt, adresse, empfangen, version, reichweite
+local tankalt, adresse, empfangen, version, reichweite, Tankname
 
 tank[1]           = {}
 
 if fs.exists("/tank/version.txt") then
-    local d = io.open ("/tank/version.txt", "r")
-    version = d:read()
+  local d = io.open ("/tank/version.txt", "r")
+  version = d:read()
+  d:close()
+else
+  version = "<FEHLER>"
+end
+
+if fs.exists("/home/Tankname") then
+  local d = io.open("/home/Tankname", "r")
+  Tankname = d:read()
+  d:close()
+else
+  term.clear()
+  print("Soll dieser Sensor einen Namen bekommen? [j/N]")
+  if string.lower(io.read()) == "j" then
+    print("Bitte Namen eingeben")
+    term.write("Eingabe: ")
+    Tankname = io.read()
+    local d = io.open("/home/Tankname", "w")
+    d:write(Tankname)
     d:close()
-  else
-    version = "<FEHLER>"
+  end
 end
 
 function f.check()
@@ -76,25 +93,6 @@ function f.check()
   return tank
 end
 
-function f.serialize(a)
-  if type(a) == "table" then
-    local ausgabe = {}
-    if Tankname then
-      ausgabe = string.format([==[[0] = {name="Tankname", label="%s", menge="0", maxmenge="0"}, ]==], Tankname)
-    end
-    for k in pairs(a) do
-      if a[k].name ~= nil then
-        ausgabe[k] = string.format([==[[%s] = {name="%s", label="%s", menge="%s", maxmenge="%s"}, ]==], k, a[k].name, a[k].label, a[k].menge, a[k].maxmenge)
-      end
-    end
-    return "{" .. table.concat(ausgabe) .. "}"
-  elseif type(a) == "function" then
-    return false, "<FEHLER> Funktionen können nicht gesendet werden" --nichts
-  else
-    return a
-  end
-end
-
 local function spairs(t, order)
   local keys = {}
   for k in pairs(t) do keys[#keys+1] = k end
@@ -109,6 +107,26 @@ local function spairs(t, order)
     if keys[i] then
       return keys[i], t[keys[i]]
     end
+  end
+end
+
+function f.serialize(eingabe)
+  if type(eingabe) == "table" then
+    local ausgabe = {}
+    if Tankname then
+      ausgabe = string.format([==[[0] = {name="Tankname", label="%s", menge="0", maxmenge="0"}, ]==], Tankname)
+    end
+    --for k in pairs(eingabe) do
+    for k in spairs(eingabe, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
+      if eingabe[k].name ~= nil then
+        ausgabe[k] = string.format([==[[%s] = {name="%s", label="%s", menge="%s", maxmenge="%s"}, ]==], k, eingabe[k].name, eingabe[k].label, eingabe[k].menge, eingabe[k].maxmenge)
+      end
+    end
+    return "{" .. table.concat(ausgabe) .. "}"
+  elseif type(eingabe) == "function" then
+    return false, "<FEHLER> Funktionen können nicht gesendet werden" --nichts
+  else
+    return eingabe
   end
 end
 
