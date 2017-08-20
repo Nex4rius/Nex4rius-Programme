@@ -107,28 +107,32 @@ function o.aktualisieren(empfangen)
   if not fs.exists("/update") then
     fs.makeDirectory("/update")
   end
-  print("Empfange Datei ... " .. empfangen[7])
-  local d = io.open("/update" .. empfangen[7], "w")
-  d:write(empfangen[8])
-  d:close()
-  f.senden(empfangen, "speichern", true)
-  if empfangen[9] then
-    print("Ersetze alte Dateien")
-    local function kopieren(...)
-      for i in fs.list(...) do
-        if fs.isDirectory(i) then
-          kopieren(i)
+  if type(empfangen[7] == "string" and type(empfangen[8]) == "string" then
+    print("Empfange Datei ... " .. empfangen[7])
+    local d = io.open("/update" .. empfangen[7], "w")
+    d:write(empfangen[8])
+    d:close()
+    f.senden(empfangen, "speichern", fs.exists(empfangen[7]))
+    if empfangen[9] then
+      print("Ersetze alte Dateien")
+      local function kopieren(...)
+        for i in fs.list(...) do
+          if fs.isDirectory(i) then
+            kopieren(i)
+          end
+          verschieben("/update/" .. i, "/" .. i)
+          Funktion.status()
         end
-        verschieben("/update/" .. i, "/" .. i)
-        Funktion.status()
       end
+      kopieren("/update")
+      entfernen("/update")
+      print("Update vollständig")
+      f.senden(empfangen, "update", true)
+      print("Neustarten in 5s")
+      require("computer").shutdown(true)
     end
-    kopieren("/update")
-    entfernen("/update")
-    print("Update vollständig")
-    f.senden(empfangen, "update", true)
-    print("Neustarten in 5s")
-    require("computer").shutdown(true)
+  else
+    f.senden(empfangen, "speichern", false)
   end
 end
 
