@@ -71,21 +71,21 @@ function f.check()
       print(string.format("%s - %s: %s/%s %.1f%%", tank[i].name, tank[i].label, tank[i].menge, tank[i].maxmenge, tank[i].menge / tank[i].maxmenge))
     end
   end
-  return f.anders(tank, tankalt)
+  return tank --f.anders(tank, tankalt)
 end
 
-function f.anders(tank, tankalt)
-  for i in pairs(tank) do
-    if type(tank[i]) == "table" and type(tankalt[i]) == "table" then
-      if tank[i].menge ~= tankalt[i].menge then
-        return tank
-      end
-    else
-      return tank
-    end
-  end
-  return false
-end
+--function f.anders(tank, tankalt)
+--  for i in pairs(tank) do
+--    if type(tank[i]) == "table" and type(tankalt[i]) == "table" then
+--      if tank[i].menge ~= tankalt[i].menge then
+--        return tank
+--      end
+--    else
+--      return tank
+--    end
+--  end
+--  return false
+--end
 
 function f.serialize(a)
   if type(a) == "table" then
@@ -97,7 +97,7 @@ function f.serialize(a)
     end
     return "{" .. ausgabe .. "}"
   elseif type(a) == "function" then
-    return "test" --nichts
+    return false, "<FEHLER> Funktionen können nicht gesendet werden" --nichts
   else
     return a
   end
@@ -151,7 +151,7 @@ function f.senden(empfangen, nachricht, ...)
   if m.isWireless() then
     m.setStrength(tonumber(empfangen[5]) + 50)
   end
-  m.send(empfangen[3], empfangen[4], f.serialize(f.check()), ...)
+  m.send(empfangen[3], empfangen[4], f.serialize(nachricht), ...)
 end
 
 function f.main()
