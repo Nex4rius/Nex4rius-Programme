@@ -135,7 +135,7 @@ function f.serialize(eingabe)
     end
     return "{" .. table.concat(ausgabe) .. "}"
   elseif type(eingabe) == "function" then
-    return false, "<FEHLER> Funktionen können nicht gesendet werden" --nichts
+    return false, "<FEHLER> Funktionen können nicht gesendet werden"
   else
     return eingabe
   end
@@ -145,12 +145,12 @@ function o.datei(empfangen)
   if not fs.exists("/update/tank") then
     fs.makeDirectory("/update/tank")
   end
-  if type(empfangen[7]) == "string" and type(empfangen[8]) == "string" and not fs.exists("/update" .. empfangen[7]) then
+  if type(empfangen[7]) == "string" and type(empfangen[8]) == "string" then
     print("\nEmpfange Datei ... " .. empfangen[7])
     local d = io.open("/update" .. empfangen[7], "w")
     d:write(empfangen[8])
     d:close()
-    f.senden(empfangen, "speichern", fs.exists(empfangen[7]))
+    f.senden(empfangen, "speichern", fs.exists("/update" .. empfangen[7]))
   else
     print("<FEHLER>")
     print("empfangen[7] " .. tostring(empfangen[7]))
