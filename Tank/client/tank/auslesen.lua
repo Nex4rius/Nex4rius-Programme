@@ -160,6 +160,9 @@ function f.main()
     m.setStrength(math.huge)
   end
   m.broadcast(port, "anmelden")
+  term.clear()
+  print("Sende Anmeldung")
+  print("Warte auf Antwort")
   while true do
     local ergebnis, grund = pcall(f.loop)
     if not ergebnis then
