@@ -150,7 +150,7 @@ function o.datei(empfangen)
     local d = io.open("/update" .. empfangen[7], "w")
     d:write(empfangen[8])
     d:close()
-    f.senden(empfangen, "speichern", fs.exists("/update" .. empfangen[7]))
+    f.senden(empfangen, "speichern", fs.exists("/update" .. empfangen[7]), empfangen[7])
   else
     print("<FEHLER>")
     print("empfangen[7] " .. tostring(empfangen[7]))
