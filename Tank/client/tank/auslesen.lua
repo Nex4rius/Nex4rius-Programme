@@ -78,17 +78,37 @@ end
 
 function f.serialize(a)
   if type(a) == "table" then
-    local ausgabe = ""
+    local ausgabe = {}
+    if Tankname then
+      ausgabe = string.format([==[[0] = {name="Tankname", label="%s", menge="0", maxmenge="0"}, ]==], Tankname)
+    end
     for k in pairs(a) do
       if a[k].name ~= nil then
-        ausgabe = string.format([[%s{name="%s", label="%s", menge="%s", maxmenge="%s"}, ]], ausgabe, a[k].name, a[k].label, a[k].menge, a[k].maxmenge)
+        ausgabe[k] = string.format([==[[%s] = {name="%s", label="%s", menge="%s", maxmenge="%s"}, ]==], k, a[k].name, a[k].label, a[k].menge, a[k].maxmenge)
       end
     end
-    return "{" .. ausgabe .. "}"
+    return "{" .. table.concat(ausgabe) .. "}"
   elseif type(a) == "function" then
     return false, "<FEHLER> Funktionen können nicht gesendet werden" --nichts
   else
     return a
+  end
+end
+
+local function spairs(t, order)
+  local keys = {}
+  for k in pairs(t) do keys[#keys+1] = k end
+  if order then
+    table.sort(keys, function(a,b) return order(t, a, b) end)
+  else
+    table.sort(keys)
+  end
+  local i = 0
+  return function()
+    i = i + 1
+    if keys[i] then
+      return keys[i], t[keys[i]]
+    end
   end
 end
 
