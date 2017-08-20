@@ -36,6 +36,9 @@ if fs.exists("/home/Tankname") then
   local d = io.open("/home/Tankname", "r")
   Tankname = d:read()
   d:close()
+  if Tankname == "false" then
+    Tankname = nil
+  end
 else
   term.clear()
   print("Soll dieser Sensor einen Namen bekommen? [j/N]")
@@ -45,6 +48,10 @@ else
     Tankname = io.read()
     local d = io.open("/home/Tankname", "w")
     d:write(Tankname)
+    d:close()
+  else
+    local d = io.open("/home/Tankname", "w")
+    d:write("false")
     d:close()
   end
 end
