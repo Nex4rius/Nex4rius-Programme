@@ -56,6 +56,7 @@ function Funktionen.installieren(versionTyp)
       weiter = true
     end
   end
+  os.sleep(2)
   Funktionen.Komponenten(typ)
   fs.makeDirectory("/tank")
   fs.makeDirectory("/update/tank")
