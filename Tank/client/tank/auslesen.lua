@@ -91,8 +91,8 @@ function f.serialize(a)
 end
 
 function o.aktualisieren(empfangen)
-  if not fs.exists("/update") then
-    fs.makeDirectory("/update")
+  if not fs.exists("/update/tank") then
+    fs.makeDirectory("/update/tank")
   end
   if type(empfangen[7]) == "string" and type(empfangen[8]) == "string" then
     print("Empfange Datei ... " .. empfangen[7])
