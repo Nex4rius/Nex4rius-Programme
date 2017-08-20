@@ -29,13 +29,13 @@ function Funktionen.installieren(versionTyp)
   gpu.setForeground(0xFFFFFF)
   term.clear()
   local weiter = true
-  if component.isAvailable("tank_controller") then
-    print("Tank Controller detected downloading client (sensor).")
+  if component.isAvailable("transposer") then
+    print("Transposer detected downloading client (sensor).")
     typ = "client"
     weiter = false
   end
-  if component.isAvailable("transposer") then
-    print("Transposer detected downloading client (sensor).")
+  if component.isAvailable("tank_controller") then
+    print("Tank Controller detected downloading client (sensor).")
     typ = "client"
     weiter = false
   end
