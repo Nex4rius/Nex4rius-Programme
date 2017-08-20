@@ -142,7 +142,7 @@ end
 
 function f.senden(empfangen, nachricht, ...)
   if m.isWireless() then
-    m.setStrength(tonumber(empfangen[5]) + 20)
+    m.setStrength(tonumber(empfangen[5]) + 50)
   end
   m.send(empfangen[3], port, f.serialize(f.check()), ...)
 end
@@ -167,7 +167,6 @@ function f.main()
     local ergebnis, grund = pcall(f.loop)
     if not ergebnis then
       print(grund)
-      standby()
       os.sleep(5)
     end
   end
