@@ -117,6 +117,7 @@ function o.aktualisieren(empfangen)
       print("Update vollständig")
       f.senden(empfangen, "update", true)
       print("Neustarten in 5s")
+      os.sleep(5)
       require("computer").shutdown(true)
     end
   else
