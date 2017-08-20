@@ -141,34 +141,34 @@ function f.serialize(eingabe)
   end
 end
 
-function o.datei(empfangen)
+function o.datei(signal)
   if not fs.exists("/update/tank") then
     fs.makeDirectory("/update/tank")
   end
-  if type(empfangen[7]) == "string" and type(empfangen[8]) == "string" then
-    print("\nEmpfange Datei ... " .. empfangen[7])
-    local d = io.open("/update" .. empfangen[7], "w")
-    d:write(empfangen[8])
+  if type(signal[7]) == "string" and type(signal[8]) == "string" then
+    print("\nEmpfange Datei ... " .. signal[7])
+    local d = io.open("/update" .. signal[7], "w")
+    d:write(signal[8])
     d:close()
-    f.senden(empfangen, "speichern", fs.exists("/update" .. empfangen[7]), empfangen[7])
+    f.senden(signal, "speichern", fs.exists("/update" .. signal[7]), signal[7])
   else
     print("<FEHLER>")
-    print("empfangen[7] " .. tostring(empfangen[7]))
-    print("empfangen[8] " .. tostring(empfangen[8]))
-    f.senden(empfangen, "speichern", false)
+    print("signal[7] " .. tostring(signal[7]))
+    print("signal[8] " .. tostring(signal[8]))
+    f.senden(signal, "speichern", false)
   end
 end
 
-function o.aktualisieren(empfangen)
+function o.aktualisieren(signal)
   local weiter = true
-  local daten = serialization.unserialize(empfangen[7])
+  local daten = serialization.unserialize(signal[7])
   for k, v in pairs(daten) do
     if not fs.exists("/update" .. v) then
       weiter = false
       print("<FEHLER>")
       print("Aktualisierung abgebrochen")
       print("Datei fehlt: " .. tostring(v))
-      f.senden(empfangen, "update", false, v)
+      f.senden(signal, "update", false, v)
       break
     end
   end
@@ -186,7 +186,7 @@ function o.aktualisieren(empfangen)
     entfernen("/update")
     print("Update vollständig")
     os.sleep(1)
-    f.senden(empfangen, "update", true)
+    f.senden(signal, "update", true)
     for i = 5, 1, -1 do
       print(string.format("\nNeustarten in %ss", i))
       os.sleep(1)
@@ -195,27 +195,27 @@ function o.aktualisieren(empfangen)
   end
 end
 
-function o.version(empfangen)
-  f.senden(empfangen, version)
+function o.version(signal)
+  f.senden(signal, version)
 end
 
-function o.tank(empfangen)
-  f.senden(empfangen, f.serialize(f.check()))
+function o.tank(signal)
+  f.senden(signal, f.serialize(f.check()))
 end
 
-function f.loop()
-  empfangen = {event.pull("modem_message")}
-  print(empfangen[6])
-  if o[empfangen[6]] then
-    o[empfangen[6]](empfangen)
+function f.loop(...)
+  local signal = {...}
+  print(signal[6])
+  if o[signal[6]] then
+    o[signal[6]](signal)
   end
 end
 
-function f.senden(empfangen, nachricht, ...)
+function f.senden(signal, nachricht, ...)
   if m.isWireless() then
-    m.setStrength(tonumber(empfangen[5]) + 30)
+    m.setStrength(tonumber(signal[5]) + 20)
   end
-  m.send(empfangen[3], empfangen[4], f.serialize(nachricht), ...)
+  m.send(signal[3], signal[4], f.serialize(nachricht), ...)
 end
 
 function f.main()
@@ -227,15 +227,10 @@ function f.main()
   term.clear()
   print("Sende Anmeldung")
   print("Warte auf Antwort")
-  while true do
-    local ergebnis, grund = pcall(f.loop)
-    if not ergebnis then
-      print(grund)
-      os.sleep(5)
-    end
-  end
+  event.listen("modem_message", f.loop)
+  pcall(os.sleep, math.huge)
 end
 
-loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tank Client")
+loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tanksensor")
 
 f.main()
