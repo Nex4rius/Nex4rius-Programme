@@ -114,7 +114,7 @@ function f.serialize(eingabe)
   if type(eingabe) == "table" then
     local ausgabe = {}
     if Tankname then
-      ausgabe = string.format([==[[0] = {name="Tankname", label="%s", menge="0", maxmenge="0"}, ]==], Tankname)
+      ausgabe[0] = string.format([==[[0] = {name="Tankname", label="%s", menge="0", maxmenge="0"}, ]==], Tankname)
     end
     --for k in pairs(eingabe) do
     for k in spairs(eingabe, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
