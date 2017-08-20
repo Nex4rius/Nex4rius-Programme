@@ -144,7 +144,7 @@ function o.aktualisieren(empfangen)
     fs.makeDirectory("/update/tank")
   end
   if type(empfangen[7]) == "string" and type(empfangen[8]) == "string" and not fs.exists("/update" .. empfangen[7]) then
-    print("Empfange Datei ... " .. empfangen[7])
+    print("\nEmpfange Datei ... " .. empfangen[7])
     local d = io.open("/update" .. empfangen[7], "w")
     d:write(empfangen[8])
     d:close()
@@ -164,7 +164,7 @@ function o.aktualisieren(empfangen)
       print("Update vollständig")
       os.sleep(1)
       f.senden(empfangen, "update", true)
-      print("Neustarten in 5s")
+      print("\nNeustarten in 5s")
       os.sleep(5)
       require("computer").shutdown(true)
     end
