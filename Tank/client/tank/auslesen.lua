@@ -4,25 +4,27 @@
 
 os.sleep(1)
 
-local component   = require("component")
-local term        = require("term")
-local event       = require("event")
-local c           = require("computer")
-local fs          = require("filesystem")
+local component     = require("component")
+local term          = require("term")
+local event         = require("event")
+local c             = require("computer")
+local fs            = require("filesystem")
+local serialization = require("serialization")
 
-local m           = component.modem
+local m             = component.modem
 
-local verschieben = function(von, nach) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach))) end
-local entfernen   = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
+local verschieben   = function(von, nach) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach))) end
+local entfernen     = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
 
-local port        = 918
-local tank        = {}
-local f           = {}
-local o           = {}
+local port          = 918
+local tank          = {}
+local f             = {}
+local o             = {}
+
+tank[1]             = {}
 
 local tankalt, adresse, empfangen, version, reichweite, Tankname
 
-tank[1]           = {}
 
 if fs.exists("/tank/version.txt") then
   local d = io.open ("/tank/version.txt", "r")
@@ -139,7 +141,7 @@ function f.serialize(eingabe)
   end
 end
 
-function o.aktualisieren(empfangen)
+function o.datei(empfangen)
   if not fs.exists("/update/tank") then
     fs.makeDirectory("/update/tank")
   end
@@ -149,30 +151,44 @@ function o.aktualisieren(empfangen)
     d:write(empfangen[8])
     d:close()
     f.senden(empfangen, "speichern", fs.exists(empfangen[7]))
-    if empfangen[9] then
-      print("Ersetze alte Dateien")
-      local function kopieren(...)
-        for i in fs.list(...) do
-          if fs.isDirectory(i) then
-            kopieren(i)
-          end
-          verschieben("/update/" .. i, "/" .. i)
-        end
-      end
-      kopieren("/update")
-      entfernen("/update")
-      print("Update vollständig")
-      os.sleep(1)
-      f.senden(empfangen, "update", true)
-      print("\nNeustarten in 5s")
-      os.sleep(5)
-      require("computer").shutdown(true)
-    end
   else
     print("<FEHLER>")
     print("empfangen[7] " .. tostring(empfangen[7]))
     print("empfangen[8] " .. tostring(empfangen[8]))
     f.senden(empfangen, "speichern", false)
+  end
+end
+
+function o.aktualisieren(empfangen)
+  local weiter = true
+  local daten = serialization.unserialize(empfangen[7])
+  for k, v in pairs(daten) do
+    if not fs.exists("/update" .. v) then
+      weiter = false
+      f.senden(empfangen, "update", false, v)
+      break
+    end
+  end
+  if weiter then
+    print("Ersetze alte Dateien")
+    local function kopieren(...)
+      for i in fs.list(...) do
+        if fs.isDirectory(i) then
+          kopieren(i)
+        end
+        verschieben("/update/" .. i, "/" .. i)
+      end
+    end
+    kopieren("/update")
+    entfernen("/update")
+    print("Update vollständig")
+    os.sleep(1)
+    f.senden(empfangen, "update", true)
+    for i = 5, 1, -1 do
+      print(string.format("\nNeustarten in %ss", i))
+      os.sleep(1)
+    end
+    require("computer").shutdown(true)
   end
 end
 
