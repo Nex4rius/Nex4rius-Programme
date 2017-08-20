@@ -113,13 +113,15 @@ end
 function f.serialize(eingabe)
   if type(eingabe) == "table" then
     local ausgabe = {}
+    local i = 0
     if Tankname then
-      ausgabe[0] = string.format([==[[0] = {name="Tankname", label="%s", menge="0", maxmenge="0"}, ]==], Tankname)
+      i = i + 1
+      ausgabe[i] = string.format([==[[%s] = {name="Tankname", label="%s", menge="0", maxmenge="0"}, ]==], i, Tankname)
     end
-    --for k in pairs(eingabe) do
-    for k in spairs(eingabe, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
-      if eingabe[k].name ~= nil then
-        ausgabe[k] = string.format([==[[%s] = {name="%s", label="%s", menge="%s", maxmenge="%s"}, ]==], k, eingabe[k].name, eingabe[k].label, eingabe[k].menge, eingabe[k].maxmenge)
+    for k, v in spairs(eingabe, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
+      if v.name ~= nil then
+        i = i + 1
+        ausgabe[i] = string.format([==[[%s] = {name="%s", label="%s", menge="%s", maxmenge="%s"}, ]==], i, v.name, v.label, v.menge, v.maxmenge)
       end
     end
     return "{" .. table.concat(ausgabe) .. "}"
