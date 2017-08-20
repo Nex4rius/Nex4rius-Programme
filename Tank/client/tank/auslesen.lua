@@ -108,7 +108,6 @@ function o.aktualisieren(empfangen)
             kopieren(i)
           end
           verschieben("/update/" .. i, "/" .. i)
-          Funktion.status()
         end
       end
       kopieren("/update")
