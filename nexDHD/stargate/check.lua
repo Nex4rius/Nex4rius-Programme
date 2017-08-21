@@ -130,6 +130,11 @@ Farben.green                 = 13
 Farben.red                   = 14
 Farben.black                 = 15
 
+if gpu.maxResolution() < 80 then
+  gpu.setForeground = function() end
+  gpu.setBackground = function() end
+end
+
 local function kopieren(a, b, c)
   if type(a) == "string" and type(b) == "string" then
     if c == "-n" then
