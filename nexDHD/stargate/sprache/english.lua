@@ -140,4 +140,5 @@ return {
   zuvielEnergie             = "<Energy too big>",
   LegendeUpdate             = "update",
   neuerName                 = "new name",
+  keinInternet              = "no Internet Card available",
 }

@@ -1469,6 +1469,7 @@ function Taste.u()
         event.timer(2, Funktion.zeigeMenu, 1)
       end
     else
+      Funktion.zeigeNachricht(sprachen.keinInternet)
       event.timer(2, Funktion.zeigeMenu, 1)
     end
   end
@@ -1755,6 +1756,7 @@ function Funktion.beendeAlles()
     Funktion.redstoneAbschalten(sideNum, Farben.black, "black")
   end
   pcall(screen.setTouchModeInverted, false)
+  os.sleep(1)
 end
 
 function Funktion.main()
@@ -1781,7 +1783,6 @@ function Funktion.main()
       os.sleep(5)
     end
   end
-  os.sleep(2)
   Funktion.beendeAlles()
 end
 
