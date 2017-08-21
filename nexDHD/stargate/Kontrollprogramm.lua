@@ -1756,7 +1756,7 @@ function Funktion.beendeAlles()
     Funktion.redstoneAbschalten(sideNum, Farben.black, "black")
   end
   pcall(screen.setTouchModeInverted, false)
-  os.sleep(1)
+  os.sleep(0.2)
 end
 
 function Funktion.main()
