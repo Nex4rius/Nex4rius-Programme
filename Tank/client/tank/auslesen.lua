@@ -196,11 +196,11 @@ function o.aktualisieren(signal)
 end
 
 function o.version(signal)
-  f.senden(signal, version)
+  f.senden(signal, "version", version)
 end
 
 function o.tank(signal)
-  f.senden(signal, f.serialize(f.check()))
+  f.senden(signal, "tank", f.serialize(f.check()))
 end
 
 function f.loop(...)
@@ -211,11 +211,11 @@ function f.loop(...)
   end
 end
 
-function f.senden(signal, nachricht, ...)
+function f.senden(signal, name, nachricht, ...)
   if m.isWireless() then
     m.setStrength(tonumber(signal[5]) + 50)
   end
-  m.send(signal[3], signal[4], f.serialize(nachricht), ...)
+  m.send(signal[3], signal[4], name, f.serialize(nachricht), ...)
 end
 
 function f.main()
@@ -226,7 +226,7 @@ function f.main()
   m.broadcast(port, "anmelden")
   term.clear()
   print("Sende Anmeldung")
-  print("Warte auf Antwort")
+  print("Warte auf Antwort...")
   event.listen("modem_message", f.loop)
   pcall(os.sleep, math.huge)
 end
