@@ -43,7 +43,7 @@ end
 function f.tankliste(signal)
   local dazu = true
   local ende = 0
-  local hier, id, nachricht = signal[1], signal[3], signal[6]
+  local hier, id, nachricht = signal[1], signal[3], signal[7]
   if hier then
     letzteNachricht = c.uptime()
     for i in pairs(tank) do
