@@ -600,12 +600,9 @@ end
 
 function Funktion.main()
   os.sleep(0.5)
-  gpu.setResolution(70, 25)
+  pcall(gpu.setResolution, 70, 25)
   gpu.setForeground(Farben.weisseFarbe)
   gpu.setBackground(Farben.graueFarbe)
-  if gpu.maxResolution() == 160 then
-    gpu.setBackground(Farben.graueFarbe)
-  end
   Funktion.checkDateien()
   if fs.exists("/stargate/version.txt") then
     local f = io.open ("/stargate/version.txt", "r")
