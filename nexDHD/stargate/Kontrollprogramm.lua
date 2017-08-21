@@ -1781,7 +1781,6 @@ function Funktion.main()
       os.sleep(5)
     end
   end
-  os.sleep(2)
   Funktion.beendeAlles()
 end
 
