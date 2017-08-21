@@ -135,6 +135,7 @@ if gpu.maxResolution() < 80 then
   gpu.setBackground(0x000000)
   gpu.setForeground = function() end
   gpu.setBackground = function() end
+  term.clear()
 end
 
 local function kopieren(a, b, c)
@@ -353,7 +354,7 @@ function Funktion.checkKomponenten()
     gpu.setForeground(Farben.roteFarbe)
     print(sprachen.gpuFehlt)
   end
-  local x, y = component.list("screen")().getAspectRatio()
+  local x, y = component.proxy(gpu.getScreen()).getAspectRatio()
   if x == 4 and y == 3 then
     gpu.setForeground(Farben.hellgrueneFarbe)
     print(sprachen.BildschirmOK)
