@@ -133,8 +133,10 @@ Farben.black                 = 15
 if gpu.maxResolution() < 80 then
   gpu.setForeground(0xFFFFFF)
   gpu.setBackground(0x000000)
-  gpu.setForeground = function() end
-  gpu.setBackground = function() end
+  local a = gpu.setForeground
+  local b = gpu.setBackground
+  gpu.setForeground = function(...) if gpu.maxResolution() >= 80 then a(...) end end
+  gpu.setBackground = function(...) if gpu.maxResolution() >= 80 then b(...) end end
   term.clear()
 end
 
@@ -356,8 +358,12 @@ function Funktion.checkKomponenten()
   end
   local x, y = component.proxy(gpu.getScreen()).getAspectRatio()
   if x == 4 and y == 3 then
-    gpu.setForeground(Farben.hellgrueneFarbe)
-    print(sprachen.BildschirmOK)
+    if gpu.maxResolution() >= 80 then
+      gpu.setForeground(Farben.hellgrueneFarbe)
+      print(sprachen.BildschirmOK)
+    else
+      print(sprachen.BildschirmT1)
+    end
   elseif gpu.maxResolution() >= 80 then
     gpu.setForeground(Farben.hellgrueneFarbe)
     print(sprachen.BildschirmFalsch(x, y))
