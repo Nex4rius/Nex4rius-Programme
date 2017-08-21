@@ -17,6 +17,7 @@ return {
   gpuOK3T                   = "- GPU Tier3            ok - Tier2 is enough",
   gpuFehlt                  = "- GPU Tier2            missing",
   BildschirmOK              = "- Screen               ok",
+  BildschirmT1              = "- Screen Tier2         missing",
   BildschirmFalsch          = function(x, y) return string.format("- Screen               aspect ratio %s:%s - optimal 4:3", x, y) end,
   BildschirmFalschT1        = function(x, y) return string.format("- Screen               aspect ratio %s:%s - optimal 4:3\n- Screen               <ERROR> Tier 2 required", x, y) end,
   StargateOK                = "- Stargate             ok",
