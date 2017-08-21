@@ -1134,14 +1134,14 @@ function Funktion.Legende()
   x = x + unicode.len(sprachen.Legende) + 3
   Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.RichtungNameEin, 0)
   Funktion.Farbe(Farben.grueneFarbe, Farben.weisseFarbe)
-  x = x + unicode.len(sprachen.RichtungNameEin) + 2
-  Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.RichtungNameAus, 0)
+  x = x + unicode.len(sprachen.RichtungNameEin)
+  Funktion.zeigeHier(x, Bildschirmhoehe - 1, "  " .. sprachen.RichtungNameAus, 0)
   Funktion.Farbe(Farben.hellblau, Farben.weisseFarbe)
-  x = x + unicode.len(sprachen.RichtungNameAus) + 2
-  Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.neueAdresse, 0)
+  x = x + unicode.len(sprachen.RichtungNameAus)
+  Funktion.zeigeHier(x, Bildschirmhoehe - 1, "  " .. sprachen.neueAdresse, 0)
   Funktion.Farbe(Farben.gelbeFarbe, Farben.schwarzeFarbe)
-  x = x + unicode.len(sprachen.neueAdresse) + 2
-  Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.LegendeUpdate, 0)
+  x = x + unicode.len(sprachen.neueAdresse)
+  Funktion.zeigeHier(x, Bildschirmhoehe - 1, "  " .. sprachen.LegendeUpdate .. string.rep(" ", 10), 0)
 end
 
 function Funktion.schreibFehlerLog(...)
@@ -1756,7 +1756,7 @@ function Funktion.beendeAlles()
     Funktion.redstoneAbschalten(sideNum, Farben.black, "black")
   end
   pcall(screen.setTouchModeInverted, false)
-  os.sleep(1)
+  os.sleep(0.2)
 end
 
 function Funktion.main()
