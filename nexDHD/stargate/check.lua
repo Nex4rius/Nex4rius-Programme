@@ -346,6 +346,17 @@ function Funktion.checkKomponenten()
     gpu.setForeground(Farben.roteFarbe)
     print(sprachen.gpuFehlt)
   end
+  local x, y = gpu.getScreen().getAspectRatio()
+  if x == 4 and y == 3 then
+    gpu.setForeground(Farben.hellgrueneFarbe)
+    print(sprachen.BildschirmOK)
+  elseif gpu.maxResolution() >= 80 then
+    gpu.setForeground(Farben.hellgrueneFarbe)
+    print(sprachen.BildschirmFalsch(x, y))
+  else
+    gpu.setForeground(Farben.roteFarbe)
+    print(sprachen.BildschirmFalschT1(x, y))
+  end
   gpu.setForeground(Farben.weisseFarbe)
   if component.isAvailable("stargate") then
     sg = component.getPrimary("stargate")
