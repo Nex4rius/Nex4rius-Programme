@@ -131,6 +131,8 @@ Farben.red                   = 14
 Farben.black                 = 15
 
 if gpu.maxResolution() < 80 then
+  gpu.setForeground(0xFFFFFF)
+  gpu.setBackground(0x000000)
   gpu.setForeground = function() end
   gpu.setBackground = function() end
 end
