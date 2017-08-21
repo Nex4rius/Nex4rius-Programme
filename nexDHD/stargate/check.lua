@@ -346,7 +346,7 @@ function Funktion.checkKomponenten()
     gpu.setForeground(Farben.roteFarbe)
     print(sprachen.gpuFehlt)
   end
-  local x, y = gpu.getScreen().getAspectRatio()
+  local x, y = component.list("screen")().getAspectRatio()
   if x == 4 and y == 3 then
     gpu.setForeground(Farben.hellgrueneFarbe)
     print(sprachen.BildschirmOK)
