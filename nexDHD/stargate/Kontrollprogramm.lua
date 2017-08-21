@@ -1469,6 +1469,7 @@ function Taste.u()
         event.timer(2, Funktion.zeigeMenu, 1)
       end
     else
+      Funktion.zeigeNachricht(sprachen.keinInternet)
       event.timer(2, Funktion.zeigeMenu, 1)
     end
   end
