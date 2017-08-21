@@ -19,6 +19,7 @@ local m               = component.modem
 local version, tankneu, energie
 
 local port            = 918
+local Sensorliste     = {}
 local tank            = {}
 local f               = {}
 local o               = {}
@@ -35,10 +36,13 @@ else
   version = "<FEHLER>"
 end
 
+if fs.exists("/tank/Sensorliste.lua") then
+  Sensorliste = loadfile("/tank/Sensorliste.lua")()
+end
+
 function f.tankliste(signal)
   local dazu = true
   local ende = 0
-  --local hier, _, id, _, _, nachricht = event.pull(Wartezeit, "modem_message")
   local hier, id, nachricht = signal[1], signal[3], signal[6]
   if hier then
     letzteNachricht = c.uptime()
@@ -320,17 +324,6 @@ function split(...)
   return output
 end
 
-function beenden()
-  for screenid in component.list("screen") do
-    gpu.bind(screenid)
-    os.sleep(0.1)
-    f.Farben(0xFFFFFF, 0x000000)
-    gpu.setResolution(gpu.maxResolution())
-    os.sleep(0.1)
-    term.clear()
-  end
-end
-
 function test(screenid)
   os.sleep(0.1)
   local _, hoch = component.proxy(screenid).getAspectRatio()
@@ -377,8 +370,49 @@ function f.keineDaten()
   f.text("Keine Daten vorhanden")
 end
 
-function f.loop()
-  
+function o.anmelden(signal)
+  local dazu = true
+  for k, v in pairs(Sensorliste) do
+    if v[1] == signal[3] then
+      dazu = nil
+      break
+    end
+  end
+  if dazu then
+    table.insert(Sensorliste, {signal[3], signal[7]])
+  end
+  local rest = {}
+  table.insert(rest, "return {\n")
+  for k, v in pairs(Sensorliste) do
+    table.insert(rest, string.format("  {%s, %s},\n"), v[1], v[2])
+  end
+  table.insert(rest, "}")
+  local d = io.open("/tank/Sensorliste.lua", "w")
+  d:write(tablet.concat(rest)
+  d:close()
+end
+
+function o.version(signal)
+  o.anmelden(signal)
+end
+
+function o.speichern(signal)
+end
+
+function o.update(signal)
+end
+
+function o.tank(signal)
+  o.tank = f.tankliste --nix extra bisher
+  f.tankliste(signal)
+end
+
+function f.loop(signal)
+  local signal = {...}
+  f.text(signal[6])
+  if o[signal[6]] then
+    o[signal[6]](signal)
+  end
 end
 
 function f.main()
@@ -386,14 +420,20 @@ function f.main()
   term.setCursor(1, 50)
   m.open(port)
   f.text("Warte auf Daten")
-  m.broadcast(port, "update", version)
-  while laeuft do
-    local ergebnis, grund = pcall(f.tankliste)
-    if not ergebnis then
-      print(grund)
-      os.sleep(5)
-      laeuft = false
-    end
+  m.broadcast(port, "version")
+  event.listen("modem_message", f.loop)
+  pcall(os.sleep, math.huge)
+end
+
+function beenden()
+  event.ignore("modem_message", f.loop)
+  for screenid in component.list("screen") do
+    gpu.bind(screenid)
+    os.sleep(0.1)
+    f.Farben(0xFFFFFF, 0x000000)
+    gpu.setResolution(gpu.maxResolution())
+    os.sleep(0.1)
+    term.clear()
   end
 end
 
