@@ -2,6 +2,8 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/
 
+os.sleep(2)
+
 local component       = require("component")
 local fs              = require("filesystem")
 local c               = require("computer")
@@ -19,28 +21,25 @@ local version, tankneu, energie
 local port            = 918
 local tank            = {}
 local f               = {}
+local o               = {}
 local laeuft          = true
 local debug           = false
 local Wartezeit       = 150
 local letzteNachricht = c.uptime()
-local standby         = function() end
-
-if fs.exists("/bin/standby.lua") then
-  standby             = require("standby")
-end
 
 if fs.exists("/tank/version.txt") then
-    local d = io.open ("/tank/version.txt", "r")
-    version = d:read()
-    d:close()
-  else
-    version = "<FEHLER>"
+  local d = io.open ("/tank/version.txt", "r")
+  version = d:read()
+  d:close()
+else
+  version = "<FEHLER>"
 end
 
-function f.update()
+function f.tankliste(signal)
   local dazu = true
   local ende = 0
-  local hier, _, id, _, _, nachricht = event.pull(Wartezeit, "modem_message")
+  --local hier, _, id, _, _, nachricht = event.pull(Wartezeit, "modem_message")
+  local hier, id, nachricht = signal[1], signal[3], signal[6]
   if hier then
     letzteNachricht = c.uptime()
     for i in pairs(tank) do
@@ -324,10 +323,12 @@ end
 function beenden()
   for screenid in component.list("screen") do
     gpu.bind(screenid)
+    os.sleep(0.1)
+    f.Farben(0xFFFFFF, 0x000000)
+    gpu.setResolution(gpu.maxResolution())
+    os.sleep(0.1)
+    term.clear()
   end
-  f.Farben(0xFFFFFF, 0x000000)
-  os.sleep(0.1)
-  term.clear()
 end
 
 function test(screenid)
@@ -354,14 +355,19 @@ function test(screenid)
   gpu.setBackground(0x000000)
 end
 
-function f.text(a)
+function f.text(a, b)
   if c.uptime() - letzteNachricht > Wartezeit then
     for screenid in component.list("screen") do
       gpu.bind(screenid)
       test(screenid)
-      gpu.setResolution(string.len(a), 1)
+      f.Farben(0xFFFFFF, 0x000000)
+      if b then
+        gpu.setResolution(gpu.maxResolution())
+      else
+        gpu.setResolution(string.len(a), 1)
+      end
       os.sleep(0.1)
-      gpu.set(1, 1, "Keine Daten vorhanden")
+      gpu.set(1, 1, a)
     end
   end
 end
@@ -371,23 +377,35 @@ function f.keineDaten()
   f.text("Keine Daten vorhanden")
 end
 
+function f.loop()
+  
+end
+
 function f.main()
   gpu.setForeground(0xFFFFFF)
   term.setCursor(1, 50)
   m.open(port)
   f.text("Warte auf Daten")
   m.broadcast(port, "update", version)
-  while true do
-    if not pcall(f.update) then
+  while laeuft do
+    local ergebnis, grund = pcall(f.tankliste)
+    if not ergebnis then
+      print(grund)
       os.sleep(5)
+      laeuft = false
     end
-    standby()
   end
 end
 
-os.sleep(2)
+loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tankanzeige")
 
-if not pcall(f.main) then
-  print("Ausschalten")
-  beenden()
+local ergebnis, grund = pcall(f.main)
+
+if not ergebnis then
+  f.text("<FEHLER> f.main", true)
+  f.text(grund, true)
+  os.sleep(1)
 end
+
+print("Ausschalten")
+beenden()
