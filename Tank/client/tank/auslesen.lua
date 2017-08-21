@@ -223,7 +223,7 @@ function f.main()
   if  m.isWireless() then
     m.setStrength(math.huge)
   end
-  m.broadcast(port, "anmelden")
+  m.broadcast(port, "anmelden", version)
   term.clear()
   print("Sende Anmeldung")
   print("Warte auf Antwort...")
