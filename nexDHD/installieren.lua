@@ -177,23 +177,37 @@ end
 function f.installieren(versionTyp)
   fs.makeDirectory("/update/stargate/sprache")
   local updateKomplett = false
-  local update = {}
-  update[1] = wget("-f", f.Pfad(versionTyp) .. "autorun.lua",                        "/update/autorun.lua")
-  update[2] = wget("-f", f.Pfad(versionTyp) .. "stargate/check.lua",                 "/update/stargate/check.lua")
-  update[3] = wget("-f", f.Pfad(versionTyp) .. "stargate/version.txt",               "/update/stargate/version.txt")
-  update[4] = wget("-f", f.Pfad(versionTyp) .. "stargate/adressen.lua",              "/update/stargate/adressen.lua")
-  update[5] = wget("-f", f.Pfad(versionTyp) .. "stargate/Sicherungsdatei.lua",       "/update/stargate/Sicherungsdatei.lua")
-  update[6] = wget("-f", f.Pfad(versionTyp) .. "stargate/Kontrollprogramm.lua",      "/update/stargate/Kontrollprogramm.lua")
-  update[7] = wget("-f", f.Pfad(versionTyp) .. "stargate/schreibSicherungsdatei.lua","/update/stargate/schreibSicherungsdatei.lua")
-  update[8] = wget("-f", f.Pfad(versionTyp) .. "stargate/sprache/ersetzen.lua",      "/update/stargate/sprache/ersetzen.lua")
-  for s in pairs(Sprachliste) do
-    if Sprachliste[s] ~= "" then
-      if wget("-f", f.Pfad(versionTyp) .. "stargate/sprache/" .. Sprachliste[s] .. ".lua", "/update/stargate/sprache/" .. Sprachliste[s] .. ".lua") then
-        update[9] = true
+  local function download(von, nach)
+    for j = 0, 10 do
+      if wget("-f", f.Pfad(versionTyp) .. von, nach) then
+        return true
       end
     end
   end
-  for i = 1, 9 do
+  local anzahl = 0
+  local update = {}
+  local dateien = {
+    {"autorun.lua",                         "/update/autorun.lua"},
+    {"stargate/check.lua",                  "/update/stargate/check.lua"},
+    {"stargate/version.txt",                "/update/stargate/version.txt"},
+    {"stargate/adressen.lua",               "/update/stargate/adressen.lua"},
+    {"stargate/Sicherungsdatei.lua",        "/update/stargate/Sicherungsdatei.lua"},
+    {"stargate/Kontrollprogramm.lua",       "/update/stargate/Kontrollprogramm.lua"},
+    {"stargate/schreibSicherungsdatei.lua", "/update/stargate/schreibSicherungsdatei.lua"},
+    {"stargate/sprache/ersetzen.lua",       "/update/stargate/sprache/ersetzen.lua"},
+  }
+  for k, v in pairs(dateien) do
+    update[k] = download(v[1], v[2])
+    anzahl = k
+  end
+  for s in pairs(Sprachliste) do
+    if Sprachliste[s] ~= "" then
+      if wget("-f", f.Pfad(versionTyp) .. "stargate/sprache/" .. Sprachliste[s] .. ".lua", "/update/stargate/sprache/" .. Sprachliste[s] .. ".lua") then
+        update[anzahl] = true
+      end
+    end
+  end
+  for i = 1, anzahl + 1 do
     if update[i] then
       updateKomplett = true
     else
