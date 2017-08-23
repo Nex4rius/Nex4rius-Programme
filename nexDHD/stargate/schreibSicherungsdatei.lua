@@ -9,12 +9,8 @@ local standard  = loadfile("/stargate/Sicherungsdatei.lua")
 local Sicherung = {}
 local sprachen  = {}
 
-if type(ALT) == "function" then
-  AlT = ALT()
-end
-if type(ALT) ~= "table" then
-  ALT = {}
-end
+if type(ALT) == "function" then AlT = ALT() end
+if type(ALT) ~= "table" then ALT = {} end
 
 if standard then
   standard = standard()
@@ -46,9 +42,9 @@ if type(NEU) == "table" then
     sprachen = reset()
   end
     
-  if type(NEU.autoclosetime) == "number" or NEU.autoclosetime == false then
+  if type(NEU.autoclosetime) == "number" or not NEU.autoclosetime then
     Sicherung.autoclosetime = NEU.autoclosetime
-  elseif type(ALT.autoclosetime) == "number" or ALT.autoclosetime == false then
+  elseif type(ALT.autoclosetime) == "number" or not ALT.autoclosetime then
     Sicherung.autoclosetime = ALT.autoclosetime
   else
     Sicherung.autoclosetime = standard.autoclosetime
