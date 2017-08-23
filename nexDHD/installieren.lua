@@ -181,6 +181,9 @@ function f.installieren(versionTyp)
     for j = 0, 10 do
       if wget("-f", f.Pfad(versionTyp) .. von, nach) then
         return true
+      else
+        print(von .. "\n")
+        os.sleep(1)
       end
     end
   end
