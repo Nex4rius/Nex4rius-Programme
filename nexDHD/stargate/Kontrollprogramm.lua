@@ -1793,6 +1793,7 @@ function Funktion.main()
   elseif CC then
     shell.run("label set Stargate-OS")
   end
+  Funktion.schreibFehlerLog("Starten ...")
   if sg.stargateState() == "Idle" and Funktion.getIrisState() == "Closed" then
     Funktion.irisOpen()
   end
@@ -1806,7 +1807,6 @@ function Funktion.main()
   seite = 0
   Funktion.zeigeMenu()
   Funktion.openModem()
-  Funktion.schreibFehlerLog()
   while running do
     if not pcall(Funktion.eventLoop) then
       os.sleep(5)
