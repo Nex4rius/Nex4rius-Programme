@@ -29,7 +29,7 @@ local term                   = term or require("term")
 local schreibSicherungsdatei = loadfile("/stargate/schreibSicherungsdatei.lua")
 local betaVersionName        = ""
 local Sicherung              = {}
-local Funktion               = {}
+local f                      = {}
 local component              = {}
 local gpu                    = {}
 local Farben                 = {}
@@ -169,9 +169,9 @@ local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
       while true do
         local event, id, data = os.pullEvent()
         if event == "http_success" then
-          local f = io.open(ziel, "w")
-          f:write(data.readAll())
-          f:close()
+          local d = io.open(ziel, "w")
+          d:write(data.readAll())
+          d:close()
           data:close()
           return true
         elseif event == "timer" and timer == id then
@@ -190,7 +190,7 @@ local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
   end
 end
 
-function Funktion.Pfad(versionTyp)
+function f.Pfad(versionTyp)
   if type(versionTyp) ~= "string" then
     return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/nexDHD/"
   elseif versionTyp == "beta" then
@@ -200,11 +200,11 @@ function Funktion.Pfad(versionTyp)
   end
 end
 
-function Funktion.checkSprache()
+function f.checkSprache()
   if Sicherung.Sprache and Sicherung.Sprache ~= "" then
     if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
       return true
-    elseif wget("-f", Funktion.Pfad(versionTyp) .. "stargate/sprache/" .. Sicherung.Sprache .. ".lua", "/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
+    elseif wget("-f", f.Pfad(versionTyp) .. "stargate/sprache/" .. Sicherung.Sprache .. ".lua", "/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
       return true
     end
   else
@@ -251,7 +251,7 @@ function Funktion.checkSprache()
   end
 end
 
-function Funktion.checkOpenOS()
+function f.checkOpenOS()
   if OC then
     local OpenOS_Version = "OpenOS 1.6.7"
     if wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Version", "/einstellungen/OpenOS-Version") then
@@ -313,7 +313,7 @@ function Funktion.checkOpenOS()
   end
 end
 
-function Funktion.checkKomponenten()
+function f.checkKomponenten()
   term.clear()
   print(sprachen.pruefeKomponenten or "Prüfe Komponenten\n")
   local function check(eingabe)
@@ -390,33 +390,33 @@ function Funktion.checkKomponenten()
   end
 end
 
-function Funktion.update(versionTyp)
+function f.update(versionTyp)
   if versionTyp == nil then
     versionTyp = "master"
   end
-  if wget("-f", Funktion.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua") then
+  if wget("-f", f.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua") then
     Sicherung.installieren = true
     if schreibSicherungsdatei(Sicherung) then
-      local f = io.open ("/autorun.lua", "w")
-      f:write('loadfile("/installieren.lua")("' .. versionTyp .. '")')
-      f:close()
+      local d = io.open ("/autorun.lua", "w")
+      d:write('loadfile("/installieren.lua")("' .. versionTyp .. '")')
+      d:close()
       loadfile("/autorun.lua")()
     else
       print(sprachen.fehlerName or "<FEHLER>")
     end
   elseif versionTyp == "master" then
-    wget("-f", Funktion.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua")
+    wget("-f", f.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua")
     loadfile("/installieren.lua")()
   end
   os.exit()
 end
 
-function Funktion.checkServerVersion()
+function f.checkServerVersion()
   gpu.setForeground(Farben.Hintergrundfarbe)
-  if wget("-f", Funktion.Pfad("master") .. "stargate/version.txt", "/serverVersion.txt") then
-    local f = io.open ("/serverVersion.txt", "r")
-    serverVersion = f:read()
-    f:close()
+  if wget("-f", f.Pfad("master") .. "stargate/version.txt", "/serverVersion.txt") then
+    local d = io.open ("/serverVersion.txt", "r")
+    serverVersion = d:read()
+    d:close()
     local a = loadfile("/bin/rm.lua") or fs.delete
     a("/serverVersion.txt")
   else
@@ -433,12 +433,12 @@ function Funktion.checkServerVersion()
   return serverVersion
 end
 
-function Funktion.checkBetaServerVersion()
+function f.checkBetaServerVersion()
   gpu.setForeground(Farben.Hintergrundfarbe)
-  if wget("-f", Funktion.Pfad("beta") .. "stargate/version.txt", "/betaVersion.txt") then
-    local f = io.open ("/betaVersion.txt", "r")
-    betaServerVersion = f:read()
-    f:close()
+  if wget("-f", f.Pfad("beta") .. "stargate/version.txt", "/betaVersion.txt") then
+    local d = io.open ("/betaVersion.txt", "r")
+    betaServerVersion = d:read()
+    d:close()
     local a = loadfile("/bin/rm.lua") or fs.delete
     a("/betaVersion.txt")
   else
@@ -455,17 +455,17 @@ function Funktion.checkBetaServerVersion()
   return betaServerVersion
 end
 
-function Funktion.checkDateien()
-  local f = io.open ("/bin/stargate.lua", "w")
-  f:write('-- pastebin run -f YVqKFnsP\n')
-  f:write('-- von Nex4rius\n')
-  f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD\n')
-  f:write('\n')
-  f:write('if not pcall(loadfile("/autorun.lua"), require("shell").parse(...)[1]) then\n')
-  f:write('   loadfile("/bin/wget-lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua")\n')
-  f:write('   loadfile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", "master", "nexDHD")\n')
-  f:write('end\n')
-  f:close()
+function f.checkDateien()
+  local d = io.open ("/bin/stargate.lua", "w")
+  d:write('-- pastebin run -f YVqKFnsP\n')
+  d:write('-- von Nex4rius\n')
+  d:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD\n')
+  d:write('\n')
+  d:write('if not pcall(loadfile("/autorun.lua"), require("shell").parse(...)[1]) then\n')
+  d:write('   loadfile("/bin/wget-lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua")\n')
+  d:write('   loadfile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", "master", "nexDHD")\n')
+  d:write('end\n')
+  d:close()
   local dateien = {
     "stargate/Kontrollprogramm.lua",
     "stargate/Sicherungsdatei.lua",
@@ -487,7 +487,7 @@ function Funktion.checkDateien()
       io.write(sprachen.fehlerName or "<FEHLER>")
       print(" Datei fehlt: " .. dateien[i])
       if component.isAvailable("internet") then
-        if not wget("-f", Funktion.Pfad(versionTyp) .. dateien[1], "/" .. dateien[1]) then
+        if not wget("-f", f.Pfad(versionTyp) .. dateien[1], "/" .. dateien[1]) then
           return
         end
       else
@@ -519,7 +519,7 @@ function Funktion.checkDateien()
       return true
     elseif component.isAvailable("internet") then
       for i in pairs(alleSprachen) do
-        if wget("-f", Funktion.Pfad(versionTyp) .. "stargate/sprache/" .. alleSprachen[i] .. ".lua", "/stargate/sprache/" .. alleSprachen[i] .. ".lua") then
+        if wget("-f", f.Pfad(versionTyp) .. "stargate/sprache/" .. alleSprachen[i] .. ".lua", "/stargate/sprache/" .. alleSprachen[i] .. ".lua") then
           return true
         end
       end
@@ -529,10 +529,10 @@ function Funktion.checkDateien()
   return
 end
 
-function Funktion.mainCheck()
+function f.mainCheck()
   if component.isAvailable("internet") then
-    local serverVersion = Funktion.checkServerVersion()
-    local betaServerVersion = Funktion.checkBetaServerVersion()
+    local serverVersion = f.checkServerVersion()
+    local betaServerVersion = f.checkBetaServerVersion()
     print(sprachen.derzeitigeVersion .. version .. sprachen.verfuegbareVersion .. serverVersion or "\nDerzeitige Version:    " .. version .. "\nVerfügbare Version:    " .. serverVersion)
     if serverVersion == betaServerVersion then else
       print(sprachen.betaVersion .. betaServerVersion .. " BETA" or "Beta-Version:          " .. betaServerVersion .. " BETA")
@@ -542,37 +542,37 @@ function Funktion.mainCheck()
     end
     if (arg == sprachen.ja or arg == "ja" or arg == "yes") and serverVersion ~= sprachen.fehlerName then
       print(sprachen.aktualisierenJa or "\nAktualisieren: Ja\n")
-      Funktion.update("master")
+      f.update("master")
     elseif arg == "neu" then
       print(sprachen.neuinstallation or "\nNeuinstallation")
-      wget("-f", Funktion.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua")
+      wget("-f", f.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua")
       loadfile("/installieren.lua")("neu")
     elseif arg == sprachen.nein or arg == "nein" or arg == "no" then
       -- nichts
     elseif arg == "beta" and betaServerVersion ~= sprachen.fehlerName then
       print(sprachen.aktualisierenBeta or "\nAktualisieren: Beta-Version\n")
-      Funktion.update("beta")
+      f.update("beta")
     elseif version ~= serverVersion or version ~= betaServerVersion then
       if Sicherung.installieren == false then
         local EndpunktVersion = string.len(version)
         if Sicherung.autoUpdate == true and version ~= serverVersion and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" and serverVersion ~= sprachen.fehlerName then
           print(sprachen.aktualisierenJa or "\nAktualisieren: Ja\n")
-          Funktion.update("master")
+          f.update("master")
         elseif serverVersion ~= sprachen.fehlerName then
           print(sprachen.aktualisierenFrage .. betaVersionName .. "\n" or "\nAktualisieren? ja/nein" .. betaVersionName .. "\n")
           if Sicherung.autoUpdate and version ~= serverVersion then
             print(sprachen.autoUpdateAn or "automatische Aktualisierungen sind aktiviert")
             print()
             os.sleep(2)
-            Funktion.update("master")
+            f.update("master")
           else
             antwortFrage = io.read()
             if string.lower(antwortFrage) == sprachen.ja or string.lower(antwortFrage) == "ja" or string.lower(antwortFrage) == "yes" then
               print(sprachen.aktualisierenJa or "\nAktualisieren: Ja\n")
-              Funktion.update("master")
+              f.update("master")
             elseif string.lower(antwortFrage) == "beta" then
               print(sprachen.aktualisierenBeta or "\nAktualisieren: Beta-Version\n")
-              Funktion.update("beta")
+              f.update("beta")
             else
               print(sprachen.aktualisierenNein .. antwortFrage or "\nAntwort: " .. antwortFrage)
             end
@@ -585,12 +585,12 @@ function Funktion.mainCheck()
   print(sprachen.laden or "\nLaden...")
   Sicherung.installieren = false
   schreibSicherungsdatei(Sicherung)
-  if Funktion.checkDateien() then
+  if f.checkDateien() then
     if fs.exists("/log") and component.isAvailable("keyboard") and Sicherung.debug then
       loadfile("/bin/edit.lua")("-r", "/log")
       loadfile("/bin/rm.lua")("/log")
     end
-    local erfolgreich, grund = pcall(loadfile("/stargate/Kontrollprogramm.lua"), Funktion.update, Funktion.checkServerVersion, version, Farben)
+    local erfolgreich, grund = pcall(loadfile("/stargate/Kontrollprogramm.lua"), f.update, f.checkServerVersion, version, Farben)
     if not erfolgreich then
       print("Kontrollprogramm.lua hat einen Fehler")
       print(grund)
@@ -600,28 +600,28 @@ function Funktion.mainCheck()
     if Sicherung.autoUpdate then
       print(sprachen.autoUpdateAn or "automatische Aktualisierungen sind aktiviert")
       os.sleep(2)
-      wget("-f", Funktion.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua")
+      wget("-f", f.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua")
       loadfile("/installieren.lua")()
     else
       antwortFrage = io.read()
       if string.lower(antwortFrage) == sprachen.ja or string.lower(antwortFrage) == "ja" or string.lower(antwortFrage) == "yes" then
-        wget("-f", Funktion.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua")
+        wget("-f", f.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua")
         loadfile("/installieren.lua")()
       end
     end
   end
 end
 
-function Funktion.main()
+function f.main()
   os.sleep(0.5)
   pcall(gpu.setResolution, 70, 25)
   gpu.setForeground(Farben.weisseFarbe)
   gpu.setBackground(Farben.graueFarbe)
-  Funktion.checkDateien()
+  f.checkDateien()
   if fs.exists("/stargate/version.txt") then
-    local f = io.open ("/stargate/version.txt", "r")
-    version = f:read()
-    f:close()
+    local d = io.open ("/stargate/version.txt", "r")
+    version = d:read()
+    d:close()
   else
     version = sprachen.fehlerName
   end
@@ -633,7 +633,7 @@ function Funktion.main()
   if arg == "master" or arg == "beta" then
     versionTyp = arg
   end
-  if Funktion.checkSprache() then
+  if f.checkSprache() then
     local neu = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
     sprachen = loadfile("/stargate/sprache/deutsch.lua")()
     for i in pairs(sprachen) do
@@ -660,9 +660,9 @@ function Funktion.main()
       beta  -> Aktualisierung zur Beta-Version
       hilfe -> zeige diese Nachricht nochmal]==])
   else
-    if Funktion.checkKomponenten() then
-      Funktion.checkOpenOS()
-      Funktion.mainCheck()
+    if f.checkKomponenten() then
+      f.checkOpenOS()
+      f.mainCheck()
     else
       print("\n")
       io.write(sprachen.fehlerName or "<FEHLER>")
@@ -676,4 +676,4 @@ function Funktion.main()
   gpu.setResolution(gpu.maxResolution())
 end
 
-Funktion.main()
+f.main()
