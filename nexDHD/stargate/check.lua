@@ -493,6 +493,7 @@ function f.checkDateien()
       else
         return
       end
+      os.sleep(1)
     end
   end
   if not fs.exists("/einstellungen") then
