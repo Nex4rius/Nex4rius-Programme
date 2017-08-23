@@ -19,7 +19,7 @@ local shell                     = shell or require("shell")
 _G.shell = shell
 local print                     = print
 
-local gpu, serialization, sprachen, unicode
+local gpu, serialization, sprachen, unicode, ID
 
 if OC then
   serialization = require("serialization")
@@ -64,6 +64,7 @@ if not pcall(loadfile("/einstellungen/Sicherungsdatei.lua")) then
 end
 
 local Sicherung                 = loadfile("/einstellungen/Sicherungsdatei.lua")()
+local gist                      = loadfile("/stargate/gist.lua")
 
 if not pcall(loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")) then
   print(string.format("Fehler %s.lua", Sicherung.Sprache))
@@ -143,6 +144,11 @@ do
     if type(neu) == "table" then
       Logbuch = neu
     end
+  end
+  if fs.exists("/einstellungen/ID.lua") then
+    local d = io.open("/einstellungen/ID.lua", "r")
+    ID = d:read()
+    d:close()
   end
   sectime                       = os.time()
   os.sleep(1)
@@ -1144,6 +1150,26 @@ function Funktion.Legende()
   Funktion.zeigeHier(x, Bildschirmhoehe - 1, sprachen.LegendeUpdate, 0)
 end
 
+function Funktion.hochladen()
+  if type(gist) ~= "function" then
+    loadfile("/bin/wget.lua")("-fQ", "https://raw.githubusercontent.com/OpenPrograms/Fingercomp-Programs/master/gist/gist.lua", "/stargate/gist.lua")
+    gist = loadfile("/stargate/gist.lua")
+    if type(gist) ~= "function" then return end
+  end
+  if ID then
+    gist("--t=ffd6b22230164136da05f9bb52e53cebc58323db", "-pr", ID, "/log=" .. (require("computer").getBootAddress() or Funktion.getAddress(sg.localAddress())))
+  else
+    gist("--t=ffd6b22230164136da05f9bb52e53cebc58323db", "-pr", "/log=" .. (require("computer").getBootAddress() or Funktion.getAddress(sg.localAddress())))
+    local x, y = term.getCursor()
+    local i, check = 45, {}
+    while gpu.get(i, y - 1) ~= " " do
+      check[i - 45] = gpu.get(i, y - 1)
+      i = i + 1
+    end
+    ID = table.concat(check)
+  end
+end
+
 function Funktion.schreibFehlerLog(...)
   if letzteEingabe == ... then else
     local f
@@ -1151,7 +1177,8 @@ function Funktion.schreibFehlerLog(...)
       f = io.open("/log", "a")
     else
       f = io.open("/log", "w")
-      f:write('-- "Ctrl + W" to exit\n\n')
+      f:write('-- ' .. tostring(sprachen.schliessen) .. '\n')
+      f:write((require("computer").getBootAddress() .. " - " .. Funktion.getAddress(sg.localAddress() .. '\n\n')
     end
     if type(...) == "string" then
       f:write(...)
@@ -1162,6 +1189,7 @@ function Funktion.schreibFehlerLog(...)
     f:close()
   end
   letzteEingabe = ...
+  pcall(Funktion.hochladen)
 end
 
 function Funktion.zeigeFehler(...)
@@ -1778,6 +1806,7 @@ function Funktion.main()
   seite = 0
   Funktion.zeigeMenu()
   Funktion.openModem()
+  Funktion.schreibFehlerLog()
   while running do
     if not pcall(Funktion.eventLoop) then
       os.sleep(5)
