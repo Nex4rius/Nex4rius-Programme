@@ -1195,7 +1195,7 @@ function f.schreibFehlerLog(...)
     d:close()
   end
   letzteEingabe = ...
-  --pcall(f.hochladen)
+  pcall(f.hochladen)
 end
 
 function f.zeigeFehler(...)
