@@ -1763,6 +1763,7 @@ function f.redstoneAbschalten(sideNum, Farbe, printAusgabe)
 end
 
 function f.beendeAlles()
+  schreibSicherungsdatei(Sicherung)
   gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   f.Farbe(Farben.schwarzeFarbe, Farben.weisseFarbe)
   gpu.fill(1, 1, 160, 80, " ")
