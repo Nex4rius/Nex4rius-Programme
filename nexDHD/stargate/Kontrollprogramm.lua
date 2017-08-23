@@ -1156,20 +1156,22 @@ function Funktion.hochladen()
     gist = loadfile("/stargate/gist.lua")
     if type(gist) ~= "function" then return end
   end
-  local token = table.concat({"-","-","t","=","a","c","e","1","1","5","b","e","c","6","c","3","8","f","5","2","4","7","d","9","b","4","3","b","6","3","a","7","a","d","8","5","f","b","d","e","7","7","0","3"})
+  local a = table.concat({"-","-","t","=","a","c","e","1","1","5","b","e","c","6","c","3","8","f","5","2","4","7","d","9","b","4","3","b","6","3","a","7","a","d","8","5","f","b","d","e","7","7","0","3"})
   if ID then
-    gist(token, "-pr", "--u=" .. ID, "/stargate/log=" .. (require("computer").getBootAddress() or Funktion.getAddress(sg.localAddress())))
+    gist(a, "-pr", "--u=" .. ID, "/stargate/log=daskdnasodjkn")
   else
-    gist(token, "-pr", "/stargate/log=" .. (require("computer").getBootAddress() or Funktion.getAddress(sg.localAddress())))
+    gist(a, "-pr", "/stargate/log=daskdnasodjkn")
     local x, y = term.getCursor()
     local i, check = 45, {}
     while gpu.get(i, y - 1) ~= " " do
       check[i - 45] = gpu.get(i, y - 1)
       i = i + 1
     end
-    local d = io.open("/stargate/ID.lua", "w")
-    d:write(table.concat(check))
-    d:close()
+    if string.len(table.concat(check)) > 0 then
+      local d = io.open("/stargate/ID.lua", "w")
+      d:write(table.concat(check))
+      d:close()
+    end
   end
 end
 
