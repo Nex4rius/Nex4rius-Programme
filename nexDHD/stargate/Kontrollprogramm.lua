@@ -1234,9 +1234,9 @@ function f.key_down(e)
   elseif c >= "0" and c <= "9" and seite >= 0 then
     Taste.Zahl(c)
   else
-    local f = Taste[c]
-    if f then
-      f.checken(f)
+    local d = Taste[c]
+    if d then
+      f.checken(d)
     end
   end
 end
