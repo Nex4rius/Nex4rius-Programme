@@ -4,12 +4,11 @@
 
 local fs        = fs or require("filesystem")
 local NEU       = ...
-local ALT       = loadfile("/einstellungen/Sicherungsdatei.lua")
+local ALT       = loadfile("/einstellungen/Sicherungsdatei.lua")()
 local standard  = loadfile("/stargate/Sicherungsdatei.lua")
 local Sicherung = {}
 local sprachen  = {}
 
-if type(ALT) == "function" then AlT = ALT() end
 if type(ALT) ~= "table" then ALT = {} end
 
 if standard then
@@ -42,6 +41,7 @@ if type(NEU) == "table" then
     sprachen = reset()
   end
   
+  print(Sicherung.autoclosetime)
   print(NEU.autoclosetime)
   print(ALT.autoclosetime)
   print(standard.autoclosetime)
@@ -54,6 +54,8 @@ if type(NEU) == "table" then
   else
     Sicherung.autoclosetime = standard.autoclosetime
   end
+  
+  print(Sicherung.autoclosetime)
   print(NEU.autoclosetime)
   print(ALT.autoclosetime)
   print(standard.autoclosetime)
