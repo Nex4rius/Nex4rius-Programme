@@ -178,12 +178,12 @@ function f.installieren(versionTyp)
   fs.makeDirectory("/update/stargate/sprache")
   local updateKomplett = false
   local function download(von, nach)
-    for j = 0, 10 do
+    for j = 1, 10 do
       if wget("-f", f.Pfad(versionTyp) .. von, nach) then
         return true
       elseif require("component").isAvailable("internet") then
-        print(von .. "\nerneuter Downloadversuch in 5s\n")
-        os.sleep(5)
+        print(von .. "\nerneuter Downloadversuch in " .. j .. "s\n")
+        os.sleep(j)
       else
         return
       end
