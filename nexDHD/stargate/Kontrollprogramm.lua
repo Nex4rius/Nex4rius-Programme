@@ -397,6 +397,7 @@ function f.Logbuchseite()
   ausgabe(max, Logbuch, "neu")
   f.Farbe(Farben.gelbeFarbe, Farben.schwarzeFarbe)
   ausgabe(max, Logbuch, "update")
+  f.Legende()
 end
 
 function f.Infoseite()
@@ -1248,7 +1249,6 @@ function Taste.Pfeil_links()
     f.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.SteuerungName, 0)
   elseif seite == -1 then
     f.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.logbuch, 0)
-    f.Legende()
   end
   if seite <= -2 then else
     seite = seite - 1
