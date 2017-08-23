@@ -1799,8 +1799,6 @@ function f.main()
     shell.run("label set Stargate-OS")
   end
   f.schreibFehlerLog("\nStarten ...")
-  print(pcall(f.hochladen))
-  io.read()
   if sg.stargateState() == "Idle" and f.getIrisState() == "Closed" then
     f.irisOpen()
   end
