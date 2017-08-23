@@ -1185,7 +1185,7 @@ function Funktion.schreibFehlerLog(...)
     elseif type(...) == "table" then
       f:write(serialization.serialize(...))
     end
-    f:write("\n" .. os.time() .. string.rep("-", max_Bildschirmbreite - string.len(os.time())) .. "\n")
+    f:write("\n" .. os.time() .. string.rep("-", 69 - string.len(os.time())) .. "\n")
     f:close()
   end
   letzteEingabe = ...
