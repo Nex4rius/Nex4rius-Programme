@@ -1832,5 +1832,6 @@ if Variablen.update == "ja" or Variablen.update == "beta" then
   print(sprachen.aktualisierenJetzt)
   print(sprachen.schliesseIris .. "...\n")
   sg.closeIris()
-  update(Variablen.update, Sicherung)
+  pcall(update, Variablen.update, Sicherung)
+  os.execute("pastebin run -f YVqKFnsP " .. Variablen.update)
 end
