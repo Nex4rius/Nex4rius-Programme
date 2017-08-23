@@ -42,9 +42,9 @@ if type(NEU) == "table" then
     sprachen = reset()
   end
     
-  if type(NEU.autoclosetime) == "number" or NEU.autoclosetime = false then
+  if type(NEU.autoclosetime) == "number" or NEU.autoclosetime == false then
     Sicherung.autoclosetime = NEU.autoclosetime
-  elseif type(ALT.autoclosetime) == "number" or ALT.autoclosetime = false then
+  elseif type(ALT.autoclosetime) == "number" or ALT.autoclosetime == false then
     Sicherung.autoclosetime = ALT.autoclosetime
   else
     Sicherung.autoclosetime = standard.autoclosetime
