@@ -1157,9 +1157,9 @@ function Funktion.hochladen()
     if type(gist) ~= "function" then return end
   end
   if ID then
-    gist("--t=ffd6b22230164136da05f9bb52e53cebc58323db", "-pr", ID, "/log=" .. (require("computer").getBootAddress() or Funktion.getAddress(sg.localAddress())))
+    gist("--t=ace115bec6c38f5247" .. "d9b43b63a7ad85fbde7703", "-pr", ID, "/log=" .. (require("computer").getBootAddress() or Funktion.getAddress(sg.localAddress())))
   else
-    gist("--t=ffd6b22230164136da05f9bb52e53cebc58323db", "-pr", "/log=" .. (require("computer").getBootAddress() or Funktion.getAddress(sg.localAddress())))
+    gist("--t=ace115bec6c38f5247" .. "d9b43b63a7ad85fbde7703", "-pr", "/log=" .. (require("computer").getBootAddress() or Funktion.getAddress(sg.localAddress())))
     local x, y = term.getCursor()
     local i, check = 45, {}
     while gpu.get(i, y - 1) ~= " " do
