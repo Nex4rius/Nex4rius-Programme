@@ -41,12 +41,6 @@ if type(NEU) == "table" then
     sprachen = reset()
   end
   
-  print(Sicherung.autoclosetime)
-  print(NEU.autoclosetime)
-  print(ALT.autoclosetime)
-  print(standard.autoclosetime)
-  io.read()
-  
   if type(NEU.autoclosetime) == "number" or NEU.autoclosetime == false then
     Sicherung.autoclosetime = NEU.autoclosetime
   elseif type(ALT.autoclosetime) == "number" or ALT.autoclosetime == false then
@@ -54,12 +48,6 @@ if type(NEU) == "table" then
   else
     Sicherung.autoclosetime = standard.autoclosetime
   end
-  
-  print(Sicherung.autoclosetime)
-  print(NEU.autoclosetime)
-  print(ALT.autoclosetime)
-  print(standard.autoclosetime)
-  io.read()
     
   local function check(typ, name)
     if type(NEU[name]) == typ then
