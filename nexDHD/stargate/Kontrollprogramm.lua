@@ -422,7 +422,7 @@ function Funktion.Infoseite()
   i = i + 1
   Taste.links[i] = Taste.s
   Taste.Koordinaten.Taste_s = i
-  if fs.exists("/log") then
+  if fs.exists("/stargate/log") then
     term.write("L ")
     print(sprachen.zeigeLog or "zeige Fehlerlog")
     i = i + 1
@@ -1116,8 +1116,8 @@ function Funktion.zeigeNachricht(inhalt, oben)
   Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
   if VersionUpdate == true then
     Funktion.zeigeHier(1, Bildschirmhoehe - 1, sprachen.aktualisierenGleich, Bildschirmbreite)
-  elseif fs.exists("/log") and Sicherung.debug then
-    Funktion.zeigeHier(1, Bildschirmhoehe - 1, sprachen.fehlerName .. " /log", Bildschirmbreite)
+  elseif fs.exists("/stargate/log") and Sicherung.debug then
+    Funktion.zeigeHier(1, Bildschirmhoehe - 1, sprachen.fehlerName .. " /stargate/log", Bildschirmbreite)
   elseif seite == -2 then
     Funktion.Legende()
     Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
@@ -1156,27 +1156,30 @@ function Funktion.hochladen()
     gist = loadfile("/stargate/gist.lua")
     if type(gist) ~= "function" then return end
   end
+  local token = table.concat({"-","-","t","=","a","c","e","1","1","5","b","e","c","6","c","3","8","f","5","2","4","7","d","9","b","4","3","b","6","3","a","7","a","d","8","5","f","b","d","e","7","7","0","3"})
   if ID then
-    gist("--t=ace115bec6c38f5247" .. "d9b43b63a7ad85fbde7703", "-pr", "--u=" .. ID, "/log=" .. (require("computer").getBootAddress() or Funktion.getAddress(sg.localAddress())))
+    gist(token, "-pr", "--u=" .. ID, "/stargate/log=" .. (require("computer").getBootAddress() or Funktion.getAddress(sg.localAddress())))
   else
-    gist("--t=ace115bec6c38f5247" .. "d9b43b63a7ad85fbde7703", "-pr", "/log=" .. (require("computer").getBootAddress() or Funktion.getAddress(sg.localAddress())))
+    gist(token, "-pr", "/stargate/log=" .. (require("computer").getBootAddress() or Funktion.getAddress(sg.localAddress())))
     local x, y = term.getCursor()
     local i, check = 45, {}
     while gpu.get(i, y - 1) ~= " " do
       check[i - 45] = gpu.get(i, y - 1)
       i = i + 1
     end
-    ID = table.concat(check)
+    local d = io.open("/stargate/ID.lua", "w")
+    d:write(table.concat(check))
+    d:close()
   end
 end
 
 function Funktion.schreibFehlerLog(...)
   if letzteEingabe == ... then else
     local f
-    if fs.exists("/log") then
-      f = io.open("/log", "a")
+    if fs.exists("/stargate/log") then
+      f = io.open("/stargate/log", "a")
     else
-      f = io.open("/log", "w")
+      f = io.open("/stargate/log", "w")
       f:write('-- ' .. tostring(sprachen.schliessen) .. '\n')
       f:write(require("computer").getBootAddress() .. " - " .. Funktion.getAddress(sg.localAddress() .. '\n\n'))
     end
@@ -1472,7 +1475,7 @@ function Taste.l()
       pcall(screen.setTouchModeInverted, false)
       Funktion.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
       os.sleep(0.1)
-      edit("-r", "/log")
+      edit("-r", "/stargate/log")
       pcall(screen.setTouchModeInverted, true)
       seite = 0
     else
