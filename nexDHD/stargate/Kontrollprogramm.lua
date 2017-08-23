@@ -1812,7 +1812,10 @@ function f.main()
   f.zeigeMenu()
   f.openModem()
   while running do
-    if not pcall(f.eventLoop) then
+    local ergebnis, grund = pcall(f.eventLoop)
+    if not ergebnis then
+      print(grund)
+      f.schreibFehlerLog(grund)
       os.sleep(5)
     end
   end
