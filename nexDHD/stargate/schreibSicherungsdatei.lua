@@ -42,9 +42,9 @@ if type(NEU) == "table" then
     sprachen = reset()
   end
     
-  if type(NEU.autoclosetime) == "number" or not NEU.autoclosetime then
+  if type(NEU.autoclosetime) == "number" or NEU.autoclosetime = false then
     Sicherung.autoclosetime = NEU.autoclosetime
-  elseif type(ALT.autoclosetime) == "number" or not ALT.autoclosetime then
+  elseif type(ALT.autoclosetime) == "number" or ALT.autoclosetime = false then
     Sicherung.autoclosetime = ALT.autoclosetime
   else
     Sicherung.autoclosetime = standard.autoclosetime
@@ -77,7 +77,11 @@ if type(NEU) == "table" then
   f:write('-- ' .. tostring(sprachen.speichern) .. '\n')
   f:write('-- ' .. tostring(sprachen.schliessen) .. '\n--\n\n')
   f:write('return {\n')
-  f:write('  autoclosetime = '  .. tostring(Sicherung.autoclosetime)..  ', -- ' .. tostring(sprachen.autoclosetime) .. '\n')
+  if Sicherung.autoclosetime then
+    f:write('  autoclosetime = '  .. tostring(Sicherung.autoclosetime)..  ', -- ' .. tostring(sprachen.autoclosetime) .. '\n')
+  else
+    f:write('  autoclosetime = false, -- ' .. tostring(sprachen.autoclosetime) .. '\n')
+  end
   f:write('  IDC           = "' .. tostring(Sicherung.IDC)          .. '", -- ' .. tostring(sprachen.IDC)           .. '\n')
   f:write('  RF            = '  .. tostring(Sicherung.RF)           ..  ', -- ' .. tostring(sprachen.RF)            .. '\n')
   f:write('  Sprache       = "' .. tostring(Sicherung.Sprache)      .. '", -- deutsch / english / russian / czech\n')
