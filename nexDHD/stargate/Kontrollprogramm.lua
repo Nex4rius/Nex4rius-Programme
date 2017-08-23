@@ -1673,7 +1673,7 @@ function f.eventLoop()
     if not e then
     elseif not e[1] then
     else
-      d = Funktion[e[1]]
+      d = f[e[1]]
       if d then
         f.checken(d, e)
       end
