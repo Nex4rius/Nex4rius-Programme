@@ -207,7 +207,7 @@ function f.installieren(versionTyp)
   end
   for s in pairs(Sprachliste) do
     if Sprachliste[s] ~= "" then
-      if wget("-f", f.Pfad(versionTyp) .. "stargate/sprache/" .. Sprachliste[s] .. ".lua", "/update/stargate/sprache/" .. Sprachliste[s] .. ".lua") then
+      if download("stargate/sprache/" .. Sprachliste[s] .. ".lua", "/update/stargate/sprache/" .. Sprachliste[s] .. ".lua") then
         update[anzahl + 1] = true
       end
     end
