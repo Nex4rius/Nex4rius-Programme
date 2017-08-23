@@ -1194,7 +1194,7 @@ function f.schreibFehlerLog(...)
     d:close()
   end
   letzteEingabe = ...
-  pcall(f.hochladen)
+  --pcall(f.hochladen)
 end
 
 function f.zeigeFehler(...)
@@ -1798,7 +1798,6 @@ function f.main()
   elseif CC then
     shell.run("label set Stargate-OS")
   end
-  f.schreibFehlerLog("\nStarten ...")
   if sg.stargateState() == "Idle" and f.getIrisState() == "Closed" then
     f.irisOpen()
   end
