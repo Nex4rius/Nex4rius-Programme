@@ -21,7 +21,7 @@ end
 
 local arg         = ...
 local Sicherung   = {}
-local Funktionen  = {}
+local f           = {}
 local sprachen, IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate
 local shell       = shell or require("shell")
 _G.shell = shell
@@ -57,9 +57,9 @@ local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
         local event, id, data = os.pullEvent()
         if event == "http_success" then
           print("erfolgreich")
-          local f = io.open(ziel, "w")
-          f:write(data.readAll())
-          f:close()
+          local d = io.open(ziel, "w")
+          d:write(data.readAll())
+          d:close()
           data:close()
           print("Gespeichert unter " .. ziel)
           return true
@@ -123,7 +123,7 @@ if Sicherung.Sprache then
   end
 end
 
-function Funktionen.Pfad(versionTyp)
+function f.Pfad(versionTyp)
   if versionTyp == "beta" then
     return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/nexDHD/nexDHD/"
   elseif versionTyp then
@@ -133,9 +133,9 @@ function Funktionen.Pfad(versionTyp)
   end
 end
 
-function Funktionen.schreibAutorun()
-  local f = io.open("/autorun.lua", "w")
-  f:write([[
+function f.schreibAutorun()
+  local d = io.open("/autorun.lua", "w")
+  d:write([[
   -- pastebin run -f YVqKFnsP
   -- nexDHD von Nex4rius
   -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD
@@ -171,29 +171,48 @@ function Funktionen.schreibAutorun()
       require("shell").setWorkingDirectory(alterPfad)
   end
   ]])
-  f:close()
+  d:close()
 end
 
-function Funktionen.installieren(versionTyp)
+function f.installieren(versionTyp)
   fs.makeDirectory("/update/stargate/sprache")
   local updateKomplett = false
-  local update = {}
-  update[1] = wget("-f", Funktionen.Pfad(versionTyp) .. "autorun.lua",                        "/update/autorun.lua")
-  update[2] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/check.lua",                 "/update/stargate/check.lua")
-  update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/version.txt",               "/update/stargate/version.txt")
-  update[4] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/adressen.lua",              "/update/stargate/adressen.lua")
-  update[5] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/Sicherungsdatei.lua",       "/update/stargate/Sicherungsdatei.lua")
-  update[6] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/Kontrollprogramm.lua",      "/update/stargate/Kontrollprogramm.lua")
-  update[7] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/schreibSicherungsdatei.lua","/update/stargate/schreibSicherungsdatei.lua")
-  update[8] = wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/sprache/ersetzen.lua",      "/update/stargate/sprache/ersetzen.lua")
-  for s in pairs(Sprachliste) do
-    if Sprachliste[s] ~= "" then
-      if wget("-f", Funktionen.Pfad(versionTyp) .. "stargate/sprache/" .. Sprachliste[s] .. ".lua", "/update/stargate/sprache/" .. Sprachliste[s] .. ".lua") then
-        update[9] = true
+  local function download(von, nach)
+    for j = 1, 10 do
+      if wget("-f", f.Pfad(versionTyp) .. von, nach) then
+        return true
+      elseif require("component").isAvailable("internet") then
+        print(von .. "\nerneuter Downloadversuch in " .. j .. "s\n")
+        os.sleep(j)
+      else
+        return
       end
     end
   end
-  for i = 1, 9 do
+  local anzahl = 0
+  local update = {}
+  local dateien = {
+    {"autorun.lua",                         "/update/autorun.lua"},
+    {"stargate/check.lua",                  "/update/stargate/check.lua"},
+    {"stargate/version.txt",                "/update/stargate/version.txt"},
+    {"stargate/adressen.lua",               "/update/stargate/adressen.lua"},
+    {"stargate/Sicherungsdatei.lua",        "/update/stargate/Sicherungsdatei.lua"},
+    {"stargate/Kontrollprogramm.lua",       "/update/stargate/Kontrollprogramm.lua"},
+    {"stargate/schreibSicherungsdatei.lua", "/update/stargate/schreibSicherungsdatei.lua"},
+    {"stargate/sprache/ersetzen.lua",       "/update/stargate/sprache/ersetzen.lua"},
+  }
+  for k, v in pairs(dateien) do
+    update[k] = download(v[1], v[2])
+    anzahl = k
+  end
+  for s in pairs(Sprachliste) do
+    if Sprachliste[s] ~= "" then
+      if download("stargate/sprache/" .. Sprachliste[s] .. ".lua", "/update/stargate/sprache/" .. Sprachliste[s] .. ".lua") then
+        update[anzahl + 1] = true
+      end
+    end
+  end
+  for i = 1, anzahl + 1 do
     if update[i] then
       updateKomplett = true
     else
@@ -201,7 +220,7 @@ function Funktionen.installieren(versionTyp)
       if sprachen then
         print(sprachen.fehlerName .. " " .. i)
       end
-      Funktionen.schreibAutorun()
+      f.schreibAutorun()
       break
     end
   end
@@ -224,14 +243,14 @@ function Funktionen.installieren(versionTyp)
         kopieren("/update/stargate/sprache/" .. Sprachliste[s] .. ".lua", "/stargate/sprache/" .. Sprachliste[s] .. ".lua")
       end
     end
-    local f = io.open("/stargate/version.txt", "r")
+    local d = io.open("/stargate/version.txt", "r")
     if f then
-      version = f:read()
-      f:close()
+      version = d:read()
+      d:close()
       if versionTyp == "beta" then
-        local f = io.open("/stargate/version.txt", "w")
-        f:write(version .. " BETA")
-        f:close()
+        local d = io.open("/stargate/version.txt", "w")
+        d:write(version .. " BETA")
+        d:close()
       end
     end
     Sicherung.installieren = true
@@ -239,16 +258,8 @@ function Funktionen.installieren(versionTyp)
     print()
   end
   if OC then
-    local f = io.open("/bin/nexDHD.lua", "w")
-    f:write('-- pastebin run -f YVqKFnsP\n')
-    f:write('-- nexDHD von Nex4rius\n')
-    f:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD\n')
-    f:write('\n')
-    f:write('if not pcall(loadfile("/autorun.lua"), require("shell").parse(...)[1]) then\n')
-    f:write('   os.execute("pastebin run -f YVqKFnsP")\n')
-    f:write('end\n')
-    f:close()
-    kopieren("/bin/nexDHD.lua", "/bin/stargate.lua")
+    kopieren("/autorun.lua", "/bin/nexDHD.lua")
+    kopieren("/autorun.lua", "/bin/stargate.lua")
   end
   if updateKomplett then
     if OC then
@@ -279,20 +290,20 @@ if versionTyp == nil then
     if OC then
       loadfile("/bin/rm.lua")("-v", "/stargate", "-r")
       loadfile("/bin/rm.lua")("-v", "/update", "-r")
-      local f = io.open("/autorun.lua", "w")
-      f:write([[
+      local d = io.open("/autorun.lua", "w")
+      d:write([[
         -- pastebin run -f YVqKFnsP
         -- nexDHD von Nex4rius
         -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD
         
-        wget("-f", Funktionen.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua")
+        wget("-f", f.Pfad(versionTyp) .. "installieren.lua", "/installieren.lua")
         loadfile("/installieren.lua")()
       ]])
     elseif CC then
       shell.run("delete /stargate")
       shell.run("delete /update")
-      local f = io.open("/startup", "w")
-      f:write([[
+      local d = io.open("/startup", "w")
+      d:write([[
         -- pastebin run -f YVqKFnsP
         -- nexDHD von Nex4rius
         -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD
@@ -300,13 +311,13 @@ if versionTyp == nil then
         shell.run("pastebin run -f YVqKFnsP")
       ]])
     end
-    f:close()
-    Funktionen.installieren("master")
+    d:close()
+    f.installieren("master")
   elseif type(arg) == "string" then
-    Funktionen.installieren(arg)
+    f.installieren(arg)
   else
-    Funktionen.installieren("master")
+    f.installieren("master")
   end
 else
-  Funktionen.installieren(versionTyp)
+  f.installieren(versionTyp)
 end
