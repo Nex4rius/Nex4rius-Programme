@@ -1178,7 +1178,7 @@ function Funktion.schreibFehlerLog(...)
     else
       f = io.open("/log", "w")
       f:write('-- ' .. tostring(sprachen.schliessen) .. '\n')
-      f:write((require("computer").getBootAddress() .. " - " .. Funktion.getAddress(sg.localAddress() .. '\n\n')
+      f:write(require("computer").getBootAddress() .. " - " .. Funktion.getAddress(sg.localAddress() .. '\n\n'))
     end
     if type(...) == "string" then
       f:write(...)
