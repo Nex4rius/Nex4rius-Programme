@@ -1828,14 +1828,9 @@ f.checken(f.main)
 local update = f.update
 Funktion = nil
 
-if Variablen.update == "ja" then
+if Variablen.update == "ja" or Variablen.update == "beta" then
   print(sprachen.aktualisierenJetzt)
   print(sprachen.schliesseIris .. "...\n")
   sg.closeIris()
-  update("master")
-elseif Variablen.update == "beta" then
-  print(sprachen.aktualisierenJetzt)
-  print(sprachen.schliesseIris .. "...\n")
-  sg.closeIris()
-  update("beta")
+  update(Variablen.update, Sicherung)
 end
