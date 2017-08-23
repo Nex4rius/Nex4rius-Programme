@@ -390,7 +390,10 @@ function f.checkKomponenten()
   end
 end
 
-function f.update(versionTyp)
+function f.update(versionTyp, a)
+  if type(a) == "table" then
+    Sicherung = a
+  end
   if versionTyp == nil then
     versionTyp = "master"
   end
