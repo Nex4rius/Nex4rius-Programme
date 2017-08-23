@@ -182,8 +182,8 @@ function f.installieren(versionTyp)
       if wget("-f", f.Pfad(versionTyp) .. von, nach) then
         return true
       else
-        print(von .. "\n")
-        os.sleep(1)
+        print(von .. "\nerneuter Downloadversuch in 5s\n")
+        os.sleep(5)
       end
     end
   end
@@ -206,7 +206,7 @@ function f.installieren(versionTyp)
   for s in pairs(Sprachliste) do
     if Sprachliste[s] ~= "" then
       if wget("-f", f.Pfad(versionTyp) .. "stargate/sprache/" .. Sprachliste[s] .. ".lua", "/update/stargate/sprache/" .. Sprachliste[s] .. ".lua") then
-        update[anzahl] = true
+        update[anzahl + 1] = true
       end
     end
   end
