@@ -1793,7 +1793,7 @@ function Funktion.main()
   elseif CC then
     shell.run("label set Stargate-OS")
   end
-  Funktion.schreibFehlerLog("Starten ...")
+  Funktion.schreibFehlerLog("\nStarten ...")
   if sg.stargateState() == "Idle" and Funktion.getIrisState() == "Closed" then
     Funktion.irisOpen()
   end
