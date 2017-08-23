@@ -1177,7 +1177,7 @@ end
 
 function f.schreibFehlerLog(...)
   if letzteEingabe == ... then else
-    local f
+    local d
     if fs.exists("/stargate/log") then
       d = io.open("/stargate/log", "a")
     else
