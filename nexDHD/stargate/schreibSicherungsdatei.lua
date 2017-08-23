@@ -41,7 +41,12 @@ if type(NEU) == "table" then
   if type(sprachen) ~= "table" then
     sprachen = reset()
   end
-    
+  
+  print(NEU.autoclosetime)
+  print(ALT.autoclosetime)
+  print(standard.autoclosetime)
+  io.read()
+  
   if type(NEU.autoclosetime) == "number" or NEU.autoclosetime == false then
     Sicherung.autoclosetime = NEU.autoclosetime
   elseif type(ALT.autoclosetime) == "number" or ALT.autoclosetime == false then
@@ -49,6 +54,10 @@ if type(NEU) == "table" then
   else
     Sicherung.autoclosetime = standard.autoclosetime
   end
+  print(NEU.autoclosetime)
+  print(ALT.autoclosetime)
+  print(standard.autoclosetime)
+  io.read()
     
   local function check(typ, name)
     if type(NEU[name]) == typ then
@@ -77,10 +86,10 @@ if type(NEU) == "table" then
   f:write('-- ' .. tostring(sprachen.speichern) .. '\n')
   f:write('-- ' .. tostring(sprachen.schliessen) .. '\n--\n\n')
   f:write('return {\n')
-  if Sicherung.autoclosetime then
-    f:write('  autoclosetime = '  .. tostring(Sicherung.autoclosetime)..  ', -- ' .. tostring(sprachen.autoclosetime) .. '\n')
-  else
+  if Sicherung.autoclosetime == false then
     f:write('  autoclosetime = false, -- ' .. tostring(sprachen.autoclosetime) .. '\n')
+  else
+    f:write('  autoclosetime = '  .. tostring(Sicherung.autoclosetime)..  ', -- ' .. tostring(sprachen.autoclosetime) .. '\n')
   end
   f:write('  IDC           = "' .. tostring(Sicherung.IDC)          .. '", -- ' .. tostring(sprachen.IDC)           .. '\n')
   f:write('  RF            = '  .. tostring(Sicherung.RF)           ..  ', -- ' .. tostring(sprachen.RF)            .. '\n')
