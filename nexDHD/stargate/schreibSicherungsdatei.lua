@@ -4,17 +4,12 @@
 
 local fs        = fs or require("filesystem")
 local NEU       = ...
-local ALT       = loadfile("/einstellungen/Sicherungsdatei.lua")
+local ALT       = loadfile("/einstellungen/Sicherungsdatei.lua")()
 local standard  = loadfile("/stargate/Sicherungsdatei.lua")
 local Sicherung = {}
 local sprachen  = {}
 
-if type(ALT) == "function" then
-  AlT = ALT()
-end
-if type(ALT) ~= "table" then
-  ALT = {}
-end
+if type(ALT) ~= "table" then ALT = {} end
 
 if standard then
   standard = standard()
@@ -45,7 +40,7 @@ if type(NEU) == "table" then
   if type(sprachen) ~= "table" then
     sprachen = reset()
   end
-    
+  
   if type(NEU.autoclosetime) == "number" or NEU.autoclosetime == false then
     Sicherung.autoclosetime = NEU.autoclosetime
   elseif type(ALT.autoclosetime) == "number" or ALT.autoclosetime == false then
@@ -81,7 +76,11 @@ if type(NEU) == "table" then
   f:write('-- ' .. tostring(sprachen.speichern) .. '\n')
   f:write('-- ' .. tostring(sprachen.schliessen) .. '\n--\n\n')
   f:write('return {\n')
-  f:write('  autoclosetime = '  .. tostring(Sicherung.autoclosetime)..  ', -- ' .. tostring(sprachen.autoclosetime) .. '\n')
+  if Sicherung.autoclosetime == false then
+    f:write('  autoclosetime = false, -- ' .. tostring(sprachen.autoclosetime) .. '\n')
+  else
+    f:write('  autoclosetime = '  .. tostring(Sicherung.autoclosetime)..  ', -- ' .. tostring(sprachen.autoclosetime) .. '\n')
+  end
   f:write('  IDC           = "' .. tostring(Sicherung.IDC)          .. '", -- ' .. tostring(sprachen.IDC)           .. '\n')
   f:write('  RF            = '  .. tostring(Sicherung.RF)           ..  ', -- ' .. tostring(sprachen.RF)            .. '\n')
   f:write('  Sprache       = "' .. tostring(Sicherung.Sprache)      .. '", -- deutsch / english / russian / czech\n')

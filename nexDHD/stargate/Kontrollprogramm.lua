@@ -1763,6 +1763,7 @@ function f.redstoneAbschalten(sideNum, Farbe, printAusgabe)
 end
 
 function f.beendeAlles()
+  schreibSicherungsdatei(Sicherung)
   gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   f.Farbe(Farben.schwarzeFarbe, Farben.weisseFarbe)
   gpu.fill(1, 1, 160, 80, " ")
@@ -1827,14 +1828,9 @@ f.checken(f.main)
 local update = f.update
 Funktion = nil
 
-if Variablen.update == "ja" then
+if Variablen.update == "ja" or Variablen.update == "beta" then
   print(sprachen.aktualisierenJetzt)
   print(sprachen.schliesseIris .. "...\n")
   sg.closeIris()
-  update("master")
-elseif Variablen.update == "beta" then
-  print(sprachen.aktualisierenJetzt)
-  print(sprachen.schliesseIris .. "...\n")
-  sg.closeIris()
-  update("beta")
+  update(Variablen.update, Sicherung)
 end
