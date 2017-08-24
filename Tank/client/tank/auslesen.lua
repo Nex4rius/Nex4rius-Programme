@@ -199,6 +199,10 @@ function o.version(signal)
   f.senden(signal, "version", version)
 end
 
+function o.anmelden(signal)
+  f.senden(signal, "anmelden", version)
+end
+
 function o.tank(signal)
   f.senden(signal, "tank", f.serialize(f.check()))
 end
