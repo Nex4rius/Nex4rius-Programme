@@ -195,10 +195,6 @@ function o.aktualisieren(signal)
   end
 end
 
-function o.version(signal)
-  f.senden(signal, "version", version)
-end
-
 function o.anmelden(signal)
   f.senden(signal, "anmelden", version)
 end
