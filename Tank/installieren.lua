@@ -77,7 +77,7 @@ function f.installieren(versionTyp)
         print(von .. "\nerneuter Downloadversuch in " .. j .. "s\n")
         os.sleep(j)
       else
-        print("\n<FEHLER> Program wird beendet\n")
+        print("\n<FEHLER> Download funktioniert nicht\nProgram wird beendet\n")
         os.exit()
       end
     end
