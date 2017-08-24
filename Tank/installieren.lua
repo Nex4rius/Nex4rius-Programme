@@ -57,7 +57,6 @@ function f.installieren(versionTyp)
       weiter = true
     end
   end
-  os.sleep(2)
   f.Komponenten(typ)
   local function ordner(...)
     while not fs.exists(...) do
