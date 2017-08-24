@@ -351,19 +351,16 @@ function test(screenid)
 end
 
 function f.text(a, b)
-  if c.uptime() - letzteNachricht > Wartezeit then
-    for screenid in component.list("screen") do
-      gpu.bind(screenid)
+  for screenid in component.list("screen") do
+    gpu.bind(screenid)
+    if b then
+      gpu.setResolution(gpu.maxResolution())
+    else
       test(screenid)
-      f.Farben(0xFFFFFF, 0x000000)
-      if b then
-        gpu.setResolution(gpu.maxResolution())
-      else
-        gpu.setResolution(string.len(a), 1)
-      end
-      os.sleep(0.1)
-      gpu.set(1, 1, a)
+      gpu.setResolution(string.len(a), 1)
     end
+    f.Farben(0xFFFFFF, 0x000000)
+    gpu.set(1, 1, a)
   end
 end
 
@@ -381,7 +378,7 @@ function o.anmelden(signal)
       a[i] = v
       i = i + 1
     end
-    f.text(table.concat(a), true)
+    f.text(table.concat(a, "/t"), true)
   end
   local dazu = true
   for k, v in pairs(Sensorliste) do
