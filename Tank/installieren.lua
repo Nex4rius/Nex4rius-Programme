@@ -156,6 +156,7 @@ function f.installieren(versionTyp)
     end
     kopieren("/update")
     entfernen("/update")
+    entfernen("/installieren.lua")
     d = io.open("/tank/version.txt", "r")
     version = d:read()
     d:close()
@@ -165,8 +166,6 @@ function f.installieren(versionTyp)
       d:close()
     end
     print()
-    updateKomplett = loadfile("/bin/rm.lua")("-v", "/update", "-r")
-    updateKomplett = loadfile("/bin/rm.lua")("-v", "/installieren.lua")
     print("\nUpdate vollständig")
   end
   local d = io.open ("/bin/tank.lua", "w")
