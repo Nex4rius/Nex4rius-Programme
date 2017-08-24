@@ -365,7 +365,7 @@ function f.text(a, b)
 end
 
 function f.keineDaten()
-  m.broadcast(port, "version")
+  m.broadcast(port, "anmelden")
   f.text("Keine Daten vorhanden")
   nix = true
 end
@@ -388,12 +388,12 @@ function o.anmelden(signal)
     end
   end
   if dazu then
-    table.insert(Sensorliste, {signal[3], signal[7]})
+    table.insert(Sensorliste, {signal[3], signal[5], signal[7]})
   end
   local rest = {}
   table.insert(rest, "return {\n")
   for k, v in pairs(Sensorliste) do
-    table.insert(rest, string.format("  {%s, %s},\n"), v[1], v[2])
+    table.insert(rest, string.format("  {%s, %s, %s},\n"), v[1], v[2], v[3])
   end
   table.insert(rest, "}")
   local d = io.open("/tank/Sensorliste.lua", "w")
@@ -423,8 +423,11 @@ function f.event(...)
   end
 end
 
-function f.senden()
+function f.senden(Sensorliste)
   for k, v in pairs(Sensorliste) do
+    if m.isWireless() then
+      m.setStrength(v[2] + 50)
+    end
     m.send(v[1], port, "tank")
   end
 end
@@ -434,9 +437,8 @@ function f.main()
   term.setCursor(1, 50)
   m.open(port)
   f.text("Warte auf Daten")
-  m.broadcast(port, "version")
+  m.broadcast(port, "anmelden")
   event.listen("modem_message", f.event)
-  timer = event.timer(60, f.senden, math.huge)
   pcall(os.sleep, math.huge)
 end
 
