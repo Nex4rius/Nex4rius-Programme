@@ -166,7 +166,6 @@ function f.installieren(versionTyp)
       d:close()
     end
     print()
-    print("\nUpdate vollständig")
   end
   local d = io.open ("/bin/tank.lua", "w")
   d:write('-- pastebin run -f cyF0yhXZ\n')
@@ -176,7 +175,7 @@ function f.installieren(versionTyp)
   d:write('loadfile("/autorun.lua")(require("shell").parse(...)[1])\n')
   d:close()
   if updateKomplett then
-    print("\nUpdate komplett\n" .. version .. " " .. string.upper(tostring(versionTyp)))
+    print("\nUpdate vollständig\n" .. version .. " " .. string.upper(tostring(versionTyp)))
     os.sleep(2)
     pcall(loadfile("/autorun.lua"))
   else
