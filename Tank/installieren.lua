@@ -70,10 +70,10 @@ function f.installieren(versionTyp)
   ordner("/update/client/tank")
   local updateKomplett = false
   local function download(von, nach)
-    for j = 1, 10 do
+    for j = 1, 11 do
       if wget("-f", f.Pfad(versionTyp) .. von, nach) then
         return true
-      elseif require("component").isAvailable("internet") then
+      elseif require("component").isAvailable("internet") and i <= 10 then
         print(von .. "\nerneuter Downloadversuch in " .. j .. "s\n")
         os.sleep(j)
       else
@@ -90,7 +90,7 @@ function f.installieren(versionTyp)
     update[3] = download(typ .. "/tank/auslesen.lua", "/update/tank/auslesen.lua")
   else
     update[3] = download(typ .. "/tank/farben.lua", "/update/tank/farben.lua")
-    update[4] = download(typ .. "/tank/anzeige.lua", "/update/tank/anzeige.lua")
+    update[4] = download(typ .. "tank/anzeige.lua", "/update/tank/anzeige.lua")
     update[5] = download(typ .. "/tank/ersetzen.lua", "/update/tank/ersetzen.lua")
     update[6] = download("client/autorun.lua", "/update/client/autorun.lua")
     update[7] = download("client/tank/auslesen.lua", "/update/client/tank/auslesen.lua")
