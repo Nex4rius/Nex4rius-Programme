@@ -391,7 +391,7 @@ function o.anmelden(signal)
     end
   end
   if dazu then
-    table.insert(Sensorliste, {signal[3], signal[7]])
+    table.insert(Sensorliste, {signal[3], signal[7]})
   end
   local rest = {}
   table.insert(rest, "return {\n")
@@ -400,7 +400,7 @@ function o.anmelden(signal)
   end
   table.insert(rest, "}")
   local d = io.open("/tank/Sensorliste.lua", "w")
-  d:write(tablet.concat(rest)
+  d:write(tablet.concat(rest))
   d:close()
 end
 
