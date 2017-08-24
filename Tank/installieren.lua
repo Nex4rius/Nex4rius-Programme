@@ -16,10 +16,17 @@ local function verschieben(von, nach)
   local ergebnis, grund = fs.remove(nach)
   if not ergebnis then
     print("<FEHLER> Löschen nicht möglich")
+    print(nach)
     print(grund)
     os.exit()
   end
-  fs.rename(von, nach)
+  local ergebnis, grund = fs.rename(von, nach)
+  if not ergebnis then
+    print("<FEHLER> Verschieben nicht möglich")
+    print(von .. " -> " .. nach)
+    print(grund)
+    os.exit()
+  end
   print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach)))
   if fs.exists(von) then
     print("<FEHLER> Kopieren")
@@ -239,7 +246,6 @@ function f.Komponenten(typ)
   end
   print()
   gpu.setForeground(0xFFFFFF)
-  os.sleep(2)
 end
 
 if versionTyp == nil then
