@@ -160,8 +160,7 @@ function Funktionen.installieren(versionTyp)
 end
 
 function Funktionen.Komponenten(typ)
-  term.clear()
-  print("check components\n")
+  print("\ncheck components\n")
   if component.isAvailable("internet") then
     gpu.setForeground(0x00FF00)
     print("Internet Card - OK")
@@ -207,6 +206,7 @@ function Funktionen.Komponenten(typ)
       print("Transposer - ERROR")
     end
   end
+  print()
   gpu.setForeground(0xFFFFFF)
   os.sleep(2)
 end
