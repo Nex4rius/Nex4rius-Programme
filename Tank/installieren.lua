@@ -63,19 +63,30 @@ function f.installieren(versionTyp)
   fs.makeDirectory("/update/tank")
   fs.makeDirectory("/update/client/tank")
   local updateKomplett = false
+  local function download(von, nach)
+    for j = 1, 10 do
+      if wget("-f", f.Pfad(versionTyp) .. von, nach) then
+        return true
+      elseif require("component").isAvailable("internet") then
+        print(von .. "\nerneuter Downloadversuch in " .. j .. "s\n")
+        os.sleep(j)
+      else
+        return
+      end
+    end
+  end
   local anzahl = 3
   local update = {}
-  update[1]   = wget("-f", f.Pfad(versionTyp) .. typ .. "/autorun.lua",       "/update/autorun.lua")
-  update[2]   = wget("-f", f.Pfad(versionTyp) ..        "/version.txt",       "/update/tank/version.txt")
+  update[1]   = download(typ .. "autorun.lua", "/update/autorun.lua")
+  update[2]   = download(typ .. "version.lua", "/update/tank/version.txt")
   if typ == "client" then
-    update[3] = wget("-f", f.Pfad(versionTyp) .. typ .. "/tank/auslesen.lua", "/update/tank/auslesen.lua")
+    update[3] = download(typ .. "tank/auslesen.lua", "/update/tank/auslesen.lua")
   else
-    update[3] = wget("-f", f.Pfad(versionTyp) .. typ .. "/tank/farben.lua",   "/update/tank/farben.lua")
-    update[4] = wget("-f", f.Pfad(versionTyp) .. typ .. "/tank/anzeige.lua",  "/update/tank/anzeige.lua")
-    update[5] = wget("-f", f.Pfad(versionTyp) .. typ .. "/tank/ersetzen.lua", "/update/tank/ersetzen.lua")
-    local typ = "client"
-    update[6] = wget("-f", f.Pfad(versionTyp) .. typ .. "/autorun.lua",       "/update/client/autorun.lua")
-    update[7] = wget("-f", f.Pfad(versionTyp) .. typ .. "/tank/auslesen.lua", "/update/client/tank/auslesen.lua")
+    update[3] = download(typ .. "tank/farben.lua", "/update/tank/farben.lua")
+    update[4] = download(typ .. "tank/anzeige.lua", "/update/tank/anzeige.lua")
+    update[5] = download(typ .. "tank/ersetzen.lua", "/update/tank/ersetzen.lua")
+    update[6] = download(typ .. "client/autorun.lua", "/update/client/autorun.lua")
+    update[7] = download(typ .. "client/tank/auslesen.lua", "/update/client/tank/auslesen.lua")
     anzahl = 7
   end
   for i = 1, anzahl do
