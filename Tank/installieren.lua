@@ -28,6 +28,7 @@ end
 function f.installieren(versionTyp)
   gpu.setBackground(0x000000)
   gpu.setForeground(0xFFFFFF)
+  print("\n\n")
   local weiter = true
   if component.isAvailable("transposer") then
     print("Transposer detected downloading client (sensor).")
@@ -66,6 +67,7 @@ function f.installieren(versionTyp)
   ordner("/tank/client")
   ordner("/update/tank")
   ordner("/update/client/tank")
+  print()
   local updateKomplett = false
   local function download(von, nach)
     for j = 1, 11 do
