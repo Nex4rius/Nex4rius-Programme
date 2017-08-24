@@ -122,7 +122,6 @@ local function test(screenid)
                0x000000}
   for _, farbe in pairs(hex) do
     gpu.setBackground(farbe)
-    os.sleep(0.1)
     term.clear()
   end
   gpu.setBackground(0x000000)
@@ -356,7 +355,7 @@ function f.text(a, b)
     if b then
       gpu.setResolution(gpu.maxResolution())
     else
-      test(screenid)
+      --test(screenid)
       gpu.setResolution(string.len(a), 1)
     end
     f.Farben(0xFFFFFF, 0x000000)
