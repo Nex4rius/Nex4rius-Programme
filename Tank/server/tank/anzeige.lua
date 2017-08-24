@@ -344,7 +344,6 @@ function test(screenid)
                0x000000}
   for _, farbe in pairs(hex) do
     gpu.setBackground(farbe)
-    os.sleep(0.1)
     term.clear()
   end
   gpu.setBackground(0x000000)
@@ -378,7 +377,7 @@ function o.anmelden(signal)
       a[i] = v
       i = i + 1
     end
-    f.text(table.concat(a, "/t"), true)
+    f.text(table.concat(a, "\t"), true)
   end
   local dazu = true
   for k, v in pairs(Sensorliste) do
