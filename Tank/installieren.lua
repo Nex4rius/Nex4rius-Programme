@@ -155,7 +155,7 @@ function f.installieren(versionTyp)
     local function kopieren(...)
       for i in fs.list(...) do
         if fs.isDirectory(i) then
-          kopieren(i)
+          kopieren(... .. i)
         end
         verschieben("/update/" .. i, "/" .. i)
       end
@@ -170,7 +170,6 @@ function f.installieren(versionTyp)
       d:write(version .. " BETA")
       d:close()
     end
-    Sicherung.installieren = true
     print()
     updateKomplett = loadfile("/bin/rm.lua")("-v", "/update", "-r")
     updateKomplett = loadfile("/bin/rm.lua")("-v", "/installieren.lua")
