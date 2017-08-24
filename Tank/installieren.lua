@@ -8,10 +8,12 @@ local fs          = require("filesystem")
 local term        = require("term")
 local arg         = ...
 local wget        = loadfile("/bin/wget.lua")
-local copy        = loadfile("/bin/cp.lua")
 local component   = require("component")
 local gpu         = component.gpu
 local Funktionen  = {}
+
+local verschieben = function(von, nach) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach))) end
+local entfernen   = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
 
 function Funktionen.Pfad(versionTyp)
   if versionTyp == "beta" then
