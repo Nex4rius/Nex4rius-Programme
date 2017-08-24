@@ -83,7 +83,7 @@ function f.installieren(versionTyp)
   end
   local anzahl = 3
   local update = {}
-  update[1]   = download("version.lua", "/update/tank/version.txt")
+  update[1]   = download("version.txt", "/update/tank/version.txt")
   update[2]   = download(typ .. "/autorun.lua", "/update/autorun.lua")
   if typ == "client" then
     update[3] = download(typ .. "/tank/auslesen.lua", "/update/tank/auslesen.lua")
