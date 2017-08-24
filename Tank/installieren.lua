@@ -28,7 +28,6 @@ end
 function f.installieren(versionTyp)
   gpu.setBackground(0x000000)
   gpu.setForeground(0xFFFFFF)
-  term.clear()
   local weiter = true
   if component.isAvailable("transposer") then
     print("Transposer detected downloading client (sensor).")
