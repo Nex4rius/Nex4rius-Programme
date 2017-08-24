@@ -10,12 +10,12 @@ local arg         = ...
 local wget        = loadfile("/bin/wget.lua")
 local component   = require("component")
 local gpu         = component.gpu
-local Funktionen  = {}
+local f           = {}
 
 local verschieben = function(von, nach) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach))) end
 local entfernen   = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
 
-function Funktionen.Pfad(versionTyp)
+function f.Pfad(versionTyp)
   if versionTyp == "beta" then
     return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/Tank/Tank/"
   elseif versionTyp then
@@ -25,7 +25,7 @@ function Funktionen.Pfad(versionTyp)
   end
 end
 
-function Funktionen.installieren(versionTyp)
+function f.installieren(versionTyp)
   gpu.setBackground(0x000000)
   gpu.setForeground(0xFFFFFF)
   term.clear()
@@ -58,24 +58,24 @@ function Funktionen.installieren(versionTyp)
     end
   end
   os.sleep(2)
-  Funktionen.Komponenten(typ)
+  f.Komponenten(typ)
   fs.makeDirectory("/tank/client")
   fs.makeDirectory("/update/tank")
   fs.makeDirectory("/update/client/tank")
   local updateKomplett = false
   local anzahl = 3
   local update = {}
-  update[1]   = wget("-f", Funktionen.Pfad(versionTyp) .. typ .. "/autorun.lua",       "/update/autorun.lua")
-  update[2]   = wget("-f", Funktionen.Pfad(versionTyp) ..        "/version.txt",       "/update/tank/version.txt")
+  update[1]   = wget("-f", f.Pfad(versionTyp) .. typ .. "/autorun.lua",       "/update/autorun.lua")
+  update[2]   = wget("-f", f.Pfad(versionTyp) ..        "/version.txt",       "/update/tank/version.txt")
   if typ == "client" then
-    update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. typ .. "/tank/auslesen.lua", "/update/tank/auslesen.lua")
+    update[3] = wget("-f", f.Pfad(versionTyp) .. typ .. "/tank/auslesen.lua", "/update/tank/auslesen.lua")
   else
-    update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. typ .. "/tank/farben.lua",   "/update/tank/farben.lua")
-    update[4] = wget("-f", Funktionen.Pfad(versionTyp) .. typ .. "/tank/anzeige.lua",  "/update/tank/anzeige.lua")
-    update[5] = wget("-f", Funktionen.Pfad(versionTyp) .. typ .. "/tank/ersetzen.lua", "/update/tank/ersetzen.lua")
+    update[3] = wget("-f", f.Pfad(versionTyp) .. typ .. "/tank/farben.lua",   "/update/tank/farben.lua")
+    update[4] = wget("-f", f.Pfad(versionTyp) .. typ .. "/tank/anzeige.lua",  "/update/tank/anzeige.lua")
+    update[5] = wget("-f", f.Pfad(versionTyp) .. typ .. "/tank/ersetzen.lua", "/update/tank/ersetzen.lua")
     local typ = "client"
-    update[6] = wget("-f", Funktionen.Pfad(versionTyp) .. typ .. "/autorun.lua",       "/update/client/autorun.lua")
-    update[7] = wget("-f", Funktionen.Pfad(versionTyp) .. typ .. "/tank/auslesen.lua", "/update/client/tank/auslesen.lua")
+    update[6] = wget("-f", f.Pfad(versionTyp) .. typ .. "/autorun.lua",       "/update/client/autorun.lua")
+    update[7] = wget("-f", f.Pfad(versionTyp) .. typ .. "/tank/auslesen.lua", "/update/client/tank/auslesen.lua")
     anzahl = 7
   end
   for i = 1, anzahl do
@@ -84,36 +84,36 @@ function Funktionen.installieren(versionTyp)
     else
       updateKomplett = false
       print("<Fehler> " ..i)
-      local f = io.open ("/autorun.lua", "w")
-      f:write('-- pastebin run -f cyF0yhXZ\n')
-      f:write('-- von Nex4rius\n')
-      f:write('-- https://github.com/Nex4rius/Nex4rius-Programme\n')
-      f:write('\n')
-      f:write('local shell = require("shell")\n')
-      f:write('local alterPfad = shell.getWorkingDirectory("/")\n')
-      f:write('local args = shell.parse(...)[1]\n')
-      f:write('\n')
-      f:write('shell.setWorkingDirectory("/")\n')
-      f:write('\n')
-      f:write('if type(args) == "string" then\n')
+      local d = io.open ("/autorun.lua", "w")
+      d:write('-- pastebin run -f cyF0yhXZ\n')
+      d:write('-- von Nex4rius\n')
+      d:write('-- https://github.com/Nex4rius/Nex4rius-Programme\n')
+      d:write('\n')
+      d:write('local shell = require("shell")\n')
+      d:write('local alterPfad = shell.getWorkingDirectory("/")\n')
+      d:write('local args = shell.parse(...)[1]\n')
+      d:write('\n')
+      d:write('shell.setWorkingDirectory("/")\n')
+      d:write('\n')
+      d:write('if type(args) == "string" then\n')
       if typ == "client" then
-        f:write('  loadfile("/tank/auslesen.lua")(args)\n')
-        f:write('else\n')
-        f:write('  loadfile("/tank/auslesen.lua")()\n')
+        d:write('  loadfile("/tank/auslesen.lua")(args)\n')
+        d:write('else\n')
+        d:write('  loadfile("/tank/auslesen.lua")()\n')
       else
-        f:write('  loadfile("/tank/anzeige.lua")(args)\n')
-        f:write('else\n')
-        f:write('  loadfile("/tank/anzeige.lua")()\n')
+        d:write('  loadfile("/tank/anzeige.lua")(args)\n')
+        d:write('else\n')
+        d:write('  loadfile("/tank/anzeige.lua")()\n')
       end
-      f:write('end\n')
-      f:write('\n')
-      f:write('shell.setWorkingDirectory(alterPfad)\n')
-      f:close()
+      d:write('end\n')
+      d:write('\n')
+      d:write('shell.setWorkingDirectory(alterPfad)\n')
+      d:close()
       break
     end
   end
   if updateKomplett then
-    print("Ersetze alte Dateien")
+    print("\nErsetze alte Dateien")
     local function kopieren(...)
       for i in fs.list(...) do
         if fs.isDirectory(i) then
@@ -124,27 +124,27 @@ function Funktionen.installieren(versionTyp)
     end
     kopieren("/update")
     entfernen("/update")
-    print("Update vollständig")
-    f = io.open ("/tank/version.txt", "r")
-    version = f:read()
-    f:close()
+    d = io.open("/tank/version.txt", "r")
+    version = d:read()
+    d:close()
     if versionTyp == "beta" then
-      f = io.open ("/tank/version.txt", "w")
-      f:write(version .. " BETA")
-      f:close()
+      d = io.open ("/tank/version.txt", "w")
+      d:write(version .. " BETA")
+      d:close()
     end
     Sicherung.installieren = true
     print()
     updateKomplett = loadfile("/bin/rm.lua")("-v", "/update", "-r")
     updateKomplett = loadfile("/bin/rm.lua")("-v", "/installieren.lua")
+    print("\nUpdate vollständig")
   end
-  local f = io.open ("/bin/tank.lua", "w")
-  f:write('-- pastebin run -f cyF0yhXZ\n')
-  f:write('-- von Nex4rius\n')
-  f:write('-- https://github.com/Nex4rius/Nex4rius-Programme\n')
-  f:write('\n')
-  f:write('loadfile("/autorun.lua")(require("shell").parse(...)[1])\n')
-  f:close()
+  local d = io.open ("/bin/tank.lua", "w")
+  d:write('-- pastebin run -f cyF0yhXZ\n')
+  d:write('-- von Nex4rius\n')
+  d:write('-- https://github.com/Nex4rius/Nex4rius-Programme\n')
+  d:write('\n')
+  d:write('loadfile("/autorun.lua")(require("shell").parse(...)[1])\n')
+  d:close()
   if updateKomplett then
     print("\nUpdate komplett\n" .. version .. " " .. string.upper(tostring(versionTyp)))
     os.sleep(2)
@@ -159,7 +159,7 @@ function Funktionen.installieren(versionTyp)
   require("computer").shutdown(true)
 end
 
-function Funktionen.Komponenten(typ)
+function f.Komponenten(typ)
   print("\ncheck components\n")
   if component.isAvailable("internet") then
     gpu.setForeground(0x00FF00)
@@ -213,10 +213,10 @@ end
 
 if versionTyp == nil then
   if type(arg) == "string" then
-    Funktionen.installieren(arg)
+    f.installieren(arg)
   else
-    Funktionen.installieren("master")
+    f.installieren("master")
   end
 else
-  Funktionen.installieren(versionTyp)
+  f.installieren(versionTyp)
 end
