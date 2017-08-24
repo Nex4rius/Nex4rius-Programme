@@ -16,7 +16,7 @@ local ersetzen        = loadfile("/tank/ersetzen.lua")()
 local gpu             = component.getPrimary("gpu")
 local m               = component.modem
 
-local version, tankneu, energie
+local version, tankneu, energie, timer
 
 local port            = 918
 local Sensorliste     = {}
@@ -359,7 +359,7 @@ function f.text(a, b)
       gpu.setResolution(string.len(a), 1)
     end
     f.Farben(0xFFFFFF, 0x000000)
-    gpu.set(1, 1, a)
+    print(a)
   end
 end
 
@@ -398,10 +398,9 @@ function o.anmelden(signal)
   local d = io.open("/tank/Sensorliste.lua", "w")
   d:write(tablet.concat(rest))
   d:close()
-end
-
-function o.version(signal)
-  o.anmelden(signal)
+  f.senden()
+  event.cancel(timer)
+  timer = event.timer(60, f.senden, math.huge)
 end
 
 function o.speichern(signal)
@@ -415,11 +414,17 @@ function o.tank(signal)
   f.tankliste(signal)
 end
 
-function f.loop(...)
+function f.event(...)
   local signal = {...}
   f.text(signal[6], true)
   if o[signal[6]] then
     o[signal[6]](signal)
+  end
+end
+
+function f.senden()
+  for k, v in pairs(Sensorliste) do
+    m.send(v[1], port, "tank")
   end
 end
 
@@ -429,12 +434,13 @@ function f.main()
   m.open(port)
   f.text("Warte auf Daten")
   m.broadcast(port, "version")
-  event.listen("modem_message", f.loop)
+  event.listen("modem_message", f.event)
+  timer = event.timer(60, f.senden, math.huge)
   pcall(os.sleep, math.huge)
 end
 
 function beenden()
-  event.ignore("modem_message", f.loop)
+  event.ignore("modem_message", f.event)
   for screenid in component.list("screen") do
     gpu.bind(screenid)
     os.sleep(0.1)
