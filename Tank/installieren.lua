@@ -155,6 +155,7 @@ function f.installieren(versionTyp)
       end
     end
     kopieren("/update")
+    print()
     entfernen("/update")
     entfernen("/installieren.lua")
     d = io.open("/tank/version.txt", "r")
