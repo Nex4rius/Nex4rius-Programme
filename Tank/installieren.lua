@@ -73,7 +73,7 @@ function f.installieren(versionTyp)
     for j = 1, 11 do
       if wget("-f", f.Pfad(versionTyp) .. von, nach) then
         return true
-      elseif require("component").isAvailable("internet") and i <= 10 then
+      elseif require("component").isAvailable("internet") and j <= 10 then
         print(von .. "\nerneuter Downloadversuch in " .. j .. "s\n")
         os.sleep(j)
       else
