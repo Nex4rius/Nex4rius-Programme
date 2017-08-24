@@ -419,7 +419,7 @@ function o.tank(signal)
   f.tankliste(signal)
 end
 
-function f.loop(signal)
+function f.loop(...)
   local signal = {...}
   f.text(signal[6])
   if o[signal[6]] then
