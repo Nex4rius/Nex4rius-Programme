@@ -12,7 +12,20 @@ local component   = require("component")
 local gpu         = component.gpu
 local f           = {}
 
-local verschieben = function(von, nach) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach))) if fs.exists(von) then print("<FEHLER> Kopieren") os.exit() end end
+local function verschieben(von, nach)
+  local ergebnis, grund = fs.remove(nach)
+  if not ergebnis then
+    print("<FEHLER> Löschen nicht möglich")
+    print(grund)
+    os.exit()
+  end
+  fs.rename(von, nach)
+  print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach)))
+  if fs.exists(von) then
+    print("<FEHLER> Kopieren")
+    os.exit()
+  end
+end
 local entfernen   = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
 
 function f.Pfad(versionTyp)
