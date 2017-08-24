@@ -24,6 +24,7 @@ local tank            = {}
 local f               = {}
 local o               = {}
 local laeuft          = true
+local nix             = true
 local debug           = false
 local Wartezeit       = 150
 local letzteNachricht = c.uptime()
@@ -149,6 +150,7 @@ function f.anzeigen(tankneu, screenid)
   local maxanzahl = 0
   for i in pairs(tankneu) do
     maxanzahl = maxanzahl + 1
+    nix = false
   end
   local a, b = gpu.getResolution()
   if maxanzahl <= 16 and maxanzahl ~= 0 then
@@ -366,11 +368,15 @@ function f.text(a, b)
 end
 
 function f.keineDaten()
-  m.broadcast(port, "update", version)
+  m.broadcast(port, "version")
   f.text("Keine Daten vorhanden")
+  nix = true
 end
 
 function o.anmelden(signal)
+  if nix then
+    f.text(string.format("%s %s %s %s %s %s %s %s", signal[1] or "", signal[2] or "", signal[3] or "", signal[4] or "", signal[5] or "", signal[6] or "", signal[7] or "", signal[8] or ""), true)
+  end
   local dazu = true
   for k, v in pairs(Sensorliste) do
     if v[1] == signal[3] then
