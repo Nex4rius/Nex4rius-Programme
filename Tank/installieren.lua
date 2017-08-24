@@ -13,13 +13,7 @@ local gpu         = component.gpu
 local f           = {}
 
 local function verschieben(von, nach)
-  local ergebnis, grund = fs.remove(nach)
-  if not ergebnis then
-    print("<FEHLER> Löschen nicht möglich")
-    print(nach)
-    print(grund)
-    os.exit()
-  end
+  fs.remove(nach)
   local ergebnis, grund = fs.rename(von, nach)
   if not ergebnis then
     print("<FEHLER> Verschieben nicht möglich")
