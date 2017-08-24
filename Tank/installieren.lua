@@ -59,9 +59,15 @@ function f.installieren(versionTyp)
   end
   os.sleep(2)
   f.Komponenten(typ)
-  fs.makeDirectory("/tank/client")
-  fs.makeDirectory("/update/tank")
-  fs.makeDirectory("/update/client/tank")
+  local function ordner(...)
+    while not fs.exists(...) do
+      fs.makeDirectory(...)
+      print("Erstelle Ordner " .. ...)
+    end
+  end
+  ordner("/tank/client")
+  ordner("/update/tank")
+  ordner("/update/client/tank")
   local updateKomplett = false
   local function download(von, nach)
     for j = 1, 10 do
