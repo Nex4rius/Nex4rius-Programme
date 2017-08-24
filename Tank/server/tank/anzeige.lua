@@ -375,7 +375,13 @@ end
 
 function o.anmelden(signal)
   if nix then
-    f.text(string.format("%s %s %s %s %s %s %s %s", signal[1] or "", signal[2] or "", signal[3] or "", signal[4] or "", signal[5] or "", signal[6] or "", signal[7] or "", signal[8] or ""), true)
+    local a = {}
+    local i = 1
+    for k, v in pairs(signal) do
+      a[i] = v
+      i = i + 1
+    end
+    f.text(table.concat(a), true)
   end
   local dazu = true
   for k, v in pairs(Sensorliste) do
