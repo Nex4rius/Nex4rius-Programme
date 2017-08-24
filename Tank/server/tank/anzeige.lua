@@ -417,7 +417,7 @@ end
 
 function f.loop(...)
   local signal = {...}
-  f.text(signal[6])
+  f.text(signal[6], true)
   if o[signal[6]] then
     o[signal[6]](signal)
   end
