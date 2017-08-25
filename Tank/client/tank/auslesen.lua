@@ -166,10 +166,8 @@ function o.aktualisieren(signal)
     if not fs.exists("/update" .. v) then
       weiter = false
       print("<FEHLER>")
-      print("Aktualisierung abgebrochen")
       print("Datei fehlt: " .. tostring(v))
       f.senden(signal, "update", false, v)
-      break
     end
   end
   if weiter then
@@ -195,12 +193,8 @@ function o.aktualisieren(signal)
   end
 end
 
-function o.anmelden(signal)
-  f.senden(signal, "anmelden", version)
-end
-
 function o.tank(signal)
-  f.senden(signal, "tank", f.serialize(f.check()))
+  f.senden(signal, "tank", version, f.serialize(f.check()))
 end
 
 function f.loop(...)
@@ -220,10 +214,10 @@ end
 
 function f.main()
   m.open(port)
-  if  m.isWireless() then
+  if m.isWireless() then
     m.setStrength(math.huge)
   end
-  m.broadcast(port, "anmelden", version)
+  m.broadcast(port, "tank", version, f.serialize(f.check()))
   term.clear()
   print("Sende Anmeldung")
   print("Warte auf Antwort...")
