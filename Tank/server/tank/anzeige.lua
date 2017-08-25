@@ -14,12 +14,11 @@ local farben          = loadfile("/tank/farben.lua")()
 local ersetzen        = loadfile("/tank/ersetzen.lua")()
 
 local gpu             = component.getPrimary("gpu")
-local m               = component.modem
+local m               = component.getPrimary("modem")
 
 local version, tankneu, energie, timer
 
 local port            = 918
-local Sensorliste     = {}
 local tank            = {}
 local f               = {}
 local o               = {}
@@ -35,53 +34,6 @@ if fs.exists("/tank/version.txt") then
   d:close()
 else
   version = "<FEHLER>"
-end
-
-if fs.exists("/tank/Sensorliste.lua") then
-  Sensorliste = loadfile("/tank/Sensorliste.lua")()
-end
-
-function f.tankliste(signal)
-  local dazu = true
-  local ende = 0
-  local hier, id, nachricht = signal[1], signal[3], signal[7]
-  if hier then
-    letzteNachricht = c.uptime()
-    for i in pairs(tank) do
-      if type(tank[i]) == "table" then
-        if tank[i].id == id then
-          tank[i].zeit = c.uptime()
-          tank[i].inhalt = require("serialization").unserialize(nachricht)
-          dazu = false
-        end
-      end
-      ende = i
-    end
-    if dazu then
-      ende = ende + 1
-      tank[ende] = {}
-      tank[ende].id = id
-      tank[ende].zeit = c.uptime()
-      tank[ende].inhalt = require("serialization").unserialize(nachricht)
-    end
-    local i = 0
-    for screenid in component.list("screen") do
-      i = i + 1
-    end
-    for screenid in component.list("screen") do
-      if i > 1 then
-        gpu.bind(screenid, false)
-      end
-      f.anzeigen(f.verarbeiten(tank), screenid)
-    end
-  else
-    f.keineDaten()
-  end
-  for i in pairs(tank) do
-    if c.uptime() - tank[i].zeit > Wartezeit * 2 then
-      tank[i] = nil
-    end
-  end
 end
 
 function f.hinzu(name, label, menge, maxmenge)
@@ -102,29 +54,6 @@ function f.hinzu(name, label, menge, maxmenge)
       tankneu[tanknr].maxmenge = maxmenge
     end
   end
-end
-
-local function test(screenid)
-  os.sleep(0.1)
-  local _, hoch = component.proxy(screenid).getAspectRatio()
-  term.clear()
-  if hoch <= 2 then
-    gpu.setResolution(160, 16)
-  else
-    gpu.setResolution(160, 48)
-  end
-  os.sleep(0.1)
-  local hex = {0x000000, 0x1F1F1F, 0x3F3F3F, 0x5F5F5F, 0x7F7F7F, 0x9F9F9F, 0xBFBFBF, 0xDFDFDF,
-               0xFFFFFF, 0xDFFFDF, 0xBFFFBF, 0x9FFF9F, 0x7FFF7F, 0x5FFF5F, 0x3FFF3F, 0x1FFF1F,
-               0x00FF00, 0x1FDF00, 0x3FBF00, 0x5F9F00, 0x7F7F00, 0x9F5F00, 0xBF3700, 0xDF1F00,
-               0xFF0000, 0xDF001F, 0xBF003F, 0x9F005F, 0x7F007F, 0x5F009F, 0x3F00BF, 0x1F00DF,
-               0x0000FF, 0x0000DF, 0x0000BF, 0x00009F, 0x00007F, 0x00005F, 0x00003F, 0x00001F,
-               0x000000}
-  for _, farbe in pairs(hex) do
-    gpu.setBackground(farbe)
-    term.clear()
-  end
-  gpu.setBackground(0x000000)
 end
 
 function f.verarbeiten(tank)
@@ -355,7 +284,6 @@ function f.text(a, b)
     if b then
       gpu.setResolution(gpu.maxResolution())
     else
-      --test(screenid)
       gpu.setResolution(string.len(a), 1)
     end
     f.Farben(0xFFFFFF, 0x000000)
@@ -369,7 +297,7 @@ function f.keineDaten()
   nix = true
 end
 
-function o.anmelden(signal)
+function o.tank(signal)
   if nix then
     local a = {}
     local i = 1
@@ -387,31 +315,72 @@ function o.anmelden(signal)
     end
   end
   if dazu then
-    table.insert(Sensorliste, {signal[3], signal[5], signal[7]})
+    table.insert(Sensorliste, {signal[3], signal[5], signal[7], signal[8]})
   end
-  local rest = {}
-  table.insert(rest, "return {\n")
-  for k, v in pairs(Sensorliste) do
-    table.insert(rest, string.format("  {%s, %s, %s},\n"), v[1], v[2], v[3])
-  end
-  table.insert(rest, "}")
-  local d = io.open("/tank/Sensorliste.lua", "w")
-  d:write(tablet.concat(rest))
-  d:close()
   f.senden()
   event.cancel(timer)
   timer = event.timer(60, f.senden, math.huge)
 end
 
 function o.speichern(signal)
+  if m.isWireless() then
+    m.setStrength(signal[5] + 50)
+  end
+  if signal[7] then
+    -- später
+  else
+    if fs.exists("/tank/client" .. signal[8]) then
+      local d = io.open("/tank/client" .. signal[8], "r")
+      m.send(signal[3], signal[4], "datei", d:read("*a"))
+      d:close()
+    end
+  end
 end
 
-function o.update(signal)
+function f.tank(signal)
+  local i = 0
+  for screenid in component.list("screen") do
+    i = i + 1
+  end
+  for screenid in component.list("screen") do
+    if i > 1 then
+      gpu.bind(screenid, false)
+    end
+    f.anzeigen(f.verarbeiten(tank), screenid)
+  end
 end
 
-function o.tank(signal)
-  o.tank = f.tankliste --nix extra bisher
-  f.tankliste(signal)
+function f.tankliste(signal)
+  local dazu = true
+  local ende = 0
+  local hier, id, nachricht = signal[1], signal[3], signal[7]
+  if hier then
+    letzteNachricht = c.uptime()
+    for i in pairs(tank) do
+      if type(tank[i]) == "table" then
+        if tank[i].id == id then
+          tank[i].zeit = c.uptime()
+          tank[i].inhalt = require("serialization").unserialize(nachricht)
+          dazu = false
+        end
+      end
+      ende = i
+    end
+    if dazu then
+      ende = ende + 1
+      tank[ende] = {}
+      tank[ende].id = id
+      tank[ende].zeit = c.uptime()
+      tank[ende].inhalt = require("serialization").unserialize(nachricht)
+    end
+  else
+    f.keineDaten()
+  end
+  for i in pairs(tank) do
+    if c.uptime() - tank[i].zeit > Wartezeit * 2 then
+      tank[i] = nil
+    end
+  end
 end
 
 function f.event(...)
@@ -422,21 +391,16 @@ function f.event(...)
   end
 end
 
-function f.senden(Sensorliste)
-  for k, v in pairs(Sensorliste) do
-    if m.isWireless() then
-      m.setStrength(v[2] + 50)
-    end
-    m.send(v[1], port, "tank")
-  end
+function f.senden()
+  m.broadcast(port, "tank")
 end
 
 function f.main()
   gpu.setForeground(0xFFFFFF)
   term.setCursor(1, 50)
-  m.open(port)
+  m.open(port + 1)
   f.text("Warte auf Daten")
-  m.broadcast(port, "anmelden")
+  m.broadcast(port, "tank")
   event.listen("modem_message", f.event)
   pcall(os.sleep, math.huge)
 end
