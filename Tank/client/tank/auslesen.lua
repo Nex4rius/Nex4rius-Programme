@@ -155,7 +155,7 @@ function o.datei(signal)
     print("<FEHLER>")
     print("signal[7] " .. tostring(signal[7]))
     print("signal[8] " .. tostring(signal[8]))
-    f.senden(signal, "speichern", false)
+    f.senden(signal, "speichern", false, signal[7])
   end
 end
 
@@ -167,7 +167,7 @@ function o.aktualisieren(signal)
       weiter = false
       print("<FEHLER>")
       print("Datei fehlt: " .. tostring(v))
-      f.senden(signal, "update", false, v)
+      f.senden(signal, "speichern", false, v)
     end
   end
   if weiter then
@@ -184,7 +184,7 @@ function o.aktualisieren(signal)
     entfernen("/update")
     print("Update vollständig")
     os.sleep(1)
-    f.senden(signal, "update", true)
+    --f.senden(signal, "update", true)
     for i = 5, 1, -1 do
       print(string.format("\nNeustarten in %ss", i))
       os.sleep(1)
