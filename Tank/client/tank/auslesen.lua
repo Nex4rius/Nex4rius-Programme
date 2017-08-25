@@ -209,7 +209,7 @@ function f.senden(signal, name, nachricht, ...)
   if m.isWireless() then
     m.setStrength(tonumber(signal[5]) + 50)
   end
-  m.send(signal[3], signal[4], name, f.serialize(nachricht), ...)
+  m.send(signal[3], signal[4] + 1, name, f.serialize(nachricht), ...)
 end
 
 function f.main()
