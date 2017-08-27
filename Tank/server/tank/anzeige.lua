@@ -430,7 +430,6 @@ function f.senden()
 end
 
 function f.test(screenid)
-  return --deaktiviert
   os.sleep(0.1)
   local screenid = screenid or gpu.getScreen()
   local _, hoch = component.proxy(screenid).getAspectRatio()
@@ -466,6 +465,8 @@ function f.test(screenid)
   end
   schwarz()
 end
+
+function f.test() end --deaktiviert
 
 function f.checkUpdate()
   serverVersion = f.checkServerVersion()
