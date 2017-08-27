@@ -22,6 +22,7 @@ local term            = require("term")
 
 local farben          = loadfile("/tank/farben.lua")()
 local ersetzen        = loadfile("/tank/ersetzen.lua")()
+local wget            = loadfile("/bin/wget.lua")
 
 local gpu             = component.getPrimary("gpu")
 local m               = component.getPrimary("modem")
@@ -448,9 +449,25 @@ local function test(screenid)
   gpu.setBackground(0x000000)
 end
 
+function f.checkUpdate()
+  serverVersion = f.checkServerVersion()
+  print("Prüfe Version\n")
+  print("\nDerzeitige Version:    " .. (version or "<FEHLER>"))
+  print("\nVerfügbare Version:    " .. (serverVersion or "<FEHLER>"))
+  if serverVersion then
+    if serverVersion ~= version then
+      if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/installieren.lua", "/installieren.lua") then
+        print("\nBeginne Update\n")
+        pcall(loadfile("/installieren.lua"))
+      end
+    end
+  end
+end
+
 function f.main()
   f.Farben(0xFFFFFF, 0x000000)
   term.clear()
+  f.checkUpdate()
   m.open(port)
   for screenid in component.list("screen") do
     test(screenid)
@@ -461,6 +478,7 @@ function f.main()
   timer.tank = event.timer(Zeit + 15, f.tank, 0)
   f.senden()
   event.listen("interrupted", f.beenden)
+  event.pull("beenden")
 end
 
 function f.beenden()
@@ -468,6 +486,7 @@ function f.beenden()
   for k, v in pairs(timer) do
     event.cancel(v)
   end
+  event.push("beenden")
   for screenid in component.list("screen") do
     gpu.bind(screenid)
     os.sleep(0.1)
@@ -475,6 +494,17 @@ function f.beenden()
     term.clear()
     print("Tankanzeige wird ausgeschaltet")
   end
+end
+
+function f.checkServerVersion()
+  local serverVersion
+  if wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/version.txt", "/serverVersion.txt") then
+    local d = io.open ("/serverVersion.txt", "r")
+    serverVersion = d:read()
+    d:close()
+    fs.delete("/serverVersion.txt")
+  end
+  return serverVersion
 end
 
 loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tankanzeige")
