@@ -107,7 +107,8 @@ function f.installieren(versionTyp)
     update[5] = download(typ .. "/tank/ersetzen.lua", "/update/tank/ersetzen.lua")
     update[6] = download("client/autorun.lua", "/update/tank/client/autorun.lua")
     update[7] = download("client/tank/auslesen.lua", "/update/tank/client/tank/auslesen.lua")
-    anzahl = 7
+    update[8] = download("version.txt", "/update/tank/client/tank/version.txt")
+    anzahl = 8
   end
   for i = 1, anzahl do
     if update[i] then
