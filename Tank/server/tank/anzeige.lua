@@ -481,10 +481,6 @@ end
 
 function f.main()
   f.Farben(0xFFFFFF, 0x000000)
-f.keineDaten()
-print("ende")
-os.sleep(5)
-  term.clear()
   f.checkUpdate()
   m.open(port)
   for screenid in component.list("screen") do
