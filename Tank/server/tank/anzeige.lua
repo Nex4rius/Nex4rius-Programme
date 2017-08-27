@@ -443,6 +443,10 @@ local function test(screenid)
                0xFF0000, 0xDF001F, 0xBF003F, 0x9F005F, 0x7F007F, 0x5F009F, 0x3F00BF, 0x1F00DF,
                0x0000FF, 0x0000DF, 0x0000BF, 0x00009F, 0x00007F, 0x00005F, 0x00003F, 0x00001F,
                0x000000}
+  gpu.setBackground(0x000000)
+  for i = 0, 100 do
+    print(string.rep(" ", 160))
+  end
   for _, farbe in pairs(hex) do
     gpu.setBackground(farbe)
     print(string.rep(" ", 160))
