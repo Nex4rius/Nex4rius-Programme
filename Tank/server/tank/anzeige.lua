@@ -436,7 +436,7 @@ local function test(screenid)
   end
   os.sleep(0.1)
   local function schwarz()
-    for i = 0, 20 do
+    for i = 0, 30 do
       gpu.setBackground(0x000000)
       print(string.rep(" ", 160))
       print(string.rep(" ", 160))
@@ -471,9 +471,9 @@ function f.checkUpdate()
   os.sleep(2)
   if serverVersion and arg then
     if serverVersion ~= version then
-      if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/installieren.lua", "/installieren.lua") then
+      if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/Tank/Tank/installieren.lua", "/installieren.lua") then --hier auf master
         print("\nBeginne Update\n")
-        --print(pcall(loadfile("/installieren.lua"))=
+        print(pcall(loadfile("/installieren.lua"))
         print("Warte 5s")
         os.sleep(5)
       end
@@ -482,6 +482,7 @@ function f.checkUpdate()
 end
 
 function f.main()
+  f.keineDaten()
   f.Farben(0xFFFFFF, 0x000000)
   term.clear()
   f.checkUpdate()
