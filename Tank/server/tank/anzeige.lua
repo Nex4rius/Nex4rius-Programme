@@ -469,12 +469,13 @@ function f.checkUpdate()
   os.sleep(2)
   if serverVersion and arg then
     if serverVersion ~= version then
-      if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/Tank/Tank/installieren.lua", "/installieren.lua") then --hier auf master
-        print("\nBeginne Update\n")
-        print(pcall(loadfile("/installieren.lua")))
-        print("Warte 5s")
-        os.sleep(5)
-      end
+      os.execute("pastebin run -f cyF0yhXZ Tank")
+      --if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/installieren.lua", "/installieren.lua") then --hier auf master
+      --  print("\nBeginne Update\n")
+      --  print(pcall(loadfile("/installieren.lua")))
+      --  print("Warte 5s")
+      --  os.sleep(5)
+      --end
     end
   end
 end
