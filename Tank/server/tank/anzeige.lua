@@ -26,12 +26,13 @@ local ersetzen        = loadfile("/tank/ersetzen.lua")()
 local gpu             = component.getPrimary("gpu")
 local m               = component.getPrimary("modem")
 
-local version, tankneu, energie, timer, timerNIX
+local version, tankneu, energie
 
 local port            = 918
 local tank            = {}
 local f               = {}
 local o               = {}
+local timer           = {}
 local laeuft          = true
 local nix             = true
 local debug           = false
@@ -361,10 +362,10 @@ function o.tankliste(signal)
   if version ~= signal[7] then
     event.timer(1, f.update(signal), 0)
   end
-  event.cancel(timer)
-  event.cancel(timerNIX)
-  timer = event.timer(Zeit, f.senden, 0)
-  timerNIX = event.timer(Zeit + 15, f.tank, 0)
+  event.cancel(timer.senden)
+  event.cancel(timer.tank)
+  timer.senden = event.timer(Zeit, f.senden, 0)
+  timer.tank = event.timer(Zeit + 15, f.tank, 0)
   f.tank(signal)
 end
 
@@ -395,7 +396,7 @@ function f.senden()
     m.setStrength(Sendeleistung)
   end
   m.broadcast(port, "tank")
-  timer = event.timer(Zeit, f.senden, 0)
+  timer.senden = event.timer(Zeit, f.senden, 0)
 end
 
 function f.main()
@@ -403,19 +404,20 @@ function f.main()
   term.clear()
   m.open(port)
   f.text("Warte auf Daten")
-  timer = event.timer(1, f.senden, 0)
   event.listen("modem_message", f.event)
-  timerNIX = event.timer(Zeit + 15, f.tank, 0)
+  timer.senden = event.timer(1, f.senden, 0)
+  timer.tank = event.timer(Zeit + 15, f.tank, 0)
   pcall(os.sleep, math.huge)
-  print("Ausschalten")
   event.ignore("modem_message", f.event)
-  event.cancel(timer)
-  event.cancel(timerNIX)
+  for k, v in pairs(timer) do
+    event.cancel(v)
+  end
   for screenid in component.list("screen") do
     gpu.bind(screenid)
     os.sleep(0.1)
     f.Farben(0xFFFFFF, 0x000000)
     term.clear()
+    print("Tankanzeige wird ausgeschaltet")
   end
 end
 
