@@ -33,6 +33,7 @@ local tank            = {}
 local f               = {}
 local o               = {}
 local timer           = {}
+local Sensorliste     = {}
 local laeuft          = true
 local nix             = true
 local debug           = false
@@ -358,15 +359,34 @@ function f.update(signal)
   return function() end
 end
 
+function f.tankliste(Sensorliste)
+  for i in pairs(Sensorliste) do
+    f.tank(Sensorliste[i])
+  end
+  return function() end
+end
+
 function o.tankliste(signal)
+  local dazu = true
   if version ~= signal[7] then
     event.timer(1, f.update(signal), 0)
   end
-  event.cancel(timer.senden)
-  event.cancel(timer.tank)
+  for i in pairs(Sensorliste) do
+    if Sensorliste[i][3] == signal[3] then
+      dazu = false
+      Sensorliste[i] = signal
+      break
+    end
+  end
+  if dazu then
+    table.insert(Sensorliste, signal)
+  end
+  for k, v in pairs(timer) do
+    event.cancel(v)
+  end
+  timer.jetzt = event.timer(5, f.tankliste(Sensorliste), 0)
   timer.senden = event.timer(Zeit, f.senden, math.huge)
-  timer.tank = event.timer(Zeit + 15, f.tank, math.huge)
-  f.tank(signal)
+  timer.tank = event.timer(Zeit + 15, f.tankliste(Sensorliste), math.huge)
 end
 
 function o.speichern(signal)
