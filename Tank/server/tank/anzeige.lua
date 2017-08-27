@@ -447,12 +447,13 @@ function f.test(screenid)
                0x0000FF, 0x0000DF, 0x0000BF, 0x00009F, 0x00007F, 0x00005F, 0x00003F, 0x00001F,
                0x000000}
   schwarz()
-  for _, farbe in pairs(hex) do
-    gpu.setBackground(farbe)
+  --for _, farbe in pairs(hex) do
+  for i = 0, 16777215 do
+    gpu.setBackground(i)
+    --gpu.setBackground(farbe)
     print(string.rep(" ", 160))
-    print(string.rep(" ", 160))
-    print(string.rep(" ", 160))
-    os.sleep(0.01)
+    --print(string.rep(" ", 160))
+    --print(string.rep(" ", 160))
   end
   schwarz()
 end
