@@ -409,7 +409,7 @@ end
 function f.update(signal)
   for k, v in pairs(dateiliste) do
     local d = io.open("/tank/client" .. v, "r")
-    m.send(signal[3], port, "datei", serialization.serialize(d:read("*a")))
+    m.send(signal[3], port, "datei", d:read("*a"))
     d:close()
   end
   return function() end
