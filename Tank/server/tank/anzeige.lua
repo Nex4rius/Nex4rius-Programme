@@ -467,7 +467,7 @@ function f.checkUpdate()
     if serverVersion ~= version then
       if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/installieren.lua", "/installieren.lua") then
         print("\nBeginne Update\n")
-        pcall(loadfile("/installieren.lua"))
+        --pcall(loadfile("/installieren.lua"))
       end
     end
   end
