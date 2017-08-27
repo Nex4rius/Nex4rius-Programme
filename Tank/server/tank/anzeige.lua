@@ -58,10 +58,9 @@ else
   arg = true
 end
 
-function f.tank(signal)
+function f.tank(hier, id, nachricht)
   local dazu = true
   local ende = 0
-  local hier, id, nachricht = signal[1], signal[3], signal[8]
   if hier then
     letzteNachricht = c.uptime()
     for i in pairs(tank) do
@@ -367,7 +366,7 @@ end
 
 function f.tankliste(Sensorliste)
   for i in pairs(Sensorliste) do
-    f.tank(Sensorliste[i])
+    f.tank(Sensorliste[i][1], Sensorliste[i][3], Sensorliste[i][8])
   end
   return function() end
 end
@@ -390,9 +389,10 @@ function o.tankliste(signal)
   for k, v in pairs(timer) do
     event.cancel(v)
   end
+  timer.tank = event.timer(Wartezeit + 15, f.tank, 0)
   timer.jetzt = event.timer(10, f.tankliste(Sensorliste), 0)
   timer.senden = event.timer(Zeit, f.senden, math.huge)
-  timer.tank = event.timer(Zeit + 15, f.tankliste(Sensorliste), math.huge)
+  timer.tankliste = event.timer(Zeit + 15, f.tankliste(Sensorliste), math.huge)
 end
 
 function o.speichern(signal)
@@ -465,7 +465,9 @@ function f.checkUpdate()
     if serverVersion ~= version then
       if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/installieren.lua", "/installieren.lua") then
         print("\nBeginne Update\n")
-        --pcall(loadfile("/installieren.lua"))
+        --print(pcall(loadfile("/installieren.lua"))=
+        print("Warte 5s")
+        os.sleep(5)
       end
     end
   end
