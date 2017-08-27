@@ -89,14 +89,8 @@ function f.tank(signal)
       tank[i] = nil
     end
   end
-  local i = 0
   for screenid in component.list("screen") do
-    i = i + 1
-  end
-  for screenid in component.list("screen") do
-    if i > 1 then
-      gpu.bind(screenid, false)
-    end
+    gpu.bind(screenid, false)
     f.anzeigen(f.verarbeiten(tank), screenid)
   end
 end
@@ -156,7 +150,8 @@ end
 
 function f.anzeigen(tankneu, screenid)
   local klein = false
-  local _, hoch = component.proxy(screenid or gpu.getScreen()).getAspectRatio()
+  local screenid = screenid or gpu.getScreen()
+  local _, hoch = component.proxy(screenid).getAspectRatio()
   if hoch <= 2 then
     klein = true
   end
@@ -395,7 +390,7 @@ function o.tankliste(signal)
   for k, v in pairs(timer) do
     event.cancel(v)
   end
-  timer.jetzt = event.timer(5, f.tankliste(Sensorliste), 0)
+  timer.jetzt = event.timer(10, f.tankliste(Sensorliste), 0)
   timer.senden = event.timer(Zeit, f.senden, math.huge)
   timer.tank = event.timer(Zeit + 15, f.tankliste(Sensorliste), math.huge)
 end
@@ -450,8 +445,7 @@ local function test(screenid)
                0x000000}
   for _, farbe in pairs(hex) do
     gpu.setBackground(farbe)
-    term.clear()
-    term.write(" ")
+    print(string.rep(" ", math.huge))
   end
   gpu.setBackground(0x000000)
 end
