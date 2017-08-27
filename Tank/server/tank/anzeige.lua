@@ -4,6 +4,15 @@
 
 os.sleep(2)
 
+local io              = io
+local os              = os
+local table           = table
+local string          = string
+local print           = print
+local pcall           = pcall
+local require         = require
+local loadfile        = loadfile
+
 local component       = require("component")
 local fs              = require("filesystem")
 local serialization   = require("serialization")
@@ -23,8 +32,6 @@ local port            = 918
 local tank            = {}
 local f               = {}
 local o               = {}
-local table           = table
-local string          = string
 local laeuft          = true
 local nix             = true
 local debug           = false
