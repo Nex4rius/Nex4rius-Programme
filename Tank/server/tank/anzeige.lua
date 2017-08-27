@@ -31,10 +31,12 @@ local version, tankneu, energie
 
 local port            = 918
 local arg             = string.lower(tostring(...))
+local dateiliste      = {"/autorun.lua", "/tank/auslesen.lua"}
 local tank            = {}
 local f               = {}
 local o               = {}
 local timer           = {}
+local updateTimer     = {}
 local Sensorliste     = {}
 local laeuft          = true
 local debug           = false
@@ -360,11 +362,6 @@ function f.keineDaten()
   m.broadcast(port, "tank")
 end
 
-function f.update(signal)
-  -- später
-  return function() end
-end
-
 function f.tankliste()
   for i in pairs(Sensorliste) do
     f.tank(Sensorliste[i][1], Sensorliste[i][3], Sensorliste[i][8])
@@ -397,7 +394,9 @@ end
 
 function o.speichern(signal)
   if signal[7] then
-    -- später
+    local ID = signal[3]
+    event.cancel(updateTimer[ID])
+    updateTimer[ID] = event.timer(10, function() m.send(ID, port, "aktualisieren", serialization.serialize(dateiliste)) updateTimer[ID] = nil end, 0)
   else
     if fs.exists("/tank/client" .. signal[8]) then
       local d = io.open("/tank/client" .. signal[8], "r")
@@ -405,6 +404,15 @@ function o.speichern(signal)
       d:close()
     end
   end
+end
+
+function f.update(signal)
+  for k, v in pairs(dateiliste) do
+    local d = io.open("/tank/client" .. v, "r")
+    m.send(signal[3], port, serialization.serialize(d:read("*a")))
+    d:close()
+  end
+  return function() end
 end
 
 function f.event(...)
