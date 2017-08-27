@@ -223,6 +223,7 @@ function f.main()
   print("Warte auf Antwort...")
   event.listen("modem_message", f.loop)
   pcall(os.sleep, math.huge)
+  event.ignore("modem_message", f.loop)
 end
 
 loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tanksensor")
