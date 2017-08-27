@@ -31,7 +31,7 @@ local version, tankneu, energie
 
 local port            = 918
 local arg             = string.lower(tostring(...))
-local dateiliste      = {"/autorun.lua", "/tank/auslesen.lua"}
+local dateiliste      = {"/autorun.lua", "/tank/auslesen.lua", "/tank/version.txt"}
 local tank            = {}
 local f               = {}
 local o               = {}
