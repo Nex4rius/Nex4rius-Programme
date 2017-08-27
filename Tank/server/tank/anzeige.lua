@@ -445,7 +445,8 @@ local function test(screenid)
                0x000000}
   for _, farbe in pairs(hex) do
     gpu.setBackground(farbe)
-    print(string.rep(" ", math.huge))
+    print(string.rep(" ", 160))
+    os.sleep(0.1)
   end
   gpu.setBackground(0x000000)
 end
