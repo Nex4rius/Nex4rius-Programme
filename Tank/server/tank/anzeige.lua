@@ -351,6 +351,12 @@ end
 
 function f.keineDaten()
   Sensorliste = {}
+  for k, v in pairs(timer) do
+    event.cancel(v)
+  end
+  timer.tank = event.timer(Wartezeit + 15, f.tank, 0)
+  timer.senden = event.timer(Zeit, f.senden, math.huge)
+  timer.tankliste = event.timer(Zeit + 15, f.tankliste(Sensorliste), math.huge)
   f.text("Keine Daten vorhanden")
   m.broadcast(port, "tank")
 end
