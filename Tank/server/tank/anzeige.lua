@@ -367,7 +367,7 @@ function f.tankliste(Sensorliste)
   for i in pairs(Sensorliste) do
     f.tank(Sensorliste[i])
   end
-  Sensorliste = {}
+  timer.reset = event.timer(30, function() Sensorliste = {} end, 0)
   return function() end
 end
 
