@@ -342,6 +342,7 @@ function f.text(a, b)
       gpu.setResolution(gpu.maxResolution())
     else
       f.test(screenid)
+      term.clear()
       gpu.setResolution(string.len(a), 1)
     end
     f.Farben(0xFFFFFF, 0x000000)
