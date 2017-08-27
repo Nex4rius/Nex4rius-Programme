@@ -446,9 +446,12 @@ local function test(screenid)
   for _, farbe in pairs(hex) do
     gpu.setBackground(farbe)
     print(string.rep(" ", 160))
-    os.sleep(0.1)
+    print(string.rep(" ", 160))
+    os.sleep(0.01)
   end
-  gpu.setBackground(0x000000)
+  for i = 0, 80 do
+    print(string.rep(" ", 160))
+  end
 end
 
 function f.checkUpdate()
