@@ -343,7 +343,7 @@ function f.text(a, b)
     end
     f.Farben(0xFFFFFF, 0x000000)
     term.setCursor(1, 1)
-    print(a)
+    term.write(a)
   end
 end
 
