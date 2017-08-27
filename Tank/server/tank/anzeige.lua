@@ -37,7 +37,6 @@ local o               = {}
 local timer           = {}
 local Sensorliste     = {}
 local laeuft          = true
-local nix             = true
 local debug           = false
 local Sendeleistung   = math.huge
 local Wartezeit       = 150
@@ -160,7 +159,6 @@ function f.anzeigen(tankneu, screenid)
   local maxanzahl = 0
   for i in pairs(tankneu) do
     maxanzahl = maxanzahl + 1
-    nix = false
   end
   local a, b = gpu.getResolution()
   if maxanzahl <= 16 and maxanzahl ~= 0 then
@@ -355,7 +353,6 @@ function f.keineDaten()
     test(screenid)
   end
   f.text("Keine Daten vorhanden")
-  nix = true
   m.broadcast(port, "tank")
 end
 
