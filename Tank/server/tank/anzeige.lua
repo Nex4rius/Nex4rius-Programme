@@ -487,6 +487,7 @@ end
 
 function f.beenden()
   event.ignore("modem_message", f.event)
+  event.ignore("interrupted", f.beenden)
   for k, v in pairs(timer) do
     event.cancel(v)
   end
