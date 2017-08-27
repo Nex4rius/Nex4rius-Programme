@@ -462,7 +462,7 @@ end
 
 function f.checkUpdate()
   serverVersion = f.checkServerVersion()
-  print("Prüfe Version\n\n")
+  print("\nPrüfe Version\n")
   print("Derzeitige Version:    " .. (version or "<FEHLER>"))
   print("Verfügbare Version:    " .. (serverVersion or "<FEHLER>"))
   print()
