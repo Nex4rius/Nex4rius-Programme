@@ -439,7 +439,7 @@ local function test(screenid)
                0x000000}
   for _, farbe in pairs(hex) do
     gpu.setBackground(farbe)
-    os.sleep(0.1)
+    os.sleep(0.01)
     term.clear()
   end
   gpu.setBackground(0x000000)
