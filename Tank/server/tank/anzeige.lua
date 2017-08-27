@@ -291,6 +291,7 @@ function f.text(a, b)
       gpu.setResolution(string.len(a), 1)
     end
     f.Farben(0xFFFFFF, 0x000000)
+    term.setCursor(1, 1)
     print(a)
   end
 end
