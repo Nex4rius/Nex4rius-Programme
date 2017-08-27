@@ -393,8 +393,8 @@ function f.senden()
 end
 
 function f.main()
-  gpu.setForeground(0xFFFFFF)
-  term.setCursor(1, 50)
+  f.Farben(0xFFFFFF, 0x000000)
+  term.clear()
   m.open(port)
   f.text("Warte auf Daten")
   timer = event.timer(1, f.senden, 0)
