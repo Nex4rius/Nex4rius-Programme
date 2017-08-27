@@ -181,7 +181,7 @@ function f.installieren(versionTyp)
   else
     print("\nERROR install / update failed\n")
   end
-  for i = 10, 0, -1 do
+  for i = 10, 1, -1 do
     print(i .. "s bis Neustart")
     os.sleep(1)
   end
