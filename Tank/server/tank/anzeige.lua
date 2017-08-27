@@ -349,9 +349,12 @@ function f.text(a, b)
 end
 
 function f.keineDaten()
-  m.broadcast(port, "tank")
+  for screenid in component.list("screen") do
+    test(screenid)
+  end
   f.text("Keine Daten vorhanden")
   nix = true
+  m.broadcast(port, "tank")
 end
 
 function f.update(signal)
