@@ -6,6 +6,7 @@ os.sleep(2)
 
 local component       = require("component")
 local fs              = require("filesystem")
+local serialization   = require("serialization")
 local c               = require("computer")
 local event           = require("event")
 local term            = require("term")
@@ -16,20 +17,24 @@ local ersetzen        = loadfile("/tank/ersetzen.lua")()
 local gpu             = component.getPrimary("gpu")
 local m               = component.getPrimary("modem")
 
-local version, tankneu, energie, timer
+local version, tankneu, energie, timer, timerNIX
 
 local port            = 918
 local tank            = {}
 local f               = {}
 local o               = {}
+local table           = table
+local string          = string
 local laeuft          = true
 local nix             = true
 local debug           = false
+local Sendeleistung   = math.huge
 local Wartezeit       = 150
 local letzteNachricht = c.uptime()
+local Zeit            = 60
 
 if fs.exists("/tank/version.txt") then
-  local d = io.open ("/tank/version.txt", "r")
+  local d = io.open("/tank/version.txt", "r")
   version = d:read()
   d:close()
 else
@@ -185,7 +190,7 @@ function f.anzeigen(tankneu, screenid)
   end
   f.Farben(0xFFFFFF, 0x000000)
   for i = anzahl, 33 do
-    gpu.set(x, y    , string.rep(" ", 80))
+    gpu.set(x, y , string.rep(" ", 80))
     if not (klein and maxanzahl > 5) then
       gpu.set(x, y + 1, string.rep(" ", 80))
       gpu.set(x, y + 2, string.rep(" ", 80))
@@ -280,7 +285,7 @@ end
 
 function f.text(a, b)
   for screenid in component.list("screen") do
-    gpu.bind(screenid)
+    gpu.bind(screenid, false)
     if b then
       gpu.setResolution(gpu.maxResolution())
     else
@@ -292,40 +297,28 @@ function f.text(a, b)
 end
 
 function f.keineDaten()
-  m.broadcast(port, "anmelden")
+  m.broadcast(port, "tank")
   f.text("Keine Daten vorhanden")
   nix = true
 end
 
-function o.tank(signal)
-  if nix then
-    local a = {}
-    local i = 1
-    for k, v in pairs(signal) do
-      a[i] = v
-      i = i + 1
-    end
-    f.text(table.concat(a, "\t"), true)
+function f.update(signal)
+  -- später
+  return function() end
+end
+
+function o.tankliste(signal)
+  if version ~= signal[7] then
+    event.timer(1, f.update(signal), 0)
   end
-  local dazu = true
-  for k, v in pairs(Sensorliste) do
-    if v[1] == signal[3] then
-      dazu = nil
-      break
-    end
-  end
-  if dazu then
-    table.insert(Sensorliste, {signal[3], signal[5], signal[7], signal[8]})
-  end
-  f.senden()
   event.cancel(timer)
-  timer = event.timer(60, f.senden, math.huge)
+  event.cancel(timerNIX)
+  timer = event.timer(Zeit, f.senden, 0)
+  timerNIX = event.timer(Zeit + 15, f.tank, 0)
+  f.tank(signal)
 end
 
 function o.speichern(signal)
-  if m.isWireless() then
-    m.setStrength(signal[5] + 50)
-  end
   if signal[7] then
     -- später
   else
@@ -348,9 +341,6 @@ function f.tank(signal)
     end
     f.anzeigen(f.verarbeiten(tank), screenid)
   end
-end
-
-function f.tankliste(signal)
   local dazu = true
   local ende = 0
   local hier, id, nachricht = signal[1], signal[3], signal[7]
@@ -360,7 +350,7 @@ function f.tankliste(signal)
       if type(tank[i]) == "table" then
         if tank[i].id == id then
           tank[i].zeit = c.uptime()
-          tank[i].inhalt = require("serialization").unserialize(nachricht)
+          tank[i].inhalt = serialization.unserialize(nachricht)
           dazu = false
         end
       end
@@ -371,7 +361,7 @@ function f.tankliste(signal)
       tank[ende] = {}
       tank[ende].id = id
       tank[ende].zeit = c.uptime()
-      tank[ende].inhalt = require("serialization").unserialize(nachricht)
+      tank[ende].inhalt = serialization.unserialize(nachricht)
     end
   else
     f.keineDaten()
@@ -387,32 +377,40 @@ function f.event(...)
   local signal = {...}
   f.text(signal[6], true)
   if o[signal[6]] then
+    if Sendeleistung < signal[5] + 50 then
+      Sendeleistung = signal[5] + 50
+    end
     o[signal[6]](signal)
   end
 end
 
 function f.senden()
+  if m.isWireless() then
+    m.setStrength(Sendeleistung)
+  end
   m.broadcast(port, "tank")
+  timer = event.timer(Zeit, f.senden, 0)
 end
 
 function f.main()
   gpu.setForeground(0xFFFFFF)
   term.setCursor(1, 50)
-  m.open(port + 1)
+  m.open(port)
   f.text("Warte auf Daten")
-  m.broadcast(port, "tank")
+  timer = event.timer(1, f.senden, 0)
   event.listen("modem_message", f.event)
+  timerNIX = event.timer(Zeit + 15, f.tank, 0)
   pcall(os.sleep, math.huge)
+  beenden()
 end
 
 function beenden()
+  print("Ausschalten")
   event.ignore("modem_message", f.event)
   for screenid in component.list("screen") do
     gpu.bind(screenid)
     os.sleep(0.1)
     f.Farben(0xFFFFFF, 0x000000)
-    gpu.setResolution(gpu.maxResolution())
-    os.sleep(0.1)
     term.clear()
   end
 end
@@ -426,6 +424,3 @@ if not ergebnis then
   f.text(grund, true)
   os.sleep(1)
 end
-
-print("Ausschalten")
-beenden()
