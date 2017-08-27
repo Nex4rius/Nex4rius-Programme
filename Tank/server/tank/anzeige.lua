@@ -41,6 +41,49 @@ else
   version = "<FEHLER>"
 end
 
+function f.tank(signal)
+  local dazu = true
+  local ende = 0
+  local hier, id, nachricht = signal[1], signal[3], signal[8]
+  if hier then
+    letzteNachricht = c.uptime()
+    for i in pairs(tank) do
+      if type(tank[i]) == "table" then
+        if tank[i].id == id then
+          tank[i].zeit = c.uptime()
+          tank[i].inhalt = serialization.unserialize(nachricht)
+          dazu = false
+        end
+      end
+      ende = i
+    end
+    if dazu then
+      ende = ende + 1
+      tank[ende] = {}
+      tank[ende].id = id
+      tank[ende].zeit = c.uptime()
+      tank[ende].inhalt = serialization.unserialize(nachricht)
+    end
+  else
+    f.keineDaten()
+  end
+  for i in pairs(tank) do
+    if c.uptime() - tank[i].zeit > Wartezeit * 2 then
+      tank[i] = nil
+    end
+  end
+  local i = 0
+  for screenid in component.list("screen") do
+    i = i + 1
+  end
+  for screenid in component.list("screen") do
+    if i > 1 then
+      gpu.bind(screenid, false)
+    end
+    f.anzeigen(f.verarbeiten(tank), screenid)
+  end
+end
+
 function f.hinzu(name, label, menge, maxmenge)
   local weiter = true
   if name ~= "nil" then
@@ -330,52 +373,8 @@ function o.speichern(signal)
   end
 end
 
-function f.tank(signal)
-  local dazu = true
-  local ende = 0
-  local hier, id, nachricht = signal[1], signal[3], signal[8]
-  if hier then
-    letzteNachricht = c.uptime()
-    for i in pairs(tank) do
-      if type(tank[i]) == "table" then
-        if tank[i].id == id then
-          tank[i].zeit = c.uptime()
-          tank[i].inhalt = serialization.unserialize(nachricht)
-          dazu = false
-        end
-      end
-      ende = i
-    end
-    if dazu then
-      ende = ende + 1
-      tank[ende] = {}
-      tank[ende].id = id
-      tank[ende].zeit = c.uptime()
-      tank[ende].inhalt = serialization.unserialize(nachricht)
-    end
-  else
-    f.keineDaten()
-  end
-  for i in pairs(tank) do
-    if c.uptime() - tank[i].zeit > Wartezeit * 2 then
-      tank[i] = nil
-    end
-  end
-  local i = 0
-  for screenid in component.list("screen") do
-    i = i + 1
-  end
-  for screenid in component.list("screen") do
-    if i > 1 then
-      gpu.bind(screenid, false)
-    end
-    f.anzeigen(f.verarbeiten(tank), screenid)
-  end
-end
-
 function f.event(...)
   local signal = {...}
-  f.text(signal[6], true)
   if o[signal[6]] then
     if Sendeleistung < signal[5] + 50 then
       Sendeleistung = signal[5] + 50
