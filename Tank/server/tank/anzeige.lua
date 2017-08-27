@@ -36,7 +36,6 @@ local tank            = {}
 local f               = {}
 local o               = {}
 local timer           = {}
-local updateTimer     = {}
 local Sensorliste     = {}
 local laeuft          = true
 local debug           = false
@@ -393,11 +392,7 @@ function o.tankliste(signal)
 end
 
 function o.speichern(signal)
-  if signal[7] then
-    local ID = signal[3]
-    event.cancel(updateTimer[ID])
-    updateTimer[ID] = event.timer(10, function() m.send(ID, port, "aktualisieren", serialization.serialize(dateiliste)) updateTimer[ID] = nil end, 0)
-  else
+  if not signal[7] then
     if fs.exists("/tank/client" .. signal[8]) then
       local d = io.open("/tank/client" .. signal[8], "r")
       m.send(signal[3], port, "datei", v, d:read("*a"))
@@ -412,6 +407,7 @@ function f.update(signal)
     m.send(signal[3], port, "datei", v, d:read("*a"))
     d:close()
   end
+  m.send(signal[3], port, "aktualisieren", serialization.serialize(dateiliste))
   return function() end
 end
 
