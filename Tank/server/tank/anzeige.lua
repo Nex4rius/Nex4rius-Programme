@@ -518,7 +518,7 @@ end
 
 function f.checkServerVersion()
   local serverVersion
-  if wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/version.txt", "/serverVersion.txt") then
+  if wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/Tank/Tank/version.txt", "/serverVersion.txt") then
     local d = io.open ("/serverVersion.txt", "r")
     serverVersion = d:read()
     d:close()
