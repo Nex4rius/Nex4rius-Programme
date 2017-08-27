@@ -78,9 +78,8 @@ function f.installieren(versionTyp)
       print("Erstelle Ordner " .. ...)
     end
   end
-  ordner("/tank/client")
-  ordner("/update/tank")
-  ordner("/update/client/tank")
+  ordner("/tank/client/tank")
+  ordner("/update/tank/client/tank")
   print()
   local updateKomplett = false
   local function download(von, nach)
@@ -106,8 +105,8 @@ function f.installieren(versionTyp)
     update[3] = download(typ .. "/tank/farben.lua", "/update/tank/farben.lua")
     update[4] = download(typ .. "/tank/anzeige.lua", "/update/tank/anzeige.lua")
     update[5] = download(typ .. "/tank/ersetzen.lua", "/update/tank/ersetzen.lua")
-    update[6] = download("client/autorun.lua", "/update/client/autorun.lua")
-    update[7] = download("client/tank/auslesen.lua", "/update/client/tank/auslesen.lua")
+    update[6] = download("client/autorun.lua", "/update/tank/client/autorun.lua")
+    update[7] = download("client/tank/auslesen.lua", "/update/tank/client/tank/auslesen.lua")
     anzahl = 7
   end
   for i = 1, anzahl do
