@@ -509,7 +509,7 @@ function f.checkServerVersion()
     local d = io.open ("/serverVersion.txt", "r")
     serverVersion = d:read()
     d:close()
-    fs.delete("/serverVersion.txt")
+    fs.remove("/serverVersion.txt")
   end
   return serverVersion
 end
