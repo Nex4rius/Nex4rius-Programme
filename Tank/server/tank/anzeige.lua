@@ -337,6 +337,7 @@ end
 function f.text(a, b)
   for screenid in component.list("screen") do
     gpu.bind(screenid, false)
+    f.test(screenid)
     if b then
       gpu.setResolution(gpu.maxResolution())
     else
@@ -485,9 +486,6 @@ function f.main()
   f.Farben(0xFFFFFF, 0x000000)
   f.checkUpdate()
   m.open(port)
-  for screenid in component.list("screen") do
-    f.test(screenid)
-  end
   f.text("Warte auf Daten")
   event.listen("modem_message", f.event)
   timer.senden = event.timer(Zeit, f.senden, math.huge)
