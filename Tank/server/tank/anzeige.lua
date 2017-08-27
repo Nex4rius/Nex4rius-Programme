@@ -436,9 +436,8 @@ function f.test(screenid)
   end
   os.sleep(0.1)
   local function schwarz()
-    for i = 0, 30 do
+    for i = 0, 50 do
       gpu.setBackground(0x000000)
-      print(string.rep(" ", 160))
       print(string.rep(" ", 160))
       print(string.rep(" ", 160))
       print(string.rep(" ", 160))
@@ -453,7 +452,6 @@ function f.test(screenid)
   schwarz()
   for _, farbe in pairs(hex) do
     gpu.setBackground(farbe)
-    print(string.rep(" ", 160))
     print(string.rep(" ", 160))
     print(string.rep(" ", 160))
     print(string.rep(" ", 160))
@@ -482,8 +480,10 @@ function f.checkUpdate()
 end
 
 function f.main()
-  f.keineDaten()
   f.Farben(0xFFFFFF, 0x000000)
+f.keineDaten()
+print("ende")
+os.sleep(5)
   term.clear()
   f.checkUpdate()
   m.open(port)
