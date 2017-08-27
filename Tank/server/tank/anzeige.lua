@@ -407,12 +407,10 @@ function f.main()
   event.listen("modem_message", f.event)
   timerNIX = event.timer(Zeit + 15, f.tank, 0)
   pcall(os.sleep, math.huge)
-  beenden()
-end
-
-function beenden()
   print("Ausschalten")
   event.ignore("modem_message", f.event)
+  event.cancel(timer)
+  event.cancel(timerNIX)
   for screenid in component.list("screen") do
     gpu.bind(screenid)
     os.sleep(0.1)
