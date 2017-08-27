@@ -513,6 +513,7 @@ function f.beenden()
     term.clear()
     print("Tankanzeige wird ausgeschaltet")
   end
+  os.exit()
 end
 
 function f.checkServerVersion()
@@ -534,5 +535,3 @@ if not ergebnis then
   f.text("<FEHLER> f.main", true)
   f.text(grund, true)
 end
-
-os.exit()
