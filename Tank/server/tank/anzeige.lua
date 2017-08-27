@@ -430,6 +430,7 @@ function f.senden()
 end
 
 function f.test(screenid)
+  f.test = function() end
   os.sleep(0.1)
   local screenid = screenid or gpu.getScreen()
   local _, hoch = component.proxy(screenid).getAspectRatio()
