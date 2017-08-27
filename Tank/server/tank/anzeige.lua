@@ -364,6 +364,7 @@ function f.tankliste(Sensorliste)
   for i in pairs(Sensorliste) do
     f.tank(Sensorliste[i])
   end
+  Sensorliste = {}
   return function() end
 end
 
