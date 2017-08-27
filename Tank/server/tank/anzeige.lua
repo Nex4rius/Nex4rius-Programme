@@ -458,9 +458,11 @@ end
 
 function f.checkUpdate()
   serverVersion = f.checkServerVersion()
-  print("Prüfe Version\n")
-  print("\nDerzeitige Version:    " .. (version or "<FEHLER>"))
-  print("\nVerfügbare Version:    " .. (serverVersion or "<FEHLER>"))
+  print("Prüfe Version\n\n")
+  print("Derzeitige Version:    " .. (version or "<FEHLER>"))
+  print("Verfügbare Version:    " .. (serverVersion or "<FEHLER>"))
+  print()
+  os.sleep(2)
   if serverVersion and arg then
     if serverVersion ~= version then
       if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/installieren.lua", "/installieren.lua") then
