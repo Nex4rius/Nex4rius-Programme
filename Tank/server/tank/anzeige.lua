@@ -400,7 +400,7 @@ function o.speichern(signal)
   else
     if fs.exists("/tank/client" .. signal[8]) then
       local d = io.open("/tank/client" .. signal[8], "r")
-      m.send(signal[3], port, "datei", d:read("*a"))
+      m.send(signal[3], port, "datei", v, d:read("*a"))
       d:close()
     end
   end
@@ -409,7 +409,7 @@ end
 function f.update(signal)
   for k, v in pairs(dateiliste) do
     local d = io.open("/tank/client" .. v, "r")
-    m.send(signal[3], port, "datei", d:read("*a"))
+    m.send(signal[3], port, "datei", v, d:read("*a"))
     d:close()
   end
   return function() end
