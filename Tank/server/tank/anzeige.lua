@@ -359,7 +359,6 @@ end
 
 function f.update(signal)
   -- später
-  m.broadcast(port, require("serialization").serialize(signal))
   return function() end
 end
 
@@ -367,7 +366,6 @@ function f.tankliste(Sensorliste)
   for i in pairs(Sensorliste) do
     f.tank(Sensorliste[i])
   end
-  timer.reset = event.timer(30, function() Sensorliste = {} end, 0)
   return function() end
 end
 
@@ -420,8 +418,8 @@ function f.senden()
   if m.isWireless() then
     m.setStrength(Sendeleistung)
   end
+  Sensorliste = {}
   m.broadcast(port, "tank")
-  timer.senden = event.timer(Zeit, f.senden, 0)
 end
 
 local function test(screenid)
@@ -444,8 +442,8 @@ local function test(screenid)
                0x000000}
   for _, farbe in pairs(hex) do
     gpu.setBackground(farbe)
-    os.sleep(0.01)
     term.clear()
+    term.write(" ")
   end
   gpu.setBackground(0x000000)
 end
@@ -459,8 +457,9 @@ function f.main()
   end
   f.text("Warte auf Daten")
   event.listen("modem_message", f.event)
-  timer.senden = event.timer(1, f.senden, 0)
+  timer.senden = event.timer(Zeit, f.senden, math.huge)
   timer.tank = event.timer(Zeit + 15, f.tank, 0)
+  f.senden()
   pcall(os.sleep, math.huge)
   event.ignore("modem_message", f.event)
   for k, v in pairs(timer) do
@@ -482,7 +481,6 @@ local ergebnis, grund = pcall(f.main)
 if not ergebnis then
   f.text("<FEHLER> f.main", true)
   f.text(grund, true)
-  os.sleep(1)
 end
 
 os.exit()
