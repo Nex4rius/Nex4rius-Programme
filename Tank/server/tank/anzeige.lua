@@ -96,8 +96,7 @@ end
 
 function f.anzeigen(tankneu, screenid)
   local klein = false
-  local screenid = screenid or gpu.getScreen()
-  local _, hoch = component.proxy(screenid).getAspectRatio()
+  local _, hoch = component.proxy(screenid or gpu.getScreen()).getAspectRatio()
   if hoch <= 2 then
     klein = true
   end
@@ -331,19 +330,9 @@ function o.speichern(signal)
 end
 
 function f.tank(signal)
-  local i = 0
-  for screenid in component.list("screen") do
-    i = i + 1
-  end
-  for screenid in component.list("screen") do
-    if i > 1 then
-      gpu.bind(screenid, false)
-    end
-    f.anzeigen(f.verarbeiten(tank), screenid)
-  end
   local dazu = true
   local ende = 0
-  local hier, id, nachricht = signal[1], signal[3], signal[7]
+  local hier, id, nachricht = signal[1], signal[3], signal[8]
   if hier then
     letzteNachricht = c.uptime()
     for i in pairs(tank) do
@@ -370,6 +359,16 @@ function f.tank(signal)
     if c.uptime() - tank[i].zeit > Wartezeit * 2 then
       tank[i] = nil
     end
+  end
+  local i = 0
+  for screenid in component.list("screen") do
+    i = i + 1
+  end
+  for screenid in component.list("screen") do
+    if i > 1 then
+      gpu.bind(screenid, false)
+    end
+    f.anzeigen(f.verarbeiten(tank), screenid)
   end
 end
 
