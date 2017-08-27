@@ -460,7 +460,10 @@ function f.main()
   timer.senden = event.timer(Zeit, f.senden, math.huge)
   timer.tank = event.timer(Zeit + 15, f.tank, 0)
   f.senden()
-  pcall(os.sleep, math.huge)
+  event.listen("interrupted", f.beenden)
+end
+
+function f.beenden()
   event.ignore("modem_message", f.event)
   for k, v in pairs(timer) do
     event.cancel(v)
