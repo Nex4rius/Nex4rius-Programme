@@ -350,7 +350,7 @@ end
 
 function f.keineDaten()
   for screenid in component.list("screen") do
-    test(screenid)
+    f.test(screenid)
   end
   f.text("Keine Daten vorhanden")
   m.broadcast(port, "tank")
@@ -423,7 +423,7 @@ function f.senden()
   m.broadcast(port, "tank")
 end
 
-local function test(screenid)
+function f.test(screenid)
   os.sleep(0.1)
   local screenid = screenid or gpu.getScreen()
   local _, hoch = component.proxy(screenid).getAspectRatio()
@@ -488,7 +488,7 @@ function f.main()
   f.checkUpdate()
   m.open(port)
   for screenid in component.list("screen") do
-    test(screenid)
+    f.test(screenid)
   end
   f.text("Warte auf Daten")
   event.listen("modem_message", f.event)
