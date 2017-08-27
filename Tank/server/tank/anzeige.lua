@@ -364,8 +364,8 @@ function o.tankliste(signal)
   end
   event.cancel(timer.senden)
   event.cancel(timer.tank)
-  timer.senden = event.timer(Zeit, f.senden, 0)
-  timer.tank = event.timer(Zeit + 15, f.tank, 0)
+  timer.senden = event.timer(Zeit, f.senden, math.huge)
+  timer.tank = event.timer(Zeit + 15, f.tank, math.huge)
   f.tank(signal)
 end
 
