@@ -337,10 +337,10 @@ end
 function f.text(a, b)
   for screenid in component.list("screen") do
     gpu.bind(screenid, false)
-    f.test(screenid)
     if b then
       gpu.setResolution(gpu.maxResolution())
     else
+      f.test(screenid)
       gpu.setResolution(string.len(a), 1)
     end
     f.Farben(0xFFFFFF, 0x000000)
@@ -350,9 +350,6 @@ function f.text(a, b)
 end
 
 function f.keineDaten()
-  for screenid in component.list("screen") do
-    f.test(screenid)
-  end
   Sensorliste = {}
   f.text("Keine Daten vorhanden")
   m.broadcast(port, "tank")
@@ -389,7 +386,6 @@ function o.tankliste(signal)
     event.cancel(v)
   end
   timer.tank = event.timer(Wartezeit + 15, f.tank, 0)
-  --timer.keineDaten = event.timer(Wartezeit + 20, f.keineDaten, math.huge)
   timer.jetzt = event.timer(10, f.tankliste(Sensorliste), 0)
   timer.senden = event.timer(Zeit, f.senden, math.huge)
   timer.tankliste = event.timer(Zeit + 15, f.tankliste(Sensorliste), math.huge)
@@ -430,7 +426,6 @@ function f.test(screenid)
   local screenid = screenid or gpu.getScreen()
   local _, hoch = component.proxy(screenid).getAspectRatio()
   gpu.bind(screenid)
-  term.clear()
   if hoch <= 2 then
     gpu.setResolution(160, 16)
   else
@@ -490,7 +485,6 @@ function f.main()
   event.listen("modem_message", f.event)
   timer.senden = event.timer(Zeit, f.senden, math.huge)
   timer.tank = event.timer(Zeit + 15, f.tank, 0)
-  --timer.keineDaten = event.timer(Wartezeit + 20, f.keineDaten, math.huge)
   f.senden()
   event.listen("interrupted", f.beenden)
   event.pull("beenden")
