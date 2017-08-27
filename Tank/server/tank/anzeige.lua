@@ -30,6 +30,7 @@ local m               = component.getPrimary("modem")
 local version, tankneu, energie
 
 local port            = 918
+local arg             = string.lower(tostring(...))
 local tank            = {}
 local f               = {}
 local o               = {}
@@ -49,6 +50,12 @@ if fs.exists("/tank/version.txt") then
   d:close()
 else
   version = "<FEHLER>"
+end
+
+if arg == "n" or arg == "nein" or arg == "no" then
+  arg = nil
+else
+  arg = true
 end
 
 function f.tank(signal)
@@ -454,7 +461,7 @@ function f.checkUpdate()
   print("Prüfe Version\n")
   print("\nDerzeitige Version:    " .. (version or "<FEHLER>"))
   print("\nVerfügbare Version:    " .. (serverVersion or "<FEHLER>"))
-  if serverVersion then
+  if serverVersion and arg then
     if serverVersion ~= version then
       if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/installieren.lua", "/installieren.lua") then
         print("\nBeginne Update\n")
