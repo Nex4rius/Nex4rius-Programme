@@ -354,10 +354,9 @@ function f.keineDaten()
   for k, v in pairs(timer) do
     event.cancel(v)
   end
+  f.text("Keine Daten vorhanden")
   timer.tank = event.timer(Wartezeit + 15, f.tank, 0)
   timer.senden = event.timer(Zeit, f.senden, math.huge)
-  timer.tankliste = event.timer(Zeit + 15, f.tankliste(Sensorliste), math.huge)
-  f.text("Keine Daten vorhanden")
   m.broadcast(port, "tank")
 end
 
@@ -366,7 +365,7 @@ function f.update(signal)
   return function() end
 end
 
-function f.tankliste(Sensorliste)
+function f.tankliste()
   for i in pairs(Sensorliste) do
     f.tank(Sensorliste[i][1], Sensorliste[i][3], Sensorliste[i][8])
   end
@@ -392,9 +391,9 @@ function o.tankliste(signal)
     event.cancel(v)
   end
   timer.tank = event.timer(Wartezeit + 15, f.tank, 0)
-  timer.jetzt = event.timer(10, f.tankliste(Sensorliste), 0)
+  timer.jetzt = event.timer(10, f.tankliste(), 0)
   timer.senden = event.timer(Zeit, f.senden, math.huge)
-  timer.tankliste = event.timer(Zeit + 15, f.tankliste(Sensorliste), math.huge)
+  timer.tankliste = event.timer(Zeit + 15, f.tankliste(), math.huge)
 end
 
 function o.speichern(signal)
@@ -441,9 +440,10 @@ function f.test(screenid)
   local function schwarz()
     for i = 0, 50 do
       gpu.setBackground(0x000000)
-      print(string.rep(" ", 160))
-      print(string.rep(" ", 160))
-      print(string.rep(" ", 160))
+      print()
+      print()
+      print()
+      os.sleep(0.01)
     end
   end
   local hex = {0x000000, 0x1F1F1F, 0x3F3F3F, 0x5F5F5F, 0x7F7F7F, 0x9F9F9F, 0xBFBFBF, 0xDFDFDF,
