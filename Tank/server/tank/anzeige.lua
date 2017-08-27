@@ -513,6 +513,8 @@ function f.beenden()
     term.clear()
     print("Tankanzeige wird ausgeschaltet")
   end
+  f = nil
+  o = nil
   os.exit()
 end
 
