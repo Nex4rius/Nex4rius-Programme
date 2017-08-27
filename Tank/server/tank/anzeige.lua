@@ -436,7 +436,7 @@ local function test(screenid)
   end
   os.sleep(0.1)
   local function schwarz()
-    for i = 0, 30 do
+    for i = 0, 20 do
       gpu.setBackground(0x000000)
       print(string.rep(" ", 160))
       print(string.rep(" ", 160))
