@@ -356,6 +356,7 @@ end
 
 function f.update(signal)
   -- später
+  m.broadcast(port, require("serialization").serialize(signal))
   return function() end
 end
 
@@ -369,7 +370,7 @@ end
 function o.tankliste(signal)
   local dazu = true
   if version ~= signal[7] then
-    event.timer(1, f.update(signal), 0)
+    event.timer(5, f.update(signal), 0)
   end
   for i in pairs(Sensorliste) do
     if Sensorliste[i][3] == signal[3] then
