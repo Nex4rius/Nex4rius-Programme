@@ -369,7 +369,6 @@ function f.tankliste()
   for i in pairs(Sensorliste) do
     f.tank(Sensorliste[i][1], Sensorliste[i][3], Sensorliste[i][8])
   end
-  return function() end
 end
 
 function o.tankliste(signal)
@@ -391,9 +390,9 @@ function o.tankliste(signal)
     event.cancel(v)
   end
   timer.tank = event.timer(Wartezeit + 15, f.tank, 0)
-  timer.jetzt = event.timer(10, f.tankliste(), 0)
+  timer.jetzt = event.timer(10, f.tankliste, 0)
   timer.senden = event.timer(Zeit, f.senden, math.huge)
-  timer.tankliste = event.timer(Zeit + 15, f.tankliste(), math.huge)
+  timer.tankliste = event.timer(Zeit + 15, f.tankliste, math.huge)
 end
 
 function o.speichern(signal)
