@@ -194,7 +194,7 @@ function o.aktualisieren(signal)
 end
 
 function o.tank(signal)
-  f.senden(signal, "tank", version, f.serialize(f.check()))
+  f.senden(signal, "tankliste", version, f.serialize(f.check()))
 end
 
 function f.loop(...)
@@ -209,7 +209,7 @@ function f.senden(signal, name, nachricht, ...)
   if m.isWireless() then
     m.setStrength(tonumber(signal[5]) + 50)
   end
-  m.send(signal[3], signal[4] + 1, name, f.serialize(nachricht), ...)
+  m.send(signal[3], signal[4], name, f.serialize(nachricht), ...)
 end
 
 function f.main()
@@ -217,7 +217,7 @@ function f.main()
   if m.isWireless() then
     m.setStrength(math.huge)
   end
-  m.broadcast(port, "tank", version, f.serialize(f.check()))
+  m.broadcast(port, "tankliste", version, f.serialize(f.check()))
   term.clear()
   print("Sende Anmeldung")
   print("Warte auf Antwort...")
