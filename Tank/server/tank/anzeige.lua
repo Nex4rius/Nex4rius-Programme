@@ -458,6 +458,7 @@ function f.test(screenid)
     print(string.rep(" ", 160))
     print(string.rep(" ", 160))
     print(string.rep(" ", 160))
+    os.sleep(0.1)
   end
   schwarz()
 end
