@@ -414,9 +414,10 @@ function f.update(versionTyp, a)
   os.exit()
 end
 
-function f.checkServerVersion()
+function f.checkServerVersion(branch)
+  local branch = branch or "master"
   gpu.setForeground(Farben.Hintergrundfarbe)
-  if wget("-f", f.Pfad("master") .. "stargate/version.txt", "/serverVersion.txt") then
+  if wget("-f", f.Pfad(branch) .. "stargate/version.txt", "/serverVersion.txt") then
     local d = io.open ("/serverVersion.txt", "r")
     serverVersion = d:read()
     d:close()
@@ -434,28 +435,6 @@ function f.checkServerVersion()
   end
   gpu.setForeground(Farben.weisseFarbe)
   return serverVersion
-end
-
-function f.checkBetaServerVersion()
-  gpu.setForeground(Farben.Hintergrundfarbe)
-  if wget("-f", f.Pfad("beta") .. "stargate/version.txt", "/betaVersion.txt") then
-    local d = io.open ("/betaVersion.txt", "r")
-    betaServerVersion = d:read()
-    d:close()
-    local a = loadfile("/bin/rm.lua") or fs.delete
-    a("/betaVersion.txt")
-  else
-    betaServerVersion = sprachen.fehlerName
-  end
-  if OC then
-    local x, y = term.getCursor()
-    term.setCursor(x, y - 1)
-    term.clearLine()
-    term.setCursor(x, y - 2)
-    term.clearLine()
-  end
-  gpu.setForeground(Farben.weisseFarbe)
-  return betaServerVersion
 end
 
 function f.checkDateien()
@@ -535,10 +514,10 @@ end
 
 function f.mainCheck()
   if component.isAvailable("internet") then
-    term.write(sprachen.derzeitigeVersion .. version .. sprachen.verfuegbareVersion or "\nDerzeitige Version:    " .. version .. "\nVerfügbare Version:    ")
-    local serverVersion = f.checkServerVersion()
-    local betaServerVersion = f.checkBetaServerVersion()
-    term.write(serverVersion .. "\n")
+    print(sprachen.derzeitigeVersion .. version or "\nDerzeitige Version:    " .. version)
+    local serverVersion = f.checkServerVersion("master")
+    local betaServerVersion = f.checkServerVersion("beta")
+    print(sprachen.verfuegbareVersion .. serverVersion or "\nVerfügbare Version:    " .. serverVersion)
     if serverVersion == betaServerVersion then else
       print(sprachen.betaVersion .. betaServerVersion .. " BETA" or "Beta-Version:          " .. betaServerVersion .. " BETA")
       if betaServerVersion == sprachen.fehlerName then else
