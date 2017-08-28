@@ -266,9 +266,15 @@ function f.pull_event()
       end
     end
     if VersionUpdate then
-      f.Logbuch_schreiben(f.checkServerVersion(), "Update:    " , "update")
-      running = false
-      Variablen.update = "ja"
+      local serverVersion = f.checkServerVersion()
+      if serverVersion ~= sprachen.fehlerName then
+        f.Logbuch_schreiben(serverVersion, "Update:    " , "update")
+        running = false
+        Variablen.update = "ja"
+      else
+        VersionUpdate = false
+        f.zeigeNachricht(sprachen.fehlerName)
+      end
     end
   end
   checkEnergy = energy
@@ -1494,9 +1500,14 @@ function Taste.u()
     if component.isAvailable("internet") then
       local serverVersion = f.checkServerVersion()
       if version ~= serverVersion then
-        f.Logbuch_schreiben(serverVersion, "Update:    " , "update")
-        running = false
-        Variablen.update = "ja"
+        if serverVersion ~= sprachen.fehlerName then
+          f.Logbuch_schreiben(serverVersion, "Update:    " , "update")
+          running = false
+          Variablen.update = "ja"
+        else
+          f.zeigeNachricht(sprachen.fehlerName)
+          event.timer(2, f.zeigeMenu, 1)
+        end
       else
         f.zeigeNachricht(sprachen.bereitsNeusteVersion)
         event.timer(2, f.zeigeMenu, 1)
