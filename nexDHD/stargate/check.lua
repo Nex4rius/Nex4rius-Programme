@@ -538,7 +538,7 @@ function f.mainCheck()
     term.write(sprachen.derzeitigeVersion .. version .. sprachen.verfuegbareVersion or "\nDerzeitige Version:    " .. version .. "\nVerfügbare Version:    ")
     local serverVersion = f.checkServerVersion()
     local betaServerVersion = f.checkBetaServerVersion()
-    print(serverVersion)
+    term.write(serverVersion .. "\n")
     if serverVersion == betaServerVersion then else
       print(sprachen.betaVersion .. betaServerVersion .. " BETA" or "Beta-Version:          " .. betaServerVersion .. " BETA")
       if betaServerVersion == sprachen.fehlerName then else
