@@ -535,9 +535,10 @@ end
 
 function f.mainCheck()
   if component.isAvailable("internet") then
+    term.write(sprachen.derzeitigeVersion .. version .. sprachen.verfuegbareVersion or "\nDerzeitige Version:    " .. version .. "\nVerfügbare Version:    ")
     local serverVersion = f.checkServerVersion()
     local betaServerVersion = f.checkBetaServerVersion()
-    print(sprachen.derzeitigeVersion .. version .. sprachen.verfuegbareVersion .. serverVersion or "\nDerzeitige Version:    " .. version .. "\nVerfügbare Version:    " .. serverVersion)
+    print(serverVersion)
     if serverVersion == betaServerVersion then else
       print(sprachen.betaVersion .. betaServerVersion .. " BETA" or "Beta-Version:          " .. betaServerVersion .. " BETA")
       if betaServerVersion == sprachen.fehlerName then else
