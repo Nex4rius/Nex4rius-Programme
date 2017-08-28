@@ -266,7 +266,7 @@ function f.pull_event()
       end
     end
     if VersionUpdate then
-      local serverVersion = f.checkServerVersion()
+      local serverVersion = f.checkServerVersion("master")
       if serverVersion ~= sprachen.fehlerName then
         f.Logbuch_schreiben(serverVersion, "Update:    " , "update")
         running = false
@@ -1498,7 +1498,7 @@ function Taste.u()
     f.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
     f.zeigeHier(1, Taste.Koordinaten.Taste_u, "U " .. sprachen.Update, 0)
     if component.isAvailable("internet") then
-      local serverVersion = f.checkServerVersion()
+      local serverVersion = f.checkServerVersion("master")
       if version ~= serverVersion then
         if serverVersion ~= sprachen.fehlerName then
           f.Logbuch_schreiben(serverVersion, "Update:    " , "update")
@@ -1746,7 +1746,7 @@ function f.angekommeneVersion(...)
   local EndpunktVersion = string.len(version)
   if string.sub(..., Endpunkt - 3, Endpunkt) ~= "BETA" and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" and version ~= ... and Sicherung.autoUpdate == true then
     if component.isAvailable("internet") then
-      if version ~= f.checkServerVersion() then
+      if version ~= f.checkServerVersion("master") then
         VersionUpdate = true
         f.zeigeNachricht(nil, true)
         event.timer(10, function() event.push("test") end, math.huge)
