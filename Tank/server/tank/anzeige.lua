@@ -339,12 +339,12 @@ function f.text(a, b)
       gpu.setResolution(gpu.maxResolution())
     else
       f.test(screenid)
-      term.clear()
+      f.Farben(0xFFFFFF, 0x000000)
+      gpu.set(1, 1, a)
       gpu.setResolution(string.len(a), 1)
     end
     f.Farben(0xFFFFFF, 0x000000)
-    term.setCursor(1, 1)
-    term.write(a)
+    gpu.set(1, 1, a)
   end
 end
 
