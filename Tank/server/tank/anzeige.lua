@@ -27,7 +27,7 @@ local wget            = loadfile("/bin/wget.lua")
 local gpu             = component.getPrimary("gpu")
 local m               = component.getPrimary("modem")
 
-local version, tankneu, energie
+local version, tankneu, energie, Updatetimer
 
 local port            = 918
 local arg             = string.lower(tostring(...))
@@ -468,30 +468,33 @@ end
 
 function f.test() end --deaktiviert
 
-function f.checkUpdate()
-  term.setCursor(gpu.getResolution())
-  serverVersion = f.checkServerVersion()
-  print("\nPrüfe Version\n")
-  print("Derzeitige Version:    " .. (version or "<FEHLER>"))
-  print("Verfügbare Version:    " .. (serverVersion or "<FEHLER>"))
-  print()
-  os.sleep(2)
-  if serverVersion and arg then
-    if serverVersion ~= version then
-      os.execute("pastebin run -f cyF0yhXZ Tank")
-      --if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/installieren.lua", "/installieren.lua") then --hier auf master
-      --  print("\nBeginne Update\n")
-      --  print(pcall(loadfile("/installieren.lua")))
-      --  print("Warte 5s")
-      --  os.sleep(5)
-      --end
-    end
+function f.checkUpdate(text)
+  if component.isAvailable("internet") then
+    serverVersion = f.checkServerVersion()
+  end
+  if text then
+    term.setCursor(gpu.getResolution())
+    print("\nPrüfe Version\n")
+    print("Derzeitige Version:    " .. (version or "<FEHLER>"))
+    print("Verfügbare Version:    " .. (serverVersion or "<FEHLER>"))
+    print()
+    os.sleep(2)
+  end
+  if serverVersion and arg and component.isAvailable("internet") and serverVersion ~= version then
+    os.execute("pastebin run -f cyF0yhXZ Tank")
+    --if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/installieren.lua", "/installieren.lua") then --hier auf master
+    --  print("\nBeginne Update\n")
+    --  print(pcall(loadfile("/installieren.lua")))
+    --  print("Warte 5s")
+    --  os.sleep(5)
+    --end
   end
 end
 
 function f.main()
   f.Farben(0xFFFFFF, 0x000000)
-  f.checkUpdate()
+  f.checkUpdate(true)
+  Updatetimer = event.timer(3600, f.checkUpdate, math.huge)
   m.open(port)
   f.text("Warte auf Daten")
   event.listen("modem_message", f.event)
@@ -509,6 +512,7 @@ function f.beenden()
   for k, v in pairs(timer) do
     event.cancel(v)
   end
+  event.cancel(Updatetimer)
   event.timer(1, f.beenden, 10)
   event.push("beenden")
   for screenid in component.list("screen") do
