@@ -391,6 +391,7 @@ function o.tankliste(signal)
   timer.jetzt = event.timer(10, f.tankliste, 0)
   timer.senden = event.timer(Zeit, f.senden, math.huge)
   timer.tankliste = event.timer(Zeit + 15, f.tankliste, math.huge)
+  timer.beenden = event.timer(Wartezeit + 30, f.beenden, 0)
 end
 
 function o.speichern(signal)
@@ -471,6 +472,7 @@ end
 function f.test() end --deaktiviert
 
 function f.checkUpdate()
+  term.setCursor(gpu.getResolution())
   serverVersion = f.checkServerVersion()
   print("\nPrüfe Version\n")
   print("Derzeitige Version:    " .. (version or "<FEHLER>"))
@@ -498,6 +500,7 @@ function f.main()
   event.listen("modem_message", f.event)
   timer.senden = event.timer(Zeit, f.senden, math.huge)
   timer.tank = event.timer(Zeit + 15, f.tank, 0)
+  timer.beenden = event.timer(Wartezeit + 30, f.beenden, 0)
   f.senden()
   event.listen("interrupted", f.beenden)
   event.pull("beenden")
@@ -509,6 +512,7 @@ function f.beenden()
   for k, v in pairs(timer) do
     event.cancel(v)
   end
+  event.timer(1, f.beenden, 10)
   event.push("beenden")
   for screenid in component.list("screen") do
     gpu.bind(screenid)
