@@ -124,7 +124,7 @@ function f.verarbeiten(tank)
       end
     end
   end
-  timer.anzeigen = event.timer(10, function(tankneu) for screenid in component.list("screen") do gpu.bind(screenid, false) f.anzeigen(tankneu, screenid) end, 0)
+  timer.anzeigen = event.timer(10, function(tankneu) for screenid in component.list("screen") do gpu.bind(screenid, false) f.anzeigen(tankneu, screenid) end end, 0)
 end
 
 local function spairs(t, order)
