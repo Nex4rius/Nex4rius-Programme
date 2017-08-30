@@ -124,14 +124,6 @@ function f.verarbeiten(tank)
       end
     end
   end
-  local function ausgabe(tankneu)
-    for screenid in component.list("screen") do
-      gpu.bind(screenid, false)
-      f.anzeigen(tankneu, screenid)
-    end
-    return function() end
-  end
-  timer.anzeigen = event.timer(10, ausgabe(tankneu), 0)
 end
 
 local function spairs(t, order)
@@ -392,10 +384,11 @@ function o.tankliste(signal)
     event.cancel(v)
   end
   timer.tank = event.timer(Wartezeit + 15, f.tank, 0)
-  timer.jetzt = event.timer(10, f.tankliste, 0)
+  timer.jetzt = event.timer(5, f.tankliste, 0)
   timer.senden = event.timer(Zeit, f.senden, math.huge)
   timer.tankliste = event.timer(Zeit + 15, f.tankliste, math.huge)
   timer.beenden = event.timer(Wartezeit + 30, f.beenden, 0)
+  timer.anzeigen = event.timer(10, function() for screenid in component.list("screen") do gpu.bind(screenid, false) f.anzeigen(tankneu, screenid) end end, 0)
 end
 
 function o.speichern(signal)
