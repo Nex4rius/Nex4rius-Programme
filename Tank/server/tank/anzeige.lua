@@ -127,7 +127,7 @@ function f.verarbeiten(tank, screenid)
       end
     end
   end
-  timer.anzeigen = event.timer(2, f.anzeigen(tankneu, screenid), 0)
+  timer.anzeigen = event.timer(5, f.anzeigen(tankneu, screenid), 0)
 end
 
 local function spairs(t, order)
