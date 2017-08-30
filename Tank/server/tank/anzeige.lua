@@ -513,7 +513,6 @@ function f.beenden()
     event.cancel(v)
   end
   event.cancel(Updatetimer)
-  event.timer(1, f.beenden, 10)
   event.push("beenden")
   for screenid in component.list("screen") do
     gpu.bind(screenid)
