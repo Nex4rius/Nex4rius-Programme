@@ -88,10 +88,7 @@ function f.tank(hier, id, nachricht)
       tank[i] = nil
     end
   end
-  for screenid in component.list("screen") do
-    gpu.bind(screenid, false)
-    f.verarbeiten(tank, screenid)
-  end
+  f.verarbeiten(tank)
 end
 
 function f.hinzu(name, label, menge, maxmenge)
@@ -114,7 +111,7 @@ function f.hinzu(name, label, menge, maxmenge)
   end
 end
 
-function f.verarbeiten(tank, screenid)
+function f.verarbeiten(tank)
   tankneu = {}
   tanknr = 0
   for i in pairs(tank) do
@@ -127,7 +124,7 @@ function f.verarbeiten(tank, screenid)
       end
     end
   end
-  timer.anzeigen = event.timer(5, f.anzeigen(tankneu, screenid), 0)
+  timer.anzeigen = event.timer(10, function(tankneu) for screenid in component.list("screen") do gpu.bind(screenid, false) f.anzeigen(tankneu, screenid) end, 0)
 end
 
 local function spairs(t, order)
