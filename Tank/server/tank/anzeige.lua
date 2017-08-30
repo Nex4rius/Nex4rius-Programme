@@ -90,7 +90,7 @@ function f.tank(hier, id, nachricht)
   end
   for screenid in component.list("screen") do
     gpu.bind(screenid, false)
-    f.anzeigen(f.verarbeiten(tank), screenid)
+    f.verarbeiten(tank, screenid)
   end
 end
 
@@ -114,7 +114,7 @@ function f.hinzu(name, label, menge, maxmenge)
   end
 end
 
-function f.verarbeiten(tank)
+function f.verarbeiten(tank, screenid)
   tankneu = {}
   tanknr = 0
   for i in pairs(tank) do
@@ -127,7 +127,7 @@ function f.verarbeiten(tank)
       end
     end
   end
-  return tankneu
+  timer.anzeigen = event.timer(2, f.anzeigen(tankneu, screenid), 0)
 end
 
 local function spairs(t, order)
@@ -256,6 +256,7 @@ function f.anzeigen(tankneu, screenid)
   if leer then
     keineDaten()
   end
+  return function() end
 end
 
 function f.zeichenErsetzen(...)
