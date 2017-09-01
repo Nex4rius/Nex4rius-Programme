@@ -315,18 +315,18 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
   if klein and maxanzahl > 5 then
     gpu.set(x, y, table.concat(nachricht, nil, 1, math.ceil(breite * menge / maxmenge)))
   else
-    gpu.set(x, y    , string.rep(" ", breite - math.ceil(breite * menge / maxmenge)))
+    gpu.set(x, y    , string.rep(" ", math.ceil(breite * menge / maxmenge)))
     gpu.set(x, y + 1, table.concat(nachricht, nil, 1, math.ceil(breite * menge / maxmenge)))
-    gpu.set(x, y + 2, string.rep(" ", breite - math.ceil(breite * menge / maxmenge)))
+    gpu.set(x, y + 2, string.rep(" ", math.ceil(breite * menge / maxmenge)))
   end
   x = x + math.ceil(breite * menge / maxmenge)
   f.Farben(farben[name][3], farben[name][4])
   if klein and maxanzahl > 5  then
     gpu.set(x, y, table.concat(nachricht, nil, math.ceil(breite * menge / maxmenge)))
   else
-    gpu.set(x, y    , string.rep(" ", math.ceil(breite * menge / maxmenge)))
+    gpu.set(x, y    , string.rep(" ", breite - math.ceil(breite * menge / maxmenge)))
     gpu.set(x, y + 1, table.concat(nachricht, nil, math.ceil(breite * menge / maxmenge)))
-    gpu.set(x, y + 2, string.rep(" ", math.ceil(breite * menge / maxmenge)))
+    gpu.set(x, y + 2, string.rep(" ", breite - math.ceil(breite * menge / maxmenge)))
   end
   --Test
 end
