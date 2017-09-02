@@ -143,11 +143,10 @@ local function spairs(t, order)
   end
 end
 
-function f.anzeigen(tankneu, screenid)
+function f.anzeigen()
   for screenid in component.list("screen") do
     gpu.bind(screenid, false)
     local klein = false
-    local screenid = screenid or gpu.getScreen()
     local _, hoch = component.proxy(screenid).getAspectRatio()
     if hoch <= 2 then
       klein = true
