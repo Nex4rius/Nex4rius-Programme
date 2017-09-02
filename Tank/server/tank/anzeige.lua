@@ -299,7 +299,7 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
     gpu.set(x, y + 1, table.concat(nachricht, nil, 1, grenze))
     gpu.fill(x, y + 2, grenze, 1, " ")
   end
-  x = x + grenze - 1
+  x = x + grenze
   f.Farben(farben[name][3], farben[name][4])
   if klein and maxanzahl > 5 then
     gpu.set(x, y, table.concat(nachricht, nil, grenze + 1))
