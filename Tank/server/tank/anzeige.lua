@@ -479,22 +479,21 @@ function f.checkUpdate(text)
     print()
     os.sleep(2)
   end
-  if serverVersion and arg and component.isAvailable("internet") and serverVersion ~= version then
-    os.execute("pastebin run -f cyF0yhXZ Tank")
+  os.execute("pastebin run -f cyF0yhXZ Tank")
+  --if serverVersion and arg and component.isAvailable("internet") and serverVersion ~= version then
     --if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/installieren.lua", "/installieren.lua") then --hier auf master
     --  print("\nBeginne Update\n")
     --  print(pcall(loadfile("/installieren.lua")))
     --  os.execute("reboot")
     --end
-  end
-  return function() end
+  --end
 end
 
 function f.main()
   f.Farben(0xFFFFFF, 0x000000)
-  f.checkUpdate(true)
+  --f.checkUpdate(true)
   --Updatetimer = event.timer(3600, f.checkUpdate, math.huge)
-  Updatetimer = event.timer(120, f.checkUpdate(true), math.huge)
+  Updatetimer = event.timer(120, f.checkUpdate, math.huge)
   m.open(port)
   f.text("Warte auf Daten")
   event.listen("modem_message", f.event)
