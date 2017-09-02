@@ -45,26 +45,26 @@ function f.installieren(versionTyp)
   print("\n\n")
   local weiter = true
   if component.isAvailable("transposer") then
-    print("Transposer detected downloading client (sensor).")
+    print("Transposer gefunden. Client/Sensor wird heruntergeladen.")
     typ = "client"
     weiter = false
   end
   if component.isAvailable("tank_controller") then
-    print("Tank Controller detected downloading client (sensor).")
+    print("Tank Controller gefunden. Client/Sensor wird heruntergeladen.")
     typ = "client"
     weiter = false
   end
   if gpu.maxResolution() == 160 then
-    print("Tier III GPU and Screen detected downloading server (display).")
+    print("Tier III GPU und Bildschirm gefunden. Server/Anzeige wird heruntergeladen.")
     typ = "server"
     weiter = false
   end
   if weiter then
-    print("Unable to detect a Tier III GPU, a Tier III Screen, a Tank Controller or a Transposer.")
+    print("Kein Tier III GPU, Tier III Bildschirm, Tank Controller oder Transposer gefunden.")
   end
   while weiter do
-    print("\n\nserver (display) / client (adapter + tank)?\n")
-    typ = io.read()
+    print("\n\nServer (Anzeige) / Client (Sensor)?\n")
+    typ = string.lower(io.read())
     if typ == "server" or typ == "client" then
       weiter = false
     else
@@ -183,42 +183,42 @@ function f.installieren(versionTyp)
     print("\nERROR install / update failed\n")
   end
   for i = 10, 1, -1 do
-    print(i .. "s bis Neustart")
+    print("Neustart in ... " .. i)
     os.sleep(1)
   end
   require("computer").shutdown(true)
 end
 
 function f.Komponenten(typ)
-  print("\ncheck components\n")
+  print("\nPrüfe Komponenten\n")
   if component.isAvailable("internet") then
     gpu.setForeground(0x00FF00)
-    print("Internet Card - OK")
+    print("Internetkarte                     - OK")
   else
     gpu.setForeground(0xFF0000)
-    print("Internet Card - ERROR")
+    print("Internetkarte                     - fehlt")
   end
   if component.isAvailable("modem") then
     gpu.setForeground(0x00FF00)
     if component.modem.isWireless() then
-      print("Wireless Network Card - OK")
+      print("WLAN-Karte                        - OK")
     else
-      print("Wireless Network Card - ERROR")
-      print("Network Card - OK")
+      print("WLAN-Karte                        - fehlt")
+      print("Netzwerkkarte                     - OK")
     end
   else
     gpu.setForeground(0xFF0000)
-    print("Network Card - ERROR")
+    print("Netzwerkkarte                     - fehlt")
   end
   if typ == "server" then
     if gpu.maxResolution() == 160 then
       gpu.setForeground(0x00FF00)
-      print("Graphic Card T3 - OK")
-      print("Screen T3 - OK")
+      print("Grafikkarte Tier III              - OK")
+      print("Bildschirm Tier III               - OK")
     else
       gpu.setForeground(0xFF0000)
-      print("Graphic Card T3 - ERROR")
-      print("Screen T3 - ERROR")
+      print("Grafikkarte Tier III              - fehlt")
+      print("Bildschirm Tier III               - fehlt")
     end
   else
     if component.isAvailable("tank_controller") then
@@ -226,14 +226,14 @@ function f.Komponenten(typ)
       print("Adapter + Tank Controller Upgrade - OK")
     else
       gpu.setForeground(0xFF0000)
-      print("Adapter + Tank Controller Upgrade - ERROR")
+      print("Adapter + Tank Controller Upgrade - fehlt")
     end
     if component.isAvailable("transposer") then
       gpu.setForeground(0x00FF00)
-      print("Transposer - OK")
+      print("Transposer                        - OK")
     else
       gpu.setForeground(0xFF0000)
-      print("Transposer - ERROR")
+      print("Transposer                        - fehlt")
     end
   end
   print()
