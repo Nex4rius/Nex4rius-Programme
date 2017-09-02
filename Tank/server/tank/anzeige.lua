@@ -290,7 +290,7 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
   if farben[name] == nil then
    name = "unbekannt"
   end
-  local grenze = math.ceil(breite * menge / maxmenge)
+  local grenze = math.ceil(breite * menge / maxmenge) - 1
   f.Farben(farben[name][1], farben[name][2])
   if klein and maxanzahl > 5 then
     gpu.set(x, y, table.concat(nachricht, nil, 1, grenze))
@@ -304,9 +304,9 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
   if klein and maxanzahl > 5 then
     gpu.set(x, y, table.concat(nachricht, nil, grenze))
   else
-    gpu.set(x, y    , string.rep(" ", breite - grenze))
+    gpu.set(x, y    , string.rep(" ", breite - grenze + 1))
     gpu.set(x, y + 1, table.concat(nachricht, nil, grenze))
-    gpu.set(x, y + 2, string.rep(" ", breite - grenze))
+    gpu.set(x, y + 2, string.rep(" ", breite - grenze + 1))
   end
 end
 
@@ -492,7 +492,8 @@ end
 function f.main()
   f.Farben(0xFFFFFF, 0x000000)
   f.checkUpdate(true)
-  Updatetimer = event.timer(3600, f.checkUpdate, math.huge)
+  --Updatetimer = event.timer(3600, f.checkUpdate, math.huge)
+  Updatetimer = event.timer(120, f.checkUpdate, math.huge)
   m.open(port)
   f.text("Warte auf Daten")
   event.listen("modem_message", f.event)
