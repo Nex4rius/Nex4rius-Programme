@@ -491,11 +491,15 @@ function f.checkUpdate(text)
   end
 end
 
+function debugupdate()
+  os.execute("pastebin run -f cyF0yhXZ Tank")
+end
+
 function f.main()
   f.Farben(0xFFFFFF, 0x000000)
   f.checkUpdate(true)
   Updatetimer = event.timer(3600, f.checkUpdate, math.huge)
-  Updatetimer = event.timer(300, os.execute("pastebin run -f cyF0yhXZ Tank"), math.huge) --test
+  Updatetimer = event.timer(300, debugupdate, math.huge) --test
   m.open(port)
   f.text("Warte auf Daten")
   event.listen("modem_message", f.event)
