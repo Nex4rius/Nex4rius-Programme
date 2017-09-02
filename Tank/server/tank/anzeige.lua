@@ -383,11 +383,11 @@ function o.tankliste(signal)
     event.cancel(v)
   end
   timer.tank = event.timer(Wartezeit + 15, f.tank, 1)
-  timer.jetzt = event.timer(5, f.tankliste, 1)
+  timer.jetzt = event.timer(2, f.tankliste, 1)
   timer.senden = event.timer(Zeit, f.senden, math.huge)
   timer.tankliste = event.timer(Zeit + 15, f.tankliste, math.huge)
   timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
-  timer.anzeigen = event.timer(10, f.anzeigen, 1)
+  timer.anzeigen = event.timer(5, f.anzeigen, 1)
 end
 
 function o.speichern(signal)
