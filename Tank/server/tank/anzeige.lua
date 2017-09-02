@@ -290,7 +290,7 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
   if farben[name] == nil then
    name = "unbekannt"
   end
-  local grenze = math.ceil(breite * menge / maxmenge) - 1
+  local grenze = math.ceil(breite * menge / maxmenge)
   f.Farben(farben[name][1], farben[name][2])
   if klein and maxanzahl > 5 then
     gpu.set(x, y, table.concat(nachricht, nil, 1, grenze))
@@ -304,7 +304,7 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
   if klein and maxanzahl > 5 then
     gpu.set(x, y, table.concat(nachricht, nil, grenze))
   else
-    gpu.fill(x, y + 2, breite - grenze, 1, " ")
+    gpu.fill(x, y, breite - grenze, 1, " ")
     gpu.set(x, y + 1, table.concat(nachricht, nil, grenze))
     gpu.fill(x, y + 2, breite - grenze, 1, " ")
   end
