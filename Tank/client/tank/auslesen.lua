@@ -124,7 +124,7 @@ function f.serialize(eingabe)
     local ausgabe = {}
     local i = 1
     if Tankname then
-      ausgabe[i] = string.format([==[[%s] = {name="Tankname", label="%s", menge="5", maxmenge="10"}, ]==], i, Tankname)
+      ausgabe[i] = string.format([==[[%s] = {name="Tankname", label="%s", menge="1", maxmenge="1"}, ]==], i, Tankname)
       i = i + 1
     end
     for k, v in spairs(eingabe, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
