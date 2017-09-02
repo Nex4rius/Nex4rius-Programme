@@ -144,121 +144,117 @@ local function spairs(t, order)
 end
 
 function f.anzeigen(tankneu, screenid)
-  --test
-  term.clear()
-  print("Jetzt hier")
-  print(screenid)
-  os.sleep(5)
-  --test
-  local klein = false
-  local screenid = screenid or gpu.getScreen()
-  local _, hoch = component.proxy(screenid).getAspectRatio()
-  if hoch <= 2 then
-    klein = true
-  end
-  local x = 1
-  local y = 1
-  local leer = true
-  local maxanzahl = 0
-  for i in pairs(tankneu) do
-    maxanzahl = maxanzahl + 1
-  end
-  local a, b = gpu.getResolution()
-  if maxanzahl <= 16 and maxanzahl ~= 0 then
-    if klein and maxanzahl > 5 then
-      if a ~= 160 or b ~= maxanzahl then
-        gpu.setResolution(160, maxanzahl)
-      end
-    else
-      if a ~= 160 or b ~= maxanzahl * 3 then
-        gpu.setResolution(160, maxanzahl * 3)
-      end
+  for screenid in component.list("screen") do
+    gpu.bind(screenid, false)
+    local klein = false
+    local screenid = screenid or gpu.getScreen()
+    local _, hoch = component.proxy(screenid).getAspectRatio()
+    if hoch <= 2 then
+      klein = true
     end
-  else
-    if klein and maxanzahl > 5 then
-      if a ~= 160 or b ~= 16 then
-        gpu.setResolution(160, 16)
-      end
-    else
-      if a ~= 160 or b ~= 48 then
-        gpu.setResolution(160, 48)
-      end
+    local x = 1
+    local y = 1
+    local leer = true
+    local maxanzahl = 0
+    for i in pairs(tankneu) do
+      maxanzahl = maxanzahl + 1
     end
-  end
-  os.sleep(0.1)
-  local anzahl = 0
-  for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
-    anzahl = anzahl + 1
-    local links, rechts, breite = -15, -25, 40
-    if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
-      links, rechts = 40, 40
-      breite = 160
-    elseif (64 - maxanzahl) >= anzahl and maxanzahl > 16 then
-      links, rechts = 0, 0
-      breite = 80
-    end
-    if anzahl == 17 or anzahl == 33 or anzahl == 49 then
-      if maxanzahl > 48 and anzahl > 48 then
-        x = 41
-        if klein and maxanzahl > 5 then
-          y = 1 + (64 - maxanzahl)
-        else
-          y = 1 + 3 * (64 - maxanzahl)
+    local a, b = gpu.getResolution()
+    if maxanzahl <= 16 and maxanzahl ~= 0 then
+      if klein and maxanzahl > 5 then
+        if a ~= 160 or b ~= maxanzahl then
+          gpu.setResolution(160, maxanzahl)
         end
-        breite = 40
-      elseif maxanzahl > 32 and anzahl > 32 then
-        x = 121
-        if klein and maxanzahl > 5 then
-          y = 1 + (48 - maxanzahl)
-        else
-          y = 1 + 3 * (48 - maxanzahl)
-        end
-        breite = 40
       else
-        x = 81
-        if klein and maxanzahl > 5 then
-          y = 1 + (32 - maxanzahl)
-        else
-          y = 1 + 3 * (32 - maxanzahl)
+        if a ~= 160 or b ~= maxanzahl * 3 then
+          gpu.setResolution(160, maxanzahl * 3)
         end
       end
-      if y < 1 then
-        y = 1
+    else
+      if klein and maxanzahl > 5 then
+        if a ~= 160 or b ~= 16 then
+          gpu.setResolution(160, 16)
+        end
+      else
+        if a ~= 160 or b ~= 48 then
+          gpu.setResolution(160, 48)
+        end
       end
     end
-    local name = string.gsub(tankneu[i].name, "%p", "")
-    local label = f.zeichenErsetzen(string.gsub(tankneu[i].label, "%p", ""))
-    local menge = tankneu[i].menge
-    local maxmenge = tankneu[i].maxmenge
-    local prozent = string.format("%.1f%%", menge / maxmenge * 100)
-    if label == "fluidhelium3" then
-      label = "Helium-3"
+    os.sleep(0.1)
+    local anzahl = 0
+    for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
+      anzahl = anzahl + 1
+      local links, rechts, breite = -15, -25, 40
+      if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
+        links, rechts = 40, 40
+        breite = 160
+      elseif (64 - maxanzahl) >= anzahl and maxanzahl > 16 then
+        links, rechts = 0, 0
+        breite = 80
+      end
+      if anzahl == 17 or anzahl == 33 or anzahl == 49 then
+        if maxanzahl > 48 and anzahl > 48 then
+          x = 41
+          if klein and maxanzahl > 5 then
+            y = 1 + (64 - maxanzahl)
+          else
+            y = 1 + 3 * (64 - maxanzahl)
+          end
+          breite = 40
+        elseif maxanzahl > 32 and anzahl > 32 then
+          x = 121
+          if klein and maxanzahl > 5 then
+            y = 1 + (48 - maxanzahl)
+          else
+            y = 1 + 3 * (48 - maxanzahl)
+          end
+          breite = 40
+        else
+          x = 81
+          if klein and maxanzahl > 5 then
+            y = 1 + (32 - maxanzahl)
+          else
+            y = 1 + 3 * (32 - maxanzahl)
+          end
+        end
+        if y < 1 then
+          y = 1
+        end
+      end
+      local name = string.gsub(tankneu[i].name, "%p", "")
+      local label = f.zeichenErsetzen(string.gsub(tankneu[i].label, "%p", ""))
+      local menge = tankneu[i].menge
+      local maxmenge = tankneu[i].maxmenge
+      local prozent = string.format("%.1f%%", menge / maxmenge * 100)
+      if label == "fluidhelium3" then
+        label = "Helium-3"
+      end
+      f.zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl)
+      leer = false
+      if klein and maxanzahl > 5 then
+        y = y + 1
+      else
+        y = y + 3
+      end
     end
-    f.zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl)
-    leer = false
-    if klein and maxanzahl > 5 then
-      y = y + 1
-    else
-      y = y + 3
+    f.Farben(0xFFFFFF, 0x000000)
+    for i = anzahl, 33 do
+      gpu.set(x, y , string.rep(" ", 80))
+      if not (klein and maxanzahl > 5) then
+        gpu.set(x, y + 1, string.rep(" ", 80))
+        gpu.set(x, y + 2, string.rep(" ", 80))
+      end
+      if klein and maxanzahl > 5 then
+        y = y + 1
+      else
+        y = y + 3
+      end
+    end
+    if leer then
+      keineDaten()
     end
   end
-  f.Farben(0xFFFFFF, 0x000000)
-  for i = anzahl, 33 do
-    gpu.set(x, y , string.rep(" ", 80))
-    if not (klein and maxanzahl > 5) then
-      gpu.set(x, y + 1, string.rep(" ", 80))
-      gpu.set(x, y + 2, string.rep(" ", 80))
-    end
-    if klein and maxanzahl > 5 then
-      y = y + 1
-    else
-      y = y + 3
-    end
-  end
-  if leer then
-    keineDaten()
-  end
-  return function() end
 end
 
 function f.zeichenErsetzen(...)
@@ -414,7 +410,7 @@ function o.tankliste(signal)
   timer.senden = event.timer(Zeit, f.senden, math.huge)
   timer.tankliste = event.timer(Zeit + 15, f.tankliste, math.huge)
   timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
-  timer.anzeigen = event.timer(10, function() for screenid in component.list("screen") do gpu.bind(screenid, false) f.anzeigen(tankneu, screenid) os.sleep(5) end end, 1)
+  timer.anzeigen = event.timer(10, f.anzeigen, 1)
 end
 
 function o.speichern(signal)
