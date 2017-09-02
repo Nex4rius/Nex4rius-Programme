@@ -387,7 +387,7 @@ function o.tankliste(signal)
   timer.senden = event.timer(Zeit, f.senden, math.huge)
   timer.tankliste = event.timer(Zeit + 15, f.tankliste, math.huge)
   timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
-  timer.anzeigen = event.timer(5, f.anzeigen, 1)
+  timer.anzeigen = event.timer(5, function() local a, b = pcall(f.anzeigen) os.sleep(5) f.text(b, true) end, 1)
 end
 
 function o.speichern(signal)
