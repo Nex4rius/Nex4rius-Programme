@@ -466,7 +466,7 @@ function f.test(screenid)
   schwarz()
 end
 
-function f.test() end --deaktiviert
+--function f.test() end --deaktiviert
 
 function f.checkUpdate(text)
   if component.isAvailable("internet") then
