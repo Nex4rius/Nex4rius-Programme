@@ -487,13 +487,14 @@ function f.checkUpdate(text)
     --  os.execute("reboot")
     --end
   end
+  return function() end
 end
 
 function f.main()
   f.Farben(0xFFFFFF, 0x000000)
   f.checkUpdate(true)
   --Updatetimer = event.timer(3600, f.checkUpdate, math.huge)
-  Updatetimer = event.timer(120, f.checkUpdate, math.huge)
+  Updatetimer = event.timer(120, f.checkUpdate(true), math.huge)
   m.open(port)
   f.text("Warte auf Daten")
   event.listen("modem_message", f.event)
