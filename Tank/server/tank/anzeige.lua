@@ -304,9 +304,9 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
   if klein and maxanzahl > 5 then
     gpu.set(x, y, table.concat(nachricht, nil, grenze))
   else
-    gpu.set(x, y    , string.rep(" ", breite - grenze + 1))
+    gpu.set(x, y    , string.rep(" ", breite - grenze))
     gpu.set(x, y + 1, table.concat(nachricht, nil, grenze))
-    gpu.set(x, y + 2, string.rep(" ", breite - grenze + 1))
+    gpu.set(x, y + 2, string.rep(" ", breite - grenze))
   end
 end
 
