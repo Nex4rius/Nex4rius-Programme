@@ -144,6 +144,12 @@ local function spairs(t, order)
 end
 
 function f.anzeigen(tankneu, screenid)
+  --test
+  term.clear()
+  print("Jetzt hier")
+  print(screenid)
+  os.sleep(5)
+  --test
   local klein = false
   local screenid = screenid or gpu.getScreen()
   local _, hoch = component.proxy(screenid).getAspectRatio()
@@ -319,7 +325,7 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
     gpu.set(x, y + 1, table.concat(nachricht, nil, 1, math.ceil(breite * menge / maxmenge)))
     gpu.set(x, y + 2, string.rep(" ", math.ceil(breite * menge / maxmenge)))
   end
-  x = x + math.ceil(breite * menge / maxmenge)
+  x = x + math.ceil(breite * menge / maxmenge) - 1
   f.Farben(farben[name][3], farben[name][4])
   if klein and maxanzahl > 5  then
     gpu.set(x, y, table.concat(nachricht, nil, math.ceil(breite * menge / maxmenge)))
@@ -374,7 +380,7 @@ function f.keineDaten()
     event.cancel(v)
   end
   f.text("Keine Daten vorhanden")
-  timer.tank = event.timer(Wartezeit + 15, f.tank, 0)
+  timer.tank = event.timer(Wartezeit + 15, f.tank, 1)
   timer.senden = event.timer(Zeit, f.senden, math.huge)
   m.broadcast(port, "tank")
 end
@@ -388,7 +394,7 @@ end
 function o.tankliste(signal)
   local dazu = true
   if version ~= signal[7] then
-    event.timer(5, f.update(signal), 0)
+    event.timer(5, f.update(signal), 1)
   end
   for i in pairs(Sensorliste) do
     if Sensorliste[i][3] == signal[3] then
@@ -403,12 +409,12 @@ function o.tankliste(signal)
   for k, v in pairs(timer) do
     event.cancel(v)
   end
-  timer.tank = event.timer(Wartezeit + 15, f.tank, 0)
-  timer.jetzt = event.timer(5, f.tankliste, 0)
+  timer.tank = event.timer(Wartezeit + 15, f.tank, 1)
+  timer.jetzt = event.timer(5, f.tankliste, 1)
   timer.senden = event.timer(Zeit, f.senden, math.huge)
   timer.tankliste = event.timer(Zeit + 15, f.tankliste, math.huge)
-  timer.beenden = event.timer(Wartezeit + 30, f.beenden, 0)
-  timer.anzeigen = event.timer(10, function() for screenid in component.list("screen") do gpu.bind(screenid, false) f.anzeigen(tankneu, screenid) end end, 0)
+  timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
+  timer.anzeigen = event.timer(10, function() for screenid in component.list("screen") do gpu.bind(screenid, false) f.anzeigen(tankneu, screenid) end end, 1)
 end
 
 function o.speichern(signal)
@@ -519,8 +525,8 @@ function f.main()
   f.text("Warte auf Daten")
   event.listen("modem_message", f.event)
   timer.senden = event.timer(Zeit, f.senden, math.huge)
-  timer.tank = event.timer(Zeit + 15, f.tank, 0)
-  timer.beenden = event.timer(Wartezeit + 30, f.beenden, 0)
+  timer.tank = event.timer(Zeit + 15, f.tank, 1)
+  timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
   f.senden()
   event.listen("interrupted", f.beenden)
   event.pull("beenden")
