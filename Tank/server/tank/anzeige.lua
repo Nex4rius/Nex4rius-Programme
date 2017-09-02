@@ -414,7 +414,7 @@ function o.tankliste(signal)
   timer.senden = event.timer(Zeit, f.senden, math.huge)
   timer.tankliste = event.timer(Zeit + 15, f.tankliste, math.huge)
   timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
-  timer.anzeigen = event.timer(10, function() for screenid in component.list("screen") do gpu.bind(screenid, false) f.anzeigen(tankneu, screenid) end end, 1)
+  timer.anzeigen = event.timer(10, function() for screenid in component.list("screen") do os.sleep(5) gpu.bind(screenid, false) f.anzeigen(tankneu, screenid) end end, 1)
 end
 
 function o.speichern(signal)
