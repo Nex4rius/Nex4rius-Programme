@@ -483,6 +483,7 @@ function f.checkUpdate(text)
   --if serverVersion and arg and component.isAvailable("internet") and serverVersion ~= version then
     --if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/installieren.lua", "/installieren.lua") then --hier auf master
     --  print("\nBeginne Update\n")
+      f.text("Updaten...")
     --  print(pcall(loadfile("/installieren.lua")))
       os.execute("reboot")
     --end
