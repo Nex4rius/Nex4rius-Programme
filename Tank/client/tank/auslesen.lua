@@ -124,13 +124,13 @@ function f.serialize(eingabe)
     local ausgabe = {}
     local i = 0
     if Tankname then
-      i = i + 1
       ausgabe[i] = string.format([==[[%s] = {name="Tankname", label="%s", menge="5", maxmenge="10"}, ]==], i, Tankname)
+      i = i + 1
     end
     for k, v in spairs(eingabe, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
       if v.name ~= nil then
-        i = i + 1
         ausgabe[i] = string.format([==[[%s] = {name="%s", label="%s", menge="%s", maxmenge="%s"}, ]==], i, v.name, v.label, v.menge, v.maxmenge)
+        i = i + 1
       end
     end
     return "{" .. table.concat(ausgabe) .. "}"
