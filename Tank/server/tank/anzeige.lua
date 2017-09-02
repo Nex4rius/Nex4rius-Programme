@@ -506,8 +506,7 @@ function f.checkUpdate(text)
     --if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/installieren.lua", "/installieren.lua") then --hier auf master
     --  print("\nBeginne Update\n")
     --  print(pcall(loadfile("/installieren.lua")))
-    --  print("Warte 5s")
-    --  os.sleep(5)
+    --  os.execute("reboot")
     --end
   end
 end
