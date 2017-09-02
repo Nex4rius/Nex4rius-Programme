@@ -446,7 +446,7 @@ function f.test(screenid)
         print()
         print()
         print()
-        os.sleep(0.01)
+        os.sleep(0.0001)
       end
     end
     local hex = {0x000000, 0x1F1F1F, 0x3F3F3F, 0x5F5F5F, 0x7F7F7F, 0x9F9F9F, 0xBFBFBF, 0xDFDFDF,
@@ -461,7 +461,7 @@ function f.test(screenid)
       print(string.rep(" ", 160))
       print(string.rep(" ", 160))
       print(string.rep(" ", 160))
-      os.sleep(0.01)
+      os.sleep(0.0001)
     end
     schwarz()
   end
@@ -472,7 +472,6 @@ function f.checkUpdate(text)
     serverVersion = f.checkServerVersion()
   end
   if text then
-    f.text("Update...")
     term.setCursor(gpu.getResolution())
     print("\nPrüfe Version\n")
     print("Derzeitige Version:    " .. (version or "<FEHLER>"))
@@ -481,6 +480,7 @@ function f.checkUpdate(text)
     os.sleep(2)
   end
   if serverVersion and arg and component.isAvailable("internet") and serverVersion ~= version then
+    f.text("Update...")
     os.execute("pastebin run -f cyF0yhXZ Tank")
     --if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/installieren.lua", "/installieren.lua") then --hier auf master
     --  print("\nBeginne Update\n")
