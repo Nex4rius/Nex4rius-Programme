@@ -122,7 +122,7 @@ end
 function f.serialize(eingabe)
   if type(eingabe) == "table" then
     local ausgabe = {}
-    local i = 0
+    local i = 1
     if Tankname then
       ausgabe[i] = string.format([==[[%s] = {name="Tankname", label="%s", menge="5", maxmenge="10"}, ]==], i, Tankname)
       i = i + 1
