@@ -472,6 +472,7 @@ function f.checkUpdate(text)
     serverVersion = f.checkServerVersion()
   end
   if text then
+    f.text("Update...")
     term.setCursor(gpu.getResolution())
     print("\nPrüfe Version\n")
     print("Derzeitige Version:    " .. (version or "<FEHLER>"))
@@ -483,7 +484,6 @@ function f.checkUpdate(text)
   --if serverVersion and arg and component.isAvailable("internet") and serverVersion ~= version then
     --if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/installieren.lua", "/installieren.lua") then --hier auf master
     --  print("\nBeginne Update\n")
-      f.text("Updaten...")
     --  print(pcall(loadfile("/installieren.lua")))
       os.execute("reboot")
     --end
