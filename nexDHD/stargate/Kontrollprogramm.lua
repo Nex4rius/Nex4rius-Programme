@@ -353,7 +353,7 @@ end
 
 function f.AdressenLesen()
   local y = 1
-  y = f.schreiben(y, sprachen.Adressseite .. seite + 1)
+  y = f.schreiben(y, sprachen.Adressseite .. seite + 1, 0xFFFFFF, 0x000000)
   if (not gespeicherteAdressen) or (os.time() / sectime - letzterAdressCheck > 21600) then
     letzterAdressCheck = os.time() / sectime
     f.AdressenSpeichern()
@@ -382,6 +382,7 @@ function f.AdressenLesen()
       end
       --y = y + 1
       f.Farbe(Farben.Adressfarbe)
+      f.Farbe(0xFFFFFF)
     end
   end
   while y < Bildschirmhoehe - 3 do
