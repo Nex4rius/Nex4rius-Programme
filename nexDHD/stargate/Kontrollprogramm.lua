@@ -393,7 +393,6 @@ function f.Logbuchseite()
   local function ausgabe(max, Logbuch, bedingung)
     for i = 1, max do
       if Logbuch[i][3] == bedingung then
-        --gpu.set(1, 1 + i, string.rep(" ", 30))
         f.zeigeHier(1, 1 + i, string.sub(string.format("%s  %s", Logbuch[i][2], Logbuch[i][1]), 1, 30), 30)
       end
     end
