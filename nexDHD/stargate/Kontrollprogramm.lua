@@ -353,7 +353,7 @@ end
 
 function f.AdressenLesen()
   local y = 1
-  f.zeigeHier(1, y, sprachen.Adressseite .. seite + 1, 0)
+  f.zeigeHier(1, y, string.sub(sprachen.Adressseite .. seite + 1, 1, 29), 30)
   y = y + 1
   if (not gespeicherteAdressen) or (os.time() / sectime - letzterAdressCheck > 21600) then
     letzterAdressCheck = os.time() / sectime
@@ -417,58 +417,81 @@ end
 function f.Infoseite()
   local i = 1
   Taste.links = {}
-  print(sprachen.Steuerung)
+  f.zeigeHier(1, i, string.sub(sprachen.Steuerung, 1, 29), 30)
   if iris == "Offline" then
   else
-    print("I " .. string.sub(sprachen.IrisSteuerung:match("^%s*(.-)%s*$")  .. " " .. sprachen.an_aus, 1, 28))
+    --print("I " .. string.sub(sprachen.IrisSteuerung:match("^%s*(.-)%s*$")  .. " " .. sprachen.an_aus, 1, 28))
     i = i + 1
+    f.zeigeHier(1, i, string.sub("I " .. sprachen.IrisSteuerung:match("^%s*(.-)%s*$")  .. " " .. sprachen.an_aus, 1, 29), 30)
     Taste.links[i] = Taste.i
     Taste.Koordinaten.Taste_i = i
   end
-  print("Z " .. sprachen.AdressenBearbeiten)
+  --print("Z " .. sprachen.AdressenBearbeiten)
   i = i + 1
+  f.zeigeHier(1, i, string.sub("Z " .. sprachen.AdressenBearbeiten, 1, 29), 30)
   Taste.links[i] = Taste.z
   Taste.Koordinaten.Taste_z = i
-  print("Q " .. sprachen.beenden)
+  --print("Q " .. sprachen.beenden)
   i = i + 1
+  f.zeigeHier(1, i, string.sub("Q " .. sprachen.beenden, 1, 29), 30)
   Taste.links[i] = Taste.q
   Taste.Koordinaten.Taste_q = i
-  print("S " .. sprachen.EinstellungenAendern)
+  --print("S " .. sprachen.EinstellungenAendern)
   i = i + 1
+  f.zeigeHier(1, i, string.sub("S " .. sprachen.EinstellungenAendern, 1, 29), 30)
   Taste.links[i] = Taste.s
   Taste.Koordinaten.Taste_s = i
   if log then
-    term.write("L ")
-    print(sprachen.zeigeLog or "zeige Fehlerlog")
+    --term.write("L ")
+    --print(sprachen.zeigeLog or "zeige Fehlerlog")
     i = i + 1
+    f.zeigeHier(1, i, string.sub("L " .. sprachen.zeigeLog, 1, 29), 30)
     Taste.links[i] = Taste.l
     Taste.Koordinaten.Taste_l = i
   end
-  print("U " .. sprachen.Update)
+  --print("U " .. sprachen.Update)
   i = i + 1
+  f.zeigeHier(1, i, string.sub("U " .. sprachen.Update, 1, 29), 30)
   Taste.links[i] = Taste.u
   Taste.Koordinaten.Taste_u = i
   local version_Zeichenlaenge = string.len(version)
   if string.sub(version, version_Zeichenlaenge - 3, version_Zeichenlaenge) == "BETA" or Sicherung.debug then
-    print("B " .. sprachen.UpdateBeta)
+    --print("B " .. sprachen.UpdateBeta)
     i = i + 1
+    f.zeigeHier(1, i, string.sub("B " .. sprachen.UpdateBeta, 1, 29), 30)
     Taste.links[i] = Taste.b
     Taste.Koordinaten.Taste_b = i
   end
-  print(sprachen.RedstoneSignale)
+  i = i + 1
+  f.zeigeHier(1, i, string.sub("B " .. sprachen.RedstoneSignale, 1, 29), 30)
+  --print(sprachen.RedstoneSignale)
   f.Farbe(Farben.weisseFarbe, Farben.schwarzeFarbe)
-  print(sprachen.RedstoneWeiss)
+  i = i + 1
+  f.zeigeHier(1, i, string.sub("B " .. sprachen.RedstoneWeiss, 1, 29), 30)
+  --print(sprachen.RedstoneWeiss)
   f.Farbe(Farben.roteFarbe)
-  print(sprachen.RedstoneRot)
+  i = i + 1
+  f.zeigeHier(1, i, string.sub("B " .. sprachen.RedstoneRot, 1, 29), 30)
+  --print(sprachen.RedstoneRot)
   f.Farbe(Farben.gelbeFarbe)
-  print(sprachen.RedstoneGelb)
+  i = i + 1
+  f.zeigeHier(1, i, string.sub("B " .. sprachen.RedstoneGelb, 1, 29), 30)
+  --print(sprachen.RedstoneGelb)
   f.Farbe(Farben.schwarzeFarbe, Farben.weisseFarbe)
-  print(sprachen.RedstoneSchwarz)
+  i = i + 1
+  f.zeigeHier(1, i, string.sub("B " .. sprachen.RedstoneSchwarz, 1, 29), 30)
+  --print(sprachen.RedstoneSchwarz)
   f.Farbe(Farben.grueneFarbe)
-  print(sprachen.RedstoneGruen)
+  i = i + 1
+  f.zeigeHier(1, i, string.sub("B " .. sprachen.RedstoneGruen, 1, 29), 30)
+  --print(sprachen.RedstoneGruen)
   f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
-  print(sprachen.versionName .. version)
-  print(string.format("\nnexDHD: %s Nex4rius", sprachen.entwicklerName))
+  i = i + 1
+  f.zeigeHier(1, i, string.sub(sprachen.versionName .. version, 1, 29), 30)
+  --print(sprachen.versionName .. version)
+  i = i + 1
+  f.zeigeHier(1, i, string.sub(string.format("\nnexDHD: %s Nex4rius", sprachen.entwicklerName), 1, 29), 30)
+  --print(string.format("\nnexDHD: %s Nex4rius", sprachen.entwicklerName))
 end
 
 function f.AdressenSpeichern()
