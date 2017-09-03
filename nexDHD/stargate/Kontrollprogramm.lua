@@ -1822,7 +1822,7 @@ function f.RedstoneAus(text)
 end
 
 function f.main()
-  pcall(screen.setTouchModeInverted, false)
+  pcall(screen.setTouchModeInverted, true)
   if OC then
     loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "nexDHD")
   elseif CC then
