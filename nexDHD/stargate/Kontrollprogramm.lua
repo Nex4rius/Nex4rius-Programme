@@ -532,9 +532,9 @@ end
 
 function f.zeigeMenu()
   f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
-  for P = 1, Bildschirmhoehe - 3 do
-    f.zeigeHier(1, P, "", xVerschiebung - 3)
-  end
+  --for i = 1, Bildschirmhoehe - 3 do
+  --  f.zeigeHier(1, i, "", xVerschiebung - 3)
+  --end
   term.setCursor(1, 1)
   if seite == -1 then
     f.Infoseite()
