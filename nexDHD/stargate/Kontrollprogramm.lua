@@ -1474,7 +1474,7 @@ function Taste.s()
       schreibSicherungsdatei(Sicherung)
       f.sides()
       gpu.setBackground(Farben.Nachrichtfarbe)
-      seite = 0
+      seite = -1
       f.zeigeAnzeige()
     else
       event.timer(2, f.zeigeMenu, 1)
