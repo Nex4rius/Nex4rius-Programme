@@ -54,7 +54,7 @@ return {
   RedstoneRot               = "rot: eingehende Verbindung",
   RedstoneGelb              = "gelb: Iris geschlossen",
   RedstoneSchwarz           = "schwarz: IDC akzeptiert",
-  RedstoneGruen             = "grün: verbunden\n",
+  RedstoneGruen             = "grün: verbunden",
   versionName               = "Version: ",
   fehlerName                = "<FEHLER>",
   SteuerungName             = "zeige Infos",
