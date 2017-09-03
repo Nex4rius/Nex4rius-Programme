@@ -1784,9 +1784,11 @@ function f.zeigeAnzeige()
   f.zeigeMenu()
 end
 
-function f.redstoneAbschalten(sideNum, Farbe, printAusgabe)
+function f.redstoneAbschalten(sideNum, Farbe, printAusgabe, text)
   r.setBundledOutput(sideNum, Farbe, 0)
-  print(sprachen.redstoneAusschalten .. printAusgabe)
+  if not text then
+    print(sprachen.redstoneAusschalten .. printAusgabe)
+  end
 end
 
 function f.beendeAlles()
@@ -1798,30 +1800,35 @@ function f.beendeAlles()
   term.setCursor(1, 1)
   print(sprachen.ausschaltenName .. "\n")
   f.Colorful_Lamp_Farben(0, true)
-  if component.isAvailable("redstone") then
-    r = component.getPrimary("redstone")
-    f.redstoneAbschalten(sideNum, Farben.white, "white")
---    f.redstoneAbschalten(sideNum, Farben.orange, "orange")
---    f.redstoneAbschalten(sideNum, Farben.magenta, "magenta")
---    f.redstoneAbschalten(sideNum, Farben.lightblue, "lightblue")
-    f.redstoneAbschalten(sideNum, Farben.yellow, "yellow")
---    f.redstoneAbschalten(sideNum, Farben.lime, "lime")
---    f.redstoneAbschalten(sideNum, Farben.pink, "pink")
---    f.redstoneAbschalten(sideNum, Farben.gray, "gray")
---    f.redstoneAbschalten(sideNum, Farben.silver, "silver")
---    f.redstoneAbschalten(sideNum, Farben.cyan, "cyan")
---    f.redstoneAbschalten(sideNum, Farben.purple, "purple")
---    f.redstoneAbschalten(sideNum, Farben.blue, "blue")
---    f.redstoneAbschalten(sideNum, Farben.brown, "brown")
-    f.redstoneAbschalten(sideNum, Farben.green, "green")
-    f.redstoneAbschalten(sideNum, Farben.red, "red")
-    f.redstoneAbschalten(sideNum, Farben.black, "black")
-  end
+  f.RedstoneAus()
   pcall(screen.setTouchModeInverted, false)
   os.sleep(0.2)
 end
 
+function f.RedstoneAus(text)
+  if component.isAvailable("redstone") then
+    r = component.getPrimary("redstone")
+    f.redstoneAbschalten(sideNum, Farben.white, "white", text)
+--    f.redstoneAbschalten(sideNum, Farben.orange, "orange", text)
+--    f.redstoneAbschalten(sideNum, Farben.magenta, "magenta", text)
+--    f.redstoneAbschalten(sideNum, Farben.lightblue, "lightblue", text)
+    f.redstoneAbschalten(sideNum, Farben.yellow, "yellow", text)
+--    f.redstoneAbschalten(sideNum, Farben.lime, "lime", text)
+--    f.redstoneAbschalten(sideNum, Farben.pink, "pink", text)
+--    f.redstoneAbschalten(sideNum, Farben.gray, "gray", text)
+--    f.redstoneAbschalten(sideNum, Farben.silver, "silver", text)
+--    f.redstoneAbschalten(sideNum, Farben.cyan, "cyan", text)
+--    f.redstoneAbschalten(sideNum, Farben.purple, "purple", text)
+--    f.redstoneAbschalten(sideNum, Farben.blue, "blue", text)
+--    f.redstoneAbschalten(sideNum, Farben.brown, "brown", text)
+    f.redstoneAbschalten(sideNum, Farben.green, "green", text)
+    f.redstoneAbschalten(sideNum, Farben.red, "red", text)
+    f.redstoneAbschalten(sideNum, Farben.black, "black", text)
+  end
+end
+
 function f.main()
+  pcall(screen.setTouchModeInverted, false)
   if OC then
     loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "nexDHD")
   elseif CC then
@@ -1832,6 +1839,7 @@ function f.main()
     f.irisOpen()
   end
   gpu.setResolution(70, 25)
+  f.RedstoneAus(true)
   Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
   f.zeigeFarben()
   f.zeigeStatus()
