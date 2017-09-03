@@ -465,7 +465,6 @@ function f.Infoseite()
   schreiben(" ", Farben.Adressfarbe, Farben.Adresstextfarbe)
   schreiben(sprachen.versionName .. version)
   schreiben(" ")
-  y = y + 1
   schreiben(string.format("nexDHD: %s Nex4rius", sprachen.entwicklerName))
   f.leeren(y)
 end
