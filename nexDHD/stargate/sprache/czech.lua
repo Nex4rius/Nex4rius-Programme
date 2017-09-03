@@ -49,7 +49,7 @@ return {
   RedstoneRot               = "cervena: prichozi pripojeni",
   RedstoneGelb              = "zluta: iris zavrena",
   RedstoneSchwarz           = "cerna: IDC prijmut",
-  RedstoneGruen             = "zelena: pripojeno\n",
+  RedstoneGruen             = "zelena: pripojeno",
   versionName               = "Verze: ",
   fehlerName                = "<CHYBA>",
   SteuerungName             = "Informace",
