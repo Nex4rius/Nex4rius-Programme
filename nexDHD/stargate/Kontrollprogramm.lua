@@ -352,7 +352,7 @@ function f.getAddress(...)
 end
 
 function f.AdressenLesen()
-  local y = 1
+  local y = 0
   y = f.schreiben(y, sprachen.Adressseite .. seite + 1, 0xFFFFFF, 0x000000)
   if (not gespeicherteAdressen) or (os.time() / sectime - letzterAdressCheck > 21600) then
     letzterAdressCheck = os.time() / sectime
@@ -385,10 +385,11 @@ function f.AdressenLesen()
       f.Farbe(0xFFFFFF)
     end
   end
-  while y < Bildschirmhoehe - 3 do
-    gpu.fill(1, y, 30, 1, " ")
-    y = y + 1
-  end
+  --while y < Bildschirmhoehe - 3 do
+  --  gpu.fill(1, y, 30, 1, " ")
+  --  y = y + 1
+  --end
+  f.leeren(y)
 end
 
 function f.Logbuchseite()
