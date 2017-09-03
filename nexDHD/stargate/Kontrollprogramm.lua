@@ -19,7 +19,7 @@ local shell                     = shell or require("shell")
 _G.shell = shell
 local print                     = print
 
-local gpu, serialization, sprachen, unicode, ID
+local gpu, serialization, sprachen, unicode, ID, Updatetimer
 
 if OC then
   serialization = require("serialization")
@@ -1634,7 +1634,7 @@ function f.sgMessageReceived(e)
       f.angekommeneAdressen(inAdressen)
     end
     if type(e[6]) == "string" then
-      f.angekommeneVersion(e[6])
+      f.checkUpdate(e[6])
     end
   end
   messageshow = true
@@ -1741,10 +1741,11 @@ function f.checkStargateName()
   end
 end
 
-function f.angekommeneVersion(...)
-  local Endpunkt = string.len(...)
+function f.checkUpdate(...)
+  local AndereVersion = ... or "<FEHLER>"
+  local Endpunkt = string.len(AndereVersion)
   local EndpunktVersion = string.len(version)
-  if string.sub(..., Endpunkt - 3, Endpunkt) ~= "BETA" and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" and version ~= ... and Sicherung.autoUpdate == true then
+  if string.sub(AndereVersion, Endpunkt - 3, Endpunkt) ~= "BETA" and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" and version ~= AndereVersion and Sicherung.autoUpdate == true then
     if component.isAvailable("internet") then
       if version ~= f.checkServerVersion("master") then
         VersionUpdate = true
@@ -1774,6 +1775,7 @@ function f.redstoneAbschalten(sideNum, Farbe, printAusgabe)
 end
 
 function f.beendeAlles()
+  event.cancel(Updatetimer)
   schreibSicherungsdatei(Sicherung)
   gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   f.Farbe(Farben.schwarzeFarbe, Farben.weisseFarbe)
@@ -1810,6 +1812,7 @@ function f.main()
   elseif CC then
     shell.run("label set Stargate-OS")
   end
+  Updatetimer = event.timer(43200, f.checkUpdate, math.huge)
   if sg.stargateState() == "Idle" and f.getIrisState() == "Closed" then
     f.irisOpen()
   end
