@@ -419,83 +419,54 @@ function f.leeren(y)
 end
 
 function f.Infoseite()
-  local y = 1
+  local y = 0
   Taste.links = {}
-  f.zeigeHier(1, y, string.sub(sprachen.Steuerung, 1, 29), 30)
-  if iris == "Offline" then
-  else
-    --print("I " .. string.sub(sprachen.IrisSteuerung:match("^%s*(.-)%s*$")  .. " " .. sprachen.an_aus, 1, 28))
+  local function schreiben(text, farbeVorne, farbeHinten)
     y = y + 1
-    f.zeigeHier(1, y, string.sub("I " .. sprachen.IrisSteuerung:match("^%s*(.-)%s*$")  .. " " .. sprachen.an_aus, 1, 29), 30)
+    f.Farbe(farbeVorne, farbeHinten)
+    f.zeigeHier(1, y, string.sub(text, 1, 29), 30)
+  end
+  schreiben(sprachen.Steuerung)
+  if iris ~= "Offline" then
+    schreiben("I " .. sprachen.IrisSteuerung:match("^%s*(.-)%s*$")  .. " " .. sprachen.an_aus)
     Taste.links[y] = Taste.i
     Taste.Koordinaten.Taste_i = y
   end
-  --print("Z " .. sprachen.AdressenBearbeiten)
-  y = y + 1
-  f.zeigeHier(1, y, string.sub("Z " .. sprachen.AdressenBearbeiten, 1, 29), 30)
+  schreiben("Z " .. sprachen.AdressenBearbeiten)
   Taste.links[y] = Taste.z
   Taste.Koordinaten.Taste_z = y
-  --print("Q " .. sprachen.beenden)
-  y = y + 1
-  f.zeigeHier(1, y, string.sub("Q " .. sprachen.beenden, 1, 29), 30)
+  schreiben("Q " .. sprachen.beenden)
   Taste.links[y] = Taste.q
   Taste.Koordinaten.Taste_q = y
-  --print("S " .. sprachen.EinstellungenAendern)
-  y = y + 1
-  f.zeigeHier(1, y, string.sub("S " .. sprachen.EinstellungenAendern, 1, 29), 30)
+  schreiben("S " .. sprachen.EinstellungenAendern)
   Taste.links[y] = Taste.s
   Taste.Koordinaten.Taste_s = y
   if log then
-    --term.write("L ")
-    --print(sprachen.zeigeLog or "zeige Fehlerlog")
-    y = y + 1
-    f.zeigeHier(1, y, string.sub("L " .. sprachen.zeigeLog, 1, 29), 30)
+    schreiben("L " .. sprachen.zeigeLog)
     Taste.links[y] = Taste.l
     Taste.Koordinaten.Taste_l = y
   end
-  --print("U " .. sprachen.Update)
-  y = y + 1
-  f.zeigeHier(1, y, string.sub("U " .. sprachen.Update, 1, 29), 30)
+  schreiben("U " .. sprachen.Update)
   Taste.links[y] = Taste.u
   Taste.Koordinaten.Taste_u = y
   local version_Zeichenlaenge = string.len(version)
   if string.sub(version, version_Zeichenlaenge - 3, version_Zeichenlaenge) == "BETA" or Sicherung.debug then
-    --print("B " .. sprachen.UpdateBeta)
-    y = y + 1
-    f.zeigeHier(1, y, string.sub("B " .. sprachen.UpdateBeta, 1, 29), 30)
+    schreiben("B " .. sprachen.UpdateBeta)
     Taste.links[y] = Taste.b
     Taste.Koordinaten.Taste_b = y
   end
+  schreiben(" ")
+  schreiben(sprachen.RedstoneSignale)
+  schreiben(sprachen.RedstoneWeiss, Farben.weisseFarbe, Farben.schwarzeFarbe)
+  schreiben(sprachen.RedstoneRot, Farben.roteFarbe)
+  schreiben(sprachen.RedstoneGelb, Farben.gelbeFarbe)
+  schreiben(sprachen.RedstoneSchwarz, Farben.schwarzeFarbe, Farben.weisseFarbe)
+  schreiben(sprachen.RedstoneGruen, Farben.grueneFarbe)
+  schreiben(" ", Farben.Adressfarbe, Farben.Adresstextfarbe)
+  schreiben(sprachen.versionName .. version)
+  schreiben(" ")
   y = y + 1
-  f.zeigeHier(1, y, string.sub("B " .. sprachen.RedstoneSignale, 1, 29), 30)
-  --print(sprachen.RedstoneSignale)
-  f.Farbe(Farben.weisseFarbe, Farben.schwarzeFarbe)
-  y = y + 1
-  f.zeigeHier(1, y, string.sub("B " .. sprachen.RedstoneWeiss, 1, 29), 30)
-  --print(sprachen.RedstoneWeiss)
-  f.Farbe(Farben.roteFarbe)
-  y = y + 1
-  f.zeigeHier(1, y, string.sub("B " .. sprachen.RedstoneRot, 1, 29), 30)
-  --print(sprachen.RedstoneRot)
-  f.Farbe(Farben.gelbeFarbe)
-  y = y + 1
-  f.zeigeHier(1, y, string.sub("B " .. sprachen.RedstoneGelb, 1, 29), 30)
-  --print(sprachen.RedstoneGelb)
-  f.Farbe(Farben.schwarzeFarbe, Farben.weisseFarbe)
-  y = y + 1
-  f.zeigeHier(1, y, string.sub("B " .. sprachen.RedstoneSchwarz, 1, 29), 30)
-  --print(sprachen.RedstoneSchwarz)
-  f.Farbe(Farben.grueneFarbe)
-  y = y + 1
-  f.zeigeHier(1, y, string.sub("B " .. sprachen.RedstoneGruen, 1, 29), 30)
-  --print(sprachen.RedstoneGruen)
-  f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
-  y = y + 1
-  f.zeigeHier(1, y, string.sub(sprachen.versionName .. version, 1, 29), 30)
-  --print(sprachen.versionName .. version)
-  y = y + 1
-  f.zeigeHier(1, y, string.sub(string.format("\nnexDHD: %s Nex4rius", sprachen.entwicklerName), 1, 29), 30)
-  --print(string.format("\nnexDHD: %s Nex4rius", sprachen.entwicklerName))
+  schreiben(string.format("nexDHD: %s Nex4rius", sprachen.entwicklerName))
   f.leeren(y)
 end
 
