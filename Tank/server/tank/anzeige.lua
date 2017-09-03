@@ -547,6 +547,7 @@ loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tankanze
 local ergebnis, grund = pcall(f.main)
 
 if not ergebnis then
-  f.text("<FEHLER> f.main", true)
-  f.text(grund, true)
+  f.text("<FEHLER> f.main")
+  os.sleep(2)
+  f.text(grund)
 end
