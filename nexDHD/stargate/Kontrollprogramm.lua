@@ -319,7 +319,7 @@ function f.zeigeHier(x, y, s, h)
       h = Bildschirmbreite
     end
     if OC then
-      gpu.set(x, y, s .. string.rep(" ", h - string.len(s)))
+      gpu.set(x, y, s .. string.rep(" ", h - unicode.len(s)))
     elseif CC then
       term.setCursorPos(x, y)
       local wiederholanzahl = h - string.len(s)
@@ -389,12 +389,12 @@ function f.AdressenLesen()
 end
 
 function f.Logbuchseite()
-  print(sprachen.logbuchTitel)
+  f.zeigeHier(1, 1, string.sub(sprachen.logbuchTitel, 1, 29), 30)
   local function ausgabe(max, Logbuch, bedingung)
     for i = 1, max do
       if Logbuch[i][3] == bedingung then
-        gpu.set(1, 1 + i, string.rep(" ", 30))
-        f.zeigeHier(1, 1 + i, string.sub(string.format("%s  %s", Logbuch[i][2], Logbuch[i][1]), 1, 30), 0)
+        --gpu.set(1, 1 + i, string.rep(" ", 30))
+        f.zeigeHier(1, 1 + i, string.sub(string.format("%s  %s", Logbuch[i][2], Logbuch[i][1]), 1, 30), 30)
       end
     end
   end
@@ -407,6 +407,10 @@ function f.Logbuchseite()
   ausgabe(max, Logbuch, "neu")
   f.Farbe(Farben.gelbeFarbe, Farben.schwarzeFarbe)
   ausgabe(max, Logbuch, "update")
+  f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
+  if max < 21 then
+    gpu.fill(1, max + 1, 30, 22 - max, " ")
+  end
   f.Legende()
 end
 
