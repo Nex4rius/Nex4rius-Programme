@@ -138,7 +138,7 @@ Taste.Steuerungrechts           = {}
 
 Variablen.WLAN_Anzahl           = 0
 
-local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit
+local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben
 
 do
@@ -353,15 +353,14 @@ end
 
 function f.AdressenLesen()
   local y = 1
-  f.zeigeHier(1, y, string.sub(sprachen.Adressseite .. seite + 1, 1, 29), 30)
-  y = y + 1
+  y = f.schreiben(y, sprachen.Adressseite .. seite + 1)
   if (not gespeicherteAdressen) or (os.time() / sectime - letzterAdressCheck > 21600) then
     letzterAdressCheck = os.time() / sectime
     f.AdressenSpeichern()
   end
   for i, na in pairs(gespeicherteAdressen) do
     if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
-      AdressAnzeige = i - seite * 10
+      local AdressAnzeige = i - seite * 10
       if AdressAnzeige == 10 then
         AdressAnzeige = 0
       end
@@ -369,16 +368,19 @@ function f.AdressenLesen()
         f.Farbe(Farben.AdressfarbeAktiv)
         gpu.fill(1, y, 30, 2, " ")
       end
-      f.zeigeHier(1, y, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 28 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
-      y = y + 1
+      --f.zeigeHier(1, y, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 28 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
+      --y = y + 1
+      y = f.schreiben(y, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
       if string.sub(na[4], 1, 1) == "<" then
-        f.Farbe(background, Farben.FehlerFarbe)
-        f.zeigeHier(1, y, "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
+        --f.Farbe(background, Farben.FehlerFarbe)
+        --f.zeigeHier(1, y, "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
+        y = f.schreiben(y, "   " .. na[4], background, Farben.FehlerFarbe)
         f.Farbe(background, Farben.Adresstextfarbe)
       else
-        f.zeigeHier(1, y, "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
+        --f.zeigeHier(1, y, "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
+        y = f.schreiben(y, "   " .. na[4])
       end
-      y = y + 1
+      --y = y + 1
       f.Farbe(Farben.Adressfarbe)
     end
   end
@@ -417,54 +419,55 @@ function f.leeren(y)
   end
 end
 
+function f.schreiben(y, text, farbeVorne, farbeHinten)
+  f.Farbe(farbeVorne, farbeHinten)
+  f.zeigeHier(1, y + 1, string.sub(text, 1, 29), 30)
+  return y + 1
+end
+
 function f.Infoseite()
   local y = 0
   Taste.links = {}
-  local function schreiben(text, farbeVorne, farbeHinten)
-    y = y + 1
-    f.Farbe(farbeVorne, farbeHinten)
-    f.zeigeHier(1, y, string.sub(text, 1, 29), 30)
-  end
-  schreiben(sprachen.Steuerung)
+  y = f.schreiben(y, sprachen.Steuerung)
   if iris ~= "Offline" then
-    schreiben("I " .. sprachen.IrisSteuerung:match("^%s*(.-)%s*$")  .. " " .. sprachen.an_aus)
+     y = f.schreiben(y, "I " .. sprachen.IrisSteuerung:match("^%s*(.-)%s*$")  .. " " .. sprachen.an_aus)
     Taste.links[y] = Taste.i
     Taste.Koordinaten.Taste_i = y
   end
-  schreiben("Z " .. sprachen.AdressenBearbeiten)
+   y = f.schreiben(y, "Z " .. sprachen.AdressenBearbeiten)
   Taste.links[y] = Taste.z
   Taste.Koordinaten.Taste_z = y
-  schreiben("Q " .. sprachen.beenden)
+   y = f.schreiben(y, "Q " .. sprachen.beenden)
   Taste.links[y] = Taste.q
   Taste.Koordinaten.Taste_q = y
-  schreiben("S " .. sprachen.EinstellungenAendern)
+   y = f.schreiben(y, "S " .. sprachen.EinstellungenAendern)
   Taste.links[y] = Taste.s
   Taste.Koordinaten.Taste_s = y
   if log then
-    schreiben("L " .. sprachen.zeigeLog)
+     y = f.schreiben(y, "L " .. sprachen.zeigeLog)
     Taste.links[y] = Taste.l
     Taste.Koordinaten.Taste_l = y
   end
-  schreiben("U " .. sprachen.Update)
+   y = f.schreiben(y, "U " .. sprachen.Update)
   Taste.links[y] = Taste.u
   Taste.Koordinaten.Taste_u = y
   local version_Zeichenlaenge = string.len(version)
   if string.sub(version, version_Zeichenlaenge - 3, version_Zeichenlaenge) == "BETA" or Sicherung.debug then
-    schreiben("B " .. sprachen.UpdateBeta)
+     y = f.schreiben(y, "B " .. sprachen.UpdateBeta)
     Taste.links[y] = Taste.b
     Taste.Koordinaten.Taste_b = y
   end
-  schreiben(" ")
-  schreiben(sprachen.RedstoneSignale)
-  schreiben(sprachen.RedstoneWeiss, Farben.weisseFarbe, Farben.schwarzeFarbe)
-  schreiben(sprachen.RedstoneRot, Farben.roteFarbe)
-  schreiben(sprachen.RedstoneGelb, Farben.gelbeFarbe)
-  schreiben(sprachen.RedstoneSchwarz, Farben.schwarzeFarbe, Farben.weisseFarbe)
-  schreiben(sprachen.RedstoneGruen, Farben.grueneFarbe)
-  schreiben(" ", Farben.Adressfarbe, Farben.Adresstextfarbe)
-  schreiben(sprachen.versionName .. version)
-  schreiben(" ")
-  schreiben(string.format("nexDHD: %s Nex4rius", sprachen.entwicklerName))
+   y = f.schreiben(y, " ")
+   y = f.schreiben(y, sprachen.RedstoneSignale)
+   y = f.schreiben(y, sprachen.RedstoneWeiss, Farben.weisseFarbe, Farben.schwarzeFarbe)
+   y = f.schreiben(y, sprachen.RedstoneRot, Farben.roteFarbe)
+   y = f.schreiben(y, sprachen.RedstoneGelb, Farben.gelbeFarbe)
+   y = f.schreiben(y, sprachen.RedstoneSchwarz, Farben.schwarzeFarbe, Farben.weisseFarbe)
+   y = f.schreiben(y, sprachen.RedstoneGruen, Farben.grueneFarbe)
+   y = f.schreiben(y, " ", Farben.Adressfarbe, Farben.Adresstextfarbe)
+   y = f.schreiben(y, sprachen.versionName .. version)
+   y = f.schreiben(y, " ")
+   y = f.schreiben(y, string.format("nexDHD: %s Nex4rius", sprachen.entwicklerName))
   f.leeren(y)
 end
 
