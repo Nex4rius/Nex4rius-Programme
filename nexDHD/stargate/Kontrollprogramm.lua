@@ -355,7 +355,8 @@ function f.AdressenLesen()
   local y = 1
   f.zeigeHier(1, y, sprachen.Adressseite .. seite + 1, 0)
   y = y + 1
-  if not gespeicherteAdressen then
+  if (not gespeicherteAdressen) or (os.time() / sectime - letzterAdressCheck > 21600) then
+    letzterAdressCheck = os.time() / sectime
     f.AdressenSpeichern()
   end
   for i, na in pairs(gespeicherteAdressen) do
@@ -541,12 +542,7 @@ function f.zeigeMenu()
   elseif seite == -2 then
     f.Logbuchseite()
   else
-    if (os.time() / sectime) - letzterAdressCheck > 21600 then
-      letzterAdressCheck = os.time() / sectime
-      f.AdressenSpeichern()
-    else
-      f.AdressenLesen()
-    end
+    f.AdressenLesen()
     iris = f.getIrisState()
   end
 end
