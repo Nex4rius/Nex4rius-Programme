@@ -353,7 +353,7 @@ end
 
 function f.AdressenLesen()
   local y = 0
-  y = f.schreiben(y, sprachen.Adressseite .. seite + 1, 0xFFFFFF, 0x000000)
+  y = f.schreiben(y, sprachen.Adressseite .. seite + 1)
   if (not gespeicherteAdressen) or (os.time() / sectime - letzterAdressCheck > 21600) then
     letzterAdressCheck = os.time() / sectime
     f.AdressenSpeichern()
@@ -366,11 +366,11 @@ function f.AdressenLesen()
       end
       if na[2] == remAddr and string.len(tostring(remAddr)) > 5 then
         f.Farbe(Farben.AdressfarbeAktiv)
-        gpu.fill(1, y, 30, 2, " ")
+        gpu.fill(1, y, 30, 2, "P")
       end
       --f.zeigeHier(1, y, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 28 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
       --y = y + 1
-      y = f.schreiben(y, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
+      y = f.schreiben(y, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7), background, Farben.Adresstextfarbe)
       if string.sub(na[4], 1, 1) == "<" then
         --f.Farbe(background, Farben.FehlerFarbe)
         --f.zeigeHier(1, y, "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
@@ -380,15 +380,9 @@ function f.AdressenLesen()
         --f.zeigeHier(1, y, "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
         y = f.schreiben(y, "   " .. na[4])
       end
-      --y = y + 1
       f.Farbe(Farben.Adressfarbe)
-      f.Farbe(0xFFFFFF)
     end
   end
-  --while y < Bildschirmhoehe - 3 do
-  --  gpu.fill(1, y, 30, 1, " ")
-  --  y = y + 1
-  --end
   f.leeren(y)
 end
 
