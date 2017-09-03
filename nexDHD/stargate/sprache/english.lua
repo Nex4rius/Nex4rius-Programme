@@ -54,7 +54,7 @@ return {
   RedstoneRot               = "red: incoming connection",
   RedstoneGelb              = "yellow: iris closed",
   RedstoneSchwarz           = "black: idc accepted",
-  RedstoneGruen             = "green: connected\n",
+  RedstoneGruen             = "green: connected",
   versionName               = "Version: ",
   fehlerName                = "<ERROR>",
   SteuerungName             = "show Info",
