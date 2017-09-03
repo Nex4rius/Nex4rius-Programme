@@ -407,91 +407,96 @@ function f.Logbuchseite()
   ausgabe(max, Logbuch, "neu")
   f.Farbe(Farben.gelbeFarbe, Farben.schwarzeFarbe)
   ausgabe(max, Logbuch, "update")
-  f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
-  if max < 21 then
-    gpu.fill(1, max + 1, 30, 22 - max, " ")
-  end
+  f.leeren(max)
   f.Legende()
 end
 
+function f.leeren(y)
+  f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
+  if y < 21 then
+    gpu.fill(1, y + 1, 30, 22 - y, " ")
+  end
+end
+
 function f.Infoseite()
-  local i = 1
+  local y = 1
   Taste.links = {}
-  f.zeigeHier(1, i, string.sub(sprachen.Steuerung, 1, 29), 30)
+  f.zeigeHier(1, y, string.sub(sprachen.Steuerung, 1, 29), 30)
   if iris == "Offline" then
   else
     --print("I " .. string.sub(sprachen.IrisSteuerung:match("^%s*(.-)%s*$")  .. " " .. sprachen.an_aus, 1, 28))
-    i = i + 1
-    f.zeigeHier(1, i, string.sub("I " .. sprachen.IrisSteuerung:match("^%s*(.-)%s*$")  .. " " .. sprachen.an_aus, 1, 29), 30)
-    Taste.links[i] = Taste.i
-    Taste.Koordinaten.Taste_i = i
+    y = y + 1
+    f.zeigeHier(1, y, string.sub("I " .. sprachen.IrisSteuerung:match("^%s*(.-)%s*$")  .. " " .. sprachen.an_aus, 1, 29), 30)
+    Taste.links[y] = Taste.i
+    Taste.Koordinaten.Taste_i = y
   end
   --print("Z " .. sprachen.AdressenBearbeiten)
-  i = i + 1
-  f.zeigeHier(1, i, string.sub("Z " .. sprachen.AdressenBearbeiten, 1, 29), 30)
-  Taste.links[i] = Taste.z
-  Taste.Koordinaten.Taste_z = i
+  y = y + 1
+  f.zeigeHier(1, y, string.sub("Z " .. sprachen.AdressenBearbeiten, 1, 29), 30)
+  Taste.links[y] = Taste.z
+  Taste.Koordinaten.Taste_z = y
   --print("Q " .. sprachen.beenden)
-  i = i + 1
-  f.zeigeHier(1, i, string.sub("Q " .. sprachen.beenden, 1, 29), 30)
-  Taste.links[i] = Taste.q
-  Taste.Koordinaten.Taste_q = i
+  y = y + 1
+  f.zeigeHier(1, y, string.sub("Q " .. sprachen.beenden, 1, 29), 30)
+  Taste.links[y] = Taste.q
+  Taste.Koordinaten.Taste_q = y
   --print("S " .. sprachen.EinstellungenAendern)
-  i = i + 1
-  f.zeigeHier(1, i, string.sub("S " .. sprachen.EinstellungenAendern, 1, 29), 30)
-  Taste.links[i] = Taste.s
-  Taste.Koordinaten.Taste_s = i
+  y = y + 1
+  f.zeigeHier(1, y, string.sub("S " .. sprachen.EinstellungenAendern, 1, 29), 30)
+  Taste.links[y] = Taste.s
+  Taste.Koordinaten.Taste_s = y
   if log then
     --term.write("L ")
     --print(sprachen.zeigeLog or "zeige Fehlerlog")
-    i = i + 1
-    f.zeigeHier(1, i, string.sub("L " .. sprachen.zeigeLog, 1, 29), 30)
-    Taste.links[i] = Taste.l
-    Taste.Koordinaten.Taste_l = i
+    y = y + 1
+    f.zeigeHier(1, y, string.sub("L " .. sprachen.zeigeLog, 1, 29), 30)
+    Taste.links[y] = Taste.l
+    Taste.Koordinaten.Taste_l = y
   end
   --print("U " .. sprachen.Update)
-  i = i + 1
-  f.zeigeHier(1, i, string.sub("U " .. sprachen.Update, 1, 29), 30)
-  Taste.links[i] = Taste.u
-  Taste.Koordinaten.Taste_u = i
+  y = y + 1
+  f.zeigeHier(1, y, string.sub("U " .. sprachen.Update, 1, 29), 30)
+  Taste.links[y] = Taste.u
+  Taste.Koordinaten.Taste_u = y
   local version_Zeichenlaenge = string.len(version)
   if string.sub(version, version_Zeichenlaenge - 3, version_Zeichenlaenge) == "BETA" or Sicherung.debug then
     --print("B " .. sprachen.UpdateBeta)
-    i = i + 1
-    f.zeigeHier(1, i, string.sub("B " .. sprachen.UpdateBeta, 1, 29), 30)
-    Taste.links[i] = Taste.b
-    Taste.Koordinaten.Taste_b = i
+    y = y + 1
+    f.zeigeHier(1, y, string.sub("B " .. sprachen.UpdateBeta, 1, 29), 30)
+    Taste.links[y] = Taste.b
+    Taste.Koordinaten.Taste_b = y
   end
-  i = i + 1
-  f.zeigeHier(1, i, string.sub("B " .. sprachen.RedstoneSignale, 1, 29), 30)
+  y = y + 1
+  f.zeigeHier(1, y, string.sub("B " .. sprachen.RedstoneSignale, 1, 29), 30)
   --print(sprachen.RedstoneSignale)
   f.Farbe(Farben.weisseFarbe, Farben.schwarzeFarbe)
-  i = i + 1
-  f.zeigeHier(1, i, string.sub("B " .. sprachen.RedstoneWeiss, 1, 29), 30)
+  y = y + 1
+  f.zeigeHier(1, y, string.sub("B " .. sprachen.RedstoneWeiss, 1, 29), 30)
   --print(sprachen.RedstoneWeiss)
   f.Farbe(Farben.roteFarbe)
-  i = i + 1
-  f.zeigeHier(1, i, string.sub("B " .. sprachen.RedstoneRot, 1, 29), 30)
+  y = y + 1
+  f.zeigeHier(1, y, string.sub("B " .. sprachen.RedstoneRot, 1, 29), 30)
   --print(sprachen.RedstoneRot)
   f.Farbe(Farben.gelbeFarbe)
-  i = i + 1
-  f.zeigeHier(1, i, string.sub("B " .. sprachen.RedstoneGelb, 1, 29), 30)
+  y = y + 1
+  f.zeigeHier(1, y, string.sub("B " .. sprachen.RedstoneGelb, 1, 29), 30)
   --print(sprachen.RedstoneGelb)
   f.Farbe(Farben.schwarzeFarbe, Farben.weisseFarbe)
-  i = i + 1
-  f.zeigeHier(1, i, string.sub("B " .. sprachen.RedstoneSchwarz, 1, 29), 30)
+  y = y + 1
+  f.zeigeHier(1, y, string.sub("B " .. sprachen.RedstoneSchwarz, 1, 29), 30)
   --print(sprachen.RedstoneSchwarz)
   f.Farbe(Farben.grueneFarbe)
-  i = i + 1
-  f.zeigeHier(1, i, string.sub("B " .. sprachen.RedstoneGruen, 1, 29), 30)
+  y = y + 1
+  f.zeigeHier(1, y, string.sub("B " .. sprachen.RedstoneGruen, 1, 29), 30)
   --print(sprachen.RedstoneGruen)
   f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
-  i = i + 1
-  f.zeigeHier(1, i, string.sub(sprachen.versionName .. version, 1, 29), 30)
+  y = y + 1
+  f.zeigeHier(1, y, string.sub(sprachen.versionName .. version, 1, 29), 30)
   --print(sprachen.versionName .. version)
-  i = i + 1
-  f.zeigeHier(1, i, string.sub(string.format("\nnexDHD: %s Nex4rius", sprachen.entwicklerName), 1, 29), 30)
+  y = y + 1
+  f.zeigeHier(1, y, string.sub(string.format("\nnexDHD: %s Nex4rius", sprachen.entwicklerName), 1, 29), 30)
   --print(string.format("\nnexDHD: %s Nex4rius", sprachen.entwicklerName))
+  f.leeren(y)
 end
 
 function f.AdressenSpeichern()
