@@ -49,7 +49,7 @@ return {
   AdressenBearbeiten        = "Bearbeite Adressen",
   beenden                   = "Beenden",
   nachrichtAngekommen       = "Nachricht: ",
-  RedstoneSignale           = "\nRedstonesignale",
+  RedstoneSignale           = "Redstonesignale",
   RedstoneWeiss             = "weiß: Status nicht Inaktiv",
   RedstoneRot               = "rot: eingehende Verbindung",
   RedstoneGelb              = "gelb: Iris geschlossen",
