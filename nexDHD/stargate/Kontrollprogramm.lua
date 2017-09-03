@@ -366,18 +366,13 @@ function f.AdressenLesen()
       end
       if na[2] == remAddr and string.len(tostring(remAddr)) > 5 then
         f.Farbe(Farben.AdressfarbeAktiv)
-        gpu.fill(1, y, 30, 2, "P")
+        gpu.fill(1, y + 1, 30, 2, " ")
       end
-      --f.zeigeHier(1, y, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 28 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
-      --y = y + 1
-      y = f.schreiben(y, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7), background, Farben.Adresstextfarbe)
+      y = f.schreiben(y, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
       if string.sub(na[4], 1, 1) == "<" then
-        --f.Farbe(background, Farben.FehlerFarbe)
-        --f.zeigeHier(1, y, "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
         y = f.schreiben(y, "   " .. na[4], background, Farben.FehlerFarbe)
         f.Farbe(background, Farben.Adresstextfarbe)
       else
-        --f.zeigeHier(1, y, "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
         y = f.schreiben(y, "   " .. na[4])
       end
       f.Farbe(Farben.Adressfarbe)
