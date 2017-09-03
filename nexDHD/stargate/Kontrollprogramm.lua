@@ -1126,7 +1126,7 @@ function f.zeigeNachricht(inhalt, oben)
   f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
   if VersionUpdate == true then
     f.zeigeHier(1, Bildschirmhoehe - 1, sprachen.aktualisierenGleich, Bildschirmbreite)
-  elseif fs.exists("/stargate/log") and Sicherung.debug then
+  elseif log and Sicherung.debug then
     f.zeigeHier(1, Bildschirmhoehe - 1, sprachen.fehlerName .. " /stargate/log", Bildschirmbreite)
   elseif seite == -2 then
     f.Legende()
