@@ -44,7 +44,7 @@ return {
   AdressenBearbeiten        = "Upravit Adresy",
   beenden                   = "Odejit",
   nachrichtAngekommen       = "zprava: ",
-  RedstoneSignale           = "\nredstone signaly",
+  RedstoneSignale           = "redstone signaly",
   RedstoneWeiss             = "bila: state not Idle",
   RedstoneRot               = "cervena: prichozi pripojeni",
   RedstoneGelb              = "zluta: iris zavrena",
