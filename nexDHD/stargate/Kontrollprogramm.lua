@@ -138,7 +138,7 @@ Taste.Steuerungrechts           = {}
 
 Variablen.WLAN_Anzahl           = 0
 
-local AdressAnzeige, adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit
+local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben
 
 do
@@ -319,7 +319,7 @@ function f.zeigeHier(x, y, s, h)
       h = Bildschirmbreite
     end
     if OC then
-      gpu.set(x, y, s .. string.rep(" ", h - string.len(s)))
+      gpu.set(x, y, s .. string.rep(" ", h - unicode.len(s)))
     elseif CC then
       term.setCursorPos(x, y)
       local wiederholanzahl = h - string.len(s)
@@ -352,48 +352,41 @@ function f.getAddress(...)
 end
 
 function f.AdressenLesen()
-  local y = 1
-  f.zeigeHier(1, y, sprachen.Adressseite .. seite + 1, 0)
-  y = y + 1
-  if not gespeicherteAdressen then
+  local y = 0
+  y = f.schreiben(y, sprachen.Adressseite .. seite + 1)
+  if (not gespeicherteAdressen) or (os.time() / sectime - letzterAdressCheck > 21600) then
+    letzterAdressCheck = os.time() / sectime
     f.AdressenSpeichern()
   end
   for i, na in pairs(gespeicherteAdressen) do
     if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
-      AdressAnzeige = i - seite * 10
+      local AdressAnzeige = i - seite * 10
       if AdressAnzeige == 10 then
         AdressAnzeige = 0
       end
       if na[2] == remAddr and string.len(tostring(remAddr)) > 5 then
         f.Farbe(Farben.AdressfarbeAktiv)
-        gpu.fill(1, y, 30, 2, " ")
+        gpu.fill(1, y + 1, 30, 2, " ")
       end
-      f.zeigeHier(1, y, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 28 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
-      y = y + 1
+      y = f.schreiben(y, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
       if string.sub(na[4], 1, 1) == "<" then
-        f.Farbe(background, Farben.FehlerFarbe)
-        f.zeigeHier(1, y, "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
+        y = f.schreiben(y, "   " .. na[4], background, Farben.FehlerFarbe)
         f.Farbe(background, Farben.Adresstextfarbe)
       else
-        f.zeigeHier(1, y, "   " .. na[4], 27 - string.len(string.sub(na[1], 1, xVerschiebung - 7)))
+        y = f.schreiben(y, "   " .. na[4])
       end
-      y = y + 1
       f.Farbe(Farben.Adressfarbe)
     end
   end
-  while y < Bildschirmhoehe - 3 do
-    gpu.fill(1, y, 30, 1, " ")
-    y = y + 1
-  end
+  f.leeren(y)
 end
 
 function f.Logbuchseite()
-  print(sprachen.logbuchTitel)
+  f.zeigeHier(1, 1, string.sub(sprachen.logbuchTitel, 1, 29), 30)
   local function ausgabe(max, Logbuch, bedingung)
     for i = 1, max do
       if Logbuch[i][3] == bedingung then
-        gpu.set(1, 1 + i, string.rep(" ", 30))
-        f.zeigeHier(1, 1 + i, string.sub(string.format("%s  %s", Logbuch[i][2], Logbuch[i][1]), 1, 30), 0)
+        f.zeigeHier(1, 1 + i, string.sub(string.format("%s  %s", Logbuch[i][2], Logbuch[i][1]), 1, 30), 30)
       end
     end
   end
@@ -406,64 +399,67 @@ function f.Logbuchseite()
   ausgabe(max, Logbuch, "neu")
   f.Farbe(Farben.gelbeFarbe, Farben.schwarzeFarbe)
   ausgabe(max, Logbuch, "update")
+  f.leeren(max)
   f.Legende()
 end
 
+function f.leeren(y)
+  f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
+  if y < 21 then
+    gpu.fill(1, y + 1, 30, 22 - y, " ")
+  end
+end
+
+function f.schreiben(y, text, farbeVorne, farbeHinten)
+  f.Farbe(farbeVorne, farbeHinten)
+  f.zeigeHier(1, y + 1, string.sub(text, 1, 29), 30)
+  return y + 1
+end
+
 function f.Infoseite()
-  local i = 1
+  local y = 0
   Taste.links = {}
-  print(sprachen.Steuerung)
-  if iris == "Offline" then
-  else
-    print("I " .. string.sub(sprachen.IrisSteuerung:match("^%s*(.-)%s*$")  .. " " .. sprachen.an_aus, 1, 28))
-    i = i + 1
-    Taste.links[i] = Taste.i
-    Taste.Koordinaten.Taste_i = i
+  y = f.schreiben(y, sprachen.Steuerung)
+  if iris ~= "Offline" then
+     y = f.schreiben(y, "I " .. sprachen.IrisSteuerung:match("^%s*(.-)%s*$")  .. " " .. sprachen.an_aus)
+    Taste.links[y] = Taste.i
+    Taste.Koordinaten.Taste_i = y
   end
-  print("Z " .. sprachen.AdressenBearbeiten)
-  i = i + 1
-  Taste.links[i] = Taste.z
-  Taste.Koordinaten.Taste_z = i
-  print("Q " .. sprachen.beenden)
-  i = i + 1
-  Taste.links[i] = Taste.q
-  Taste.Koordinaten.Taste_q = i
-  print("S " .. sprachen.EinstellungenAendern)
-  i = i + 1
-  Taste.links[i] = Taste.s
-  Taste.Koordinaten.Taste_s = i
+   y = f.schreiben(y, "Z " .. sprachen.AdressenBearbeiten)
+  Taste.links[y] = Taste.z
+  Taste.Koordinaten.Taste_z = y
+   y = f.schreiben(y, "Q " .. sprachen.beenden)
+  Taste.links[y] = Taste.q
+  Taste.Koordinaten.Taste_q = y
+   y = f.schreiben(y, "S " .. sprachen.EinstellungenAendern)
+  Taste.links[y] = Taste.s
+  Taste.Koordinaten.Taste_s = y
   if log then
-    term.write("L ")
-    print(sprachen.zeigeLog or "zeige Fehlerlog")
-    i = i + 1
-    Taste.links[i] = Taste.l
-    Taste.Koordinaten.Taste_l = i
+     y = f.schreiben(y, "L " .. sprachen.zeigeLog)
+    Taste.links[y] = Taste.l
+    Taste.Koordinaten.Taste_l = y
   end
-  print("U " .. sprachen.Update)
-  i = i + 1
-  Taste.links[i] = Taste.u
-  Taste.Koordinaten.Taste_u = i
+   y = f.schreiben(y, "U " .. sprachen.Update)
+  Taste.links[y] = Taste.u
+  Taste.Koordinaten.Taste_u = y
   local version_Zeichenlaenge = string.len(version)
   if string.sub(version, version_Zeichenlaenge - 3, version_Zeichenlaenge) == "BETA" or Sicherung.debug then
-    print("B " .. sprachen.UpdateBeta)
-    i = i + 1
-    Taste.links[i] = Taste.b
-    Taste.Koordinaten.Taste_b = i
+     y = f.schreiben(y, "B " .. sprachen.UpdateBeta)
+    Taste.links[y] = Taste.b
+    Taste.Koordinaten.Taste_b = y
   end
-  print(sprachen.RedstoneSignale)
-  f.Farbe(Farben.weisseFarbe, Farben.schwarzeFarbe)
-  print(sprachen.RedstoneWeiss)
-  f.Farbe(Farben.roteFarbe)
-  print(sprachen.RedstoneRot)
-  f.Farbe(Farben.gelbeFarbe)
-  print(sprachen.RedstoneGelb)
-  f.Farbe(Farben.schwarzeFarbe, Farben.weisseFarbe)
-  print(sprachen.RedstoneSchwarz)
-  f.Farbe(Farben.grueneFarbe)
-  print(sprachen.RedstoneGruen)
-  f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
-  print(sprachen.versionName .. version)
-  print(string.format("\nnexDHD: %s Nex4rius", sprachen.entwicklerName))
+   y = f.schreiben(y, " ")
+   y = f.schreiben(y, sprachen.RedstoneSignale)
+   y = f.schreiben(y, sprachen.RedstoneWeiss, Farben.weisseFarbe, Farben.schwarzeFarbe)
+   y = f.schreiben(y, sprachen.RedstoneRot, Farben.roteFarbe)
+   y = f.schreiben(y, sprachen.RedstoneGelb, Farben.gelbeFarbe)
+   y = f.schreiben(y, sprachen.RedstoneSchwarz, Farben.schwarzeFarbe, Farben.weisseFarbe)
+   y = f.schreiben(y, sprachen.RedstoneGruen, Farben.grueneFarbe)
+   y = f.schreiben(y, " ", Farben.Adressfarbe, Farben.Adresstextfarbe)
+   y = f.schreiben(y, sprachen.versionName .. version)
+   y = f.schreiben(y, " ")
+   y = f.schreiben(y, string.format("nexDHD: %s Nex4rius", sprachen.entwicklerName))
+  f.leeren(y)
 end
 
 function f.AdressenSpeichern()
@@ -532,21 +528,16 @@ end
 
 function f.zeigeMenu()
   f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
-  for P = 1, Bildschirmhoehe - 3 do
-    f.zeigeHier(1, P, "", xVerschiebung - 3)
-  end
+  --for i = 1, Bildschirmhoehe - 3 do
+  --  f.zeigeHier(1, i, "", xVerschiebung - 3)
+  --end
   term.setCursor(1, 1)
   if seite == -1 then
     f.Infoseite()
   elseif seite == -2 then
     f.Logbuchseite()
   else
-    if (os.time() / sectime) - letzterAdressCheck > 21600 then
-      letzterAdressCheck = os.time() / sectime
-      f.AdressenSpeichern()
-    else
-      f.AdressenLesen()
-    end
+    f.AdressenLesen()
     iris = f.getIrisState()
   end
 end
@@ -1260,6 +1251,11 @@ function Taste.Pfeil_links()
   elseif seite == -1 then
     f.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.logbuch, 0)
   end
+  if seite > -2 then
+    seite = seite - 1
+    f.zeigeAnzeige()
+  end
+  --[[
   if seite <= -2 then else
     seite = seite - 1
     f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
@@ -1268,6 +1264,7 @@ function Taste.Pfeil_links()
     end
     f.zeigeAnzeige()
   end
+  --]]
 end
 
 function Taste.Pfeil_rechts()
@@ -1282,12 +1279,18 @@ function Taste.Pfeil_rechts()
   end
   if seite + 1 < maxseiten then
     seite = seite + 1
+    f.zeigeAnzeige()
+  end
+  --[[
+  if seite + 1 < maxseiten then
+    seite = seite + 1
     f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
     for P = 1, Bildschirmhoehe - 3 do
       f.zeigeHier(1, P, "", xVerschiebung - 3)
     end
     f.zeigeAnzeige()
   end
+  --]]
 end
 
 function Taste.q()
@@ -1471,7 +1474,7 @@ function Taste.s()
       schreibSicherungsdatei(Sicherung)
       f.sides()
       gpu.setBackground(Farben.Nachrichtfarbe)
-      seite = 0
+      seite = -1
       f.zeigeAnzeige()
     else
       event.timer(2, f.zeigeMenu, 1)
@@ -1775,9 +1778,11 @@ function f.zeigeAnzeige()
   f.zeigeMenu()
 end
 
-function f.redstoneAbschalten(sideNum, Farbe, printAusgabe)
+function f.redstoneAbschalten(sideNum, Farbe, printAusgabe, text)
   r.setBundledOutput(sideNum, Farbe, 0)
-  print(sprachen.redstoneAusschalten .. printAusgabe)
+  if not text then
+    print(sprachen.redstoneAusschalten .. printAusgabe)
+  end
 end
 
 function f.beendeAlles()
@@ -1789,30 +1794,35 @@ function f.beendeAlles()
   term.setCursor(1, 1)
   print(sprachen.ausschaltenName .. "\n")
   f.Colorful_Lamp_Farben(0, true)
-  if component.isAvailable("redstone") then
-    r = component.getPrimary("redstone")
-    f.redstoneAbschalten(sideNum, Farben.white, "white")
---    f.redstoneAbschalten(sideNum, Farben.orange, "orange")
---    f.redstoneAbschalten(sideNum, Farben.magenta, "magenta")
---    f.redstoneAbschalten(sideNum, Farben.lightblue, "lightblue")
-    f.redstoneAbschalten(sideNum, Farben.yellow, "yellow")
---    f.redstoneAbschalten(sideNum, Farben.lime, "lime")
---    f.redstoneAbschalten(sideNum, Farben.pink, "pink")
---    f.redstoneAbschalten(sideNum, Farben.gray, "gray")
---    f.redstoneAbschalten(sideNum, Farben.silver, "silver")
---    f.redstoneAbschalten(sideNum, Farben.cyan, "cyan")
---    f.redstoneAbschalten(sideNum, Farben.purple, "purple")
---    f.redstoneAbschalten(sideNum, Farben.blue, "blue")
---    f.redstoneAbschalten(sideNum, Farben.brown, "brown")
-    f.redstoneAbschalten(sideNum, Farben.green, "green")
-    f.redstoneAbschalten(sideNum, Farben.red, "red")
-    f.redstoneAbschalten(sideNum, Farben.black, "black")
-  end
+  f.RedstoneAus()
   pcall(screen.setTouchModeInverted, false)
   os.sleep(0.2)
 end
 
+function f.RedstoneAus(text)
+  if component.isAvailable("redstone") then
+    r = component.getPrimary("redstone")
+    f.redstoneAbschalten(sideNum, Farben.white, "white", text)
+--    f.redstoneAbschalten(sideNum, Farben.orange, "orange", text)
+--    f.redstoneAbschalten(sideNum, Farben.magenta, "magenta", text)
+--    f.redstoneAbschalten(sideNum, Farben.lightblue, "lightblue", text)
+    f.redstoneAbschalten(sideNum, Farben.yellow, "yellow", text)
+--    f.redstoneAbschalten(sideNum, Farben.lime, "lime", text)
+--    f.redstoneAbschalten(sideNum, Farben.pink, "pink", text)
+--    f.redstoneAbschalten(sideNum, Farben.gray, "gray", text)
+--    f.redstoneAbschalten(sideNum, Farben.silver, "silver", text)
+--    f.redstoneAbschalten(sideNum, Farben.cyan, "cyan", text)
+--    f.redstoneAbschalten(sideNum, Farben.purple, "purple", text)
+--    f.redstoneAbschalten(sideNum, Farben.blue, "blue", text)
+--    f.redstoneAbschalten(sideNum, Farben.brown, "brown", text)
+    f.redstoneAbschalten(sideNum, Farben.green, "green", text)
+    f.redstoneAbschalten(sideNum, Farben.red, "red", text)
+    f.redstoneAbschalten(sideNum, Farben.black, "black", text)
+  end
+end
+
 function f.main()
+  pcall(screen.setTouchModeInverted, true)
   if OC then
     loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "nexDHD")
   elseif CC then
@@ -1823,6 +1833,7 @@ function f.main()
     f.irisOpen()
   end
   gpu.setResolution(70, 25)
+  f.RedstoneAus(true)
   Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
   f.zeigeFarben()
   f.zeigeStatus()
