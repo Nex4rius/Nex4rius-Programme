@@ -498,7 +498,7 @@ function f.main()
   f.test()
   f.Farben(0xFFFFFF, 0x000000)
   f.checkUpdate(true)
-  Updatetimer = event.timer(3600, f.checkUpdate, math.huge)
+  Updatetimer = event.timer(43200, f.checkUpdate, math.huge)
   Updatetimer = event.timer(300, debugupdate, math.huge) --test
   m.open(port)
   f.text("Warte auf Daten")
