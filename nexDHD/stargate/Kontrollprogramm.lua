@@ -1808,7 +1808,7 @@ end
 
 function f.main()
   if OC then
-    loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Stargate OS")
+    loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "nexDHD")
   elseif CC then
     shell.run("label set Stargate-OS")
   end
