@@ -44,7 +44,7 @@ return {
   AdressenBearbeiten        = "Редактировать адреса",
   beenden                   = "Выход",
   nachrichtAngekommen       = "Сообщение: ",
-  RedstoneSignale           = "\nРедстоун сигнал",
+  RedstoneSignale           = "Редстоун сигнал",
   RedstoneWeiss             = "белый: не в режиме ожидания",
   RedstoneRot               = "красный: входящее соединение",
   RedstoneGelb              = "желтый: диафрагма закрыта",
