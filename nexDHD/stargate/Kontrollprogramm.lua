@@ -1256,6 +1256,11 @@ function Taste.Pfeil_links()
   elseif seite == -1 then
     f.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.logbuch, 0)
   end
+  if seite > -2 then
+    seite = seite - 1
+    f.zeigeAnzeige()
+  end
+  --[[
   if seite <= -2 then else
     seite = seite - 1
     f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
@@ -1264,6 +1269,7 @@ function Taste.Pfeil_links()
     end
     f.zeigeAnzeige()
   end
+  --]]
 end
 
 function Taste.Pfeil_rechts()
@@ -1278,12 +1284,18 @@ function Taste.Pfeil_rechts()
   end
   if seite + 1 < maxseiten then
     seite = seite + 1
+    f.zeigeAnzeige()
+  end
+  --[[
+  if seite + 1 < maxseiten then
+    seite = seite + 1
     f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
     for P = 1, Bildschirmhoehe - 3 do
       f.zeigeHier(1, P, "", xVerschiebung - 3)
     end
     f.zeigeAnzeige()
   end
+  --]]
 end
 
 function Taste.q()
