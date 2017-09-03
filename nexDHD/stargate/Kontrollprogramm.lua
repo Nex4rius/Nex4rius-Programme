@@ -19,7 +19,7 @@ local shell                     = shell or require("shell")
 _G.shell = shell
 local print                     = print
 
-local gpu, serialization, sprachen, unicode, ID, Updatetimer
+local gpu, serialization, sprachen, unicode, ID, Updatetimer, log
 
 if OC then
   serialization = require("serialization")
@@ -79,6 +79,9 @@ do
     end
   end
   sprachen = sprachen or neu
+  if fs.exists("/stargate/log") then
+    log = true
+  end
 end
 
 local ersetzen                  = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
@@ -429,7 +432,7 @@ function f.Infoseite()
   i = i + 1
   Taste.links[i] = Taste.s
   Taste.Koordinaten.Taste_s = i
-  if fs.exists("/stargate/log") then
+  if log then
     term.write("L ")
     print(sprachen.zeigeLog or "zeige Fehlerlog")
     i = i + 1
@@ -1199,6 +1202,7 @@ function f.schreibFehlerLog(...)
     end
     d:write("\n" .. os.time() .. string.rep("-", 69 - string.len(os.time())) .. "\n")
     d:close()
+    log = true
   end
   letzteEingabe = ...
   --pcall(f.hochladen)
