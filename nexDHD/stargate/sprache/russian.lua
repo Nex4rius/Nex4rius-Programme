@@ -49,7 +49,7 @@ return {
   RedstoneRot               = "красный: входящее соединение",
   RedstoneGelb              = "желтый: диафрагма закрыта",
   RedstoneSchwarz           = "черный: idc принят",
-  RedstoneGruen             = "зеленый: есть соединение\n",
+  RedstoneGruen             = "зеленый: есть соединение",
   versionName               = "Версия: ",
   fehlerName                = "<ОШИБКА>",
   SteuerungName             = "информация",
