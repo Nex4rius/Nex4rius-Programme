@@ -17,6 +17,7 @@ local table                     = table
 local string                    = string
 local print                     = print
 local pcall                     = pcall
+local type                      = type
 local require                   = require
 local loadfile                  = loadfile
 
