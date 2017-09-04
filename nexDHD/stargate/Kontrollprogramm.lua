@@ -1689,23 +1689,23 @@ end
 function f.sgDialIn()
   wormhole = "in"
   f.Logbuch_schreiben(remoteName , f.getAddress(sg.remoteAddress()), wormhole)
-  event.cancel(timer.anzeige)
-  timer.anzeige = event.timer(10, f.schnelleAktualisierung, 1)
+  --event.cancel(timer.anzeige)
+  --timer.anzeige = event.timer(10, f.schnelleAktualisierung, 1)
 end
 
 function f.sgDialOut()
   state = "Dialling"
   wormhole = "out"
   direction = "Outgoing"
-  event.cancel(timer.anzeige)
-  timer.anzeige = event.timer(10, f.schnelleAktualisierung, 1) -- anwahlzeit prüfen
+  --event.cancel(timer.anzeige)
+  --timer.anzeige = event.timer(10, f.schnelleAktualisierung, 1) -- anwahlzeit prüfen
 end
 
 function f.schnelleAktualisierung()
-  --while state == "Connected" do
-  --  f.zeigeEnergie(v.Energiezeile)
-  --  os.sleep(0.1)
-  --end
+  while state == "Connected" do
+    f.zeigeEnergie(v.Energiezeile)
+    os.sleep(0.1)
+  end
 end
 
 function f.eventLoop()
@@ -1852,8 +1852,7 @@ function f.main()
   elseif CC then
     shell.run("label set Stargate-OS")
   end
-  --Updatetimer = event.timer(43200, f.checkUpdate, math.huge)
-  Updatetimer = event.timer(300, f.checkUpdate, math.huge)
+  Updatetimer = event.timer(3600, f.checkUpdate, math.huge)
   if sg.stargateState() == "Idle" and f.getIrisState() == "Closed" then
     f.irisOpen()
   end
