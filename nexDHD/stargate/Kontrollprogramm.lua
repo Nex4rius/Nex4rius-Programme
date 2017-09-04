@@ -29,8 +29,15 @@ if OC then
   gpu = component.getPrimary("gpu")
   local a = gpu.setForeground
   local b = gpu.setBackground
-  gpu.setForeground = function(code) if code then a(code) end end
-  gpu.setBackground = function(code) if code then b(code) end end
+  gpu.setForeground = function(code) if type(code) == "number" then a(code) end end
+  gpu.setBackground = function(code) if type(code) == "number" then b(code) end end
+  local altesSenden = sg.sendMessage
+  sg.sendMessage = function(...)
+    altesSenden(...)
+    if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
+      component.modem.broadcast(Sicherung.Port, ...)
+    end
+  end
 elseif CC then
   component.getPrimary = peripheral.find
   component.isAvailable = function(name)
@@ -250,12 +257,8 @@ function f.schreibeAdressen()
 end
 
 function f.Farbe(hintergrund, vordergrund)
-  if type(hintergrund) == "number" then
-    gpu.setBackground(hintergrund)
-  end
-  if type(vordergrund) == "number" then
-    gpu.setForeground(vordergrund)
-  end
+  gpu.setBackground(hintergrund)
+  gpu.setForeground(vordergrund)
 end
 
 function f.pull_event()
