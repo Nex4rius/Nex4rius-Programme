@@ -11,13 +11,21 @@ else
   CC = true
 end
 
+local io                        = io
+local os                        = os
+local table                     = table
+local string                    = string
+local print                     = print
+local pcall                     = pcall
+local require                   = require
+local loadfile                  = loadfile
+
 local component                 = {}
 local event                     = {}
 local term                      = term or require("term")
 local fs                        = fs or require("filesystem")
 local shell                     = shell or require("shell")
 _G.shell = shell
-local print                     = print
 
 local gpu, serialization, sprachen, unicode, ID, Updatetimer, log
 
@@ -31,13 +39,6 @@ if OC then
   local b = gpu.setBackground
   gpu.setForeground = function(code) if type(code) == "number" then a(code) end end
   gpu.setBackground = function(code) if type(code) == "number" then b(code) end end
-  local altesSenden = sg.sendMessage
-  sg.sendMessage = function(...)
-    altesSenden(...)
-    if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-      component.modem.broadcast(Sicherung.Port, ...)
-    end
-  end
 elseif CC then
   component.getPrimary = peripheral.find
   component.isAvailable = function(name)
@@ -95,6 +96,16 @@ local ersetzen                  = loadfile("/stargate/sprache/ersetzen.lua")(spr
 
 local sg                        = component.getPrimary("stargate")
 local screen                    = component.getPrimary("screen") or {}
+
+do
+  local altesSenden = sg.sendMessage
+  sg.sendMessage = function(...)
+    altesSenden(...)
+    if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
+      component.modem.broadcast(Sicherung.Port, ...)
+    end
+  end
+end
 
 local Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
 local max_Bildschirmbreite, max_Bildschirmhoehe = gpu.maxResolution()
