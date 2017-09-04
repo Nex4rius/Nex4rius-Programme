@@ -1828,7 +1828,8 @@ function f.main()
   elseif CC then
     shell.run("label set Stargate-OS")
   end
-  Updatetimer = event.timer(43200, f.checkUpdate, math.huge)
+  --Updatetimer = event.timer(43200, f.checkUpdate, math.huge)
+  Updatetimer = event.timer(300, f.checkUpdate, math.huge)
   if sg.stargateState() == "Idle" and f.getIrisState() == "Closed" then
     f.irisOpen()
   end
