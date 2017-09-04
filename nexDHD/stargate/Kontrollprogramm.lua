@@ -204,25 +204,6 @@ elseif CC then
   --r = peripheral.find("redstone")
 end
 
-if r then
-  r.setBundledOutput(0, Farben.white, 0)
---  r.setBundledOutput(0, Farben.orange, 0)
---  r.setBundledOutput(0, Farben.magenta, 0)
---  r.setBundledOutput(0, Farben.lightblue, 0)
-  r.setBundledOutput(0, Farben.yellow, 0)
---  r.setBundledOutput(0, Farben.lime, 0)
---  r.setBundledOutput(0, Farben.pink, 0)
---  r.setBundledOutput(0, Farben.gray, 0)
---  r.setBundledOutput(0, Farben.silver, 0)
---  r.setBundledOutput(0, Farben.cyan, 0)
---  r.setBundledOutput(0, Farben.purple, 0)
---  r.setBundledOutput(0, Farben.blue, 0)
---  r.setBundledOutput(0, Farben.brown, 0)
-  r.setBundledOutput(0, Farben.green, 0)
-  r.setBundledOutput(0, Farben.red, 0)
-  r.setBundledOutput(0, Farben.black, 0)
-end
-
 function f.Logbuch_schreiben(name, adresse, richtung)
   local rest = {}
   if fs.exists("/einstellungen/logbuch.lua") then
