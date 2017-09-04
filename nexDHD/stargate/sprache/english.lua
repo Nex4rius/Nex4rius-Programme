@@ -145,4 +145,10 @@ return {
   LegendeUpdate             = "update",
   neuerName                 = "new name",
   keinInternet              = "no Internet Card available",
+  Adresseingabe             = "enter address",
+  Eingeben_Adresse          = "new address",
+  Eingeben_Name             = "name of the address",
+  Eingeben_idc              = "IDC for the new address",
+  richtige_Adresse          = "new address was added",
+  falsche_Adresse           = "the address is invalid",
 }
