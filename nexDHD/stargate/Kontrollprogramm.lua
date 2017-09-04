@@ -122,9 +122,10 @@ local wormhole                  = "in"
 local iriscontrol               = "on"
 local energytype                = "EU"
 local f                         = {}
+local v                         = {}
 local Taste                     = {}
-local Variablen                 = {}
 local Logbuch                   = {}
+local timer                     = {}
 local activationtime            = 0
 local energy                    = 0
 local seite                     = 0
@@ -155,7 +156,7 @@ Taste.Koordinaten               = {}
 Taste.Steuerunglinks            = {}
 Taste.Steuerungrechts           = {}
 
-Variablen.WLAN_Anzahl           = 0
+v.WLAN_Anzahl                   = 0
 
 local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben
@@ -274,7 +275,7 @@ function f.Farbe(hintergrund, vordergrund)
 end
 
 function f.pull_event()
-  local Wartezeit = 1
+  local Wartezeit = 10
   if state == "Idle" then
     if checkEnergy == energy and not VersionUpdate then
       if Nachrichtleer == true then
@@ -288,7 +289,7 @@ function f.pull_event()
       if serverVersion ~= sprachen.fehlerName then
         f.Logbuch_schreiben(serverVersion, "Update:    " , "update")
         running = false
-        Variablen.update = "ja"
+        v.update = "ja"
       else
         VersionUpdate = false
         f.zeigeNachricht(sprachen.fehlerName)
@@ -322,7 +323,7 @@ function f.checkReset()
       AddNewAddress         = true
       activationtime        = 0
       time                  = 0
-      Variablen.WLAN_Anzahl = 0
+      v.WLAN_Anzahl         = 0
     end
   end
 end
@@ -493,7 +494,7 @@ function f.AdressenSpeichern()
       sendeAdressen[i] = {}
       sendeAdressen[i][1] = na[1]
       sendeAdressen[i][2] = na[2]
-      Variablen.lokaleAdresse = true
+      v.lokaleAdresse = true
     else
       local anwahlEnergie = sg.energyToDial(na[2])
       if not anwahlEnergie then
@@ -533,7 +534,7 @@ function f.AdressenSpeichern()
     maxseiten = (i + k) / 10
     AdressenAnzahl = i
   end
-  if not Variablen.lokaleAdresse then
+  if not v.lokaleAdresse then
     f.checkStargateName()
   end
   f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
@@ -812,7 +813,7 @@ function f.aktualisiereStatus()
   f.wormholeDirection()
   f.iriscontroller()
   if state == "Idle" then
-    Variablen.WLAN_Anzahl = 0
+    v.WLAN_Anzahl = 0
     RichtungName = ""
   else
     if wormhole == "out" then
@@ -855,7 +856,9 @@ function f.autoclose()
   end
 end
 
-function f.zeigeEnergie()
+function f.zeigeEnergie(eingabe)
+  local zeile = eingabe or zeile
+  v.Energiezeile = zeile
   if energy < 1000 then
     f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2, 0)
     f.SchreibInAndererFarben(xVerschiebung + unicode.len("  " .. sprachen.energie1 .. energytype .. sprachen.energie2), zeile, sprachen.keineEnergie, Farben.FehlerFarbe)
@@ -1539,7 +1542,7 @@ function Taste.u()
         if serverVersion ~= sprachen.fehlerName then
           f.Logbuch_schreiben(serverVersion, "Update:    " , "update")
           running = false
-          Variablen.update = "ja"
+          v.update = "ja"
         else
           f.zeigeNachricht(sprachen.fehlerName)
           event.timer(2, f.zeigeMenu, 1)
@@ -1563,7 +1566,7 @@ function Taste.b()
     if component.isAvailable("internet") then
       f.Logbuch_schreiben(serverVersion .. " BETA", "Update:    " , "update")
       running = false
-      Variablen.update = "beta"
+      v.update = "beta"
     end
   end
 end
@@ -1642,8 +1645,8 @@ function f.modem_message(e)
       modem.closeAll()
     end
   end
-  Variablen.WLAN_Anzahl = Variablen.WLAN_Anzahl + 1
-  if Variablen.WLAN_Anzahl < 5 then
+  v.WLAN_Anzahl = v.WLAN_Anzahl + 1
+  if v.WLAN_Anzahl < 5 then
     f.sgMessageReceived({e[1], e[2], e[6]})
     event.timer(2, f.openModem, 0)
   end
@@ -1705,12 +1708,23 @@ end
 function f.sgDialIn()
   wormhole = "in"
   f.Logbuch_schreiben(remoteName , f.getAddress(sg.remoteAddress()), wormhole)
+  event.cancel(timer.anzeige)
+  timer.anzeige = event.timer(10, f.schnelleAktualisierung, 1)
 end
 
 function f.sgDialOut()
   state = "Dialling"
   wormhole = "out"
   direction = "Outgoing"
+  event.cancel(timer.anzeige)
+  timer.anzeige = event.timer(10, f.schnelleAktualisierung, 1) -- anwahlzeit prüfen
+end
+
+function f.schnelleAktualisierung()
+  while state == "Connected" do
+    f.zeigeEnergie(v.Energiezeile)
+    os.sleep(0.1)
+  end
 end
 
 function f.eventLoop()
@@ -1888,14 +1902,14 @@ f.checken(f.main)
 local update = f.update
 Funktion = nil
 
-if Variablen.update == "ja" or Variablen.update == "beta" then
+if v.update == "ja" or v.update == "beta" then
   print(sprachen.aktualisierenJetzt)
   print(sprachen.schliesseIris .. "...\n")
   sg.closeIris()
-  if Variablen.update == "ja" then
+  if v.update == "ja" then
     pcall(update, "master", Sicherung)
   else
-    pcall(update, Variablen.update, Sicherung)
+    pcall(update, v.update, Sicherung)
   end
-  os.execute("pastebin run -f YVqKFnsP " .. Variablen.update)
+  os.execute("pastebin run -f YVqKFnsP " .. v.update)
 end
