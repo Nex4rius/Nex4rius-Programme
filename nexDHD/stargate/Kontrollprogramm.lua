@@ -436,44 +436,47 @@ function f.Infoseite()
   Taste.links = {}
   y = f.schreiben(y, sprachen.Steuerung)
   if iris ~= "Offline" then
-     y = f.schreiben(y, "I " .. sprachen.IrisSteuerung:match("^%s*(.-)%s*$")  .. " " .. sprachen.an_aus)
+    y = f.schreiben(y, "I " .. sprachen.IrisSteuerung:match("^%s*(.-)%s*$")  .. " " .. sprachen.an_aus)
     Taste.links[y] = Taste.i
     Taste.Koordinaten.Taste_i = y
   end
-   y = f.schreiben(y, "Z " .. sprachen.AdressenBearbeiten)
+  y = f.schreiben(y, "Z " .. sprachen.AdressenBearbeiten)
   Taste.links[y] = Taste.z
   Taste.Koordinaten.Taste_z = y
-   y = f.schreiben(y, "Q " .. sprachen.beenden)
+  y = f.schreiben(y, "Q " .. sprachen.beenden)
   Taste.links[y] = Taste.q
   Taste.Koordinaten.Taste_q = y
-   y = f.schreiben(y, "S " .. sprachen.EinstellungenAendern)
+  y = f.schreiben(y, "S " .. sprachen.EinstellungenAendern)
   Taste.links[y] = Taste.s
   Taste.Koordinaten.Taste_s = y
+  y = f.schreiben(y, "A " .. sprachen.Adresseingabe)
+  Taste.links[y] = Taste.a
+  Taste.Koordinaten.Taste_a = y
   if log then
-     y = f.schreiben(y, "L " .. sprachen.zeigeLog)
+    y = f.schreiben(y, "L " .. sprachen.zeigeLog)
     Taste.links[y] = Taste.l
     Taste.Koordinaten.Taste_l = y
   end
-   y = f.schreiben(y, "U " .. sprachen.Update)
+  y = f.schreiben(y, "U " .. sprachen.Update)
   Taste.links[y] = Taste.u
   Taste.Koordinaten.Taste_u = y
   local version_Zeichenlaenge = string.len(version)
   if string.sub(version, version_Zeichenlaenge - 3, version_Zeichenlaenge) == "BETA" or Sicherung.debug then
-     y = f.schreiben(y, "B " .. sprachen.UpdateBeta)
+    y = f.schreiben(y, "B " .. sprachen.UpdateBeta)
     Taste.links[y] = Taste.b
     Taste.Koordinaten.Taste_b = y
   end
-   y = f.schreiben(y, " ")
-   y = f.schreiben(y, sprachen.RedstoneSignale)
-   y = f.schreiben(y, sprachen.RedstoneWeiss, Farben.weisseFarbe, Farben.schwarzeFarbe)
-   y = f.schreiben(y, sprachen.RedstoneRot, Farben.roteFarbe)
-   y = f.schreiben(y, sprachen.RedstoneGelb, Farben.gelbeFarbe)
-   y = f.schreiben(y, sprachen.RedstoneSchwarz, Farben.schwarzeFarbe, Farben.weisseFarbe)
-   y = f.schreiben(y, sprachen.RedstoneGruen, Farben.grueneFarbe)
-   y = f.schreiben(y, " ", Farben.Adressfarbe, Farben.Adresstextfarbe)
-   y = f.schreiben(y, sprachen.versionName .. version)
-   y = f.schreiben(y, " ")
-   y = f.schreiben(y, string.format("nexDHD: %s Nex4rius", sprachen.entwicklerName))
+  y = f.schreiben(y, " ")
+  y = f.schreiben(y, sprachen.RedstoneSignale)
+  y = f.schreiben(y, sprachen.RedstoneWeiss, Farben.weisseFarbe, Farben.schwarzeFarbe)
+  y = f.schreiben(y, sprachen.RedstoneRot, Farben.roteFarbe)
+  y = f.schreiben(y, sprachen.RedstoneGelb, Farben.gelbeFarbe)
+  y = f.schreiben(y, sprachen.RedstoneSchwarz, Farben.schwarzeFarbe, Farben.weisseFarbe)
+  y = f.schreiben(y, sprachen.RedstoneGruen, Farben.grueneFarbe)
+  y = f.schreiben(y, " ", Farben.Adressfarbe, Farben.Adresstextfarbe)
+  y = f.schreiben(y, sprachen.versionName .. version)
+  y = f.schreiben(y, " ")
+  y = f.schreiben(y, string.format("nexDHD: %s Nex4rius", sprachen.entwicklerName))
   f.leeren(y)
 end
 
@@ -741,7 +744,7 @@ function f.sendeAdressliste()
   end
 end
 
-function f.newAddress(neueAdresse, neuerName, ...)
+function f.newAddress(idc, neueAdresse, neuerName, ...)
   if AddNewAddress == true and string.len(neueAdresse) == 11 and sg.energyToDial(neueAdresse) then
     AdressenAnzahl = AdressenAnzahl + 1
     adressen[AdressenAnzahl] = {}
@@ -754,7 +757,7 @@ function f.newAddress(neueAdresse, neuerName, ...)
       f.Logbuch_schreiben(neuerName , neueAdresse, "neu")
     end
     adressen[AdressenAnzahl][2] = neueAdresse
-    adressen[AdressenAnzahl][3] = ""
+    adressen[AdressenAnzahl][3] = idc or ""
     if ... == nil then
       f.schreibeAdressen()
       if nichtmehr then
@@ -783,7 +786,7 @@ function f.destinationName()
         end
       end
       if remoteName == "" then
-        f.newAddress(remAddr)
+        f.newAddress(nil, remAddr)
       end
     end
   end
@@ -1319,9 +1322,9 @@ function Taste.e()
     if state == "Connected" and direction == "Outgoing" then
       term.setCursor(1, Bildschirmhoehe)
       f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
+      local timerID = event.timer(1, function() f.zeigeStatus() f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe) end, math.huge)
       term.clearLine()
       term.write(sprachen.IDCeingabe .. ":")
-      local timerID = event.timer(1, function() f.zeigeStatus() f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe) end, math.huge)
       pcall(screen.setTouchModeInverted, false)
       local eingabe = term.read(nil, false, nil, "*")
       pcall(screen.setTouchModeInverted, true)
@@ -1331,6 +1334,37 @@ function Taste.e()
     else
       f.zeigeNachricht(sprachen.keineVerbindung)
     end
+  end
+end
+
+function Taste.a()
+  f.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
+  f.zeigeHier(Taste.Koordinaten.a_X, Taste.Koordinaten.a_Y, "A " .. sprachen.Adresseingabe, 0)
+  if f.Tastatur() then
+    term.setCursor(1, Bildschirmhoehe)
+    f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
+    local timerID = event.timer(1, function() f.zeigeStatus() f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe) end, math.huge)
+    pcall(screen.setTouchModeInverted, false)
+    local function eingeben(text)
+      term.clearLine()
+      term.write(text .. ":")
+      local eingabe = term.read(nil, false)
+      return string.sub(eingabe, 1, string.len(eingabe) - 1)
+    end
+    local adresse = eingeben(sprachen.Eingeben_Adresse)
+    if sg.energyToDial(adresse) then
+      local name = eingeben(sprachen.Eingeben_Name)
+      if name == "" then
+        name = ">>>" .. adresse .. "<<<"
+      end
+      local idc = eingeben(sprachen.Eingeben_idc)
+      f.newAddress(idc, adresse, name)
+      f.zeigeNachricht(sprachen.richtige_Adresse)
+    else
+      f.zeigeNachricht(sprachen.falsche_Adresse)
+    end
+    pcall(screen.setTouchModeInverted, true)
+    event.cancel(timerID)
   end
 end
 
@@ -1705,7 +1739,7 @@ function f.angekommeneAdressen(...)
       elseif b[2] ~= d[2] then
         neuHinzufuegen = true
       elseif b[2] == d[2] and d[1] == ">>>" .. d[2] .. "<<<" and d[1] ~= b[1] then
-        if f.newAddress(b[2], b[1], true) then
+        if f.newAddress(nil, b[2], b[1], true) then
           adressen[c] = nil
         end
         AddNewAddress = true
@@ -1718,7 +1752,7 @@ function f.angekommeneAdressen(...)
     end
     if neuHinzufuegen == true then
       AddNewAddress = true
-      f.newAddress(b[2], b[1], true)
+      f.newAddress(nil, b[2], b[1], true)
     end
   end
   if AddNewAddress == true then
@@ -1741,7 +1775,7 @@ function f.checkStargateName()
     pcall(screen.setTouchModeInverted, true)
     Sicherung.StargateName = string.sub(eingabe, 1, string.len(eingabe) - 1)
     schreibSicherungsdatei(Sicherung)
-    f.newAddress(f.getAddress(sg.localAddress()), Sicherung.StargateName)
+    f.newAddress(nil, f.getAddress(sg.localAddress()), Sicherung.StargateName)
   end
 end
 
