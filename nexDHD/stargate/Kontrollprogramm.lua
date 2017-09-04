@@ -593,6 +593,9 @@ function f.iriscontroller()
   if state == "Dialing" then
     messageshow = true
     AddNewAddress = true
+    if wormhole == "in" then
+      f.openModem()
+    end
   end
   if direction == "Incoming" and incode == Sicherung.IDC and Sicherung.control == "Off" then
     IDCyes = true
@@ -791,10 +794,7 @@ function f.aktualisiereStatus()
   f.wormholeDirection()
   f.iriscontroller()
   if state == "Idle" then
-    if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-      component.modem.open(Sicherung.Port)
-      Variablen.WLAN_Anzahl = 0
-    end
+    Variablen.WLAN_Anzahl = 0
     RichtungName = ""
   else
     if wormhole == "out" then
@@ -1616,7 +1616,7 @@ function f.modem_message(e)
   Variablen.WLAN_Anzahl = Variablen.WLAN_Anzahl + 1
   if Variablen.WLAN_Anzahl < 5 then
     f.sgMessageReceived({e[1], e[2], e[6]})
-    event.timer(5, f.openModem, 0)
+    event.timer(2, f.openModem, 0)
   end
 end
 
@@ -1843,7 +1843,6 @@ function f.main()
   f.AdressenSpeichern()
   seite = 0
   f.zeigeMenu()
-  f.openModem()
   while running do
     local ergebnis, grund = pcall(f.eventLoop)
     if not ergebnis then
