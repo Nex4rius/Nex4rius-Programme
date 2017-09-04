@@ -1824,7 +1824,7 @@ function f.beendeAlles()
 end
 
 function f.RedstoneAus(text)
-  if component.isAvailable("redstone") then
+  if component.isAvailable("redstone") and type(sideNum) == "number" and type(Farben.white) == "number" then
     r = component.getPrimary("redstone")
     f.redstoneAbschalten(sideNum, Farben.white, "white", text)
 --    f.redstoneAbschalten(sideNum, Farben.orange, "orange", text)
