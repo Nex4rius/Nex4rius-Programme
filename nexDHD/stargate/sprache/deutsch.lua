@@ -145,4 +145,10 @@ return {
   LegendeUpdate             = "Update",
   neuerName                 = "neuer Name",
   keinInternet              = "keine Internetkarte vorhanden",
+  Adresseingabe             = "Adresse eingeben",
+  Eingeben_Adresse          = "neue Adresse",
+  Eingeben_Name             = "Name der Adresse",
+  Eingeben_idc              = "IDC der neuen Adresse",
+  richtige_Adresse          = "neue Adresse wurde hinzugefügt",
+  falsche_Adresse           = "die Adresse ist ungültig",
 }
