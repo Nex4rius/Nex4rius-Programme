@@ -431,9 +431,9 @@ function f.Infoseite()
   y = f.schreiben(y, "S " .. sprachen.EinstellungenAendern)
   Taste.links[y] = Taste.s
   Taste.Koordinaten.Taste_s = y
-  y = f.schreiben(y, "A " .. sprachen.Adresseingabe)
-  Taste.links[y] = Taste.a
-  Taste.Koordinaten.Taste_a = y
+  --y = f.schreiben(y, "A " .. sprachen.Adresseingabe)
+  --Taste.links[y] = Taste.a
+  --Taste.Koordinaten.Taste_a = y
   if log then
     y = f.schreiben(y, "L " .. sprachen.zeigeLog)
     Taste.links[y] = Taste.l
@@ -1702,10 +1702,10 @@ function f.sgDialOut()
 end
 
 function f.schnelleAktualisierung()
-  while state == "Connected" do
-    f.zeigeEnergie(v.Energiezeile)
-    os.sleep(0.1)
-  end
+  --while state == "Connected" do
+  --  f.zeigeEnergie(v.Energiezeile)
+  --  os.sleep(0.1)
+  --end
 end
 
 function f.eventLoop()
