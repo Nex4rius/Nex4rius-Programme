@@ -11,13 +11,22 @@ else
   CC = true
 end
 
+local io                        = io
+local os                        = os
+local table                     = table
+local string                    = string
+local print                     = print
+local pcall                     = pcall
+local type                      = type
+local require                   = require
+local loadfile                  = loadfile
+
 local component                 = {}
 local event                     = {}
 local term                      = term or require("term")
 local fs                        = fs or require("filesystem")
 local shell                     = shell or require("shell")
 _G.shell = shell
-local print                     = print
 
 local gpu, serialization, sprachen, unicode, ID, Updatetimer, log
 
@@ -29,8 +38,8 @@ if OC then
   gpu = component.getPrimary("gpu")
   local a = gpu.setForeground
   local b = gpu.setBackground
-  gpu.setForeground = function(code) if code then a(code) end end
-  gpu.setBackground = function(code) if code then b(code) end end
+  gpu.setForeground = function(code) if type(code) == "number" then a(code) end end
+  gpu.setBackground = function(code) if type(code) == "number" then b(code) end end
 elseif CC then
   component.getPrimary = peripheral.find
   component.isAvailable = function(name)
@@ -89,6 +98,16 @@ local ersetzen                  = loadfile("/stargate/sprache/ersetzen.lua")(spr
 local sg                        = component.getPrimary("stargate")
 local screen                    = component.getPrimary("screen") or {}
 
+do
+  local altesSenden = sg.sendMessage
+  sg.sendMessage = function(...)
+    altesSenden(...)
+    if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
+      component.modem.broadcast(Sicherung.Port, ...)
+    end
+  end
+end
+
 local Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
 local max_Bildschirmbreite, max_Bildschirmhoehe = gpu.maxResolution()
 
@@ -103,9 +122,10 @@ local wormhole                  = "in"
 local iriscontrol               = "on"
 local energytype                = "EU"
 local f                         = {}
+local v                         = {}
 local Taste                     = {}
-local Variablen                 = {}
 local Logbuch                   = {}
+local timer                     = {}
 local activationtime            = 0
 local energy                    = 0
 local seite                     = 0
@@ -136,7 +156,7 @@ Taste.Koordinaten               = {}
 Taste.Steuerunglinks            = {}
 Taste.Steuerungrechts           = {}
 
-Variablen.WLAN_Anzahl           = 0
+v.WLAN_Anzahl                   = 0
 
 local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben
@@ -182,25 +202,6 @@ if OC then
   end
 elseif CC then
   --r = peripheral.find("redstone")
-end
-
-if r then
-  r.setBundledOutput(0, Farben.white, 0)
---  r.setBundledOutput(0, Farben.orange, 0)
---  r.setBundledOutput(0, Farben.magenta, 0)
---  r.setBundledOutput(0, Farben.lightblue, 0)
-  r.setBundledOutput(0, Farben.yellow, 0)
---  r.setBundledOutput(0, Farben.lime, 0)
---  r.setBundledOutput(0, Farben.pink, 0)
---  r.setBundledOutput(0, Farben.gray, 0)
---  r.setBundledOutput(0, Farben.silver, 0)
---  r.setBundledOutput(0, Farben.cyan, 0)
---  r.setBundledOutput(0, Farben.purple, 0)
---  r.setBundledOutput(0, Farben.blue, 0)
---  r.setBundledOutput(0, Farben.brown, 0)
-  r.setBundledOutput(0, Farben.green, 0)
-  r.setBundledOutput(0, Farben.red, 0)
-  r.setBundledOutput(0, Farben.black, 0)
 end
 
 function f.Logbuch_schreiben(name, adresse, richtung)
@@ -250,16 +251,12 @@ function f.schreibeAdressen()
 end
 
 function f.Farbe(hintergrund, vordergrund)
-  if type(hintergrund) == "number" then
-    gpu.setBackground(hintergrund)
-  end
-  if type(vordergrund) == "number" then
-    gpu.setForeground(vordergrund)
-  end
+  gpu.setBackground(hintergrund)
+  gpu.setForeground(vordergrund)
 end
 
 function f.pull_event()
-  local Wartezeit = 1
+  local Wartezeit = 10
   if state == "Idle" then
     if checkEnergy == energy and not VersionUpdate then
       if Nachrichtleer == true then
@@ -273,7 +270,7 @@ function f.pull_event()
       if serverVersion ~= sprachen.fehlerName then
         f.Logbuch_schreiben(serverVersion, "Update:    " , "update")
         running = false
-        Variablen.update = "ja"
+        v.update = "ja"
       else
         VersionUpdate = false
         f.zeigeNachricht(sprachen.fehlerName)
@@ -307,7 +304,7 @@ function f.checkReset()
       AddNewAddress         = true
       activationtime        = 0
       time                  = 0
-      Variablen.WLAN_Anzahl = 0
+      v.WLAN_Anzahl         = 0
     end
   end
 end
@@ -421,44 +418,47 @@ function f.Infoseite()
   Taste.links = {}
   y = f.schreiben(y, sprachen.Steuerung)
   if iris ~= "Offline" then
-     y = f.schreiben(y, "I " .. sprachen.IrisSteuerung:match("^%s*(.-)%s*$")  .. " " .. sprachen.an_aus)
+    y = f.schreiben(y, "I " .. sprachen.IrisSteuerung:match("^%s*(.-)%s*$")  .. " " .. sprachen.an_aus)
     Taste.links[y] = Taste.i
     Taste.Koordinaten.Taste_i = y
   end
-   y = f.schreiben(y, "Z " .. sprachen.AdressenBearbeiten)
+  y = f.schreiben(y, "Z " .. sprachen.AdressenBearbeiten)
   Taste.links[y] = Taste.z
   Taste.Koordinaten.Taste_z = y
-   y = f.schreiben(y, "Q " .. sprachen.beenden)
+  y = f.schreiben(y, "Q " .. sprachen.beenden)
   Taste.links[y] = Taste.q
   Taste.Koordinaten.Taste_q = y
-   y = f.schreiben(y, "S " .. sprachen.EinstellungenAendern)
+  y = f.schreiben(y, "S " .. sprachen.EinstellungenAendern)
   Taste.links[y] = Taste.s
   Taste.Koordinaten.Taste_s = y
+  --y = f.schreiben(y, "A " .. sprachen.Adresseingabe)
+  --Taste.links[y] = Taste.a
+  --Taste.Koordinaten.Taste_a = y
   if log then
-     y = f.schreiben(y, "L " .. sprachen.zeigeLog)
+    y = f.schreiben(y, "L " .. sprachen.zeigeLog)
     Taste.links[y] = Taste.l
     Taste.Koordinaten.Taste_l = y
   end
-   y = f.schreiben(y, "U " .. sprachen.Update)
+  y = f.schreiben(y, "U " .. sprachen.Update)
   Taste.links[y] = Taste.u
   Taste.Koordinaten.Taste_u = y
   local version_Zeichenlaenge = string.len(version)
   if string.sub(version, version_Zeichenlaenge - 3, version_Zeichenlaenge) == "BETA" or Sicherung.debug then
-     y = f.schreiben(y, "B " .. sprachen.UpdateBeta)
+    y = f.schreiben(y, "B " .. sprachen.UpdateBeta)
     Taste.links[y] = Taste.b
     Taste.Koordinaten.Taste_b = y
   end
-   y = f.schreiben(y, " ")
-   y = f.schreiben(y, sprachen.RedstoneSignale)
-   y = f.schreiben(y, sprachen.RedstoneWeiss, Farben.weisseFarbe, Farben.schwarzeFarbe)
-   y = f.schreiben(y, sprachen.RedstoneRot, Farben.roteFarbe)
-   y = f.schreiben(y, sprachen.RedstoneGelb, Farben.gelbeFarbe)
-   y = f.schreiben(y, sprachen.RedstoneSchwarz, Farben.schwarzeFarbe, Farben.weisseFarbe)
-   y = f.schreiben(y, sprachen.RedstoneGruen, Farben.grueneFarbe)
-   y = f.schreiben(y, " ", Farben.Adressfarbe, Farben.Adresstextfarbe)
-   y = f.schreiben(y, sprachen.versionName .. version)
-   y = f.schreiben(y, " ")
-   y = f.schreiben(y, string.format("nexDHD: %s Nex4rius", sprachen.entwicklerName))
+  y = f.schreiben(y, " ")
+  y = f.schreiben(y, sprachen.RedstoneSignale)
+  y = f.schreiben(y, sprachen.RedstoneWeiss, Farben.weisseFarbe, Farben.schwarzeFarbe)
+  y = f.schreiben(y, sprachen.RedstoneRot, Farben.roteFarbe)
+  y = f.schreiben(y, sprachen.RedstoneGelb, Farben.gelbeFarbe)
+  y = f.schreiben(y, sprachen.RedstoneSchwarz, Farben.schwarzeFarbe, Farben.weisseFarbe)
+  y = f.schreiben(y, sprachen.RedstoneGruen, Farben.grueneFarbe)
+  y = f.schreiben(y, " ", Farben.Adressfarbe, Farben.Adresstextfarbe)
+  y = f.schreiben(y, sprachen.versionName .. version)
+  y = f.schreiben(y, " ")
+  y = f.schreiben(y, string.format("nexDHD: %s Nex4rius", sprachen.entwicklerName))
   f.leeren(y)
 end
 
@@ -475,7 +475,7 @@ function f.AdressenSpeichern()
       sendeAdressen[i] = {}
       sendeAdressen[i][1] = na[1]
       sendeAdressen[i][2] = na[2]
-      Variablen.lokaleAdresse = true
+      v.lokaleAdresse = true
     else
       local anwahlEnergie = sg.energyToDial(na[2])
       if not anwahlEnergie then
@@ -515,7 +515,7 @@ function f.AdressenSpeichern()
     maxseiten = (i + k) / 10
     AdressenAnzahl = i
   end
-  if not Variablen.lokaleAdresse then
+  if not v.lokaleAdresse then
     f.checkStargateName()
   end
   f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
@@ -593,6 +593,9 @@ function f.iriscontroller()
   if state == "Dialing" then
     messageshow = true
     AddNewAddress = true
+    if wormhole == "in" then
+      f.openModem()
+    end
   end
   if direction == "Incoming" and incode == Sicherung.IDC and Sicherung.control == "Off" then
     IDCyes = true
@@ -723,7 +726,7 @@ function f.sendeAdressliste()
   end
 end
 
-function f.newAddress(neueAdresse, neuerName, ...)
+function f.newAddress(idc, neueAdresse, neuerName, ...)
   if AddNewAddress == true and string.len(neueAdresse) == 11 and sg.energyToDial(neueAdresse) then
     AdressenAnzahl = AdressenAnzahl + 1
     adressen[AdressenAnzahl] = {}
@@ -736,7 +739,7 @@ function f.newAddress(neueAdresse, neuerName, ...)
       f.Logbuch_schreiben(neuerName , neueAdresse, "neu")
     end
     adressen[AdressenAnzahl][2] = neueAdresse
-    adressen[AdressenAnzahl][3] = ""
+    adressen[AdressenAnzahl][3] = idc or ""
     if ... == nil then
       f.schreibeAdressen()
       if nichtmehr then
@@ -765,7 +768,7 @@ function f.destinationName()
         end
       end
       if remoteName == "" then
-        f.newAddress(remAddr)
+        f.newAddress(nil, remAddr)
       end
     end
   end
@@ -791,10 +794,7 @@ function f.aktualisiereStatus()
   f.wormholeDirection()
   f.iriscontroller()
   if state == "Idle" then
-    if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-      component.modem.open(Sicherung.Port)
-      Variablen.WLAN_Anzahl = 0
-    end
+    v.WLAN_Anzahl = 0
     RichtungName = ""
   else
     if wormhole == "out" then
@@ -837,7 +837,9 @@ function f.autoclose()
   end
 end
 
-function f.zeigeEnergie()
+function f.zeigeEnergie(eingabe)
+  local zeile = eingabe or zeile
+  v.Energiezeile = zeile
   if energy < 1000 then
     f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2, 0)
     f.SchreibInAndererFarben(xVerschiebung + unicode.len("  " .. sprachen.energie1 .. energytype .. sprachen.energie2), zeile, sprachen.keineEnergie, Farben.FehlerFarbe)
@@ -1255,16 +1257,6 @@ function Taste.Pfeil_links()
     seite = seite - 1
     f.zeigeAnzeige()
   end
-  --[[
-  if seite <= -2 then else
-    seite = seite - 1
-    f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
-    for P = 1, Bildschirmhoehe - 3 do
-      f.zeigeHier(1, P, "", xVerschiebung - 3)
-    end
-    f.zeigeAnzeige()
-  end
-  --]]
 end
 
 function Taste.Pfeil_rechts()
@@ -1281,16 +1273,6 @@ function Taste.Pfeil_rechts()
     seite = seite + 1
     f.zeigeAnzeige()
   end
-  --[[
-  if seite + 1 < maxseiten then
-    seite = seite + 1
-    f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
-    for P = 1, Bildschirmhoehe - 3 do
-      f.zeigeHier(1, P, "", xVerschiebung - 3)
-    end
-    f.zeigeAnzeige()
-  end
-  --]]
 end
 
 function Taste.q()
@@ -1324,9 +1306,9 @@ function Taste.e()
     if state == "Connected" and direction == "Outgoing" then
       term.setCursor(1, Bildschirmhoehe)
       f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
+      local timerID = event.timer(1, function() f.zeigeStatus() f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe) end, math.huge)
       term.clearLine()
       term.write(sprachen.IDCeingabe .. ":")
-      local timerID = event.timer(1, function() f.zeigeStatus() f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe) end, math.huge)
       pcall(screen.setTouchModeInverted, false)
       local eingabe = term.read(nil, false, nil, "*")
       pcall(screen.setTouchModeInverted, true)
@@ -1336,6 +1318,37 @@ function Taste.e()
     else
       f.zeigeNachricht(sprachen.keineVerbindung)
     end
+  end
+end
+
+function Taste.a()
+  f.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
+  f.zeigeHier(Taste.Koordinaten.a_X, Taste.Koordinaten.a_Y, "A " .. sprachen.Adresseingabe, 0)
+  if f.Tastatur() then
+    term.setCursor(1, Bildschirmhoehe)
+    f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
+    local timerID = event.timer(1, function() f.zeigeStatus() f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe) end, math.huge)
+    pcall(screen.setTouchModeInverted, false)
+    local function eingeben(text)
+      term.clearLine()
+      term.write(text .. ":")
+      local eingabe = term.read(nil, false)
+      return string.sub(eingabe, 1, string.len(eingabe) - 1)
+    end
+    local adresse = eingeben(sprachen.Eingeben_Adresse)
+    if sg.energyToDial(adresse) then
+      local name = eingeben(sprachen.Eingeben_Name)
+      if name == "" then
+        name = ">>>" .. adresse .. "<<<"
+      end
+      local idc = eingeben(sprachen.Eingeben_idc)
+      f.newAddress(idc, adresse, name)
+      f.zeigeNachricht(sprachen.richtige_Adresse)
+    else
+      f.zeigeNachricht(sprachen.falsche_Adresse)
+    end
+    pcall(screen.setTouchModeInverted, true)
+    event.cancel(timerID)
   end
 end
 
@@ -1510,7 +1523,7 @@ function Taste.u()
         if serverVersion ~= sprachen.fehlerName then
           f.Logbuch_schreiben(serverVersion, "Update:    " , "update")
           running = false
-          Variablen.update = "ja"
+          v.update = "ja"
         else
           f.zeigeNachricht(sprachen.fehlerName)
           event.timer(2, f.zeigeMenu, 1)
@@ -1534,7 +1547,7 @@ function Taste.b()
     if component.isAvailable("internet") then
       f.Logbuch_schreiben(serverVersion .. " BETA", "Update:    " , "update")
       running = false
-      Variablen.update = "beta"
+      v.update = "beta"
     end
   end
 end
@@ -1613,10 +1626,10 @@ function f.modem_message(e)
       modem.closeAll()
     end
   end
-  Variablen.WLAN_Anzahl = Variablen.WLAN_Anzahl + 1
-  if Variablen.WLAN_Anzahl < 5 then
+  v.WLAN_Anzahl = v.WLAN_Anzahl + 1
+  if v.WLAN_Anzahl < 5 then
     f.sgMessageReceived({e[1], e[2], e[6]})
-    event.timer(5, f.openModem, 0)
+    event.timer(2, f.openModem, 0)
   end
 end
 
@@ -1676,12 +1689,23 @@ end
 function f.sgDialIn()
   wormhole = "in"
   f.Logbuch_schreiben(remoteName , f.getAddress(sg.remoteAddress()), wormhole)
+  event.cancel(timer.anzeige)
+  timer.anzeige = event.timer(10, f.schnelleAktualisierung, 1)
 end
 
 function f.sgDialOut()
   state = "Dialling"
   wormhole = "out"
   direction = "Outgoing"
+  event.cancel(timer.anzeige)
+  timer.anzeige = event.timer(10, f.schnelleAktualisierung, 1) -- anwahlzeit prüfen
+end
+
+function f.schnelleAktualisierung()
+  --while state == "Connected" do
+  --  f.zeigeEnergie(v.Energiezeile)
+  --  os.sleep(0.1)
+  --end
 end
 
 function f.eventLoop()
@@ -1710,7 +1734,7 @@ function f.angekommeneAdressen(...)
       elseif b[2] ~= d[2] then
         neuHinzufuegen = true
       elseif b[2] == d[2] and d[1] == ">>>" .. d[2] .. "<<<" and d[1] ~= b[1] then
-        if f.newAddress(b[2], b[1], true) then
+        if f.newAddress(nil, b[2], b[1], true) then
           adressen[c] = nil
         end
         AddNewAddress = true
@@ -1723,7 +1747,7 @@ function f.angekommeneAdressen(...)
     end
     if neuHinzufuegen == true then
       AddNewAddress = true
-      f.newAddress(b[2], b[1], true)
+      f.newAddress(nil, b[2], b[1], true)
     end
   end
   if AddNewAddress == true then
@@ -1746,7 +1770,7 @@ function f.checkStargateName()
     pcall(screen.setTouchModeInverted, true)
     Sicherung.StargateName = string.sub(eingabe, 1, string.len(eingabe) - 1)
     schreibSicherungsdatei(Sicherung)
-    f.newAddress(f.getAddress(sg.localAddress()), Sicherung.StargateName)
+    f.newAddress(nil, f.getAddress(sg.localAddress()), Sicherung.StargateName)
   end
 end
 
@@ -1800,7 +1824,7 @@ function f.beendeAlles()
 end
 
 function f.RedstoneAus(text)
-  if component.isAvailable("redstone") then
+  if component.isAvailable("redstone") and type(sideNum) == "number" and type(Farben.white) == "number" then
     r = component.getPrimary("redstone")
     f.redstoneAbschalten(sideNum, Farben.white, "white", text)
 --    f.redstoneAbschalten(sideNum, Farben.orange, "orange", text)
@@ -1828,7 +1852,8 @@ function f.main()
   elseif CC then
     shell.run("label set Stargate-OS")
   end
-  Updatetimer = event.timer(43200, f.checkUpdate, math.huge)
+  --Updatetimer = event.timer(43200, f.checkUpdate, math.huge)
+  Updatetimer = event.timer(300, f.checkUpdate, math.huge)
   if sg.stargateState() == "Idle" and f.getIrisState() == "Closed" then
     f.irisOpen()
   end
@@ -1842,7 +1867,6 @@ function f.main()
   f.AdressenSpeichern()
   seite = 0
   f.zeigeMenu()
-  f.openModem()
   while running do
     local ergebnis, grund = pcall(f.eventLoop)
     if not ergebnis then
@@ -1859,14 +1883,14 @@ f.checken(f.main)
 local update = f.update
 Funktion = nil
 
-if Variablen.update == "ja" or Variablen.update == "beta" then
+if v.update == "ja" or v.update == "beta" then
   print(sprachen.aktualisierenJetzt)
   print(sprachen.schliesseIris .. "...\n")
   sg.closeIris()
-  if Variablen.update == "ja" then
+  if v.update == "ja" then
     pcall(update, "master", Sicherung)
   else
-    pcall(update, Variablen.update, Sicherung)
+    pcall(update, v.update, Sicherung)
   end
-  os.execute("pastebin run -f YVqKFnsP " .. Variablen.update)
+  os.execute("pastebin run -f YVqKFnsP " .. v.update)
 end
