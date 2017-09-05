@@ -285,30 +285,6 @@ function f.zeichenErsetzen(...)
   return string.gsub(..., "%a+", function (str) return ersetzen [str] end)
 end
 
-function f.checkReset()
-  if type(time) == "number" then
-    if time > 500 then
-      zielAdresse           = ""
-      remoteName            = ""
-      showidc               = ""
-      incode                = "-"
-      codeaccepted          = "-"
-      wormhole              = "in"
-      iriscontrol           = "on"
-      k                     = "open"
-      LampenGruen           = false
-      IDCyes                = false
-      entercode             = false
-      messageshow           = true
-      send                  = true
-      AddNewAddress         = true
-      activationtime        = 0
-      time                  = 0
-      v.WLAN_Anzahl         = 0
-    end
-  end
-end
-
 function f.zeigeHier(x, y, s, h)
   s = tostring(s)
   if type(x) == "number" and type(y) == "number" then
@@ -876,7 +852,6 @@ function f.activetime()
     if time > 0 then
       f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit1 .. f.ErsetzePunktMitKomma(string.format("%.1f", time)) .. "s")
     end
-    f.checkReset()
   else
     f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit2)
     time = 0
