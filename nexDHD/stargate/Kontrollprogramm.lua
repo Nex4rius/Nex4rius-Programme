@@ -1662,7 +1662,9 @@ function f.sgMessageReceived(e)
   messageshow = true
 end
 
-function f.touch(e)
+function f.touch(e) end
+function f.touche(...)
+  local e = {...}
   local x = e[3]
   local y = e[4]
   if x <= 30 then
@@ -1813,6 +1815,7 @@ end
 
 function f.beendeAlles()
   event.cancel(Updatetimer)
+  f.eventlisten(false)
   schreibSicherungsdatei(Sicherung)
   gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   f.Farbe(Farben.schwarzeFarbe, Farben.weisseFarbe)
@@ -1847,6 +1850,30 @@ function f.RedstoneAus(text)
   end
 end
 
+function f.component(eventname, id, comp)
+  if eventname == "component_removed" then
+    if comp == "redstone" then
+      r = nil
+    end
+  elseif eventname == "component_added" then
+    if comp == "redstone" then
+      r = component.getPrimary("redstone")
+    end
+  end
+end
+
+function f.eventlisten(an)
+  if an then
+    event.listen("component_added", f.component)
+    event.listen("component_removed", f.component)
+    event.listen("touch", f.touche)
+  else
+    event.ignore("component_added", f.component)
+    event.ignore("component_removed", f.component)
+    event.ignore("touch", f.touche)
+  end
+end
+
 function f.main()
   pcall(screen.setTouchModeInverted, true)
   if OC then
@@ -1868,6 +1895,7 @@ function f.main()
   f.AdressenSpeichern()
   seite = 0
   f.zeigeMenu()
+  f.eventlisten(true)
   while running do
     local ergebnis, grund = pcall(f.eventLoop)
     if not ergebnis then
