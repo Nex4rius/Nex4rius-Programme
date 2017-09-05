@@ -256,7 +256,7 @@ function f.Farbe(hintergrund, vordergrund)
 end
 
 function f.pull_event()
-  local Wartezeit = 10
+  local Wartezeit = 5
   if state == "Idle" then
     if checkEnergy == energy and not VersionUpdate then
       if Nachrichtleer == true then
@@ -1244,18 +1244,22 @@ function f.key_down(e)
   end
 end
 
+function f.Seite(zahl)
+  seite = seite + zahl
+  f.zeigeAnzeige()
+end
+
 function Taste.Pfeil_links()
   f.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
   if seite >= 1 then
     f.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.vorherigeSeite, 0)
+    f.Seite(-1)
   elseif seite == 0 then
     f.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.SteuerungName, 0)
+    f.Seite(-1)
   elseif seite == -1 then
     f.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.logbuch, 0)
-  end
-  if seite > -2 then
-    seite = seite - 1
-    f.zeigeAnzeige()
+    f.Seite(-1)
   end
 end
 
@@ -1263,15 +1267,14 @@ function Taste.Pfeil_rechts()
   f.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
   if seite == -1 then
     f.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.zeigeAdressen, 0)
+    f.Seite(1)
   elseif seite == -2 then
     f.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.SteuerungName, 0)
-    event.timer(0.1, function() f.zeigeNachricht(nil, true) end, 0)
-  elseif maxseiten > seite + 1 then
+    f.Seite(1)
+    f.zeigeNachricht(nil, true)
+  elseif seite + 1 < maxseiten then
     f.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.naechsteSeite, 0)
-  end
-  if seite + 1 < maxseiten then
-    seite = seite + 1
-    f.zeigeAnzeige()
+    f.Seite(1)
   end
 end
 
