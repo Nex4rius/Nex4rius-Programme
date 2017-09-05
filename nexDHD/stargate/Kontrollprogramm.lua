@@ -1852,10 +1852,12 @@ end
 
 function f.component(eventname, id, comp)
   if eventname == "component_removed" then
+    f.zeigeNachricht(eventname, id, comp)
     if comp == "redstone" then
       r = nil
     end
   elseif eventname == "component_added" then
+    f.zeigeNachricht(eventname, id, comp)
     if comp == "redstone" then
       r = component.getPrimary("redstone")
     end
