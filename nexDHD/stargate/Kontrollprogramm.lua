@@ -946,8 +946,7 @@ function f.RedstoneAenderung(a, b)
   if sideNum == nil then
     f.sides()
   end
-  if component.isAvailable("redstone") and OC then
-    r = component.getPrimary("redstone")
+  if OC and r then
     r.setBundledOutput(sideNum, a, b)
   end
 end
@@ -1299,7 +1298,7 @@ function Taste.d()
       f.zeigeNachricht(sprachen.stargateAbschalten .. " " .. sprachen.stargateName)
     end
   end
-  event.timer(1, f.zeigeMenu, 1)
+  event.timer(2, f.zeigeMenu, 1)
 end
 
 function Taste.e()
