@@ -4,10 +4,14 @@
 
 local fs        = fs or require("filesystem")
 local NEU       = ...
-local ALT       = loadfile("/einstellungen/Sicherungsdatei.lua")()
 local standard  = loadfile("/stargate/Sicherungsdatei.lua")
 local Sicherung = {}
 local sprachen  = {}
+local ALT       = {}
+
+if fs.exists("/einstellungen/Sicherungsdatei.lua") then
+  ALT = loadfile("/einstellungen/Sicherungsdatei.lua")()
+end
 
 if type(ALT) ~= "table" then ALT = {} end
 
