@@ -44,13 +44,13 @@ function f.main()
   end
 end
 
-f.start()
-
 function f.loop()
   while true do
     main()
   end
 end
+
+f.start()
 
 while true do
   pcall(f.loop)
