@@ -1,3 +1,4 @@
+local component = component
 local r = component.proxy(component.list("redstone")())
 local typ, uuid, side, signal
 local Farben = {}
