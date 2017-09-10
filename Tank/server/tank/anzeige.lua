@@ -501,6 +501,7 @@ function f.checkUpdate(text)
 end
 
 function debugupdate()
+  f.text("Update...")
   os.execute("pastebin run -f cyF0yhXZ Tank")
 end
 
