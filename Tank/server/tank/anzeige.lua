@@ -266,15 +266,17 @@ function f.zeichenErsetzen(...)
 end
 
 function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl)
-  local ausgabe = {}
   if farben[name] == nil and debug then
     nachricht = string.format("%s  %s  >>report this liquid<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
     nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
   elseif name == "Tankname" then
+    local ausgabe = {}
     table.insert(ausgabe, string.rep(" ", math.floor(breite / 2)))
     table.insert(ausgabe, label)
     table.insert(ausgabe, string.rep(" ", math.ceil(breite / 2)))
+    nachricht = split(table.concat(ausgabe))
   else
+    local ausgabe = {}
     if breite == 40 then
       table.insert(ausgabe, string.sub(nachricht, 1, 37 - string.len(menge) - string.len(prozent)))
       table.insert(ausgabe, string.rep(" ", 37 - string.len(nachricht) - string.len(menge) - string.len(prozent)))
