@@ -277,9 +277,9 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
       table.insert(ausgabe, label)
       table.insert(ausgabe, string.rep("━", math.ceil(breite / 2)))
     else
-      table.insert(ausgabe, "║" .. string.rep(" ", math.floor(breite / 2) - 1))
+      table.insert(ausgabe, " ║" .. string.rep(" ", math.floor(breite / 2) - 2))
       table.insert(ausgabe, label)
-      table.insert(ausgabe, string.rep(" ", math.ceil(breite / 2) - 1) .. "║")
+      table.insert(ausgabe, string.rep(" ", math.ceil(breite / 2) - 2) .. "║ ")
     end
     nachricht = split(table.concat(ausgabe))
   else
@@ -308,8 +308,8 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
   if farben[name] == nil then
    name = "unbekannt"
   end
-  local oben = "╔" .. string.rep("═", breite - 2) .. "╗"
-  local unten = "╚" .. string.rep("═", breite - 2) .. "╝"
+  local oben = " ╔" .. string.rep("═", breite - 4) .. "╗ "
+  local unten = " ╚" .. string.rep("═", breite - 4) .. "╝ "
   local grenze = math.ceil(breite * menge / maxmenge)
   f.Farben(farben[name][1], farben[name][2])
   if klein and maxanzahl > 5 then
