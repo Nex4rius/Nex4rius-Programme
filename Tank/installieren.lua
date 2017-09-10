@@ -178,7 +178,6 @@ function f.installieren(versionTyp)
   if updateKomplett then
     print("\nUpdate vollständig\n" .. version .. " " .. string.upper(tostring(versionTyp)))
     os.sleep(2)
-    pcall(loadfile("/autorun.lua"))
   else
     print("\nERROR install / update failed\n")
   end
