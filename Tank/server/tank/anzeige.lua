@@ -313,7 +313,11 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
   local grenze = math.ceil(breite * menge / maxmenge)
   f.Farben(farben[name][1], farben[name][2])
   if klein and maxanzahl > 5 then
-    gpu.set(x, y, table.concat(nachricht, nil, 1, grenze))
+    if name == "Tankname" then
+      gpu.set(x, y, table.concat(nachricht))
+    else
+      gpu.set(x, y, table.concat(nachricht, nil, 1, grenze))
+    end
   else
     if name == "Tankname" then
       gpu.set(x, y, oben)
