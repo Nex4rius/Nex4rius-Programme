@@ -4,6 +4,8 @@
 
 os.sleep(2)
 
+local a = 5 / b
+
 local io              = io
 local os              = os
 local table           = table
