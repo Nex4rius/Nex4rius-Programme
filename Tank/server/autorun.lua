@@ -26,7 +26,7 @@ if not ergebnis then
     os.sleep(1)
   end
   for i = 1, math.huge do
-    if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/installieren.lua", "/installieren.lua") then --hier auf master
+    if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/Tank/Tank/installieren.lua", "/installieren.lua") then --hier auf master
       print(pcall(loadfile("/installieren.lua")))
     end
     print("<FEHLER> Warte " .. i .. "s")
