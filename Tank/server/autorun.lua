@@ -22,6 +22,7 @@ if not ergebnis then
   print(grund)
   for i = 10, 1, -1 do
     print("Neustart in ... " .. i)
+    os.sleep(i)
   end
   for i = 1, math.huge do
     os.execute("pastebin run -f cyF0yhXZ Tank")
