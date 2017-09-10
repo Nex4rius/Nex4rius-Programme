@@ -63,7 +63,6 @@ function f.tank(hier, id, nachricht)
   local ende = 0
   if hier then
     letzteNachricht = c.uptime()
-    --for i in pairs(tank) do
     for i = 1, #tank do
       if type(tank[i]) == "table" then
         if tank[i].id == id then
@@ -84,7 +83,6 @@ function f.tank(hier, id, nachricht)
   else
     f.keineDaten()
   end
-  --for i in pairs(tank) do
   for i = 1, #tank do
     if c.uptime() - tank[i].zeit > Wartezeit * 2 then
       tank[i] = nil
@@ -93,15 +91,15 @@ function f.tank(hier, id, nachricht)
   f.verarbeiten(tank)
 end
 
-function f.hinzu(name, label, menge, maxmenge)
-  local weiter = true
-  if name ~= "nil" and name ~= "Tankname" then
-    --for i in pairs(tankneu) do
-    for i = 1, #tankneu do
-      if tankneu[i].name == name then
-        tankneu[i].menge = tankneu[i].menge + menge
-        tankneu[i].maxmenge = tankneu[i].maxmenge + maxmenge
-        weiter = false
+function f.hinzu(name, label, menge, maxmenge, extra, weiter)
+  if name ~= "nil" then
+    if not extra then
+      for i = 1, #tankneu do
+        if tankneu[i].name == name then
+          tankneu[i].menge = tankneu[i].menge + menge
+          tankneu[i].maxmenge = tankneu[i].maxmenge + maxmenge
+          weiter = false
+        end
       end
     end
     if weiter then
@@ -117,14 +115,18 @@ end
 function f.verarbeiten(tank)
   tankneu = {}
   tanknr = 0
-  --for i in pairs(tank) do
+  local extra
   for i = 1, #tank do
     if type(tank[i]) == "table" then
       if type(tank[i].inhalt) == "table" then
-        --for j in pairs(tank[i].inhalt) do
+        for j = 1, #tank[i].inhalt do
+          if tank[i].inhalt[j].name == "Tankname" then
+            extra = true
+          end
+        end
         for j = 1, #tank[i].inhalt do
           tanknr = tanknr + 1
-          f.hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge)
+          f.hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, extra, true)
         end
       end
     end
@@ -160,10 +162,6 @@ function f.anzeigen()
     local y = 1
     local leer = true
     local maxanzahl = #tankneu
-    --local maxanzahl = 0
-    --for i in pairs(tankneu) do
-    --  maxanzahl = maxanzahl + 1
-    --end
     local a, b = gpu.getResolution()
     if maxanzahl <= 16 and maxanzahl ~= 0 then
       if klein and maxanzahl > 5 then
@@ -189,7 +187,6 @@ function f.anzeigen()
     os.sleep(0.1)
     local anzahl = 0
     --for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
-    --for i in pairs(tankneu) do
     for i = 1, #tankneu do
       anzahl = anzahl + 1
       local links, rechts, breite = -15, -25, 40
@@ -513,7 +510,7 @@ function f.main()
   m.open(port)
   f.text("Warte auf Daten")
   event.listen("modem_message", f.event)
-  event.listen("component_added", f.tank)
+  event.listen("component_added", f.anzeigen)
   timer.senden = event.timer(Zeit, f.senden, math.huge)
   timer.tank = event.timer(Zeit + 15, f.tank, 1)
   timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
