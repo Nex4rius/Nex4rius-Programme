@@ -513,6 +513,7 @@ function f.main()
   m.open(port)
   f.text("Warte auf Daten")
   event.listen("modem_message", f.event)
+  event.listen("component_added", f.tank)
   timer.senden = event.timer(Zeit, f.senden, math.huge)
   timer.tank = event.timer(Zeit + 15, f.tank, 1)
   timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
@@ -523,6 +524,7 @@ end
 
 function f.beenden()
   event.ignore("modem_message", f.event)
+  event.ignore("component_added", f.tank)
   event.ignore("interrupted", f.beenden)
   for k, v in pairs(timer) do
     event.cancel(v)
