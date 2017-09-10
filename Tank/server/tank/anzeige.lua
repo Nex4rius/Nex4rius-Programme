@@ -4,7 +4,7 @@
 
 os.sleep(2)
 
-local a = 5 / b
+local a = b / c
 
 local io              = io
 local os              = os
