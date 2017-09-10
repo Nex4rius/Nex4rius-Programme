@@ -234,7 +234,7 @@ function f.anzeigen()
       if label == "fluidhelium3" then
         label = "Helium-3"
       end
-      f.zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl)
+      print(pcall(f.zeigeHier, x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl)))
       leer = false
       if klein and maxanzahl > 5 then
         y = y + 1
