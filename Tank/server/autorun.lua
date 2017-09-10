@@ -17,9 +17,13 @@ end
 local ergebnis, grund = pcall(loadfile("/tank/anzeige.lua"), args)
 
 if not ergebnis then
+  require("term").clear()
   print("<FEHLER>")
   print(grund)
-  os.sleep(10)
+  for i = 10, 1, -1 do
+    print("Neustart in ... " i)
+  end
+  os.execute("pastebin run -f cyF0yhXZ Tank")
 end
 
 shell.setWorkingDirectory(alterPfad)
