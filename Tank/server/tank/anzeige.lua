@@ -278,9 +278,9 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
       table.insert(ausgabe, string.sub(label, 1, breite - 3))
       table.insert(ausgabe, string.rep("━", math.ceil(breite / 2)))
     else
-      table.insert(ausgabe, " ┃" .. string.rep(" ", math.floor(breite / 2) - 2))
+      table.insert(ausgabe, " ┃" .. string.rep(" ", math.floor(breite / 2) - 2 - string.len(label)))
       table.insert(ausgabe, string.sub(label, 1, breite - 5))
-      table.insert(ausgabe, string.rep(" ", math.ceil(breite / 2) - 2) .. "┃ ")
+      table.insert(ausgabe, string.rep(" ", math.ceil(breite / 2) - 2 - string.len(label)) .. "┃ ")
     end
     nachricht = split(table.concat(ausgabe))
   else
