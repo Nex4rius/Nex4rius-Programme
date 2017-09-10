@@ -122,7 +122,7 @@ function f.verarbeiten(tank)
     if type(tank[i]) == "table" then
       if type(tank[i].inhalt) == "table" then
         --for j in pairs(tank[i].inhalt) do
-        for j = 1, #tank[i].inhalt
+        for j = 1, #tank[i].inhalt do
           tanknr = tanknr + 1
           f.hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge)
         end
