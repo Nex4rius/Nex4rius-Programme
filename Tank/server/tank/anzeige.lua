@@ -115,12 +115,12 @@ end
 function f.verarbeiten(tank)
   tankneu = {}
   tanknr = 0
-  local extra
   for i = 1, #tank do
     if type(tank[i]) == "table" then
       if type(tank[i].inhalt) == "table" then
+        local extra
         for j = 1, #tank[i].inhalt do
-          if tank[i].inhalt[j].name == "Tankname" then
+          if tank[i].inhalt[j].name == "Tankname" and tank[i].inhalt[j].label ~= "false" then
             extra = true
           end
         end
