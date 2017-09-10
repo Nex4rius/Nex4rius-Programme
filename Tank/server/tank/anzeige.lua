@@ -125,7 +125,7 @@ function f.verarbeiten(tank)
           end
         end
         for j = 1, #tank[i].inhalt do
-          if tank[i].inhalt[j].name == "Tankname" and tank[i].inhalt[j].label ~= "false" then
+          if tank[i].inhalt[j].label ~= "false" then
             tanknr = tanknr + 1
             f.hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, extra, true)
           end
