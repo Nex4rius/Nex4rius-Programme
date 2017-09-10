@@ -273,13 +273,13 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
     local ausgabe = {}
     local breite = breite - string.len(label)
     if klein and maxanzahl > 5 then
-      table.insert(ausgabe, string.rep(" ", math.floor(breite / 2)))
+      table.insert(ausgabe, string.rep("━", math.floor(breite / 2)))
       table.insert(ausgabe, label)
-      table.insert(ausgabe, string.rep(" ", math.ceil(breite / 2)))
+      table.insert(ausgabe, string.rep("━", math.ceil(breite / 2)))
     else
-      table.insert(ausgabe, "┃" .. string.rep("━", math.floor(breite / 2) - 1))
+      table.insert(ausgabe, "║" .. string.rep(" ", math.floor(breite / 2) - 1))
       table.insert(ausgabe, label)
-      table.insert(ausgabe, string.rep("━", math.ceil(breite / 2) - 1) .. "┃")
+      table.insert(ausgabe, string.rep(" ", math.ceil(breite / 2) - 1) .. "║")
     end
     nachricht = split(table.concat(ausgabe))
   else
@@ -316,9 +316,9 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
     gpu.set(x, y, table.concat(nachricht, nil, 1, grenze))
   else
     if name == "Tankname" then
-      gpu.set(x, y    , string.sub(oben, 1, grenze))
-      gpu.set(x, y + 1, table.concat(nachricht, nil, 1, grenze))
-      gpu.set(x, y + 2, string.sub(unten, 1, grenze))
+      gpu.set(x, y, oben)
+      gpu.set(x, y + 1, table.concat(nachricht))
+      gpu.set(x, y + 2, unten)
     else
       gpu.fill(x, y, grenze, 1, " ")
       gpu.set(x, y + 1, table.concat(nachricht, nil, 1, grenze))
@@ -330,11 +330,7 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
   if klein and maxanzahl > 5 then
     gpu.set(x, y, table.concat(nachricht, nil, grenze + 1))
   else
-    if name == "Tankname" then
-      gpu.set(x, y    , string.sub(oben, breite - grenze, grenze))
-      gpu.set(x, y + 1, table.concat(nachricht, nil, grenze + 1))
-      gpu.set(x, y + 2, string.sub(unten, breite - grenze, grenze))
-    else
+    if name ~= "Tankname" then
       gpu.fill(x, y, breite - grenze, 1, " ")
       gpu.set(x, y + 1, table.concat(nachricht, nil, grenze + 1))
       gpu.fill(x, y + 2, breite - grenze, 1, " ")
