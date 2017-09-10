@@ -274,7 +274,7 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
     local breite = breite - string.len(label)
     table.insert(ausgabe, string.rep("-", math.floor(breite / 2)))
     table.insert(ausgabe, label)
-    table.insert(ausgabe, string.rep("=", math.ceil(breite / 2)))
+    table.insert(ausgabe, string.rep("-", math.ceil(breite / 2)))
     nachricht = split(table.concat(ausgabe))
   else
     local ausgabe = {}
