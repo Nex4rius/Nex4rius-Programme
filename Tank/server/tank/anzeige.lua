@@ -274,13 +274,13 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
   elseif name == "Tankname" then
     local ausgabe = {}
     if klein and maxanzahl > 5 then
-      table.insert(ausgabe, string.rep("━", math.floor((breite - string.len(label)) / 2)))
-      table.insert(ausgabe, string.sub(label, 1, breite - 3))
-      table.insert(ausgabe, string.rep("━", math.ceil((breite - string.len(label)) / 2)))
+      table.insert(ausgabe, "━━" .. string.rep("━", math.floor((breite - string.len(label)) / 2) - 2))
+      table.insert(ausgabe, string.sub(label, 1, breite - 4))
+      table.insert(ausgabe, string.rep("━", math.ceil((breite - string.len(label)) / 2) - 2)) .. "━━"
     else
-      table.insert(ausgabe, " ┃" .. string.rep(" ", math.floor((breite - string.len(label)) / 2) - 2))
-      table.insert(ausgabe, string.sub(label, 1, breite - 5))
-      table.insert(ausgabe, string.rep(" ", math.ceil((breite - string.len(label)) / 2) - 2) .. "┃ ")
+      table.insert(ausgabe, " ┃ " .. string.rep(" ", math.floor((breite - string.len(label)) / 2) - 3))
+      table.insert(ausgabe, string.sub(label, 1, breite - 6))
+      table.insert(ausgabe, string.rep(" ", math.ceil((breite - string.len(label)) / 2) - 3) .. " ┃ ")
     end
     nachricht = split(table.concat(ausgabe))
   else
