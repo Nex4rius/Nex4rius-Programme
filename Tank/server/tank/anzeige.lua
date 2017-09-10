@@ -273,7 +273,6 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
     nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
   elseif name == "Tankname" then
     local ausgabe = {}
-    local breite = breite - string.len(label)
     if klein and maxanzahl > 5 then
       table.insert(ausgabe, string.rep("━", math.floor(breite / 2)))
       table.insert(ausgabe, string.sub(label, 1, breite - 3))
