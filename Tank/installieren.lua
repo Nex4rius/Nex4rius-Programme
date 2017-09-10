@@ -182,7 +182,7 @@ function f.installieren(versionTyp)
     print("\nERROR install / update failed\n")
   end
   for i = 10, 1, -1 do
-    print("Neustart in ... " .. i)
+    print("Neustart in " .. i .. "s")
     os.sleep(1)
   end
   require("computer").shutdown(true)
