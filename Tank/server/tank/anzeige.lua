@@ -492,6 +492,7 @@ function f.checkUpdate(text)
   end
   if serverVersion and arg and component.isAvailable("internet") and serverVersion ~= version then
     f.text("Update...")
+    require("component").getPrimary("gpu").setResolution(require("component").getPrimary("gpu").maxResolution())
     os.execute("pastebin run -f cyF0yhXZ Tank")
     --if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/installieren.lua", "/installieren.lua") then --hier auf master
     --  print("\nBeginne Update\n")
