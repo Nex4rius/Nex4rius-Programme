@@ -23,7 +23,11 @@ if not ergebnis then
   for i = 10, 1, -1 do
     print("Neustart in ... " i)
   end
-  os.execute("pastebin run -f cyF0yhXZ Tank")
+  for i = 1, math.huge do
+    os.execute("pastebin run -f cyF0yhXZ Tank")
+    print("<FEHLER> Warte " .. i .. "s")
+    os.sleep(i)
+  end
 end
 
 shell.setWorkingDirectory(alterPfad)
