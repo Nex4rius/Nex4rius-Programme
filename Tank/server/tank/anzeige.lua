@@ -491,7 +491,7 @@ function f.checkUpdate(text)
     f.text("Update...")
     if wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/Tank/Tank/installieren.lua", "/installieren.lua") then --hier auf master
       require("component").getPrimary("gpu").setResolution(require("component").getPrimary("gpu").maxResolution())
-      print(pcall(loadfile("/installieren.lua")))
+      print(pcall(loadfile("/installieren.lua"), "Tank"))
       os.execute("reboot")
     end
   end
