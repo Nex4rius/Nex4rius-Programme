@@ -64,8 +64,6 @@ function f.tank(hier, id, nachricht)
   if hier then
     letzteNachricht = c.uptime()
     --for i in pairs(tank) do
-    print("1")
-    os.sleep(1)
     for i = 1, #tank do
       if type(tank[i]) == "table" then
         if tank[i].id == id then
@@ -87,8 +85,6 @@ function f.tank(hier, id, nachricht)
     f.keineDaten()
   end
   --for i in pairs(tank) do
-    print("2")
-    os.sleep(1)
   for i = 1, #tank do
     if c.uptime() - tank[i].zeit > Wartezeit * 2 then
       tank[i] = nil
@@ -100,8 +96,6 @@ end
 function f.hinzu(name, label, menge, maxmenge)
   local weiter = true
   if name ~= "nil" and name ~= "Tankname" then
-    print("2a")
-    os.sleep(1)
     --for i in pairs(tankneu) do
     for i = 1, #tankneu do
       if tankneu[i].name == name then
@@ -124,15 +118,10 @@ function f.verarbeiten(tank)
   tankneu = {}
   tanknr = 0
   --for i in pairs(tank) do
-    print("3")
-    os.sleep(1)
   for i = 1, #tank do
     if type(tank[i]) == "table" then
       if type(tank[i].inhalt) == "table" then
         --for j in pairs(tank[i].inhalt) do
-        
-    print("4")
-    os.sleep(1)
         for j = 1, #tank[i].inhalt do
           tanknr = tanknr + 1
           f.hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge)
@@ -201,9 +190,6 @@ function f.anzeigen()
     local anzahl = 0
     --for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
     --for i in pairs(tankneu) do
-    
-    print("5")
-    os.sleep(1)
     for i = 1, #tankneu do
       anzahl = anzahl + 1
       local links, rechts, breite = -15, -25, 40
