@@ -19,7 +19,7 @@ local ergebnis, grund = pcall(loadfile("/tank/anzeige.lua"), args)
 if not ergebnis then
   require("component").getPrimary("gpu").setResolution(require("component").getPrimary("gpu").maxResolution())
   require("term").clear()
-  print("<FEHLER>")
+  print("<FEHLER> /tank/anzeige.lua")
   print(grund)
   for i = 10, 1, -1 do
     print("Neustart in " .. i .. "s")
