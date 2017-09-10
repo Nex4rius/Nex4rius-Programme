@@ -63,7 +63,8 @@ function f.tank(hier, id, nachricht)
   local ende = 0
   if hier then
     letzteNachricht = c.uptime()
-    for i in pairs(tank) do
+    --for i in pairs(tank) do
+    for i = 1, #tank do
       if type(tank[i]) == "table" then
         if tank[i].id == id then
           tank[i].zeit = c.uptime()
@@ -83,7 +84,8 @@ function f.tank(hier, id, nachricht)
   else
     f.keineDaten()
   end
-  for i in pairs(tank) do
+  --for i in pairs(tank) do
+  for i = 1, #tank do
     if c.uptime() - tank[i].zeit > Wartezeit * 2 then
       tank[i] = nil
     end
@@ -94,7 +96,8 @@ end
 function f.hinzu(name, label, menge, maxmenge)
   local weiter = true
   if name ~= "nil" then
-    for i in pairs(tankneu) do
+    --for i in pairs(tankneu) do
+    for i = 1, #tankneu do
       if tankneu[i].name == name then
         tankneu[i].menge = tankneu[i].menge + menge
         tankneu[i].maxmenge = tankneu[i].maxmenge + maxmenge
@@ -114,10 +117,12 @@ end
 function f.verarbeiten(tank)
   tankneu = {}
   tanknr = 0
-  for i in pairs(tank) do
+  --for i in pairs(tank) do
+  for i = 1, #tank do
     if type(tank[i]) == "table" then
       if type(tank[i].inhalt) == "table" then
-        for j in pairs(tank[i].inhalt) do
+        --for j in pairs(tank[i].inhalt) do
+        for j = 1, #tank[i].inhalt
           tanknr = tanknr + 1
           f.hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge)
         end
@@ -154,10 +159,11 @@ function f.anzeigen()
     local x = 1
     local y = 1
     local leer = true
-    local maxanzahl = 0
-    for i in pairs(tankneu) do
-      maxanzahl = maxanzahl + 1
-    end
+    local maxanzahl = #tankneu
+    --local maxanzahl = 0
+    --for i in pairs(tankneu) do
+    --  maxanzahl = maxanzahl + 1
+    --end
     local a, b = gpu.getResolution()
     if maxanzahl <= 16 and maxanzahl ~= 0 then
       if klein and maxanzahl > 5 then
@@ -183,7 +189,8 @@ function f.anzeigen()
     os.sleep(0.1)
     local anzahl = 0
     --for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
-    for i in pairs(tankneu) do
+    --for i in pairs(tankneu) do
+    for i = 1, #tankneu do
       anzahl = anzahl + 1
       local links, rechts, breite = -15, -25, 40
       if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
@@ -495,7 +502,7 @@ function debugupdate()
 end
 
 function f.main()
-  f.test()
+  --f.test()
   f.Farben(0xFFFFFF, 0x000000)
   f.checkUpdate(true)
   Updatetimer = event.timer(43200, f.checkUpdate, math.huge)
