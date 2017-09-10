@@ -22,7 +22,7 @@ if not ergebnis then
   print("<FEHLER>")
   print(grund)
   for i = 10, 1, -1 do
-    print("Neustart in ... " .. i)
+    print("Neustart in ... " .. i .. "s")
     os.sleep(1)
   end
   for i = 1, math.huge do
