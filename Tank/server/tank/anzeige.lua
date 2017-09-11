@@ -91,6 +91,29 @@ function f.tank(hier, id, nachricht)
   f.verarbeiten(tank)
 end
 
+function f.verarbeiten(tank)
+  tankneu = {}
+  tanknr = 0
+  for i = 1, #tank do
+    if type(tank[i]) == "table" then
+      if type(tank[i].inhalt) == "table" then
+        for j = 1, #tank[i].inhalt do
+          if tank[i].inhalt[1].name == "Tankname" and tank[i].inhalt[1].label == "false" then
+            tanknr = tanknr + 1
+            f.hinzu(tanknr, tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, true)
+          end
+        end
+        for j = 1, #tank[i].inhalt do
+          if tank[i].inhalt[1].name == "Tankname" and tank[i].inhalt[1].label ~= "false" then
+            tanknr = tanknr + 1
+            f.hinzu(tanknr, tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, false, true)
+          end
+        end
+      end
+    end
+  end
+end
+
 function f.hinzu(tanknr, name, label, menge, maxmenge, dazu, weiter)
   if name ~= "nil" then
     if dazu then
@@ -101,37 +124,23 @@ function f.hinzu(tanknr, name, label, menge, maxmenge, dazu, weiter)
           weiter = false
         end
       end
-    end
-    if weiter then
+      if weiter then
+        tankneu[tanknr] = {}
+        tankneu[tanknr].name = name
+        tankneu[tanknr].label = label
+        tankneu[tanknr].menge = menge
+        tankneu[tanknr].maxmenge = maxmenge
+      end
+    else
       tankneu[tanknr] = {}
       tankneu[tanknr].name = name
       tankneu[tanknr].label = label
       tankneu[tanknr].menge = menge
       tankneu[tanknr].maxmenge = maxmenge
     end
-  end
-end
-
-function f.verarbeiten(tank)
-  tankneu = {}
-  tanknr = 0
-  for i = 1, #tank do
-    if type(tank[i]) == "table" then
-      if type(tank[i].inhalt) == "table" then
-        for j = 1, #tank[i].inhalt do
-          if tank[i].inhalt[1].name ~= "Tankname" then
-            tanknr = tanknr + 1
-            f.hinzu(tanknr, tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, true, true)
-          end
-        end
-        for j = 1, #tank[i].inhalt do
-          if tank[i].inhalt[1].name == "Tankname" then
-            tanknr = tanknr + 1
-            f.hinzu(tanknr, tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, false, true)
-          end
-        end
-      end
-    end
+  else
+    print(name)
+    io.read()
   end
 end
 
