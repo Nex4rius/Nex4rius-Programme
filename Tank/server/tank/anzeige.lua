@@ -103,7 +103,6 @@ function f.verarbeiten(tank)
           dazu = true
         end
         for j = start, #tank[i].inhalt do
-          gpu.set(1, 1, "a " .. tostring(tank[i].inhalt[j].name) .. "   " .. tostring(tank[i].inhalt[j].label) .. "                   ")
           tanknr = tanknr + 1
           f.hinzu(tanknr, tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, dazu, true)
         end
