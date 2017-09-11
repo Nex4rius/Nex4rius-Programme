@@ -38,6 +38,9 @@ if fs.exists("/home/Tankname") then
   local d = io.open("/home/Tankname", "r")
   Tankname = d:read()
   d:close()
+  if Tankname == "false" then
+    Tankname = nil
+  end
 else
   term.clear()
   print("Soll dieser Sensor einen Namen bekommen? [j/N]")
