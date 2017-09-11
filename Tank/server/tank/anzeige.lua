@@ -91,9 +91,9 @@ function f.tank(hier, id, nachricht)
   f.verarbeiten(tank)
 end
 
-function f.hinzu(name, label, menge, maxmenge, extra, weiter)
+function f.hinzu(name, label, menge, maxmenge, dazu, weiter)
   if name ~= "nil" then
-    if not extra then
+    if dazu then
       for i = 1, #tankneu do
         if tankneu[i].name == name then
           tankneu[i].menge = tankneu[i].menge + menge
@@ -118,16 +118,16 @@ function f.verarbeiten(tank)
   for i = 1, #tank do
     if type(tank[i]) == "table" then
       if type(tank[i].inhalt) == "table" then
-        local extra
+        local dazu = true
         for j = 1, #tank[i].inhalt do
           if tank[i].inhalt[j].name == "Tankname" then --and tank[i].inhalt[j].label ~= "false" then
-            extra = true
+            dazu = false
           end
         end
         for j = 1, #tank[i].inhalt do
           if tank[i].inhalt[j].label ~= "false" then
             tanknr = tanknr + 1
-            f.hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, extra, true)
+            f.hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, dazu, true)
           end
         end
       end
