@@ -103,8 +103,7 @@ function f.verarbeiten(tank)
           dazu = true
         end
         for j = start, #tank[i].inhalt do
-          gpu.set(1, 1, "a " .. tostring(tank[i].inhalt[j].name) .. "   " .. tostring(tank[i].inhalt[j].label))
-          os.sleep(2)
+          gpu.set(1, 1, "a " .. tostring(tank[i].inhalt[j].name) .. "   " .. tostring(tank[i].inhalt[j].label) .. "                   ")
           tanknr = tanknr + 1
           f.hinzu(tanknr, tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, dazu, true)
         end
@@ -320,7 +319,7 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
   local oben = " ┏" .. string.rep("━", breite - 4) .. "┓ "
   local unten = " ┗" .. string.rep("━", breite - 4) .. "┛ "
   local grenze = math.ceil(breite * menge / maxmenge)
-          gpu.set(1, 1, "b " .. tostring(name) .. "   " .. tostring(label))
+          gpu.set(1, 1, "b " .. tostring(tank[i].inhalt[j].name) .. "   " .. tostring(tank[i].inhalt[j].label) .. "                   ")
           os.sleep(2)
   f.Farben(farben[name][1], farben[name][2])
   if klein and maxanzahl > 5 then
