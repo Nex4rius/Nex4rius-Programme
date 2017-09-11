@@ -99,8 +99,10 @@ function f.verarbeiten(tank)
       if type(tank[i].inhalt) == "table" then
         for j = 1, #tank[i].inhalt do
           if tank[i].inhalt[1].name == "Tankname" and tank[i].inhalt[1].label == "false" then
-            tanknr = tanknr + 1
-            f.hinzu(tanknr, tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, true)
+            if tank[i].inhalt[j].name ~= "Tankname" and tank[i].inhalt[j].label ~= "false" then
+              tanknr = tanknr + 1
+              f.hinzu(tanknr, tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, true)
+            end
           end
         end
         for j = 1, #tank[i].inhalt do
