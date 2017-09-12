@@ -318,8 +318,7 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
   local oben = " ┏" .. string.rep("━", breite - 4) .. "┓ "
   local unten = " ┗" .. string.rep("━", breite - 4) .. "┛ "
   local grenze = math.ceil(breite * menge / maxmenge)
-          gpu.set(1, 1, "b " .. tostring(tank[i].inhalt[j].name) .. "   " .. tostring(tank[i].inhalt[j].label) .. "                   ")
-          os.sleep(2)
+          gpu.set(x, y, "b " .. tostring(tank[i].inhalt[j].name) .. "   " .. tostring(tank[i].inhalt[j].label) .. "                   ")
   f.Farben(farben[name][1], farben[name][2])
   if klein and maxanzahl > 5 then
     if name == "Tankname" then
@@ -349,6 +348,7 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
       gpu.fill(x, y + 2, breite - grenze, 1, " ")
     end
   end
+          gpu.set(x - grenze, y, "b " .. tostring(tank[i].inhalt[j].name) .. "   " .. tostring(tank[i].inhalt[j].label) .. "                   ")
 end
 
 function f.Farben(vorne, hinten)
