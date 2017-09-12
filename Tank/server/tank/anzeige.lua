@@ -115,7 +115,7 @@ function f.hinzu(tanknr, name, label, menge, maxmenge, dazu, weiter)
   if name ~= "nil" then
     if dazu then
       for i = 1, #tankneu do
-        if tankneu[i].name == name then
+        if tankneu[i].name == name and name ~= "Tankname" then
           tankneu[i].menge = tankneu[i].menge + menge
           tankneu[i].maxmenge = tankneu[i].maxmenge + maxmenge
           weiter = false
