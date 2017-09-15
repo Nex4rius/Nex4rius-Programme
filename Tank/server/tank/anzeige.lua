@@ -97,12 +97,11 @@ function f.verarbeiten(tank)
   for i = 1, #tank do
     if type(tank[i]) == "table" then
       if type(tank[i].inhalt) == "table" then
-        local start, dazu = 1, false
+        local dazu = false
         if tank[i].inhalt[1].name == "Tankname" and tank[i].inhalt[1].label == "false" then
-          start = 2
           dazu = true
         end
-        for j = start, #tank[i].inhalt do
+        for j in pairs(tank[i].inhalt) do
           tanknr = tanknr + 1
           f.hinzu(tanknr, tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, dazu, true)
         end
