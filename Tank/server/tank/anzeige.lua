@@ -112,6 +112,7 @@ function f.verarbeiten(tank)
 end
 
 function f.hinzu(tanknr, name, label, menge, maxmenge, dazu, weiter)
+  m.broadcast(100, string.format("Hinzu Nr: %s - Name: %s - Label: %s - Dazu: %s - Weiter: %s", tanknr, name, label, dazu, weiter))--debug
   if name ~= "nil" then
     if dazu then
       for i = 1, #tankneu do
@@ -274,6 +275,7 @@ function f.zeichenErsetzen(...)
 end
 
 function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl)
+  m.broadcast(100, string.format("zeigeHier X: %s - Y: %s - Label: %s - Name: %s - Nachricht: %s", x, y, label, name, nachricht))--debug
   if farben[name] == nil and debug then
     nachricht = string.format("%s  %s  >>report this liquid<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
     nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
