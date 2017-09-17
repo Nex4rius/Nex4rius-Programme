@@ -2,6 +2,7 @@ local component = require("component")
 local event = require("event")
 local term = require("term")
 
+term.clear()
 component.getPrimary("modem").open(100)
 
 local d = io.open("log", "w")
