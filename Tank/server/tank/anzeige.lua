@@ -272,7 +272,7 @@ function f.zeichenErsetzen(...)
 end
 
 function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl)
-  m.broadcast(100, string.format("zeigeHier X: %s - Y: %s - Label: %s - Name: %s - Nachricht: %s", x, y, label, name, nachricht, table.concat({x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl}, "  ")))--debug
+  m.broadcast(100, string.format("zeigeHier X: %s - Y: %s - Label: %s - Name: %s - Nachricht: %s", x, y, label, name, nachricht, table.concat({x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, tostring(klein), maxanzahl}, "  ")))--debug
   if farben[name] == nil and debug then
     nachricht = string.format("%s  %s  >>report this liquid<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
     nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
