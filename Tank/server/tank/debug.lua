@@ -11,7 +11,8 @@ local function lesen(...)
     d:write(tostring(v) .. "   ")
     term.write(tostring(v) .. "   ")
   end
-  print()
+  d:write("\n")
+  term.write("\n")
 end
 
 while true do
