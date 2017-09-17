@@ -14,13 +14,13 @@ if type(args) ~= "string" then
   args = ""
 end
 
-local ergebnis, grund = pcall(loadfile("/tank/anzeige.lua"), args)
+local ergebnis, grund, a, b = pcall(loadfile("/tank/anzeige.lua"), args)
 
 if not ergebnis then
   require("component").getPrimary("gpu").setResolution(require("component").getPrimary("gpu").maxResolution())
   require("term").clear()
   print("<FEHLER> /tank/anzeige.lua")
-  print(grund)
+  print(grund, a, b)
   for i = 10, 1, -1 do
     print("Neustart in " .. i .. "s")
     os.sleep(1)
