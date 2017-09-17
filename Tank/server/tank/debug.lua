@@ -18,6 +18,6 @@ end
 while true do
   i = i + 1
   local a, _, _, _, _, _, b, c, d, e, f, g, h = event.pull("modem_message")
-  lesen(i, a, b, c, d, e, ,f , g, h)
+  lesen(i, a, b, c, d, e ,f , g, h)
 end
 d:close()
