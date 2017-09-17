@@ -315,14 +315,12 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
     end
     nachricht = split(table.concat(ausgabe))
   end
-  m.broadcast(100, "teil2")
   if farben[name] == nil then
    name = "unbekannt"
   end
   local oben = " ┏" .. string.rep("━", breite - 4) .. "┓ "
   local unten = " ┗" .. string.rep("━", breite - 4) .. "┛ "
   local grenze = math.ceil(breite * menge / maxmenge)
-  m.broadcast(100, "teil3")
   f.Farben(farben[name][1], farben[name][2])
   if klein and maxanzahl > 5 then
     if name == "Tankname" then
@@ -341,7 +339,6 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
       gpu.fill(x, y + 2, grenze, 1, " ")
     end
   end
-  m.broadcast(100, "teil4")
   x = x + grenze
   f.Farben(farben[name][3], farben[name][4])
   if klein and maxanzahl > 5 then
@@ -353,7 +350,6 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
       gpu.fill(x, y + 2, breite - grenze, 1, " ")
     end
   end
-  m.broadcast(100, "teil5")
 end
 
 function f.Farben(vorne, hinten)
