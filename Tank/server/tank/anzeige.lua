@@ -158,7 +158,7 @@ end
 function f.anzeigen()
   m.broadcast(100, "anzeige start")
   for screenid in component.list("screen") do
-    m.broadcast(100, "anzeige bildschirm" .. screenid)
+    m.broadcast(100, "anzeige bildschirm " .. screenid)
     gpu.bind(screenid, false)
     local klein = false
     local _, hoch = component.proxy(screenid).getAspectRatio()
@@ -195,9 +195,9 @@ function f.anzeigen()
     local anzahl = 0
     --for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
     m.broadcast(100, "loop")
-    m.broadcast(100, table.concat(tankneu))
     --for i = 1, #tankneu do
     for i in pairs(tankneu) do
+      m.broadcast(100, i)
       anzahl = anzahl + 1
       local links, rechts, breite = -15, -25, 40
       if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
