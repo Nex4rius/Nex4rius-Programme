@@ -5,7 +5,7 @@ local i = 0
 
 component.getPrimary("modem").open(100)
 
-local d = io.open("/log", "w")
+local d = io.open("log", "w")
 local function lesen(...)
   for k, v in pairs({...}) do
     d:write(tostring(v) .. "   ")
@@ -16,7 +16,7 @@ end
 
 while true do
   i = i + 1
-  local a, b, c, d, e, f, g, h = event.pull()
-  lesen(i, a, b, c, d, e, f, g, h)
+  local a, _, _, _, _, _, b, c, d, e, f, g, h = event.pull("modem_message")
+  lesen(i, a, b, c, d, e, ,f , g, h)
 end
 d:close()
