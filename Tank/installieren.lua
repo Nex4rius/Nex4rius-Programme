@@ -44,15 +44,28 @@ function f.installieren(versionTyp)
   gpu.setForeground(0xFFFFFF)
   print("\n\n")
   local weiter = true
-  if component.isAvailable("transposer") then
-    print("Transposer gefunden. Client/Sensor wird heruntergeladen.")
-    typ = "client"
-    weiter = false
+  local sensoren = {
+    "transposer",
+    "tank_controller",
+    "chargepad_batbox", "batbox",
+    "chargepad_cesu", "cesu",
+    "chargepad_mfe", "mfe",
+    "chargepad_mfsu", "mfsu",
+    "capacitor_bank",
+    "logisticsic2powerprovider",
+    "logisticstepowerprovider"}
+  local function Sensorcheck(name)
+    if component.isAvailable(name) then
+      print(name .. " gefunden. Client/Sensor wird heruntergeladen.")
+      typ = "client"
+      weiter = false
+      return true
+    end
   end
-  if component.isAvailable("tank_controller") then
-    print("Tank Controller gefunden. Client/Sensor wird heruntergeladen.")
-    typ = "client"
-    weiter = false
+  for k, v in pairs(sensoren) do
+    if Sensorcheck(v) then
+      break
+    end
   end
   if gpu.maxResolution() == 160 then
     print("Tier III GPU und Bildschirm gefunden. Server/Anzeige wird heruntergeladen.")
