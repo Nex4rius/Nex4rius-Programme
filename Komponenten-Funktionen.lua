@@ -1,3 +1,7 @@
+-- pastebin run -f 1wrJ1vwX
+-- von Nex4rius
+-- https://github.com/Nex4rius/Nex4rius-Programme/
+
 local c = require("component")
 local fs = require("filesystem")
 local term = require("term")
