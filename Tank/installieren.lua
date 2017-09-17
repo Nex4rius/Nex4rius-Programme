@@ -53,9 +53,7 @@ function f.installieren(versionTyp)
     "chargepad_cesu", "cesu",
     "chargepad_mfe", "mfe",
     "chargepad_mfsu", "mfsu",
-    "logisticsic2powerprovider",
     --RF
-    "logisticstepowerprovider",
     "capacitor_bank",
     --Item
     "mcp_mobius_betterbarrel",}
