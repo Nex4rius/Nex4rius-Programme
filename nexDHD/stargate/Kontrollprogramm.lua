@@ -256,7 +256,7 @@ function f.Farbe(hintergrund, vordergrund)
 end
 
 function f.pull_event()
-  local Wartezeit = 10
+  local Wartezeit = 5
   if state == "Idle" then
     if checkEnergy == energy and not VersionUpdate then
       if Nachrichtleer == true then
@@ -283,30 +283,6 @@ end
 
 function f.zeichenErsetzen(...)
   return string.gsub(..., "%a+", function (str) return ersetzen [str] end)
-end
-
-function f.checkReset()
-  if type(time) == "number" then
-    if time > 500 then
-      zielAdresse           = ""
-      remoteName            = ""
-      showidc               = ""
-      incode                = "-"
-      codeaccepted          = "-"
-      wormhole              = "in"
-      iriscontrol           = "on"
-      k                     = "open"
-      LampenGruen           = false
-      IDCyes                = false
-      entercode             = false
-      messageshow           = true
-      send                  = true
-      AddNewAddress         = true
-      activationtime        = 0
-      time                  = 0
-      v.WLAN_Anzahl         = 0
-    end
-  end
 end
 
 function f.zeigeHier(x, y, s, h)
@@ -876,7 +852,6 @@ function f.activetime()
     if time > 0 then
       f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit1 .. f.ErsetzePunktMitKomma(string.format("%.1f", time)) .. "s")
     end
-    f.checkReset()
   else
     f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit2)
     time = 0
@@ -946,8 +921,7 @@ function f.RedstoneAenderung(a, b)
   if sideNum == nil then
     f.sides()
   end
-  if component.isAvailable("redstone") and OC then
-    r = component.getPrimary("redstone")
+  if OC and r then
     r.setBundledOutput(sideNum, a, b)
   end
 end
@@ -1244,18 +1218,22 @@ function f.key_down(e)
   end
 end
 
+function f.Seite(zahl)
+  seite = seite + zahl
+  f.zeigeAnzeige()
+end
+
 function Taste.Pfeil_links()
   f.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
   if seite >= 1 then
     f.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.vorherigeSeite, 0)
+    f.Seite(-1)
   elseif seite == 0 then
     f.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.SteuerungName, 0)
+    f.Seite(-1)
   elseif seite == -1 then
     f.zeigeHier(Taste.Koordinaten.Pfeil_links_X + 2, Taste.Koordinaten.Pfeil_links_Y, "← " .. sprachen.logbuch, 0)
-  end
-  if seite > -2 then
-    seite = seite - 1
-    f.zeigeAnzeige()
+    f.Seite(-1)
   end
 end
 
@@ -1263,15 +1241,14 @@ function Taste.Pfeil_rechts()
   f.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
   if seite == -1 then
     f.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.zeigeAdressen, 0)
+    f.Seite(1)
   elseif seite == -2 then
     f.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.SteuerungName, 0)
-    event.timer(0.1, function() f.zeigeNachricht(nil, true) end, 0)
-  elseif maxseiten > seite + 1 then
+    f.Seite(1)
+    f.zeigeNachricht(nil, true)
+  elseif seite + 1 < maxseiten then
     f.zeigeHier(Taste.Koordinaten.Pfeil_rechts_X, Taste.Koordinaten.Pfeil_rechts_Y, "→ " .. sprachen.naechsteSeite, 0)
-  end
-  if seite + 1 < maxseiten then
-    seite = seite + 1
-    f.zeigeAnzeige()
+    f.Seite(1)
   end
 end
 
@@ -1296,7 +1273,7 @@ function Taste.d()
       f.zeigeNachricht(sprachen.stargateAbschalten .. " " .. sprachen.stargateName)
     end
   end
-  event.timer(1, f.zeigeMenu, 1)
+  event.timer(2, f.zeigeMenu, 1)
 end
 
 function Taste.e()
@@ -1660,7 +1637,9 @@ function f.sgMessageReceived(e)
   messageshow = true
 end
 
-function f.touch(e)
+function f.touch(e) end
+function f.touche(...)
+  local e = {...}
   local x = e[3]
   local y = e[4]
   if x <= 30 then
@@ -1811,6 +1790,7 @@ end
 
 function f.beendeAlles()
   event.cancel(Updatetimer)
+  f.eventlisten(false)
   schreibSicherungsdatei(Sicherung)
   gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   f.Farbe(Farben.schwarzeFarbe, Farben.weisseFarbe)
@@ -1845,6 +1825,32 @@ function f.RedstoneAus(text)
   end
 end
 
+function f.component(eventname, id, comp)
+  if eventname == "component_removed" then
+    f.zeigeNachricht(eventname, id, comp)
+    if comp == "redstone" then
+      r = nil
+    end
+  elseif eventname == "component_added" then
+    f.zeigeNachricht(eventname, id, comp)
+    if comp == "redstone" then
+      r = component.getPrimary("redstone")
+    end
+  end
+end
+
+function f.eventlisten(an)
+  if an then
+    event.listen("component_added", f.component)
+    event.listen("component_removed", f.component)
+    event.listen("touch", f.touche)
+  else
+    event.ignore("component_added", f.component)
+    event.ignore("component_removed", f.component)
+    event.ignore("touch", f.touche)
+  end
+end
+
 function f.main()
   pcall(screen.setTouchModeInverted, true)
   if OC then
@@ -1866,6 +1872,7 @@ function f.main()
   f.AdressenSpeichern()
   seite = 0
   f.zeigeMenu()
+  f.eventlisten(true)
   while running do
     local ergebnis, grund = pcall(f.eventLoop)
     if not ergebnis then
