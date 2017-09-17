@@ -51,9 +51,9 @@ function f.installieren(versionTyp)
     "chargepad_cesu", "cesu",
     "chargepad_mfe", "mfe",
     "chargepad_mfsu", "mfsu",
-    "capacitor_bank",
     "logisticsic2powerprovider",
     "logisticstepowerprovider"}
+    "capacitor_bank",
   local function Sensorcheck(name)
     if component.isAvailable(name) then
       print(name .. " gefunden. Client/Sensor wird heruntergeladen.")
