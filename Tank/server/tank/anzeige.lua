@@ -156,6 +156,7 @@ local function spairs(t, order)
 end
 
 function f.anzeigen()
+  m.broadcast(100, "anzeige start")
   for screenid in component.list("screen") do
     gpu.bind(screenid, false)
     local klein = false
