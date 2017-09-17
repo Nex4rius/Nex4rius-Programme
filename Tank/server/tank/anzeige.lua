@@ -274,7 +274,7 @@ function f.zeichenErsetzen(...)
 end
 
 function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl)
-  m.broadcast(100, string.format("zeigeHier X: %s - Y: %s - Label: %s - Name: %s - Nachricht: %s", x, y, label, name, nachricht))--debug
+  m.broadcast(100, string.format("zeigeHier X: %s - Y: %s - Label: %s - Name: %s - Nachricht: %s", x, y, label, name, nachricht, table.concat({x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl}, "  ")))--debug
   if farben[name] == nil and debug then
     nachricht = string.format("%s  %s  >>report this liquid<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
     nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
@@ -313,13 +313,14 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
     end
     nachricht = split(table.concat(ausgabe))
   end
+  m.broadcast(100, "teil2")
   if farben[name] == nil then
    name = "unbekannt"
   end
   local oben = " ┏" .. string.rep("━", breite - 4) .. "┓ "
   local unten = " ┗" .. string.rep("━", breite - 4) .. "┛ "
   local grenze = math.ceil(breite * menge / maxmenge)
-          gpu.set(x, y, "b " .. tostring(tank[i].inhalt[j].name) .. "   " .. tostring(tank[i].inhalt[j].label) .. "                   ")
+  m.broadcast(100, "teil3")
   f.Farben(farben[name][1], farben[name][2])
   if klein and maxanzahl > 5 then
     if name == "Tankname" then
@@ -338,6 +339,7 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
       gpu.fill(x, y + 2, grenze, 1, " ")
     end
   end
+  m.broadcast(100, "teil4")
   x = x + grenze
   f.Farben(farben[name][3], farben[name][4])
   if klein and maxanzahl > 5 then
@@ -349,7 +351,7 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
       gpu.fill(x, y + 2, breite - grenze, 1, " ")
     end
   end
-          gpu.set(x - grenze, y, "b " .. tostring(tank[i].inhalt[j].name) .. "   " .. tostring(tank[i].inhalt[j].label) .. "                   ")
+  m.broadcast(100, "teil5")
 end
 
 function f.Farben(vorne, hinten)
