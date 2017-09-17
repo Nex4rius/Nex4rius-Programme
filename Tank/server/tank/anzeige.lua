@@ -97,38 +97,35 @@ function f.verarbeiten(tank)
   for i = 1, #tank do
     if type(tank[i]) == "table" then
       if type(tank[i].inhalt) == "table" then
-        local dazu = false
-        if tank[i].inhalt[1].name == "Tankname" and tank[i].inhalt[1].label == "false" then
-          dazu = true
+        local extra
+        for j = 1, #tank[i].inhalt do
+          if tank[i].inhalt[j].name == "Tankname" and tank[i].inhalt[j].label ~= "false" then
+            extra = true
+          end
         end
-        for j in pairs(tank[i].inhalt) do
-          tanknr = tanknr + 1
-          f.hinzu(tanknr, tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, dazu, true)
+        for j = 1, #tank[i].inhalt do
+          if tank[i].inhalt[j].label ~= "false" then
+            tanknr = tanknr + 1
+            f.hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, extra, true)
+          end
         end
       end
     end
   end
 end
 
-function f.hinzu(tanknr, name, label, menge, maxmenge, dazu, weiter)
-  m.broadcast(100, string.format("Hinzu Nr: %s - Name: %s - Label: %s - Dazu: %s - Weiter: %s", tanknr, name, label, dazu, weiter))--debug
+function f.hinzu(name, label, menge, maxmenge, extra, weiter)
   if name ~= "nil" then
-    if dazu then
+    if not extra then
       for i = 1, #tankneu do
-        if tankneu[i].name == name and name ~= "Tankname" then
+        if tankneu[i].name == name then
           tankneu[i].menge = tankneu[i].menge + menge
           tankneu[i].maxmenge = tankneu[i].maxmenge + maxmenge
           weiter = false
         end
       end
-      if weiter then
-        tankneu[tanknr] = {}
-        tankneu[tanknr].name = name
-        tankneu[tanknr].label = label
-        tankneu[tanknr].menge = menge
-        tankneu[tanknr].maxmenge = maxmenge
-      end
-    else
+    end
+    if weiter then
       tankneu[tanknr] = {}
       tankneu[tanknr].name = name
       tankneu[tanknr].label = label
@@ -156,9 +153,7 @@ local function spairs(t, order)
 end
 
 function f.anzeigen()
-  m.broadcast(100, "anzeige start")
   for screenid in component.list("screen") do
-    m.broadcast(100, "anzeige bildschirm " .. screenid)
     gpu.bind(screenid, false)
     local klein = false
     local _, hoch = component.proxy(screenid).getAspectRatio()
@@ -194,10 +189,7 @@ function f.anzeigen()
     os.sleep(0.1)
     local anzahl = 0
     --for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
-    m.broadcast(100, "loop")
-    --for i = 1, #tankneu do
-    for i in pairs(tankneu) do
-      m.broadcast(100, i)
+    for i = 1, #tankneu do
       anzahl = anzahl + 1
       local links, rechts, breite = -15, -25, 40
       if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
@@ -244,7 +236,7 @@ function f.anzeigen()
       if label == "fluidhelium3" then
         label = "Helium-3"
       end
-      m.broadcast(100, pcall(f.zeigeHier, x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl))
+      f.zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl)
       leer = false
       if klein and maxanzahl > 5 then
         y = y + 1
@@ -276,7 +268,6 @@ function f.zeichenErsetzen(...)
 end
 
 function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl)
-  m.broadcast(100, string.format("zeigeHier X: %s - Y: %s - Label: %s - Name: %s - Nachricht: %s", x, y, label, name, nachricht, table.concat({x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, tostring(klein), maxanzahl}, "  ")))--debug
   if farben[name] == nil and debug then
     nachricht = string.format("%s  %s  >>report this liquid<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
     nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
