@@ -1,7 +1,6 @@
 local component = require("component")
 local event = require("event")
 local term = require("term")
-local i = 0
 
 component.getPrimary("modem").open(100)
 
@@ -16,8 +15,7 @@ local function lesen(...)
 end
 
 while true do
-  i = i + 1
   local _, _, _, _, _, a, b, c, d, e, f, g, h = event.pull("modem_message")
-  lesen(i, a, b, c, d, e ,f , g, h)
+  lesen(a, b, c, d, e ,f , g, h)
 end
 d:close()
