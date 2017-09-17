@@ -45,15 +45,20 @@ function f.installieren(versionTyp)
   print("\n\n")
   local weiter = true
   local sensoren = {
+    --Tank
     "transposer",
     "tank_controller",
+    --EU
     "chargepad_batbox", "batbox",
     "chargepad_cesu", "cesu",
     "chargepad_mfe", "mfe",
     "chargepad_mfsu", "mfsu",
     "logisticsic2powerprovider",
-    "logisticstepowerprovider"}
+    --RF
+    "logisticstepowerprovider",
     "capacitor_bank",
+    --Item
+    "mcp_mobius_betterbarrel",}
   local function Sensorcheck(name)
     if component.isAvailable(name) then
       print(name .. " gefunden. Client/Sensor wird heruntergeladen.")
