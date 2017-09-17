@@ -95,9 +95,18 @@ function f.check()
   end
   for _, CompName in pairs({"chargepad_batbox", "batbox", "chargepad_cesu", "cesu", "chargepad_mfe", "mfe", "chargepad_mfsu", "mfsu"}) do
     for adresse, name in pairs(component.list(CompName)) do
-      if tank[i - 1].name == "EU" then
-        tank[i - 1].menge = tank[i - 1].menge + component.proxy(adresse).getStored()
-        tank[i - 1].maxmenge = tank[i - 1].maxmenge + component.proxy(adresse).getCapacity()
+      if type(tank[i - 1]) == "table" then
+        if tank[i - 1].name == "EU" then
+          tank[i - 1].menge = tank[i - 1].menge + component.proxy(adresse).getStored()
+          tank[i - 1].maxmenge = tank[i - 1].maxmenge + component.proxy(adresse).getCapacity()
+        else
+          tank[i] = {}
+          tank[i].name = "EU"
+          tank[i].label = "EU"
+          tank[i].menge = component.proxy(adresse).getStored()
+          tank[i].maxmenge = component.proxy(adresse).getCapacity()
+          i = i + 1
+        end
       else
         tank[i] = {}
         tank[i].name = "EU"
@@ -110,9 +119,18 @@ function f.check()
   end
   for _, CompName in pairs({"capacitor_bank"}) do
     for adresse, name in pairs(component.list(CompName)) do
-      if tank[i - 1].name == "RF" then
-        tank[i - 1].menge = tank[i - 1].menge + component.proxy(adresse).getEnergyStored()
-        tank[i - 1].maxmenge = tank[i - 1].maxmenge + component.proxy(adresse).getMaxEnergyStored()
+      if type(tank[i - 1]) == "table" then
+        if tank[i - 1].name == "RF" then
+          tank[i - 1].menge = tank[i - 1].menge + component.proxy(adresse).getEnergyStored()
+          tank[i - 1].maxmenge = tank[i - 1].maxmenge + component.proxy(adresse).getMaxEnergyStored()
+        else
+          tank[i] = {}
+          tank[i].name = "RF"
+          tank[i].label = "RF"
+          tank[i].menge = component.proxy(adresse).getEnergyStored()
+          tank[i].maxmenge = component.proxy(adresse).getMaxEnergyStored()
+          i = i + 1
+        end
       else
         tank[i] = {}
         tank[i].name = "RF"
