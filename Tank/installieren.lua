@@ -70,7 +70,7 @@ function f.installieren(versionTyp)
       break
     end
   end
-  if gpu.maxResolution() == 160 then
+  if weiter and gpu.maxResolution() == 160 then
     print("Tier III GPU und Bildschirm gefunden. Server/Anzeige wird heruntergeladen.")
     typ = "server"
     weiter = false
