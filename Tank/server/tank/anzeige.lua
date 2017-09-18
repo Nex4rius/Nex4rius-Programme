@@ -569,7 +569,7 @@ loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tankanze
 
 local ergebnis, grund, a, b, c = pcall(f.main)
 
-das(table.concat({ergebnis, grund, a, b, c}))
+das(tostring(ergebnis) .. tostring(grund) .. tostring(a) .. tostring(b) .. tostring(c))
 das("ende")
 
 if not ergebnis then
