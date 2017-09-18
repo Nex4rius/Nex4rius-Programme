@@ -62,6 +62,8 @@ local function das(a)
   m.broadcast(100, a)
 end
 
+das("start")
+
 function f.tank(hier, id, nachricht)
   das("1")
   local dazu = true
