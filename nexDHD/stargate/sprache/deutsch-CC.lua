@@ -2,7 +2,7 @@
 -- nexDHD von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD
 
-return {
+local sprachen = {
   pruefeKomponenten         = "Pruefe Komponenten\n",
   verfuegbareVersion        = "\nVerfuegbare Version:   ",
   aktualisierenGleich       = "Automatische Aktualisierung wenn Stargate untaetig ist.",
@@ -30,3 +30,5 @@ return {
   TastaturFehlt             = "Tastatur wird benoetigt",
   StargateNichtKomplett     = "Stargate ist funktionsunfaehig",
 }
+
+return sprachen
