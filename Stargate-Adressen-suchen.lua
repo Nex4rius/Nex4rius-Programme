@@ -69,7 +69,7 @@ function f.check(eingabe)
     gpu.setForeground(0xFFFFFF)
     gefunden = gefunden + 1
   else
-    print("Prüfe Adresse Nr.: " .. i, Adresse, "Gefunden: " .. gefunden)
+    print("Nr.", i, "Prüfe Adresse:" , Adresse, "Gefunden: " .. gefunden)
   end
 end
 
