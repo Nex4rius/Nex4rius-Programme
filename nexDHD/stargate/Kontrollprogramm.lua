@@ -1707,10 +1707,10 @@ function f.eventLoop()
   end
 end
 
-function f.angekommeneAdressen(...)
+function f.angekommeneAdressen(eingabe)
   local AddNewAddress = false
-  for a = 1, #... do
-    local b = ...[a]
+  for a = 1, #eingabe do
+    local b = eingabe[a]
     local neuHinzufuegen = false
     for c = 1, #adressen do
       local d = adressen[c]
