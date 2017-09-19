@@ -120,7 +120,6 @@ local sprachen = {
   IDC                       = "Iris Deaktivierungscode",
   autoclosetime             = "in Sekunden -- false für keine automatische Schließung",
   RF                        = "zeige Energie in RF anstatt in EU",
-  side                      = "unten, oben, hinten, vorne, rechts oder links",
   autoUpdate                = "aktiviere automatische Aktualisierungen",
   iris                      = "Trage deine eigenen Stargate Adressen hier ein",
   keinIDC                   = "für keinen Iris Code",
