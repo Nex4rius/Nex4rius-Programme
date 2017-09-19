@@ -44,15 +44,12 @@ function f.nacheinander()
 end
 
 function f.zufall()
-  local j = 0
   while true do
-    j = j + 1
-    i = i + 1
-    if j == 1000 then
-      os.sleep(1)
-      j = 0
+    for j = 0, 1000 do
+      i = i + 1
+      f.check({alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], "-", alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], "-", alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)]})
     end
-    f.check({alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], "-", alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], "-", alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)]})
+    os.sleep(1)
   end
 end
 
