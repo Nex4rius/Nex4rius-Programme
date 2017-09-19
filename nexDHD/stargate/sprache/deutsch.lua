@@ -2,7 +2,7 @@
 -- nexDHD von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD
 
-return {
+local sprachen = {
   dezimalkomma              = true,
   pruefeKomponenten         = "Prüfe Komponenten\n",
   redstoneOK                = "- Redstonekarte        ok - optional",
@@ -151,10 +151,15 @@ return {
   Eingeben_idc              = "IDC der neuen Adresse",
   richtige_Adresse          = "neue Adresse wurde hinzugefügt",
   falsche_Adresse           = "die Adresse ist ungültig",
-  oben                      = "oben",
   unten                     = "unten",
+  oben                      = "oben",
   hinten                    = "hinten",
   vorne                     = "vorne",
   rechts                    = "rechts",
+  oder                      = "oder",
   links                     = "links",
 }
+
+sprachen.side               = string.format("%s, %s, %s, %s, %s %s %s", unten, oben, hinten, vorne, rechts, oder, links)
+
+return sprachen
