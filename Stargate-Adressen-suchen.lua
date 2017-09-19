@@ -1,5 +1,10 @@
 local sg = require("component").getPrimary("stargate")
 
+do
+  local g = require("component").getPrimary("gpu")
+  g.setResolution(g.maxResolution())
+end
+
 local gefunden = 0
 local i = 0
 local f = {}
