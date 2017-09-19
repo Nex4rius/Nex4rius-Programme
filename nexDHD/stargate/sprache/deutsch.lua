@@ -151,4 +151,10 @@ return {
   Eingeben_idc              = "IDC der neuen Adresse",
   richtige_Adresse          = "neue Adresse wurde hinzugefügt",
   falsche_Adresse           = "die Adresse ist ungültig",
+  oben                      = "oben",
+  unten                     = "unten",
+  hinten                    = "hinten",
+  vorne                     = "vorne",
+  rechts                    = "rechts",
+  links                     = "links",
 }
