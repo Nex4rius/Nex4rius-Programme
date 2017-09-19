@@ -1836,7 +1836,7 @@ end
 
 function f.eventlisten(befehl)
   for k, v in pairs(o) do
-    event[befehl](v, o[v])
+    event[befehl](k, v)
   end
 end
 
