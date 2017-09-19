@@ -6,6 +6,7 @@ do
 end
 
 local gefunden = 0
+local letzte = ""
 local i = 0
 local f = {}
 local alleZeichen = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
@@ -58,8 +59,9 @@ function f.check(Adresse)
     d:close ()
     gpu.setForeground(0xFFFFFF)
     gefunden = gefunden + 1
+    letzte = Adresse
   else
-    print("Nr.", i, "Prüfe Adresse:" , Adresse, "Gefunden:", gefunden)
+    print("Nr.", i, "Prüfe Adresse:" , Adresse, "Gefunden:", gefunden, letzte)
   end
 end
 
