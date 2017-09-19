@@ -118,7 +118,7 @@ local zielAdresse               = ""
 local time                      = "-"
 local incode                    = "-"
 local codeaccepted              = "-"
-local wormhole                  = "in"
+local wurmloch                  = "in"
 local iriscontrol               = "on"
 local energytype                = "EU"
 local f                         = {}
@@ -553,26 +553,26 @@ function f.irisOpen()
 end
 
 function f.sides()
-  if Sicherung.side == "oben" or Sicherung.side == "top" then
+  if Sicherung.side == "oben" or Sicherung.side == sprachen.oben then
     sideNum = 1
-  elseif Sicherung.side == "hinten" or Sicherung.side == "back" then
+  elseif Sicherung.side == "hinten" or Sicherung.side == sprachen.hinten then
     sideNum = 2
-  elseif Sicherung.side == "vorne" or Sicherung.side == "front" then
+  elseif Sicherung.side == "vorne" or Sicherung.side == sprachen.vorne then
     sideNum = 3
-  elseif Sicherung.side == "rechts" or Sicherung.side == "right" then
+  elseif Sicherung.side == "rechts" or Sicherung.side == sprachen.rechts then
     sideNum = 4
-  elseif Sicherung.side == "links" or Sicherung.side == "left" then
+  elseif Sicherung.side == "links" or Sicherung.side == sprachen.links then
     sideNum = 5
   else
     sideNum = 0
   end
 end
 
-function f.iriscontroller()
+function f.Iriskontrolle()
   if state == "Dialing" then
     messageshow = true
     AddNewAddress = true
-    if wormhole == "in" then
+    if wurmloch == "in" then
       f.openModem()
     end
   end
@@ -610,7 +610,7 @@ function f.iriscontroller()
     send = false
     f.zeigeMenu()
   end
-  if wormhole == "in" and state == "Dialling" and iriscontrol == "on" and Sicherung.control == "On" then
+  if wurmloch == "in" and state == "Dialling" and iriscontrol == "on" and Sicherung.control == "On" then
     if iris == "Offline" then else
       f.irisClose()
       f.RedstoneAenderung(Farben.red, 255)
@@ -627,7 +627,7 @@ function f.iriscontroller()
       f.irisOpen()
     end
     iriscontrol = "on"
-    wormhole = "in"
+    wurmloch = "in"
     codeaccepted = "-"
     activationtime = 0
     entercode = false
@@ -650,7 +650,7 @@ function f.iriscontroller()
   end
   if state == "Idle" then
     incode = "-"
-    wormhole = "in"
+    wurmloch = "in"
     AddNewAddress = true
     LampenGruen = false
     LampenRot = false
@@ -733,9 +733,9 @@ function f.newAddress(idc, neueAdresse, neuerName, ...)
   end
 end
 
-function f.destinationName()
+function f.Zielname()
   if state == "Dialling" or state == "Connected" then
-    if remoteName == "" and wormhole == "in" and type(adressen) == "table" then
+    if remoteName == "" and wurmloch == "in" and type(adressen) == "table" then
       for j = 1, #adressen do
         local na = adressen[j]
         if remAddr == na[2] then
@@ -754,11 +754,11 @@ function f.destinationName()
   end
 end
 
-function f.wormholeDirection()
+function f.wurmlochRichtung()
   if direction == "Outgoing" then
-    wormhole = "out"
+    wurmloch = "out"
   end
-  if wormhole == "out" and state == "Closing" then
+  if wurmloch == "out" and state == "Closing" then
     direction = "Outgoing"
   end
 end
@@ -770,14 +770,14 @@ function f.aktualisiereStatus()
   remAddr = f.getAddress(sg.remoteAddress())
   iris = f.getIrisState()
   state, chevrons, direction = sg.stargateState()
-  f.destinationName()
-  f.wormholeDirection()
-  f.iriscontroller()
+  f.Zielname()
+  f.wurmlochRichtung()
+  f.Iriskontrolle()
   if state == "Idle" then
     v.WLAN_Anzahl = 0
     RichtungName = ""
   else
-    if wormhole == "out" then
+    if wurmloch == "out" then
       RichtungName = sprachen.RichtungNameAus
     else
       RichtungName = sprachen.RichtungNameEin
@@ -1193,7 +1193,7 @@ function f.dial(name, adresse)
     f.zeigeNachricht(sprachen.waehlen .. "<" .. string.sub(remoteName, 1, xVerschiebung + 12) .. "> <" .. adresse .. ">")
   end
   state = "Dialling"
-  wormhole = "out"
+  wurmloch = "out"
   local ok, ergebnis = sg.dial(adresse)
   if ok == nil then
     if string.sub(ergebnis, 0, 20) == "Stargate at address " then
@@ -1202,7 +1202,7 @@ function f.dial(name, adresse)
     end
     f.zeigeNachricht(ergebnis)
   else
-    f.Logbuch_schreiben(name , adresse, wormhole)
+    f.Logbuch_schreiben(name , adresse, wurmloch)
   end
   os.sleep(1)
 end
@@ -1339,7 +1339,7 @@ function Taste.o()
   f.zeigeHier(Taste.Koordinaten.o_X + 2, Taste.Koordinaten.o_Y, "O " .. sprachen.oeffneIris, 0)
   if iris == "Offline" then else
     f.irisOpen()
-    if wormhole == "in" then
+    if wurmloch == "in" then
       if iris == "Offline" then else
         os.sleep(2)
         if f.atmosphere(true) then
@@ -1363,7 +1363,7 @@ function Taste.c()
   if iris == "Offline" then else
     f.irisClose()
     iriscontrol = "off"
-    if wormhole == "in" then
+    if wurmloch == "in" then
       if f.atmosphere(true) then
         sg.sendMessage("Manual Override: Iris: Closed" .. f.atmosphere(true))
       else
@@ -1559,7 +1559,7 @@ function Taste.Zahl(c)
       f.zeigeHier(1, y * 2 + 1, "   " .. na[4], 0)
     end
     iriscontrol = "off"
-    wormhole = "out"
+    wurmloch = "out"
     if na then
       f.dial(na[1], na[2])
       if string.sub(na[4], 1, 1) == "<" and sg.energyToDial(na[2]) then
@@ -1611,7 +1611,7 @@ function o.modem_message(e)
   end
   v.WLAN_Anzahl = v.WLAN_Anzahl + 1
   if v.WLAN_Anzahl < 5 then
-    f.sgMessageReceived({e[1], e[2], e[6]})
+    o.sgMessageReceived({e[1], e[2], e[6]})
     event.timer(2, f.openModem, 0)
   end
 end
@@ -1625,7 +1625,7 @@ end
 function o.sgMessageReceived(e)
   if direction == "Outgoing" then
     codeaccepted = e[3]
-  elseif direction == "Incoming" and wormhole == "in" then
+  elseif direction == "Incoming" and wurmloch == "in" then
     if e[3] == "Adressliste" then
     else
       incode = tostring(e[3])
@@ -1671,15 +1671,15 @@ function o.touch(...)
 end
 
 function o.sgDialIn()
-  wormhole = "in"
-  f.Logbuch_schreiben(remoteName , f.getAddress(sg.remoteAddress()), wormhole)
+  wurmloch = "in"
+  f.Logbuch_schreiben(remoteName , f.getAddress(sg.remoteAddress()), wurmloch)
   --event.cancel(timer.anzeige)
   --timer.anzeige = event.timer(10, f.schnelleAktualisierung, 1)
 end
 
 function o.sgDialOut()
   state = "Dialling"
-  wormhole = "out"
+  wurmloch = "out"
   direction = "Outgoing"
   --event.cancel(timer.anzeige)
   --timer.anzeige = event.timer(10, f.schnelleAktualisierung, 1) -- anwahlzeit prüfen
