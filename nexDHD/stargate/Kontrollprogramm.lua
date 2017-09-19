@@ -1396,6 +1396,7 @@ function Taste.z()
     f.zeigeHier(1, Taste.Koordinaten.Taste_z, "Z " .. sprachen.AdressenBearbeiten, 0)
     if f.Tastatur() then
       f.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
+      f.eventlisten("ignore")
       pcall(screen.setTouchModeInverted, false)
       kopieren("/einstellungen/adressen.lua", "/einstellungen/adressen-bearbeiten")
       edit("/einstellungen/adressen-bearbeiten")
@@ -1408,6 +1409,7 @@ function Taste.z()
       end
       entfernen("/einstellungen/adressen-bearbeiten")
       pcall(screen.setTouchModeInverted, true)
+      f.eventlisten("listen")
       seite = -1
       f.zeigeAnzeige()
       seite = 0
@@ -1425,6 +1427,7 @@ function Taste.s()
     if f.Tastatur() then
       f.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
       schreibSicherungsdatei(Sicherung)
+      f.eventlisten("ignore")
       pcall(screen.setTouchModeInverted, false)
       kopieren("/einstellungen/Sicherungsdatei.lua", "/einstellungen/Sicherungsdatei-bearbeiten")
       edit("/einstellungen/Sicherungsdatei-bearbeiten")
@@ -1437,6 +1440,7 @@ function Taste.s()
       end
       entfernen("/einstellungen/Sicherungsdatei-bearbeiten")
       pcall(screen.setTouchModeInverted, true)
+      f.eventlisten("listen")
       local a = Sicherung.RF
       Sicherung = loadfile("/einstellungen/Sicherungsdatei.lua")()
       if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
