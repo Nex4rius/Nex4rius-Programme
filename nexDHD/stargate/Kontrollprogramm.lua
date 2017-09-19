@@ -1875,7 +1875,8 @@ end
 f.checken(f.main)
 
 local update = f.update
-Funktion = nil
+f = nil
+o = nil
 
 if v.update == "ja" or v.update == "beta" then
   print(sprachen.aktualisierenJetzt)
