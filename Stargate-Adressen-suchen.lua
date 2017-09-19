@@ -41,7 +41,6 @@ function f.zufall()
   end
   while true do
     for j = 0, 1000 do
-      i = i + 1
       f.check(table.concat({a(), a(), a(), a(), "-", a(), a(), a(), "-", a(), a()}))
     end
     os.sleep(1)
@@ -49,6 +48,7 @@ function f.zufall()
 end
 
 function f.check(Adresse)
+  i = i + 1
   if sg.energyToDial(Adresse) then
     local gpu = require("component").getPrimary("gpu")
     gpu.setForeground(0xFF0000)
