@@ -58,14 +58,7 @@ else
   arg = true
 end
 
-local function das(a)
-  m.broadcast(100, a)
-end
-
-das("start")
-
 function f.tank(hier, id, nachricht)
-  das("1")
   local dazu = true
   local ende = 0
   if hier then
@@ -99,7 +92,6 @@ function f.tank(hier, id, nachricht)
 end
 
 function f.verarbeiten(tank)
-  das("2")
   tankneu = {}
   tanknr = 0
   for i = 1, #tank do
@@ -123,7 +115,6 @@ function f.verarbeiten(tank)
 end
 
 function f.hinzu(name, label, menge, maxmenge, extra, weiter)
-  das("3")
   if name ~= "nil" then
     if not extra then
       for i = 1, #tankneu do
@@ -145,7 +136,6 @@ function f.hinzu(name, label, menge, maxmenge, extra, weiter)
 end
 
 local function spairs(t, order)
-  das("4")
   local keys = {}
   for k in pairs(t) do keys[#keys+1] = k end
   if order then
@@ -163,7 +153,6 @@ local function spairs(t, order)
 end
 
 function f.anzeigen()
-  das("5")
   for screenid in component.list("screen") do
     gpu.bind(screenid, false)
     local klein = false
@@ -275,12 +264,10 @@ function f.anzeigen()
 end
 
 function f.zeichenErsetzen(...)
-  das("6")
   return string.gsub(..., "%a+", function (str) return ersetzen[str] end)
 end
 
 function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl)
-  das("7")
   if farben[name] == nil and debug then
     nachricht = string.format("%s  %s  >>report this liquid<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
     nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
@@ -359,7 +346,6 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
 end
 
 function f.Farben(vorne, hinten)
-  das("8")
   if type(vorne) == "number" then
     gpu.setForeground(vorne)
   else
@@ -373,7 +359,6 @@ function f.Farben(vorne, hinten)
 end
 
 function split(...)
-  das("9")
   local output = {}
   for i = 1, string.len(...) do
     output[i] = string.sub(..., i, i)
@@ -382,7 +367,6 @@ function split(...)
 end
 
 function f.text(a, b)
-  das("10")
   for screenid in component.list("screen") do
     gpu.bind(screenid, false)
     if b then
@@ -398,7 +382,6 @@ function f.text(a, b)
 end
 
 function f.keineDaten()
-  das("11")
   Sensorliste = {}
   for k, v in pairs(timer) do
     event.cancel(v)
@@ -410,14 +393,12 @@ function f.keineDaten()
 end
 
 function f.tankliste()
-  das("12")
   for i in pairs(Sensorliste) do
     f.tank(Sensorliste[i][1], Sensorliste[i][3], Sensorliste[i][8])
   end
 end
 
 function o.tankliste(signal)
-  das("13")
   local dazu = true
   if version ~= signal[7] then
     event.timer(5, f.update(signal), 1)
@@ -444,7 +425,6 @@ function o.tankliste(signal)
 end
 
 function o.speichern(signal)
-  das("14")
   if not signal[7] then
     if fs.exists("/tank/client" .. signal[8]) then
       local d = io.open("/tank/client" .. signal[8], "r")
@@ -455,7 +435,6 @@ function o.speichern(signal)
 end
 
 function f.update(signal)
-  das("15")
   for k, v in pairs(dateiliste) do
     local d = io.open("/tank/client" .. v, "r")
     m.send(signal[3], port, "datei", v, d:read("*a"))
@@ -466,7 +445,6 @@ function f.update(signal)
 end
 
 function f.event(...)
-  das("16")
   local signal = {...}
   if o[signal[6]] then
     if Sendeleistung < signal[5] + 50 then
@@ -477,7 +455,6 @@ function f.event(...)
 end
 
 function f.senden()
-  das("17")
   if m.isWireless() then
     m.setStrength(Sendeleistung)
   end
@@ -486,7 +463,6 @@ function f.senden()
 end
 
 function f.checkUpdate(text)
-  das("18")
   if component.isAvailable("internet") then
     serverVersion = f.checkServerVersion()
   end
@@ -509,14 +485,12 @@ function f.checkUpdate(text)
 end
 
 function debugupdate()
-  das("19")
   f.text("Update...")
   require("component").getPrimary("gpu").setResolution(require("component").getPrimary("gpu").maxResolution())
   os.execute("pastebin run -f cyF0yhXZ Tank")
 end
 
 function f.main()
-  das("20")
   f.Farben(0xFFFFFF, 0x000000)
   f.checkUpdate(true)
   Updatetimer = event.timer(43200, f.checkUpdate, math.huge)
@@ -534,7 +508,6 @@ function f.main()
 end
 
 function f.beenden()
-  das("21")
   event.ignore("modem_message", f.event)
   event.ignore("component_added", f.tank)
   event.ignore("interrupted", f.beenden)
@@ -556,7 +529,6 @@ function f.beenden()
 end
 
 function f.checkServerVersion()
-  das("22")
   local serverVersion
   if wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/Tank/Tank/version.txt", "/serverVersion.txt") then
     local d = io.open ("/serverVersion.txt", "r")
@@ -570,9 +542,6 @@ end
 loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tankanzeige")
 
 local ergebnis, grund, a, b, c = pcall(f.main)
-
-das(tostring(ergebnis) .. tostring(grund) .. tostring(a) .. tostring(b) .. tostring(c))
-das("ende")
 
 if not ergebnis then
   f.text("<FEHLER> f.main")
