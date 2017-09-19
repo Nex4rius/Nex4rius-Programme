@@ -159,6 +159,6 @@ local sprachen = {
   links                     = "left",
 }
 
-sprachen.side               = string.format("%s, %s, %s, %s, %s %s %s", unten, oben, hinten, vorne, rechts, oder, links)
+sprachen.side               = string.format("%s, %s, %s, %s, %s %s %s", sprachen.unten, sprachen.oben, sprachen.hinten, sprachen.vorne, sprachen.rechts, sprachen.oder, sprachen.links)
 
 return sprachen
