@@ -2,7 +2,7 @@
 -- nexDHD von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD
 
-return {
+local sprachen = {
   dezimalkomma              = false,
   pruefeKomponenten         = "Checking Components\n",
   redstoneOK                = "- Redstone Card        ok - optional",
@@ -120,7 +120,6 @@ return {
   IDC                       = "Iris Deactivation Code",
   autoclosetime             = "in seconds -- false for no autoclose",
   RF                        = "show energy in RF instead of EU",
-  side                      = "bottom, top, back, front, right or left",
   autoUpdate                = "enable automated updates",
   iris                      = "Put your own Stargate addresses here",
   keinIDC                   = "for no Iris Code",
@@ -151,4 +150,15 @@ return {
   Eingeben_idc              = "IDC for the new address",
   richtige_Adresse          = "new address was added",
   falsche_Adresse           = "the address is invalid",
+  unten                     = "bottom",
+  oben                      = "top",
+  hinten                    = "back",
+  vorne                     = "front",
+  rechts                    = "right",
+  oder                      = "or",
+  links                     = "left",
 }
+
+sprachen.side               = string.format("%s, %s, %s, %s, %s %s %s", unten, oben, hinten, vorne, rechts, oder, links)
+
+return sprachen
