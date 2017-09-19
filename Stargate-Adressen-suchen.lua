@@ -8,30 +8,21 @@ end
 local gefunden = 0
 local i = 0
 local f = {}
-local A, B, C, D, E, F, G, H
 local alleZeichen = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
                      "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
                      "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
 
 function f.nacheinander()
-  for Ai = 1, 36 do
-    A = alleZeichen[Ai]
-    for Bi = 1, 36 do
-      B = alleZeichen[Bi]
-      for Ci = 1, 36 do
-        C = alleZeichen[Ci]
-        for Di = 1, 36 do
-          D = alleZeichen[Di]
-          for Ei = 1, 36 do
-            E = alleZeichen[Ei]
-            for Fi = 1, 36 do
-              F = alleZeichen[Fi]
-              for Gi = 1, 36 do
-                G = alleZeichen[Gi]
-                for Hi = 1, 36 do
-                  H = alleZeichen[Hi]
-                  for Ii = 1, 36 do
-                    f.check({A, B, C, D, "-", E, F, G, "-", H, alleZeichen[Ii]})
+  for A = 1, 36 do
+    for B = 1, 36 do
+      for C = 1, 36 do
+        for D = 1, 36 do
+          for E = 1, 36 do
+            for F = 1, 36 do
+              for G = 1, 36 do
+                for H = 1, 36 do
+                  for I = 1, 36 do
+                    f.check({alleZeichen[A], alleZeichen[B], alleZeichen[C], alleZeichen[D], "-", alleZeichen[E], alleZeichen[F], alleZeichen[G], "-", alleZeichen[H], alleZeichen[I]})
                   end
                 end
               end
