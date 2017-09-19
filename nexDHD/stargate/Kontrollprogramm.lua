@@ -1132,7 +1132,6 @@ function f.Legende()
 end
 
 function f.hochladen()
-  return --funktioniert bisher nicht
   if type(gist) ~= "function" then
     loadfile("/bin/wget.lua")("-fQ", "https://raw.githubusercontent.com/OpenPrograms/Fingercomp-Programs/master/gist/gist.lua", "/stargate/gist.lua")
     gist = loadfile("/stargate/gist.lua")
@@ -1177,7 +1176,7 @@ function f.schreibFehlerLog(...)
     log = true
   end
   letzteEingabe = ...
-  f.hochladen()
+  --f.hochladen() funktioniert bisher nicht
 end
 
 function f.zeigeFehler(...)
