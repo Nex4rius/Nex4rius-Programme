@@ -1,6 +1,7 @@
 local sg = require("component").getPrimary("stargate")
 
 local gefunden = 0
+local i = 0
 local f = {}
 local A, B, C, D, E, F, G, H
 local alleZeichen = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
@@ -38,7 +39,13 @@ function f.nacheinander()
 end
 
 function f.zufall()
+  local j = 0
   while true do
+    j = j + 1
+    if j == 1000 then
+      os.sleep(1)
+      j = 0
+    end
     f.check({alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], "-", alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], "-", alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)]})
   end
 end
@@ -56,7 +63,7 @@ function f.check(eingabe)
     gpu.setForeground(0xFFFFFF)
     gefunden = gefunden + 1
   else
-    print("Prüfe: ", Adresse, "Gefunden: " .. gefunden)
+    print("Prüfe Adresse Nr.: " .. i, Adresse, "Gefunden: " .. gefunden)
   end
 end
 
