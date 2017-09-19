@@ -122,6 +122,7 @@ local wormhole                  = "in"
 local iriscontrol               = "on"
 local energytype                = "EU"
 local f                         = {}
+local o                         = {}
 local v                         = {}
 local Taste                     = {}
 local Logbuch                   = {}
@@ -243,8 +244,8 @@ function f.schreibeAdressen()
   d:write('-- "" ' .. sprachen.keinIDC .. '\n--\n\n')
   d:write('return {\n')
   d:write('--{"<Name>", "<Adresse>", "<IDC>"},\n')
-  for k, v in pairs(adressen) do
-    d:write(string.format('  {"%s", "%s", "%s"},\n', adressen[k][1], adressen[k][2], adressen[k][3]))
+  for i = 1, #adressen do
+    d:write(string.format('  {"%s", "%s", "%s"},\n', adressen[i][1], adressen[i][2], adressen[i][3]))
   end
   d:write('}')
   d:close()
@@ -331,7 +332,8 @@ function f.AdressenLesen()
     letzterAdressCheck = os.time() / sectime
     f.AdressenSpeichern()
   end
-  for i, na in pairs(gespeicherteAdressen) do
+  for i = 1, #gespeicherteAdressen do
+    local na = gespeicherteAdressen[i]
     if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
       local AdressAnzeige = i - seite * 10
       if AdressAnzeige == 10 then
@@ -445,7 +447,8 @@ function f.AdressenSpeichern()
   sendeAdressen = {}
   local k = 0
   local LokaleAdresse = f.getAddress(sg.localAddress())
-  for i, na in pairs(adressen) do
+  for i = 1, #adressen do
+    local na = adressen[i]
     if na[2] == LokaleAdresse then
       k = -1
       sendeAdressen[i] = {}
@@ -733,7 +736,8 @@ end
 function f.destinationName()
   if state == "Dialling" or state == "Connected" then
     if remoteName == "" and wormhole == "in" and type(adressen) == "table" then
-      for j, na in pairs(adressen) do
+      for j = 1, #adressen do
+        local na = adressen[j]
         if remAddr == na[2] then
           if na[1] == na[2] then
             remoteName = sprachen.Unbekannt
@@ -1128,6 +1132,7 @@ function f.Legende()
 end
 
 function f.hochladen()
+  return --funktioniert bisher nicht
   if type(gist) ~= "function" then
     loadfile("/bin/wget.lua")("-fQ", "https://raw.githubusercontent.com/OpenPrograms/Fingercomp-Programs/master/gist/gist.lua", "/stargate/gist.lua")
     gist = loadfile("/stargate/gist.lua")
@@ -1172,7 +1177,7 @@ function f.schreibFehlerLog(...)
     log = true
   end
   letzteEingabe = ...
-  --pcall(f.hochladen)
+  f.hochladen()
 end
 
 function f.zeigeFehler(...)
@@ -1202,7 +1207,7 @@ function f.dial(name, adresse)
   os.sleep(1)
 end
 
-function f.key_down(e)
+function o.key_down(e)
   c = string.char(e[3])
   if e[3] == 0 and e[4] == 203 then
     Taste.Pfeil_links()
@@ -1569,15 +1574,16 @@ function Taste.Zahl(c)
 end
 
 function f.Tastatur()
-  if component.isAvailable("keyboard") then
-    return true
-  else
-    f.zeigeNachricht(sprachen.TastaturFehlt)
-    return false
-  end
+  --if component.isAvailable("keyboard") then
+  --  return true
+  --else
+  --  f.zeigeNachricht(sprachen.TastaturFehlt)
+  --  return false
+  --end
+  return component.isAvailable("keyboard") or f.zeigeNachricht(sprachen.TastaturFehlt) --vllt?
 end
 
-function f.sgChevronEngaged(e)
+function o.sgChevronEngaged(e)
   chevron = e[3]
   local remAdr = sg.remoteAddress()
   if remAdr then
@@ -1594,7 +1600,7 @@ function f.sgChevronEngaged(e)
   f.zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
 end
 
-function f.modem_message(e)
+function o.modem_message(e)
   if OC then
     component.modem.close()
   elseif CC then
@@ -1616,7 +1622,7 @@ function f.openModem()
   end
 end
 
-function f.sgMessageReceived(e)
+function o.sgMessageReceived(e)
   if direction == "Outgoing" then
     codeaccepted = e[3]
   elseif direction == "Incoming" and wormhole == "in" then
@@ -1637,8 +1643,7 @@ function f.sgMessageReceived(e)
   messageshow = true
 end
 
-function f.touch(e) end
-function f.touche(...)
+function o.touch(...)
   local e = {...}
   local x = e[3]
   local y = e[4]
@@ -1665,14 +1670,14 @@ function f.touche(...)
   end
 end
 
-function f.sgDialIn()
+function o.sgDialIn()
   wormhole = "in"
   f.Logbuch_schreiben(remoteName , f.getAddress(sg.remoteAddress()), wormhole)
   --event.cancel(timer.anzeige)
   --timer.anzeige = event.timer(10, f.schnelleAktualisierung, 1)
 end
 
-function f.sgDialOut()
+function o.sgDialOut()
   state = "Dialling"
   wormhole = "out"
   direction = "Outgoing"
@@ -1705,9 +1710,11 @@ end
 
 function f.angekommeneAdressen(...)
   local AddNewAddress = false
-  for a, b in pairs(...) do
+  for a = 1, #... do
+    local b = ...[a]
     local neuHinzufuegen = false
-    for c, d in pairs(adressen) do
+    for c = 1, #adressen do
+      local d = adressen[c]
       if d[2] == "XXXX-XXX-XX" then
         adressen[c] = nil
       elseif b[2] ~= d[2] then
@@ -1790,7 +1797,7 @@ end
 
 function f.beendeAlles()
   event.cancel(Updatetimer)
-  f.eventlisten(false)
+  f.eventlisten("ignore")
   schreibSicherungsdatei(Sicherung)
   gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   f.Farbe(Farben.schwarzeFarbe, Farben.weisseFarbe)
@@ -1806,48 +1813,30 @@ end
 function f.RedstoneAus(text)
   if component.isAvailable("redstone") and type(sideNum) == "number" and type(Farben.white) == "number" then
     r = component.getPrimary("redstone")
-    f.redstoneAbschalten(sideNum, Farben.white, "white", text)
---    f.redstoneAbschalten(sideNum, Farben.orange, "orange", text)
---    f.redstoneAbschalten(sideNum, Farben.magenta, "magenta", text)
---    f.redstoneAbschalten(sideNum, Farben.lightblue, "lightblue", text)
-    f.redstoneAbschalten(sideNum, Farben.yellow, "yellow", text)
---    f.redstoneAbschalten(sideNum, Farben.lime, "lime", text)
---    f.redstoneAbschalten(sideNum, Farben.pink, "pink", text)
---    f.redstoneAbschalten(sideNum, Farben.gray, "gray", text)
---    f.redstoneAbschalten(sideNum, Farben.silver, "silver", text)
---    f.redstoneAbschalten(sideNum, Farben.cyan, "cyan", text)
---    f.redstoneAbschalten(sideNum, Farben.purple, "purple", text)
---    f.redstoneAbschalten(sideNum, Farben.blue, "blue", text)
---    f.redstoneAbschalten(sideNum, Farben.brown, "brown", text)
-    f.redstoneAbschalten(sideNum, Farben.green, "green", text)
-    f.redstoneAbschalten(sideNum, Farben.red, "red", text)
-    f.redstoneAbschalten(sideNum, Farben.black, "black", text)
-  end
-end
-
-function f.component(eventname, id, comp)
-  if eventname == "component_removed" then
-    f.zeigeNachricht(eventname, id, comp)
-    if comp == "redstone" then
-      r = nil
-    end
-  elseif eventname == "component_added" then
-    f.zeigeNachricht(eventname, id, comp)
-    if comp == "redstone" then
-      r = component.getPrimary("redstone")
+    local alleFarben = {"white", "yellow", "green", "red", "black"}
+    for i = 1, #alleFarben do
+      f.redstoneAbschalten(sideNum, Farben[alleFarben[i]], alleFarben[i], text)
     end
   end
 end
 
-function f.eventlisten(an)
-  if an then
-    event.listen("component_added", f.component)
-    event.listen("component_removed", f.component)
-    event.listen("touch", f.touche)
-  else
-    event.ignore("component_added", f.component)
-    event.ignore("component_removed", f.component)
-    event.ignore("touch", f.touche)
+function o.component_removed(eventname, id, comp)
+  f.zeigeNachricht(eventname, id, comp)
+  if comp == "redstone" then
+    r = nil
+  end
+end
+
+function o.component_added(eventname, id, comp)
+  f.zeigeNachricht(eventname, id, comp)
+  if comp == "redstone" then
+    r = component.getPrimary("redstone")
+  end
+end
+
+function f.eventlisten(befehl)
+  for k, v in pairs(o) do
+    event[befehl](v, o[v])
   end
 end
 
@@ -1872,7 +1861,7 @@ function f.main()
   f.AdressenSpeichern()
   seite = 0
   f.zeigeMenu()
-  f.eventlisten(true)
+  f.eventlisten("listen")
   while running do
     local ergebnis, grund = pcall(f.eventLoop)
     if not ergebnis then
