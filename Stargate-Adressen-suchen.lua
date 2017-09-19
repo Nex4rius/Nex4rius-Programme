@@ -39,7 +39,7 @@ end
 
 function f.zufall()
   while true do
-    f.check(alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], "-", alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], "-", alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)])
+    f.check({alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], "-", alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], "-", alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)]})
   end
 end
 
@@ -56,7 +56,7 @@ function f.check(eingabe)
     gpu.setForeground(0xFFFFFF)
     gefunden = gefunden + 1
   else
-    print("Prüfe: ", Adresse, "Gefunden: ", gefunden)
+    print("Prüfe: ", Adresse, "Gefunden: " .. gefunden)
   end
 end
 
