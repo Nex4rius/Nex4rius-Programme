@@ -59,7 +59,7 @@ function f.check(Adresse)
     d:close ()
     gpu.setForeground(0xFFFFFF)
     gefunden = gefunden + 1
-    letzte = Adresse
+    letzte = letzte .. Adresse
   else
     print("Nr.", i, "Prüfe Adresse:" , Adresse, "Gefunden:", gefunden, letzte)
   end
