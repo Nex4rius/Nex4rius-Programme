@@ -1206,7 +1206,8 @@ function f.dial(name, adresse)
   os.sleep(1)
 end
 
-function o.key_down(e)
+function o.key_down(...)
+  local e = {...}
   c = string.char(e[3])
   if e[3] == 0 and e[4] == 203 then
     Taste.Pfeil_links()
