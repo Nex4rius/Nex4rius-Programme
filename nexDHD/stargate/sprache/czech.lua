@@ -3,7 +3,7 @@
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD
 -- translation by iamceph
 
-return {
+local sprachen = {
   dezimalkomma              = true,
   pruefeKomponenten         = "Kontrola komponentu\n",
   redstoneOK                = "- Redstone Card        ok - voltene",
@@ -115,7 +115,6 @@ return {
   IDC                       = "Iris Deactivation Code",
   autoclosetime             = "v sekundach -- false -> nezavirat automaticky",
   RF                        = "show energy in RF instead of EU",
-  side                      = "spodek, vrch, zadek, predek, z prava nebo z leva",
   autoUpdate                = "zapnout automaticke aktualizace",
   iris                      = "Zadejte Vasi Stargate adresu zde",
   keinIDC                   = "for pro zadny kod Iris",
@@ -130,4 +129,15 @@ return {
   FrageStargateName         = "pojmenujte tuto stargate",
   debug                     = "pro debug",
   keineEnergie              = "<bez energie>",
+  unten                     = "spodek",
+  oben                      = "vrch",
+  hinten                    = "zadek",
+  vorne                     = "predek",
+  rechts                    = "z prava",
+  oder                      = "nebo",
+  links                     = "z leva",
 }
+
+sprachen.side               = string.format("%s, %s, %s, %s, %s %s %s", unten, oben, hinten, vorne, rechts, oder, links)
+
+return sprachen
