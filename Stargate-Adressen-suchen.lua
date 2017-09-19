@@ -22,7 +22,7 @@ function f.nacheinander()
               for G = 1, 36 do
                 for H = 1, 36 do
                   for I = 1, 36 do
-                    f.check({alleZeichen[A], alleZeichen[B], alleZeichen[C], alleZeichen[D], "-", alleZeichen[E], alleZeichen[F], alleZeichen[G], "-", alleZeichen[H], alleZeichen[I]})
+                    f.check(table.concat({alleZeichen[A], alleZeichen[B], alleZeichen[C], alleZeichen[D], "-", alleZeichen[E], alleZeichen[F], alleZeichen[G], "-", alleZeichen[H], alleZeichen[I]}))
                   end
                 end
               end
@@ -41,14 +41,13 @@ function f.zufall()
   while true do
     for j = 0, 1000 do
       i = i + 1
-      f.check({a(), a(), a(), a(), "-", a(), a(), a(), "-", a(), a()})
+      f.check(table.concat({a(), a(), a(), a(), "-", a(), a(), a(), "-", a(), a()}))
     end
     os.sleep(1)
   end
 end
 
-function f.check(eingabe)
-  local Adresse = table.concat(eingabe)
+function f.check(Adresse)
   if sg.energyToDial(Adresse) then
     local gpu = require("component").getPrimary("gpu")
     gpu.setForeground(0xFF0000)
