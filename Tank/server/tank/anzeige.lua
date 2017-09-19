@@ -541,7 +541,7 @@ end
 
 loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tankanzeige")
 
-local ergebnis, grund, a, b, c = pcall(f.main)
+local ergebnis, grund = pcall(f.main)
 
 if not ergebnis then
   f.text("<FEHLER> f.main")
