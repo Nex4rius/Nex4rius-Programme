@@ -184,12 +184,10 @@ function f.installieren(versionTyp)
     end
     print()
   end
-  local d = io.open ("/bin/tank.lua", "w")
-  d:write('-- pastebin run -f cyF0yhXZ\n')
-  d:write('-- von Nex4rius\n')
-  d:write('-- https://github.com/Nex4rius/Nex4rius-Programme\n')
-  d:write('\n')
-  d:write('loadfile("/autorun.lua")(require("shell").parse(...)[1])\n')
+  local d = io.open ("/autorun.lua", "r")
+  local e = io.open ("/bin/tank.lua", "w")
+  e:write(d:read("*a"))
+  e:close()
   d:close()
   if updateKomplett then
     print("\nUpdate vollständig\n" .. version .. " " .. string.upper(tostring(versionTyp)))
