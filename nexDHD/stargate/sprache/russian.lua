@@ -3,7 +3,7 @@
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD
 -- translation by DOOBW
 
-return {
+local sprachen = {
   dezimalkomma              = true,
   pruefeKomponenten         = "Проверка компонентов\n",
   redstoneOK                = "- Редстоун карта         есть - опционально",
@@ -115,7 +115,6 @@ return {
   IDC                       = "код открытия диафрагмы",
   autoclosetime             = "в секундах -- false без автозакрытия",
   RF                        = "показать энергию в RF вместо EU",
-  side                      = "снизу, сверху, сзади, спереди, справа или слева",
   autoUpdate                = "включить автоматические обновления",
   iris                      = "адрес этих врат",
   keinIDC                   = "без диафрагмы",
@@ -130,4 +129,15 @@ return {
   FrageStargateName         = "Задайте название этих врат",
   debug                     = "для отладки",
   keineEnergie              = "<нет энергии>",
+  unten                     = "снизу",
+  oben                      = "сверху",
+  hinten                    = "сзади",
+  vorne                     = "спереди",
+  rechts                    = "справа",
+  oder                      = "или",
+  links                     = "слева",
 }
+
+sprachen.side               = string.format("%s, %s, %s, %s, %s %s %s", unten, oben, hinten, vorne, rechts, oder, links)
+
+return sprachen
