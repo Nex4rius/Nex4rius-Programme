@@ -35,10 +35,13 @@ function f.nacheinander()
 end
 
 function f.zufall()
+  local function a()
+    return alleZeichen[math.random(1,36)]
+  end
   while true do
     for j = 0, 1000 do
       i = i + 1
-      f.check({alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], "-", alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)], "-", alleZeichen[math.random(1,36)], alleZeichen[math.random(1,36)]})
+      f.check({a(), a(), a(), a(), "-", a(), a(), a(), "-", a(), a()})
     end
     os.sleep(1)
   end
