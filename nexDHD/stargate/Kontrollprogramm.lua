@@ -1583,7 +1583,8 @@ function f.Tastatur()
   return component.isAvailable("keyboard") or f.zeigeNachricht(sprachen.TastaturFehlt) --vllt?
 end
 
-function o.sgChevronEngaged(e)
+function o.sgChevronEngaged(...)
+  local e = {...}
   chevron = e[3]
   local remAdr = sg.remoteAddress()
   if remAdr then
@@ -1600,7 +1601,8 @@ function o.sgChevronEngaged(e)
   f.zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
 end
 
-function o.modem_message(e)
+function o.modem_message(...)
+  local e = {...}
   if OC then
     component.modem.close()
   elseif CC then
@@ -1622,7 +1624,8 @@ function f.openModem()
   end
 end
 
-function o.sgMessageReceived(e)
+function o.sgMessageReceived(...)
+  local e = {...}
   if direction == "Outgoing" then
     codeaccepted = e[3]
   elseif direction == "Incoming" and wurmloch == "in" then
