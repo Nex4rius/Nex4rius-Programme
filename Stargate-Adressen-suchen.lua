@@ -42,6 +42,7 @@ function f.zufall()
   local j = 0
   while true do
     j = j + 1
+    i = i + 1
     if j == 1000 then
       os.sleep(1)
       j = 0
@@ -68,8 +69,8 @@ function f.check(eingabe)
 end
 
 local function main()
-  print("1) Nacheinander oder 2) Zufall?")
   while true do
+    print("1) Nacheinander oder 2) Zufall?")
     local eingabe = io.read()
     if tostring(eingabe) == "1" then
       f.nacheinander()
