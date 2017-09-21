@@ -434,7 +434,7 @@ function o.speichern(signal)
 end
 
 function f.update(signal)
-  local dateiliste = {"/autorun.lua", "/tank/auslesen.lua", "/tank/version.txt"}
+  local dateiliste = {"/tank/auslesen.lua", "/tank/version.txt", "/autorun.lua"}
   for i = 1, #dateiliste do
     local d = io.open("/tank/client" .. dateiliste[i], "r")
     m.send(signal[3], port, "datei", dateiliste[i], d:read("*a"))
