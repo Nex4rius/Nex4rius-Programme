@@ -423,23 +423,24 @@ function o.tankliste(signal)
   timer.anzeigen = event.timer(5, f.anzeigen, 1)
 end
 
+function f.datei(id, datei)
+  if fs.exists("/tank/client" .. datei) then
+    local d = io.open("/tank/client" .. datei, "r")
+    m.send(id, port, "datei", datei, d:read("*a"))
+    d:close()
+  end
+end
+
 function o.speichern(signal)
   if not signal[7] then
-    if fs.exists("/tank/client" .. signal[8]) then
-      local d = io.open("/tank/client" .. signal[8], "r")
-      m.send(signal[3], port, "datei", signal[8], d:read("*a"))
-      d:close()
-    end
+    f.datei(signal[3], signal[8])
   end
 end
 
 function f.update(signal)
   local dateiliste = {"/tank/auslesen.lua", "/tank/version.txt", "/autorun.lua"}
   for i = 1, #dateiliste do
-    local d = io.open("/tank/client" .. dateiliste[i], "r")
-    m.send(signal[3], port, "datei", dateiliste[i], d:read("*a"))
-    d:close()
-    os.sleep(1)
+    f.datei(signal[3], dateiliste[i])
   end
   m.send(signal[3], port, "aktualisieren", serialization.serialize(dateiliste))
   return function() end
