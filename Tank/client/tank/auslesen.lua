@@ -265,9 +265,9 @@ function f.main()
   if m.isWireless() then
     m.setStrength(math.huge)
   end
-  m.broadcast(port, "tankliste", version, f.serialize(f.check()))
   term.clear()
   print("Sende Anmeldung")
+  m.broadcast(port, "tankliste", version, f.serialize(f.check()))
   print("Warte auf Antwort...")
   event.listen("modem_message", f.loop)
   pcall(os.sleep, math.huge)
