@@ -276,4 +276,4 @@ end
 
 loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tanksensor")
 
-f.main()
+print(pcall(f.main))
