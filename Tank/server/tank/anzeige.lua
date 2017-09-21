@@ -547,6 +547,6 @@ local ergebnis, grund = pcall(f.main)
 
 if not ergebnis then
   f.text("<FEHLER> f.main")
-  os.sleep(2)
   f.text(grund)
+  os.sleep(2)
 end
