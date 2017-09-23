@@ -22,6 +22,9 @@ end
 local arg         = ...
 local Sicherung   = {}
 local f           = {}
+local event       = require("event")
+local component   = require("component")
+local gpu         = component.getPrimary("gpu")
 local sprachen, IDC, autoclosetime, RF, Sprache, side, installieren, control, autoUpdate
 local shell       = shell or require("shell")
 _G.shell = shell
@@ -79,6 +82,13 @@ local wget = loadfile("/bin/wget.lua") or function(option, url, ziel)
   end
 end
 
+local computer = require("computer")
+local disk     = component.proxy(fs.get("/").address)
+
+gpu.setResolution(gpu.maxResolution())
+
+local x = gpu.getResolution() - 35
+
 if not fs.exists("/einstellungen") then
   fs.makeDirectory("/einstellungen")
 end
@@ -133,6 +143,17 @@ function f.Pfad(versionTyp)
   end
 end
 
+function f.status()
+    gpu.set(x, 2, string.format("   RAM: %.1fkB / %.1fkB%s", (computer.totalMemory() - computer.freeMemory()) / 1024, computer.totalMemory() / 1024, string.rep(" ", 35)))
+    gpu.set(x, 4, string.format("   Energie: %.1f / %s%s", computer.energy(), computer.maxEnergy(), string.rep(" ", 35)))
+    gpu.set(x, 6, string.format("   Speicher: %.1fkB / %.1fkB%s", disk.spaceUsed() / 1024, disk.spaceTotal() / 1024, string.rep(" ", 35)))
+    gpu.set(x, 1, string.rep(" ", 35))
+    gpu.set(x, 3, string.rep(" ", 35))
+    gpu.set(x, 5, string.rep(" ", 35))
+    gpu.set(x, 7, string.rep(" ", 35))
+    gpu.set(x, 8, string.rep(" ", 35))
+end
+
 function f.schreibAutorun()
   local d = io.open("/autorun.lua", "w")
   d:write([[
@@ -175,13 +196,14 @@ function f.schreibAutorun()
 end
 
 function f.installieren(versionTyp)
+  local timer = event.timer(0.1, f.Status, math.huge)
   fs.makeDirectory("/update/stargate/sprache")
   local updateKomplett = false
   local function download(von, nach)
     for j = 1, 10 do
       if wget("-f", f.Pfad(versionTyp) .. von, nach) then
         return true
-      elseif require("component").isAvailable("internet") then
+      elseif component.isAvailable("internet") then
         print(von .. "\nerneuter Downloadversuch in " .. j .. "s\n")
         os.sleep(j)
       else
@@ -283,6 +305,7 @@ function f.installieren(versionTyp)
   elseif CC then
     os.reboot()
   end
+  event.cancel(timer)
 end
 
 if versionTyp == nil then
