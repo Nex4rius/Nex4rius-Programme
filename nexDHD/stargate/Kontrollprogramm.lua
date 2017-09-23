@@ -1306,35 +1306,37 @@ function Taste.e()
 end
 
 function Taste.a()
-  f.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
-  f.zeigeHier(Taste.Koordinaten.a_X, Taste.Koordinaten.a_Y, "A " .. sprachen.Adresseingabe, 0)
-  if f.Tastatur() then
-    term.setCursor(1, Bildschirmhoehe)
-    f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
-    local timerID = event.timer(1, function() f.zeigeStatus() f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe) end, math.huge)
-    f.eventlisten("ignore")
-    pcall(screen.setTouchModeInverted, false)
-    local function eingeben(text)
-      term.clearLine()
-      term.write(text .. ":")
-      local eingabe = term.read(nil, false)
-      return string.sub(eingabe, 1, string.len(eingabe) - 1)
-    end
-    local adresse = eingeben(sprachen.Eingeben_Adresse)
-    if sg.energyToDial(adresse) then
-      local name = eingeben(sprachen.Eingeben_Name)
-      if name == "" then
-        name = ">>>" .. adresse .. "<<<"
+  if seite == -1 then
+    f.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
+    f.zeigeHier(Taste.Koordinaten.a_X, Taste.Koordinaten.a_Y, "A " .. sprachen.Adresseingabe, 0)
+    if f.Tastatur() then
+      term.setCursor(1, Bildschirmhoehe)
+      f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
+      local timerID = event.timer(1, function() f.zeigeStatus() f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe) end, math.huge)
+      f.eventlisten("ignore")
+      pcall(screen.setTouchModeInverted, false)
+      local function eingeben(text)
+        term.clearLine()
+        term.write(text .. ":")
+        local eingabe = term.read(nil, false)
+        return string.sub(eingabe, 1, string.len(eingabe) - 1)
       end
-      local idc = eingeben(sprachen.Eingeben_idc)
-      f.newAddress(idc, adresse, name)
-      f.zeigeNachricht(sprachen.richtige_Adresse)
-    else
-      f.zeigeNachricht(sprachen.falsche_Adresse)
+      local adresse = eingeben(sprachen.Eingeben_Adresse)
+      if sg.energyToDial(adresse) then
+        local name = eingeben(sprachen.Eingeben_Name)
+        if name == "" then
+          name = ">>>" .. adresse .. "<<<"
+        end
+        local idc = eingeben(sprachen.Eingeben_idc)
+        f.newAddress(idc, adresse, name)
+        f.zeigeNachricht(sprachen.richtige_Adresse)
+      else
+        f.zeigeNachricht(sprachen.falsche_Adresse)
+      end
+      pcall(screen.setTouchModeInverted, true)
+      f.eventlisten("listen")
+      event.cancel(timerID)
     end
-    pcall(screen.setTouchModeInverted, true)
-    f.eventlisten("listen")
-    event.cancel(timerID)
   end
 end
 
