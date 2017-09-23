@@ -647,7 +647,7 @@ function f.Iriskontrolle()
     zielAdresse = ""
     f.zeigeNachricht("")
     f.zeigeMenu()
-    event.cancel(Anzeigetimer)
+    event.cancel(v.Anzeigetimer)
   end
   if state == "Idle" then
     incode = "-"
@@ -1698,9 +1698,8 @@ end
 function o.sgStargateStateChange(...)
   local e = {...}
   if e[3] == "Connected" then
-    Anzeigetimer = event.timer(0.1, f.zeigeEnergie, math.huge)
-  else
-    event.cancel(Anzeigetimer)
+    f.zeigeNachricht(tostring() .. "jap")
+    v.Anzeigetimer = event.timer(0.1, f.zeigeEnergie, math.huge)
   end
 end
 
