@@ -409,9 +409,9 @@ function f.Infoseite()
   y = f.schreiben(y, "S " .. sprachen.EinstellungenAendern)
   Taste.links[y] = Taste.s
   Taste.Koordinaten.Taste_s = y
-  --y = f.schreiben(y, "A " .. sprachen.Adresseingabe)
-  --Taste.links[y] = Taste.a
-  --Taste.Koordinaten.Taste_a = y
+  y = f.schreiben(y, "A " .. sprachen.Adresseingabe)
+  Taste.links[y] = Taste.a
+  Taste.Koordinaten.Taste_a = y
   if log then
     y = f.schreiben(y, "L " .. sprachen.zeigeLog)
     Taste.links[y] = Taste.l
@@ -1322,7 +1322,7 @@ function Taste.a()
         local eingabe = term.read(nil, false)
         return string.sub(eingabe, 1, string.len(eingabe) - 1)
       end
-      local adresse = eingeben(sprachen.Eingeben_Adresse)
+      local adresse = string.upper(eingeben(sprachen.Eingeben_Adresse))
       if sg.energyToDial(adresse) then
         local name = eingeben(sprachen.Eingeben_Name .. adresse)
         if name == "" then
