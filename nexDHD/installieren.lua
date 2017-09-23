@@ -196,7 +196,7 @@ function f.schreibAutorun()
 end
 
 function f.installieren(versionTyp)
-  local timer = event.timer(0.1, f.Status, math.huge)
+  local timer = event.timer(0.1, f.status, math.huge)
   fs.makeDirectory("/update/stargate/sprache")
   local updateKomplett = false
   local function download(von, nach)
