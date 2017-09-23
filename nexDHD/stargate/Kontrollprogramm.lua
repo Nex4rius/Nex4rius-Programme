@@ -847,6 +847,9 @@ function f.zeigeEnergie(eingabe)
     end
     f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2 .. f.ErsetzePunktMitKomma(energieMenge))
   end
+  if state ~= "Connected" then
+    event.cancel(v.Anzeigetimer)
+  end
 end
 
 function f.activetime()
