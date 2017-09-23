@@ -1290,10 +1290,12 @@ function Taste.e()
       f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
       local timerID = event.timer(1, function() f.zeigeStatus() f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe) end, math.huge)
       term.clearLine()
+      f.eventlisten("ignore")
       term.write(sprachen.IDCeingabe .. ":")
       pcall(screen.setTouchModeInverted, false)
       local eingabe = term.read(nil, false, nil, "*")
       pcall(screen.setTouchModeInverted, true)
+      f.eventlisten("listen")
       sg.sendMessage(string.sub(eingabe, 1, string.len(eingabe) - 1))
       event.cancel(timerID)
       f.zeigeNachricht(sprachen.IDCgesendet)
@@ -1310,6 +1312,7 @@ function Taste.a()
     term.setCursor(1, Bildschirmhoehe)
     f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
     local timerID = event.timer(1, function() f.zeigeStatus() f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe) end, math.huge)
+    f.eventlisten("ignore")
     pcall(screen.setTouchModeInverted, false)
     local function eingeben(text)
       term.clearLine()
@@ -1330,6 +1333,7 @@ function Taste.a()
       f.zeigeNachricht(sprachen.falsche_Adresse)
     end
     pcall(screen.setTouchModeInverted, true)
+    f.eventlisten("listen")
     event.cancel(timerID)
   end
 end
@@ -1360,7 +1364,7 @@ end
 function Taste.c()
   f.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
   f.zeigeHier(Taste.Koordinaten.c_X, Taste.Koordinaten.c_Y, "C " .. sprachen.schliesseIris, 0)
-  if iris == "Offline" then else
+  if iris ~= "Offline" then
     f.irisClose()
     iriscontrol = "off"
     if wurmloch == "in" then
@@ -1378,7 +1382,7 @@ function Taste.i()
     f.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
     f.zeigeHier(1, Taste.Koordinaten.Taste_i, "I " .. string.sub(sprachen.IrisSteuerung:match("^%s*(.-)%s*$") .. " " .. sprachen.an_aus, 1, 28), 0)
     event.timer(2, f.zeigeMenu, 1)
-    if iris == "Offline" then else
+    if iris ~= "Offline" then
       send = true
       if Sicherung.control == "On" then
         Sicherung.control = "Off"
@@ -1486,11 +1490,13 @@ function Taste.l()
     f.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
     f.zeigeHier(1, Taste.Koordinaten.Taste_l, "L " .. sprachen.zeigeLog, 0)
     if f.Tastatur() then
+      f.eventlisten("ignore")
       pcall(screen.setTouchModeInverted, false)
       f.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
       os.sleep(0.1)
       edit("-r", "/stargate/log")
       pcall(screen.setTouchModeInverted, true)
+      f.eventlisten("listen")
       seite = 0
     else
       event.timer(2, f.zeigeMenu, 1)
@@ -1578,13 +1584,7 @@ function Taste.Zahl(c)
 end
 
 function f.Tastatur()
-  --if component.isAvailable("keyboard") then
-  --  return true
-  --else
-  --  f.zeigeNachricht(sprachen.TastaturFehlt)
-  --  return false
-  --end
-  return component.isAvailable("keyboard") or f.zeigeNachricht(sprachen.TastaturFehlt) --vllt?
+  return component.isAvailable("keyboard") or f.zeigeNachricht(sprachen.TastaturFehlt)
 end
 
 function o.sgChevronEngaged(...)
@@ -1680,22 +1680,21 @@ end
 function o.sgDialIn()
   wurmloch = "in"
   f.Logbuch_schreiben(remoteName , f.getAddress(sg.remoteAddress()), wurmloch)
-  --event.cancel(timer.anzeige)
-  --timer.anzeige = event.timer(10, f.schnelleAktualisierung, 1)
 end
 
 function o.sgDialOut()
   state = "Dialling"
   wurmloch = "out"
   direction = "Outgoing"
-  --event.cancel(timer.anzeige)
-  --timer.anzeige = event.timer(10, f.schnelleAktualisierung, 1) -- anwahlzeit prüfen
 end
 
-function f.schnelleAktualisierung()
-  while state == "Connected" do
-    f.zeigeEnergie(v.Energiezeile)
-    os.sleep(0.1)
+function o.sgStargateStateChange(...)
+  local e = {...}
+  if e[3] == "Connected" then
+    while state == "Connected" do
+      f.zeigeEnergie(v.Energiezeile)
+      os.sleep(0.1)
+    end
   end
 end
 
