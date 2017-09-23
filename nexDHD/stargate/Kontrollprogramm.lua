@@ -1702,6 +1702,8 @@ function o.sgStargateStateChange(...)
   local e = {...}
   if e[3] == "Connected" then
     f.zeigeNachricht(tostring() .. "jap")
+    os.sleep(1)
+    f.zeigeNachricht(tostring() .. "jap")
     v.Anzeigetimer = event.timer(0.1, f.zeigeEnergie, math.huge)
   end
 end
