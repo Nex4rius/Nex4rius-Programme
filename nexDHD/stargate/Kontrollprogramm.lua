@@ -821,6 +821,7 @@ end
 function f.zeigeEnergie(eingabe)
   local zeile = eingabe or v.Energiezeile or zeile
   v.Energiezeile = zeile
+  f.Farbe(Farben.Statusfarbe, Farben.Statustextfarbe)
   if energy < 1000 then
     f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2, 0)
     f.SchreibInAndererFarben(xVerschiebung + unicode.len("  " .. sprachen.energie1 .. energytype .. sprachen.energie2), zeile, sprachen.keineEnergie, Farben.FehlerFarbe)
