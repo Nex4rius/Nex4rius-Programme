@@ -707,7 +707,7 @@ function f.sendeAdressliste()
 end
 
 function f.newAddress(idc, neueAdresse, neuerName, ...)
-  if AddNewAddress == true and string.len(neueAdresse) == 11 and sg.energyToDial(neueAdresse) then
+  if AddNewAddress == true and string.len(neueAdresse) >= 7 and string.len(neueAdresse) <= 11 and sg.energyToDial(neueAdresse) then
     AdressenAnzahl = AdressenAnzahl + 1
     adressen[AdressenAnzahl] = {}
     local nichtmehr
@@ -1318,19 +1318,22 @@ function Taste.a()
       pcall(screen.setTouchModeInverted, false)
       local function eingeben(text)
         term.clearLine()
-        term.write(text .. ":")
+        term.write(text .. ": ")
         local eingabe = term.read(nil, false)
         return string.sub(eingabe, 1, string.len(eingabe) - 1)
       end
       local adresse = eingeben(sprachen.Eingeben_Adresse)
       if sg.energyToDial(adresse) then
-        local name = eingeben(sprachen.Eingeben_Name)
+        local name = eingeben(sprachen.Eingeben_Name .. adresse)
         if name == "" then
           name = ">>>" .. adresse .. "<<<"
         end
-        local idc = eingeben(sprachen.Eingeben_idc)
-        f.newAddress(idc, adresse, name)
-        f.zeigeNachricht(sprachen.richtige_Adresse)
+        local idc = eingeben(sprachen.Eingeben_idc .. name)
+        if f.newAddress(idc, adresse, name) then
+          f.zeigeNachricht(sprachen.richtige_Adresse)
+        else
+          f.zeigeNachricht(sprachen.falsche_Adresse)
+        end
       else
         f.zeigeNachricht(sprachen.falsche_Adresse)
       end
