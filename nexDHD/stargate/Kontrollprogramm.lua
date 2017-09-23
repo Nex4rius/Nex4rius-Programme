@@ -257,7 +257,7 @@ function f.Farbe(hintergrund, vordergrund)
 end
 
 function f.pull_event()
-  local Wartezeit = 5
+  local Wartezeit = 1
   if state == "Idle" then
     if checkEnergy == energy and not VersionUpdate then
       if Nachrichtleer == true then
@@ -647,7 +647,9 @@ function f.Iriskontrolle()
     zielAdresse = ""
     f.zeigeNachricht("")
     f.zeigeMenu()
-    event.cancel(v.Anzeigetimer)
+    if v.Anzeigetimer then
+      event.cancel(v.Anzeigetimer)
+    end
   end
   if state == "Idle" then
     incode = "-"
@@ -1699,6 +1701,7 @@ function o.sgDialOut()
 end
 
 function o.sgStargateStateChange(...)
+  if true then return end --deaktiviert weil es nicht funktioniert
   local e = {...}
   if e[3] == "Connected" then
     f.zeigeNachricht(tostring() .. "jap")
