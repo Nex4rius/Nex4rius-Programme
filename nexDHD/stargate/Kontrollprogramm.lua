@@ -1309,13 +1309,13 @@ end
 
 function Taste.a()
   if seite == -1 then
-    f.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
-    f.zeigeHier(Taste.Koordinaten.a_X, Taste.Koordinaten.a_Y, "A " .. sprachen.Adresseingabe, 0)
+    f.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
+    f.zeigeHier(1, Taste.Koordinaten.Taste_a, "A " .. sprachen.Adresseingabe, 0)
     if f.Tastatur() then
+      f.eventlisten("ignore")
       term.setCursor(1, Bildschirmhoehe)
       f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
       local timerID = event.timer(1, function() f.zeigeStatus() f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe) end, math.huge)
-      f.eventlisten("ignore")
       pcall(screen.setTouchModeInverted, false)
       local function eingeben(text)
         term.clearLine()
