@@ -647,6 +647,7 @@ function f.Iriskontrolle()
     zielAdresse = ""
     f.zeigeNachricht("")
     f.zeigeMenu()
+    event.cancel(Anzeigetimer)
   end
   if state == "Idle" then
     incode = "-"
@@ -818,8 +819,8 @@ function f.autoclose()
 end
 
 function f.zeigeEnergie(eingabe)
-  local zeile = eingabe or zeile
-  v.Energiezeile = zeile
+  v.Energiezeile = eingabe or v.Energiezeile
+  local zeile = v.Energiezeile
   if energy < 1000 then
     f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2, 0)
     f.SchreibInAndererFarben(xVerschiebung + unicode.len("  " .. sprachen.energie1 .. energytype .. sprachen.energie2), zeile, sprachen.keineEnergie, Farben.FehlerFarbe)
@@ -1693,10 +1694,9 @@ end
 function o.sgStargateStateChange(...)
   local e = {...}
   if e[3] == "Connected" then
-    while state == "Connected" do
-      f.zeigeEnergie(v.Energiezeile)
-      os.sleep(0.1)
-    end
+    Anzeigetimer = event.timer(0.1, f.zeigeEnergie, math.huge)
+  else
+    event.cancel(Anzeigetimer)
   end
 end
 
