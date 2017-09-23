@@ -195,6 +195,13 @@ function f.schreibAutorun()
   d:close()
 end
 
+function f.start(versionTyp)
+  while true do
+    print(pcall(f.installieren, versionTyp))
+    os.sleep(5)
+  end
+end
+
 function f.installieren(versionTyp)
   local timer = event.timer(0.1, f.status, math.huge)
   fs.makeDirectory("/update/stargate/sprache")
@@ -335,12 +342,12 @@ if versionTyp == nil then
       ]])
     end
     d:close()
-    f.installieren("master")
+    f.start("master")
   elseif type(arg) == "string" then
-    f.installieren(arg)
+    f.start(arg)
   else
-    f.installieren("master")
+    f.start("master")
   end
 else
-  f.installieren(versionTyp)
+  f.start(versionTyp)
 end
