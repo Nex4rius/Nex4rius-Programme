@@ -819,8 +819,8 @@ function f.autoclose()
 end
 
 function f.zeigeEnergie(eingabe)
-  v.Energiezeile = eingabe or v.Energiezeile
-  local zeile = v.Energiezeile
+  local zeile = eingabe or v.Energiezeile or zeile
+  v.Energiezeile = zeile
   if energy < 1000 then
     f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2, 0)
     f.SchreibInAndererFarben(xVerschiebung + unicode.len("  " .. sprachen.energie1 .. energytype .. sprachen.energie2), zeile, sprachen.keineEnergie, Farben.FehlerFarbe)
@@ -1023,7 +1023,7 @@ function f.zeigeStatus()
   ausgabe(sprachen.zielAdresseName, zielAdresse)
   ausgabe(sprachen.zielName, remoteName)
   ausgabe(sprachen.statusName, StatusName)
-  f.zeigeEnergie()
+  f.zeigeEnergie(zeile)
   f.neueZeile(1)
   ausgabe(sprachen.IrisName, f.zeichenErsetzen(iris))
   if iris == "Offline" then else
