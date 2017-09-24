@@ -1624,12 +1624,13 @@ function o.modem_message(...)
       modem.closeAll()
     end
   end
-  v.WLAN_Anzahl = v.WLAN_Anzahl + 1
-  if v.WLAN_Anzahl < 20 then
-    o.sgMessageReceived({e[1], e[2], e[6]})
-    event.timer(2, f.openModem, 1)
+  if e[6] then
+    v.WLAN_Anzahl = v.WLAN_Anzahl + 1
+    if v.WLAN_Anzahl < 20 then
+      o.sgMessageReceived({e[1], e[2], e[6]})
+      event.timer(2, f.openModem, 1)
+    end
   end
-  f.zeigeNachricht(table.concat({e[1], e[2], e[6]}))
 end
 
 function f.openModem()
