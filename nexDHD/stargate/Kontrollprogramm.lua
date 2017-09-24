@@ -572,9 +572,6 @@ function f.Iriskontrolle()
   if state == "Dialing" then
     messageshow = true
     AddNewAddress = true
-    if wurmloch == "in" then
-      f.openModem()
-    end
   end
   if direction == "Incoming" and incode == Sicherung.IDC and Sicherung.control == "Off" then
     IDCyes = true
@@ -1618,26 +1615,27 @@ function o.sgChevronEngaged(...)
 end
 
 function o.modem_message(...)
+  f.closeModem()
   local e = {...}
-  if OC then
-    component.modem.close()
-  elseif CC then
-    local modem = peripheral.find("modem")
-    if modem then
-      modem.closeAll()
+  if e[6] and type(e[6]) == "string" and e[6] ~= "" then
+    v.WLAN_Anzahl = v.WLAN_Anzahl + 1
+    if v.WLAN_Anzahl < 20 then
+      if direction == "Incoming" and wurmloch == "in" then
+        if e[6] ~= "Adressliste" then
+          incode = e[6]
+        end
+      end
+      event.timer(2, f.openModem, 1)
     end
-  end
-  v.WLAN_Anzahl = v.WLAN_Anzahl + 1
-  if v.WLAN_Anzahl < 5 then
-    o.sgMessageReceived({e[1], e[2], e[6]})
-    event.timer(2, f.openModem, 0)
   end
 end
 
 function f.openModem()
-  if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-    component.modem.open(Sicherung.Port)
-  end
+  o.modem_message = f.modem_message
+end
+
+function f.closeModem()
+  o.modem_message = function() end
 end
 
 function o.sgMessageReceived(...)
@@ -1691,6 +1689,7 @@ end
 
 function o.sgDialIn()
   wurmloch = "in"
+  f.openModem()
   f.Logbuch_schreiben(remoteName , f.getAddress(sg.remoteAddress()), wurmloch)
 end
 
@@ -1704,9 +1703,6 @@ function o.sgStargateStateChange(...)
   if true then return end --deaktiviert weil es nicht funktioniert
   local e = {...}
   if e[3] == "Connected" then
-    f.zeigeNachricht(tostring() .. "jap")
-    os.sleep(1)
-    f.zeigeNachricht(tostring() .. "jap")
     v.Anzeigetimer = event.timer(0.1, f.zeigeEnergie, math.huge)
   end
 end
@@ -1843,6 +1839,8 @@ function o.component_removed(eventname, id, comp)
   f.zeigeNachricht(eventname, id, comp)
   if comp == "redstone" then
     r = nil
+  elseif comp == "modem" then
+    f.closeModem()
   end
 end
 
@@ -1850,6 +1848,11 @@ function o.component_added(eventname, id, comp)
   f.zeigeNachricht(eventname, id, comp)
   if comp == "redstone" then
     r = component.getPrimary("redstone")
+  elseif comp == "modem" then
+    if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
+      component.modem.open(Sicherung.Port)
+      f.openModem()
+    end
   end
 end
 
@@ -1860,6 +1863,10 @@ function f.eventlisten(befehl)
 end
 
 function f.main()
+  if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
+    component.modem.open(Sicherung.Port)
+  end
+  f.modem_message = o.modem_message
   pcall(screen.setTouchModeInverted, true)
   if OC then
     loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "nexDHD")
