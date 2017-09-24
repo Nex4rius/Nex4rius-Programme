@@ -328,6 +328,7 @@ function f.checkKomponenten()
   local alleKomponenten = {
     {"internet",      sprachen.InternetOK,  sprachen.InternetFehlt},
     {"world_sensor",  sprachen.SensorOK,    sprachen.SensorFehlt},
+    {"colorful_lamp", sprachen.LampeOK,     sprachen.LampeFehlt},
     {"redstone",      sprachen.redstoneOK,  sprachen.redstoneFehlt},
     {"stargate",      sprachen.StargateOK,  sprachen.StargateFehlt},
   }
