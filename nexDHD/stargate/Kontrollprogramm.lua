@@ -1627,7 +1627,7 @@ function o.modem_message(...)
   v.WLAN_Anzahl = v.WLAN_Anzahl + 1
   if v.WLAN_Anzahl < 5 then
     o.sgMessageReceived({e[1], e[2], e[6]})
-    event.timer(2, f.openModem, 0)
+    event.timer(2, f.openModem, 1)
   end
 end
 
