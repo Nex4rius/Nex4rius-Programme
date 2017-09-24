@@ -287,15 +287,15 @@ function f.checkOpenOS()
       end
       gpu.setForeground(Farben.roteFarbe)
       print("\nOpenOS Version:        " .. _OSVERSION .. " -> " .. OpenOS_Version .. "\n")
-      if neuer and false == true then --deaktiviert
-        if Sicherung.autoUpdate and false == true then
+      if neuer then
+        if Sicherung.autoUpdate then
           print("Update OpenOS")
           os.sleep(3)
           wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/updater.lua", "/updater.lua")
           loadfile("/updater.lua")()
           return
         end
-        print("Update OpenOS? [y/N]")
+        print("Update OpenOS? [j/N]")
         term.write("Input: ")
         local eingabe = string.lower(io.read())
         if eingabe == sprachen.ja or eingabe == "ja" or eingabe == "yes" or eingabe == "y" or eingabe == "j" then
