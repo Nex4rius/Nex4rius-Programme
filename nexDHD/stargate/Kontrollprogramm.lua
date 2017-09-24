@@ -1629,6 +1629,7 @@ function o.modem_message(...)
     o.sgMessageReceived({e[1], e[2], e[6]})
     event.timer(2, f.openModem, 1)
   end
+  f.zeigeNachricht(table.concat({e[1], e[2], e[6]}))
 end
 
 function f.openModem()
