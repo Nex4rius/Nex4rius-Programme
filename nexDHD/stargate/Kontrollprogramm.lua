@@ -1617,12 +1617,12 @@ end
 function o.modem_message(...)
   f.closeModem()
   local e = {...}
-  if e[6] then
+  if e[6] and type(e[6]) == "string" and e[6] ~= "" then
     v.WLAN_Anzahl = v.WLAN_Anzahl + 1
     if v.WLAN_Anzahl < 20 then
       if direction == "Incoming" and wurmloch == "in" then
         if e[6] ~= "Adressliste" then
-          incode = tostring(e[6])
+          incode = e[6]
         end
       end
       event.timer(2, f.openModem, 1)
