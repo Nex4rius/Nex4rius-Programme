@@ -572,9 +572,6 @@ function f.Iriskontrolle()
   if state == "Dialing" then
     messageshow = true
     AddNewAddress = true
-    if wurmloch == "in" then
-      f.openModem()
-    end
   end
   if direction == "Incoming" and incode == Sicherung.IDC and Sicherung.control == "Off" then
     IDCyes = true
@@ -1691,6 +1688,7 @@ end
 
 function o.sgDialIn()
   wurmloch = "in"
+  f.openModem()
   f.Logbuch_schreiben(remoteName , f.getAddress(sg.remoteAddress()), wurmloch)
 end
 
