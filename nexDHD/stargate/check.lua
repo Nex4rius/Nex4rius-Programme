@@ -420,7 +420,7 @@ end
 function f.checkServerVersion(branch)
   local branch = branch or "master"
   gpu.setForeground(Farben.Hintergrundfarbe)
-  if wget("-f", f.Pfad(branch) .. "stargate/version.txt", "/serverVersion.txt") then
+  if wget("-fQ", f.Pfad(branch) .. "stargate/version.txt", "/serverVersion.txt") then
     local d = io.open ("/serverVersion.txt", "r")
     serverVersion = d:read()
     d:close()
