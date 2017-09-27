@@ -204,7 +204,7 @@ function f.checkSprache()
   if Sicherung.Sprache and Sicherung.Sprache ~= "" then
     if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
       return true
-    elseif wget("-f", f.Pfad(versionTyp) .. "stargate/sprache/" .. Sicherung.Sprache .. ".lua", "/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
+    elseif wget("-fQ", f.Pfad(versionTyp) .. "stargate/sprache/" .. Sicherung.Sprache .. ".lua", "/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
       return true
     end
   else
