@@ -1546,7 +1546,7 @@ function Taste.b()
     f.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
     f.zeigeHier(1, Taste.Koordinaten.Taste_b, "B " .. sprachen.UpdateBeta, 0)
     if component.isAvailable("internet") then
-      f.Logbuch_schreiben(serverVersion .. " BETA", "Update:    " , "update")
+      f.Logbuch_schreiben(tostring(serverVersion) .. " BETA", "Update:    " , "update")
       running = false
       v.update = "beta"
     end
