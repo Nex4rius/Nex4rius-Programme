@@ -429,13 +429,6 @@ function f.checkServerVersion(branch)
   else
     serverVersion = sprachen.fehlerName
   end
-  if OC then
-    local x, y = term.getCursor()
-    term.setCursor(x, y - 1)
-    term.clearLine()
-    term.setCursor(x, y - 2)
-    term.clearLine()
-  end
   gpu.setForeground(Farben.weisseFarbe)
   return serverVersion
 end
