@@ -152,7 +152,9 @@ local function spairs(t, order)
 end
 
 function f.anzeigen()
+  print("f.anzeigen start") --debug
   for screenid in component.list("screen") do
+    print("f.anzeigen im for") --debug
     gpu.bind(screenid, false)
     local klein = false
     local _, hoch = component.proxy(screenid).getAspectRatio()
@@ -188,7 +190,9 @@ function f.anzeigen()
     os.sleep(0.1)
     local anzahl = 0
     --for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
+    print("tankneu start") --debug
     for i = 1, #tankneu do
+      print("tankneu drin") --debug
       anzahl = anzahl + 1
       local links, rechts, breite = -15, -25, 40
       if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
@@ -235,6 +239,7 @@ function f.anzeigen()
       if label == "fluidhelium3" then
         label = "Helium-3"
       end
+      print("zeigeHier start") --debug
       f.zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl)
       gpu.set(x, y, string.format("Anzahl: %s / %s X:%s Y:%s", i, #tankneu, x, y))
       leer = false
@@ -268,6 +273,7 @@ function f.zeichenErsetzen(...)
 end
 
 function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl)
+  print("zeigeHier drin") --debug
   if farben[name] == nil and debug then
     nachricht = string.format("%s  %s  >>report this liquid<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
     nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
@@ -403,11 +409,13 @@ function f.tankliste()
 end
 
 function o.tankliste(signal)
+  print("tankliste jap") --debug
   local dazu = true
   if version ~= signal[7] then
     event.timer(1, f.update(signal), 1)
   end
   for i in pairs(Sensorliste) do
+    print(Sensorliste[i]) --debug
     if Sensorliste[i][3] == signal[3] then
       dazu = false
       Sensorliste[i] = signal
@@ -420,6 +428,7 @@ function o.tankliste(signal)
   for k, v in pairs(timer) do
     event.cancel(v)
   end
+  print("timer start jap") --debug
   timer.tank = event.timer(Wartezeit + 15, f.tank, 1)
   timer.jetzt = event.timer(2, f.tankliste, 1)
   timer.senden = event.timer(Zeit, f.senden, math.huge)
@@ -452,8 +461,8 @@ function f.update(signal)
 end
 
 function f.event(...)
-  print("\n\n\n")
-  print(...)
+  print("\n") --debug
+  print(...) --debug
   local signal = {...}
   if o[signal[6]] then
     if Sendeleistung < signal[5] + 50 then
