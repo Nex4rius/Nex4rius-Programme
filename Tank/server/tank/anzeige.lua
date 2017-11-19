@@ -432,12 +432,17 @@ function o.tankliste(signal)
 end
 
 function f.datei(id, datei)
+  print("datei 1") -- debug
+  print("/tank/client" .. datei) -- debug
   if fs.exists("/tank/client" .. datei) then
+    print("datei 2") -- debug
     local d = io.open("/tank/client" .. datei, "r")
-    pritn("datei senden") --debug
+    print("datei senden") --debug
     m.send(id, port, "datei", datei, d:read("*a"))
+    print("datei 3) -- debug
     d:close()
   end
+  print("datei 4) -- debug
 end
 
 function o.speichern(signal)
@@ -449,7 +454,6 @@ function o.speichern(signal)
 end
 
 function f.update(signal)
-  print("f.update drin") -- debug
   local dateiliste = {"/tank/auslesen.lua", "/tank/version.txt", "/autorun.lua"}
   print("f.update 1") -- debug
   for i = 1, #dateiliste do
