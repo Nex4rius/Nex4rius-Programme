@@ -98,12 +98,12 @@ function f.verarbeiten(tank)
       if type(tank[i].inhalt) == "table" then
         local extra
         for j = 1, #tank[i].inhalt do -- debug
-          print("start") -- debug
           if tank[i].inhalt[j].name == "Tankname" then -- debug
+            print("\nstart\n") -- debug
             print(tank[i].inhalt[j].name) -- debug
             print(tank[i].inhalt[j].label) -- debug
+            print("\nende\n") -- debug
           end -- debug
-          print("ende") -- debug
         end -- debug
         for j = 1, #tank[i].inhalt do
           if tank[i].inhalt[j].name == "Tankname" and tank[i].inhalt[j].label ~= "false" then
@@ -122,23 +122,21 @@ function f.verarbeiten(tank)
 end
 
 function f.hinzu(name, label, menge, maxmenge, extra, weiter)
-  if name ~= "nil" then
-    if not extra then
-      for i = 1, #tankneu do
-        if tankneu[i].name == name then
-          tankneu[i].menge = tankneu[i].menge + menge
-          tankneu[i].maxmenge = tankneu[i].maxmenge + maxmenge
-          weiter = false
-        end
+  if not extra then
+    for i = 1, #tankneu do
+      if tankneu[i].name == name then
+        tankneu[i].menge = tankneu[i].menge + menge
+        tankneu[i].maxmenge = tankneu[i].maxmenge + maxmenge
+        weiter = false
       end
     end
-    if weiter then
-      tankneu[tanknr] = {}
-      tankneu[tanknr].name = name
-      tankneu[tanknr].label = label
-      tankneu[tanknr].menge = menge
-      tankneu[tanknr].maxmenge = maxmenge
-    end
+  end
+  if weiter then
+    tankneu[tanknr] = {}
+    tankneu[tanknr].name = name
+    tankneu[tanknr].label = label
+    tankneu[tanknr].menge = menge
+    tankneu[tanknr].maxmenge = maxmenge
   end
 end
 
