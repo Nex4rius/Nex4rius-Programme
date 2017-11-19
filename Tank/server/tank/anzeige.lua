@@ -92,6 +92,7 @@ function f.tank(hier, id, nachricht)
 end
 
 function f.verarbeiten(tank)
+  print(serialization.serialize(tank))
   tank_a = {}
   tank_a["false"] = {}
   for i = 1, #tank do
