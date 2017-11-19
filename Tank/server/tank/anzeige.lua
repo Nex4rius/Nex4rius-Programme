@@ -96,7 +96,6 @@ function f.verarbeiten(tank)
   for i = 1, #tank do
     if type(tank[i]) == "table" then
       if type(tank[i].inhalt) == "table" then
-        local extra
         tank_a[tank[i].inhalt[1].name] = {}
         for j = 1, #tank[i].inhalt do
           f.hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, true, tank_a[tank[i].inhalt[1].name])
