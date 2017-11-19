@@ -111,7 +111,7 @@ function f.verarbeiten(tank)
   for _, v in pairs(tank_a) do
     for _, w in pairs(v) do
       print(serialization.serialize(w))
-      tankneu[#tankneu] = w
+      table.insert(tankneu, w)
     end
   end
   print("\n\n")
