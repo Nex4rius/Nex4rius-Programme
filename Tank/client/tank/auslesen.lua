@@ -246,6 +246,8 @@ function o.tank(signal)
 end
 
 function f.loop(...)
+  print("\n\n\n")
+  print(...)
   local signal = {...}
   print(signal[6])
   if o[signal[6]] then
