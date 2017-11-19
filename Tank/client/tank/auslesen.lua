@@ -2,7 +2,16 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/
 
-os.sleep(1)
+os.sleep(2)
+
+local io            = io
+local os            = os
+local table         = table
+local string        = string
+local print         = print
+local pcall         = pcall
+local require       = require
+local loadfile      = loadfile
 
 local component     = require("component")
 local term          = require("term")
