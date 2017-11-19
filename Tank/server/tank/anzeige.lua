@@ -32,6 +32,7 @@ local version, tankneu, energie, Updatetimer
 local port            = 918
 local arg             = string.lower(tostring(...))
 local tank            = {}
+local tank_a          = {}
 local f               = {}
 local o               = {}
 local timer           = {}
@@ -91,7 +92,7 @@ function f.tank(hier, id, nachricht)
 end
 
 function f.verarbeiten(tank)
-  local tank_a = {}
+  tank_a = {}
   tank_a["false"] = {}
   for i = 1, #tank do
     if type(tank[i]) == "table" then
