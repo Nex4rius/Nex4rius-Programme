@@ -243,7 +243,7 @@ function f.Komponenten(typ)
     zeigen("chargepad_cesu", "CESU")
     zeigen("chargepad_mfe", "MFE")
     zeigen("chargepad_mfsu", "MFSU")
-    zeigen("capacitor_bank", "Capacitor bank")
+    zeigen("capacitor_bank", "Capacitor Bank")
   end
   print()
   gpu.setForeground(0xFFFFFF)
