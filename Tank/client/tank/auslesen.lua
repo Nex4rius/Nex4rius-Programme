@@ -229,15 +229,18 @@ function o.aktualisieren(signal)
   end
   if weiter then
     print("Ersetze alte Dateien")
-    local function kopieren(...)
-      for i in fs.list(...) do
-        if fs.isDirectory(i) then
-          kopieren(i)
-        end
-        verschieben("/update/" .. i, "/" .. i)
-      end
+    --local function kopieren(...)
+    --  for i in fs.list(...) do
+    --    if fs.isDirectory(i) then
+    --      kopieren(i)
+    --    end
+    --    verschieben("/update/" .. i, "/" .. i)
+    --  end
+    --end
+    --kopieren("/update")
+    for k, v in pairs(daten) do
+      verschieben("/update/" .. v, "/" .. v)
     end
-    kopieren("/update")
     entfernen("/update")
     print("Update vollständig")
     os.sleep(1)
