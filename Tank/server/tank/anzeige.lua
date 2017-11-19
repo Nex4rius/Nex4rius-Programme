@@ -567,10 +567,13 @@ end
 
 loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tankanzeige")
 
+local beenden = f.beenden
+
 local ergebnis, grund = pcall(f.main)
 
 if not ergebnis then
   f.text("<FEHLER> f.main")
   f.text(grund)
   os.sleep(2)
+  beenden()
 end
