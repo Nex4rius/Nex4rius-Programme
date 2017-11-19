@@ -441,12 +441,15 @@ end
 function f.datei(id, datei)
   if fs.exists("/tank/client" .. datei) then
     local d = io.open("/tank/client" .. datei, "r")
+    pritn("datei senden") --debug
     m.send(id, port, "datei", datei, d:read("*a"))
     d:close()
   end
 end
 
 function o.speichern(signal)
+  pritn("speichern") --debug
+  pritn(signal[7]) --debug
   if not signal[7] then
     f.datei(signal[3], signal[8])
   end
