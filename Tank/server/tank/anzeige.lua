@@ -37,7 +37,7 @@ local o               = {}
 local timer           = {}
 local Sensorliste     = {}
 local laeuft          = true
-local debug           = false
+local debug           = true
 local Sendeleistung   = math.huge
 local Wartezeit       = 150
 local letzteNachricht = c.uptime()
@@ -236,6 +236,7 @@ function f.anzeigen()
         label = "Helium-3"
       end
       f.zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl)
+      gpu.set(x, y, string.format("Anzahl: %s / %s X:%s Y:%s", i, #tankneu, x, y))
       leer = false
       if klein and maxanzahl > 5 then
         y = y + 1
@@ -342,6 +343,7 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
       gpu.fill(x, y + 2, breite - grenze, 1, " ")
     end
   end
+   gpu.set(x, y, string.format("X:%s Y:%s", x, y))
 end
 
 function f.Farben(vorne, hinten)
