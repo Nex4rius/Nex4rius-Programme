@@ -144,7 +144,7 @@ function f.check()
   term.clear()
   for i in pairs(tank) do
     if tank[i].name ~= nil then
-      print(string.format("%s - %s: %s/%s %.1f%%", tank[i].name, tank[i].label, tank[i].menge, tank[i].maxmenge, tank[i].menge / tank[i].maxmenge))
+      print(string.format("%s - %s: %s/%s %.1f%%", tank[i].name, tank[i].label, tank[i].menge, tank[i].maxmenge, tank[i].menge / tank[i].maxmenge * 100))
     end
   end
   return tank
