@@ -210,10 +210,10 @@ function f.Komponenten(typ)
   local function zeigen(name, text)
     if component.isAvailable(name) then
       gpu.setForeground(0x00FF00)
-      print(text .. string.rep(" ", 33 - string.len(text)) .. "- OK")
+      print(text .. string.rep(" ", 34 - string.len(text)) .. "- OK")
     else
       gpu.setForeground(0xFF0000)
-      print(text .. string.rep(" ", 33 - string.len(text)) .. "- fehlt")
+      print(text .. string.rep(" ", 34 - string.len(text)) .. "- fehlt")
     end
   end
   print("\nPrüfe Komponenten\n")
