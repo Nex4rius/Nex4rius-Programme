@@ -380,7 +380,8 @@ function f.text(a, b)
     gpu.setResolution(gpu.maxResolution()) --debug
     f.Farben(0xFFFFFF, 0x000000)
     gpu.set(1, 1, a)
-    gpu.set(1, 2, "                      ") --debug
+    gpu.set(1, 2, "                                             ") --debug
+    gpu.set(1, 3, "                                             ") --debug
   end
 end
 
