@@ -346,7 +346,6 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
       gpu.fill(x, y + 2, breite - grenze, 1, " ")
     end
   end
-   gpu.set(x, y, string.format("X:%s Y:%s", x, y))
 end
 
 function f.Farben(vorne, hinten)
