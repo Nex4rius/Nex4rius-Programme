@@ -375,8 +375,10 @@ function f.text(a, b)
       gpu.set(1, 1, a)
       --gpu.setResolution(string.len(a), 1)
     end
+    gpu.setResolution(gpu.maxResolution()) --debug
     f.Farben(0xFFFFFF, 0x000000)
     gpu.set(1, 1, a)
+    gpu.set(1, 2, "                      ") --debug
   end
 end
 
