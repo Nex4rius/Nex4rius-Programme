@@ -151,10 +151,8 @@ local function spairs(t, order)
 end
 
 function f.anzeigen()
-  print("f.anzeigen start") --debug
   local tankanzeige = tankneu
   for screenid in component.list("screen") do
-    print("f.anzeigen im for") --debug
     gpu.bind(screenid, false)
     local klein = false
     local _, hoch = component.proxy(screenid).getAspectRatio()
@@ -465,7 +463,6 @@ function f.update(signal)
 end
 
 function f.event(...)
-  print("\n") --debug
   print(...) --debug
   local signal = {...}
   if o[signal[6]] then
