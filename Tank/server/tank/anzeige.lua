@@ -91,50 +91,47 @@ function f.tank(hier, id, nachricht)
 end
 
 function f.verarbeiten(tank)
-  tankneu = {}
-  tanknr = 0
+  local tank_a = {}
+  tank_a["false"] = {}
   for i = 1, #tank do
     if type(tank[i]) == "table" then
       if type(tank[i].inhalt) == "table" then
         local extra
-        for j = 1, #tank[i].inhalt do -- debug
-          if tank[i].inhalt[j].name == "Tankname" then -- debug
-            print("Tankname Position: " .. j) -- debug
-          end -- debug
-        end -- debug
-        os.sleep(1) -- debug
         for j = 1, #tank[i].inhalt do
-          if tank[i].inhalt[j].name == "Tankname" and tank[i].inhalt[j].label ~= "false" then
-            extra = true
+          if tank[i].inhalt[j].name == "Tankname" then
+            print("Tankname Position: " .. j) -- debug
+            tank_a[tank[i].inhalt[j].name] = {}
           end
         end
         for j = 1, #tank[i].inhalt do
-          if tank[i].inhalt[j].label ~= "false" then
-            tanknr = tanknr + 1
-            f.hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, extra, true)
-          end
+          f.hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, true, tank_a[tank[i].inhalt[1].name])
         end
       end
+    end
+  end
+  tankneu = {}
+  for _, v in pairs(tank_a) do
+    for _, w in pairs(v) do
+      tankneu[#tankneu] = w
     end
   end
 end
 
-function f.hinzu(name, label, menge, maxmenge, extra, weiter)
-  if not extra then
-    for i = 1, #tankneu do
-      if tankneu[i].name == name then
-        tankneu[i].menge = tankneu[i].menge + menge
-        tankneu[i].maxmenge = tankneu[i].maxmenge + maxmenge
-        weiter = false
-      end
+function f.hinzu(name, label, menge, maxmenge, weiter, tankdazu)
+  local j = #tankdazu
+  for i = 1, j do
+    if tankdazu[i].name == name then
+      tankdazu[i].menge = tankdazu[i].menge + menge
+      tankdazu[i].maxmenge = tankdazu[i].maxmenge + maxmenge
+      weiter = false
     end
   end
   if weiter then
-    tankneu[tanknr] = {}
-    tankneu[tanknr].name = name
-    tankneu[tanknr].label = label
-    tankneu[tanknr].menge = menge
-    tankneu[tanknr].maxmenge = maxmenge
+    tankdazu[j] = {}
+    tankdazu[j].name = name
+    tankdazu[j].label = label
+    tankdazu[j].menge = menge
+    tankdazu[j].maxmenge = maxmenge
   end
 end
 
