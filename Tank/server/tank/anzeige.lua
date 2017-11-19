@@ -98,10 +98,13 @@ function f.verarbeiten(tank)
       if type(tank[i].inhalt) == "table" then
         local extra
         for j = 1, #tank[i].inhalt do -- debug
-          print(tank[i].inhalt[j].name) -- debug
-          print(tank[i].inhalt[j].label) -- debug
+          print("start") -- debug
+          if tank[i].inhalt[j].name == "Tankname" then -- debug
+            print(tank[i].inhalt[j].name) -- debug
+            print(tank[i].inhalt[j].label) -- debug
+          end -- debug
+          print("ende") -- debug
         end -- debug
-        os.sleep(2) -- debug
         for j = 1, #tank[i].inhalt do
           if tank[i].inhalt[j].name == "Tankname" and tank[i].inhalt[j].label ~= "false" then
             extra = true
