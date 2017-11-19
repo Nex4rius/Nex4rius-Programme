@@ -97,12 +97,7 @@ function f.verarbeiten(tank)
     if type(tank[i]) == "table" then
       if type(tank[i].inhalt) == "table" then
         local extra
-        for j = 1, #tank[i].inhalt do
-          if tank[i].inhalt[j].name == "Tankname" then
-            print("Tankname Position: " .. j) -- debug
-            tank_a[tank[i].inhalt[j].name] = {}
-          end
-        end
+        tank_a[tank[i].inhalt[1].name] = {}
         for j = 1, #tank[i].inhalt do
           f.hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, true, tank_a[tank[i].inhalt[1].name])
         end
@@ -115,6 +110,10 @@ function f.verarbeiten(tank)
       tankneu[#tankneu] = w
     end
   end
+  print(serialization.serialize(tank_a))
+  os.sleep(5)
+  print(serialization.serialize(tankneu))
+  os.sleep(5)
 end
 
 function f.hinzu(name, label, menge, maxmenge, weiter, tankdazu)
