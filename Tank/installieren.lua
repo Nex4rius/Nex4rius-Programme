@@ -49,6 +49,10 @@ function f.installieren(versionTyp)
     "transposer",
     "tank_controller",
     --EU
+    "batbox", "batbox",
+    "cesu", "cesu",
+    "mfe", "mfe",
+    "mfsu", "mfsu",
     "chargepad_batbox", "batbox",
     "chargepad_cesu", "cesu",
     "chargepad_mfe", "mfe",
@@ -239,10 +243,14 @@ function f.Komponenten(typ)
   else
     zeigen("tank_controller", "Tank Controller Upgrade")
     zeigen("transposer", "Transposer")
-    zeigen("chargepad_batbox", "Batbox")
-    zeigen("chargepad_cesu", "CESU")
-    zeigen("chargepad_mfe", "MFE")
-    zeigen("chargepad_mfsu", "MFSU")
+    zeigen("batbox", "Batbox")
+    zeigen("cesu", "CESU")
+    zeigen("mfe", "MFE")
+    zeigen("mfsu", "MFSU")
+    zeigen("chargepad_batbox", "Batbox Charge Pad")
+    zeigen("chargepad_cesu", "CESU Charge Pad")
+    zeigen("chargepad_mfe", "MFE Charge Pad")
+    zeigen("chargepad_mfsu", "MFSU Charge Pad")
     zeigen("capacitor_bank", "Capacitor Bank")
   end
   print()
