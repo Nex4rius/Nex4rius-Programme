@@ -495,14 +495,17 @@ function f.senden()
 end
 
 function f.checkUpdate(text)
-  if component.isAvailable("internet") then
-    serverVersion = f.checkServerVersion()
-  end
   if text then
     term.setCursor(gpu.getResolution())
     print("\nPrüfe Version\n")
     print("Derzeitige Version:    " .. (version or "<FEHLER>"))
-    print("Verfügbare Version:    " .. (serverVersion or "<FEHLER>"))
+    io.write("Verfügbare Version:    ")
+  end
+  if component.isAvailable("internet") then
+    serverVersion = f.checkServerVersion() or "<FEHLER>"
+  end
+  if text then
+    print(serverVersion)
     print()
     os.sleep(2)
   end
