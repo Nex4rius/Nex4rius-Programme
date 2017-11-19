@@ -411,9 +411,11 @@ function o.tankliste(signal)
     print("f.update start") -- debug
     f.update(signal)
   end
-  print("f.update ende draußen") -- debug
+  for i in pairs(Sensorliste) do --debug
+    print(Sensorliste[i][3]) --debug
+    print(serialization.serialize(Sensorliste[i][3])) --debug
+  end --debug
   for i in pairs(Sensorliste) do
-    print(Sensorliste[i]) --debug
     if Sensorliste[i][3] == signal[3] then
       dazu = false
       Sensorliste[i] = signal
