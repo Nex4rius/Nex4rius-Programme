@@ -411,9 +411,12 @@ end
 function o.tankliste(signal)
   print("tankliste jap") --debug
   local dazu = true
+  print("tankliste 1") --debug
   if version ~= signal[7] then
+    print("f.update start") -- debug
     event.timer(1, f.update(signal), 1)
   end
+  print("tankliste 2") --debug
   for i in pairs(Sensorliste) do
     print(Sensorliste[i]) --debug
     if Sensorliste[i][3] == signal[3] then
@@ -422,9 +425,11 @@ function o.tankliste(signal)
       break
     end
   end
+  print("tankliste 3") --debug
   if dazu then
     table.insert(Sensorliste, signal)
   end
+  print("tankliste 4") --debug
   for k, v in pairs(timer) do
     event.cancel(v)
   end
@@ -452,6 +457,7 @@ function o.speichern(signal)
 end
 
 function f.update(signal)
+  print("f.update drin") -- debug
   local dateiliste = {"/tank/auslesen.lua", "/tank/version.txt", "/autorun.lua"}
   for i = 1, #dateiliste do
     f.datei(signal[3], dateiliste[i])
