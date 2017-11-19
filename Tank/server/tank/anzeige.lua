@@ -98,7 +98,7 @@ function f.verarbeiten(tank)
       if type(tank[i].inhalt) == "table" then
         tank_a[tank[i].inhalt[1].name] = {}
         for j = 1, #tank[i].inhalt do
-          f.hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, true, tank_a[tank[i].inhalt[1].name])
+          f.hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, true, tank[i].inhalt[1].name)
         end
       end
     end
@@ -110,26 +110,26 @@ function f.verarbeiten(tank)
     end
   end
   print(serialization.serialize(tank_a))
-  os.sleep(5)
+  print("\n\n\n")
   print(serialization.serialize(tankneu))
-  os.sleep(5)
+  os.sleep(10)
 end
 
 function f.hinzu(name, label, menge, maxmenge, weiter, tankdazu)
-  local j = #tankdazu
+  local j = #tank_a[tankdazu]
   for i = 1, j do
-    if tankdazu[i].name == name then
-      tankdazu[i].menge = tankdazu[i].menge + menge
-      tankdazu[i].maxmenge = tankdazu[i].maxmenge + maxmenge
+    if tank_a[tankdazu][i].name == name then
+      tank_a[tankdazu][i].menge = tank_a[tankdazu][i].menge + menge
+      tank_a[tankdazu][i].maxmenge = tank_a[tankdazu][i].maxmenge + maxmenge
       weiter = false
     end
   end
   if weiter then
-    tankdazu[j] = {}
-    tankdazu[j].name = name
-    tankdazu[j].label = label
-    tankdazu[j].menge = menge
-    tankdazu[j].maxmenge = maxmenge
+    tank_a[tankdazu][j] = {}
+    tank_a[tankdazu][j].name = name
+    tank_a[tankdazu][j].label = label
+    tank_a[tankdazu][j].menge = menge
+    tank_a[tankdazu][j].maxmenge = maxmenge
   end
 end
 
