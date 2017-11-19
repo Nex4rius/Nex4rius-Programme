@@ -107,9 +107,10 @@ function f.verarbeiten(tank)
       end
     end
   end
-  tankneu = {}
+  tankneu = tank_a["false"]
   for _, v in pairs(tank_a) do
     for _, w in pairs(v) do
+      print(serialization.serialize(w))
       tankneu[#tankneu] = w
     end
   end
