@@ -373,7 +373,7 @@ function f.text(a, b)
     else
       f.Farben(0xFFFFFF, 0x000000)
       gpu.set(1, 1, a)
-      gpu.setResolution(string.len(a), 1)
+      --gpu.setResolution(string.len(a), 1)
     end
     f.Farben(0xFFFFFF, 0x000000)
     gpu.set(1, 1, a)
