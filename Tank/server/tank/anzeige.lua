@@ -99,12 +99,10 @@ function f.verarbeiten(tank)
         local extra
         for j = 1, #tank[i].inhalt do -- debug
           if tank[i].inhalt[j].name == "Tankname" then -- debug
-            print("\nstart\n") -- debug
-            print(tank[i].inhalt[j].name) -- debug
-            print(tank[i].inhalt[j].label) -- debug
-            print("\nende\n") -- debug
+            print("Tankname Position: " .. j) -- debug
           end -- debug
         end -- debug
+        os.sleep(1) -- debug
         for j = 1, #tank[i].inhalt do
           if tank[i].inhalt[j].name == "Tankname" and tank[i].inhalt[j].label ~= "false" then
             extra = true
@@ -159,6 +157,7 @@ end
 
 function f.anzeigen()
   print("f.anzeigen start") --debug
+  local tankanzeige = tankneu
   for screenid in component.list("screen") do
     print("f.anzeigen im for") --debug
     gpu.bind(screenid, false)
@@ -170,7 +169,7 @@ function f.anzeigen()
     local x = 1
     local y = 1
     local leer = true
-    local maxanzahl = #tankneu
+    local maxanzahl = #tankanzeige
     local a, b = gpu.getResolution()
     if maxanzahl <= 16 and maxanzahl ~= 0 then
       if klein and maxanzahl > 5 then
@@ -195,9 +194,9 @@ function f.anzeigen()
     end
     os.sleep(0.1)
     local anzahl = 0
-    --for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
-    print("tankneu start") --debug
-    for i = 1, #tankneu do
+    --for i in spairs(tankanzeige, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
+    print("tankanzeige start") --debug
+    for i = 1, #tankanzeige do
       anzahl = anzahl + 1
       local links, rechts, breite = -15, -25, 40
       if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
@@ -236,16 +235,16 @@ function f.anzeigen()
           y = 1
         end
       end
-      local name = string.gsub(tankneu[i].name, "%p", "")
-      local label = f.zeichenErsetzen(string.gsub(tankneu[i].label, "%p", ""))
-      local menge = tankneu[i].menge
-      local maxmenge = tankneu[i].maxmenge
+      local name = string.gsub(tankanzeige[i].name, "%p", "")
+      local label = f.zeichenErsetzen(string.gsub(tankanzeige[i].label, "%p", ""))
+      local menge = tankanzeige[i].menge
+      local maxmenge = tankanzeige[i].maxmenge
       local prozent = string.format("%.1f%%", menge / maxmenge * 100)
       if label == "fluidhelium3" then
         label = "Helium-3"
       end
       f.zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl)
-      gpu.set(x, y, string.format("Anzahl: %s / %s X:%s Y:%s", i, #tankneu, x, y))
+      gpu.set(x, y, string.format("Anzahl: %s / %s X:%s Y:%s", i, #tankanzeige, x, y))
       leer = false
       if klein and maxanzahl > 5 then
         y = y + 1
