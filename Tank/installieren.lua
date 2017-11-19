@@ -217,7 +217,6 @@ function f.Komponenten(typ)
     end
   end
   print("\nPrüfe Komponenten\n")
-  zeigen("internet", "Internetkarte")
   if component.isAvailable("modem") then
     gpu.setForeground(0x00FF00)
     if component.modem.isWireless() then
@@ -231,6 +230,7 @@ function f.Komponenten(typ)
     print("Netzwerkkarte                     - fehlt")
   end
   if typ == "server" then
+    zeigen("internet", "Internetkarte")
     if gpu.maxResolution() == 160 then
       gpu.setForeground(0x00FF00)
       print("Grafikkarte Tier III              - OK")
