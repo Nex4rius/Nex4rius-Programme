@@ -479,7 +479,7 @@ function f.event(...)
   print(...) --debug
   local signal = {...}
   if o[signal[6]] then
-    if Sendeleistung < signal[5] + 50 then
+    if Sendeleistung < signal[5] + 50 or Sendeleistung == math.huge then
       Sendeleistung = signal[5] + 50
     end
     o[signal[6]](signal)
