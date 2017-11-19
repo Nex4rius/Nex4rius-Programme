@@ -438,6 +438,10 @@ function f.datei(id, datei)
     print("datei 2") -- debug
     local d = io.open("/tank/client" .. datei, "r")
     print("datei senden") --debug
+    print(id) --debug
+    print(port) --debug
+    print(datei) --debug
+    print(type(d:read("*a"))) --debug
     m.send(id, port, "datei", datei, d:read("*a"))
     print("datei 3") -- debug
     d:close()
