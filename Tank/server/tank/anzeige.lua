@@ -447,6 +447,7 @@ function f.update(signal)
 end
 
 function f.event(...)
+  print("\n\n\n")
   print(...)
   local signal = {...}
   if o[signal[6]] then
