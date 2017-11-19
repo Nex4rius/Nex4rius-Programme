@@ -238,7 +238,6 @@ function f.anzeigen()
       if label == "fluidhelium3" then
         label = "Helium-3"
       end
-      print("zeigeHier start") --debug
       f.zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl)
       gpu.set(x, y, string.format("Anzahl: %s / %s X:%s Y:%s", i, #tankneu, x, y))
       leer = false
@@ -272,7 +271,6 @@ function f.zeichenErsetzen(...)
 end
 
 function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl)
-  print("zeigeHier drin") --debug
   if farben[name] == nil and debug then
     nachricht = string.format("%s  %s  >>report this liquid<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
     nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
