@@ -215,6 +215,7 @@ function f.Komponenten(typ)
       gpu.setForeground(0xFF0000)
       print(text .. string.rep(" ", 34 - string.len(text)) .. "- fehlt")
     end
+    os.sleep(1)
   end
   print("\nPrüfe Komponenten\n")
   zeigen("internet", "Internetkarte")
