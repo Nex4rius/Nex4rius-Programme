@@ -411,12 +411,11 @@ end
 function o.tankliste(signal)
   print("tankliste jap") --debug
   local dazu = true
-  print("tankliste 1") --debug
   if version ~= signal[7] then
     print("f.update start") -- debug
     f.update(signal)
   end
-  print("tankliste 2") --debug
+  print("f.update ende draußen") -- debug
   for i in pairs(Sensorliste) do
     print(Sensorliste[i]) --debug
     if Sensorliste[i][3] == signal[3] then
@@ -425,11 +424,9 @@ function o.tankliste(signal)
       break
     end
   end
-  print("tankliste 3") --debug
   if dazu then
     table.insert(Sensorliste, signal)
   end
-  print("tankliste 4") --debug
   for k, v in pairs(timer) do
     event.cancel(v)
   end
