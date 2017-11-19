@@ -203,14 +203,17 @@ function f.installieren(versionTyp)
 end
 
 function f.Komponenten(typ)
-  print("\nPrüfe Komponenten\n")
-  if component.isAvailable("internet") then
-    gpu.setForeground(0x00FF00)
-    print("Internetkarte                     - OK")
-  else
-    gpu.setForeground(0xFF0000)
-    print("Internetkarte                     - fehlt")
+  local function zeigen(name, text)
+    if component.isAvailable(name) then
+      gpu.setForeground(0x00FF00)
+      print(text .. string.rep(" ", 33 - string.len(text)) .. "- OK")
+    else
+      gpu.setForeground(0xFF0000)
+      print(text .. string.rep(" ", 33 - string.len(text)) .. "- fehlt")
+    end
   end
+  print("\nPrüfe Komponenten\n")
+  zeigen("internet", "Internetkarte")
   if component.isAvailable("modem") then
     gpu.setForeground(0x00FF00)
     if component.modem.isWireless() then
@@ -234,20 +237,13 @@ function f.Komponenten(typ)
       print("Bildschirm Tier III               - fehlt")
     end
   else
-    if component.isAvailable("tank_controller") then
-      gpu.setForeground(0x00FF00)
-      print("Adapter + Tank Controller Upgrade - OK")
-    else
-      gpu.setForeground(0xFF0000)
-      print("Adapter + Tank Controller Upgrade - fehlt")
-    end
-    if component.isAvailable("transposer") then
-      gpu.setForeground(0x00FF00)
-      print("Transposer                        - OK")
-    else
-      gpu.setForeground(0xFF0000)
-      print("Transposer                        - fehlt")
-    end
+    zeigen("tank_controller", "Tank Controller Upgrade")
+    zeigen("transposer", "Transposer")
+    zeigen("chargepad_batbox", "Batbox")
+    zeigen("chargepad_cesu", "CESU")
+    zeigen("chargepad_mfe", "MFE")
+    zeigen("chargepad_mfsu", "MFSU")
+    zeigen("capacitor_bank", "Capacitor bank")
   end
   print()
   gpu.setForeground(0xFFFFFF)
