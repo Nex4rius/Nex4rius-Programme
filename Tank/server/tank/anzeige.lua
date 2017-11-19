@@ -414,7 +414,7 @@ function o.tankliste(signal)
   print("tankliste 1") --debug
   if version ~= signal[7] then
     print("f.update start") -- debug
-    event.timer(1, f.update(signal), 1)
+    f.update(signal)
   end
   print("tankliste 2") --debug
   for i in pairs(Sensorliste) do
@@ -462,8 +462,9 @@ function f.update(signal)
   for i = 1, #dateiliste do
     f.datei(signal[3], dateiliste[i])
   end
+  print("f.update senden") -- debug
   m.send(signal[3], port, "aktualisieren", serialization.serialize(dateiliste))
-  return function() end
+  print("f.update ende") -- debug
 end
 
 function f.event(...)
