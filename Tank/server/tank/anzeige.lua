@@ -158,6 +158,7 @@ end
 
 function f.anzeigen()
   local tankanzeige = tankneu
+  print(serialization.serialize(tankanzeige))
   for screenid in component.list("screen") do
     gpu.bind(screenid, false)
     local klein = false
