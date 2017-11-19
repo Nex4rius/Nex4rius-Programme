@@ -192,7 +192,6 @@ function f.anzeigen()
     --for i in spairs(tankneu, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
     print("tankneu start") --debug
     for i = 1, #tankneu do
-      print("tankneu drin") --debug
       anzahl = anzahl + 1
       local links, rechts, breite = -15, -25, 40
       if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
@@ -456,12 +455,15 @@ end
 function f.update(signal)
   print("f.update drin") -- debug
   local dateiliste = {"/tank/auslesen.lua", "/tank/version.txt", "/autorun.lua"}
+  print("f.update 1") -- debug
   for i = 1, #dateiliste do
+    print("f.update loop 1") -- debug
     f.datei(signal[3], dateiliste[i])
+    print("f.update loop 2") -- debug
   end
-  print("f.update senden") -- debug
+  print("f.update 2") -- debug
   m.send(signal[3], port, "aktualisieren", serialization.serialize(dateiliste))
-  print("f.update ende") -- debug
+  print("f.update 3") -- debug
 end
 
 function f.event(...)
