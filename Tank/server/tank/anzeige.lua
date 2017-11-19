@@ -97,9 +97,11 @@ function f.verarbeiten(tank)
   for i = 1, #tank do
     if type(tank[i]) == "table" then
       if type(tank[i].inhalt) == "table" then
-        tank_a[tank[i].inhalt[1].name] = {}
+        tank_a[tank[i].inhalt[1].label] = {}
+        print(tank[i].inhalt[1].name)
+        print(tank[i].inhalt[1].label)
         for j = 1, #tank[i].inhalt do
-          f.hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, true, tank[i].inhalt[1].name)
+          f.hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, true, tank[i].inhalt[1].label)
         end
       end
     end
@@ -110,8 +112,9 @@ function f.verarbeiten(tank)
       tankneu[#tankneu] = w
     end
   end
+  print("\n\n")
   print(serialization.serialize(tank_a))
-  print("\n\n\n")
+  print("\n")
   print(serialization.serialize(tankneu))
   os.sleep(10)
 end
