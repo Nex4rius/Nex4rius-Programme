@@ -239,12 +239,11 @@ function o.aktualisieren(signal)
     --end
     --kopieren("/update")
     for k, v in pairs(daten) do
-      verschieben("/update/" .. v, "/" .. v)
+      --verschieben("/update/" .. v, "/" .. v)
     end
-    entfernen("/update")
+    --entfernen("/update")
     print("Update vollständig")
     os.sleep(1)
-    --f.senden(signal, "update", true)
     for i = 5, 1, -1 do
       print(string.format("\nNeustarten in %ss", i))
       os.sleep(1)
