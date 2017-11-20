@@ -287,7 +287,7 @@ function f.checkOpenOS()
       end
       gpu.setForeground(Farben.roteFarbe)
       print("\nOpenOS Version:        " .. _OSVERSION .. " -> " .. OpenOS_Version .. "\n")
-      if neuer and component.isAvailable("internet") then
+      if neuer and component.isAvailable("internet") and true == false then -- deaktiviert
         if Sicherung.autoUpdate then
           print("Update OpenOS")
           os.sleep(3)
