@@ -35,7 +35,7 @@ x = x - 35
 
 function Funktion.Pfad(api)
     if api then
-        return "https://api.github.com/repos/MightyPirates/OpenComputers/git/trees/285f9c8fa60abf54dd6b199c895c9e07943c6d1d?recursive=1"
+        return "https://api.github.com/repos/MightyPirates/OpenComputers/git/trees/89f1752e0c29a7152a12bf36f7707c25dc51da35?recursive=1"
     else
         return "https://raw.githubusercontent.com/MightyPirates/OpenComputers/master-MC1.7.10/src/main/resources/assets/opencomputers/loot/openos/"
     end
