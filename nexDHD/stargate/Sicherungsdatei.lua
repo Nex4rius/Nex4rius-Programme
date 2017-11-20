@@ -7,7 +7,7 @@
 --
 
 return {
-  autoclosetime = 60, -- in seconds -- false for no autoclose
+  autoclosetime = false, -- in seconds -- false for no autoclose
   IDC           = "", -- Iris Deactivation Code
   RF            = false, -- show energy in RF instead of EU
   Sprache       = "", -- deutsch / english / russian / czech
