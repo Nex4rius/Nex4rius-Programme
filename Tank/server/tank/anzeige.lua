@@ -100,15 +100,15 @@ function f.tank(hier, id, nachricht)
 end
 
 function f.verarbeiten(tank)
-  printwlan(serialization.serialize(tank))
+  printwlan("tank\n" .. serialization.serialize(tank))
   tank_a = {}
   tank_a["false"] = {}
   for i = 1, #tank do
     if type(tank[i]) == "table" then
       if type(tank[i].inhalt) == "table" then
         tank_a[tank[i].inhalt[1].label] = {}
-        printwlan(tank[i].inhalt[1].name)
-        printwlan(tank[i].inhalt[1].label)
+        printwlan("name\n" .. tank[i].inhalt[1].name)
+        printwlan("label\n" .. tank[i].inhalt[1].label)
         for j = 1, #tank[i].inhalt do
           f.hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, true, tank[i].inhalt[1].label)
         end
@@ -118,15 +118,12 @@ function f.verarbeiten(tank)
   tankneu = tank_a["false"]
   for _, v in pairs(tank_a) do
     for _, w in pairs(v) do
-      printwlan(serialization.serialize(w))
+      printwlan("w\n" .. serialization.serialize(w))
       table.insert(tankneu, w)
     end
   end
-  printwlan("\n\n")
-  printwlan(serialization.serialize(tank_a))
-  printwlan("\n")
-  printwlan(serialization.serialize(tankneu))
-  os.sleep(10)
+  printwlan("tank_a\n" .. serialization.serialize(tank_a))
+  printwlan("tankneu\n" .. serialization.serialize(tankneu))
 end
 
 function f.hinzu(name, label, menge, maxmenge, weiter, tankdazu)
@@ -166,7 +163,7 @@ end
 
 function f.anzeigen()
   local tankanzeige = tankneu
-  printwlan(serialization.serialize(tankanzeige))
+  printwlan("tankanzeige\n" .. serialization.serialize(tankanzeige))
   for screenid in component.list("screen") do
     gpu.bind(screenid, false)
     local klein = false
@@ -203,7 +200,6 @@ function f.anzeigen()
     os.sleep(0.1)
     local anzahl = 0
     --for i in spairs(tankanzeige, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
-    printwlan("tankanzeige start") --debug
     for i = 1, #tankanzeige do
       anzahl = anzahl + 1
       local links, rechts, breite = -15, -25, 40
@@ -464,8 +460,7 @@ function f.datei(id, datei)
 end
 
 function o.speichern(signal)
-  pritn("speichern") --debug
-  pritn(signal[7]) --debug
+  printwlan("speichern\n" .. signal[7]) --debug
   if not signal[7] then
     f.datei(signal[3], signal[8])
   end
@@ -485,7 +480,7 @@ function f.update(signal)
 end
 
 function f.event(...)
-  printwlan(...) --debug
+  printwlan("event", ...) --debug
   local signal = {...}
   if o[signal[6]] then
     --if Sendeleistung < signal[5] + 50 or Sendeleistung == math.huge then
