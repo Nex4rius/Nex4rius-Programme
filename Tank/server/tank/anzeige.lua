@@ -452,7 +452,7 @@ function f.datei(id, datei)
     printwlan("datei 4") --debug
     printwlan(type(inhalt)) --debug
     printwlan(serialization.serialize(inhalt)) --debug
-    if inhalt then
+    if string.len(tostring(inhalt)) > 10 then
       printwlan("datei 5") --debug
       m.send(id, port, "datei", datei, d:read("*a"))
     end
