@@ -821,7 +821,10 @@ function f.autoclose()
     f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAn .. Sicherung.autoclosetime .. "s")
     if (activationtime - os.time()) / sectime > Sicherung.autoclosetime and state == "Connected" and einmalBeenden then
       einmalBeenden = false
-      sg.disconnect()
+      state, chevrons, direction = sg.stargateState()
+      if direction == "Outgoing" then
+        sg.disconnect()
+      end
     end
   end
 end
