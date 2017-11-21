@@ -62,6 +62,10 @@ local function printwlan(...)
   m.broadcast(1, ...)
 end
 
+m.setStrength(math.huge)
+
+printwlan("start")
+
 function f.tank(hier, id, nachricht)
   local dazu = true
   local ende = 0
