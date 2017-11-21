@@ -91,6 +91,12 @@ do
   if fs.exists("/stargate/log") then
     log = true
   end
+  if Statustimer then
+    local function statusabbrechen()
+      event.cancel(Statustimer)
+    end
+    pcall(statusabbrechen)
+  end
 end
 
 local ersetzen                  = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
@@ -143,6 +149,7 @@ local running                   = true
 local send                      = true
 local einmalAdressenSenden      = true
 local Nachrichtleer             = true
+local einmalBeenden             = true
 local IDCyes                    = false
 local entercode                 = false
 local redstoneConnected         = false
@@ -655,6 +662,7 @@ function f.Iriskontrolle()
     LampenGruen = false
     LampenRot = false
     zielAdresse = ""
+    einmalBeenden = true
   end
   if state == "Closing" and Sicherung.control == "On" then
     k = "close"
@@ -811,7 +819,8 @@ function f.autoclose()
       Sicherung.autoclosetime = 60
     end
     f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAn .. Sicherung.autoclosetime .. "s")
-    if (activationtime - os.time()) / sectime > Sicherung.autoclosetime and state == "Connected" then
+    if (activationtime - os.time()) / sectime > Sicherung.autoclosetime and state == "Connected" and einmalBeenden then
+      einmalBeenden = false
       sg.disconnect()
     end
   end
@@ -1272,12 +1281,11 @@ end
 function Taste.d()
   f.Farbe(Farben.Steuerungstextfarbe, Farben.Steuerungsfarbe)
   f.zeigeHier(Taste.Koordinaten.d_X + 2, Taste.Koordinaten.d_Y, "D " .. sprachen.abschalten, 0)
+  sg.disconnect()
   if state == "Connected" and direction == "Incoming" then
-    sg.disconnect()
     sg.sendMessage("Request: Disconnect Stargate")
     f.zeigeNachricht(sprachen.senden .. sprachen.aufforderung .. ": " .. sprachen.stargateAbschalten .. " " .. sprachen.stargateName)
   else
-    sg.disconnect()
     if state == "Idle" then else
       f.zeigeNachricht(sprachen.stargateAbschalten .. " " .. sprachen.stargateName)
     end
