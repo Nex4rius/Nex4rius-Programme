@@ -253,7 +253,7 @@ end
 
 function f.checkOpenOS()
   if OC then
-    local OpenOS_Version = "OpenOS 1.6.7"
+    local OpenOS_Version = "OpenOS 1.7.0"
     if wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Version", "/einstellungen/OpenOS-Version") then
       local d = io.open("/einstellungen/OpenOS-Version", "r")
       OpenOS_Version = d:read()
