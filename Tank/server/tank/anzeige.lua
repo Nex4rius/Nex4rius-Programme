@@ -59,6 +59,7 @@ else
 end
 
 local function printwlan(...)
+  print(...)
   m.broadcast(1, ...)
 end
 
