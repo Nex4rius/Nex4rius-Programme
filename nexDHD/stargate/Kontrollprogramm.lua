@@ -91,6 +91,12 @@ do
   if fs.exists("/stargate/log") then
     log = true
   end
+  if Statustimer then
+    local function statusabbrechen()
+      event.cancel(Statustimer)
+    end
+    pcall(statusabbrechen)
+  end
 end
 
 local ersetzen                  = loadfile("/stargate/sprache/ersetzen.lua")(sprachen)
