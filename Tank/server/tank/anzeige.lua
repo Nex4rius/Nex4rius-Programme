@@ -448,8 +448,8 @@ function f.datei(id, datei)
     printwlan("datei 3") --debug
     local inhalt = d:read("*a")
     printwlan("datei 4") --debug
+    printwlan(serialization.serialize(inhalt)) --debug
     if inhalt then
-      printwlan(inhalt) --debug
       printwlan("datei 5") --debug
       m.send(id, port, "datei", datei, d:read("*a"))
     end
