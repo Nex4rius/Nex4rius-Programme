@@ -487,9 +487,9 @@ function f.event(...)
   printwlan(...) --debug
   local signal = {...}
   if o[signal[6]] then
-    if Sendeleistung < signal[5] + 50 or Sendeleistung == math.huge then
-      Sendeleistung = signal[5] + 50
-    end
+    --if Sendeleistung < signal[5] + 50 or Sendeleistung == math.huge then
+    --  Sendeleistung = signal[5] + 50
+    --end
     o[signal[6]](signal)
   end
 end
