@@ -822,7 +822,6 @@ function f.autoclose()
     if (activationtime - os.time()) / sectime > Sicherung.autoclosetime and state == "Connected" and einmalBeenden then
       einmalBeenden = false
       sg.disconnect()
-      event.timer(2, sg.disconnect, 1)
     end
   end
 end
