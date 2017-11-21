@@ -203,7 +203,7 @@ function f.start(versionTyp)
 end
 
 function f.installieren(versionTyp)
-  local timer = event.timer(0.1, f.status, math.huge)
+  Statustimer = event.timer(0.1, f.status, math.huge)
   fs.makeDirectory("/update/stargate/sprache")
   local updateKomplett = false
   local function download(von, nach)
@@ -312,7 +312,8 @@ function f.installieren(versionTyp)
   elseif CC then
     os.reboot()
   end
-  event.cancel(timer)
+  event.cancel(Statustimer)
+  Statustimer = nil
 end
 
 if versionTyp == nil then
