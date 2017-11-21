@@ -6,7 +6,7 @@ os.sleep(2)
 
 local io              = io
 local os              = os
-local table           = table
+local table           = tableR
 local string          = string
 local print           = print
 local pcall           = pcall
@@ -285,7 +285,7 @@ end
 
 function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl)
   if farben[name] == nil and debug then
-    nachricht = string.format("%s  %s  >>report this liquid<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
+    nachricht = string.format("%s  %s  >>report this<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
     nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
   elseif name == "Tankname" then
     local ausgabe = {}
