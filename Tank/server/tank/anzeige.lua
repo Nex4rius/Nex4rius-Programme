@@ -6,7 +6,7 @@ os.sleep(2)
 
 local io              = io
 local os              = os
-local table           = tableR
+local table           = table
 local string          = string
 local print           = print
 local pcall           = pcall
