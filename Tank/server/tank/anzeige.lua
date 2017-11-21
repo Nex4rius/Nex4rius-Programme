@@ -524,6 +524,7 @@ function f.checkUpdate(text)
 end
 
 function debugupdate()
+  printwlan("update")
   f.text("Update...")
   require("component").getPrimary("gpu").setResolution(require("component").getPrimary("gpu").maxResolution())
   os.execute("pastebin run -f cyF0yhXZ Tank")
