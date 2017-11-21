@@ -143,6 +143,7 @@ local running                   = true
 local send                      = true
 local einmalAdressenSenden      = true
 local Nachrichtleer             = true
+local einmalBeenden             = true
 local IDCyes                    = false
 local entercode                 = false
 local redstoneConnected         = false
@@ -655,6 +656,7 @@ function f.Iriskontrolle()
     LampenGruen = false
     LampenRot = false
     zielAdresse = ""
+    einmalBeenden = true
   end
   if state == "Closing" and Sicherung.control == "On" then
     k = "close"
@@ -811,8 +813,10 @@ function f.autoclose()
       Sicherung.autoclosetime = 60
     end
     f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAn .. Sicherung.autoclosetime .. "s")
-    if (activationtime - os.time()) / sectime > Sicherung.autoclosetime and state == "Connected" then
+    if (activationtime - os.time()) / sectime > Sicherung.autoclosetime and state == "Connected" and einmalBeenden then
+      einmalBeenden = false
       sg.disconnect()
+      event.timer(2, sg.disconnect, 1)
     end
   end
 end
