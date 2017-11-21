@@ -58,6 +58,10 @@ else
   arg = true
 end
 
+local function printwlan(...)
+  m.broadcast(1, ...)
+end
+
 function f.tank(hier, id, nachricht)
   local dazu = true
   local ende = 0
@@ -92,15 +96,15 @@ function f.tank(hier, id, nachricht)
 end
 
 function f.verarbeiten(tank)
-  print(serialization.serialize(tank))
+  printwlan(serialization.serialize(tank))
   tank_a = {}
   tank_a["false"] = {}
   for i = 1, #tank do
     if type(tank[i]) == "table" then
       if type(tank[i].inhalt) == "table" then
         tank_a[tank[i].inhalt[1].label] = {}
-        print(tank[i].inhalt[1].name)
-        print(tank[i].inhalt[1].label)
+        printwlan(tank[i].inhalt[1].name)
+        printwlan(tank[i].inhalt[1].label)
         for j = 1, #tank[i].inhalt do
           f.hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, true, tank[i].inhalt[1].label)
         end
@@ -110,14 +114,14 @@ function f.verarbeiten(tank)
   tankneu = tank_a["false"]
   for _, v in pairs(tank_a) do
     for _, w in pairs(v) do
-      print(serialization.serialize(w))
+      printwlan(serialization.serialize(w))
       table.insert(tankneu, w)
     end
   end
-  print("\n\n")
-  print(serialization.serialize(tank_a))
-  print("\n")
-  print(serialization.serialize(tankneu))
+  printwlan("\n\n")
+  printwlan(serialization.serialize(tank_a))
+  printwlan("\n")
+  printwlan(serialization.serialize(tankneu))
   os.sleep(10)
 end
 
@@ -158,7 +162,7 @@ end
 
 function f.anzeigen()
   local tankanzeige = tankneu
-  print(serialization.serialize(tankanzeige))
+  printwlan(serialization.serialize(tankanzeige))
   for screenid in component.list("screen") do
     gpu.bind(screenid, false)
     local klein = false
@@ -195,7 +199,7 @@ function f.anzeigen()
     os.sleep(0.1)
     local anzahl = 0
     --for i in spairs(tankanzeige, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
-    print("tankanzeige start") --debug
+    printwlan("tankanzeige start") --debug
     for i = 1, #tankanzeige do
       anzahl = anzahl + 1
       local links, rechts, breite = -15, -25, 40
@@ -410,10 +414,10 @@ function f.tankliste()
 end
 
 function o.tankliste(signal)
-  print("tankliste jap") --debug
+  printwlan("tankliste jap") --debug
   local dazu = true
   if version ~= signal[7] then
-    print("f.update start") -- debug
+    printwlan("f.update start") -- debug
     f.update(signal)
   end
   for i in pairs(Sensorliste) do
@@ -429,7 +433,7 @@ function o.tankliste(signal)
   for k, v in pairs(timer) do
     event.cancel(v)
   end
-  print("timer start jap") --debug
+  printwlan("timer start jap") --debug
   timer.tank = event.timer(Wartezeit + 15, f.tank, 1)
   timer.jetzt = event.timer(2, f.tankliste, 1)
   timer.senden = event.timer(Zeit, f.senden, math.huge)
@@ -439,22 +443,23 @@ function o.tankliste(signal)
 end
 
 function f.datei(id, datei)
-  print("datei 1") -- debug
-  print("/tank/client" .. datei) -- debug
+  printwlan("datei 1") -- debug
+  printwlan("/tank/client" .. datei) -- debug
   if fs.exists("/tank/client" .. datei) then
-    print("datei 2") -- debug
+    printwlan("datei 2") -- debug
     local d = io.open("/tank/client" .. datei, "r")
-    print("datei 3") --debug
+    printwlan("datei 3") --debug
     local inhalt = d:read("*a")
-    print("datei 4") --debug
+    printwlan("datei 4") --debug
     if inhalt then
-      print("datei 5") --debug
+      printwlan(inhalt) --debug
+      printwlan("datei 5") --debug
       m.send(id, port, "datei", datei, d:read("*a"))
     end
-    print("datei 6") -- debug
+    printwlan("datei 6") -- debug
     d:close()
   end
-  print("datei 7") -- debug
+  printwlan("datei 7") -- debug
 end
 
 function o.speichern(signal)
@@ -467,19 +472,19 @@ end
 
 function f.update(signal)
   local dateiliste = {"/tank/auslesen.lua", "/tank/version.txt", "/autorun.lua"}
-  print("f.update 1") -- debug
+  printwlan("f.update 1") -- debug
   for i = 1, #dateiliste do
-    print("f.update loop 1") -- debug
+    printwlan("f.update loop 1") -- debug
     f.datei(signal[3], dateiliste[i])
-    print("f.update loop 2") -- debug
+    printwlan("f.update loop 2") -- debug
   end
-  print("f.update 2") -- debug
+  printwlan("f.update 2") -- debug
   m.send(signal[3], port, "aktualisieren", serialization.serialize(dateiliste))
-  print("f.update 3") -- debug
+  printwlan("f.update 3") -- debug
 end
 
 function f.event(...)
-  print(...) --debug
+  printwlan(...) --debug
   local signal = {...}
   if o[signal[6]] then
     if Sendeleistung < signal[5] + 50 or Sendeleistung == math.huge then
