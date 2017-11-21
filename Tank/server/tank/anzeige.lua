@@ -100,15 +100,15 @@ function f.tank(hier, id, nachricht)
 end
 
 function f.verarbeiten(tank)
-  printwlan("tank\n" .. serialization.serialize(tank))
+  printwlan("tank\n", serialization.serialize(tank))
   tank_a = {}
   tank_a["false"] = {}
   for i = 1, #tank do
     if type(tank[i]) == "table" then
       if type(tank[i].inhalt) == "table" then
         tank_a[tank[i].inhalt[1].label] = {}
-        printwlan("name\n" .. tank[i].inhalt[1].name)
-        printwlan("label\n" .. tank[i].inhalt[1].label)
+        printwlan("name\n", tank[i].inhalt[1].name)
+        printwlan("label\n", tank[i].inhalt[1].label)
         for j = 1, #tank[i].inhalt do
           f.hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, true, tank[i].inhalt[1].label)
         end
@@ -122,8 +122,8 @@ function f.verarbeiten(tank)
       table.insert(tankneu, w)
     end
   end
-  printwlan("tank_a\n" .. serialization.serialize(tank_a))
-  printwlan("tankneu\n" .. serialization.serialize(tankneu))
+  printwlan("tank_a\n", serialization.serialize(tank_a))
+  printwlan("tankneu\n", serialization.serialize(tankneu))
 end
 
 function f.hinzu(name, label, menge, maxmenge, weiter, tankdazu)
@@ -163,7 +163,7 @@ end
 
 function f.anzeigen()
   local tankanzeige = tankneu
-  printwlan("tankanzeige\n" .. serialization.serialize(tankanzeige))
+  printwlan("tankanzeige\n", serialization.serialize(tankanzeige))
   for screenid in component.list("screen") do
     gpu.bind(screenid, false)
     local klein = false
@@ -199,7 +199,6 @@ function f.anzeigen()
     end
     os.sleep(0.1)
     local anzahl = 0
-    --for i in spairs(tankanzeige, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
     for i = 1, #tankanzeige do
       anzahl = anzahl + 1
       local links, rechts, breite = -15, -25, 40
