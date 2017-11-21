@@ -115,7 +115,9 @@ function f.verarbeiten(tank)
       end
     end
   end
-  tankneu = tank_a["false"]
+  --tankneu = tank_a["false"]
+  --tankneu = tank_a["false"][0]
+  tankneu = {}
   for _, v in pairs(tank_a) do
     for _, w in pairs(v) do
       printwlan("w\n" .. serialization.serialize(w))
@@ -127,6 +129,7 @@ function f.verarbeiten(tank)
 end
 
 function f.hinzu(name, label, menge, maxmenge, weiter, tankdazu)
+  printwlan("hinzu\n", name, label, menge, maxmenge, weiter, tankdazu)
   local j = #tank_a[tankdazu]
   for i = 1, j do
     if tank_a[tankdazu][i].name == name then
