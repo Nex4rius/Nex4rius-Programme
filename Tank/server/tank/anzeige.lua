@@ -100,7 +100,7 @@ function f.tank(hier, id, nachricht)
 end
 
 function f.verarbeiten(tank)
-    printwlan("\n\n\ntank", serialization.serialize(tank))
+    printwlan("\n\n\ntank", serialization.serialize(tank, math.huge))
     tank_a = {}
     tank_a["false"] = {}
     for i = 1, #tank do
@@ -117,13 +117,13 @@ function f.verarbeiten(tank)
     end
     tankneu = {}
     for _, v in pairs(tank_a) do
-        printwlan("v", serialization.serialize(v))
+        printwlan("v", serialization.serialize(v, math.huge))
         for _, w in pairs(v) do
-            printwlan("w", serialization.serialize(w))
+            printwlan("w", serialization.serialize(w, math.huge))
             table.insert(tankneu, w)
         end
     end
-    printwlan("tank_a", serialization.serialize(tank_a), "\ntankneu", serialization.serialize(tankneu))
+    printwlan("tank_a", serialization.serialize(tank_a, math.huge), "\ntankneu", serialization.serialize(tankneu, math.huge))
 end
 
 function f.hinzu(name, label, menge, maxmenge, weiter, tankdazu)
@@ -170,7 +170,7 @@ end
 
 function f.anzeigen()
     local tankanzeige = tankneu
-    printwlan("tankanzeige", serialization.serialize(tankanzeige))
+    printwlan("tankanzeige", serialization.serialize(tankanzeige, math.huge))
     for screenid in component.list("screen") do
         gpu.bind(screenid, false)
         local klein = false
