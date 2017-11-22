@@ -123,8 +123,7 @@ function f.verarbeiten(tank)
             table.insert(tankneu, w)
         end
     end
-    printwlan("tank_a", serialization.serialize(tank_a))
-    printwlan("tankneu", serialization.serialize(tankneu))
+    printwlan("tank_a", serialization.serialize(tank_a), "\ntankneu", serialization.serialize(tankneu))
 end
 
 function f.hinzu(name, label, menge, maxmenge, weiter, tankdazu)
@@ -135,16 +134,12 @@ function f.hinzu(name, label, menge, maxmenge, weiter, tankdazu)
     local j = #tank_a[tankdazu]
     printwlan("tank_a[tankdazu]", serialization.serialize(tank_a[tankdazu]))
     for k, v in pairs(tank_a[tankdazu]) do
-        printwlan("vname", v.name, name)
         if v.name == name then
             printwlan("hier drin")
             tank_a[tankdazu][k].menge = v.menge + menge
             tank_a[tankdazu][k].maxmenge = v.maxmenge + maxmenge
             weiter = false
         end
-    end
-    if type(tank_a[tankdazu][j]) == "table" then
-        printwlan("hinzu ende", tank_a[tankdazu][j].name, tank_a[tankdazu][j].label, tank_a[tankdazu][j].menge, tank_a[tankdazu][j].maxmenge)
     end
     if weiter then
         tank_a[tankdazu][j] = {}
