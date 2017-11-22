@@ -127,12 +127,12 @@ function f.verarbeiten(tank)
 end
 
 function f.hinzu(name, label, menge, maxmenge, weiter, tankdazu)
-    printwlan("hinzu", name, label, menge, maxmenge, weiter, tankdazu)
+    --printwlan("hinzu", name, label, menge, maxmenge, weiter, tankdazu)
     if not tank_a[tankdazu] then
         tank_a[tankdazu] = {}
     end
     local j = #tank_a[tankdazu]
-    printwlan("tank_a[tankdazu]", serialization.serialize(tank_a[tankdazu]))
+    --printwlan("tank_a[tankdazu]", serialization.serialize(tank_a[tankdazu]))
     for k, v in pairs(tank_a[tankdazu]) do
         if v.name == name then
             printwlan("hier drin")
@@ -148,7 +148,7 @@ function f.hinzu(name, label, menge, maxmenge, weiter, tankdazu)
         tank_a[tankdazu][j].menge = menge
         tank_a[tankdazu][j].maxmenge = maxmenge
     end
-    printwlan("hinzu ende", tank_a[tankdazu][j].name, tank_a[tankdazu][j].label, tank_a[tankdazu][j].menge, tank_a[tankdazu][j].maxmenge)
+    --printwlan("hinzu ende", tank_a[tankdazu][j].name, tank_a[tankdazu][j].label, tank_a[tankdazu][j].menge, tank_a[tankdazu][j].maxmenge)
 end
 
 local function spairs(t, order)
