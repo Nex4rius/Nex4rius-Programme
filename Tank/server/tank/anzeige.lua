@@ -67,6 +67,7 @@ m.setStrength(math.huge)
 printwlan("start")
 
 function f.tank(hier, id, nachricht)
+    printwlan("ftank start", hier, id, nachricht)
     local dazu = true
     local ende = 0
     if hier then
@@ -410,7 +411,6 @@ function f.keineDaten()
 end
 
 function f.tankliste()
-    printwlan("Sensorliste", serialization.serialize(Sensorliste))
     for i in pairs(Sensorliste) do
         f.tank(Sensorliste[i][1], Sensorliste[i][3], Sensorliste[i][8])
     end
