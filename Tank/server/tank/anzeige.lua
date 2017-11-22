@@ -100,7 +100,7 @@ function f.tank(hier, id, nachricht)
 end
 
 function f.verarbeiten(tank)
-  printwlan("tank\n", serialization.serialize(tank))
+  printwlan("tank", serialization.serialize(tank))
   tank_a = {}
   tank_a["false"] = {}
   for i = 1, #tank do
@@ -115,18 +115,18 @@ function f.verarbeiten(tank)
   end
   tankneu = {}
   for _, v in pairs(tank_a) do
-    printwlan("v\n", serialization.serialize(v))
+    printwlan("v", serialization.serialize(v))
     for _, w in pairs(v) do
-      printwlan("w\n", serialization.serialize(w))
+      printwlan("w", serialization.serialize(w))
       table.insert(tankneu, w)
     end
   end
-  printwlan("tank_a\n", serialization.serialize(tank_a))
-  printwlan("tankneu\n", serialization.serialize(tankneu))
+  printwlan("tank_a", serialization.serialize(tank_a))
+  printwlan("tankneu", serialization.serialize(tankneu))
 end
 
 function f.hinzu(name, label, menge, maxmenge, weiter, tankdazu)
-  printwlan("hinzu\n", name, label, menge, maxmenge, weiter, tankdazu)
+  printwlan("hinzu", name, label, menge, maxmenge, weiter, tankdazu)
   if not tank_a[tankdazu] then
     tank_a[tankdazu] = {}
   end
@@ -142,7 +142,7 @@ function f.hinzu(name, label, menge, maxmenge, weiter, tankdazu)
     end
   end
   if type(tank_a[tankdazu][j]) == "table" then
-    printwlan("hinzu ende\n", tank_a[tankdazu][j].name, tank_a[tankdazu][j].label, tank_a[tankdazu][j].menge, tank_a[tankdazu][j].maxmenge)
+    printwlan("hinzu ende", tank_a[tankdazu][j].name, tank_a[tankdazu][j].label, tank_a[tankdazu][j].menge, tank_a[tankdazu][j].maxmenge)
   end
   if weiter then
     tank_a[tankdazu][j] = {}
@@ -151,7 +151,7 @@ function f.hinzu(name, label, menge, maxmenge, weiter, tankdazu)
     tank_a[tankdazu][j].menge = menge
     tank_a[tankdazu][j].maxmenge = maxmenge
   end
-  printwlan("hinzu ende\n", tank_a[tankdazu][j].name, tank_a[tankdazu][j].label, tank_a[tankdazu][j].menge, tank_a[tankdazu][j].maxmenge)
+  printwlan("hinzu ende", tank_a[tankdazu][j].name, tank_a[tankdazu][j].label, tank_a[tankdazu][j].menge, tank_a[tankdazu][j].maxmenge)
 end
 
 local function spairs(t, order)
@@ -173,7 +173,7 @@ end
 
 function f.anzeigen()
   local tankanzeige = tankneu
-  printwlan("tankanzeige\n", serialization.serialize(tankanzeige))
+  printwlan("tankanzeige", serialization.serialize(tankanzeige))
   for screenid in component.list("screen") do
     gpu.bind(screenid, false)
     local klein = false
@@ -470,7 +470,7 @@ function f.datei(id, datei)
 end
 
 function o.speichern(signal)
-  printwlan("speichern\n" .. signal[7]) --debug
+  printwlan("speichern" .. signal[7]) --debug
   if not signal[7] then
     f.datei(signal[3], signal[8])
   end
@@ -493,9 +493,9 @@ function f.event(...)
   printwlan(...) --debug
   local signal = {...}
   if o[signal[6]] then
-    --if Sendeleistung < signal[5] + 50 or Sendeleistung == math.huge then
-    --  Sendeleistung = signal[5] + 50
-    --end
+    if Sendeleistung < signal[5] + 50 or Sendeleistung == math.huge then
+      Sendeleistung = signal[5] + 50
+    end
     o[signal[6]](signal)
   end
 end
