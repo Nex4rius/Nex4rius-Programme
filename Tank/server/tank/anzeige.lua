@@ -468,9 +468,9 @@ end
 function f.update(signal)
   local dateiliste = {"/tank/auslesen.lua", "/tank/version.txt", "/autorun.lua"}
   printwlan("f.update 1") -- debug
-  for i = 1, #dateiliste do
+  for k, v in pairs(dateiliste) do
     printwlan("f.update loop 1") -- debug
-    f.datei(signal[3], dateiliste[i])
+    f.datei(signal[3], v)
     printwlan("f.update loop 2") -- debug
   end
   printwlan("f.update 2") -- debug
