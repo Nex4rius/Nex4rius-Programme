@@ -132,10 +132,12 @@ function f.hinzu(name, label, menge, maxmenge, weiter, tankdazu)
   end
   local j = #tank_a[tankdazu]
   for i = 1, j do
-    if tank_a[tankdazu][i].name == name then
+  for k, v in pairs(tank_a[tankdazu]) do
+    printwlan("vname", v.name, name)
+    if v.name == name then
       printwlan("hier drin")
-      tank_a[tankdazu][i].menge = tank_a[tankdazu][i].menge + menge
-      tank_a[tankdazu][i].maxmenge = tank_a[tankdazu][i].maxmenge + maxmenge
+      tank_a[tankdazu][k].menge = v.menge + menge
+      tank_a[tankdazu][k].maxmenge = v.maxmenge + maxmenge
       weiter = false
     end
   end
