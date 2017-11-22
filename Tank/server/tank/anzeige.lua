@@ -100,7 +100,7 @@ function f.tank(hier, id, nachricht)
 end
 
 function f.verarbeiten(tank)
-  printwlan("tank", serialization.serialize(tank))
+  printwlan("\n\n\ntank", serialization.serialize(tank))
   tank_a = {}
   tank_a["false"] = {}
   for i = 1, #tank do
@@ -131,7 +131,7 @@ function f.hinzu(name, label, menge, maxmenge, weiter, tankdazu)
     tank_a[tankdazu] = {}
   end
   local j = #tank_a[tankdazu]
-  for i = 1, j do
+  printwlan("tank_a[tankdazu]", serialization.serialize(tank_a[tankdazu]))
   for k, v in pairs(tank_a[tankdazu]) do
     printwlan("vname", v.name, name)
     if v.name == name then
