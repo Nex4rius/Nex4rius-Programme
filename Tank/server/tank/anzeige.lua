@@ -107,20 +107,15 @@ function f.verarbeiten(tank)
     if type(tank[i]) == "table" then
       if type(tank[i].inhalt) == "table" then
         tank_a[tank[i].inhalt[1].label] = {}
-        printwlan("name\n", tank[i].inhalt[1].name)
-        printwlan("label\n", tank[i].inhalt[1].label)
         for j = 1, #tank[i].inhalt do
           f.hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, true, tank[i].inhalt[1].label)
         end
       end
     end
   end
-  --tankneu = tank_a["false"]
-  --tankneu = tank_a["false"][0]
   tankneu = {}
   for _, v in pairs(tank_a) do
     for _, w in pairs(v) do
-      printwlan("w\n" .. serialization.serialize(w))
       table.insert(tankneu, w)
     end
   end
@@ -145,6 +140,7 @@ function f.hinzu(name, label, menge, maxmenge, weiter, tankdazu)
     tank_a[tankdazu][j].menge = menge
     tank_a[tankdazu][j].maxmenge = maxmenge
   end
+  printwlan("hinzu ende\n", tank_a[tankdazu][j].name, tank_a[tankdazu][j].label, tank_a[tankdazu][j].menge, tank_a[tankdazu][j].maxmenge)
 end
 
 local function spairs(t, order)
