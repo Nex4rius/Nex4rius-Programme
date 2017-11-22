@@ -96,11 +96,12 @@ function f.tank(hier, id, nachricht)
             tank[i] = nil
         end
     end
+    printwlan("\n\n\ntank 1", serialization.serialize(tank))
     f.verarbeiten(tank)
 end
 
 function f.verarbeiten(tank)
-    printwlan("\n\n\ntank", serialization.serialize(tank))
+    printwlan("\n\n\ntank 2", serialization.serialize(tank))
     tank_a = {}
     tank_a["false"] = {}
     for i = 1, #tank do
@@ -411,6 +412,7 @@ function f.keineDaten()
 end
 
 function f.tankliste()
+    printwlan("Sensorliste", serialization.serialize(Sensorliste))
     for i in pairs(Sensorliste) do
         f.tank(Sensorliste[i][1], Sensorliste[i][3], Sensorliste[i][8])
     end
