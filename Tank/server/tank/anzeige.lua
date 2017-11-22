@@ -67,7 +67,6 @@ m.setStrength(math.huge)
 printwlan("start")
 
 function f.tank(hier, id, nachricht)
-    printwlan("ftank start", hier, id, nachricht)
     local dazu = true
     local ende = 0
     if hier then
@@ -97,44 +96,19 @@ function f.tank(hier, id, nachricht)
             tank[i] = nil
         end
     end
-    printwlan("\n\n\ntank 1", serialization.serialize(tank))
     f.verarbeiten(tank)
 end
 
 function f.verarbeiten(tank)
-    printwlan("\n\n\ntank 2", serialization.serialize(tank))
+    printwlan("\n\n\ntank", serialization.serialize(tank))
     tank_a = {}
     tank_a["false"] = {}
     for i = 1, #tank do
         if type(tank[i]) == "table" then
             if type(tank[i].inhalt) == "table" then
-                local gruppe = tank[i].inhalt[1].label
-                if not tank_a[gruppe] then
-                    tank_a[gruppe] = {}
-                end
+                tank_a[tank[i].inhalt[1].label] = {}
                 for j = 1, #tank[i].inhalt do
-                    local name = tank[i].inhalt[j].name
-                    local label = tank[i].inhalt[j].label
-                    local menge = tank[i].inhalt[j].menge
-                    local maxmenge = tank[i].inhalt[j].maxmenge
-                    local weiter = true
-                    printwlan("hinzu", name, label, menge, maxmenge, weiter, gruppe, "\ntank_a[gruppe]", serialization.serialize(tank_a[gruppe]))
-                    for k, v in pairs(tank_a[gruppe]) do
-                        if v.name == name then
-                            printwlan("hier drin", v.name, name)
-                            v.menge = v.menge + menge
-                            v.maxmenge = v.maxmenge + maxmenge
-                            weiter = false
-                        end
-                    end
-                    if weiter then
-                        tank_a[gruppe][j] = {}
-                        tank_a[gruppe][j].name = name
-                        tank_a[gruppe][j].label = label
-                        tank_a[gruppe][j].menge = menge
-                        tank_a[gruppe][j].maxmenge = maxmenge
-                    end
-                    printwlan("hinzu ende", tank_a[gruppe][j].name, tank_a[gruppe][j].label, tank_a[gruppe][j].menge, tank_a[gruppe][j].maxmenge)
+                    f.hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, true, tank[i].inhalt[1].label)
                 end
             end
         end
@@ -149,6 +123,35 @@ function f.verarbeiten(tank)
     end
     printwlan("tank_a", serialization.serialize(tank_a))
     printwlan("tankneu", serialization.serialize(tankneu))
+end
+
+function f.hinzu(name, label, menge, maxmenge, weiter, tankdazu)
+    printwlan("hinzu", name, label, menge, maxmenge, weiter, tankdazu)
+    if not tank_a[tankdazu] then
+        tank_a[tankdazu] = {}
+    end
+    local j = #tank_a[tankdazu]
+    printwlan("tank_a[tankdazu]", serialization.serialize(tank_a[tankdazu]))
+    for k, v in pairs(tank_a[tankdazu]) do
+        printwlan("vname", v.name, name)
+        if v.name == name then
+            printwlan("hier drin")
+            tank_a[tankdazu][k].menge = v.menge + menge
+            tank_a[tankdazu][k].maxmenge = v.maxmenge + maxmenge
+            weiter = false
+        end
+    end
+    if type(tank_a[tankdazu][j]) == "table" then
+        printwlan("hinzu ende", tank_a[tankdazu][j].name, tank_a[tankdazu][j].label, tank_a[tankdazu][j].menge, tank_a[tankdazu][j].maxmenge)
+    end
+    if weiter then
+        tank_a[tankdazu][j] = {}
+        tank_a[tankdazu][j].name = name
+        tank_a[tankdazu][j].label = label
+        tank_a[tankdazu][j].menge = menge
+        tank_a[tankdazu][j].maxmenge = maxmenge
+    end
+    printwlan("hinzu ende", tank_a[tankdazu][j].name, tank_a[tankdazu][j].label, tank_a[tankdazu][j].menge, tank_a[tankdazu][j].maxmenge)
 end
 
 local function spairs(t, order)
@@ -438,11 +441,11 @@ function o.tankliste(signal)
     end
     printwlan("timer start jap") --debug
     timer.tank = event.timer(Wartezeit + 15, f.tank, 1)
-    timer.jetzt = event.timer(5, f.tankliste, 1)
+    timer.jetzt = event.timer(2, f.tankliste, 1)
     timer.senden = event.timer(Zeit, f.senden, math.huge)
     timer.tankliste = event.timer(Zeit + 15, f.tankliste, math.huge)
     timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
-    timer.anzeigen = event.timer(10, f.anzeigen, 1)
+    timer.anzeigen = event.timer(5, f.anzeigen, 1)
 end
 
 function f.datei(id, datei)
@@ -523,7 +526,6 @@ function f.checkUpdate(text)
     if serverVersion and arg and component.isAvailable("internet") and serverVersion ~= version then
         f.text("Update...")
         if wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/Tank/Tank/installieren.lua", "/installieren.lua") then --hier auf master
-            f.beenden()
             require("component").getPrimary("gpu").setResolution(require("component").getPrimary("gpu").maxResolution())
             print(pcall(loadfile("/installieren.lua"), "Tank"))
             os.execute("reboot")
@@ -534,7 +536,6 @@ end
 function debugupdate()
     printwlan("update")
     f.text("Update...")
-    f.beenden()
     require("component").getPrimary("gpu").setResolution(require("component").getPrimary("gpu").maxResolution())
     os.execute("pastebin run -f cyF0yhXZ Tank")
 end
@@ -574,7 +575,7 @@ function f.beenden()
     end
     f = nil
     o = nil
-    --os.exit()
+    os.exit()
 end
 
 function f.checkServerVersion()
