@@ -115,7 +115,9 @@ function f.verarbeiten(tank)
   end
   tankneu = {}
   for _, v in pairs(tank_a) do
+    printwlan("v\n", serialization.serialize(v))
     for _, w in pairs(v) do
+      printwlan("w\n", serialization.serialize(w))
       table.insert(tankneu, w)
     end
   end
@@ -125,13 +127,20 @@ end
 
 function f.hinzu(name, label, menge, maxmenge, weiter, tankdazu)
   printwlan("hinzu\n", name, label, menge, maxmenge, weiter, tankdazu)
+  if not tank_a[tankdazu] then
+    tank_a[tankdazu] = {}
+  end
   local j = #tank_a[tankdazu]
   for i = 1, j do
     if tank_a[tankdazu][i].name == name then
+      printwlan("hier drin")
       tank_a[tankdazu][i].menge = tank_a[tankdazu][i].menge + menge
       tank_a[tankdazu][i].maxmenge = tank_a[tankdazu][i].maxmenge + maxmenge
       weiter = false
     end
+  end
+  if type(tank_a[tankdazu][j]) == "table" then
+    printwlan("hinzu ende\n", tank_a[tankdazu][j].name, tank_a[tankdazu][j].label, tank_a[tankdazu][j].menge, tank_a[tankdazu][j].maxmenge)
   end
   if weiter then
     tank_a[tankdazu][j] = {}
