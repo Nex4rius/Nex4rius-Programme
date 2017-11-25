@@ -280,6 +280,7 @@ function f.main()
   end
   term.clear()
   print("Sende Anmeldung")
+  print("\n" .. Tankname)
   m.broadcast(port + 1, "tankliste", version, f.serialize(f.check()))
   print("Warte auf Antwort...")
   event.listen("modem_message", f.loop)
