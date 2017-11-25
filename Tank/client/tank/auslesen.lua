@@ -180,10 +180,10 @@ function f.serialize(eingabe)
   if type(eingabe) == "table" then
     local ausgabe = {}
     local i = 1
-    --if Tankname then
-      ausgabe.name = string.format([==[[%s] = {name="Tankname", label="%s", menge="1", maxmenge="1"}, ]==], i, Tankname)
-      --i = i + 1
-    --end
+    if Tankname then
+      ausgabe[i] = string.format([==[[%s] = {name="Tankname", label="%s", menge="1", maxmenge="1"}, ]==], i, Tankname)
+      i = i + 1
+    end
     for k, v in spairs(eingabe, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
       if v.name ~= nil then
         ausgabe[i] = string.format([==[[%s] = {name="%s", label="%s", menge="%s", maxmenge="%s"}, ]==], i, v.name, v.label, v.menge, v.maxmenge)
