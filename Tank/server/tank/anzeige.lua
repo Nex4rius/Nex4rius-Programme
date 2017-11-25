@@ -96,8 +96,6 @@ function f.tank(hier, id, nachricht)
             tank[i] = nil
         end
     end
-    --printwlan("nachricht1", nachricht)
-    --printwlan("nachricht2", serialization.unserialize(nachricht))
     f.verarbeiten(tank)
 end
 
@@ -132,12 +130,10 @@ function f.verarbeiten(tank)
 end
 
 function f.hinzu(name, label, menge, maxmenge, weiter, tankdazu)
-    --printwlan("hinzu", name, label, menge, maxmenge, weiter, tankdazu)
     if not tank_a[tankdazu] then
         tank_a[tankdazu] = {}
     end
     local j = #tank_a[tankdazu]
-    --printwlan("tank_a[tankdazu]", serialization.serialize(tank_a[tankdazu]))
     for k, v in pairs(tank_a[tankdazu]) do
         if v.name == name then
             printwlan("hier drin")
@@ -153,7 +149,6 @@ function f.hinzu(name, label, menge, maxmenge, weiter, tankdazu)
         tank_a[tankdazu][j].menge = menge
         tank_a[tankdazu][j].maxmenge = maxmenge
     end
-    --printwlan("hinzu ende", tank_a[tankdazu][j].name, tank_a[tankdazu][j].label, tank_a[tankdazu][j].menge, tank_a[tankdazu][j].maxmenge)
 end
 
 local function spairs(t, order)
@@ -461,7 +456,9 @@ function f.datei(id, datei)
         gpu.setResolution(gpu.maxResolution())
         while true do
             local sende_inhalt = string.sub(inhalt, max_packet * i + 1, max_packet * (i + 1))
-            printwlan("loop " .. i .. "\nlänge" .. string.len(sende_inhalt)) -- debug
+            printwlan(max_packet * i + 1) -- debug
+            printwlan(max_packet * (i + 1)) -- debug
+            printwlan("art: " .. art .. "\nloop " .. i .. "\nlänge" .. string.len(sende_inhalt)) -- debug
             print(sende_inhalt) -- debug
             m.send(id, port, "datei", datei, sende_inhalt, art)
             i = i + 1
