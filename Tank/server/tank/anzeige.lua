@@ -96,6 +96,8 @@ function f.tank(hier, id, nachricht)
             tank[i] = nil
         end
     end
+    printwlan("nachricht1", nachricht)
+    printwlan("nachricht2", serialization.unserialize(nachricht))
     f.verarbeiten(tank)
 end
 
