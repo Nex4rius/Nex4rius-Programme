@@ -459,10 +459,16 @@ function f.datei(id, datei)
         printwlan("datei 3") --debug
         local inhalt = d:read("*a")
         printwlan("datei 4") --debug
-        printwlan(type(inhalt)) --debug
-        printwlan(string.len(inhalt)) --debug
         if string.len(tostring(inhalt)) > 10 then
             printwlan("datei 5") --debug
+            printwlan(type(id)) --debug
+            printwlan(id) --debug
+            printwlan(type(port)) --debug
+            printwlan(port) --debug
+            printwlan(type(datei)) --debug
+            printwlan(datei) --debug
+            printwlan(type(inhalt)) --debug
+            printwlan(inhalt) --debug
             m.send(id, port, "datei", datei, inhalt)
         end
         printwlan("datei 6") -- debug
