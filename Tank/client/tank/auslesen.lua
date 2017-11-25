@@ -150,7 +150,7 @@ function f.check()
       end
     end
   end
-  print("\n\n\n")
+  print("\n\n\n" .. Tankname .. "\n")
   for i in pairs(tank) do
     if tank[i].name ~= nil then
       print(string.format("%s - %s: %s/%s %.1f%%", tank[i].name, tank[i].label, tank[i].menge, tank[i].maxmenge, tank[i].menge / tank[i].maxmenge * 100))
