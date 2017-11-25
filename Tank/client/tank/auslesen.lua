@@ -2,6 +2,8 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/
 
+os.sleep(5)
+print("klappt")
 os.sleep(2)
 
 local io            = io
