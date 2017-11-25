@@ -455,21 +455,14 @@ function f.datei(id, datei)
         local d = io.open("/tank/client" .. datei, "r")
         local inhalt = d:read("*a")
         printwlan("datei 4") --debug
-        if string.len(tostring(inhalt)) > 10 then
-            printwlan("datei 5") --debug
-            printwlan(type(id)) --debug
-            printwlan(id) --debug
-            printwlan(type(port)) --debug
-            printwlan(port) --debug
-            printwlan(type(datei)) --debug
-            printwlan(datei) --debug
-            printwlan(type(inhalt)) --debug
-            print(inhalt) --debug
-            local d = io.open("/inhalt", "w") --debug
-            d:write(inhalt) --debug
-            d:close() --debug
-            printwlan(inhalt) --debug
-            m.send(id, port, "datei", datei, inhalt)
+        local i = 0
+        local art = "w"
+        local max_packet = 8000
+        while true do
+            local send_inhalt = string.sub(inhalt, max_packet * i, max_packet * (i + 1))
+            m.send(id, port, "datei", datei, inhalt, art)
+            i = i + 1
+            art = "a"
         end
         printwlan("datei 6") -- debug
         d:close()
