@@ -458,13 +458,18 @@ function f.datei(id, datei)
         local i = 0
         local art = "w"
         local max_packet = 8000
+        gpu.setResolution(gpu.maxResolution())
         while true do
-            local sende_inhalt = string.sub(inhalt, max_packet * i, max_packet * (i + 1))
+            local sende_inhalt = string.sub(inhalt, max_packet * i + 1, max_packet * (i + 1))
             printwlan("loop " .. i .. string.len(sende_inhalt)) -- debug
             print(sende_inhalt) -- debug
             m.send(id, port, "datei", datei, sende_inhalt, art)
             i = i + 1
             art = "a"
+            if i > 100
+                print("Fehler Dateiloop")
+                break
+            end
         end
         printwlan("datei 6") -- debug
         d:close()
