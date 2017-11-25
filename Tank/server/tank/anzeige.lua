@@ -101,6 +101,9 @@ end
 
 function f.verarbeiten(tank)
     printwlan("\n\n\ntank", serialization.serialize(tank))
+    local d = io.open("/hier", "w")
+    d:write(serialization.serialize(tank))
+    d:close()
     tank_a = {}
     tank_a["false"] = {}
     for i = 1, #tank do
