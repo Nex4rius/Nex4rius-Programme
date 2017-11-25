@@ -243,10 +243,9 @@ function o.aktualisieren(signal)
     --end
     --kopieren("/update")
     for k, v in pairs(daten) do
-      --verschieben("/update/" .. v, "/" .. v)
-      print("jap verschieben")
+      verschieben("/update/" .. v, "/" .. v)
     end
-    --entfernen("/update")
+    entfernen("/update")
     print("Update vollständig")
     os.sleep(1)
     for i = 5, 1, -1 do
