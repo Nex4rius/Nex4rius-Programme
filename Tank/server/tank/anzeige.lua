@@ -457,19 +457,14 @@ function f.datei(id, datei)
         printwlan("datei 4") --debug
         local i = 0
         local art = "w"
-        local max_packet = 500
+        local max_packet = 8000
         while true do
-            printwlan("loop " .. i) -- debug
             local sende_inhalt = string.sub(inhalt, max_packet * i, max_packet * (i + 1))
-            printwlan(string.len(sende_inhalt)) -- debug
-            printwlan(string.find(inhalt, sende_inhalt)) -- debug
+            printwlan("loop " .. i .. string.len(sende_inhalt)) -- debug
             print(sende_inhalt) -- debug
             m.send(id, port, "datei", datei, sende_inhalt, art)
             i = i + 1
             art = "a"
-            if i > 100 then
-                break
-            end
         end
         printwlan("datei 6") -- debug
         d:close()
