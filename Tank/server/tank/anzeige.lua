@@ -451,12 +451,8 @@ function o.tankliste(signal)
 end
 
 function f.datei(id, datei)
-    printwlan("datei 1") -- debug
-    printwlan("/tank/client" .. datei) -- debug
     if fs.exists("/tank/client" .. datei) then
-        printwlan("datei 2") -- debug
         local d = io.open("/tank/client" .. datei, "r")
-        printwlan("datei 3") --debug
         local inhalt = d:read("*a")
         printwlan("datei 4") --debug
         if string.len(tostring(inhalt)) > 10 then
@@ -468,6 +464,10 @@ function f.datei(id, datei)
             printwlan(type(datei)) --debug
             printwlan(datei) --debug
             printwlan(type(inhalt)) --debug
+            print(inhalt) --debug
+            local d = io.open("/inhalt", "w") --debug
+            d:write(inhalt) --debug
+            d:close() --debug
             printwlan(inhalt) --debug
             m.send(id, port, "datei", datei, inhalt)
         end
