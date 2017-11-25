@@ -205,6 +205,7 @@ function o.datei(signal)
   if type(signal[7]) == "string" and type(signal[8]) == "string" then
     print("\nEmpfange Datei ... " .. signal[7])
     local d = io.open("/update" .. signal[7], "w")
+    print(signal[8]) -- debug
     d:write(signal[8])
     d:close()
     f.senden(signal, "speichern", fs.exists("/update" .. signal[7]), signal[7])
