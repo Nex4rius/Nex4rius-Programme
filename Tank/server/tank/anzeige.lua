@@ -414,8 +414,8 @@ function f.keineDaten()
 end
 
 function f.tankliste()
-    for i in pairs(Sensorliste) do
-        f.tank(Sensorliste[i][1], Sensorliste[i][3], Sensorliste[i][8])
+    for k, v in pairs(Sensorliste) do
+        f.tank(v[1], v[3], v[8])
     end
 end
 
@@ -426,7 +426,7 @@ function o.tankliste(signal)
         printwlan("f.update start") -- debug
         f.update(signal)
     end
-    for i in pairs(Sensorliste) do
+    for k, v in pairs(Sensorliste) do
         if Sensorliste[i][3] == signal[3] then
             dazu = false
             Sensorliste[i] = signal
