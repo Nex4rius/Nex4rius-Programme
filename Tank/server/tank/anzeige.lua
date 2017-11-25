@@ -108,15 +108,35 @@ function f.verarbeiten(tank)
     d:write(serialization.serialize(tank))
     d:close()
     tank_a = {}
-    tank_a["false"] = {}
-    for i = 1, #tank do
+    for i in pairs(tank) do
         if type(tank[i]) == "table" then
             if type(tank[i].inhalt) == "table" then
-                if not tank_a[tank[i].inhalt[1].label] then
-                    tank_a[tank[i].inhalt[1].label] = {}
+                local gruppe = tank[i].inhalt[1].label
+                if not tank_a[gruppe] then
+                    tank_a[gruppe] = {}
                 end
-                for j = 1, #tank[i].inhalt do
-                    f.hinzu(tank[i].inhalt[j].name, tank[i].inhalt[j].label, tank[i].inhalt[j].menge, tank[i].inhalt[j].maxmenge, true, tank[i].inhalt[1].label)
+                for j in pairs(tank[i].inhalt) do
+                    local name = tank[i].inhalt[j].name
+                    local label = tank[i].inhalt[j].label
+                    local menge = tank[i].inhalt[j].menge
+                    local maxmenge = tank[i].inhalt[j].maxmenge
+                    local weiter = true
+                    for k in pairs(tank_a[gruppe]) do
+                        if tank_a[gruppe].name == name then
+                            printwlan("hier drin")
+                            tank_a[gruppe][k].menge = tank_a[gruppe][k].menge + menge
+                            tank_a[gruppe][k].maxmenge = tank_a[gruppe][k].maxmenge + maxmenge
+                            weiter = false
+                        end
+                    end
+                    if weiter then
+                        local k = #tank_a[gruppe]
+                        tank_a[gruppe][k] = {}
+                        tank_a[gruppe][k].name = name
+                        tank_a[gruppe][k].label = label
+                        tank_a[gruppe][k].menge = menge
+                        tank_a[gruppe][k].maxmenge = maxmenge
+                    end
                 end
             end
         end
@@ -130,28 +150,6 @@ function f.verarbeiten(tank)
         end
     end
     printwlan("tank_a", serialization.serialize(tank_a), "\ntankneu", serialization.serialize(tankneu))
-end
-
-function f.hinzu(name, label, menge, maxmenge, weiter, tankdazu)
-    if not tank_a[tankdazu] then
-        tank_a[tankdazu] = {}
-    end
-    local j = #tank_a[tankdazu]
-    for k, v in pairs(tank_a[tankdazu]) do
-        if v.name == name then
-            printwlan("hier drin")
-            tank_a[tankdazu][k].menge = v.menge + menge
-            tank_a[tankdazu][k].maxmenge = v.maxmenge + maxmenge
-            weiter = false
-        end
-    end
-    if weiter then
-        tank_a[tankdazu][j] = {}
-        tank_a[tankdazu][j].name = name
-        tank_a[tankdazu][j].label = label
-        tank_a[tankdazu][j].menge = menge
-        tank_a[tankdazu][j].maxmenge = maxmenge
-    end
 end
 
 local function spairs(t, order)
