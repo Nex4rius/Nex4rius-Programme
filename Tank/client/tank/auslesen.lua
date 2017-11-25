@@ -4,7 +4,7 @@
 
 os.sleep(2)
 os.execute("clear")
-print("geändert")
+print("2")
 os.sleep(2)
 
 local io            = io
