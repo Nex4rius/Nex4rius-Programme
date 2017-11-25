@@ -454,14 +454,14 @@ function f.datei(id, datei)
     if fs.exists("/tank/client" .. datei) then
         local d = io.open("/tank/client" .. datei, "r")
         local inhalt = d:read("*a")
-        printwlan("datei 4") --debug
+        printwlan("datei start") --debug
         local i = 0
         local art = "w"
         local max_packet = 8000
         gpu.setResolution(gpu.maxResolution())
         while true do
             local sende_inhalt = string.sub(inhalt, max_packet * i + 1, max_packet * (i + 1))
-            printwlan("loop " .. i .. string.len(sende_inhalt)) -- debug
+            printwlan("loop " .. i .. "\nlänge" .. string.len(sende_inhalt)) -- debug
             print(sende_inhalt) -- debug
             m.send(id, port, "datei", datei, sende_inhalt, art)
             i = i + 1
@@ -471,10 +471,9 @@ function f.datei(id, datei)
                 break
             end
         end
-        printwlan("datei 6") -- debug
+        printwlan("datei fertig") -- debug
         d:close()
     end
-    printwlan("datei 7") -- debug
 end
 
 function o.speichern(signal)
