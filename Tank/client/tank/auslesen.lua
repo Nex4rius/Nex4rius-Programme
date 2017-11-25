@@ -4,7 +4,7 @@
 
 os.sleep(2)
 os.execute("clear")
-print("2")
+print("3")
 os.sleep(2)
 
 local io            = io
@@ -208,7 +208,7 @@ function o.datei(signal)
   if type(signal[7]) == "string" and type(signal[8]) == "string" then
     print("\nEmpfange Datei ... " .. signal[7])
     local d = io.open("/update" .. signal[7], signal[9])
-    print(signal[8]) -- debug
+    print("\n\n\n" .. signal[8] .. "\n\n\n") -- debug
     d:write(signal[8])
     d:close()
     f.senden(signal, "speichern", fs.exists("/update" .. signal[7]), signal[7])
