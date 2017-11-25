@@ -460,9 +460,8 @@ function f.datei(id, datei)
         local max_packet = 500
         while true do
             printwlan("loop " .. i) -- debug
-            local send_inhalt = string.sub(inhalt, max_packet * i, max_packet * (i + 1))
-            printwlan(string.len(send_inhalt)) -- debug
-            m.send(id, port, "datei", datei, send_inhalt, art)
+            local sende_inhalt = string.sub(inhalt, max_packet * i, max_packet * (i + 1))
+            m.send(id, port, "datei", datei, sende_inhalt, art)
             i = i + 1
             art = "a"
         end
