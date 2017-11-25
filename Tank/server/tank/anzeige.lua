@@ -427,9 +427,9 @@ function o.tankliste(signal)
         f.update(signal)
     end
     for k, v in pairs(Sensorliste) do
-        if Sensorliste[i][3] == signal[3] then
+        if Sensorliste[k][3] == signal[3] then
             dazu = false
-            Sensorliste[i] = signal
+            Sensorliste[k] = signal
             break
         end
     end
