@@ -3,9 +3,6 @@
 -- https://github.com/Nex4rius/Nex4rius-Programme/
 
 os.sleep(2)
-os.execute("clear")
-print("6")
-os.sleep(2)
 
 local io            = io
 local os            = os
