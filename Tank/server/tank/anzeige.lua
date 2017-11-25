@@ -466,7 +466,7 @@ function f.datei(id, datei)
             m.send(id, port, "datei", datei, sende_inhalt, art)
             i = i + 1
             art = "a"
-            if i > 100
+            if i > 100 then
                 print("Fehler Dateiloop")
                 break
             end
