@@ -4,6 +4,8 @@
 
 os.sleep(2)
 
+der_tank = 0
+
 local io              = io
 local os              = os
 local table           = table
@@ -104,6 +106,12 @@ end
 
 function f.verarbeiten(tank)
     printwlan("\n\n\ntank", serialization.serialize(tank))
+    der_tank = der_tank + 1
+    if der_tank > 8 then
+        der_tank = tank
+        f.beenden()
+        os.exit()
+    end
     local d = io.open("/hier", "w")
     d:write(serialization.serialize(tank))
     d:close()
