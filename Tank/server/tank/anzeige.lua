@@ -4,8 +4,6 @@
 
 os.sleep(2)
 
-local der_tank = 0 -- debug
-
 local io              = io
 local os              = os
 local table           = table
@@ -106,15 +104,6 @@ end
 
 function f.verarbeiten(tank)
     printwlan("\n\n\ntank", serialization.serialize(tank))
-    der_tank = der_tank + 1
-    if der_tank > 8 then
-        f.beenden()
-        print("Hier ende")
-        local d = io.open("/hier", "w")
-        d:write(serialization.serialize(tank))
-        d:close()
-        os.exit()
-    end
     local d = io.open("/hier", "w")
     d:write(serialization.serialize(tank))
     d:close()
@@ -122,10 +111,7 @@ function f.verarbeiten(tank)
     for i in pairs(tank) do
         if type(tank[i]) == "table" then
             if type(tank[i].inhalt) == "table" then
-                local gruppe --= tank[i].inhalt[1].label
-                --if not tank_a[gruppe] then
-                --    tank_a[gruppe] = {}
-                --end
+                local gruppe
                 for j in pairs(tank[i].inhalt) do
                     if tank[i].inhalt[j].name == "Tankname" then
                         gruppe = tank[i].inhalt[j].label
