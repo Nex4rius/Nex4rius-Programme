@@ -595,7 +595,7 @@ function f.beenden()
         f[k] = function() end
     end
     for k, v in pairs(o) do
-        f[k] = function() end
+        o[k] = function() end
     end
     --f = nil
     --o = nil
