@@ -265,7 +265,9 @@ function f.anzeigen()
                 label = "Helium-3"
             end
             f.zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl)
-            gpu.set(x, y, string.format("Anzahl: %s / %s X:%s Y:%s", i, #tankanzeige, x, y))
+            if debug then
+                gpu.set(x, y, string.format("Anzahl: %s / %s X:%s Y:%s", i, #tankanzeige, x, y))
+            end
             leer = false
             if klein and maxanzahl > 5 then
                 y = y + 1
