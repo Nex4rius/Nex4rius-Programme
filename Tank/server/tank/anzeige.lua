@@ -591,8 +591,14 @@ function f.beenden()
         term.clear()
         print("Tankanzeige wird ausgeschaltet")
     end
-    f = nil
-    o = nil
+    for k, v in pairs(f) do
+        f[k] = function() end
+    end
+    for k, v in pairs(o) do
+        f[k] = function() end
+    end
+    --f = nil
+    --o = nil
     --os.exit()
 end
 
