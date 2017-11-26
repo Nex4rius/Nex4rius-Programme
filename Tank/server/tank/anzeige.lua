@@ -120,8 +120,15 @@ function f.verarbeiten(tank)
         if type(tank[i]) == "table" then
             if type(tank[i].inhalt) == "table" then
                 local gruppe = tank[i].inhalt[1].label
-                if not tank_a[gruppe] then
-                    tank_a[gruppe] = {}
+                --if not tank_a[gruppe] then
+                --    tank_a[gruppe] = {}
+                --end
+                for j in pairs(tank[i].inhalt) do
+                    if tank[i].inhalt[j].name = "Tankname" then
+                        if not tank_a[gruppe] then
+                            tank_a[gruppe] = {}
+                        end
+                    end
                 end
                 for j in pairs(tank[i].inhalt) do
                     local name = tank[i].inhalt[j].name
