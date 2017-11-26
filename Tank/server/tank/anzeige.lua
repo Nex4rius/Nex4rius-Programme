@@ -103,10 +103,7 @@ function f.tank(hier, id, nachricht)
 end
 
 function f.verarbeiten(tank)
-    printwlan("\n\n\ntank", serialization.serialize(tank))
-    local d = io.open("/hier", "w")
-    d:write(serialization.serialize(tank))
-    d:close()
+    printwlan("\ntank", serialization.serialize(tank))
     tank_a = {}
     for i in pairs(tank) do
         if type(tank[i]) == "table" then
@@ -135,7 +132,7 @@ function f.verarbeiten(tank)
                         end
                     end
                     if weiter then
-                        local k = #tank_a[gruppe]
+                        local k = #tank_a[gruppe] + 1
                         tank_a[gruppe][k] = {}
                         tank_a[gruppe][k].name = name
                         tank_a[gruppe][k].label = label
@@ -147,14 +144,19 @@ function f.verarbeiten(tank)
         end
     end
     tankneu = {}
-    for _, v in pairs(tank_a) do
-        printwlan("v", serialization.serialize(v))
+    for gruppe, v in pairs(tank_a) do
+        local position = #tankneu + 1
+        tankneu[position] = {}
+        tankneu[position].name = "Tankname"
+        tankneu[position].label = gruppe
+        tankneu[position].menge = "1"
+        tankneu[position].maxmenge = "1"
         for _, w in pairs(v) do
             printwlan("w", serialization.serialize(w))
-            table.insert(tankneu, w)
+            tankneu[#tankneu + 1] = w
         end
     end
-    printwlan("tank_a", serialization.serialize(tank_a), "\ntankneu", serialization.serialize(tankneu))
+    printwlan("tank_a", serialization.serialize(tank_a), "\n\ntankneu", serialization.serialize(tankneu))
 end
 
 local function spairs(t, order)
