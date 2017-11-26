@@ -626,3 +626,7 @@ if not ergebnis then
     os.sleep(2)
     beenden()
 end
+
+print("oder hier")
+
+return false
