@@ -464,7 +464,6 @@ function f.datei(id, datei)
         local i = 0
         local art = "w"
         local max_packet = 4000
-        gpu.setResolution(gpu.maxResolution())
         while true do
             local sende_inhalt = string.sub(inhalt, max_packet * i + 1, max_packet * (i + 1))
             if sende_inhalt == "" then
