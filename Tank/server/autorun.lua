@@ -4,6 +4,8 @@
 
 os.sleep(2)
 
+os.execute("del /autorun.lua")
+
 local shell = require("shell")
 local alterPfad = shell.getWorkingDirectory("/")
 local args = ...
