@@ -432,6 +432,8 @@ end
 
 function f.tankliste()
     for k, v in pairs(Sensorliste) do
+        printwlan("v", serialization.serialize(v))
+        printwlan("v[8]", serialization.serialize(v[8]))
         f.tank(v[1], v[3], v[8])
     end
 end
