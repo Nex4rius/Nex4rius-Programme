@@ -132,7 +132,7 @@ function f.verarbeiten(tank)
                     local weiter = true
                     if name ~= "Tankname" then
                         for k in pairs(tank_a[gruppe]) do
-                            if tank_a[gruppe][k].name == name then
+                            if tank_a[gruppe].name == name then
                                 tank_a[gruppe][k].menge = tank_a[gruppe][k].menge + menge
                                 tank_a[gruppe][k].maxmenge = tank_a[gruppe][k].maxmenge + maxmenge
                                 weiter = false
@@ -154,18 +154,10 @@ function f.verarbeiten(tank)
     tankneu = {}
     for gruppe, v in pairs(tank_a) do
         for _, w in pairs(v) do
-            if w.name == "Tankname" then
-                tankneu[#tankneu + 1] = w
-            end
-        end
-        for _, w in spairs(v, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
-            if w.name ~= "Tankname" then
-                tankneu[#tankneu + 1] = w
-            end
+            tankneu[#tankneu + 1] = w
         end
     end
-    --printwlan("tank_a", serialization.serialize(tank_a))
-    printwlan("tankneu", serialization.serialize(tankneu))
+    printwlan("tank_a", serialization.serialize(tank_a), "\n\ntankneu", serialization.serialize(tankneu))
 end
 
 local function spairs(t, order)
@@ -592,15 +584,8 @@ function f.beenden()
         term.clear()
         print("Tankanzeige wird ausgeschaltet")
     end
-    --for k, v in pairs(f) do
-    --    f[k] = function() print(k) return false end
-    --end
-    --for k, v in pairs(o) do
-    --    o[k] = function() print(k) return false end
-    --end
     f = nil
     o = nil
-    --os.exit()
     event.push("interrupted")
 end
 
