@@ -110,6 +110,7 @@ function f.verarbeiten(tank)
     if der_tank > 8 then
         der_tank = tank
         f.beenden()
+        print("Hier ende")
         os.exit()
     end
     local d = io.open("/hier", "w")
