@@ -148,15 +148,15 @@ function f.verarbeiten(tank)
     end
     tankneu = {}
     for gruppe, v in pairs(tank_a) do
-        local position = tostring(#tankneu + 1)
-        tankneu.position = {}
-        tankneu.position.name = "Tankname"
-        tankneu.position.label = gruppe
-        tankneu.position.menge = "1"
-        tankneu.position.maxmenge = "1"
+        local position = #tankneu + 1
+        tankneu[position] = {}
+        tankneu[position].name = "Tankname"
+        tankneu[position].label = gruppe
+        tankneu[position].menge = "1"
+        tankneu[position].maxmenge = "1"
         for _, w in pairs(v) do
             printwlan("w", serialization.serialize(w))
-            tankneu.tostring(#tankneu + 1) = w
+            tankneu[#tankneu + 1] = w
         end
     end
     printwlan("tank_a", serialization.serialize(tank_a), "\n\ntankneu", serialization.serialize(tankneu))
