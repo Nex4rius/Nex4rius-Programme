@@ -108,7 +108,6 @@ function f.verarbeiten(tank)
     local d = io.open("/home/daten")
     d:write(serialization.serialize(tank))
     d:close()
-    os.execute("del /autorun.lua")
     for i in pairs(tank) do
         if type(tank[i]) == "table" then
             if type(tank[i].inhalt) == "table" then
