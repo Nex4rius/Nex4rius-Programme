@@ -10,6 +10,7 @@ local args = ...
 
 shell.setWorkingDirectory("/")
 
+os.sleep(2)
 os.execute("del autorun.lua")
 
 if type(args) ~= "string" then
