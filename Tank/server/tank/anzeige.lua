@@ -30,7 +30,7 @@ local m               = component.getPrimary("modem")
 local version, tankneu, energie, Updatetimer
 
 local port            = 918
-local arg             = string.lower(tostring(...))
+local arg             = string.lower(tostring(... or nil))
 local tank            = {}
 local tank_a          = {}
 local f               = {}
