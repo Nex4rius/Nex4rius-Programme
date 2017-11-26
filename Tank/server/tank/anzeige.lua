@@ -124,7 +124,7 @@ function f.verarbeiten(tank)
                 --    tank_a[gruppe] = {}
                 --end
                 for j in pairs(tank[i].inhalt) do
-                    if tank[i].inhalt[j].name = "Tankname" then
+                    if tank[i].inhalt[j].name == "Tankname" then
                         gruppe = tank[i].inhalt[j].label
                         if not tank_a[gruppe] then
                             tank_a[gruppe] = {}
