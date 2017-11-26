@@ -432,6 +432,7 @@ end
 
 function f.tankliste()
     printwlan("f.tankliste") --debug
+    printwlan("Sensorliste", type(Sensorliste))
     printwlan("Sensorliste", serialization.serialize(Sensorliste))
     for k, v in pairs(Sensorliste) do
         f.tank(v[1], v[3], v[8])
