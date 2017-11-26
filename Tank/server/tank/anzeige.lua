@@ -469,7 +469,7 @@ function f.datei(id, datei)
         printwlan("datei start") --debug
         local i = 0
         local art = "w"
-        local max_packet = 8000
+        local max_packet = 4000
         gpu.setResolution(gpu.maxResolution())
         while true do
             local sende_inhalt = string.sub(inhalt, max_packet * i + 1, max_packet * (i + 1))
