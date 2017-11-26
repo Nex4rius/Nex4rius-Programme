@@ -431,6 +431,7 @@ function f.keineDaten()
 end
 
 function f.tankliste()
+    printwlan("f.tankliste") --debug
     for k, v in pairs(Sensorliste) do
         printwlan("v", serialization.serialize(v))
         printwlan("v[8]", serialization.serialize(v[8]))
@@ -439,7 +440,7 @@ function f.tankliste()
 end
 
 function o.tankliste(signal)
-    printwlan("tankliste jap") --debug
+    printwlan("o.tankliste") --debug
     local dazu = true
     if version ~= signal[7] then
         printwlan("f.update start") -- debug
