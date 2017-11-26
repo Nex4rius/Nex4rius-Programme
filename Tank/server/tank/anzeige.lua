@@ -592,14 +592,11 @@ function f.beenden()
         term.clear()
         print("Tankanzeige wird ausgeschaltet")
     end
-    local function abbruch()
-        return false
-    end
     for k, v in pairs(f) do
-        f[k] = abbruch
+        f[k] = function() print(k) return false end
     end
     for k, v in pairs(o) do
-        o[k] = abbruch
+        o[k] = function() print(k) return false end
     end
     --f = nil
     --o = nil
