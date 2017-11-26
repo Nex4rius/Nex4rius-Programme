@@ -4,7 +4,7 @@
 
 os.sleep(2)
 
-der_tank = 0
+local der_tank = 0 -- debug
 
 local io              = io
 local os              = os
@@ -108,9 +108,11 @@ function f.verarbeiten(tank)
     printwlan("\n\n\ntank", serialization.serialize(tank))
     der_tank = der_tank + 1
     if der_tank > 8 then
-        der_tank = tank
         f.beenden()
         print("Hier ende")
+        local d = io.open("/hier", "w")
+        d:write(serialization.serialize(tank))
+        d:close()
         os.exit()
     end
     local d = io.open("/hier", "w")
@@ -592,15 +594,16 @@ function f.beenden()
         term.clear()
         print("Tankanzeige wird ausgeschaltet")
     end
-    for k, v in pairs(f) do
-        f[k] = function() print(k) return false end
-    end
-    for k, v in pairs(o) do
-        o[k] = function() print(k) return false end
-    end
-    --f = nil
-    --o = nil
+    --for k, v in pairs(f) do
+    --    f[k] = function() print(k) return false end
+    --end
+    --for k, v in pairs(o) do
+    --    o[k] = function() print(k) return false end
+    --end
+    f = nil
+    o = nil
     --os.exit()
+    event.push("interrupted")
 end
 
 function f.checkServerVersion()
