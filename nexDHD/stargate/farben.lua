@@ -78,8 +78,8 @@ elseif Theme == "dunkel" then
     Farben.Adressfarbe           = schwarz
     Farben.AdressfarbeAktiv      = blau
     Farben.AdressfarbeAktiv2     = blau
-    Farben.AdresstextfarbeAktiv  = schwarz
-    Farben.Adresstextfarbe       = blau
+    Farben.AdresstextfarbeAktiv  = hellblau
+    Farben.Adresstextfarbe       = hellblau
     Farben.Nachrichtfarbe        = schwarz
     Farben.Nachrichttextfarbe    = hellblau
     Farben.Steuerungsfarbe       = schwarz
