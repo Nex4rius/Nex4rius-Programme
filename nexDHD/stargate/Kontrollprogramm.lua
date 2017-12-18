@@ -23,6 +23,7 @@ local loadfile                  = loadfile
 
 local component                 = {}
 local event                     = {}
+local Farben                    = {}
 local term                      = term or require("term")
 local fs                        = fs or require("filesystem")
 local shell                     = shell or require("shell")
@@ -1900,6 +1901,7 @@ function f.main()
   seite = 0
   f.zeigeMenu()
   f.eventlisten("listen")
+  Farben = loadfile("/stargate/farben.lua")(Sicherung.Theme, OC, CC)
   while running do
     local ergebnis, grund = pcall(f.eventLoop)
     if not ergebnis then
@@ -1910,8 +1912,6 @@ function f.main()
   end
   f.beendeAlles()
 end
-
-local Farben  = loadfile("/stargate/farben.lua")(Sicherung.Theme, OC, CC)
 
 f.checken(f.main)
 
