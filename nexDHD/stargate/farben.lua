@@ -47,8 +47,8 @@ if Theme == "schwarz_weiss" then
     Farben.Logbuch_update        = Farben.schwarzeFarbe
     Farben.Logbuch_updatetext    = Farben.weisseFarbe
     Farben.Adressfarbe           = Farben.schwarzeFarbe
-    Farben.AdressfarbeAktiv      = Farben.schwarzeFarbe
-    Farben.AdressfarbeAktiv2     = Farben.schwarzeFarbe
+    Farben.AdressfarbeAktiv      = Farben.weisseFarbe
+    Farben.AdressfarbeAktiv2     = Farben.weisseFarbe
     Farben.AdresstextfarbeAktiv  = Farben.schwarzeFarbe
     Farben.Adresstextfarbe       = Farben.weisseFarbe
     Farben.Nachrichtfarbe        = Farben.schwarzeFarbe
