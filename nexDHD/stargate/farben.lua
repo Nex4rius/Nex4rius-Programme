@@ -58,14 +58,15 @@ if Theme == "schwarz_weiss" then
     Farben.Statusfarbe           = Farben.schwarzeFarbe
     Farben.Statustextfarbe       = Farben.weisseFarbe
 elseif Theme == "dunkel" then
-    local blau                   = 0x57DED4
+    local hellblau               = 0x57DED4
+    local blau                   = 0x3667A2
     local schwarz                = 0x020204
     local rot                    = 0xC80E13
     local gruen                  = 0x91DF44
     Farben.FehlerFarbe           = rot
     Farben.Hintergrundfarbe      = schwarz
-    Farben.Trennlinienfarbe      = blau
-    Farben.Textfarbe             = blau
+    Farben.Trennlinienfarbe      = hellblau
+    Farben.Textfarbe             = hellblau
     Farben.Logbuch_in            = Farben.roteFarbe
     Farben.Logbuch_intext        = Farben.schwarzeFarbe
     Farben.Logbuch_out           = Farben.grueneFarbe
@@ -80,11 +81,11 @@ elseif Theme == "dunkel" then
     Farben.AdresstextfarbeAktiv  = schwarz
     Farben.Adresstextfarbe       = blau
     Farben.Nachrichtfarbe        = schwarz
-    Farben.Nachrichttextfarbe    = blau
+    Farben.Nachrichttextfarbe    = hellblau
     Farben.Steuerungsfarbe       = schwarz
-    Farben.Steuerungstextfarbe   = blau
+    Farben.Steuerungstextfarbe   = gruen
     Farben.Statusfarbe           = schwarz
-    Farben.Statustextfarbe       = blau
+    Farben.Statustextfarbe       = hellblau
 else
     Farben.FehlerFarbe           = Farben.roteFarbe
     Farben.Hintergrundfarbe      = Farben.graueFarbe
