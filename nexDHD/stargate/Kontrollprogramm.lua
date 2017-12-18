@@ -357,7 +357,7 @@ function f.AdressenLesen()
       else
         y = f.schreiben(y, "   " .. na[4])
       end
-      f.Farbe(Farben.Adressfarbe)
+      f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
     end
   end
   f.leeren(y)
