@@ -159,6 +159,7 @@ local sprachen = {
   rechts                    = "rechts",
   oder                      = "oder",
   links                     = "links",
+  Theme                     = "normal, dunkel",
 }
 
 sprachen.side               = string.format("%s, %s, %s, %s, %s %s %s", sprachen.unten, sprachen.oben, sprachen.hinten, sprachen.vorne, sprachen.rechts, sprachen.oder, sprachen.links)
