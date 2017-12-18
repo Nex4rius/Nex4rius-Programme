@@ -389,7 +389,8 @@ end
 function f.leeren(y)
   f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
   if y < 21 then
-    gpu.fill(1, y + 1, 30, 22 - y, " ")
+    gpu.fill(1, y + 1, 30, 22 - y, "X")
+    --gpu.fill(1, y + 1, 30, 22 - y, " ")
   end
 end
 
