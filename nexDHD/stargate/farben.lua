@@ -33,8 +33,56 @@ elseif CC then
     Farben.orangeFarbe         = 2
 end
 
-if Theme == "dunkel" then
-    -- dark Theme here
+if Theme == "schwarz_weiss" then
+    Farben.FehlerFarbe           = Farben.weisseFarbe
+    Farben.Hintergrundfarbe      = Farben.schwarzeFarbe
+    Farben.Trennlinienfarbe      = Farben.weisseFarbe
+    Farben.Textfarbe             = Farben.weisseFarbe
+    Farben.Logbuch_in            = Farben.schwarzeFarbe
+    Farben.Logbuch_intext        = Farben.weisseFarbe
+    Farben.Logbuch_out           = Farben.schwarzeFarbe
+    Farben.Logbuch_outtext       = Farben.weisseFarbe
+    Farben.Logbuch_neu           = Farben.schwarzeFarbe
+    Farben.Logbuch_neutext       = Farben.weisseFarbe
+    Farben.Logbuch_update        = Farben.schwarzeFarbe
+    Farben.Logbuch_updatetext    = Farben.weisseFarbe
+    Farben.Adressfarbe           = Farben.schwarzeFarbe
+    Farben.AdressfarbeAktiv      = Farben.schwarzeFarbe
+    Farben.AdressfarbeAktiv2     = Farben.schwarzeFarbe
+    Farben.Adresstextfarbe       = Farben.weisseFarbe
+    Farben.Nachrichtfarbe        = Farben.schwarzeFarbe
+    Farben.Nachrichttextfarbe    = Farben.weisseFarbe
+    Farben.Steuerungsfarbe       = Farben.schwarzeFarbe
+    Farben.Steuerungstextfarbe   = Farben.weisseFarbe
+    Farben.Statusfarbe           = Farben.schwarzeFarbe
+    Farben.Statustextfarbe       = Farben.schwarzeFarbe
+elseif Theme == "dunkel" then
+    local blau                   = 0x57DED4
+    local schwarz                = 0x020204
+    local rot                    = 0xC80E13
+    local gruen                  = 0x91DF44
+    Farben.FehlerFarbe           = rot
+    Farben.Hintergrundfarbe      = schwarz
+    Farben.Trennlinienfarbe      = blau
+    Farben.Textfarbe             = blau
+    Farben.Logbuch_in            = schwarz
+    Farben.Logbuch_intext        = blau
+    Farben.Logbuch_out           = schwarz
+    Farben.Logbuch_outtext       = blau
+    Farben.Logbuch_neu           = schwarz
+    Farben.Logbuch_neutext       = blau
+    Farben.Logbuch_update        = schwarz
+    Farben.Logbuch_updatetext    = blau
+    Farben.Adressfarbe           = schwarz
+    Farben.AdressfarbeAktiv      = gruen
+    Farben.AdressfarbeAktiv2     = gruen
+    Farben.Adresstextfarbe       = blau
+    Farben.Nachrichtfarbe        = schwarz
+    Farben.Nachrichttextfarbe    = blau
+    Farben.Steuerungsfarbe       = blau
+    Farben.Steuerungstextfarbe   = schwarz
+    Farben.Statusfarbe           = schwarz
+    Farben.Statustextfarbe       = blau
 else
     Farben.FehlerFarbe           = Farben.roteFarbe
     Farben.Hintergrundfarbe      = Farben.graueFarbe

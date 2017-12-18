@@ -35,7 +35,7 @@ local function reset()
     debug          = "zum debuggen",
     nichtsAendern  = "verändere nichts ab hier",
     StargateName   = "der Name dieses Stargates",
-    Theme          = "normal, dunkel",
+    Theme          = "normal, dunkel, schwarz_weiss",
   }
 end
 
