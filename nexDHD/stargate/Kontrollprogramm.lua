@@ -347,7 +347,7 @@ function f.AdressenLesen()
         AdressAnzeige = 0
       end
       if na[2] == remAddr and string.len(tostring(remAddr)) > 5 then
-        f.Farbe(Farben.AdressfarbeAktiv)
+        f.Farbe(Farben.AdressfarbeAktiv, Farben.AdresstextfarbeAktiv)
         gpu.fill(1, y + 1, 30, 2, " ")
       end
       y = f.schreiben(y, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
