@@ -1901,7 +1901,6 @@ function f.main()
   seite = 0
   f.zeigeMenu()
   f.eventlisten("listen")
-  Farben = loadfile("/stargate/farben.lua")(Sicherung.Theme, OC, CC)
   while running do
     local ergebnis, grund = pcall(f.eventLoop)
     if not ergebnis then
@@ -1912,6 +1911,8 @@ function f.main()
   end
   f.beendeAlles()
 end
+
+Farben = loadfile("/stargate/farben.lua")(Sicherung.Theme, OC, CC)
 
 f.checken(f.main)
 
