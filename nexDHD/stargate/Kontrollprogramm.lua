@@ -373,13 +373,13 @@ function f.Logbuchseite()
     end
   end
   local max = #Logbuch
-  f.Farbe(Farben.roteFarbe, Farben.schwarzeFarbe)
+  f.Farbe(Farben.Logbuch_in, Farben.Logbuch_intext)
   ausgabe(max, Logbuch, "in")
-  f.Farbe(Farben.grueneFarbe, Farben.weisseFarbe)
+  f.Farbe(Farben.Logbuch_out, Farben.Logbuch_outtext)
   ausgabe(max, Logbuch, "out")
-  f.Farbe(Farben.hellblau, Farben.weisseFarbe)
+  f.Farbe(Farben.Logbuch_neu, Farben.Logbuch_neutext)
   ausgabe(max, Logbuch, "neu")
-  f.Farbe(Farben.gelbeFarbe, Farben.schwarzeFarbe)
+  f.Farbe(Farben.Logbuch_update, Farben.Logbuch_updatetext)
   ausgabe(max, Logbuch, "update")
   f.leeren(max)
   f.Legende()
@@ -1133,16 +1133,16 @@ function f.Legende()
   f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
   local x = 1
   f.zeigeHier(x, Bildschirmhoehe - 1, string.format("%s:  ", sprachen.Legende))
-  f.Farbe(Farben.roteFarbe, Farben.schwarzeFarbe)
+  f.Farbe(Farben.Logbuch_in, Farben.Logbuch_intext)
   x = x + unicode.len(sprachen.Legende) + 3
   f.zeigeHier(x, Bildschirmhoehe - 1, sprachen.RichtungNameEin, 0)
-  f.Farbe(Farben.grueneFarbe, Farben.weisseFarbe)
+  f.Farbe(Farben.Logbuch_out, Farben.Logbuch_outtext)
   x = x + unicode.len(sprachen.RichtungNameEin) + 2
   f.zeigeHier(x, Bildschirmhoehe - 1, sprachen.RichtungNameAus, 0)
-  f.Farbe(Farben.hellblau, Farben.weisseFarbe)
+  f.Farbe(Farben.Logbuch_neu, Farben.Logbuch_neutext)
   x = x + unicode.len(sprachen.RichtungNameAus) + 2
   f.zeigeHier(x, Bildschirmhoehe - 1, sprachen.neueAdresse, 0)
-  f.Farbe(Farben.gelbeFarbe, Farben.schwarzeFarbe)
+  f.Farbe(Farben.Logbuch_update, Farben.Logbuch_updatetext)
   x = x + unicode.len(sprachen.neueAdresse) + 2
   f.zeigeHier(x, Bildschirmhoehe - 1, sprachen.LegendeUpdate, 0)
 end
@@ -1566,7 +1566,7 @@ end
 
 function Taste.Zahl(c)
   event.timer(2, f.zeigeMenu, 1)
-  f.Farbe(Farben.mittelblau, Farben.Adresstextfarbe)
+  f.Farbe(Farben.AdressfarbeAktiv2, Farben.Adresstextfarbe)
   if c == "0" then
     c = 10
   end
