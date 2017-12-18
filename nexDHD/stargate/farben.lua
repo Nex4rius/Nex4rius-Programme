@@ -49,13 +49,14 @@ if Theme == "schwarz_weiss" then
     Farben.Adressfarbe           = Farben.schwarzeFarbe
     Farben.AdressfarbeAktiv      = Farben.schwarzeFarbe
     Farben.AdressfarbeAktiv2     = Farben.schwarzeFarbe
+    Farben.AdresstextfarbeAktiv  = Farben.schwarzeFarbe
     Farben.Adresstextfarbe       = Farben.weisseFarbe
     Farben.Nachrichtfarbe        = Farben.schwarzeFarbe
     Farben.Nachrichttextfarbe    = Farben.weisseFarbe
     Farben.Steuerungsfarbe       = Farben.schwarzeFarbe
     Farben.Steuerungstextfarbe   = Farben.weisseFarbe
     Farben.Statusfarbe           = Farben.schwarzeFarbe
-    Farben.Statustextfarbe       = Farben.schwarzeFarbe
+    Farben.Statustextfarbe       = Farben.weisseFarbe
 elseif Theme == "dunkel" then
     local blau                   = 0x57DED4
     local schwarz                = 0x020204
@@ -74,13 +75,14 @@ elseif Theme == "dunkel" then
     Farben.Logbuch_update        = schwarz
     Farben.Logbuch_updatetext    = blau
     Farben.Adressfarbe           = schwarz
-    Farben.AdressfarbeAktiv      = gruen
-    Farben.AdressfarbeAktiv2     = gruen
+    Farben.AdressfarbeAktiv      = blau
+    Farben.AdressfarbeAktiv2     = blau
+    Farben.AdresstextfarbeAktiv  = schwarz
     Farben.Adresstextfarbe       = blau
     Farben.Nachrichtfarbe        = schwarz
     Farben.Nachrichttextfarbe    = blau
-    Farben.Steuerungsfarbe       = blau
-    Farben.Steuerungstextfarbe   = schwarz
+    Farben.Steuerungsfarbe       = schwarz
+    Farben.Steuerungstextfarbe   = blau
     Farben.Statusfarbe           = schwarz
     Farben.Statustextfarbe       = blau
 else
@@ -99,6 +101,7 @@ else
     Farben.Adressfarbe           = Farben.brauneFarbe
     Farben.AdressfarbeAktiv      = Farben.hellblau
     Farben.AdressfarbeAktiv2     = Farben.mittelblau
+    Farben.AdresstextfarbeAktiv  = Farben.Textfarbe
     Farben.Adresstextfarbe       = Farben.Textfarbe
     Farben.Nachrichtfarbe        = Farben.graueFarbe
     Farben.Nachrichttextfarbe    = Farben.Textfarbe
