@@ -23,6 +23,7 @@ local loadfile                  = loadfile
 
 local component                 = {}
 local event                     = {}
+local Farben                    = {}
 local term                      = term or require("term")
 local fs                        = fs or require("filesystem")
 local shell                     = shell or require("shell")
@@ -347,7 +348,7 @@ function f.AdressenLesen()
         AdressAnzeige = 0
       end
       if na[2] == remAddr and string.len(tostring(remAddr)) > 5 then
-        f.Farbe(Farben.AdressfarbeAktiv)
+        f.Farbe(Farben.AdressfarbeAktiv, Farben.AdresstextfarbeAktiv)
         gpu.fill(1, y + 1, 30, 2, " ")
       end
       y = f.schreiben(y, AdressAnzeige .. " " .. string.sub(na[1], 1, xVerschiebung - 7))
@@ -357,7 +358,7 @@ function f.AdressenLesen()
       else
         y = f.schreiben(y, "   " .. na[4])
       end
-      f.Farbe(Farben.Adressfarbe)
+      f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
     end
   end
   f.leeren(y)
@@ -1275,7 +1276,7 @@ end
 
 function Taste.q()
   if seite == -1 then
-    f.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
+    f.Farbe(Farben.AdressfarbeAktiv, Farben.AdresstextfarbeAktiv)
     f.zeigeHier(1, Taste.Koordinaten.Taste_q, "Q " .. sprachen.beenden, 0)
     running = false
   end
@@ -1322,7 +1323,7 @@ end
 
 function Taste.a()
   if seite == -1 then
-    f.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
+    f.Farbe(Farben.AdressfarbeAktiv, Farben.AdresstextfarbeAktiv)
     f.zeigeHier(1, Taste.Koordinaten.Taste_a, "A " .. sprachen.Adresseingabe, 0)
     if f.Tastatur() then
       f.eventlisten("ignore")
@@ -1399,7 +1400,7 @@ end
 
 function Taste.i()
   if seite == -1 then
-    f.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
+    f.Farbe(Farben.AdressfarbeAktiv, Farben.AdresstextfarbeAktiv)
     f.zeigeHier(1, Taste.Koordinaten.Taste_i, "I " .. string.sub(sprachen.IrisSteuerung:match("^%s*(.-)%s*$") .. " " .. sprachen.an_aus, 1, 28), 0)
     event.timer(2, f.zeigeMenu, 1)
     if iris ~= "Offline" then
@@ -1416,7 +1417,7 @@ end
 
 function Taste.z()
   if seite == -1 then
-    f.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
+    f.Farbe(Farben.AdressfarbeAktiv, Farben.AdresstextfarbeAktiv)
     f.zeigeHier(1, Taste.Koordinaten.Taste_z, "Z " .. sprachen.AdressenBearbeiten, 0)
     if f.Tastatur() then
       f.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
@@ -1446,7 +1447,7 @@ end
 
 function Taste.s()
   if seite == -1 then
-    f.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
+    f.Farbe(Farben.AdressfarbeAktiv, Farben.AdresstextfarbeAktiv)
     f.zeigeHier(1, Taste.Koordinaten.Taste_s, "S " .. sprachen.EinstellungenAendern, 0)
     if f.Tastatur() then
       f.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
@@ -1495,6 +1496,7 @@ function Taste.s()
         f.AdressenSpeichern()
       end
       schreibSicherungsdatei(Sicherung)
+      Farben = loadfile("/stargate/farben.lua")(Sicherung.Theme, OC, CC)
       f.sides()
       gpu.setBackground(Farben.Nachrichtfarbe)
       seite = -1
@@ -1507,7 +1509,7 @@ end
 
 function Taste.l()
   if seite == -1 then
-    f.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
+    f.Farbe(Farben.AdressfarbeAktiv, Farben.AdresstextfarbeAktiv)
     f.zeigeHier(1, Taste.Koordinaten.Taste_l, "L " .. sprachen.zeigeLog, 0)
     if f.Tastatur() then
       f.eventlisten("ignore")
@@ -1527,7 +1529,7 @@ end
 function Taste.u()
   if seite == -1 then
     f.zeigeNachricht(sprachen.Update)
-    f.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
+    f.Farbe(Farben.AdressfarbeAktiv, Farben.AdresstextfarbeAktiv)
     f.zeigeHier(1, Taste.Koordinaten.Taste_u, "U " .. sprachen.Update, 0)
     if component.isAvailable("internet") then
       local serverVersion = f.checkServerVersion("master")
@@ -1554,7 +1556,7 @@ end
 function Taste.b()
   if seite == -1 then
     f.zeigeNachricht(sprachen.UpdateBeta)
-    f.Farbe(Farben.AdressfarbeAktiv, Farben.Adresstextfarbe)
+    f.Farbe(Farben.AdressfarbeAktiv, Farben.AdresstextfarbeAktiv)
     f.zeigeHier(1, Taste.Koordinaten.Taste_b, "B " .. sprachen.UpdateBeta, 0)
     if component.isAvailable("internet") then
       f.Logbuch_schreiben(tostring(serverVersion) .. " BETA", "Update:    " , "update")
@@ -1566,7 +1568,7 @@ end
 
 function Taste.Zahl(c)
   event.timer(2, f.zeigeMenu, 1)
-  f.Farbe(Farben.AdressfarbeAktiv2, Farben.Adresstextfarbe)
+  f.Farbe(Farben.AdressfarbeAktiv2, Farben.AdresstextfarbeAktiv)
   if c == "0" then
     c = 10
   end
@@ -1909,6 +1911,8 @@ function f.main()
   end
   f.beendeAlles()
 end
+
+Farben = loadfile("/stargate/farben.lua")(Sicherung.Theme, OC, CC)
 
 f.checken(f.main)
 

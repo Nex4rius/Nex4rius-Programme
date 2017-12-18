@@ -227,6 +227,7 @@ function f.installieren(versionTyp)
     {"stargate/adressen.lua",               "/update/stargate/adressen.lua"},
     {"stargate/Sicherungsdatei.lua",        "/update/stargate/Sicherungsdatei.lua"},
     {"stargate/Kontrollprogramm.lua",       "/update/stargate/Kontrollprogramm.lua"},
+    {"stargate/farben.lua",                 "/update/stargate/farben.lua"},
     {"stargate/schreibSicherungsdatei.lua", "/update/stargate/schreibSicherungsdatei.lua"},
     {"stargate/sprache/ersetzen.lua",       "/update/stargate/sprache/ersetzen.lua"},
   }
@@ -265,6 +266,7 @@ function f.installieren(versionTyp)
     kopieren("/update/stargate/adressen.lua",               "/stargate/adressen.lua")
     kopieren("/update/stargate/Sicherungsdatei.lua",        "/stargate/Sicherungsdatei.lua")
     kopieren("/update/stargate/Kontrollprogramm.lua",       "/stargate/Kontrollprogramm.lua")
+    kopieren("/update/stargate/farben.lua",                 "/stargate/farben.lua")
     kopieren("/update/stargate/schreibSicherungsdatei.lua", "/stargate/schreibSicherungsdatei.lua")
     kopieren("/update/stargate/sprache/ersetzen.lua",       "/stargate/sprache/ersetzen.lua")
     for s in pairs(Sprachliste) do

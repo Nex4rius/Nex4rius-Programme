@@ -18,7 +18,7 @@ if type(ALT) ~= "table" then ALT = {} end
 if standard then
   standard = standard()
 else
-  standard = {autoclosetime = 60, IDC = "", RF = false, Sprache = "", side = "unten", autoUpdate = true, StargateName = "", Port = 645, debug = false, control = "On", installieren = false}
+  standard = {autoclosetime = 60, IDC = "", RF = false, Sprache = "", side = "unten", autoUpdate = true, StargateName = "", Port = 645, debug = false, control = "On", installieren = false, Theme = "normal"}
 end
 
 local function reset()
@@ -35,6 +35,7 @@ local function reset()
     debug          = "zum debuggen",
     nichtsAendern  = "verändere nichts ab hier",
     StargateName   = "der Name dieses Stargates",
+    Theme          = "normal, dunkel, schwarz_weiss",
   }
 end
 
@@ -72,6 +73,7 @@ if type(NEU) == "table" then
   check("boolean", "debug")
   check("string" , "control")
   check("boolean", "installieren")
+  check("string", "Theme")
   
   local f = io.open ("/einstellungen/Sicherungsdatei.lua", "w")
   f:write('-- pastebin run -f YVqKFnsP\n')
@@ -92,6 +94,7 @@ if type(NEU) == "table" then
   f:write('  autoUpdate    = '  .. tostring(Sicherung.autoUpdate)   ..  ', -- ' .. tostring(sprachen.autoUpdate)    .. '\n')
   f:write('  StargateName  = "' .. tostring(Sicherung.StargateName) .. '", -- ' .. tostring(sprachen.StargateName)  .. '\n')
   f:write('  Port          = '  .. tostring(Sicherung.Port)         ..  ', -- ' .. tostring(sprachen.Port)          .. '\n')
+  f:write('  Theme         = "' .. tostring(Sicherung.Theme)        .. '", -- ' .. tostring(sprachen.Theme)           .. '\n')
   f:write('\n')
   f:write(string.rep("-", 10)   .. tostring(sprachen.nichtsAendern) .. string.rep("-", 60 - string.len(tostring(sprachen.nichtsAendern))) .. '\n')
   f:write('\n')

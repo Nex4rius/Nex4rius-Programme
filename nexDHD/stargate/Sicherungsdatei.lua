@@ -15,6 +15,7 @@ return {
   autoUpdate    = true, -- enable automated updates
   StargateName  = "", -- the name of this stargate
   Port          = 645, -- default 645
+  Theme         = "normal" -- normal, dunkel, schwarz_weiss
 
 ----------don't change anything below---------------------------------
 
