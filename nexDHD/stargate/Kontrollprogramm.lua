@@ -1495,7 +1495,7 @@ function Taste.s()
         f.AdressenSpeichern()
       end
       schreibSicherungsdatei(Sicherung)
-      Farben = Farben(Sicherung.Theme, OC, CC)
+      Farben = loadfile("/stargate/farben.lua")(Sicherung.Theme, OC, CC)
       f.sides()
       gpu.setBackground(Farben.Nachrichtfarbe)
       seite = -1
