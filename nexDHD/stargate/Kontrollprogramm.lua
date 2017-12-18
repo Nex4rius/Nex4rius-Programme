@@ -74,6 +74,7 @@ end
 
 local Sicherung                 = loadfile("/einstellungen/Sicherungsdatei.lua")()
 local gist                      = loadfile("/stargate/gist.lua")
+local Farben                    = loadfile("/stargate/farben.lua")(Sicherung.Theme, OC, CC)
 
 if not pcall(loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")) then
   print(string.format("Fehler %s.lua", Sicherung.Sprache))
