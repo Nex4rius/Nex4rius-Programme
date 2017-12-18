@@ -103,8 +103,18 @@ Farben.Hintergrundfarbe      = Farben.graueFarbe
 Farben.Trennlinienfarbe      = Farben.blaueFarbe
 Farben.Textfarbe             = Farben.weisseFarbe
 
+Farben.Logbuch_in            = Farben.roteFarbe
+Farben.Logbuch_intext        = Farben.schwarzeFarbe
+Farben.Logbuch_out           = Farben.grueneFarbe
+Farben.Logbuch_outtext       = Farben.weisseFarbe
+Farben.Logbuch_neu           = Farben.hellblau
+Farben.Logbuch_neutext       = Farben.weisseFarbe
+Farben.Logbuch_update        = Farben.gelbeFarbe
+Farben.Logbuch_updatetext    = Farben.schwarzeFarbe
+
 Farben.Adressfarbe           = Farben.brauneFarbe
 Farben.AdressfarbeAktiv      = Farben.hellblau
+Farben.AdressfarbeAktiv2     = Farben.mittelblau
 Farben.Adresstextfarbe       = Farben.Textfarbe
 Farben.Nachrichtfarbe        = Farben.graueFarbe
 Farben.Nachrichttextfarbe    = Farben.Textfarbe
@@ -112,6 +122,8 @@ Farben.Steuerungsfarbe       = Farben.gelbeFarbe
 Farben.Steuerungstextfarbe   = Farben.schwarzeFarbe
 Farben.Statusfarbe           = Farben.grueneFarbe
 Farben.Statustextfarbe       = Farben.Textfarbe
+
+--Redstonefarben
 
 Farben.white                 = 0
 Farben.orange                = 1
