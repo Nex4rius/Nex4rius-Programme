@@ -702,7 +702,7 @@ function f.Iriskontrolle()
 end
 
 function f.sendeAdressliste()
-  if einmalAdressenSenden then
+  if einmalAdressenSenden and Sicherung.kein_senden ~= true then
     einmalAdressenSenden = false
     if OC then
       return "Adressliste", serialization.serialize(sendeAdressen), version
