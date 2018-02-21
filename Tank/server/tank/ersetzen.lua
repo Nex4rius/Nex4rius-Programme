@@ -69,4 +69,11 @@ return {
 ["UUMatter"]                           = "UU-Matter",
 ["lpg"]                                = "LPG",
 ["plastic"]                            = "Liquid Plastic",
+["cryotheum"]                          = "Gelid Cryotheum";
+["redstone"]                           = "Destabilized Redstone";
+["petrotheum"]                         = "Tectonic Petrotheum";
+["pyrotheum"]                          = "Blazing Pyrotheum";
+["glowstone"]                          = "Energized Glowstone";
+["aerotheum"]                          = "Zephyrean Aerotheum";
+["ender"]                              = "Resonant Ender";
 }
