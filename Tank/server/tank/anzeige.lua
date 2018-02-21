@@ -262,7 +262,7 @@ end
 
 function zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl)
   if farben[name] == nil and debug then
-    nachricht = string.format("%s  %s  >>report this liquid<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
+    nachricht = string.format("%s >>report this liquid<<<  %smb / %smb  %s", name, menge, maxmenge, prozent)
     nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
   else
     local ausgabe = {}
