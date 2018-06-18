@@ -19,6 +19,8 @@ oil                       = {0xFFFFFF,  0x010101,  0xFFFFFF,  0x4F4F4F},
 -- Railcraft
 creosote                  = {0xFFFFFF,  0x6D6800,  0xFFFFFF,  0xA19C00},
 steam                     = {0x000000,  0xAEAEAE,  0xFFFFFF,  0x7B7B7B},
+-- Industrial Foregoing
+latex                     = {0x000000,  0xF2F4C3,  0x000000,  0xF2F4C3},
 -- Forestry
 bioethanol                = {0x000000,  0xFC7600,  0x000000,  0xCA5E00},
 seedoil                   = {0x000000,  0xFCFC96,  0x000000,  0xCACA79},
