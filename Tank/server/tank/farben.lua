@@ -12,6 +12,8 @@ lava                      = {0x000000,  0xCF4E0C,  0xFFFFFF,  0x9C3A09},
 milk                      = {0x000000,  0xFCFCFC,  0x000000,  0xCDCDCD},
 -- Unbekannt
 unbekannt                 = {0xFFFFFF,  0x444444,  0xFFFFFF,  0x333333},
+-- Astral Sorcery
+astralsorceryliquidstarlight = {0x000000,  0xAEAEAE,  0xFFFFFF,  0x7B7B7B},
 -- BuildCraft
 diesel                    = {0xFFFFFF,  0x888300,  0xFFFFFF,  0x666300},
 fuel                      = {0xFFFFFF,  0x888300,  0xFFFFFF,  0x666300},
