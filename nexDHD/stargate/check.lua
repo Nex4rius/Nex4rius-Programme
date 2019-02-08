@@ -410,7 +410,7 @@ function f.checkDateien()
       io.write(sprachen.fehlerName or "<FEHLER>")
       print(" Datei fehlt: " .. dateien[i])
       if component.isAvailable("internet") then
-        if not wget("-f", f.Pfad(versionTyp) .. dateien[1], "/" .. dateien[1]) then
+        if not wget("-f", f.Pfad(versionTyp) .. dateien[i], "/" .. dateien[i]) then
           return
         end
       else
