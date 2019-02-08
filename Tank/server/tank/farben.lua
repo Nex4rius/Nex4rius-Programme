@@ -13,6 +13,7 @@ milk                         = {0x000000,  0xFCFCFC,  0x000000,  0xCDCDCD},
 unbekannt                    = {0xFFFFFF,  0x444444,  0xFFFFFF,  0x333333},
 -- Astral Sorcery
 astralsorceryliquidstarlight = {0x000000,  0xAEAEAE,  0xFFFFFF,  0x7B7B7B},
+liquidstarlight              = {0x0017FF,  0x000000,  0x0017FF,  0xFFFFFF},
 -- BuildCraft
 diesel                       = {0xFFFFFF,  0x888300,  0xFFFFFF,  0x666300},
 fuel                         = {0xFFFFFF,  0x888300,  0xFFFFFF,  0x666300},
@@ -33,6 +34,10 @@ plastic                      = {0xFFFFFF,  0x838383,  0xFFFFFF,  0x4F4F4F},
 xpjuice                      = {0x000000,  0x50FC01,  0x000000,  0x419C04},
 -- Ender IO
 rocketfuel                   = {0xFFFFFF,  0x6E6C41,  0xFFFFFF,  0xA19F5F},
+-- Immersive Engineering
+biodiesel                    = {0x000000,  0xFC7600,  0x000000,  0xCA5E00},
+ethanol                      = {0x000000,  0xFFFFFF,  0x000000,  0xCDCDCD},
+plantoil                     = {0x000000,  0xFFFF1C,  0x000000,  0xCDCD17},
 -- Thermal Foundation
 aerotheum                    = {0x000000,  0xaca485,  0x000000,  0xa19e7f},
 crudeoil                     = {0xF0F0F0,  0x1E1E1E,  0xF0F0F0,  0x3C3C3C},
@@ -150,4 +155,6 @@ aluminum                     = {0x000000,  0xE0E0E0,  0x000000,  0x828282},
 nickel                       = {0x000000,  0xD6E28E,  0x000000,  0xA8B26E},
 silver                       = {0x000000,  0xCBF4F4,  0x000000,  0xABD3D3},
 copper                       = {0xFFFFFF,  0xCE7500,  0xFFFFFF,  0x965501},
+-- ???
+kerosene                     = {0x00AEFF,  0x0075FF,  0xFFFFFF,  0x0006FF},
 }
