@@ -242,6 +242,10 @@ function f.Logbuch_schreiben(name, adresse, richtung)
 end
 
 function f.schreibeAdressen()
+  local d = io.open("/einstellungen/adressen.lua", "r")
+  local davor = d:read("*all")
+  d:close()
+
   local d = io.open("/einstellungen/adressen.lua", "w")
   d:write('-- pastebin run -f YVqKFnsP\n')
   d:write('-- nexDHD von Nex4rius\n')
@@ -257,6 +261,13 @@ function f.schreibeAdressen()
   end
   d:write('}')
   d:close()
+  -- Checken
+  if not loadfile("/einstellungen/adressen.lua")() then
+    f.schreibFehlerLog("<FEHLER> Schreiben der Adressdatei ist nicht möglich")
+    local d = io.open("/einstellungen/adressen.lua", "w")
+    d:write(davor)
+    d:close()
+  end
 end
 
 function f.Farbe(hintergrund, vordergrund)
@@ -451,6 +462,11 @@ end
 function f.AdressenSpeichern()
   local a = loadfile("/einstellungen/adressen.lua") or loadfile("/stargate/adressen.lua")
   adressen = a()
+  if not adressen then
+    f.schreibFehlerLog("<FEHLER> Adressdatei ist beschädigt | Kopiere beschädigte Datei nach /adressen.lua")
+    kopieren("/einstellungen/adressen.lua", "/adressen.lua")
+    adressen = loadfile("/stargate/adressen.lua")()
+  end
   gespeicherteAdressen = {}
   sendeAdressen = {}
   local k = 0
@@ -671,11 +687,10 @@ function f.Iriskontrolle()
   if state == "Connected" and direction == "Outgoing" and send == true then
     if outcode == "-" or outcode == nil then
       sg.sendMessage("Adressliste", f.sendeAdressliste())
-      send = false
     else
       sg.sendMessage(outcode, f.sendeAdressliste())
-      send = false
     end
+    send = false
   end
   if codeaccepted == "-" or codeaccepted == nil then
   elseif messageshow == true then
@@ -747,13 +762,17 @@ function f.Zielname()
     if remoteName == "" and wurmloch == "in" and type(adressen) == "table" then
       for j = 1, #adressen do
         local na = adressen[j]
-        if remAddr == na[2] then
-          if na[1] == na[2] then
-            remoteName = sprachen.Unbekannt
-          else
-            remoteName = na[1]
-            break
+        if na then
+          if remAddr == na[2] then
+            if na[1] == na[2] then
+              remoteName = sprachen.Unbekannt
+            else
+              remoteName = na[1]
+              break
+            end
           end
+        else
+          remoteName = sprachen.Unbekannt
         end
       end
       if remoteName == "" then
