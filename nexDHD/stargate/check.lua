@@ -53,6 +53,7 @@ if OC then
   local b = gpu.setBackground
   gpu.setForeground = function(code) if code then a(code) end end
   gpu.setBackground = function(code) if code then b(code) end end
+  pcall(component.getPrimary("screen").setTouchModeInverted, false)
 elseif CC then
   component.getPrimary = peripheral.find
   component.isAvailable = function(name)
