@@ -483,8 +483,7 @@ function f.AdressenSpeichern()
   sendeAdressen = {}
   local k = 0
   local LokaleAdresse = f.getAddress(sg.localAddress())
-  for i = 1, #adressen do
-    local na = adressen[i]
+  for i, na in pairs(adressen) do
     if na[2] == LokaleAdresse then
       k = -1
       sendeAdressen[i] = {}
@@ -745,7 +744,10 @@ function f.newAddress(idc, neueAdresse, neuerName, weiter)
   f.zeigeFehler(string.format("test2 --- %s --- %s --- %s --- %s", idc, neueAdresse, neuerName, weiter)) --debug
   f.zeigeFehler(string.format("test4a --- %s", serialization.serialize(adressen))) --debug
   if AddNewAddress == true and string.len(neueAdresse) >= 7 and string.len(neueAdresse) <= 11 and sg.energyToDial(neueAdresse) then
-    local i = #adressen + 1
+    local i
+    for k in pairs(adressen)
+      i = k + 1
+    end
     adressen[i] = {}
     local nichtmehr
     if neuerName == nil then
@@ -775,11 +777,7 @@ end
 function f.Zielname()
   if state == "Dialling" or state == "Connected" then
     if remoteName == "" and wurmloch == "in" and type(adressen) == "table" then
-      for j = 1, #adressen do
-        local na = adressen[j]
-        if not na then
-          break
-        end
+      for j, na in pairs(adressen) do
         if remAddr == na[2] then
           if na[1] == na[2] then
             remoteName = sprachen.Unbekannt
@@ -1780,8 +1778,7 @@ function f.angekommeneAdressen(eingabe)
   for a = 1, #eingabe do
     local b = eingabe[a]
     local neuHinzufuegen = false
-    for c = 1, #adressen do
-      local d = adressen[c]
+    for c, d in pairs(adressen) do
       if d[2] == "XXXX-XXX-XX" then
         adressen[c] = nil
       elseif b[2] ~= d[2] then
