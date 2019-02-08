@@ -241,11 +241,6 @@ function f.Logbuch_schreiben(name, adresse, richtung)
 end
 
 function f.schreibeAdressen()
-  f.zeigeFehler(string.format("test3b --- %s", serialization.serialize(adressen))) --debug
-  f.zeigeFehler(string.format("test3 --- %s", #adressen)) --debug
-  for k, v in pairs(adressen) do
-    f.zeigeFehler(string.format("test3e --- %s --- %s --- %s", v[1], v[2], v[3])) --debug
-  end
   local d = io.open("/einstellungen/adressen.lua", "r")
   if d then
     local davor = d:read("*all")
@@ -269,10 +264,6 @@ function f.schreibeAdressen()
   d:close()
   -- Checken
   local a = loadfile("/einstellungen/adressen.lua")()
-  f.zeigeFehler(string.format("test3f --- %s", #a)) --debug
-  for k, v in pairs(a) do
-    f.zeigeFehler(string.format("test3g --- %s --- %s --- %s", v[1], v[2], v[3])) --debug
-  end
   if not a or #a <= 0 then
     f.zeigeFehler("<FEHLER> Schreiben der Adressdatei ist nicht möglich")
     local d = io.open("/einstellungen/adressen.lua", "w")
@@ -741,8 +732,6 @@ function f.sendeAdressliste()
 end
 
 function f.newAddress(idc, neueAdresse, neuerName, weiter)
-  f.zeigeFehler(string.format("test2 --- %s --- %s --- %s --- %s", idc, neueAdresse, neuerName, weiter)) --debug
-  f.zeigeFehler(string.format("test4a --- %s", serialization.serialize(adressen))) --debug
   if AddNewAddress == true and string.len(neueAdresse) >= 7 and string.len(neueAdresse) <= 11 and sg.energyToDial(neueAdresse) then
     local i = 1
     for k in pairs(adressen) do
@@ -759,7 +748,6 @@ function f.newAddress(idc, neueAdresse, neuerName, weiter)
     end
     adressen[i][2] = neueAdresse
     adressen[i][3] = idc or ""
-    f.zeigeFehler(string.format("test4b --- %s", serialization.serialize(adressen))) --debug
     if weiter == nil then
       f.schreibeAdressen()
       if nichtmehr then
@@ -768,10 +756,8 @@ function f.newAddress(idc, neueAdresse, neuerName, weiter)
       f.AdressenSpeichern()
       f.zeigeMenu()
     end
-    f.zeigeFehler(string.format("test4c --- %s", serialization.serialize(adressen))) --debug
     return true
   end
-  f.zeigeFehler(string.format("test4d --- %s", serialization.serialize(adressen))) --debug
 end
 
 function f.Zielname()
