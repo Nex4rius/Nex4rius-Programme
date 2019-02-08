@@ -139,7 +139,6 @@ local energy                    = 0
 local seite                     = 0
 local maxseiten                 = 0
 local checkEnergy               = 0
-local AdressenAnzahl            = 0
 local zeile                     = 1
 local Trennlinienhoehe          = 14
 local energymultiplicator       = 20
@@ -242,9 +241,16 @@ function f.Logbuch_schreiben(name, adresse, richtung)
 end
 
 function f.schreibeAdressen()
+  f.zeigeFehler(string.format("test3b --- %s", serialization.serialize(adressen))) --debug
+  f.zeigeFehler(string.format("test3 --- %s", #adressen)) --debug
+  for k, v in pairs(adressen) do
+    f.zeigeFehler(string.format("test3e --- %s --- %s --- %s", v[1], v[2], v[3])) --debug
+  end
   local d = io.open("/einstellungen/adressen.lua", "r")
-  local davor = d:read("*all")
-  d:close()
+  if d then
+    local davor = d:read("*all")
+    d:close()
+  end
 
   local d = io.open("/einstellungen/adressen.lua", "w")
   d:write('-- pastebin run -f YVqKFnsP\n')
@@ -256,14 +262,18 @@ function f.schreibeAdressen()
   d:write('-- "" ' .. sprachen.keinIDC .. '\n--\n\n')
   d:write('return {\n')
   d:write('--{"<Name>", "<Adresse>", "<IDC>"},\n')
-  for i = 1, #adressen do
-    d:write(string.format('  {"%s", "%s", "%s"},\n', adressen[i][1], adressen[i][2], adressen[i][3]))
+  for k, v in pairs(adressen) do
+    d:write(string.format('  {"%s", "%s", "%s"},\n', v[1], v[2], v[3]))
   end
   d:write('}')
   d:close()
   -- Checken
-  local a = loadfile("/einstellungen/adressen.lua")
-  if not a() or a() == {} then
+  local a = loadfile("/einstellungen/adressen.lua")()
+  f.zeigeFehler(string.format("test3f --- %s", #a)) --debug
+  for k, v in pairs(a) do
+    f.zeigeFehler(string.format("test3g --- %s --- %s --- %s", v[1], v[2], v[3])) --debug
+  end
+  if not a or #a <= 0 then
     f.zeigeFehler("<FEHLER> Schreiben der Adressdatei ist nicht möglich")
     local d = io.open("/einstellungen/adressen.lua", "w")
     d:write(davor)
@@ -464,6 +474,7 @@ function f.AdressenSpeichern()
   local a = loadfile("/einstellungen/adressen.lua") or loadfile("/stargate/adressen.lua")
   adressen = a()
   if not adressen then
+    f.zeigeFehler(string.format("Hier ist der Adressenfehler --- %s", adressen))
     f.zeigeFehler("<FEHLER> Adressdatei ist beschädigt | Kopiere beschädigte Datei nach /adressen.lua")
     kopieren("/einstellungen/adressen.lua", "/adressen.lua")
     adressen = loadfile("/stargate/adressen.lua")()
@@ -480,6 +491,7 @@ function f.AdressenSpeichern()
       sendeAdressen[i][1] = na[1]
       sendeAdressen[i][2] = na[2]
       v.lokaleAdresse = true
+      Sicherung.StargateName = na[1]
     else
       local anwahlEnergie = sg.energyToDial(na[2])
       if not anwahlEnergie then
@@ -517,7 +529,6 @@ function f.AdressenSpeichern()
     end
     f.zeigeNachricht(sprachen.verarbeiteAdressen .. "<" .. na[2] .. "> <" .. na[1] .. ">")
     maxseiten = (i + k) / 10
-    AdressenAnzahl = i
   end
   if not v.lokaleAdresse then
     f.checkStargateName()
@@ -730,21 +741,24 @@ function f.sendeAdressliste()
   end
 end
 
-function f.newAddress(idc, neueAdresse, neuerName, ...)
+function f.newAddress(idc, neueAdresse, neuerName, weiter)
+  f.zeigeFehler(string.format("test2 --- %s --- %s --- %s --- %s", idc, neueAdresse, neuerName, weiter)) --debug
+  f.zeigeFehler(string.format("test4a --- %s", serialization.serialize(adressen))) --debug
   if AddNewAddress == true and string.len(neueAdresse) >= 7 and string.len(neueAdresse) <= 11 and sg.energyToDial(neueAdresse) then
-    AdressenAnzahl = AdressenAnzahl + 1
-    adressen[AdressenAnzahl] = {}
+    local i = #adressen + 1
+    adressen[i] = {}
     local nichtmehr
     if neuerName == nil then
-      adressen[AdressenAnzahl][1] = ">>>" .. neueAdresse .. "<<<"
+      adressen[i][1] = ">>>" .. neueAdresse .. "<<<"
     else
-      adressen[AdressenAnzahl][1] = neuerName
+      adressen[i][1] = neuerName
       nichtmehr = true
       f.Logbuch_schreiben(neuerName , neueAdresse, "neu")
     end
-    adressen[AdressenAnzahl][2] = neueAdresse
-    adressen[AdressenAnzahl][3] = idc or ""
-    if ... == nil then
+    adressen[i][2] = neueAdresse
+    adressen[i][3] = idc or ""
+    f.zeigeFehler(string.format("test4b --- %s", serialization.serialize(adressen))) --debug
+    if weiter == nil then
       f.schreibeAdressen()
       if nichtmehr then
         AddNewAddress = false
@@ -752,10 +766,10 @@ function f.newAddress(idc, neueAdresse, neuerName, ...)
       f.AdressenSpeichern()
       f.zeigeMenu()
     end
+    f.zeigeFehler(string.format("test4c --- %s", serialization.serialize(adressen))) --debug
     return true
-  else
-    return false
   end
+  f.zeigeFehler(string.format("test4d --- %s", serialization.serialize(adressen))) --debug
 end
 
 function f.Zielname()
@@ -763,17 +777,16 @@ function f.Zielname()
     if remoteName == "" and wurmloch == "in" and type(adressen) == "table" then
       for j = 1, #adressen do
         local na = adressen[j]
-        if na then
-          if remAddr == na[2] then
-            if na[1] == na[2] then
-              remoteName = sprachen.Unbekannt
-            else
-              remoteName = na[1]
-              break
-            end
+        if not na then
+          break
+        end
+        if remAddr == na[2] then
+          if na[1] == na[2] then
+            remoteName = sprachen.Unbekannt
+          else
+            remoteName = na[1]
+            break
           end
-        else
-          remoteName = sprachen.Unbekannt
         end
       end
       if remoteName == "" then
@@ -1168,6 +1181,7 @@ function f.Legende()
   f.zeigeHier(x, Bildschirmhoehe - 1, sprachen.LegendeUpdate, 0)
 end
 
+--[[
 function f.hochladen()
   if type(gist) ~= "function" then
     loadfile("/bin/wget.lua")("-fQ", "https://raw.githubusercontent.com/OpenPrograms/Fingercomp-Programs/master/gist/gist.lua", "/stargate/gist.lua")
@@ -1192,6 +1206,7 @@ function f.hochladen()
     end
   end
 end
+]]
 
 function f.schreibFehlerLog(...)
   if letzteEingabe == ... then else
@@ -1201,7 +1216,7 @@ function f.schreibFehlerLog(...)
     else
       d = io.open("/stargate/log", "w")
       d:write('-- ' .. tostring(sprachen.schliessen) .. '\n')
-      d:write(require("computer").getBootAddress() .. " - " .. f.getAddress(sg.localAddress() .. '\n\n'))
+      d:write(require("computer").getBootAddress() .. " - " .. f.getAddress(sg.localAddress()) .. '\n\n')
     end
     if type(...) == "string" then
       d:write(...)
@@ -1440,9 +1455,7 @@ function Taste.z()
     f.Farbe(Farben.AdressfarbeAktiv, Farben.AdresstextfarbeAktiv)
     f.zeigeHier(1, Taste.Koordinaten.Taste_z, "Z " .. sprachen.AdressenBearbeiten, 0)
     if f.Tastatur() then
-      f.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
-      f.eventlisten("ignore")
-      pcall(screen.setTouchModeInverted, false)
+      f.textanzeige(true)
       kopieren("/einstellungen/adressen.lua", "/einstellungen/adressen-bearbeiten")
       edit("/einstellungen/adressen-bearbeiten")
       if pcall(loadfile("/einstellungen/adressen-bearbeiten")) then
@@ -1453,8 +1466,7 @@ function Taste.z()
         os.sleep(2)
       end
       entfernen("/einstellungen/adressen-bearbeiten")
-      pcall(screen.setTouchModeInverted, true)
-      f.eventlisten("listen")
+      f.textanzeige(false)
       seite = -1
       f.zeigeAnzeige()
       seite = 0
@@ -1470,10 +1482,8 @@ function Taste.s()
     f.Farbe(Farben.AdressfarbeAktiv, Farben.AdresstextfarbeAktiv)
     f.zeigeHier(1, Taste.Koordinaten.Taste_s, "S " .. sprachen.EinstellungenAendern, 0)
     if f.Tastatur() then
-      f.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
       schreibSicherungsdatei(Sicherung)
-      f.eventlisten("ignore")
-      pcall(screen.setTouchModeInverted, false)
+      f.textanzeige(true)
       kopieren("/einstellungen/Sicherungsdatei.lua", "/einstellungen/Sicherungsdatei-bearbeiten")
       edit("/einstellungen/Sicherungsdatei-bearbeiten")
       if pcall(loadfile("/einstellungen/Sicherungsdatei-bearbeiten")) then
@@ -1484,8 +1494,7 @@ function Taste.s()
         os.sleep(2)
       end
       entfernen("/einstellungen/Sicherungsdatei-bearbeiten")
-      pcall(screen.setTouchModeInverted, true)
-      f.eventlisten("listen")
+      f.textanzeige(false)
       local a = Sicherung.RF
       Sicherung = loadfile("/einstellungen/Sicherungsdatei.lua")()
       if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
@@ -1532,13 +1541,9 @@ function Taste.l()
     f.Farbe(Farben.AdressfarbeAktiv, Farben.AdresstextfarbeAktiv)
     f.zeigeHier(1, Taste.Koordinaten.Taste_l, "L " .. sprachen.zeigeLog, 0)
     if f.Tastatur() then
-      f.eventlisten("ignore")
-      pcall(screen.setTouchModeInverted, false)
-      f.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
-      os.sleep(0.1)
+      f.textanzeige(true)
       edit("-r", "/stargate/log")
-      pcall(screen.setTouchModeInverted, true)
-      f.eventlisten("listen")
+      f.textanzeige(false)
       seite = 0
     else
       event.timer(2, f.zeigeMenu, 1)
@@ -1627,6 +1632,20 @@ end
 
 function f.Tastatur()
   return component.isAvailable("keyboard") or f.zeigeNachricht(sprachen.TastaturFehlt)
+end
+
+function f.textanzeige(an)
+  os.sleep(0.1)
+  if an then
+    f.eventlisten("ignore")
+    screen.setTouchModeInverted(false)
+    f.Farbe(Farben.Nachrichtfarbe, Farben.Textfarbe)
+    gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
+  else
+    f.eventlisten("listen")
+    screen.setTouchModeInverted(true)
+    gpu.setResolution(70, 25)
+  end
 end
 
 function o.sgChevronEngaged(...)
@@ -1804,8 +1823,8 @@ function f.checkStargateName()
     pcall(screen.setTouchModeInverted, true)
     Sicherung.StargateName = string.sub(eingabe, 1, string.len(eingabe) - 1)
     schreibSicherungsdatei(Sicherung)
-    f.newAddress(nil, f.getAddress(sg.localAddress()), Sicherung.StargateName)
   end
+  f.newAddress(nil, f.getAddress(sg.localAddress()), Sicherung.StargateName)
 end
 
 function f.checkUpdate(...)
@@ -1904,7 +1923,7 @@ function f.main()
   if OC then
     loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "nexDHD")
   elseif CC then
-    shell.run("label set Stargate-OS")
+    shell.run("label set nexDHD")
   end
   Updatetimer = event.timer(3600, f.checkUpdate, math.huge)
   if sg.stargateState() == "Idle" and f.getIrisState() == "Closed" then
