@@ -262,8 +262,9 @@ function f.schreibeAdressen()
   d:write('}')
   d:close()
   -- Checken
-  if not loadfile("/einstellungen/adressen.lua")() then
-    f.schreibFehlerLog("<FEHLER> Schreiben der Adressdatei ist nicht möglich")
+  local a = loadfile("/einstellungen/adressen.lua")
+  if not a() or a() == {} then
+    f.zeigeFehler("<FEHLER> Schreiben der Adressdatei ist nicht möglich")
     local d = io.open("/einstellungen/adressen.lua", "w")
     d:write(davor)
     d:close()
