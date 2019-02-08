@@ -29,8 +29,8 @@ return {
 ["fluidnitricacid"]                    = "Nitric Acid",
 ["fluidmercury"]                       = "Mercury",
 ["fluidmoltenepoxid"]                  = "Molten Epoxid",
-["fluidmoltenplastic"]                 = "Molten Polytetrafluoroethylene",
-["fluidmoltenpolytetrafluoroethylene"] = "Molten Tetr",
+["fluidmoltenplastic"]                 = "Molten Plastic",
+["fluidmoltenpolytetrafluoroethylene"] = "Molten Polytetrafluoroethylene",
 ["fluidmoltenredstone"]                = "Molten Redstone",
 ["fluidmoltenrubber"]                  = "Molten Rubber",
 ["fluidmoltensolderingalloy"]          = "Molten Soldering Alloy",
@@ -69,4 +69,11 @@ return {
 ["UUMatter"]                           = "UU-Matter",
 ["lpg"]                                = "LPG",
 ["plastic"]                            = "Liquid Plastic",
+["cryotheum"]                          = "Gelid Cryotheum";
+["redstone"]                           = "Destabilized Redstone";
+["petrotheum"]                         = "Tectonic Petrotheum";
+["pyrotheum"]                          = "Blazing Pyrotheum";
+["glowstone"]                          = "Energized Glowstone";
+["aerotheum"]                          = "Zephyrean Aerotheum";
+["ender"]                              = "Resonant Ender";
 }
