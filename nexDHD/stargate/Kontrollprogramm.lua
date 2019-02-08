@@ -464,7 +464,7 @@ function f.AdressenSpeichern()
   local a = loadfile("/einstellungen/adressen.lua") or loadfile("/stargate/adressen.lua")
   adressen = a()
   if not adressen then
-    f.schreibFehlerLog("<FEHLER> Adressdatei ist beschädigt | Kopiere beschädigte Datei nach /adressen.lua")
+    f.zeigeFehler("<FEHLER> Adressdatei ist beschädigt | Kopiere beschädigte Datei nach /adressen.lua")
     kopieren("/einstellungen/adressen.lua", "/adressen.lua")
     adressen = loadfile("/stargate/adressen.lua")()
   end
