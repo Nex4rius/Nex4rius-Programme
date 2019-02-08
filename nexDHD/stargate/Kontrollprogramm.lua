@@ -1775,8 +1775,7 @@ end
 
 function f.angekommeneAdressen(eingabe)
   local AddNewAddress = false
-  for a = 1, #eingabe do
-    local b = eingabe[a]
+  for a, b in pairs(eingabe) do
     local neuHinzufuegen = false
     for c, d in pairs(adressen) do
       if d[2] == "XXXX-XXX-XX" then
