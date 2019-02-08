@@ -160,6 +160,7 @@ local sprachen = {
   oder                      = "oder",
   links                     = "links",
   Theme                     = "normal, dunkel, schwarz_weiss",
+  kein_senden               = "true -> keine Adressen senden",
 }
 
 sprachen.side               = string.format("%s, %s, %s, %s, %s %s %s", sprachen.unten, sprachen.oben, sprachen.hinten, sprachen.vorne, sprachen.rechts, sprachen.oder, sprachen.links)

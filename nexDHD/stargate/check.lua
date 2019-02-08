@@ -53,6 +53,7 @@ if OC then
   local b = gpu.setBackground
   gpu.setForeground = function(code) if code then a(code) end end
   gpu.setBackground = function(code) if code then b(code) end end
+  pcall(component.getPrimary("screen").setTouchModeInverted, false)
 elseif CC then
   component.getPrimary = peripheral.find
   component.isAvailable = function(name)
@@ -410,7 +411,7 @@ function f.checkDateien()
       io.write(sprachen.fehlerName or "<FEHLER>")
       print(" Datei fehlt: " .. dateien[i])
       if component.isAvailable("internet") then
-        if not wget("-f", f.Pfad(versionTyp) .. dateien[1], "/" .. dateien[1]) then
+        if not wget("-f", f.Pfad(versionTyp) .. dateien[i], "/" .. dateien[i]) then
           return
         end
       else

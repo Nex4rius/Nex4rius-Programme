@@ -18,7 +18,7 @@ if type(ALT) ~= "table" then ALT = {} end
 if standard then
   standard = standard()
 else
-  standard = {autoclosetime = 60, IDC = "", RF = false, Sprache = "", side = "unten", autoUpdate = true, StargateName = "", Port = 645, debug = false, control = "On", installieren = false, Theme = "normal"}
+  standard = {autoclosetime = 60, IDC = "", RF = false, Sprache = "", side = "unten", autoUpdate = true, StargateName = "", Port = 645, debug = false, control = "On", installieren = false, Theme = "normal", kein_senden = false}
 end
 
 local function reset()
@@ -36,6 +36,7 @@ local function reset()
     nichtsAendern  = "verändere nichts ab hier",
     StargateName   = "der Name dieses Stargates",
     Theme          = "normal, dunkel, schwarz_weiss",
+    kein_senden    = "true -> keine Adressen senden",
   }
 end
 
@@ -74,6 +75,7 @@ if type(NEU) == "table" then
   check("string" , "control")
   check("boolean", "installieren")
   check("string", "Theme")
+  check("boolean", "kein_senden")
   
   local f = io.open ("/einstellungen/Sicherungsdatei.lua", "w")
   f:write('-- pastebin run -f YVqKFnsP\n')
@@ -85,7 +87,7 @@ if type(NEU) == "table" then
   if Sicherung.autoclosetime == false then
     f:write('  autoclosetime = false, -- ' .. tostring(sprachen.autoclosetime) .. '\n')
   else
-    f:write('  autoclosetime = '  .. tostring(Sicherung.autoclosetime)..  ', -- ' .. tostring(sprachen.autoclosetime) .. '\n')
+    f:write('  autoclosetime = '.. tostring(Sicherung.autoclosetime)..  ', -- ' .. tostring(sprachen.autoclosetime) .. '\n')
   end
   f:write('  IDC           = "' .. tostring(Sicherung.IDC)          .. '", -- ' .. tostring(sprachen.IDC)           .. '\n')
   f:write('  RF            = '  .. tostring(Sicherung.RF)           ..  ', -- ' .. tostring(sprachen.RF)            .. '\n')
@@ -94,7 +96,8 @@ if type(NEU) == "table" then
   f:write('  autoUpdate    = '  .. tostring(Sicherung.autoUpdate)   ..  ', -- ' .. tostring(sprachen.autoUpdate)    .. '\n')
   f:write('  StargateName  = "' .. tostring(Sicherung.StargateName) .. '", -- ' .. tostring(sprachen.StargateName)  .. '\n')
   f:write('  Port          = '  .. tostring(Sicherung.Port)         ..  ', -- ' .. tostring(sprachen.Port)          .. '\n')
-  f:write('  Theme         = "' .. tostring(Sicherung.Theme)        .. '", -- ' .. tostring(sprachen.Theme)           .. '\n')
+  f:write('  Theme         = "' .. tostring(Sicherung.Theme)        .. '", -- ' .. tostring(sprachen.Theme)         .. '\n')
+  f:write('  kein_senden   = '  .. tostring(Sicherung.kein_senden)  ..  ', -- ' .. tostring(sprachen.kein_senden)   .. '\n')
   f:write('\n')
   f:write(string.rep("-", 10)   .. tostring(sprachen.nichtsAendern) .. string.rep("-", 60 - string.len(tostring(sprachen.nichtsAendern))) .. '\n')
   f:write('\n')
