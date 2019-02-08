@@ -745,7 +745,7 @@ function f.newAddress(idc, neueAdresse, neuerName, weiter)
   f.zeigeFehler(string.format("test4a --- %s", serialization.serialize(adressen))) --debug
   if AddNewAddress == true and string.len(neueAdresse) >= 7 and string.len(neueAdresse) <= 11 and sg.energyToDial(neueAdresse) then
     local i
-    for k in pairs(adressen)
+    for k in pairs(adressen) do
       i = k + 1
     end
     adressen[i] = {}
