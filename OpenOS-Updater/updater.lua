@@ -27,8 +27,8 @@ local entfernen     = function(datei) gpu.setForeground(0xFF0000) fs.remove(date
 local original_wget = loadfile("/bin/wget.lua")
 
 local f = {}
-local MINECRAFT_VERSION = "master-MC1.7.10"
---local MINECRAFT_VERSION = "master-MC1.12"
+--local MINECRAFT_VERSION = "master-MC1.7.10"
+local MINECRAFT_VERSION = "master-MC1.12"
 
 local ersetzen, id, sha
 
