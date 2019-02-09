@@ -34,7 +34,7 @@ local function wget(...)
         if original_wget(...) then
             return true
         end
-        print("Downloadfehler ... Neustart in " .. i .. "s")
+        print("\nDownloadfehler ... Neustart in " .. i .. "s")
         os.sleep(i)
     end
 end
