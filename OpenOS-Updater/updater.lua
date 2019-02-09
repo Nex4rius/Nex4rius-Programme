@@ -146,7 +146,7 @@ function f.verarbeiten()
             end
         end
     end
-    print("\nDownload Beendet\n")
+    print("\Update Beendet\n")
     if dateien["truncated"] or not komplett then
         gpu.setForeground(0xFF0000)
         print("<FEHLER> Download unvollständig")
@@ -186,7 +186,7 @@ local function main()
     f.checkKomponenten()
     gpu.setForeground(0xFFFFFF)
     f.status()
-    print("Starte Download")
+    print("Starte Update")
     id = event.timer(0.1, f.status, math.huge)
     if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/json.lua", "/json.lua") and wget("-f", f.Pfad(true), "/github-liste.txt") then
         if f.verarbeiten() then
