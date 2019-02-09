@@ -30,9 +30,12 @@ local ersetzen, id, sha
 x = x - 35
 
 local function wget(...)
-    for i = 1, 20 do
+    for i = 1, 21 do
         if original_wget(...) then
             return true
+        end
+        if i > 20 then
+            return false
         end
         print("\nDownloadfehler ... Neustart in " .. i .. "s")
         os.sleep(i)
