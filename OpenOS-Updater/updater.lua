@@ -146,7 +146,7 @@ function f.verarbeiten()
             end
         end
     end
-    print("\Update Beendet\n")
+    print("\nUpdate Beendet\n")
     if dateien["truncated"] or not komplett then
         gpu.setForeground(0xFF0000)
         print("<FEHLER> Download unvollständig")
