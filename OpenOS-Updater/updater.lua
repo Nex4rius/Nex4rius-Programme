@@ -21,27 +21,63 @@ local gpu           = component.gpu
 local disk          = component.proxy(fs.get("/").address)
 local x, y          = gpu.getResolution()
 
-local verschieben   = function(von, nach) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach))) end
-local entfernen     = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
+local verschieben   = function(von, nach) gpu.setForeground(0x00FF00) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach))) gpu.setForeground(0xFFFFFF) end
+local entfernen     = function(datei) gpu.setForeground(0xFF0000) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) gpu.setForeground(0xFFFFFF) end
 
-local wget          = loadfile("/bin/wget.lua")
+local original_wget = loadfile("/bin/wget.lua")
 
+local f = {}
+local MINECRAFT_VERSION = "master-MC1.7.10"
+--local MINECRAFT_VERSION = "master-MC1.12"
 
-local Funktion      = {}
-
-local ersetzen, id
+local ersetzen, id, sha
 
 x = x - 35
 
-function Funktion.Pfad(api)
-    if api then
-        return "https://api.github.com/repos/MightyPirates/OpenComputers/git/trees/4aead279ed17c57785e0776ab52bbdc332ce6400?recursive=1"
-    else
-        return "https://raw.githubusercontent.com/MightyPirates/OpenComputers/master-MC1.7.10/src/main/resources/assets/opencomputers/loot/openos/"
+local function wget(...)
+    for i = 1, 20 do
+        if original_wget(...) then
+            return true
+        end
+        print("Downloadfehler ... Neustart in " .. i .. "s")
+        os.sleep(i)
     end
 end
 
-function Funktion.checkKomponenten()
+function f.json_decode(d)
+    return loadfile("/json.lua")():decode(d:read("*all"))
+end
+
+function f.Pfad(api)
+    if api then
+        if not sha then
+            f.check_sha()
+        end
+        return "https://api.github.com/repos/MightyPirates/OpenComputers/git/trees/" .. sha .. "?recursive=1"
+    else
+        return "https://raw.githubusercontent.com/MightyPirates/OpenComputers/" .. MINECRAFT_VERSION .. "/src/main/resources/assets/opencomputers/loot/openos/"
+    end
+end
+
+function f.check_sha()
+    sha = MINECRAFT_VERSION
+    local a = {"src", "main", "resources", "assets", "opencomputers", "loot", "openos"}
+    for k, v in pairs(a) do
+        local dateiname = string.format("/github-liste-%s.txt", v)
+        wget("-f", "https://api.github.com/repos/MightyPirates/OpenComputers/git/trees/" .. sha, dateiname)
+        local d = io.open(dateiname, "r")
+        local dateien = f.json_decode(d)
+        d:close()
+        entfernen(dateiname)
+        for i in pairs(dateien.tree) do
+            if dateien.tree[i].type == "tree" and dateien.tree[i].path == v then
+                sha = dateien.tree[i].sha
+            end
+        end
+    end
+end
+
+function f.checkKomponenten()
     term.clear()
     local weiter = true
     print("Prüfe Komponenten\n")
@@ -71,7 +107,7 @@ function Funktion.checkKomponenten()
     end
 end
 
-function Funktion.status()
+function f.status()
     gpu.set(x, 2, string.format("   RAM: %.1fkB / %.1fkB%s", (computer.totalMemory() - computer.freeMemory()) / 1024, computer.totalMemory() / 1024, string.rep(" ", 35)))
     gpu.set(x, 4, string.format("   Energie: %.1f / %s%s", computer.energy(), computer.maxEnergy(), string.rep(" ", 35)))
     gpu.set(x, 6, string.format("   Speicher: %.1fkB / %.1fkB%s", disk.spaceUsed() / 1024, disk.spaceTotal() / 1024, string.rep(" ", 35)))
@@ -82,19 +118,19 @@ function Funktion.status()
     gpu.set(x, 8, string.rep(" ", 35))
 end
 
-function Funktion.verarbeiten()
+function f.verarbeiten()
     local function kopieren(...)
         for i in fs.list(...) do
-            Funktion.status()
+            f.status()
             if fs.isDirectory(i) then
                 kopieren(i)
             end
             verschieben("/update/" .. i, "/" .. i)
         end
     end
-    local f = io.open("/github-liste.txt", "r")
-    local dateien = loadfile("/json.lua")():decode(f:read("*all"))
-    f:close()
+    local d = io.open("/github-liste.txt", "r")
+    local dateien = f.json_decode(d)
+    d:close()
     fs.makeDirectory("/update")
     local komplett = true
     for i in pairs(dateien.tree) do
@@ -104,9 +140,8 @@ function Funktion.verarbeiten()
     end
     for i in pairs(dateien.tree) do
         if dateien.tree[i].type == "blob" then
-            local ergebnis, grund = wget("-f", Funktion.Pfad() .. dateien.tree[i].path, "/update/" .. dateien.tree[i].path)
-            Funktion.status()
-            if not ergebnis then
+            f.status()
+            if not wget("-f", f.Pfad() .. dateien.tree[i].path, "/update/" .. dateien.tree[i].path) then
                 komplett = false
                 break
             end
@@ -145,13 +180,13 @@ local function main()
         print(string.format("freier Speicherplatz: %.1fkB", (disk.spaceTotal() - disk.spaceUsed()) / 1024))
         return
     end
-    Funktion.checkKomponenten()
+    f.checkKomponenten()
     gpu.setForeground(0xFFFFFF)
-    Funktion.status()
+    f.status()
     print("Starte Download")
-    id = event.timer(0.1, Funktion.status, math.huge)
-    if wget("-f", Funktion.Pfad(true), "/github-liste.txt") and wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/json.lua", "/json.lua") then
-        if Funktion.verarbeiten() then
+    id = event.timer(0.1, f.status, math.huge)
+    if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/json.lua", "/json.lua") and wget("-f", f.Pfad(true), "/github-liste.txt") then
+        if f.verarbeiten() then
             return
         end
     end
