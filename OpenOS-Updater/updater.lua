@@ -44,6 +44,10 @@ local function wget(...)
     end
 end
 
+function f.json_decode(d)
+    return loadfile("/json.lua")():decode(d:read("*all"))
+end
+
 function f.Pfad(api)
     if api then
         if not sha then
@@ -62,7 +66,7 @@ function f.check_sha()
         local dateiname = string.format("/github-liste-%s.txt", v)
         wget("-f", "https://api.github.com/repos/MightyPirates/OpenComputers/git/trees/" .. sha, dateiname)
         local d = io.open(dateiname, "r")
-        local dateien = loadfile("/json.lua")():decode(d:read("*all"))
+        local dateien = f.json_decode(d)
         d:close()
         entfernen(dateiname)
         for i in pairs(dateien.tree) do
@@ -124,9 +128,9 @@ function f.verarbeiten()
             verschieben("/update/" .. i, "/" .. i)
         end
     end
-    local f = io.open("/github-liste.txt", "r")
-    local dateien = loadfile("/json.lua")():decode(f:read("*all"))
-    f:close()
+    local d = io.open("/github-liste.txt", "r")
+    local dateien = f.json_decode(d)
+    d:close()
     fs.makeDirectory("/update")
     local komplett = true
     for i in pairs(dateien.tree) do
