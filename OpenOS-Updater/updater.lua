@@ -21,8 +21,8 @@ local gpu           = component.gpu
 local disk          = component.proxy(fs.get("/").address)
 local x, y          = gpu.getResolution()
 
-local verschieben   = function(von, nach) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach))) end
-local entfernen     = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
+local verschieben   = function(von, nach) gpu.setForeground(0x00FF00) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach))) gpu.setForeground(0xFFFFFF) end
+local entfernen     = function(datei) gpu.setForeground(0xFF0000) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) gpu.setForeground(0xFFFFFF) end
 
 local original_wget = loadfile("/bin/wget.lua")
 
@@ -185,7 +185,7 @@ local function main()
     f.status()
     print("Starte Download")
     id = event.timer(0.1, f.status, math.huge)
-    if wget("-f", f.Pfad(true), "/github-liste.txt") and wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/json.lua", "/json.lua") then
+    if wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/json.lua", "/json.lua") and wget("-f", f.Pfad(true), "/github-liste.txt") then
         if f.verarbeiten() then
             return
         end
