@@ -2,13 +2,13 @@
 -- nexDHD von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD
 
-return {
+local sprachen = {
   pruefeKomponenten         = "Pruefe Komponenten\n",
-  verfuegbareVersion        = "\nVerfuegbare Version:   ",
+  verfuegbareVersion        = "\n" .. "Verfuegbare Version:   ",
   aktualisierenGleich       = "Automatische Aktualisierung wenn Stargate untaetig ist.",
   waehlen                   = "Waehle ",
   RedstoneWeiss             = "weiss: Status nicht Inaktiv",
-  RedstoneGruen             = "gruen: verbunden\n",
+  RedstoneGruen             = "gruen: verbunden" .. "\n",
   autoSchliessungAus        = "Autoschliessung:  Aus",
   autoSchliessungAn         = "Autoschliessung:  ",
   atmosphere                = "Atmosphaere:       ",
@@ -30,3 +30,5 @@ return {
   TastaturFehlt             = "Tastatur wird benoetigt",
   StargateNichtKomplett     = "Stargate ist funktionsunfaehig",
 }
+
+return sprachen

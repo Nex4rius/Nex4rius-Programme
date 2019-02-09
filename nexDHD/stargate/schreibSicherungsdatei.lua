@@ -4,22 +4,21 @@
 
 local fs        = fs or require("filesystem")
 local NEU       = ...
-local ALT       = loadfile("/einstellungen/Sicherungsdatei.lua")
 local standard  = loadfile("/stargate/Sicherungsdatei.lua")
 local Sicherung = {}
 local sprachen  = {}
+local ALT       = {}
 
-if type(ALT) == "function" then
-  AlT = ALT()
+if fs.exists("/einstellungen/Sicherungsdatei.lua") then
+  ALT = loadfile("/einstellungen/Sicherungsdatei.lua")()
 end
-if type(ALT) ~= "table" then
-  ALT = {}
-end
+
+if type(ALT) ~= "table" then ALT = {} end
 
 if standard then
   standard = standard()
 else
-  standard = {autoclosetime = 60, IDC = "", RF = false, Sprache = "", side = "unten", autoUpdate = true, StargateName = "", Port = 645, debug = false, control = "On", installieren = false}
+  standard = {autoclosetime = 60, IDC = "", RF = false, Sprache = "", side = "unten", autoUpdate = true, StargateName = "", Port = 645, debug = false, control = "On", installieren = false, Theme = "normal", kein_senden = false}
 end
 
 local function reset()
@@ -36,6 +35,8 @@ local function reset()
     debug          = "zum debuggen",
     nichtsAendern  = "verändere nichts ab hier",
     StargateName   = "der Name dieses Stargates",
+    Theme          = "normal, dunkel, schwarz_weiss",
+    kein_senden    = "true -> keine Adressen senden",
   }
 end
 
@@ -45,7 +46,7 @@ if type(NEU) == "table" then
   if type(sprachen) ~= "table" then
     sprachen = reset()
   end
-    
+  
   if type(NEU.autoclosetime) == "number" or NEU.autoclosetime == false then
     Sicherung.autoclosetime = NEU.autoclosetime
   elseif type(ALT.autoclosetime) == "number" or ALT.autoclosetime == false then
@@ -73,6 +74,8 @@ if type(NEU) == "table" then
   check("boolean", "debug")
   check("string" , "control")
   check("boolean", "installieren")
+  check("string", "Theme")
+  check("boolean", "kein_senden")
   
   local f = io.open ("/einstellungen/Sicherungsdatei.lua", "w")
   f:write('-- pastebin run -f YVqKFnsP\n')
@@ -81,7 +84,11 @@ if type(NEU) == "table" then
   f:write('-- ' .. tostring(sprachen.speichern) .. '\n')
   f:write('-- ' .. tostring(sprachen.schliessen) .. '\n--\n\n')
   f:write('return {\n')
-  f:write('  autoclosetime = '  .. tostring(Sicherung.autoclosetime)..  ', -- ' .. tostring(sprachen.autoclosetime) .. '\n')
+  if Sicherung.autoclosetime == false then
+    f:write('  autoclosetime = false, -- ' .. tostring(sprachen.autoclosetime) .. '\n')
+  else
+    f:write('  autoclosetime = '.. tostring(Sicherung.autoclosetime)..  ', -- ' .. tostring(sprachen.autoclosetime) .. '\n')
+  end
   f:write('  IDC           = "' .. tostring(Sicherung.IDC)          .. '", -- ' .. tostring(sprachen.IDC)           .. '\n')
   f:write('  RF            = '  .. tostring(Sicherung.RF)           ..  ', -- ' .. tostring(sprachen.RF)            .. '\n')
   f:write('  Sprache       = "' .. tostring(Sicherung.Sprache)      .. '", -- deutsch / english / russian / czech\n')
@@ -89,6 +96,8 @@ if type(NEU) == "table" then
   f:write('  autoUpdate    = '  .. tostring(Sicherung.autoUpdate)   ..  ', -- ' .. tostring(sprachen.autoUpdate)    .. '\n')
   f:write('  StargateName  = "' .. tostring(Sicherung.StargateName) .. '", -- ' .. tostring(sprachen.StargateName)  .. '\n')
   f:write('  Port          = '  .. tostring(Sicherung.Port)         ..  ', -- ' .. tostring(sprachen.Port)          .. '\n')
+  f:write('  Theme         = "' .. tostring(Sicherung.Theme)        .. '", -- ' .. tostring(sprachen.Theme)         .. '\n')
+  f:write('  kein_senden   = '  .. tostring(Sicherung.kein_senden)  ..  ', -- ' .. tostring(sprachen.kein_senden)   .. '\n')
   f:write('\n')
   f:write(string.rep("-", 10)   .. tostring(sprachen.nichtsAendern) .. string.rep("-", 60 - string.len(tostring(sprachen.nichtsAendern))) .. '\n')
   f:write('\n')
