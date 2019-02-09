@@ -131,6 +131,7 @@ function f.verarbeiten()
     local d = io.open("/github-liste.txt", "r")
     local dateien = f.json_decode(d)
     d:close()
+    entfernen("/github-liste.txt")
     fs.makeDirectory("/update")
     local komplett = true
     for i in pairs(dateien.tree) do
@@ -152,14 +153,12 @@ function f.verarbeiten()
         gpu.setForeground(0xFF0000)
         print("<FEHLER> Download unvollständig")
         entfernen("/update")
-        entfernen("/github-liste.txt")
         gpu.setForeground(0xFFFFFF)
         return true
     else
         print("Ersetze alte Dateien")
         kopieren("/update")
         entfernen("/update")
-        entfernen("/github-liste.txt")
         entfernen("/updater.lua")
         entfernen("/json.lua")
         gpu.setForeground(0x00FF00)
@@ -172,7 +171,7 @@ function f.verarbeiten()
 end
 
 local function main()
-    if (disk.spaceTotal() - disk.spaceUsed()) / 1024 < 550 then
+    if (disk.spaceTotal() - disk.spaceUsed()) / 1024 < 500 then
         gpu.setForeground(0xFFFFFF)
         print(string.format("Festplatte: %.1fkB / %.1fkB", disk.spaceUsed() / 1024, disk.spaceTotal() / 1024))
         gpu.setForeground(0xFF0000)
