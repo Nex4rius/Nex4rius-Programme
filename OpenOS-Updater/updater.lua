@@ -152,6 +152,7 @@ function f.verarbeiten()
         print("<FEHLER> Download unvollständig")
         entfernen("/update")
         gpu.setForeground(0xFFFFFF)
+        event.cancel(id)
         return true
     else
         print("Ersetze alte Dateien")
