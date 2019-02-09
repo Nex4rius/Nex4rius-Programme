@@ -171,7 +171,7 @@ function f.verarbeiten()
 end
 
 local function main()
-    if (disk.spaceTotal() - disk.spaceUsed()) / 1024 < 500 then
+    if (disk.spaceTotal() - disk.spaceUsed()) / 1024 < 512 then
         gpu.setForeground(0xFFFFFF)
         print(string.format("Festplatte: %.1fkB / %.1fkB", disk.spaceUsed() / 1024, disk.spaceTotal() / 1024))
         gpu.setForeground(0xFF0000)
