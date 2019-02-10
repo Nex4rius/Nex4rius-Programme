@@ -259,8 +259,11 @@ local function spairs(t, order)
 end
 
 function f.anzeigen()
+    print("test a")
     local tankanzeige = tankneu or {}
+    print("test b")
     printwlan("tankanzeige", serialization.serialize(tankanzeige), "\n\n\n")
+    print("test c")
     for screenid in component.list("screen") do
         gpu.bind(screenid, false)
         local klein = false
