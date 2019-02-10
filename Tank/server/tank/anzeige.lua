@@ -77,7 +77,7 @@ end
 -----------------------------------------------------------
 local Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
 function f.schreibFehlerLog(a)
-  if letzteEingabe == ... then else
+  if letzteEingabe == a then else
     local d = io.open("/log", "a")
     if d then
         if type(a) == "string" then
