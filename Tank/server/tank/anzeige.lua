@@ -377,7 +377,9 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
             table.insert(ausgabe, prozent)
             table.insert(ausgabe, " ")
         else
+            printwlan("test1 davor")
             table.insert(ausgabe, string.sub(nachricht, 1, 25))
+            printwlan("test1 danach")
             table.insert(ausgabe, string.rep(" ", links + 38 - string.len(nachricht) - string.len(menge)))
             table.insert(ausgabe, menge)
             table.insert(ausgabe, "mb")
@@ -673,6 +675,7 @@ local ergebnis, grund = pcall(f.main)
 if not ergebnis then
     f.text("<FEHLER> f.main")
     f.text(grund)
+    printwlan(grund)
     os.sleep(2)
     beenden()
 end
