@@ -262,8 +262,10 @@ function f.anzeigen()
     print("test a")
     local tankanzeige = tankneu or {}
     print("test b")
-    printwlan("tankanzeige", serialization.serialize(tankanzeige), "\n\n\n")
+    printwlan("tankanzeige")
     print("test c")
+    printwlan(tankanzeige)
+    print("test d")
     for screenid in component.list("screen") do
         gpu.bind(screenid, false)
         local klein = false
