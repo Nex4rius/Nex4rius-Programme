@@ -700,6 +700,8 @@ local beenden = f.beenden
 printwlan("hier anzeigen ", grund)
 f.anzeigen()--debug
 
+f.main()--debug
+
 local ergebnis, grund = pcall(f.main)
 
 if not ergebnis then
