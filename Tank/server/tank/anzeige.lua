@@ -70,7 +70,6 @@ else
 end
 
 local function printwlan(a)
-    print("hier test ", a)
     --m.broadcast(1, a)
     f.zeigeFehler(a)
 end
@@ -96,15 +95,14 @@ end
 function f.zeigeFehler(a)
   if a == "" then else
     f.schreibFehlerLog(a)
-    f.zeigeNachricht(string.format("%s %s", "<FEHLER1>", a))
   end
 end
 
 function f.zeigeNachricht(inhalt, oben)
-  f.zeigeHier(1, Bildschirmhoehe, inhalt, Bildschirmbreite)
+  f.asdasd(1, Bildschirmhoehe, inhalt, Bildschirmbreite)
 end
 
-function f.zeigeHier(x, y, s, h)
+function f.asdasd(x, y, s, h)
     print("zeigehier geht")
   s = tostring(s)
   if type(x) == "number" and type(y) == "number" then
