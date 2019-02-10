@@ -236,20 +236,27 @@ function f.verarbeiten(tank)
             end
         end
     end
-    printwlan("f.verarbeiten ende")
+    printwlan("f.verarbeiten j")
     tankneu = {}
     for gruppe, v in pairs(tank_a) do
+        printwlan("f.verarbeiten k")
         for _, w in pairs(v) do
+            printwlan("f.verarbeiten l")
             if w.name == "Tankname" then
+                printwlan("f.verarbeiten m")
                 tankneu[#tankneu + 1] = w
             end
         end
+        printwlan("f.verarbeiten n")
         for _, w in spairs(v, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
+            printwlan("f.verarbeiten o")
             if w.name ~= "Tankname" then
+                printwlan("f.verarbeiten p")
                 tankneu[#tankneu + 1] = w
             end
         end
     end
+    printwlan("f.verarbeiten ende")
     printwlan("tank_a")
     printwlan(tank_a)
     printwlan("tankneu")
@@ -257,6 +264,7 @@ function f.verarbeiten(tank)
 end
 
 local function spairs(t, order)
+    printwlan("spairs start")
     local keys = {}
     for k in pairs(t) do keys[#keys+1] = k end
     if order then
