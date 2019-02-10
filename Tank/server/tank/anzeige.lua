@@ -99,7 +99,7 @@ function f.zeigeFehler(a)
 end
 
 function f.zeigeNachricht(inhalt, oben)
-  f.asdasd(1, Bildschirmhoehe, inhalt, Bildschirmbreite)
+  f.asdasd(1, 75, inhalt, Bildschirmbreite)
 end
 
 function f.asdasd(x, y, s, h)
