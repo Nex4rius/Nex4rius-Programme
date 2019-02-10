@@ -567,6 +567,8 @@ function o.tankliste(signal)
     timer.tankliste = event.timer(Zeit + 15, f.tankliste, math.huge)
     timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
     timer.anzeigen = event.timer(5, f.anzeigen, 1)
+    printwlan("timer start ende") --debug
+    f.tankliste()--debug
 end
 
 function f.datei(id, datei)
