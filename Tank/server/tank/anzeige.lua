@@ -112,6 +112,9 @@ function f.zeigeHier(x, y, s, h)
   end
 end
 
+local computer = require("computer")
+local disk = component.proxy(fs.get("/").address)
+
 function f.status()
     gpu.set(x, 2, string.format("   RAM: %.1fkB / %.1fkB%s", (computer.totalMemory() - computer.freeMemory()) / 1024, computer.totalMemory() / 1024, string.rep(" ", 35)))
     gpu.set(x, 4, string.format("   Energie: %.1f / %s%s", computer.energy(), computer.maxEnergy(), string.rep(" ", 35)))
@@ -124,6 +127,8 @@ function f.status()
 end
 
 event.timer(0.1, f.status, math.huge)
+print("Sleep 5s")
+os.sleep(5)
 -----------------------------------------------------------
 
 m.setStrength(math.huge)
