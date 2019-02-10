@@ -260,12 +260,15 @@ end
 
 function f.anzeigen()
     print("test a")
-    local tankanzeige = tankneu or {}
+    local tankanzeige = tankneu
     print("test b")
     printwlan("tankanzeige")
     print("test c")
     printwlan(tankanzeige)
     print("test d")
+    if not tankanzeige then
+        return
+    end
     for screenid in component.list("screen") do
         gpu.bind(screenid, false)
         local klein = false
