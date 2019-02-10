@@ -690,7 +690,7 @@ local ergebnis, grund = pcall(f.main)
 if not ergebnis then
     f.text("<FEHLER> f.main")
     f.text(grund)
-    printwlan(grund)
+    printwlan("hier a", grund)
     os.sleep(2)
     beenden()
 end
