@@ -697,9 +697,10 @@ loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tankanze
 
 local beenden = f.beenden
 
-printwlan("hier anzeigen ", grund)
+print("anzeigen debug")
 f.anzeigen()--debug
 
+print("main debug")
 f.main()--debug
 
 local ergebnis, grund = pcall(f.main)
