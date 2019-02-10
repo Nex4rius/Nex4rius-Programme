@@ -129,8 +129,8 @@ event.timer(0.1, f.status, math.huge)
 m.setStrength(math.huge)
 
 function f.tank(hier, id, nachricht)
-    printwlan("nachricht", serialization.serialize(nachricht))
-    printwlan("tank1", serialization.serialize(tank))
+    printwlan("nachricht a", serialization.serialize(nachricht))
+    printwlan("tank1 a", serialization.serialize(tank))
     local dazu = true
     local ende = 0
     if hier then
@@ -365,7 +365,7 @@ function f.zeichenErsetzen(...)
 end
 
 function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl)
-    printwlan("nachricht")
+    printwlan("nachricht b")
     printwlan(nachricht)
     if farben[name] == nil and debug then
         nachricht = string.format("%s  %s  >>report this<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
