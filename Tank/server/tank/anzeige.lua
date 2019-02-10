@@ -27,6 +27,9 @@ local wget            = loadfile("/bin/wget.lua")
 local gpu             = component.getPrimary("gpu")
 local m               = component.getPrimary("modem")
 
+gpu.setResolution(gpu.maxResolution())
+gpu.setResolution = function() end
+
 local version, tankneu, energie, Updatetimer
 
 local port            = 918
