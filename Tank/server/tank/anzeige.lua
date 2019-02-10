@@ -258,16 +258,17 @@ local function spairs(t, order)
 end
 
 function f.anzeigen()
-    print("test a")
+    printwlan("test a")
     local tankanzeige = tankneu
-    print("test b")
+    printwlan("test b")
     printwlan("tankanzeige")
-    print("test c")
+    printwlan("test c")
     printwlan(tankanzeige)
-    print("test d")
+    printwlan("test d")
     if not tankanzeige then
         return
     end
+    printwlan("test e")
     for screenid in component.list("screen") do
         gpu.bind(screenid, false)
         local klein = false
