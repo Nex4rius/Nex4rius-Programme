@@ -127,7 +127,7 @@ function f.status()
     gpu.set(x, 8, string.rep(" ", 35))
 end
 
-event.timer(0.1, f.status, math.huge)
+require("event").timer(0.1, f.status, math.huge)
 print(pcall(f.status))
 f.status()
 print("Sleep 5s")
