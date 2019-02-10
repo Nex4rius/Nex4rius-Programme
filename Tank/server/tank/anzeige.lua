@@ -30,6 +30,7 @@ local m               = component.getPrimary("modem")
 for screenid in component.list("screen") do
     gpu.bind(screenid)
     gpu.setResolution(gpu.maxResolution())
+    term.clear()
 end
 
 gpu.setResolution = function() end
