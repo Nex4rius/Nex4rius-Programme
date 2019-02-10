@@ -79,15 +79,15 @@ local Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
 function f.schreibFehlerLog(...)
   if letzteEingabe == ... then else
     local d = io.open("/log", "a")
-      if d then
+    if d then
         if type(...) == "string" then
-          d:write(...)
+            d:write(...)
         elseif type(...) == "table" then
-          d:write(serialization.serialize(...))
+            d:write(serialization.serialize(...))
         end
-      end
-    d:write("\n" .. os.time() .. string.rep("-", 69 - string.len(os.time())) .. "\n")
-    d:close()
+        d:write("\n" .. os.time() .. string.rep("-", 69 - string.len(os.time())) .. "\n")
+        d:close()
+    end
     log = true
   end
   letzteEingabe = ...
