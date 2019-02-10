@@ -115,8 +115,6 @@ end
 
 m.setStrength(math.huge)
 
-printwlan("start")
-
 function f.tank(hier, id, nachricht)
     printwlan("nachricht", serialization.serialize(nachricht))
     printwlan("tank1", serialization.serialize(tank))
@@ -618,7 +616,9 @@ function f.main()
     Updatetimer = event.timer(300, debugupdate, math.huge) --test
     m.open(port + 1)
     f.text("Warte auf Daten")
+    printwlan("event liste modem_message start")
     event.listen("modem_message", f.event)
+    printwlan("event liste modem_message danach")
     event.listen("component_added", f.anzeigen)
     timer.senden = event.timer(Zeit, f.senden, math.huge)
     timer.tank = event.timer(Zeit + 15, f.tank, 1)
