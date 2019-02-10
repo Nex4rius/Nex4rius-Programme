@@ -593,7 +593,9 @@ function f.beenden()
     event.ignore("component_added", f.tank)
     event.ignore("interrupted", f.beenden)
     for k, v in pairs(timer) do
-        event.cancel(v)
+        if type(v) == "number" then
+            event.cancel(v)
+        end
     end
     event.cancel(Updatetimer)
     event.push("beenden")
