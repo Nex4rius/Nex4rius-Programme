@@ -128,6 +128,8 @@ function f.status()
 end
 
 event.timer(0.1, f.status, math.huge)
+print(pcall(f.status))
+f.status()
 print("Sleep 5s")
 os.sleep(5)
 -----------------------------------------------------------
