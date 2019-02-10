@@ -707,9 +707,6 @@ local beenden = f.beenden
 print("anzeigen debug")
 f.anzeigen()--debug
 
-print("main debug")
-f.main()--debug
-
 local ergebnis, grund = pcall(f.main)
 
 if not ergebnis then
@@ -719,7 +716,3 @@ if not ergebnis then
     os.sleep(2)
     beenden()
 end
-
-print("oder hier")
-
-return false
