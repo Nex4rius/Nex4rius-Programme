@@ -179,15 +179,20 @@ function f.tank(hier, id, nachricht)
 end
 
 function f.verarbeiten(tank)
-    printwlan("f.verarbeiten")
+    printwlan("f.verarbeiten a")
     printwlan(tank)
     tank_a = {}
     for i in pairs(tank) do
+        printwlan("f.verarbeiten b")
         if type(tank[i]) == "table" then
+            printwlan("f.verarbeiten c")
             if type(tank[i].inhalt) == "table" then
+                printwlan("f.verarbeiten d")
                 local gruppe
                 for j in pairs(tank[i].inhalt) do
+                    printwlan("f.verarbeiten e")
                     if tank[i].inhalt[j].name == "Tankname" then
+                        printwlan("f.verarbeiten f")
                         gruppe = tank[i].inhalt[j].label
                         if tank_a[gruppe] then
                             break
@@ -199,9 +204,12 @@ function f.verarbeiten(tank)
                             tank_a[gruppe][1].menge = "1"
                             tank_a[gruppe][1].maxmenge = "1"
                         end
+                        printwlan("f.verarbeiten g")
                     end
                 end
+                printwlan("f.verarbeiten h")
                 for j in pairs(tank[i].inhalt) do
+                    printwlan("f.verarbeiten i")
                     local name = tank[i].inhalt[j].name
                     local label = tank[i].inhalt[j].label
                     local menge = tank[i].inhalt[j].menge
@@ -228,6 +236,7 @@ function f.verarbeiten(tank)
             end
         end
     end
+    printwlan("f.verarbeiten ende")
     tankneu = {}
     for gruppe, v in pairs(tank_a) do
         for _, w in pairs(v) do
