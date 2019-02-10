@@ -373,8 +373,7 @@ function f.zeichenErsetzen(...)
 end
 
 function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl)
-    printwlan("nachricht b")
-    printwlan(nachricht)
+    printwlan("nachricht b ", nachricht)
     if farben[name] == nil and debug then
         nachricht = string.format("%s  %s  >>report this<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
         nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
