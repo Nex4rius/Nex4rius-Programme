@@ -94,7 +94,7 @@ end
 function f.zeigeFehler(...)
   if ... == "" then else
     f.schreibFehlerLog(...)
-    f.zeigeNachricht(string.format("%s %s", "<FEHLER>", ...))
+    f.zeigeNachricht(string.format("%s %s", "<FEHLER1>", ...))
   end
 end
 
