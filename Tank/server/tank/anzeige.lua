@@ -132,11 +132,11 @@ end
 require("event").timer(0.1, f.status, math.huge)
 print(pcall(f.status))
 f.status()
-print("Sleep 5s")
-os.sleep(5)
+print("Sleep 1s")
+os.sleep(1)
 print(pcall(f.anzeigen))
-print("Sleep 5s")
-os.sleep(5)
+print("Sleep 1s")
+os.sleep(1)
 -----------------------------------------------------------
 
 m.setStrength(math.huge)
