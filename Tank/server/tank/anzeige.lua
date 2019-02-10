@@ -69,34 +69,34 @@ else
     arg = true
 end
 
-local function printwlan(...)
-    --m.broadcast(1, ...)
-    f.zeigeFehler(...)
+local function printwlan(a)
+    --m.broadcast(1, a)
+    f.zeigeFehler(a)
 end
 
 -----------------------------------------------------------
 local Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
-function f.schreibFehlerLog(...)
+function f.schreibFehlerLog(a)
   if letzteEingabe == ... then else
     local d = io.open("/log", "a")
     if d then
-        if type(...) == "string" then
-            d:write(...)
-        elseif type(...) == "table" then
-            d:write(serialization.serialize(...))
+        if type(a) == "string" then
+            d:write(a)
+        elseif type(a) == "table" then
+            d:write(serialization.serialize(a))
         end
         d:write("\n" .. os.time() .. string.rep("-", 69 - string.len(os.time())) .. "\n")
         d:close()
     end
     log = true
   end
-  letzteEingabe = ...
+  letzteEingabe = a
 end
 
-function f.zeigeFehler(...)
-  if ... == "" then else
-    f.schreibFehlerLog(...)
-    f.zeigeNachricht(string.format("%s %s", "<FEHLER1>", ...))
+function f.zeigeFehler(a)
+  if a == "" then else
+    f.schreibFehlerLog(a)
+    f.zeigeNachricht(string.format("%s %s", "<FEHLER1>", a))
   end
 end
 
@@ -697,6 +697,7 @@ loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tankanze
 
 local beenden = f.beenden
 
+printwlan("hier anzeigen ", grund)
 f.anzeigen()--debug
 
 local ergebnis, grund = pcall(f.main)
