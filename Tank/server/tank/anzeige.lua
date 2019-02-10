@@ -697,6 +697,8 @@ loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tankanze
 
 local beenden = f.beenden
 
+f.anzeigen()--debug
+
 local ergebnis, grund = pcall(f.main)
 
 if not ergebnis then
