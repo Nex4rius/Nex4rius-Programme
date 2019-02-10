@@ -71,7 +71,47 @@ end
 
 local function printwlan(...)
     --m.broadcast(1, ...)
+    f.zeigeFehler(...)
 end
+
+-----------------------------------------------------------
+local Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
+function f.schreibFehlerLog(...)
+  if letzteEingabe == ... then else
+    local d = io.open("/log", "a")
+    if type(...) == "string" then
+      d:write(...)
+    elseif type(...) == "table" then
+      d:write(serialization.serialize(...))
+    end
+    d:write("\n" .. os.time() .. string.rep("-", 69 - string.len(os.time())) .. "\n")
+    d:close()
+    log = true
+  end
+  letzteEingabe = ...
+end
+
+function f.zeigeFehler(...)
+  if ... == "" then else
+    f.schreibFehlerLog(...)
+    f.zeigeNachricht(string.format("%s %s", sprachen.fehlerName, ...))
+  end
+end
+
+function f.zeigeNachricht(inhalt, oben)
+  f.zeigeHier(1, Bildschirmhoehe, inhalt, Bildschirmbreite)
+end
+
+function f.zeigeHier(x, y, s, h)
+  s = tostring(s)
+  if type(x) == "number" and type(y) == "number" then
+    if not h then
+      h = Bildschirmbreite
+    end
+    gpu.set(x, y, s .. string.rep(" ", 40))
+  end
+end
+-----------------------------------------------------------
 
 m.setStrength(math.huge)
 
