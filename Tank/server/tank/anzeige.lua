@@ -70,7 +70,7 @@ else
 end
 
 local function printwlan(...)
-    m.broadcast(1, ...)
+    --m.broadcast(1, ...)
 end
 
 m.setStrength(math.huge)
