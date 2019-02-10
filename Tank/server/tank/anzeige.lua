@@ -141,8 +141,10 @@ os.sleep(1)
 m.setStrength(math.huge)
 
 function f.tank(hier, id, nachricht)
-    printwlan("nachricht a", serialization.serialize(nachricht))
-    printwlan("tank1 a", serialization.serialize(tank))
+    printwlan("nachricht a")
+    printwlan(nachricht)
+    printwlan("tank1 a")
+    printwlan(tank)
     local dazu = true
     local ende = 0
     if hier then
@@ -172,11 +174,13 @@ function f.tank(hier, id, nachricht)
             tank[i] = nil
         end
     end
+    printwlan("f.tank ende")
     f.verarbeiten(tank)
 end
 
 function f.verarbeiten(tank)
-    printwlan("\ntank", serialization.serialize(tank))
+    printwlan("f.verarbeiten")
+    printwlan(tank)
     tank_a = {}
     for i in pairs(tank) do
         if type(tank[i]) == "table" then
@@ -237,7 +241,10 @@ function f.verarbeiten(tank)
             end
         end
     end
-    printwlan("tank_a", serialization.serialize(tank_a), "\n\ntankneu", serialization.serialize(tankneu))
+    printwlan("tank_a")
+    printwlan(tank_a)
+    printwlan("\n\ntankneu")
+    printwlan(tankneu)
 end
 
 local function spairs(t, order)
@@ -515,11 +522,13 @@ end
 
 function f.tankliste()
     printwlan("f.tankliste") --debug
-    printwlan("Sensorliste", type(Sensorliste))
-    printwlan("Sensorliste", serialization.serialize(Sensorliste))
+    printwlan("Sensorliste")
+    printwlan(type(Sensorliste))
+    printwlan(Sensorliste)
     for k, v in pairs(Sensorliste) do
         f.tank(v[1], v[3], v[8])
     end
+    printwlan("ende Sensorliste")
 end
 
 function o.tankliste(signal)
