@@ -243,7 +243,7 @@ function f.verarbeiten(tank)
     end
     printwlan("tank_a")
     printwlan(tank_a)
-    printwlan("\n\ntankneu")
+    printwlan("tankneu")
     printwlan(tankneu)
 end
 
