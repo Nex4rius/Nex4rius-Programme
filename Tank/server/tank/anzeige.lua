@@ -70,6 +70,7 @@ else
 end
 
 local function printwlan(a)
+    print("hier test ", a)
     --m.broadcast(1, a)
     f.zeigeFehler(a)
 end
@@ -88,7 +89,6 @@ function f.schreibFehlerLog(a)
         d:write("\n" .. os.time() .. string.rep("-", 69 - string.len(os.time())) .. "\n")
         d:close()
     end
-    log = true
   end
   letzteEingabe = a
 end
@@ -105,6 +105,7 @@ function f.zeigeNachricht(inhalt, oben)
 end
 
 function f.zeigeHier(x, y, s, h)
+    print("zeigehier geht")
   s = tostring(s)
   if type(x) == "number" and type(y) == "number" then
     if not h then
