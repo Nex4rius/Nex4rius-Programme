@@ -46,6 +46,14 @@ local Zeit            = 60
 local letztesAnzeigen = c.uptime()
 local Bildschirmaktualisierung = 0
 
+for screenid in component.list("screen") do
+    gpu.bind(screenid)
+    gpu.setResolution(gpu.maxResolution())
+    term.clear()
+end
+
+gpu.setResolution = function() end
+
 if fs.exists("/tank/version.txt") then
     local d = io.open("/tank/version.txt", "r")
     version = d:read()
