@@ -513,8 +513,8 @@ function o.tankliste(signal)
 end
 
 function f.bildschirm_aktualisieren()
-    print("hier test ", letztesAnzeigen, c.uptime())
-    if letztesAnzeigen - c.uptime() > Zeit then
+    print("hier test2 ", c.uptime(), letztesAnzeigen, c.uptime() - letztesAnzeigen)
+    if c.uptime() - letztesAnzeigen > Zeit then
         f.anzeigen()
         letztesAnzeigen = c.uptime()
     end
@@ -618,7 +618,7 @@ function f.main()
     timer.senden = event.timer(Zeit, f.senden, math.huge)
     timer.tank = event.timer(Zeit + 15, f.tank, 1)
     timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
-    Bildschirmaktualisierung = event.timer(Zeit / 3, f.bildschirm_aktualisieren, math.huge)
+    Bildschirmaktualisierung = event.timer(Zeit / 6, f.bildschirm_aktualisieren, math.huge)
     f.senden()
     event.listen("interrupted", f.beenden)
     event.pull("beenden")
