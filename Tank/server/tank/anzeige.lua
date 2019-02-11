@@ -140,6 +140,24 @@ os.sleep(1)
 
 m.setStrength(math.huge)
 
+local function spairs(t, order)
+    printlog("spairs start")
+    local keys = {}
+    for k in pairs(t) do keys[#keys+1] = k end
+    if order then
+        table.sort(keys, function(a,b) return order(t, a, b) end)
+    else
+        table.sort(keys)
+    end
+    local i = 0
+    return function()
+        i = i + 1
+        if keys[i] then
+            return keys[i], t[keys[i]]
+        end
+    end
+end
+
 function f.schreib_table(name, daten)
     local d = io.open(name, "w")
     d:write(serialization.serialize(daten))
@@ -268,24 +286,6 @@ function f.verarbeiten(tank)
     printlog("tankneu")
     printlog(tankneu)
     f.schreib_table("/tankneu", tankneu)
-end
-
-local function spairs(t, order)
-    printlog("spairs start")
-    local keys = {}
-    for k in pairs(t) do keys[#keys+1] = k end
-    if order then
-        table.sort(keys, function(a,b) return order(t, a, b) end)
-    else
-        table.sort(keys)
-    end
-    local i = 0
-    return function()
-        i = i + 1
-        if keys[i] then
-            return keys[i], t[keys[i]]
-        end
-    end
 end
 
 function f.anzeigen()
