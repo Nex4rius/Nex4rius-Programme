@@ -43,7 +43,7 @@ local Sendeleistung   = math.huge
 local Wartezeit       = 150
 local letzteNachricht = c.uptime()
 local Zeit            = 60
-local Bildschirmaktualisierung
+local Bildschirmaktualisierung = 0
 
 if fs.exists("/tank/version.txt") then
     local d = io.open("/tank/version.txt", "r")
