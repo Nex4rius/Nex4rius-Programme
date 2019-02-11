@@ -203,6 +203,9 @@ function f.installieren(versionTyp)
     print("Neustart in " .. i .. "s")
     os.sleep(1)
   end
+  if fs.exists("/log") then
+    fs.remove("/log)
+  end
   require("computer").shutdown(true)
 end
 
