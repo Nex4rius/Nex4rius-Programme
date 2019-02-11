@@ -513,7 +513,7 @@ function o.tankliste(signal)
 end
 
 function f.bildschirm_aktualisieren()
-    print("hier test2 ", c.uptime(), letztesAnzeigen, c.uptime() - letztesAnzeigen)
+    print("hier test2 ", c.uptime(), letztesAnzeigen, c.uptime() - letztesAnzeigen, c.uptime() - letztesAnzeigen > Zeit)
     if c.uptime() - letztesAnzeigen > Zeit then
         f.anzeigen()
         letztesAnzeigen = c.uptime()
