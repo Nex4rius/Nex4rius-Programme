@@ -512,12 +512,16 @@ function o.tankliste(signal)
 end
 
 function f.bildschirm_aktualisieren()
-    print("hier test2 ", c.uptime(), letztesAnzeigen, c.uptime() - letztesAnzeigen, c.uptime() - letztesAnzeigen > Zeit)
-    if c.uptime() - letztesAnzeigen > Zeit then
-        f.anzeigen()
-        letztesAnzeigen = c.uptime()
+    print("hier test3 ", laeuft)
+    if laeuft then
+        print("hier test2 ", c.uptime(), letztesAnzeigen, c.uptime() - letztesAnzeigen, c.uptime() - letztesAnzeigen > Zeit)
+        if c.uptime() - letztesAnzeigen > Zeit then
+            f.anzeigen()
+            letztesAnzeigen = c.uptime()
+        end
+        os.sleep(5)
+        f.bildschirm_aktualisieren()
     end
-    event.timer(6, f.bildschirm_aktualisieren, 1)
 end
 
 function f.datei(id, datei)
@@ -646,6 +650,7 @@ function f.beenden()
     end
     f = nil
     o = nil
+    laeuft = false
     event.push("interrupted")
 end
 
