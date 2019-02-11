@@ -43,6 +43,7 @@ local Sendeleistung   = math.huge
 local Wartezeit       = 150
 local letzteNachricht = c.uptime()
 local Zeit            = 60
+local letztesAnzeigen = c.uptime()
 local Bildschirmaktualisierung = 0
 
 if fs.exists("/tank/version.txt") then
@@ -500,7 +501,14 @@ function o.tankliste(signal)
     timer.senden = event.timer(Zeit, f.senden, math.huge)
     timer.tankliste = event.timer(Zeit + 15, f.tankliste, math.huge)
     timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
-    timer.anzeigen = event.timer(5, f["anzeigen"], 1)
+    --timer.anzeigen = event.timer(5, f["anzeigen"], 1)
+end
+
+function f.bildschirm_aktualisieren()
+    if letztesAnzeigen - c.uptime() > Zeit then
+        f.anzeigen()
+        letztesAnzeigen = c.uptime()
+    end
 end
 
 function f.datei(id, datei)
@@ -538,6 +546,7 @@ function f.update(signal)
 end
 
 function f.event(...)
+    Bildschirmaktualisierung = c.uptime()
     local signal = {...}
     if o[signal[6]] then
         if Sendeleistung < signal[5] + 50 or Sendeleistung == math.huge then
@@ -600,7 +609,7 @@ function f.main()
     timer.senden = event.timer(Zeit, f.senden, math.huge)
     timer.tank = event.timer(Zeit + 15, f.tank, 1)
     timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
-    Bildschirmaktualisierung = event.timer(Zeit, f.anzeigen)
+    Bildschirmaktualisierung = event.timer(Zeit / 3, f.bildschirm_aktualisieren, math.huge)
     f.senden()
     event.listen("interrupted", f.beenden)
     event.pull("beenden")
