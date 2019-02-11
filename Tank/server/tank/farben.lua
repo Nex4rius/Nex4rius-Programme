@@ -27,6 +27,8 @@ latex                        = {0x000000,  0xF2F4C3,  0x000000,  0xF2F4C3},
 -- Forestry
 bioethanol                   = {0x000000,  0xFC7600,  0x000000,  0xCA5E00},
 seedoil                      = {0x000000,  0xFCFC96,  0x000000,  0xCACA79},
+-- Gendustry
+liquiddna                    = {0xFFFFFF,  0x9f11c3,  0xFFFFFF,  0x750D8F},
 -- PneumaticCraft
 etchacid                     = {0xFFFFFF,  0x732F07,  0xFFFFFF,  0x401904},
 lpg                          = {0x000000,  0xE9D41C,  0x000000,  0xB6A616},
