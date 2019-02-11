@@ -158,12 +158,6 @@ local function spairs(t, order)
     end
 end
 
-function f.schreib_table(name, daten)
-    local d = io.open(name, "w")
-    d:write(serialization.serialize(daten))
-    d:close()
-end
-
 function f.tank(hier, id, nachricht)
     printlog("nachricht a")
     printlog(nachricht)
@@ -285,7 +279,6 @@ function f.verarbeiten(tank)
     printlog("f.verarbeiten ende")
     printlog("tankneu")
     printlog(tankneu)
-    f.schreib_table("/tankneu", tankneu)
 end
 
 function f.anzeigen()
@@ -572,7 +565,6 @@ function o.tankliste(signal)
     if dazu then
         table.insert(Sensorliste, signal)
     end
-    f.schreib_table("/sensorliste", Sensorliste)
     for k, v in pairs(timer) do
         event.cancel(v)
     end
