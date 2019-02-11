@@ -27,6 +27,7 @@ local wget            = loadfile("/bin/wget.lua")
 local gpu             = component.getPrimary("gpu")
 local m               = component.getPrimary("modem")
 
+--[[
 for screenid in component.list("screen") do
     gpu.bind(screenid)
     gpu.setResolution(gpu.maxResolution())
@@ -34,6 +35,7 @@ for screenid in component.list("screen") do
 end
 
 gpu.setResolution = function() end
+]]
 
 local version, tankneu, energie, Updatetimer
 
