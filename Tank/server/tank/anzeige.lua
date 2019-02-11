@@ -69,7 +69,7 @@ else
     arg = true
 end
 
-local function printwlan(a)
+local function printlog(a)
     --m.broadcast(1, a)
     f.zeigeFehler(a)
 end
@@ -147,10 +147,10 @@ function f.schreib_table(name, daten)
 end
 
 function f.tank(hier, id, nachricht)
-    printwlan("nachricht a")
-    printwlan(nachricht)
-    printwlan("tank1 a")
-    printwlan(tank)
+    printlog("nachricht a")
+    printlog(nachricht)
+    printlog("tank1 a")
+    printlog(tank)
     local dazu = true
     local ende = 0
     if hier then
@@ -180,25 +180,25 @@ function f.tank(hier, id, nachricht)
             tank[i] = nil
         end
     end
-    printwlan("f.tank ende")
+    printlog("f.tank ende")
     f.verarbeiten(tank)
 end
 
 function f.verarbeiten(tank)
-    printwlan("f.verarbeiten a")
-    printwlan(tank)
+    printlog("f.verarbeiten a")
+    printlog(tank)
     tank_a = {}
     for i in pairs(tank) do
-        printwlan("f.verarbeiten b")
+        printlog("f.verarbeiten b")
         if type(tank[i]) == "table" then
-            printwlan("f.verarbeiten c")
+            printlog("f.verarbeiten c")
             if type(tank[i].inhalt) == "table" then
-                printwlan("f.verarbeiten d")
+                printlog("f.verarbeiten d")
                 local gruppe
                 for j in pairs(tank[i].inhalt) do
-                    printwlan("f.verarbeiten e")
+                    printlog("f.verarbeiten e")
                     if tank[i].inhalt[j].name == "Tankname" then
-                        printwlan("f.verarbeiten f")
+                        printlog("f.verarbeiten f")
                         gruppe = tank[i].inhalt[j].label
                         if tank_a[gruppe] then
                             break
@@ -210,12 +210,12 @@ function f.verarbeiten(tank)
                             tank_a[gruppe][1].menge = "1"
                             tank_a[gruppe][1].maxmenge = "1"
                         end
-                        printwlan("f.verarbeiten g")
+                        printlog("f.verarbeiten g")
                     end
                 end
-                printwlan("f.verarbeiten h")
+                printlog("f.verarbeiten h")
                 for j in pairs(tank[i].inhalt) do
-                    printwlan("f.verarbeiten i")
+                    printlog("f.verarbeiten i")
                     local name = tank[i].inhalt[j].name
                     local label = tank[i].inhalt[j].label
                     local menge = tank[i].inhalt[j].menge
@@ -242,36 +242,36 @@ function f.verarbeiten(tank)
             end
         end
     end
-    printwlan("f.verarbeiten j")
+    printlog("f.verarbeiten j")
     tankneu = {}
     for gruppe, v in pairs(tank_a) do
-        printwlan("f.verarbeiten k")
+        printlog("f.verarbeiten k")
         for _, w in pairs(v) do
-            printwlan("f.verarbeiten l")
+            printlog("f.verarbeiten l")
             if w.name == "Tankname" then
-                printwlan("f.verarbeiten m")
+                printlog("f.verarbeiten m")
                 tankneu[#tankneu + 1] = w
             end
         end
-        printwlan("f.verarbeiten n")
+        printlog("f.verarbeiten n")
         for _, w in spairs(v, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
-            printwlan("f.verarbeiten o")
+            printlog("f.verarbeiten o")
             if w.name ~= "Tankname" then
-                printwlan("f.verarbeiten p")
+                printlog("f.verarbeiten p")
                 tankneu[#tankneu + 1] = w
             end
         end
     end
-    printwlan("f.verarbeiten ende")
-    printwlan("tank_a")
-    printwlan(tank_a)
-    printwlan("tankneu")
-    printwlan(tankneu)
+    printlog("f.verarbeiten ende")
+    printlog("tank_a")
+    printlog(tank_a)
+    printlog("tankneu")
+    printlog(tankneu)
     f.schreib_table("/tankneu", tankneu)
 end
 
 local function spairs(t, order)
-    printwlan("spairs start")
+    printlog("spairs start")
     local keys = {}
     for k in pairs(t) do keys[#keys+1] = k end
     if order then
@@ -289,17 +289,17 @@ local function spairs(t, order)
 end
 
 function f.anzeigen()
-    printwlan("test a")
+    printlog("test a")
     local tankanzeige = tankneu
-    printwlan("test b")
-    printwlan("tankanzeige")
-    printwlan("test c")
-    printwlan(tankanzeige)
-    printwlan("test d")
+    printlog("test b")
+    printlog("tankanzeige")
+    printlog("test c")
+    printlog(tankanzeige)
+    printlog("test d")
     if not tankanzeige then
         return
     end
-    printwlan("test e")
+    printlog("test e")
     for screenid in component.list("screen") do
         gpu.bind(screenid, false)
         local klein = false
@@ -417,7 +417,7 @@ function f.zeichenErsetzen(...)
 end
 
 function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl)
-    printwlan("nachricht b ", nachricht)
+    printlog("nachricht b ", nachricht)
     if farben[name] == nil and debug then
         nachricht = string.format("%s  %s  >>report this<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
         nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
@@ -443,9 +443,9 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
             table.insert(ausgabe, prozent)
             table.insert(ausgabe, " ")
         else
-            printwlan("test1 davor")
+            printlog("test1 davor")
             table.insert(ausgabe, string.sub(nachricht, 1, 25))
-            printwlan("test1 danach")
+            printlog("test1 danach")
             table.insert(ausgabe, string.rep(" ", links + 38 - string.len(nachricht) - string.len(menge)))
             table.insert(ausgabe, menge)
             table.insert(ausgabe, "mb")
@@ -545,21 +545,21 @@ function f.keineDaten()
 end
 
 function f.tankliste()
-    printwlan("f.tankliste") --debug
-    printwlan("Sensorliste")
-    printwlan(type(Sensorliste))
-    printwlan(Sensorliste)
+    printlog("f.tankliste") --debug
+    printlog("Sensorliste")
+    printlog(type(Sensorliste))
+    printlog(Sensorliste)
     for k, v in pairs(Sensorliste) do
         f.tank(v[1], v[3], v[8])
     end
-    printwlan("ende Sensorliste")
+    printlog("ende Sensorliste")
 end
 
 function o.tankliste(signal)
-    printwlan("o.tankliste") --debug
+    printlog("o.tankliste") --debug
     local dazu = true
     if version ~= signal[7] then
-        printwlan("f.update start") -- debug
+        printlog("f.update start") -- debug
         f.update(signal)
     end
     for k, v in pairs(Sensorliste) do
@@ -576,14 +576,14 @@ function o.tankliste(signal)
     for k, v in pairs(timer) do
         event.cancel(v)
     end
-    printwlan("timer start jap") --debug
+    printlog("timer start jap") --debug
     timer.tank = event.timer(Wartezeit + 15, f.tank, 1)
     timer.jetzt = event.timer(2, f.tankliste, 1)
     timer.senden = event.timer(Zeit, f.senden, math.huge)
     timer.tankliste = event.timer(Zeit + 15, f.tankliste, math.huge)
     timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
     timer.anzeigen = event.timer(5, f.anzeigen, 1)
-    printwlan("timer start ende") --debug
+    printlog("timer start ende") --debug
     f.tankliste()--debug
 end
 
@@ -591,7 +591,7 @@ function f.datei(id, datei)
     if fs.exists("/tank/client" .. datei) then
         local d = io.open("/tank/client" .. datei, "r")
         local inhalt = d:read("*a")
-        printwlan("datei start") --debug
+        printlog("datei start") --debug
         local i = 0
         local art = "w"
         local max_packet = 4000
@@ -604,13 +604,13 @@ function f.datei(id, datei)
             i = i + 1
             art = "a"
         end
-        printwlan("datei fertig") -- debug
+        printlog("datei fertig") -- debug
         d:close()
     end
 end
 
 function o.speichern(signal)
-    printwlan("speichern" .. signal[7]) --debug
+    printlog("speichern" .. signal[7]) --debug
     if not signal[7] then
         f.datei(signal[3], signal[8])
     end
@@ -618,21 +618,21 @@ end
 
 function f.update(signal)
     local dateiliste = {"/tank/auslesen.lua", "/tank/version.txt", "/autorun.lua"}
-    printwlan("f.update 1") -- debug
+    printlog("f.update 1") -- debug
     for k, v in pairs(dateiliste) do
-        printwlan("f.update loop 1") -- debug
+        printlog("f.update loop 1") -- debug
         f.datei(signal[3], v)
-        printwlan("f.update loop 2") -- debug
+        printlog("f.update loop 2") -- debug
     end
-    printwlan("f.update 2") -- debug
+    printlog("f.update 2") -- debug
     m.send(signal[3], port, "aktualisieren", serialization.serialize(dateiliste))
-    printwlan("f.update 3") -- debug
+    printlog("f.update 3") -- debug
 end
 
 function f.event(...)
     local signal = {...}
-    printwlan("f.event hier") --debug
-    printwlan(signal) --debug
+    printlog("f.event hier") --debug
+    printlog(signal) --debug
     if o[signal[6]] then
         if Sendeleistung < signal[5] + 50 or Sendeleistung == math.huge then
             Sendeleistung = signal[5] + 50
@@ -676,7 +676,7 @@ function f.checkUpdate(text)
 end
 
 function debugupdate()
-    printwlan("update")
+    printlog("update")
     f.text("Update...")
     f.beenden()
     require("component").getPrimary("gpu").setResolution(require("component").getPrimary("gpu").maxResolution())
@@ -690,9 +690,9 @@ function f.main()
     Updatetimer = event.timer(300, debugupdate, math.huge) --test
     m.open(port + 1)
     f.text("Warte auf Daten")
-    printwlan("event liste modem_message start")
+    printlog("event liste modem_message start")
     event.listen("modem_message", f.event)
-    printwlan("event liste modem_message danach")
+    printlog("event liste modem_message danach")
     event.listen("component_added", f.anzeigen)
     timer.senden = event.timer(Zeit, f.senden, math.huge)
     timer.tank = event.timer(Zeit + 15, f.tank, 1)
@@ -750,7 +750,7 @@ local ergebnis, grund = pcall(f.main)
 if not ergebnis then
     f.text("<FEHLER> f.main")
     f.text(grund)
-    printwlan("hier a", grund)
+    printlog("hier a", grund)
     os.sleep(2)
     beenden()
 end
