@@ -243,6 +243,8 @@ function f.verarbeiten(tank)
         end
     end
     printlog("f.verarbeiten j")
+    printlog("tank_a")
+    printlog(tank_a)
     tankneu = {}
     for gruppe, v in pairs(tank_a) do
         printlog("f.verarbeiten k")
@@ -263,8 +265,6 @@ function f.verarbeiten(tank)
         end
     end
     printlog("f.verarbeiten ende")
-    printlog("tank_a")
-    printlog(tank_a)
     printlog("tankneu")
     printlog(tankneu)
     f.schreib_table("/tankneu", tankneu)
