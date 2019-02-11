@@ -157,6 +157,7 @@ silver                       = {0x000000,  0xCBF4F4,  0x000000,  0xABD3D3},
 copper                       = {0xFFFFFF,  0xCE7500,  0xFFFFFF,  0x965501},
 -- ???
 kerosene                     = {0x00AEFF,  0x0075FF,  0xFFFFFF,  0x0006FF},
+Tankname                     = {0x000000,  0xFFFFFF,  0x000000,  0xFFFFFF},
 -- Energie
 EU                           = {0x000000,  0xFFFF00,  0xFFFFFF,  0x990000},
 RF                           = {0x000000,  0xFFFF00,  0xFFFFFF,  0x990000},
