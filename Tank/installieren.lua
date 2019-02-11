@@ -204,7 +204,7 @@ function f.installieren(versionTyp)
     os.sleep(1)
   end
   if fs.exists("/log") then
-    fs.remove("/log)
+    fs.remove("/log")
   end
   require("computer").shutdown(true)
 end
