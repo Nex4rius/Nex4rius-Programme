@@ -11,6 +11,7 @@ water                        = {0xFFFFFF,  0x2A3BF1,  0xFFFFFF,  0x212BC0},
 lava                         = {0x000000,  0xCF4E0C,  0xFFFFFF,  0x9C3A09},
 milk                         = {0x000000,  0xFCFCFC,  0x000000,  0xCDCDCD},
 unbekannt                    = {0xFFFFFF,  0x444444,  0xFFFFFF,  0x333333},
+Tankname                     = {0x000000,  0xFFFFFF,  0x000000,  0xFFFFFF},
 -- Astral Sorcery
 astralsorceryliquidstarlight = {0x000000,  0xAEAEAE,  0xFFFFFF,  0x7B7B7B},
 liquidstarlight              = {0x0017FF,  0x000000,  0x0017FF,  0xFFFFFF},
@@ -157,7 +158,6 @@ silver                       = {0x000000,  0xCBF4F4,  0x000000,  0xABD3D3},
 copper                       = {0xFFFFFF,  0xCE7500,  0xFFFFFF,  0x965501},
 -- ???
 kerosene                     = {0x00AEFF,  0x0075FF,  0xFFFFFF,  0x0006FF},
-Tankname                     = {0x000000,  0xFFFFFF,  0x000000,  0xFFFFFF},
 -- Energie
 EU                           = {0x000000,  0xFFFF00,  0xFFFFFF,  0x990000},
 RF                           = {0x000000,  0xFFFF00,  0xFFFFFF,  0x990000},
