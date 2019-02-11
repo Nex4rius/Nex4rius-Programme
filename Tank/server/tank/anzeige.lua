@@ -123,7 +123,6 @@ local disk = component.proxy(fs.get("/").address)
 m.setStrength(math.huge)
 
 local function spairs(t, order)
-    printlog("spairs start")
     local keys = {}
     for k in pairs(t) do keys[#keys+1] = k end
     if order then
@@ -183,16 +182,11 @@ function f.verarbeiten(tank)
     printlog(tank)
     tank_a = {}
     for i in pairs(tank) do
-        printlog("f.verarbeiten b")
         if type(tank[i]) == "table" then
-            printlog("f.verarbeiten c")
             if type(tank[i].inhalt) == "table" then
-                printlog("f.verarbeiten d")
                 local gruppe
                 for j in pairs(tank[i].inhalt) do
-                    printlog("f.verarbeiten e")
                     if tank[i].inhalt[j].name == "Tankname" then
-                        printlog("f.verarbeiten f")
                         gruppe = tank[i].inhalt[j].label
                         if tank_a[gruppe] then
                             break
@@ -204,12 +198,10 @@ function f.verarbeiten(tank)
                             tank_a[gruppe][1].menge = "1"
                             tank_a[gruppe][1].maxmenge = "1"
                         end
-                        printlog("f.verarbeiten g")
                     end
                 end
                 printlog("f.verarbeiten h")
                 for j in pairs(tank[i].inhalt) do
-                    printlog("f.verarbeiten i")
                     local name = tank[i].inhalt[j].name
                     local label = tank[i].inhalt[j].label
                     local menge = tank[i].inhalt[j].menge
@@ -236,24 +228,17 @@ function f.verarbeiten(tank)
             end
         end
     end
-    printlog("f.verarbeiten j")
     printlog("tank_a")
     printlog(tank_a)
     tankneu = {}
     for gruppe, v in pairs(tank_a) do
-        printlog("f.verarbeiten k")
         for _, w in pairs(v) do
-            printlog("f.verarbeiten l")
             if w.name == "Tankname" then
-                printlog("f.verarbeiten m")
                 tankneu[#tankneu + 1] = w
             end
         end
-        printlog("f.verarbeiten n")
         for _, w in spairs(v, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
-            printlog("f.verarbeiten o")
             if w.name ~= "Tankname" then
-                printlog("f.verarbeiten p")
                 tankneu[#tankneu + 1] = w
             end
         end
