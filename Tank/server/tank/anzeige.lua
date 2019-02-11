@@ -348,6 +348,7 @@ function f.anzeigen()
             keineDaten()
         end
     end
+    letztesAnzeigen = c.uptime()
 end
 
 function f.zeichenErsetzen(...)
@@ -517,7 +518,6 @@ function f.bildschirm_aktualisieren()
         print("hier test2 ", c.uptime(), letztesAnzeigen, c.uptime() - letztesAnzeigen, c.uptime() - letztesAnzeigen > Zeit)
         if c.uptime() - letztesAnzeigen > Zeit then
             f.anzeigen()
-            letztesAnzeigen = c.uptime()
         end
         os.sleep(5)
         f.bildschirm_aktualisieren()
