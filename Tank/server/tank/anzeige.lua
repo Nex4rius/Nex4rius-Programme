@@ -43,6 +43,7 @@ local Sendeleistung   = math.huge
 local Wartezeit       = 150
 local letzteNachricht = c.uptime()
 local Zeit            = 60
+local Bildschirmaktualisierung
 
 if fs.exists("/tank/version.txt") then
     local d = io.open("/tank/version.txt", "r")
@@ -599,6 +600,7 @@ function f.main()
     timer.senden = event.timer(Zeit, f.senden, math.huge)
     timer.tank = event.timer(Zeit + 15, f.tank, 1)
     timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
+    Bildschirmaktualisierung = event.timer(Zeit, f.anzeigen)
     f.senden()
     event.listen("interrupted", f.beenden)
     event.pull("beenden")
@@ -616,6 +618,7 @@ function f.beenden()
     if type(Updatetimer) == "number" then
         event.cancel(Updatetimer)
     end
+    event.cancel(Bildschirmaktualisierung)
     event.push("beenden")
     for screenid in component.list("screen") do
         gpu.bind(screenid)
