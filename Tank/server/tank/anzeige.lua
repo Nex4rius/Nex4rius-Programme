@@ -140,6 +140,12 @@ os.sleep(1)
 
 m.setStrength(math.huge)
 
+function f.schreib_table(name, daten)
+    local d = io.open(name, "w")
+    d:write(serialization.serialize(daten))
+    d:close()
+end
+
 function f.tank(hier, id, nachricht)
     printwlan("nachricht a")
     printwlan(nachricht)
@@ -261,6 +267,7 @@ function f.verarbeiten(tank)
     printwlan(tank_a)
     printwlan("tankneu")
     printwlan(tankneu)
+    f.schreib_table("/tankneu", tankneu)
 end
 
 local function spairs(t, order)
@@ -565,6 +572,7 @@ function o.tankliste(signal)
     if dazu then
         table.insert(Sensorliste, signal)
     end
+    f.schreib_table("/sensorliste", Sensorliste)
     for k, v in pairs(timer) do
         event.cancel(v)
     end
