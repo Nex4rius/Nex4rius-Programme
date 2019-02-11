@@ -27,16 +27,6 @@ local wget            = loadfile("/bin/wget.lua")
 local gpu             = component.getPrimary("gpu")
 local m               = component.getPrimary("modem")
 
---[[
-for screenid in component.list("screen") do
-    gpu.bind(screenid)
-    gpu.setResolution(gpu.maxResolution())
-    term.clear()
-end
-
-gpu.setResolution = function() end
-]]
-
 local version, tankneu, energie, Updatetimer
 
 local port            = 918
@@ -72,7 +62,6 @@ else
 end
 
 local function printlog(a)
-    --m.broadcast(1, a)
     f.zeigeFehler(a)
 end
 
@@ -140,10 +129,6 @@ local function spairs(t, order)
 end
 
 function f.tank(hier, id, nachricht)
-    printlog("nachricht a")
-    printlog(nachricht)
-    printlog("tank1 a")
-    printlog(tank)
     local dazu = true
     local ende = 0
     if hier then
@@ -173,13 +158,10 @@ function f.tank(hier, id, nachricht)
             tank[i] = nil
         end
     end
-    printlog("f.tank ende")
     f.verarbeiten(tank)
 end
 
 function f.verarbeiten(tank)
-    printlog("f.verarbeiten a")
-    printlog(tank)
     tank_a = {}
     for i in pairs(tank) do
         if type(tank[i]) == "table" then
@@ -200,7 +182,6 @@ function f.verarbeiten(tank)
                         end
                     end
                 end
-                printlog("f.verarbeiten h")
                 for j in pairs(tank[i].inhalt) do
                     local name = tank[i].inhalt[j].name
                     local label = tank[i].inhalt[j].label
@@ -228,8 +209,6 @@ function f.verarbeiten(tank)
             end
         end
     end
-    printlog("tank_a")
-    printlog(tank_a)
     tankneu = {}
     for gruppe, v in pairs(tank_a) do
         for _, w in pairs(v) do
@@ -243,23 +222,13 @@ function f.verarbeiten(tank)
             end
         end
     end
-    printlog("f.verarbeiten ende")
-    printlog("tankneu")
-    printlog(tankneu)
 end
 
 function f.anzeigen()
-    printlog("test a")
     local tankanzeige = tankneu
-    printlog("test b")
-    printlog("tankanzeige")
-    printlog("test c")
-    printlog(tankanzeige)
-    printlog("test d")
     if not tankanzeige then
         return
     end
-    printlog("test e")
     for screenid in component.list("screen") do
         gpu.bind(screenid, false)
         local klein = false
@@ -377,7 +346,6 @@ function f.zeichenErsetzen(...)
 end
 
 function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl)
-    printlog("nachricht b ", nachricht)
     if farben[name] == nil and debug then
         nachricht = string.format("%s  %s  >>report this<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
         nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
@@ -403,9 +371,7 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
             table.insert(ausgabe, prozent)
             table.insert(ausgabe, " ")
         else
-            printlog("test1 davor")
             table.insert(ausgabe, string.sub(nachricht, 1, 25))
-            printlog("test1 danach")
             table.insert(ausgabe, string.rep(" ", links + 38 - string.len(nachricht) - string.len(menge)))
             table.insert(ausgabe, menge)
             table.insert(ausgabe, "mb")
@@ -505,21 +471,14 @@ function f.keineDaten()
 end
 
 function f.tankliste()
-    printlog("f.tankliste") --debug
-    printlog("Sensorliste")
-    printlog(type(Sensorliste))
-    printlog(Sensorliste)
     for k, v in pairs(Sensorliste) do
         f.tank(v[1], v[3], v[8])
     end
-    printlog("ende Sensorliste")
 end
 
 function o.tankliste(signal)
-    printlog("o.tankliste") --debug
     local dazu = true
     if version ~= signal[7] then
-        printlog("f.update start") -- debug
         f.update(signal)
     end
     for k, v in pairs(Sensorliste) do
@@ -535,14 +494,12 @@ function o.tankliste(signal)
     for k, v in pairs(timer) do
         event.cancel(v)
     end
-    printlog("timer start jap") --debug
     timer.tank = event.timer(Wartezeit + 15, f.tank, 1)
     timer.jetzt = event.timer(2, f.tankliste, 1)
     timer.senden = event.timer(Zeit, f.senden, math.huge)
     timer.tankliste = event.timer(Zeit + 15, f.tankliste, math.huge)
     timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
     timer.anzeigen = event.timer(5, f.anzeigen, 1)
-    printlog("timer start ende") --debug
     f.tankliste()--debug
 end
 
@@ -550,7 +507,6 @@ function f.datei(id, datei)
     if fs.exists("/tank/client" .. datei) then
         local d = io.open("/tank/client" .. datei, "r")
         local inhalt = d:read("*a")
-        printlog("datei start") --debug
         local i = 0
         local art = "w"
         local max_packet = 4000
@@ -563,13 +519,11 @@ function f.datei(id, datei)
             i = i + 1
             art = "a"
         end
-        printlog("datei fertig") -- debug
         d:close()
     end
 end
 
 function o.speichern(signal)
-    printlog("speichern" .. signal[7]) --debug
     if not signal[7] then
         f.datei(signal[3], signal[8])
     end
@@ -577,21 +531,14 @@ end
 
 function f.update(signal)
     local dateiliste = {"/tank/auslesen.lua", "/tank/version.txt", "/autorun.lua"}
-    printlog("f.update 1") -- debug
     for k, v in pairs(dateiliste) do
-        printlog("f.update loop 1") -- debug
         f.datei(signal[3], v)
-        printlog("f.update loop 2") -- debug
     end
-    printlog("f.update 2") -- debug
     m.send(signal[3], port, "aktualisieren", serialization.serialize(dateiliste))
-    printlog("f.update 3") -- debug
 end
 
 function f.event(...)
     local signal = {...}
-    printlog("f.event hier") --debug
-    printlog(signal) --debug
     if o[signal[6]] then
         if Sendeleistung < signal[5] + 50 or Sendeleistung == math.huge then
             Sendeleistung = signal[5] + 50
@@ -635,7 +582,6 @@ function f.checkUpdate(text)
 end
 
 function debugupdate()
-    printlog("update")
     f.text("Update...")
     f.beenden()
     require("component").getPrimary("gpu").setResolution(require("component").getPrimary("gpu").maxResolution())
@@ -649,9 +595,7 @@ function f.main()
     Updatetimer = event.timer(300, debugupdate, math.huge) --test
     m.open(port + 1)
     f.text("Warte auf Daten")
-    printlog("event liste modem_message start")
     event.listen("modem_message", f.event)
-    printlog("event liste modem_message danach")
     event.listen("component_added", f.anzeigen)
     timer.senden = event.timer(Zeit, f.senden, math.huge)
     timer.tank = event.timer(Zeit + 15, f.tank, 1)
@@ -709,7 +653,6 @@ local ergebnis, grund = pcall(f.main)
 if not ergebnis then
     f.text("<FEHLER> f.main")
     f.text(grund)
-    printlog("hier a", grund)
     os.sleep(2)
     beenden()
 end
