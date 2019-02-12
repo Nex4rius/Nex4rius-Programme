@@ -247,10 +247,8 @@ function f.verarbeiten(tank)
 end
 
 function f.anzeigen()
+    print("test4 hier")
     local tankanzeige = tankneu
-    if not tankanzeige then
-        return
-    end
     for screenid in component.list("screen") do
         gpu.bind(screenid, false)
         local klein = false
