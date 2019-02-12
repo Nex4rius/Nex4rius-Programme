@@ -475,17 +475,19 @@ function split(...)
 end
 
 function f.text(a, b)
-    for screenid in component.list("screen") do
-        gpu.bind(screenid, false)
-        if b then
-            gpu.setResolution(gpu.maxResolution())
-        else
+    if type(a) == "string" then
+        for screenid in component.list("screen") do
+            gpu.bind(screenid, false)
+            if b then
+                gpu.setResolution(gpu.maxResolution())
+            else
+                f.Farben(0xFFFFFF, 0x000000)
+                gpu.set(1, 1, a)
+                gpu.setResolution(string.len(a), 1)
+            end
             f.Farben(0xFFFFFF, 0x000000)
             gpu.set(1, 1, a)
-            gpu.setResolution(string.len(a), 1)
         end
-        f.Farben(0xFFFFFF, 0x000000)
-        gpu.set(1, 1, a)
     end
 end
 
