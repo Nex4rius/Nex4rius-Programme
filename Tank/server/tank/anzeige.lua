@@ -266,7 +266,11 @@ function f.anzeigen()
         local y = 1
         print("test4 a7")
         local leer = true
+        print("test4 a7a")
+        print("test ausgabe tankanzeige ", type(tankanzeige), tankanzeige)
+        print("test ausgabe #tankanzeige ", type(#tankanzeige), #tankanzeige)
         local maxanzahl = #tankanzeige
+        print("test4 a7b")
         print("test4 a8")
         local a, b = gpu.getResolution()
         print("test4 b")
