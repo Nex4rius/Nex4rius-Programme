@@ -253,9 +253,6 @@ function f.anzeigen()
     print("test4 a")
     print("test ausgabe tankneu ", type(tankneu), tankneu)
     local tankanzeige = tankneu
-    if not tankanzeige then
-        return
-    end
     print("test4 a1")
     for screenid in component.list("screen") do
         print("test4 a2")
@@ -383,7 +380,7 @@ function f.anzeigen()
         end
         print("test4 i")
         if leer then
-            keineDaten()
+            f.keineDaten()
         end
     end
     letztesAnzeigen = c.uptime()
