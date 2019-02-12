@@ -14,11 +14,12 @@ if type(args) ~= "string" then
   args = ""
 end
 
-local ergebnis, grund, a, b = pcall(loadfile("/tank/anzeige.lua"), args)
+loadfile("/tank/anzeige.lua")(args)--debug
+--local ergebnis, grund, a, b = pcall(loadfile("/tank/anzeige.lua"), args)
 
+require("component").getPrimary("gpu").setResolution(require("component").getPrimary("gpu").maxResolution())
+require("term").clear()
 if not ergebnis then
-  require("component").getPrimary("gpu").setResolution(require("component").getPrimary("gpu").maxResolution())
-  require("term").clear()
   print("<FEHLER> /tank/anzeige.lua")
   print(grund, a, b)
   for i = 10, 1, -1 do
