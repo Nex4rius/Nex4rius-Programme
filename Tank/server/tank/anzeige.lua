@@ -655,7 +655,8 @@ function f.main()
     event.timer(6, f.bildschirm_aktualisieren, 1)
     f.senden()
     event.listen("interrupted", f.beenden)
-    --event.pull("beenden")
+    event.pull("beenden")
+    return true
 end
 
 function f.beenden()
@@ -699,7 +700,7 @@ loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tankanze
 
 local beenden = f.beenden
 
-f.main()--debug
+local ergebnis = f.main()--debug
 --local ergebnis, grund = pcall(f.main)
 
 if not ergebnis then
