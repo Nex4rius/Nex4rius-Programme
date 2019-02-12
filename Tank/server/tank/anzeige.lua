@@ -253,6 +253,11 @@ function f.anzeigen()
     print("test4 a")
     print("test ausgabe tankneu ", type(tankneu), tankneu)
     local tankanzeige = tankneu
+    if not tankanzeige then
+        print("test4 leer")
+        f.keineDaten()
+        return
+    end
     print("test4 a1")
     for screenid in component.list("screen") do
         print("test4 a2")
