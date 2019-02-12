@@ -497,32 +497,6 @@ function f.tankliste()
     end
 end
 
-function o.tankliste(signal)
-    local dazu = true
-    if version ~= signal[7] then
-        f.update(signal)
-    end
-    for k, v in pairs(Sensorliste) do
-        if Sensorliste[k][3] == signal[3] then
-            dazu = false
-            Sensorliste[k] = signal
-            break
-        end
-    end
-    if dazu then
-        table.insert(Sensorliste, signal)
-    end
-    for k, v in pairs(timer) do
-        event.cancel(v)
-    end
-    timer.tank = event.timer(Wartezeit + 15, f.tank, 1)
-    timer.jetzt = event.timer(2, f.tankliste, 1)
-    timer.senden = event.timer(Zeit, f.senden, math.huge)
-    timer.tankliste = event.timer(Zeit + 15, f.tankliste, math.huge)
-    timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
-    --timer.anzeigen = event.timer(5, f["anzeigen"], 1)
-end
-
 function f.bildschirm_aktualisieren()
     print("hier test3 ", laeuft)
     if laeuft then
@@ -559,6 +533,32 @@ function o.speichern(signal)
     if not signal[7] then
         f.datei(signal[3], signal[8])
     end
+end
+
+function o.tankliste(signal)
+    local dazu = true
+    if version ~= signal[7] then
+        f.update(signal)
+    end
+    for k, v in pairs(Sensorliste) do
+        if Sensorliste[k][3] == signal[3] then
+            dazu = false
+            Sensorliste[k] = signal
+            break
+        end
+    end
+    if dazu then
+        table.insert(Sensorliste, signal)
+    end
+    for k, v in pairs(timer) do
+        event.cancel(v)
+    end
+    timer.tank = event.timer(Wartezeit + 15, f.tank, 1)
+    timer.jetzt = event.timer(2, f.tankliste, 1)
+    timer.senden = event.timer(Zeit, f.senden, math.huge)
+    timer.tankliste = event.timer(Zeit + 15, f.tankliste, math.huge)
+    timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
+    timer.anzeigen = event.timer(5, f.anzeigen, 1)
 end
 
 function f.update(signal)
