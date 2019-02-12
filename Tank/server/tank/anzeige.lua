@@ -670,7 +670,7 @@ function f.main()
 end
 
 function f.beenden()
-    return -- debug
+    --[[
     event.ignore("modem_message", f.event)
     event.ignore("component_added", f.tank)
     event.ignore("interrupted", f.beenden)
@@ -694,6 +694,7 @@ function f.beenden()
     o = nil
     laeuft = false
     event.push("interrupted")
+    ]]
 end
 
 function f.checkServerVersion()
