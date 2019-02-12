@@ -248,7 +248,11 @@ end
 
 function f.anzeigen()
     print("test4 a")
+    print("test ausgabe tankneu ", type(tankneu), tankneu)
     local tankanzeige = tankneu
+    if not tankanzeige then
+        return
+    end
     print("test4 a1")
     for screenid in component.list("screen") do
         print("test4 a2")
@@ -656,9 +660,9 @@ function f.main()
     timer.senden = event.timer(Zeit, f.senden, math.huge)
     timer.tank = event.timer(Zeit + 15, f.tank, 1)
     timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
-    event.timer(6, f.bildschirm_aktualisieren, 1)
     f.senden()
     event.listen("interrupted", f.beenden)
+    f.bildschirm_aktualisieren()
     event.pull("beenden")
     return true
 end
