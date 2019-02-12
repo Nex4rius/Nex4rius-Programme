@@ -22,7 +22,7 @@ local term            = require("term")
 
 local farben          = loadfile("/tank/farben.lua")()
 local ersetzen        = loadfile("/tank/ersetzen.lua")()
-local wget            = loadfile("/bin/wget.lua")
+local original_wget   = loadfile("/bin/wget.lua")
 
 local gpu             = component.getPrimary("gpu")
 local m               = component.getPrimary("modem")
@@ -44,6 +44,19 @@ local Wartezeit       = 150
 local letzteNachricht = c.uptime()
 local Zeit            = 60
 local letztesAnzeigen = c.uptime()
+
+local function wget(...)
+    for i = 1, 21 do
+        if original_wget(...) then
+            return true
+        end
+        if i > 20 then
+            return false
+        end
+        print("\nDownloadfehler ... Neustart in " .. i .. "s")
+        os.sleep(i)
+    end
+end
 
 for screenid in component.list("screen") do
     gpu.bind(screenid)
