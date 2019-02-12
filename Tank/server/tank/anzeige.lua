@@ -247,7 +247,7 @@ function f.verarbeiten(tank)
 end
 
 function f.anzeigen()
-    print("test4 hier")
+    print("test4 a")
     local tankanzeige = tankneu
     for screenid in component.list("screen") do
         gpu.bind(screenid, false)
@@ -261,6 +261,7 @@ function f.anzeigen()
         local leer = true
         local maxanzahl = #tankanzeige
         local a, b = gpu.getResolution()
+        print("test4 b")
         if maxanzahl <= 16 and maxanzahl ~= 0 then
             if klein and maxanzahl > 5 then
                 if a ~= 160 or b ~= maxanzahl then
@@ -282,6 +283,7 @@ function f.anzeigen()
                 end
             end
         end
+        print("test4 c")
         os.sleep(0.1)
         local anzahl = 0
         for i = 1, #tankanzeige do
@@ -294,6 +296,7 @@ function f.anzeigen()
                 links, rechts = 0, 0
                 breite = 80
             end
+        print("test4 d")
             if anzahl == 17 or anzahl == 33 or anzahl == 49 then
                 if maxanzahl > 48 and anzahl > 48 then
                     x = 41
@@ -323,6 +326,7 @@ function f.anzeigen()
                     y = 1
                 end
             end
+        print("test4 e")
             local name = string.gsub(tankanzeige[i].name, "%p", "")
             local label = f.zeichenErsetzen(string.gsub(tankanzeige[i].label, "%p", ""))
             local menge = tankanzeige[i].menge
@@ -331,7 +335,9 @@ function f.anzeigen()
             if label == "fluidhelium3" then
                 label = "Helium-3"
             end
+        print("test4 f")
             f.zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl)
+        print("test4 g")
             if debug then
                 gpu.set(x, y, string.format("Anzahl: %s / %s X:%s Y:%s", i, #tankanzeige, x, y))
             end
@@ -342,6 +348,7 @@ function f.anzeigen()
                 y = y + 3
             end
         end
+        print("test4 h")
         f.Farben(0xFFFFFF, 0x000000)
         for i = anzahl, 33 do
             gpu.set(x, y , string.rep(" ", 80))
@@ -355,11 +362,13 @@ function f.anzeigen()
                 y = y + 3
             end
         end
+        print("test4 i")
         if leer then
             keineDaten()
         end
     end
     letztesAnzeigen = c.uptime()
+    print("test4 ende")
 end
 
 function f.zeichenErsetzen(...)
