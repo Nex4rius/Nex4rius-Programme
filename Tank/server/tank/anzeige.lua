@@ -525,14 +525,9 @@ function f.tankliste()
 end
 
 function f.bildschirm_aktualisieren()
-    print("hier test3 ", laeuft)
-    if laeuft then
-        print("hier test2 ", c.uptime(), letztesAnzeigen, c.uptime() - letztesAnzeigen, c.uptime() - letztesAnzeigen > Zeit)
-        if c.uptime() - letztesAnzeigen > Zeit then
-            f.anzeigen()
-        end
-        os.sleep(5)
-        f.bildschirm_aktualisieren()
+    print("hier test2 ", c.uptime(), letztesAnzeigen, c.uptime() - letztesAnzeigen, c.uptime() - letztesAnzeigen > Zeit)
+    if c.uptime() - letztesAnzeigen > Zeit then
+        f.anzeigen()
     end
 end
 
@@ -662,8 +657,10 @@ function f.main()
     timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
     f.senden()
     event.listen("interrupted", f.beenden)
-    f.bildschirm_aktualisieren()
-    event.pull("beenden")
+    while laeuft do
+        f.bildschirm_aktualisieren()
+        os.sleep(5)
+    end
     return true
 end
 
