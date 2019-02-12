@@ -185,6 +185,7 @@ end
 
 function f.verarbeiten(tank)
     tank_a = {}
+    print("verarbeiten a")
     for i in pairs(tank) do
         if type(tank[i]) == "table" then
             if type(tank[i].inhalt) == "table" then
@@ -231,6 +232,7 @@ function f.verarbeiten(tank)
             end
         end
     end
+    print("verarbeiten b")
     tankneu = {}
     for gruppe, v in pairs(tank_a) do
         for _, w in pairs(v) do
@@ -244,6 +246,7 @@ function f.verarbeiten(tank)
             end
         end
     end
+    print("verarbeiten c")
 end
 
 function f.anzeigen()
