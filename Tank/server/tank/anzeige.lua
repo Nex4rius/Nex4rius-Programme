@@ -645,7 +645,7 @@ function f.main()
     event.timer(6, f.bildschirm_aktualisieren, 1)
     f.senden()
     event.listen("interrupted", f.beenden)
-    event.pull("beenden")
+    --event.pull("beenden")
 end
 
 function f.beenden()
