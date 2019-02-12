@@ -249,17 +249,25 @@ end
 function f.anzeigen()
     print("test4 a")
     local tankanzeige = tankneu
+    print("test4 a1")
     for screenid in component.list("screen") do
+        print("test4 a2")
         gpu.bind(screenid, false)
+        print("test4 a3")
         local klein = false
+        print("test4 a4")
         local _, hoch = component.proxy(screenid).getAspectRatio()
+        print("test4 a5")
         if hoch <= 2 then
             klein = true
         end
+        print("test4 a6")
         local x = 1
         local y = 1
+        print("test4 a7")
         local leer = true
         local maxanzahl = #tankanzeige
+        print("test4 a8")
         local a, b = gpu.getResolution()
         print("test4 b")
         if maxanzahl <= 16 and maxanzahl ~= 0 then
