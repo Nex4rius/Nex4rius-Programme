@@ -178,6 +178,8 @@ function f.verarbeiten(tank)
     tankneu = {}
     for gruppe, v in pairs(tank_a) do
         for _, w in pairs(v) do
+            print(serialization.serialize(w))
+            os.sleep(0.1)
             if w.name == "Tankname" then
                 tankneu[#tankneu + 1] = w
             end
