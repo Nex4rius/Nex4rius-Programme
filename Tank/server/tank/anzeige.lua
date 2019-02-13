@@ -185,7 +185,7 @@ end
 
 function f.verarbeiten(tank)
     tank_a = {}
-    print("verarbeiten a")
+    --print("verarbeiten a")
     for i in pairs(tank) do
         if type(tank[i]) == "table" then
             if type(tank[i].inhalt) == "table" then
@@ -232,7 +232,7 @@ function f.verarbeiten(tank)
             end
         end
     end
-    print("verarbeiten b")
+    --print("verarbeiten b")
     tankneu = {}
     for gruppe, v in pairs(tank_a) do
         for _, w in pairs(v) do
@@ -246,43 +246,43 @@ function f.verarbeiten(tank)
             end
         end
     end
-    print("verarbeiten c")
+    --print("verarbeiten c")
 end
 
 function f.anzeigen()
-    print("test4 a")
-    print("test ausgabe tankneu ", type(tankneu), tankneu)
+    --print("test4 a")
+    --print("test ausgabe tankneu ", type(tankneu), tankneu)
     local tankanzeige = tankneu
     if not tankanzeige then
         print("test4 leer")
         f.keineDaten()
         return
     end
-    print("test4 a1")
+    --print("test4 a1")
     for screenid in component.list("screen") do
-        print("test4 a2")
+        --print("test4 a2")
         gpu.bind(screenid, false)
-        print("test4 a3")
+        --print("test4 a3")
         local klein = false
-        print("test4 a4")
+        --print("test4 a4")
         local _, hoch = component.proxy(screenid).getAspectRatio()
-        print("test4 a5")
+        --print("test4 a5")
         if hoch <= 2 then
             klein = true
         end
-        print("test4 a6")
+        --print("test4 a6")
         local x = 1
         local y = 1
-        print("test4 a7")
+        --print("test4 a7")
         local leer = true
-        print("test4 a7a")
-        print("test ausgabe tankanzeige ", type(tankanzeige), tankanzeige)
-        print("test ausgabe #tankanzeige ", type(#tankanzeige), #tankanzeige)
+        --print("test4 a7a")
+        --print("test ausgabe tankanzeige ", type(tankanzeige), tankanzeige)
+        --print("test ausgabe #tankanzeige ", type(#tankanzeige), #tankanzeige)
         local maxanzahl = #tankanzeige
-        print("test4 a7b")
-        print("test4 a8")
+        --print("test4 a7b")
+        --print("test4 a8")
         local a, b = gpu.getResolution()
-        print("test4 b")
+        --print("test4 b")
         if maxanzahl <= 16 and maxanzahl ~= 0 then
             if klein and maxanzahl > 5 then
                 if a ~= 160 or b ~= maxanzahl then
@@ -304,7 +304,7 @@ function f.anzeigen()
                 end
             end
         end
-        print("test4 c")
+        --print("test4 c")
         os.sleep(0.1)
         local anzahl = 0
         for i = 1, #tankanzeige do
@@ -317,7 +317,7 @@ function f.anzeigen()
                 links, rechts = 0, 0
                 breite = 80
             end
-        print("test4 d")
+        --print("test4 d")
             if anzahl == 17 or anzahl == 33 or anzahl == 49 then
                 if maxanzahl > 48 and anzahl > 48 then
                     x = 41
@@ -347,7 +347,7 @@ function f.anzeigen()
                     y = 1
                 end
             end
-        print("test4 e")
+        --print("test4 e")
             local name = string.gsub(tankanzeige[i].name, "%p", "")
             local label = f.zeichenErsetzen(string.gsub(tankanzeige[i].label, "%p", ""))
             local menge = tankanzeige[i].menge
@@ -356,9 +356,9 @@ function f.anzeigen()
             if label == "fluidhelium3" then
                 label = "Helium-3"
             end
-        print("test4 f")
+        --print("test4 f")
             f.zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl)
-        print("test4 g")
+        --print("test4 g")
             if debug then
                 gpu.set(x, y, string.format("Anzahl: %s / %s X:%s Y:%s", i, #tankanzeige, x, y))
             end
@@ -369,7 +369,7 @@ function f.anzeigen()
                 y = y + 3
             end
         end
-        print("test4 h")
+        --print("test4 h")
         f.Farben(0xFFFFFF, 0x000000)
         for i = anzahl, 33 do
             gpu.set(x, y , string.rep(" ", 80))
@@ -383,13 +383,13 @@ function f.anzeigen()
                 y = y + 3
             end
         end
-        print("test4 i")
+        --print("test4 i")
         if leer then
             f.keineDaten()
         end
     end
     letztesAnzeigen = c.uptime()
-    print("test4 ende")
+    --print("test4 ende")
 end
 
 function f.zeichenErsetzen(...)
@@ -563,7 +563,7 @@ function o.speichern(signal)
 end
 
 function o.tankliste(signal)
-    print("o.tankliste 1")
+    --print("o.tankliste 1")
     local dazu = true
     if version ~= signal[7] then
         f.update(signal)
@@ -587,7 +587,7 @@ function o.tankliste(signal)
     timer.tankliste = event.timer(Zeit + 15, f.tankliste, math.huge)
     timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
     timer.anzeigen = event.timer(5, f.anzeigen, 1)
-    print("o.tankliste 2")
+    --print("o.tankliste 2")
 end
 
 function f.update(signal)
@@ -599,7 +599,7 @@ function f.update(signal)
 end
 
 function f.event(...)
-    print("Event hier")
+    --print("Event hier")
     local signal = {...}
     if o[signal[6]] then
         if Sendeleistung < signal[5] + 50 or Sendeleistung == math.huge then
