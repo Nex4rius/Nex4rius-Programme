@@ -382,6 +382,16 @@ function f.zu_SI(wert)
     return f.ErsetzePunktMitKomma(wert)
 end
 
+function f.checkFarbe(name)
+    for k, v in pairs(farben) do
+        if string.find(k, name) or string.find(name, k) then
+            farben[name] = v
+            return name
+        end
+    end
+    return "unbekannt"
+end
+
 function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl)
     if farben[name] == nil and debug then
         nachricht = string.format("%s  %s  >>report this<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
@@ -432,7 +442,7 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
         nachricht = split(table.concat(ausgabe))
     end
     if farben[name] == nil then
-        name = "unbekannt"
+        name = f.checkFarbe(name)
     end
     local oben = " ┏" .. string.rep("━", breite - 4) .. "┓ "
     local unten = " ┗" .. string.rep("━", breite - 4) .. "┛ "
