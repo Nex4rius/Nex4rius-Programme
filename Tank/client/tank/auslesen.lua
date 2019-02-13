@@ -257,7 +257,7 @@ function o.tank(signal)
 end
 
 function f.loop(...)
-  print("\n\n\n")
+  print("\n\n")
   print(...)
   local signal = {...}
   print(signal[6])
@@ -273,6 +273,10 @@ function f.senden(signal, name, nachricht, ...)
   m.send(signal[3], signal[4] + 1, name, f.serialize(nachricht), ...)
 end
 
+function f.anders()
+  m.broadcast(port + 1, "tankliste", version, f.serialize(f.check()))
+end
+
 function f.main()
   m.open(port)
   if m.isWireless() then
@@ -284,8 +288,12 @@ function f.main()
   m.broadcast(port + 1, "tankliste", version, f.serialize(f.check()))
   print("Warte auf Antwort...")
   event.listen("modem_message", f.loop)
+  event.listen("component_added", f.anders)
+  event.listen("component_removed", f.anders)
   pcall(os.sleep, math.huge)
   event.ignore("modem_message", f.loop)
+  event.ignore("component_added", f.anders)
+  event.ignore("component_removed", f.anders)
 end
 
 loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tanksensor")
