@@ -161,6 +161,6 @@ copper                       = {0xFFFFFF,  0xCE7500,  0xFFFFFF,  0x965501},
 -- ???
 kerosene                     = {0x00AEFF,  0x0075FF,  0xFFFFFF,  0x0006FF},
 -- Energie
-EU                           = {0x000000,  0xFFFF00,  0xFFFFFF,  0x990000},
+EU                           = {0x000000,  0xED1504,  0xFFFFFF,  0xA10E03},
 RF                           = {0x000000,  0xFFFF00,  0xFFFFFF,  0x990000},
 }
