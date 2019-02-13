@@ -187,6 +187,7 @@ function f.verarbeiten(tank)
     end
     tankneu = {}
     for gruppe, v in pairs(tank_a) do
+        print("gruppe ", gruppe)
         for _, w in pairs(v) do
             print(serialization.serialize(w))
             os.sleep(0.1)
