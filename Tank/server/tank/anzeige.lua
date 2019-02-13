@@ -599,7 +599,7 @@ function f.update(signal)
 end
 
 function f.event(...)
-    pritn("Event hier")
+    print("Event hier")
     local signal = {...}
     if o[signal[6]] then
         if Sendeleistung < signal[5] + 50 or Sendeleistung == math.huge then
