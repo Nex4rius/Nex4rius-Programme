@@ -58,14 +58,6 @@ local function wget(...)
     end
 end
 
-for screenid in component.list("screen") do
-    gpu.bind(screenid)
-    gpu.setResolution(gpu.maxResolution())
-    term.clear()
-end
-
-gpu.setResolution = function() end
-
 if fs.exists("/tank/version.txt") then
     local d = io.open("/tank/version.txt", "r")
     version = d:read()
@@ -82,54 +74,6 @@ if arg == "n" or arg == "nein" or arg == "no" then
 else
     arg = true
 end
-
-local function printlog(a)
-    f.zeigeFehler(a)
-end
-
------------------------------------------------------------
-local Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
-function f.schreibFehlerLog(a)
-  if letzteEingabe == a then else
-    local d = io.open("/log", "a")
-    if d then
-        if type(a) == "string" then
-            d:write(a)
-        elseif type(a) == "table" then
-            d:write(serialization.serialize(a))
-        end
-        d:write("\n" .. os.time() .. string.rep("-", 69 - string.len(os.time())) .. "\n")
-        d:close()
-    end
-  end
-  letzteEingabe = a
-end
-
-function f.zeigeFehler(a)
-  if a == "" then else
-    f.schreibFehlerLog(a)
-  end
-end
-
-function f.zeigeNachricht(inhalt, oben)
-  f.asdasd(1, 75, inhalt, Bildschirmbreite)
-end
-
-function f.asdasd(x, y, s, h)
-    print("zeigehier geht")
-  s = tostring(s)
-  if type(x) == "number" and type(y) == "number" then
-    if not h then
-      h = Bildschirmbreite
-    end
-    gpu.set(x, y, s .. string.rep(" ", 40))
-  end
-end
-
-local computer = require("computer")
-local disk = component.proxy(fs.get("/").address)
-
------------------------------------------------------------
 
 m.setStrength(math.huge)
 
@@ -185,7 +129,6 @@ end
 
 function f.verarbeiten(tank)
     tank_a = {}
-    --print("verarbeiten a")
     for i in pairs(tank) do
         if type(tank[i]) == "table" then
             if type(tank[i].inhalt) == "table" then
@@ -232,7 +175,6 @@ function f.verarbeiten(tank)
             end
         end
     end
-    --print("verarbeiten b")
     tankneu = {}
     for gruppe, v in pairs(tank_a) do
         for _, w in pairs(v) do
@@ -246,43 +188,26 @@ function f.verarbeiten(tank)
             end
         end
     end
-    --print("verarbeiten c")
 end
 
 function f.anzeigen()
-    --print("test4 a")
-    --print("test ausgabe tankneu ", type(tankneu), tankneu)
     local tankanzeige = tankneu
     if not tankanzeige then
-        print("test4 leer")
         f.keineDaten()
         return
     end
-    --print("test4 a1")
     for screenid in component.list("screen") do
-        --print("test4 a2")
         gpu.bind(screenid, false)
-        --print("test4 a3")
         local klein = false
-        --print("test4 a4")
         local _, hoch = component.proxy(screenid).getAspectRatio()
-        --print("test4 a5")
         if hoch <= 2 then
             klein = true
         end
-        --print("test4 a6")
         local x = 1
         local y = 1
-        --print("test4 a7")
         local leer = true
-        --print("test4 a7a")
-        --print("test ausgabe tankanzeige ", type(tankanzeige), tankanzeige)
-        --print("test ausgabe #tankanzeige ", type(#tankanzeige), #tankanzeige)
         local maxanzahl = #tankanzeige
-        --print("test4 a7b")
-        --print("test4 a8")
         local a, b = gpu.getResolution()
-        --print("test4 b")
         if maxanzahl <= 16 and maxanzahl ~= 0 then
             if klein and maxanzahl > 5 then
                 if a ~= 160 or b ~= maxanzahl then
@@ -304,7 +229,6 @@ function f.anzeigen()
                 end
             end
         end
-        --print("test4 c")
         os.sleep(0.1)
         local anzahl = 0
         for i = 1, #tankanzeige do
@@ -317,7 +241,6 @@ function f.anzeigen()
                 links, rechts = 0, 0
                 breite = 80
             end
-        --print("test4 d")
             if anzahl == 17 or anzahl == 33 or anzahl == 49 then
                 if maxanzahl > 48 and anzahl > 48 then
                     x = 41
@@ -347,7 +270,6 @@ function f.anzeigen()
                     y = 1
                 end
             end
-        --print("test4 e")
             local name = string.gsub(tankanzeige[i].name, "%p", "")
             local label = f.zeichenErsetzen(string.gsub(tankanzeige[i].label, "%p", ""))
             local menge = tankanzeige[i].menge
@@ -356,9 +278,7 @@ function f.anzeigen()
             if label == "fluidhelium3" then
                 label = "Helium-3"
             end
-        --print("test4 f")
             f.zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl)
-        --print("test4 g")
             if debug then
                 gpu.set(x, y, string.format("Anzahl: %s / %s X:%s Y:%s", i, #tankanzeige, x, y))
             end
@@ -369,7 +289,6 @@ function f.anzeigen()
                 y = y + 3
             end
         end
-        --print("test4 h")
         f.Farben(0xFFFFFF, 0x000000)
         for i = anzahl, 33 do
             gpu.set(x, y , string.rep(" ", 80))
@@ -383,13 +302,11 @@ function f.anzeigen()
                 y = y + 3
             end
         end
-        --print("test4 i")
         if leer then
             f.keineDaten()
         end
     end
     letztesAnzeigen = c.uptime()
-    --print("test4 ende")
 end
 
 function f.zeichenErsetzen(...)
@@ -530,7 +447,6 @@ function f.tankliste()
 end
 
 function f.bildschirm_aktualisieren()
-    print("hier test2 ", c.uptime(), letztesAnzeigen, c.uptime() - letztesAnzeigen, c.uptime() - letztesAnzeigen > Zeit)
     if c.uptime() - letztesAnzeigen > Zeit then
         f.anzeigen()
     end
@@ -563,7 +479,6 @@ function o.speichern(signal)
 end
 
 function o.tankliste(signal)
-    --print("o.tankliste 1")
     local dazu = true
     if version ~= signal[7] then
         f.update(signal)
@@ -587,7 +502,6 @@ function o.tankliste(signal)
     timer.tankliste = event.timer(Zeit + 15, f.tankliste, math.huge)
     timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
     timer.anzeigen = event.timer(5, f.anzeigen, 1)
-    --print("o.tankliste 2")
 end
 
 function f.update(signal)
@@ -599,7 +513,6 @@ function f.update(signal)
 end
 
 function f.event(...)
-    --print("Event hier")
     local signal = {...}
     if o[signal[6]] then
         if Sendeleistung < signal[5] + 50 or Sendeleistung == math.huge then
@@ -672,7 +585,6 @@ function f.main()
 end
 
 function f.beenden()
-    --[[
     event.ignore("modem_message", f.event)
     event.ignore("component_added", f.tank)
     event.ignore("interrupted", f.beenden)
@@ -696,7 +608,6 @@ function f.beenden()
     o = nil
     laeuft = false
     event.push("interrupted")
-    ]]
 end
 
 function f.checkServerVersion()
@@ -714,8 +625,7 @@ loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tankanze
 
 local beenden = f.beenden
 
-local ergebnis = f.main()--debug
---local ergebnis, grund = pcall(f.main)
+local ergebnis, grund = pcall(f.main)
 
 if not ergebnis then
     f.text("<FEHLER> f.main")
