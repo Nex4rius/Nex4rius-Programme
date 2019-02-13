@@ -45,6 +45,16 @@ local letzteNachricht = c.uptime()
 local Zeit            = 60
 local letztesAnzeigen = c.uptime()
 
+---------------------------------------------------------
+for screenid in component.list("screen") do
+    gpu.bind(screenid)
+    gpu.setResolution(gpu.maxResolution())
+    term.clear()
+end
+
+gpu.setResolution = function() end
+---------------------------------------------------------
+
 local function wget(...)
     for i = 1, 21 do
         if original_wget(...) then
