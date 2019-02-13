@@ -19,6 +19,7 @@ local serialization   = require("serialization")
 local c               = require("computer")
 local event           = require("event")
 local term            = require("term")
+local unicode         = require("unicode")
 
 local farben          = loadfile("/tank/farben.lua")()
 local ersetzen        = loadfile("/tank/ersetzen.lua")()
@@ -41,8 +42,8 @@ local laeuft          = true
 local debug           = false
 local Sendeleistung   = math.huge
 local Wartezeit       = 150
-local letzteNachricht = c.uptime()
 local Zeit            = 60
+local letzteNachricht = c.uptime()
 local letztesAnzeigen = c.uptime()
 
 local function wget(...)
@@ -218,25 +219,45 @@ function f.anzeigen()
         local leer = true
         local maxanzahl = #tankanzeige
         local a, b = gpu.getResolution()
+        local function gpu_set(x, y)
+            if a ~= x or b ~= y then
+                gpu.setResolution(x, y)
+            end
+        end
+        --local maxbreite = 160
         if maxanzahl <= 16 and maxanzahl ~= 0 then
             if klein and maxanzahl > 5 then
-                if a ~= 160 or b ~= maxanzahl then
-                    gpu.setResolution(160, maxanzahl)
-                end
+                gpu_set(160, maxanzahl)
             else
-                if a ~= 160 or b ~= maxanzahl * 3 then
-                    gpu.setResolution(160, maxanzahl * 3)
+                --[[
+                if maxanzahl == 16 then
+                    maxbreite = 157
+                elseif maxanzahl == 15 then
+                    maxbreite = 147
+                elseif maxanzahl == 14 then
+                    maxbreite = 138
+                elseif maxanzahl == 13 then
+                    maxbreite = 128
+                elseif maxanzahl == 12 then
+                    maxbreite = 118
+                elseif maxanzahl == 11 then
+                    maxbreite = 108
+                elseif maxanzahl == 10 then
+                    maxbreite = 98
+                elseif maxanzahl == 9 then
+                    maxbreite = 88
+                else
+                    maxbreite = 80
                 end
+                gpu_set(maxbreite, maxanzahl * 3)
+                ]]
+                gpu_set(160, maxanzahl * 3)
             end
         else
             if klein and maxanzahl > 5 then
-                if a ~= 160 or b ~= 16 then
-                    gpu.setResolution(160, 16)
-                end
+                gpu_set(160, 16)
             else
-                if a ~= 160 or b ~= 48 then
-                    gpu.setResolution(160, 48)
-                end
+                gpu_set(160, 48)
             end
         end
         os.sleep(0.1)
@@ -245,7 +266,8 @@ function f.anzeigen()
             anzahl = anzahl + 1
             local links, rechts, breite = -15, -25, 40
             if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
-                links, rechts = 40, 40
+                links = 40
+                rechts = 40
                 breite = 160
             elseif (64 - maxanzahl) >= anzahl and maxanzahl > 16 then
                 links, rechts = 0, 0
@@ -280,6 +302,13 @@ function f.anzeigen()
                     y = 1
                 end
             end
+            --[[
+            if maxanzahl <= 16 and not klein then
+                links = 40 - (math.floor((maxbreite - 80) / 2))
+                rechts = 40 - (math.ceil((maxbreite - 80) / 2))
+                breite = maxbreite
+            end
+            ]]           
             local name = string.gsub(tankanzeige[i].name, "%p", "")
             local label = f.zeichenErsetzen(string.gsub(tankanzeige[i].label, "%p", ""))
             local menge = tankanzeige[i].menge
@@ -356,17 +385,17 @@ end
 function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl)
     if farben[name] == nil and debug then
         nachricht = string.format("%s  %s  >>report this<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
-        nachricht = split(nachricht .. string.rep(" ", breite - string.len(nachricht)))
+        nachricht = split(nachricht .. string.rep(" ", breite - unicode.len(nachricht)))
     elseif name == "Tankname" then
         local ausgabe = {}
         if klein and maxanzahl > 5 then
-            table.insert(ausgabe, "━" .. string.rep("━", math.floor((breite - string.len(label)) / 2) - 2) .. " ")
+            table.insert(ausgabe, "━" .. string.rep("━", math.floor((breite - unicode.len(label)) / 2) - 2) .. " ")
             table.insert(ausgabe, string.sub(label, 1, breite - 4))
-            table.insert(ausgabe, " " .. string.rep("━", math.ceil((breite - string.len(label)) / 2) - 2) .. "━")
+            table.insert(ausgabe, " " .. string.rep("━", math.ceil((breite - unicode.len(label)) / 2) - 2) .. "━")
         else
-            table.insert(ausgabe, " ┃ " .. string.rep(" ", math.floor((breite - string.len(label)) / 2) - 3))
+            table.insert(ausgabe, " ┃ " .. string.rep(" ", math.floor((breite - unicode.len(label)) / 2) - 3))
             table.insert(ausgabe, string.sub(label, 1, breite - 6))
-            table.insert(ausgabe, string.rep(" ", math.ceil((breite - string.len(label)) / 2) - 3) .. " ┃ ")
+            table.insert(ausgabe, string.rep(" ", math.ceil((breite - unicode.len(label)) / 2) - 3) .. " ┃ ")
         end
         nachricht = split(table.concat(ausgabe))
     else
@@ -383,14 +412,14 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
         end
         if breite == 40 then
             table.insert(ausgabe, string.sub(nachricht, 1, 37 - string.len(menge) - string.len(prozent)))
-            table.insert(ausgabe, string.rep(" ", 37 - string.len(nachricht) - string.len(menge) - string.len(prozent)))
+            table.insert(ausgabe, string.rep(" ", 37 - unicode.len(nachricht) - string.len(menge) - string.len(prozent)))
             table.insert(ausgabe, menge)
             table.insert(ausgabe, einheit)
             table.insert(ausgabe, prozent)
             table.insert(ausgabe, " ")
         else
             table.insert(ausgabe, string.sub(nachricht, 1, 25))
-            table.insert(ausgabe, string.rep(" ", links + 38 - string.len(nachricht) - string.len(menge)))
+            table.insert(ausgabe, string.rep(" ", links + 38 - unicode.len(nachricht) - string.len(menge)))
             table.insert(ausgabe, menge)
             table.insert(ausgabe, einheit)
             table.insert(ausgabe, " / ")
