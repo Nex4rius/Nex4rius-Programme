@@ -14,8 +14,7 @@ if type(args) ~= "string" then
   args = ""
 end
 
-loadfile("/tank/anzeige.lua")(args)--debug
---local ergebnis, grund, a, b = pcall(loadfile("/tank/anzeige.lua"), args)
+local ergebnis, grund, a, b = pcall(loadfile("/tank/anzeige.lua"), args)
 
 require("component").getPrimary("gpu").setResolution(require("component").getPrimary("gpu").maxResolution())
 require("term").clear()
@@ -28,7 +27,7 @@ if not ergebnis then
   end
   for i = 1, math.huge do
     if loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/Tank/Tank/installieren.lua", "/installieren.lua") then --hier auf master
-      print(pcall(loadfile("/installieren.lua"), "Tank"))
+      print(pcall(loadfile("/installieren.lua")))
     end
     print("<FEHLER> Warte " .. i .. "s")
     os.sleep(i)
