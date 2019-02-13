@@ -45,16 +45,6 @@ local letzteNachricht = c.uptime()
 local Zeit            = 60
 local letztesAnzeigen = c.uptime()
 
----------------------------------------------------------
-for screenid in component.list("screen") do
-    gpu.bind(screenid)
-    gpu.setResolution(gpu.maxResolution())
-    term.clear()
-end
-
-gpu.setResolution = function() end
----------------------------------------------------------
-
 local function wget(...)
     for i = 1, 21 do
         if original_wget(...) then
@@ -186,18 +176,25 @@ function f.verarbeiten(tank)
         end
     end
     tankneu = {}
-    for gruppe, v in pairs(tank_a) do
-        print("gruppe ", gruppe)
-        for _, w in pairs(v) do
-            print(serialization.serialize(w))
-            os.sleep(0.1)
-            if w.name == "Tankname" then
-                tankneu[#tankneu + 1] = w
-            end
-        end
+    if tank_a["false"] then
+        local v = tank_a["false"]
         for _, w in spairs(v, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
             if w.name ~= "Tankname" then
                 tankneu[#tankneu + 1] = w
+            end
+        end
+    end
+    for gruppe, v in pairs(tank_a) do
+        if gruppe ~= "false" then            
+            for _, w in pairs(v) do
+                if w.name == "Tankname" then
+                    tankneu[#tankneu + 1] = w
+                end
+            end
+            for _, w in spairs(v, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
+                if w.name ~= "Tankname" then
+                    tankneu[#tankneu + 1] = w
+                end
             end
         end
     end
@@ -326,6 +323,36 @@ function f.zeichenErsetzen(...)
     return string.gsub(..., "%a+", function (str) return ersetzen[str] end)
 end
 
+function f.ErsetzePunktMitKomma(...)
+    local Punkt = string.find(..., "%.")
+    if type(Punkt) == "number" then
+        return string.sub(..., 0, Punkt - 1) .. "," .. string.sub(..., Punkt + 1)
+    end
+    return ...
+  end
+
+function f.zu_SI(wert)
+    wert = tonumber(wert)
+    if     wert < 10000 then
+        wert = string.format("%.f" , wert)
+    elseif wert < 10000000 then
+        wert = string.format("%.1f", wert / 1000) .. " k "
+    elseif wert < 10000000000 then
+        wert = string.format("%.2f", wert / 1000000) .. " M "
+    elseif wert < 10000000000000 then
+        wert = string.format("%.3f", wert / 1000000000) .. " G "
+    elseif wert < 10000000000000000 then
+        wert = string.format("%.3f", wert / 1000000000000) .. " T "
+    elseif wert < 10000000000000000000 then
+        wert = string.format("%.3f", wert / 1000000000000000) .. " P "
+    elseif wert < 10000000000000000000000 then
+        wert = string.format("%.3f", wert / 1000000000000000000) .. " E "
+    else
+        wert = string.format("%.3f", wert / 1000000000000000000000) .. " Z "
+    end
+    return f.ErsetzePunktMitKomma(wert)
+end
+
 function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl)
     if farben[name] == nil and debug then
         nachricht = string.format("%s  %s  >>report this<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
@@ -344,21 +371,31 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
         nachricht = split(table.concat(ausgabe))
     else
         local ausgabe = {}
+        local einheit
+        local menge = menge
+        local maxmenge = maxmenge
+        if name == "EU" or name == "RF" then
+            einheit = name
+            menge = f.zu_SI(menge)
+            maxmenge = f.zu_SI(maxmenge)
+        else
+            einheit = "mb"
+        end
         if breite == 40 then
             table.insert(ausgabe, string.sub(nachricht, 1, 37 - string.len(menge) - string.len(prozent)))
             table.insert(ausgabe, string.rep(" ", 37 - string.len(nachricht) - string.len(menge) - string.len(prozent)))
             table.insert(ausgabe, menge)
-            table.insert(ausgabe, "mb")
+            table.insert(ausgabe, einheit)
             table.insert(ausgabe, prozent)
             table.insert(ausgabe, " ")
         else
             table.insert(ausgabe, string.sub(nachricht, 1, 25))
             table.insert(ausgabe, string.rep(" ", links + 38 - string.len(nachricht) - string.len(menge)))
             table.insert(ausgabe, menge)
-            table.insert(ausgabe, "mb")
+            table.insert(ausgabe, einheit)
             table.insert(ausgabe, " / ")
             table.insert(ausgabe, maxmenge)
-            table.insert(ausgabe, "mb")
+            table.insert(ausgabe, einheit)
             table.insert(ausgabe, string.rep(" ", rechts + 26 - string.len(maxmenge)))
             table.insert(ausgabe, prozent)
             table.insert(ausgabe, " ")
@@ -569,18 +606,10 @@ function f.checkUpdate(text)
     end
 end
 
-function debugupdate()
-    f.text("Update...")
-    f.beenden()
-    require("component").getPrimary("gpu").setResolution(require("component").getPrimary("gpu").maxResolution())
-    os.execute("pastebin run -f cyF0yhXZ Tank")
-end
-
 function f.main()
     f.Farben(0xFFFFFF, 0x000000)
     f.checkUpdate(true)
     Updatetimer = event.timer(43200, f.checkUpdate, math.huge)
-    Updatetimer = event.timer(300, debugupdate, math.huge) --test
     m.open(port + 1)
     f.text("Warte auf Daten")
     event.listen("modem_message", f.event)
