@@ -49,18 +49,12 @@ function f.installieren(versionTyp)
     "transposer",
     "tank_controller",
     --EU
-    "batbox", "batbox",
-    "cesu", "cesu",
-    "mfe", "mfe",
-    "mfsu", "mfsu",
     "chargepad_batbox", "batbox",
     "chargepad_cesu", "cesu",
     "chargepad_mfe", "mfe",
     "chargepad_mfsu", "mfsu",
     --RF
-    "capacitor_bank",
-    --Item
-    "mcp_mobius_betterbarrel",}
+    "capacitor_bank",}
   local function Sensorcheck(name)
     if component.isAvailable(name) then
       print(name .. " gefunden. Client/Sensor wird heruntergeladen.")
