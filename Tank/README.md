@@ -17,7 +17,7 @@ Allowed sizes: 4x1; 8x2; 8x5
 <a href="https://www.youtube.com/watch?v=avvYO2xSxGw">installation instructions</a>
 
 server / display components:
-- Internet Card (to install)
+- Internet Card (to install & update)
 - Network Card
 - Graphics Card T3
 - Screen T3
