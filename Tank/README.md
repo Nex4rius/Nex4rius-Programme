@@ -25,7 +25,7 @@ server / display components:
 client / adapter + tank components:
 - Internet Card (only to install)
 - Network Card
-- Adapter + Tank Controller Upgrade
+- Adapter + Tank Controller Upgrade or Transposer
 
 Make pull requests if you want :)
 You can add new liquids <a href="https://github.com/Nex4rius/Nex4rius-Programme/blob/Tank/Tank/server/tank/farben.lua">here</a>.
