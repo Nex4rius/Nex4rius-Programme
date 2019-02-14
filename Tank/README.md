@@ -23,7 +23,7 @@ server / display components:
 - Screen T3
 
 client / adapter + tank components:
-- Internet Card (to install)
+- Internet Card (only to install)
 - Network Card
 - Adapter + Tank Controller Upgrade
 
