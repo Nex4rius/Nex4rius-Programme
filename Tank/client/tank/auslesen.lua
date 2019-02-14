@@ -2,64 +2,73 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/
 
-local component  = require("component")
-local term       = require("term")
-local event      = require("event")
-local c          = require("computer")
-local fs         = require("filesystem")
+os.sleep(2)
 
-local m          = component.modem
+local io            = io
+local os            = os
+local table         = table
+local string        = string
+local print         = print
+local pcall         = pcall
+local require       = require
+local loadfile      = loadfile
 
-local standby    = function() end
-local tps        = function() return 20 end
-local port       = 70
-local maxzeit    = 30
-local tpsZeit    = 1
-local reichweite
-local zeit       = maxzeit
-local tank       = {}
+local component     = require("component")
+local term          = require("term")
+local event         = require("event")
+local c             = require("computer")
+local fs            = require("filesystem")
+local serialization = require("serialization")
 
-local tankalt, adresse, empfangen, version
+local m             = component.modem
 
-tank[1]          = {}
+local verschieben   = function(von, nach) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach))) end
+local entfernen     = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
 
-if fs.exists("/bin/standby.lua") then
-  standby        = require("standby")
-end
+local port          = 918
+local tank          = {}
+local f             = {}
+local o             = {}
 
-if fs.exists("/bin/tps.lua") then
-  tps            = require("tps")
-end
+tank[1]             = {}
+
+local adresse, empfangen, version, reichweite, Tankname
+
 
 if fs.exists("/tank/version.txt") then
-    local f = io.open ("/tank/version.txt", "r")
-    version = f:read()
-    f:close()
-  else
-    version = "<FEHLER>"
+  local d = io.open ("/tank/version.txt", "r")
+  version = d:read()
+  d:close()
+else
+  version = "<FEHLER>"
 end
 
-do
-  if fs.exists("/tank/reichweite") then
-    local f = io.open("/tank/reichweite", "r")
-    reichweite = f:read()
-    f:close()
+if fs.exists("/home/Tankname") then
+  local d = io.open("/home/Tankname", "r")
+  Tankname = d:read()
+  d:close()
+  --if Tankname == "false" then
+  --  Tankname = nil
+  --end
+else
+  term.clear()
+  print("Soll dieser Sensor einen Namen bekommen? [j/N]")
+  if string.lower(io.read()) == "j" then
+    print("Bitte Namen eingeben")
+    term.write("Eingabe: ")
+    Tankname = io.read()
+    local d = io.open("/home/Tankname", "w")
+    d:write(Tankname)
+    d:close()
   else
-    print("Set wireless network card range (default: 400)")
-    io.write("Range: ")
-    local lesen = io.read()
-    if lesen == "" then
-      lesen = nil
-    end
-    local f = io.open("/tank/reichweite", "w")
-    f:write(lesen)
-    f:close()
-    reichweite = lesen or 400
+    local d = io.open("/home/Tankname", "w")
+    d:write("false")
+    d:close()
   end
 end
 
-function check()
-  tank, tankalt = {}, tank
+function f.check()
+  tank = {}
   local i = 1
   for _, CompName in pairs({"tank_controller", "transposer"}) do
     for adresse, name in pairs(component.list(CompName)) do
@@ -93,92 +102,200 @@ function check()
       end
     end
   end
-  term.clear()
+  for _, CompName in pairs({"chargepad_batbox", "batbox", "chargepad_cesu", "cesu", "chargepad_mfe", "mfe", "chargepad_mfsu", "mfsu"}) do
+    for adresse, name in pairs(component.list(CompName)) do
+      if type(tank[i - 1]) == "table" then
+        if tank[i - 1].name == "EU" then
+          tank[i - 1].menge = tank[i - 1].menge + component.proxy(adresse).getStored()
+          tank[i - 1].maxmenge = tank[i - 1].maxmenge + component.proxy(adresse).getCapacity()
+        else
+          tank[i] = {}
+          tank[i].name = "EU"
+          tank[i].label = "EU"
+          tank[i].menge = component.proxy(adresse).getStored()
+          tank[i].maxmenge = component.proxy(adresse).getCapacity()
+          i = i + 1
+        end
+      else
+        tank[i] = {}
+        tank[i].name = "EU"
+        tank[i].label = "EU"
+        tank[i].menge = component.proxy(adresse).getStored()
+        tank[i].maxmenge = component.proxy(adresse).getCapacity()
+        i = i + 1
+      end
+    end
+  end
+  for _, CompName in pairs({"capacitor_bank"}) do
+    for adresse, name in pairs(component.list(CompName)) do
+      if type(tank[i - 1]) == "table" then
+        if tank[i - 1].name == "RF" then
+          tank[i - 1].menge = tank[i - 1].menge + component.proxy(adresse).getEnergyStored()
+          tank[i - 1].maxmenge = tank[i - 1].maxmenge + component.proxy(adresse).getMaxEnergyStored()
+        else
+          tank[i] = {}
+          tank[i].name = "RF"
+          tank[i].label = "RF"
+          tank[i].menge = component.proxy(adresse).getEnergyStored()
+          tank[i].maxmenge = component.proxy(adresse).getMaxEnergyStored()
+          i = i + 1
+        end
+      else
+        tank[i] = {}
+        tank[i].name = "RF"
+        tank[i].label = "RF"
+        tank[i].menge = component.proxy(adresse).getEnergyStored()
+        tank[i].maxmenge = component.proxy(adresse).getMaxEnergyStored()
+        i = i + 1
+      end
+    end
+  end
+  print("\n\n\n" .. Tankname .. "\n")
   for i in pairs(tank) do
     if tank[i].name ~= nil then
-      print(string.format("%s - %s: %s/%s %.1f%%", tank[i].name, tank[i].label, tank[i].menge, tank[i].maxmenge, tank[i].menge / tank[i].maxmenge))
+      print(string.format("%s - %s: %s/%s %.1f%%", tank[i].name, tank[i].label, tank[i].menge, tank[i].maxmenge, tank[i].menge / tank[i].maxmenge * 100))
     end
   end
-  return anders(tank, tankalt), tank
+  return tank
 end
 
-function anders(tank, tankalt)
-  for i in pairs(tank) do
-    if type(tank[i]) == "table" and type(tankalt[i]) == "table" then
-      if tank[i].menge ~= tankalt[i].menge then
-        return true
-      end
-    else
-      return true
-    end
-  end
-  return false
-end
-
-function serialize(a)
-  if type(a) == "table" then
-    local ausgabe = ""
-    for k in pairs(a) do
-      if a[k].name ~= nil then
-        ausgabe = string.format([[%s{name="%s", label="%s", menge="%s", maxmenge="%s"}, ]], ausgabe, a[k].name, a[k].label, a[k].menge, a[k].maxmenge)
-      end
-    end
-    return "{" .. ausgabe .. "}"
-  end
-end
-
-function aktualisieren()
-end
-
-function senden(warten, nachricht)
-  if type(empfangen) == "table" then
-    if empfangen[6] == "update" then
-      adresse = empfangen[3]
-      if type(empfangen[5]) == "number" and m.isWireless() then
-        m.setStrength(tonumber(empfangen[5] + 5))
-      end
-      if tostring(version) ~= tostring(empfangen[7]) then
-        aktualisieren()
-      end
-    end
-  end
-  m.broadcast(port, serialize(nachricht))
-  return warten
-end
-
-function loop()
-  zeit = maxzeit * tpsZeit
-  if senden(check()) then
-    zeit = maxzeit / 3
-  end
-  os.sleep(5)
-  empfangen = {event.pull(zeit, "modem_message")}
-  standby()
-  local a = tps()
-  if     a >= 15 then
-    tpsZeit = 1
-  elseif a >= 10 then
-    tpsZeit = 1.5
-  elseif a >= 5 then
-    tpsZeit = 2
+local function spairs(t, order)
+  local keys = {}
+  for k in pairs(t) do keys[#keys+1] = k end
+  if order then
+    table.sort(keys, function(a,b) return order(t, a, b) end)
   else
-    tpsZeit = 3
+    table.sort(keys)
   end
-end
-
-function main()
-  if m.isWireless() then
-    m.setStrength(tonumber(reichweite + 5))
-  end
-  m.open(port + 1)
-  while true do
-    if not pcall(loop) then
-      standby()
-      os.sleep(5)
+  local i = 0
+  return function()
+    i = i + 1
+    if keys[i] then
+      return keys[i], t[keys[i]]
     end
   end
 end
 
-loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tank Client")
+function f.serialize(eingabe)
+  if type(eingabe) == "table" then
+    local ausgabe = {}
+    local i = 1
+    if Tankname then
+      ausgabe[i] = string.format([==[[%s] = {name="Tankname", label="%s", menge="1", maxmenge="1"}, ]==], i, Tankname)
+      i = i + 1
+    end
+    for k, v in spairs(eingabe, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
+      if v.name ~= nil then
+        ausgabe[i] = string.format([==[[%s] = {name="%s", label="%s", menge="%s", maxmenge="%s"}, ]==], i, v.name, v.label, v.menge, v.maxmenge)
+        i = i + 1
+      end
+    end
+    return "{" .. table.concat(ausgabe) .. "}"
+  elseif type(eingabe) == "function" then
+    return false, "<FEHLER> Funktionen können nicht gesendet werden"
+  else
+    return eingabe
+  end
+end
 
-main()
+function o.datei(signal)
+  if not fs.exists("/update/tank") then
+    fs.makeDirectory("/update/tank")
+  end
+  if type(signal[7]) == "string" and type(signal[8]) == "string" then
+    print("\nEmpfange Datei ... " .. signal[7])
+    local d = io.open("/update" .. signal[7], signal[9])
+    d:write(signal[8])
+    d:close()
+    f.senden(signal, "speichern", fs.exists("/update" .. signal[7]), signal[7])
+  else
+    print("<FEHLER>")
+    print("signal[7] " .. tostring(signal[7]))
+    print("signal[8] " .. tostring(signal[8]))
+    f.senden(signal, "speichern", false, signal[7])
+  end
+end
+
+function o.aktualisieren(signal)
+  local weiter = true
+  local daten = serialization.unserialize(signal[7])
+  for k, v in pairs(daten) do
+    if not fs.exists("/update" .. v) then
+      weiter = false
+      print("<FEHLER>")
+      print("Datei fehlt: " .. tostring(v))
+      f.senden(signal, "speichern", false, v)
+    end
+  end
+  if weiter then
+    print("Ersetze alte Dateien")
+    --local function kopieren(...)
+    --  for i in fs.list(...) do
+    --    if fs.isDirectory(i) then
+    --      kopieren(i)
+    --    end
+    --    verschieben("/update/" .. i, "/" .. i)
+    --  end
+    --end
+    --kopieren("/update")
+    for k, v in pairs(daten) do
+      verschieben("/update/" .. v, "/" .. v)
+    end
+    entfernen("/update")
+    print("Update vollständig")
+    os.sleep(1)
+    for i = 5, 1, -1 do
+      print(string.format("\nNeustarten in %ss", i))
+      os.sleep(1)
+    end
+    require("computer").shutdown(true)
+  end
+end
+
+function o.tank(signal)
+  f.senden(signal, "tankliste", version, f.serialize(f.check()))
+end
+
+function f.loop(...)
+  print("\n\n")
+  print(...)
+  local signal = {...}
+  print(signal[6])
+  if o[signal[6]] then
+    o[signal[6]](signal)
+  end
+end
+
+function f.senden(signal, name, nachricht, ...)
+  if m.isWireless() then
+    m.setStrength(tonumber(signal[5]) + 50)
+  end
+  m.send(signal[3], signal[4] + 1, name, f.serialize(nachricht), ...)
+end
+
+function f.anders()
+  m.broadcast(port + 1, "tankliste", version, f.serialize(f.check()))
+end
+
+function f.main()
+  m.open(port)
+  if m.isWireless() then
+    m.setStrength(math.huge)
+  end
+  term.clear()
+  print("Sende Anmeldung")
+  print("\n" .. Tankname)
+  m.broadcast(port + 1, "tankliste", version, f.serialize(f.check()))
+  print("Warte auf Antwort...")
+  event.listen("modem_message", f.loop)
+  event.listen("component_added", f.anders)
+  event.listen("component_removed", f.anders)
+  pcall(os.sleep, math.huge)
+  event.ignore("modem_message", f.loop)
+  event.ignore("component_added", f.anders)
+  event.ignore("component_removed", f.anders)
+end
+
+loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tanksensor")
+
+print(pcall(f.main))
