@@ -393,8 +393,9 @@ function f.checkFarbe(name)
     end
     if hex then
         farben[name] = hex
+        return ergebnis
     end
-    return ergebnis or "unbekannt"
+    return "unbekannt"
 end
 
 function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl)
