@@ -388,11 +388,11 @@ function f.checkFarbe(name)
     for k, v in pairs(farben) do
         if (string.find(k, name) or string.find(name, k)) and string.len(k) > string.len(ergebnis) then
             hex = v
-            ergebnis = name
+            ergebnis = k
         end
     end
     if hex then
-        farben[ergebnis] = hex
+        farben[name] = hex
     end
     return ergebnis or "unbekannt"
 end
