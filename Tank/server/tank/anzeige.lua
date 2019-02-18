@@ -383,13 +383,18 @@ function f.zu_SI(wert)
 end
 
 function f.checkFarbe(name)
+    local ergebnis = ""
+    local hex
     for k, v in pairs(farben) do
-        if (string.find(k, name) or string.find(name, k)) and k ~= "EU" and k ~= "RF" then
-            farben[name] = v
-            return name
+        if (string.find(k, name) or string.find(name, k)) and string.len(k) > string.len(ergebnis) then
+            hex = v
+            ergebnis = name
         end
     end
-    return "unbekannt"
+    if hex then
+        farben[ergebnis] = hex
+    end
+    return ergebnis or "unbekannt"
 end
 
 function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl)
