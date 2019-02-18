@@ -384,7 +384,7 @@ end
 
 function f.checkFarbe(name)
     for k, v in pairs(farben) do
-        if string.find(k, name) or string.find(name, k) then
+        if (string.find(k, name) or string.find(name, k)) and k ~= "EU" and k ~= "RF" then
             farben[name] = v
             return name
         end
