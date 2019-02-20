@@ -678,6 +678,7 @@ function f.main()
 end
 
 function f.beenden()
+    laeuft = false
     event.ignore("modem_message", f.event)
     event.ignore("component_added", f.tank)
     event.ignore("interrupted", f.beenden)
@@ -690,16 +691,16 @@ function f.beenden()
         event.cancel(Updatetimer)
     end
     event.push("beenden")
+    f = nil
+    o = nil
     for screenid in component.list("screen") do
-        gpu.bind(screenid)
+        gpu.bind(screenid, false)
         os.sleep(0.1)
         f.Farben(0xFFFFFF, 0x000000)
         term.clear()
         print("Tankanzeige wird ausgeschaltet")
     end
-    f = nil
-    o = nil
-    laeuft = false
+    gpu.setResolution(gpu.maxResolution())
     event.push("interrupted")
 end
 
