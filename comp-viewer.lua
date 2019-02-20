@@ -27,9 +27,10 @@ local function zeig_method(name)
 end
 
 for id, name in c.list() do
-  if not alle[name] then
+  if alle[name] then
     d:write(string.format(">>> %s - %s <<<\n", name, id))
     zeig_method(name)
+    alle[name] = false
   end
 end
 
