@@ -34,5 +34,5 @@ for id, name in c.list() do
   end
 end
 
-os.execute("view " .. pfad)
+os.execute("edit " .. pfad)
 fs.remove(pfad)
