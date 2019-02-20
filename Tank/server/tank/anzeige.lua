@@ -153,6 +153,7 @@ function f.verarbeiten(tank)
                 for j in pairs(tank[i].inhalt) do
                     local name = tank[i].inhalt[j].name
                     local label = tank[i].inhalt[j].label
+                    local einheit = tank[i].inhalt[j].einheit
                     local menge = tank[i].inhalt[j].menge
                     local maxmenge = tank[i].inhalt[j].maxmenge
                     local weiter = true
@@ -169,6 +170,7 @@ function f.verarbeiten(tank)
                             tank_a[gruppe][k] = {}
                             tank_a[gruppe][k].name = name
                             tank_a[gruppe][k].label = label
+                            tank_a[gruppe][k].einheit = einheit
                             tank_a[gruppe][k].menge = menge
                             tank_a[gruppe][k].maxmenge = maxmenge
                         end
@@ -314,13 +316,14 @@ function f.anzeigen()
                 ]]           
                 local name = string.gsub(tankanzeige[i].name, "%p", "")
                 local label = f.zeichenErsetzen(string.gsub(tankanzeige[i].label, "%p", ""))
+                local einheit = tankanzeige[i].einheit
                 local menge = tankanzeige[i].menge
                 local maxmenge = tankanzeige[i].maxmenge
                 local prozent = f.ErsetzePunktMitKomma(string.format("%.1f%%", menge / maxmenge * 100))
                 if label == "fluidhelium3" then
                     label = "Helium-3"
                 end
-                f.zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl)
+                f.zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl, einheit)
                 if debug then
                     gpu.set(x, y, string.format("Anzahl: %s / %s X:%s Y:%s", i, #tankanzeige, x, y))
                 end
@@ -403,7 +406,7 @@ function f.checkFarbe(name)
     return "unbekannt"
 end
 
-function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl)
+function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl, einheit)
     if farben[name] == nil and debug then
         nachricht = string.format("%s  %s  >>report this<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
         nachricht = split(nachricht .. string.rep(" ", breite - unicode.len(nachricht)))
@@ -421,15 +424,11 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
         nachricht = split(table.concat(ausgabe))
     else
         local ausgabe = {}
-        local einheit
         local menge = menge
         local maxmenge = maxmenge
-        if name == "EU" or name == "RF" then
-            einheit = name
+        if einheit == "EU" or einheit == "RF" then
             menge = f.zu_SI(menge)
             maxmenge = f.zu_SI(maxmenge)
-        else
-            einheit = "mb"
         end
         if breite == 40 then
             table.insert(ausgabe, string.sub(nachricht, 1, 37 - string.len(menge) - string.len(prozent)))
