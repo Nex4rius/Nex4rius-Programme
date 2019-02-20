@@ -34,7 +34,6 @@ tank[1]             = {}
 
 local adresse, empfangen, version, reichweite, Tankname
 
-
 if fs.exists("/tank/version.txt") then
   local d = io.open ("/tank/version.txt", "r")
   version = d:read()
@@ -47,34 +46,37 @@ if fs.exists("/home/Tankname") then
   local d = io.open("/home/Tankname", "r")
   Tankname = d:read()
   d:close()
-  --if Tankname == "false" then
-  --  Tankname = nil
-  --end
 else
   term.clear()
   print("Soll dieser Sensor einen Namen bekommen? [j/N]")
+  local d = io.open("/home/Tankname", "w")
   if string.lower(io.read()) == "j" then
     print("Bitte Namen eingeben")
     term.write("Eingabe: ")
     Tankname = io.read()
-    local d = io.open("/home/Tankname", "w")
-    d:write(Tankname)
-    d:close()
+    if string.len(Tankname) <= 2 then
+      d:write("false")
+    else
+      d:write(Tankname)
+    end
   else
-    local d = io.open("/home/Tankname", "w")
     d:write("false")
-    d:close()
   end
+  d:close()
 end
 
 function f.check()
   tank = {}
   local i = 1
+  --------------------------------------------------------
+  --------------------------tank--------------------------
+  --------------------------------------------------------
   for _, CompName in pairs({"tank_controller", "transposer"}) do
     for adresse, name in pairs(component.list(CompName)) do
+      local k = component.proxy(adresse)
       for side = 0, 5 do
-        if type(component.proxy(adresse).getFluidInTank(side)) == "table" then
-          for a, b in pairs(component.proxy(adresse).getFluidInTank(side)) do
+        if type(k.getFluidInTank(side)) == "table" then
+          for a, b in pairs(k.getFluidInTank(side)) do
             if type(a) == "number" then
               local dazu = true
               local c
@@ -89,6 +91,7 @@ function f.check()
                 tank[i] = {}
                 tank[i].name = b.name
                 tank[i].label = b.label
+                tank[i].einheit = "mb"
                 tank[i].menge = b.amount
                 tank[i].maxmenge = b.capacity
                 i = i + 1
@@ -102,54 +105,69 @@ function f.check()
       end
     end
   end
+  --------------------------------------------------------
+  --------------------------ic2---------------------------
+  --------------------------------------------------------
   for _, CompName in pairs({"chargepad_batbox", "batbox", "chargepad_cesu", "cesu", "chargepad_mfe", "mfe", "chargepad_mfsu", "mfsu"}) do
     for adresse, name in pairs(component.list(CompName)) do
+      local k = component.proxy(adresse)
       if type(tank[i - 1]) == "table" then
         if tank[i - 1].name == "EU" then
-          tank[i - 1].menge = tank[i - 1].menge + component.proxy(adresse).getStored()
-          tank[i - 1].maxmenge = tank[i - 1].maxmenge + component.proxy(adresse).getCapacity()
+          tank[i - 1].menge = tank[i - 1].menge + k.getStored()
+          tank[i - 1].maxmenge = tank[i - 1].maxmenge + k.getCapacity()
         else
           tank[i] = {}
           tank[i].name = "EU"
           tank[i].label = "EU"
-          tank[i].menge = component.proxy(adresse).getStored()
-          tank[i].maxmenge = component.proxy(adresse).getCapacity()
+          tank[i].einheit = "EU"
+          tank[i].menge = k.getStored()
+          tank[i].maxmenge = k.getCapacity()
           i = i + 1
         end
       else
         tank[i] = {}
         tank[i].name = "EU"
         tank[i].label = "EU"
-        tank[i].menge = component.proxy(adresse).getStored()
-        tank[i].maxmenge = component.proxy(adresse).getCapacity()
+        tank[i].einheit = "EU"
+        tank[i].menge = k.getStored()
+        tank[i].maxmenge = k.getCapacity()
         i = i + 1
       end
     end
   end
+  --------------------------------------------------------
+  ------------------------enderio-------------------------
+  --------------------------------------------------------
   for _, CompName in pairs({"capacitor_bank"}) do
     for adresse, name in pairs(component.list(CompName)) do
+      local k = component.proxy(adresse)
       if type(tank[i - 1]) == "table" then
         if tank[i - 1].name == "RF" then
-          tank[i - 1].menge = tank[i - 1].menge + component.proxy(adresse).getEnergyStored()
-          tank[i - 1].maxmenge = tank[i - 1].maxmenge + component.proxy(adresse).getMaxEnergyStored()
+          tank[i - 1].menge = tank[i - 1].menge + k.getEnergyStored()
+          tank[i - 1].maxmenge = tank[i - 1].maxmenge + k.getMaxEnergyStored()
         else
           tank[i] = {}
           tank[i].name = "RF"
           tank[i].label = "RF"
-          tank[i].menge = component.proxy(adresse).getEnergyStored()
-          tank[i].maxmenge = component.proxy(adresse).getMaxEnergyStored()
+          tank[i].einheit = "RF"
+          tank[i].menge = k.getEnergyStored()
+          tank[i].maxmenge = k.getMaxEnergyStored()
           i = i + 1
         end
       else
         tank[i] = {}
         tank[i].name = "RF"
         tank[i].label = "RF"
-        tank[i].menge = component.proxy(adresse).getEnergyStored()
-        tank[i].maxmenge = component.proxy(adresse).getMaxEnergyStored()
+        tank[i].einheit = "RF"
+        tank[i].menge = k.getEnergyStored()
+        tank[i].maxmenge = k.getMaxEnergyStored()
         i = i + 1
       end
     end
   end
+  --------------------------------------------------------
+  --------------------------------------------------------
+  --------------------------------------------------------
   print("\n\n\n" .. Tankname .. "\n")
   for i in pairs(tank) do
     if tank[i].name ~= nil then
@@ -186,7 +204,7 @@ function f.serialize(eingabe)
     end
     for k, v in spairs(eingabe, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
       if v.name ~= nil then
-        ausgabe[i] = string.format([==[[%s] = {name="%s", label="%s", menge="%s", maxmenge="%s"}, ]==], i, v.name, v.label, v.menge, v.maxmenge)
+        ausgabe[i] = string.format([==[[%s] = {name="%s", label="%s", menge="%s", maxmenge="%s", einheit="%s"}, ]==], i, v.name, v.label, v.menge, v.maxmenge, v.einheit)
         i = i + 1
       end
     end
