@@ -10,8 +10,13 @@ local alle = {}
 
 local d = io.open(pfad, "w")
 
+local function zeig(text)
+  print(text)
+  d:write(text)
+end
+
 for id, name in c.list() do
-  d:write(string.format(">>> %s - %s <<<\n", name, id))
+  zeig(string.format(">>> %s - %s <<<\n", name, id))
   alle[name] = true
 end
 
@@ -20,15 +25,15 @@ d:write("\n\n")
 local function zeig_method(name)
   for i in pairs(c.list(name)) do
     for j in pairs(c.methods(i)) do
-      d:write("  " .. j .. "\n    " .. tostring(c.doc(i, j)) .. "\n")
+      zeig("  " .. j .. "\n    " .. tostring(c.doc(i, j)) .. "\n")
     end
-    d:write("\n\n")
+    zeig("\n\n")
   end
 end
 
 for id, name in c.list() do
   if alle[name] then
-    d:write(string.format(">>> %s - %s <<<\n", name, id))
+    zeig(string.format(">>> %s - %s <<<\n", name, id))
     zeig_method(name)
     alle[name] = false
   end
