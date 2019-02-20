@@ -39,5 +39,6 @@ for id, name in c.list() do
   end
 end
 
+os.sleep(1)
 os.execute("edit " .. pfad)
 fs.remove(pfad)
