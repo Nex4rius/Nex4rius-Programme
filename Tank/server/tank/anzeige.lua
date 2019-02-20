@@ -691,8 +691,6 @@ function f.beenden()
         event.cancel(Updatetimer)
     end
     event.push("beenden")
-    f = nil
-    o = nil
     for screenid in component.list("screen") do
         gpu.bind(screenid, false)
         os.sleep(0.1)
@@ -700,6 +698,8 @@ function f.beenden()
         term.clear()
         print("Tankanzeige wird ausgeschaltet")
     end
+    f = nil
+    o = nil
     gpu.setResolution(gpu.maxResolution())
     event.push("interrupted")
 end
