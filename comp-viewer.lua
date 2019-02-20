@@ -11,6 +11,12 @@ local d = io.open(pfad, "w")
 
 for k,v in require("component").list() do
   d:write(string.format("%s - %s\n", v, k))
+end
+
+d:write("\n\n")
+
+for k,v in require("component").list() do
+  d:write(string.format("%s - %s\n", v, k))
   for i in pairs(c.list(v)) do
     for j in pairs(c.methods(i)) do
       d:write("  " .. j .. "\n    " .. tostring(c.doc(i, j)) .. "\n")
