@@ -6,7 +6,7 @@ local c = require("component")
 local fs = require("filesystem")
 local term = require("term")
 local pfad = "temp-comp-viewer"
-local alle = {};
+local alle = {}
 
 local d = io.open(pfad, "w")
 
@@ -29,7 +29,7 @@ end
 for id, name in c.list() do
   if not alle[name] then
     d:write(string.format(">>> %s - %s <<<\n", name, id))
-    pcall(zeig_method, name)
+    zeig_method(name)
   end
 end
 
