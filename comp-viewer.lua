@@ -6,11 +6,13 @@ local c = require("component")
 local fs = require("filesystem")
 local term = require("term")
 local pfad = "temp-comp-viewer"
+local alle = {};
 
 local d = io.open(pfad, "w")
 
-for k,v in c.list() do
-  d:write(string.format(">>> %s - %s <<<\n", v, k))
+for id, name in c.list() do
+  d:write(string.format(">>> %s - %s <<<\n", name, id))
+  alle[name] = true
 end
 
 d:write("\n\n")
@@ -24,9 +26,11 @@ local function zeig_method(name)
   end
 end
 
-for k,v in c.list() do
-  d:write(string.format(">>> %s - %s <<<\n", v, k))
-  pcall(zeig_method, name)
+for id, name in c.list() do
+  if not alle[name] then
+    d:write(string.format(">>> %s - %s <<<\n", name, id))
+    pcall(zeig_method, name)
+  end
 end
 
 os.execute("view " .. pfad)
