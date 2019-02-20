@@ -691,13 +691,9 @@ function f.beenden()
         event.cancel(Updatetimer)
     end
     event.push("beenden")
-    for screenid in component.list("screen") do
-        gpu.bind(screenid, false)
-        os.sleep(0.1)
-        f.Farben(0xFFFFFF, 0x000000)
-        term.clear()
-        print("Tankanzeige wird ausgeschaltet")
-    end
+    f.Farben(0xFFFFFF, 0x000000)
+    term.clear()
+    print("Tankanzeige wird ausgeschaltet")
     f = nil
     o = nil
     gpu.setResolution(gpu.maxResolution())
