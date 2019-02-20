@@ -15,14 +15,18 @@ end
 
 d:write("\n\n")
 
-for k,v in c.list() do
-  d:write(string.format(">>> %s - %s <<<\n", v, k))
-  for i in pairs(c.list(v)) do
+local function zeig_method(name)
+  for i in pairs(c.list(name)) do
     for j in pairs(c.methods(i)) do
       d:write("  " .. j .. "\n    " .. tostring(c.doc(i, j)) .. "\n")
     end
     d:write("\n\n")
   end
+end
+
+for k,v in c.list() do
+  d:write(string.format(">>> %s - %s <<<\n", v, k))
+  pcall(zeig_method, name)
 end
 
 os.execute("view " .. pfad)
