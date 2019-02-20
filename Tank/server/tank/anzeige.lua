@@ -316,7 +316,7 @@ function f.anzeigen()
                 local label = f.zeichenErsetzen(string.gsub(tankanzeige[i].label, "%p", ""))
                 local menge = tankanzeige[i].menge
                 local maxmenge = tankanzeige[i].maxmenge
-                local prozent = string.format("%.1f%%", menge / maxmenge * 100)
+                local prozent = f.ErsetzePunktMitKomma(string.format("%.1f%%", menge / maxmenge * 100))
                 if label == "fluidhelium3" then
                     label = "Helium-3"
                 end
