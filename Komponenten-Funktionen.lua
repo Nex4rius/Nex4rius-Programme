@@ -5,8 +5,9 @@
 local c = require("component")
 local fs = require("filesystem")
 local term = require("term")
+local pfad = "komponent"
 
-local d = io.open("/tmp/alledaten", "w")
+local d = io.open(pfad, "w")
 
 for k,v in require("component").list() do
   d:write(string.format("%s - %s\n", v, k))
@@ -18,5 +19,5 @@ for k,v in require("component").list() do
   end
 end
 
-os.execute("view /tmp/alledaten")
-os.execute("del /tmp/alledaten")
+os.execute("view " .. pfad)
+--os.execute("del /tmp/alledaten")
