@@ -11,7 +11,7 @@ local alle = {}
 local d = io.open(pfad, "w")
 
 local function zeig(text)
-  print(text)
+  term.write(text)
   d:write(text)
 end
 
