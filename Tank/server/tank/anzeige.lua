@@ -531,6 +531,7 @@ end
 
 function f.keineDaten()
     Sensorliste = {}
+    tankneu = nil
     for k, v in pairs(timer) do
         event.cancel(v)
     end
