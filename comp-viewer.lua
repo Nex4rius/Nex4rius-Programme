@@ -5,7 +5,7 @@
 local c = require("component")
 local fs = require("filesystem")
 local term = require("term")
-local pfad = "comp-temp"
+local pfad = "temp-comp-viewer"
 
 local d = io.open(pfad, "w")
 
@@ -20,4 +20,4 @@ for k,v in require("component").list() do
 end
 
 os.execute("view " .. pfad)
-os.execute("del " .. pfad)
+fs.remove(pfad)
