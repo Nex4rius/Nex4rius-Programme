@@ -9,13 +9,13 @@ local pfad = "temp-comp-viewer"
 
 local d = io.open(pfad, "w")
 
-for k,v in require("component").list() do
+for k,v in c.list() do
   d:write(string.format(">>> %s - %s <<<\n", v, k))
 end
 
 d:write("\n\n")
 
-for k,v in require("component").list() do
+for k,v in c.list() do
   d:write(string.format(">>> %s - %s <<<\n", v, k))
   for i in pairs(c.list(v)) do
     for j in pairs(c.methods(i)) do
