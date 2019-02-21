@@ -35,8 +35,8 @@ tank[1]             = {}
 local adresse, empfangen, version, reichweite, Tankname
 
 local function gt(k)
-  local menge = k.getStoredEU()
-  local maxmenge = k.getEUCapacity()
+  local menge = 0
+  local maxmenge = 0
   for i = 1, 16 do
     local EU = k.getBatteryCharge(i)
     if EU then
