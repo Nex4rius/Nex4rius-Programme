@@ -158,7 +158,8 @@ function f.check()
           for _, b in pairs(k[typ[2]]()) do
             if type(b) == "table" then
               if typ[2] == "getEssentiaInNetwork" then
-                b.name = string.sub(string.lower(b.label), 0, string.len(b.label) - 4)
+                b.label = string.sub(b.label, 0, string.len(b.label) - 4)
+                b.name = string.lower(b.label)
               end
               local dazu = true
               local c
