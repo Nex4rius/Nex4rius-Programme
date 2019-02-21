@@ -47,6 +47,19 @@ local letzteNachricht = c.uptime()
 local letztesAnzeigen = c.uptime()
 local erlaubeAnzeigen = true
 
+local maxbreite = {}
+for i = 1, 8 do
+    maxbreite[i] = 80
+end
+maxbreite[9] = 88
+maxbreite[10] = 98
+maxbreite[11] = 108
+maxbreite[12] = 118
+maxbreite[13] = 128
+maxbreite[14] = 138
+maxbreite[15] = 147
+maxbreite[16] = 157
+
 local function wget(...)
     for i = 1, 21 do
         if original_wget(...) then
@@ -229,34 +242,13 @@ function f.anzeigen()
                     gpu.setResolution(x, y)
                 end
             end
-            --local maxbreite = 160
             if maxanzahl <= 16 and maxanzahl ~= 0 then
                 if klein and maxanzahl > 5 then
-                    gpu_set(160, maxanzahl)
-                else
-                    --[[
-                    if maxanzahl == 16 then
-                        maxbreite = 157
-                    elseif maxanzahl == 15 then
-                        maxbreite = 147
-                    elseif maxanzahl == 14 then
-                        maxbreite = 138
-                    elseif maxanzahl == 13 then
-                        maxbreite = 128
-                    elseif maxanzahl == 12 then
-                        maxbreite = 118
-                    elseif maxanzahl == 11 then
-                        maxbreite = 108
-                    elseif maxanzahl == 10 then
-                        maxbreite = 98
-                    elseif maxanzahl == 9 then
-                        maxbreite = 88
-                    else
-                        maxbreite = 80
-                    end
-                    gpu_set(maxbreite, maxanzahl * 3)
-                    ]]
+                    gpu_set(maxbreite[maxanzahl], maxanzahl)
+                elseif klein then
                     gpu_set(160, maxanzahl * 3)
+                else
+                    gpu_set(maxbreite[maxanzahl], maxanzahl * 3)
                 end
             else
                 if klein and maxanzahl > 5 then
@@ -307,13 +299,16 @@ function f.anzeigen()
                         y = 1
                     end
                 end
-                --[[
-                if maxanzahl <= 16 and not klein then
-                    links = 40 - (math.floor((maxbreite - 80) / 2))
-                    rechts = 40 - (math.ceil((maxbreite - 80) / 2))
-                    breite = maxbreite
-                end
-                ]]           
+                if maxanzahl <= 16 then
+                    if klein and maxanzahl <= 5 then
+                        breite = 160
+                    else
+                        breite = maxbreite[maxanzahl]
+                    end
+                    local a = 160 - breite
+                    links = links - (math.floor(a / 2))
+                    rechts = rechts - (math.ceil(a / 2))
+                end   
                 local name = string.gsub(tankanzeige[i].name, "%p", "")
                 local label = f.zeichenErsetzen(string.gsub(tankanzeige[i].label, "%p", ""))
                 local einheit = tankanzeige[i].einheit
