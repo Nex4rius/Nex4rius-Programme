@@ -103,6 +103,10 @@ else
   d:close()
 end
 
+local function firstToUpper(str)
+  return (str:gsub("^%l", string.upper))
+end
+
 function f.check()
   tank = {}
   local i = 1
@@ -153,6 +157,9 @@ function f.check()
         if k[typ[2]] then
           for _, b in pairs(k[typ[2]]()) do
             if type(b) == "table" then
+              if typ[2] == "getEssentiaInNetwork" then
+                b.name = string.lower(b.label)
+              end
               local dazu = true
               local c
               for j, k in pairs(tank) do
@@ -201,7 +208,7 @@ function f.check()
       if dazu then
         tank[i] = {}
         tank[i].name = name
-        tank[i].label = name
+        tank[i].label = firstToUpper(name)
         tank[i].einheit = ""
         tank[i].menge = menge
         tank[i].maxmenge = maxmenge
