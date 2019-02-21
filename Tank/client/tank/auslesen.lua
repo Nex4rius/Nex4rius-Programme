@@ -38,10 +38,10 @@ local function gt(k)
   local menge = k.getStoredEU()
   local maxmenge = k.getEUCapacity()
   for i = 1, 16 do
-    local EU = k.getBatteryCharger(i)
+    local EU = k.getBatteryCharge(i)
     if EU then
       menge = menge + EU
-      menge = menge + k.getMaxBatteryCharge(i)
+      maxmenge = maxmenge + k.getMaxBatteryCharge(i)
     end
   end
   return "EU", "EU", "EU", menge, maxmenge
@@ -106,9 +106,9 @@ end
 function f.check()
   tank = {}
   local i = 1
-  --------------------------------------------------------
-  --------------------------------------------------------
-  --------------------------------------------------------
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
   for _, CompName in pairs({"tank_controller", "transposer"}) do
     for adresse, name in pairs(component.list(CompName)) do
       local k = component.proxy(adresse)
@@ -143,10 +143,10 @@ function f.check()
       end
     end
   end
-  --------------------------------------------------------
-  --------------------------------------------------------
-  --------------------------------------------------------
-  for _, CompName in pairs({"me_controller"}) do
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  for _, CompName in pairs({"me_controller", "me_interface"}) do
     for adresse, name in pairs(component.list(CompName)) do
       local k = component.proxy(adresse)
       for _, typ in pairs({{"mb", "getFluidsInNetwork"}, {"", "getEssentiaInNetwork"}, {"", "GetGasesInNetwork"}}) do
@@ -180,13 +180,45 @@ function f.check()
       end
     end
   end
-  --------------------------------------------------------
-  --------------------------------------------------------
-  --------------------------------------------------------
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  for _, CompName in pairs({"blockjar_0", "blockjar_3"}) do
+    for adresse, name in pairs(component.list(CompName)) do
+      local k = component.proxy(adresse)
+      local name = k.getEssentiaType(0)
+      local menge = k.getEssentiaAmount(0)
+      local maxmenge = 64
+      local dazu = true
+      local c
+      for j, k in pairs(tank) do
+        if name == k.name then
+          dazu = false
+          c = j
+          break
+        end
+      end
+      if dazu then
+        tank[i] = {}
+        tank[i].name = name
+        tank[i].label = name
+        tank[i].einheit = ""
+        tank[i].menge = menge
+        tank[i].maxmenge = maxmenge
+        i = i + 1
+      else
+        tank[c].menge = tank[c].menge + menge
+        tank[c].maxmenge = tank[c].maxmenge + maxmenge
+      end
+    end
+  end
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
   for _, v in pairs(andere) do
     for adresse, name in pairs(component.list(v[2])) do
       local k = component.proxy(adresse)
-      local name, label, einheit, menge, maxmenge = v[1]()
+      local name, label, einheit, menge, maxmenge = v[1](k)
       if type(tank[i - 1]) == "table" then
         if tank[i - 1].name == name then
           tank[i - 1].menge = tank[i - 1].menge + menge
@@ -211,9 +243,9 @@ function f.check()
       end
     end
   end
-  --------------------------------------------------------
-  --------------------------------------------------------
-  --------------------------------------------------------
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
   print("\n\n\n" .. Tankname .. "\n")
   for i in pairs(tank) do
     if tank[i].name then
@@ -263,6 +295,7 @@ function f.serialize(eingabe)
 end
 
 function o.datei(signal)
+  if true then return end
   if not fs.exists("/update/tank") then
     fs.makeDirectory("/update/tank")
   end
