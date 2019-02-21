@@ -219,12 +219,13 @@ end
 
 function f.anzeigen()
     if erlaubeAnzeigen then
+        erlaubeAnzeigen = false
         local tankanzeige = tankneu
         if not tankanzeige then
             f.keineDaten()
+            erlaubeAnzeigen = true
             return
         end
-        erlaubeAnzeigen = false
         for screenid in component.list("screen") do
             gpu.bind(screenid, false)
             local klein = false
