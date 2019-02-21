@@ -183,7 +183,7 @@ function f.check()
   ---------------------------------------------------------------------------
   ---------------------------------------------------------------------------
   ---------------------------------------------------------------------------
-  for _, CompName in pairs({"blockjar_0", "blockjar_3"}) do
+  for _, CompName in pairs({"blockjar_0", "blockjar_3", "blockcreativejar_3"}) do
     for adresse, name in pairs(component.list(CompName)) do
       local k = component.proxy(adresse)
       local name = k.getEssentiaType(0)
