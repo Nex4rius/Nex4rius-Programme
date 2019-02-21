@@ -54,7 +54,15 @@ function f.installieren(versionTyp)
     "chargepad_mfe", "mfe",
     "chargepad_mfsu", "mfsu",
     --RF
-    "capacitor_bank",}
+    "capacitor_bank",
+    --ME
+    "me_controller",
+    "me_interface",
+    --Essentia
+    "blockjar_0",
+    "blockjar_3",
+    "blockcreativejar_3",
+}
   local function Sensorcheck(name)
     if component.isAvailable(name) then
       print(name .. " gefunden. Client/Sensor wird heruntergeladen.")
