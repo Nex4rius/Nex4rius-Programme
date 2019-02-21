@@ -151,7 +151,7 @@ function f.check()
       local k = component.proxy(adresse)
       for _, typ in pairs({{"mb", "getFluidsInNetwork"}, {"", "getEssentiaInNetwork"}, {"", "GetGasesInNetwork"}}) do
         if k[typ[2]] then
-          for _, b in pairs(k[typ[2]]) do
+          for _, b in pairs(k[typ[2]]()) do
             if type(b) == "table" then
               local dazu = true
               local c
