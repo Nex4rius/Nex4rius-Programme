@@ -208,7 +208,7 @@ function f.verarbeiten(tank)
                     tankneu[#tankneu + 1] = w
                 end
             end
-            for _, w in spairs(v, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
+            for _, w in spairs(v, function(t,a,b) return (tonumber(t[b].menge) < tonumber(t[a].menge)) or (tonumber(t[a].menge) == tonumber(t[b].menge) and string.lower(t[a].label) <= string.lower(t[b].label)) end) do
                 if w.name ~= "Tankname" then
                     tankneu[#tankneu + 1] = w
                 end
