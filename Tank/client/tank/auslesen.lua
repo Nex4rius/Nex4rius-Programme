@@ -295,7 +295,6 @@ function f.serialize(eingabe)
 end
 
 function o.datei(signal)
-  if true then return end
   if not fs.exists("/update/tank") then
     fs.makeDirectory("/update/tank")
   end
