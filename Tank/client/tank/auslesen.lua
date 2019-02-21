@@ -159,7 +159,7 @@ function f.check()
             if type(b) == "table" then
               if typ[2] == "getEssentiaInNetwork" then
                 b.label = string.sub(b.label, 0, string.len(b.label) - 4)
-                b.name = "es_" .. string.lower(b.label)
+                b.name = string.lower(b.label)
               end
               local dazu = true
               local c
@@ -194,8 +194,8 @@ function f.check()
   for _, CompName in pairs({"blockjar_0", "blockjar_3", "blockcreativejar_3"}) do
     for adresse, name in pairs(component.list(CompName)) do
       local k = component.proxy(adresse)
-      local name = "es_" .. k.getEssentiaType(0)
-      local label = firstToUpper(k.getEssentiaType(0))
+      local name = k.getEssentiaType(0)
+      local label = firstToUpper(name)
       local menge = k.getEssentiaAmount(0)
       local maxmenge = 64
       local dazu = true
