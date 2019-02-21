@@ -307,7 +307,6 @@ function o.datei(signal)
   if not fs.exists("/update/tank") then
     fs.makeDirectory("/update/tank")
   end
-  os.sleep(1)
   if type(signal[7]) == "string" and type(signal[8]) == "string" then
     print("\nEmpfange Datei ... " .. signal[7])
     local d = io.open("/update" .. signal[7], signal[9])
