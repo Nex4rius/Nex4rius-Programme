@@ -432,20 +432,20 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
         end
         if breite == 40 then
             table.insert(ausgabe, string.sub(nachricht, 1, 37 - string.len(menge) - string.len(prozent)))
-            table.insert(ausgabe, string.rep(" ", 37 - unicode.len(nachricht) - string.len(menge) - string.len(prozent)))
+            table.insert(ausgabe, string.rep(" ", 39 - unicode.len(nachricht) - string.len(menge) - string.len(prozent) - string.len(einheit)))
             table.insert(ausgabe, menge)
             table.insert(ausgabe, einheit)
             table.insert(ausgabe, prozent)
             table.insert(ausgabe, " ")
         else
             table.insert(ausgabe, string.sub(nachricht, 1, 25))
-            table.insert(ausgabe, string.rep(" ", links + 38 - unicode.len(nachricht) - string.len(menge)))
+            table.insert(ausgabe, string.rep(" ", links + 40 - unicode.len(nachricht) - string.len(menge) - string.len(einheit)))
             table.insert(ausgabe, menge)
             table.insert(ausgabe, einheit)
             table.insert(ausgabe, " / ")
             table.insert(ausgabe, maxmenge)
             table.insert(ausgabe, einheit)
-            table.insert(ausgabe, string.rep(" ", rechts + 26 - string.len(maxmenge)))
+            table.insert(ausgabe, string.rep(" ", rechts + 28 - string.len(maxmenge) - string.len(einheit)))
             table.insert(ausgabe, prozent)
             table.insert(ausgabe, " ")
         end
