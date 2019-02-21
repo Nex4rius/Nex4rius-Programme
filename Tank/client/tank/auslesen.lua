@@ -195,29 +195,31 @@ function f.check()
     for adresse, name in pairs(component.list(CompName)) do
       local k = component.proxy(adresse)
       local name = k.getEssentiaType(0)
-      local label = firstToUpper(name)
-      local menge = k.getEssentiaAmount(0)
-      local maxmenge = 64
-      local dazu = true
-      local c
-      for j, k in pairs(tank) do
-        if name == k.name then
-          dazu = false
-          c = j
-          break
+      if name then
+        local label = firstToUpper(name)
+        local menge = k.getEssentiaAmount(0)
+        local maxmenge = 64
+        local dazu = true
+        local c
+        for j, k in pairs(tank) do
+          if name == k.name then
+            dazu = false
+            c = j
+            break
+          end
         end
-      end
-      if dazu then
-        tank[i] = {}
-        tank[i].name = name
-        tank[i].label = label
-        tank[i].einheit = ""
-        tank[i].menge = menge
-        tank[i].maxmenge = maxmenge
-        i = i + 1
-      else
-        tank[c].menge = tank[c].menge + menge
-        tank[c].maxmenge = tank[c].maxmenge + maxmenge
+        if dazu then
+          tank[i] = {}
+          tank[i].name = name
+          tank[i].label = label
+          tank[i].einheit = ""
+          tank[i].menge = menge
+          tank[i].maxmenge = maxmenge
+          i = i + 1
+        else
+          tank[c].menge = tank[c].menge + menge
+          tank[c].maxmenge = tank[c].maxmenge + maxmenge
+        end
       end
     end
   end
