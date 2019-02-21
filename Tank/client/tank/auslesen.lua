@@ -34,6 +34,40 @@ tank[1]             = {}
 
 local adresse, empfangen, version, reichweite, Tankname
 
+local function gt(k)
+  local menge = 0
+  local maxmenge = 0
+  for i = 1, 16 do
+    local EU = k.getBatteryCharge(i)
+    if EU then
+      menge = menge + EU
+      maxmenge = maxmenge + k.getMaxBatteryCharge(i)
+    end
+  end
+  return "EU", "EU", "EU", menge, maxmenge
+end
+
+local function ic2(k)
+  return "EU", "EU", "EU", k.getStored(), k.getCapacity()
+end
+
+local function enderio(k)
+  return "RF", "RF", "RF", k.getEnergyStored(), k.getMaxEnergyStored()
+end
+--return name, label, einheit, menge, maxmenge
+
+local andere = {
+  {gt, "gt_batterybuffer"},
+  {ic2, "chargepad_batbox"},
+  {ic2, "chargepad_cesu"},
+  {ic2, "chargepad_mfe"},
+  {ic2, "chargepad_mfsu"},
+  {ic2, "batbox"},
+  {ic2, "cesu"},
+  {ic2, "mfe"},
+  {ic2, "mfsu"},
+  {enderio, "capacitor_bank"},
+}
 
 if fs.exists("/tank/version.txt") then
   local d = io.open ("/tank/version.txt", "r")
@@ -46,35 +80,45 @@ end
 if fs.exists("/home/Tankname") then
   local d = io.open("/home/Tankname", "r")
   Tankname = d:read()
+  if string.len(Tankname) <= 2 then
+    Tankname = "false"  
+  end
   d:close()
-  --if Tankname == "false" then
-  --  Tankname = nil
-  --end
 else
   term.clear()
   print("Soll dieser Sensor einen Namen bekommen? [j/N]")
+  local d = io.open("/home/Tankname", "w")
   if string.lower(io.read()) == "j" then
     print("Bitte Namen eingeben")
     term.write("Eingabe: ")
     Tankname = io.read()
-    local d = io.open("/home/Tankname", "w")
-    d:write(Tankname)
-    d:close()
+    if string.len(Tankname) <= 2 then
+      d:write("false")
+    else
+      d:write(Tankname)
+    end
   else
-    local d = io.open("/home/Tankname", "w")
     d:write("false")
-    d:close()
   end
+  d:close()
+end
+
+local function firstToUpper(str)
+  return (str:gsub("^%l", string.upper))
 end
 
 function f.check()
   tank = {}
   local i = 1
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
   for _, CompName in pairs({"tank_controller", "transposer"}) do
     for adresse, name in pairs(component.list(CompName)) do
+      local k = component.proxy(adresse)
       for side = 0, 5 do
-        if type(component.proxy(adresse).getFluidInTank(side)) == "table" then
-          for a, b in pairs(component.proxy(adresse).getFluidInTank(side)) do
+        if type(k.getFluidInTank(side)) == "table" then
+          for a, b in pairs(k.getFluidInTank(side)) do
             if type(a) == "number" then
               local dazu = true
               local c
@@ -89,6 +133,7 @@ function f.check()
                 tank[i] = {}
                 tank[i].name = b.name
                 tank[i].label = b.label
+                tank[i].einheit = "mb"
                 tank[i].menge = b.amount
                 tank[i].maxmenge = b.capacity
                 i = i + 1
@@ -102,57 +147,117 @@ function f.check()
       end
     end
   end
-  for _, CompName in pairs({"chargepad_batbox", "batbox", "chargepad_cesu", "cesu", "chargepad_mfe", "mfe", "chargepad_mfsu", "mfsu"}) do
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  for _, CompName in pairs({"me_controller", "me_interface"}) do
     for adresse, name in pairs(component.list(CompName)) do
+      local k = component.proxy(adresse)
+      for _, typ in pairs({{"mb", "getFluidsInNetwork"}, {"", "getEssentiaInNetwork"}, {"", "GetGasesInNetwork"}}) do
+        if k[typ[2]] then
+          for _, b in pairs(k[typ[2]]()) do
+            if type(b) == "table" then
+              if typ[2] == "getEssentiaInNetwork" then
+                b.label = string.sub(b.label, 0, string.len(b.label) - 4)
+                b.name = string.lower(b.label)
+              end
+              local dazu = true
+              local c
+              for j, k in pairs(tank) do
+                if b.name == k.name then
+                  dazu = false
+                  c = j
+                  break
+                end
+              end
+              if dazu then
+                tank[i] = {}
+                tank[i].name = b.name
+                tank[i].label = b.label
+                tank[i].einheit = typ[1]
+                tank[i].menge = b.amount
+                tank[i].maxmenge = b.amount
+                i = i + 1
+              else
+                tank[c].menge = tank[c].menge + b.amount
+                tank[c].maxmenge = tank[c].maxmenge + b.amount
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  for _, CompName in pairs({"blockjar_0", "blockjar_3", "blockcreativejar_3"}) do
+    for adresse, name in pairs(component.list(CompName)) do
+      local k = component.proxy(adresse)
+      local name = k.getEssentiaType(0)
+      local label = firstToUpper(name)
+      local menge = k.getEssentiaAmount(0)
+      local maxmenge = 64
+      local dazu = true
+      local c
+      for j, k in pairs(tank) do
+        if name == k.name then
+          dazu = false
+          c = j
+          break
+        end
+      end
+      if dazu then
+        tank[i] = {}
+        tank[i].name = name
+        tank[i].label = label
+        tank[i].einheit = ""
+        tank[i].menge = menge
+        tank[i].maxmenge = maxmenge
+        i = i + 1
+      else
+        tank[c].menge = tank[c].menge + menge
+        tank[c].maxmenge = tank[c].maxmenge + maxmenge
+      end
+    end
+  end
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  for _, v in pairs(andere) do
+    for adresse, name in pairs(component.list(v[2])) do
+      local k = component.proxy(adresse)
+      local name, label, einheit, menge, maxmenge = v[1](k)
       if type(tank[i - 1]) == "table" then
-        if tank[i - 1].name == "EU" then
-          tank[i - 1].menge = tank[i - 1].menge + component.proxy(adresse).getStored()
-          tank[i - 1].maxmenge = tank[i - 1].maxmenge + component.proxy(adresse).getCapacity()
+        if tank[i - 1].name == name then
+          tank[i - 1].menge = tank[i - 1].menge + menge
+          tank[i - 1].maxmenge = tank[i - 1].maxmenge + maxmenge
         else
           tank[i] = {}
-          tank[i].name = "EU"
-          tank[i].label = "EU"
-          tank[i].menge = component.proxy(adresse).getStored()
-          tank[i].maxmenge = component.proxy(adresse).getCapacity()
+          tank[i].name = name
+          tank[i].label = label
+          tank[i].einheit = einheit
+          tank[i].menge = menge
+          tank[i].maxmenge = maxmenge
           i = i + 1
         end
       else
         tank[i] = {}
-        tank[i].name = "EU"
-        tank[i].label = "EU"
-        tank[i].menge = component.proxy(adresse).getStored()
-        tank[i].maxmenge = component.proxy(adresse).getCapacity()
+        tank[i].name = name
+        tank[i].label = label
+        tank[i].einheit = einheit
+        tank[i].menge = menge
+        tank[i].maxmenge = maxmenge
         i = i + 1
       end
     end
   end
-  for _, CompName in pairs({"capacitor_bank"}) do
-    for adresse, name in pairs(component.list(CompName)) do
-      if type(tank[i - 1]) == "table" then
-        if tank[i - 1].name == "RF" then
-          tank[i - 1].menge = tank[i - 1].menge + component.proxy(adresse).getEnergyStored()
-          tank[i - 1].maxmenge = tank[i - 1].maxmenge + component.proxy(adresse).getMaxEnergyStored()
-        else
-          tank[i] = {}
-          tank[i].name = "RF"
-          tank[i].label = "RF"
-          tank[i].menge = component.proxy(adresse).getEnergyStored()
-          tank[i].maxmenge = component.proxy(adresse).getMaxEnergyStored()
-          i = i + 1
-        end
-      else
-        tank[i] = {}
-        tank[i].name = "RF"
-        tank[i].label = "RF"
-        tank[i].menge = component.proxy(adresse).getEnergyStored()
-        tank[i].maxmenge = component.proxy(adresse).getMaxEnergyStored()
-        i = i + 1
-      end
-    end
-  end
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
   print("\n\n\n" .. Tankname .. "\n")
   for i in pairs(tank) do
-    if tank[i].name ~= nil then
+    if tank[i].name then
       print(string.format("%s - %s: %s/%s %.1f%%", tank[i].name, tank[i].label, tank[i].menge, tank[i].maxmenge, tank[i].menge / tank[i].maxmenge * 100))
     end
   end
@@ -181,12 +286,12 @@ function f.serialize(eingabe)
     local ausgabe = {}
     local i = 1
     if Tankname then
-      ausgabe[i] = string.format([==[[%s] = {name="Tankname", label="%s", menge="1", maxmenge="1"}, ]==], i, Tankname)
+      ausgabe[i] = string.format([==[[%s] = {name="Tankname", label="%s", menge="1", maxmenge="1", einheit=""}, ]==], i, Tankname)
       i = i + 1
     end
     for k, v in spairs(eingabe, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
-      if v.name ~= nil then
-        ausgabe[i] = string.format([==[[%s] = {name="%s", label="%s", menge="%s", maxmenge="%s"}, ]==], i, v.name, v.label, v.menge, v.maxmenge)
+      if v.name then
+        ausgabe[i] = string.format([==[[%s] = {name="%s", label="%s", menge="%s", maxmenge="%s", einheit="%s"}, ]==], i, v.name, v.label, v.menge, v.maxmenge, v.einheit)
         i = i + 1
       end
     end
@@ -202,6 +307,7 @@ function o.datei(signal)
   if not fs.exists("/update/tank") then
     fs.makeDirectory("/update/tank")
   end
+  os.sleep(1)
   if type(signal[7]) == "string" and type(signal[8]) == "string" then
     print("\nEmpfange Datei ... " .. signal[7])
     local d = io.open("/update" .. signal[7], signal[9])
@@ -229,15 +335,6 @@ function o.aktualisieren(signal)
   end
   if weiter then
     print("Ersetze alte Dateien")
-    --local function kopieren(...)
-    --  for i in fs.list(...) do
-    --    if fs.isDirectory(i) then
-    --      kopieren(i)
-    --    end
-    --    verschieben("/update/" .. i, "/" .. i)
-    --  end
-    --end
-    --kopieren("/update")
     for k, v in pairs(daten) do
       verschieben("/update/" .. v, "/" .. v)
     end

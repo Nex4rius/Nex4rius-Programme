@@ -47,6 +47,19 @@ local letzteNachricht = c.uptime()
 local letztesAnzeigen = c.uptime()
 local erlaubeAnzeigen = true
 
+local maxbreite = {}
+for i = 1, 8 do
+    maxbreite[i] = 80
+end
+maxbreite[9] = 88
+maxbreite[10] = 98
+maxbreite[11] = 108
+maxbreite[12] = 118
+maxbreite[13] = 128
+maxbreite[14] = 138
+maxbreite[15] = 147
+maxbreite[16] = 157
+
 local function wget(...)
     for i = 1, 21 do
         if original_wget(...) then
@@ -153,6 +166,7 @@ function f.verarbeiten(tank)
                 for j in pairs(tank[i].inhalt) do
                     local name = tank[i].inhalt[j].name
                     local label = tank[i].inhalt[j].label
+                    local einheit = tank[i].inhalt[j].einheit
                     local menge = tank[i].inhalt[j].menge
                     local maxmenge = tank[i].inhalt[j].maxmenge
                     local weiter = true
@@ -169,6 +183,7 @@ function f.verarbeiten(tank)
                             tank_a[gruppe][k] = {}
                             tank_a[gruppe][k].name = name
                             tank_a[gruppe][k].label = label
+                            tank_a[gruppe][k].einheit = einheit
                             tank_a[gruppe][k].menge = menge
                             tank_a[gruppe][k].maxmenge = maxmenge
                         end
@@ -193,7 +208,7 @@ function f.verarbeiten(tank)
                     tankneu[#tankneu + 1] = w
                 end
             end
-            for _, w in spairs(v, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
+            for _, w in spairs(v, function(t,a,b) return (tonumber(t[b].menge) < tonumber(t[a].menge)) or (tonumber(t[a].menge) == tonumber(t[b].menge) and string.lower(t[a].label) <= string.lower(t[b].label)) end) do
                 if w.name ~= "Tankname" then
                     tankneu[#tankneu + 1] = w
                 end
@@ -204,12 +219,13 @@ end
 
 function f.anzeigen()
     if erlaubeAnzeigen then
+        erlaubeAnzeigen = false
         local tankanzeige = tankneu
         if not tankanzeige then
             f.keineDaten()
+            erlaubeAnzeigen = true
             return
         end
-        erlaubeAnzeigen = false
         for screenid in component.list("screen") do
             gpu.bind(screenid, false)
             local klein = false
@@ -227,34 +243,13 @@ function f.anzeigen()
                     gpu.setResolution(x, y)
                 end
             end
-            --local maxbreite = 160
             if maxanzahl <= 16 and maxanzahl ~= 0 then
                 if klein and maxanzahl > 5 then
-                    gpu_set(160, maxanzahl)
-                else
-                    --[[
-                    if maxanzahl == 16 then
-                        maxbreite = 157
-                    elseif maxanzahl == 15 then
-                        maxbreite = 147
-                    elseif maxanzahl == 14 then
-                        maxbreite = 138
-                    elseif maxanzahl == 13 then
-                        maxbreite = 128
-                    elseif maxanzahl == 12 then
-                        maxbreite = 118
-                    elseif maxanzahl == 11 then
-                        maxbreite = 108
-                    elseif maxanzahl == 10 then
-                        maxbreite = 98
-                    elseif maxanzahl == 9 then
-                        maxbreite = 88
-                    else
-                        maxbreite = 80
-                    end
-                    gpu_set(maxbreite, maxanzahl * 3)
-                    ]]
+                    gpu_set(maxbreite[maxanzahl], maxanzahl)
+                elseif klein then
                     gpu_set(160, maxanzahl * 3)
+                else
+                    gpu_set(maxbreite[maxanzahl], maxanzahl * 3)
                 end
             else
                 if klein and maxanzahl > 5 then
@@ -305,22 +300,26 @@ function f.anzeigen()
                         y = 1
                     end
                 end
-                --[[
-                if maxanzahl <= 16 and not klein then
-                    links = 40 - (math.floor((maxbreite - 80) / 2))
-                    rechts = 40 - (math.ceil((maxbreite - 80) / 2))
-                    breite = maxbreite
-                end
-                ]]           
+                if maxanzahl <= 16 then
+                    if klein and maxanzahl <= 5 then
+                        breite = 160
+                    else
+                        breite = maxbreite[maxanzahl]
+                    end
+                    local a = 160 - breite
+                    links = links - (math.floor(a / 2))
+                    rechts = rechts - (math.ceil(a / 2))
+                end   
                 local name = string.gsub(tankanzeige[i].name, "%p", "")
                 local label = f.zeichenErsetzen(string.gsub(tankanzeige[i].label, "%p", ""))
+                local einheit = tankanzeige[i].einheit
                 local menge = tankanzeige[i].menge
                 local maxmenge = tankanzeige[i].maxmenge
                 local prozent = f.ErsetzePunktMitKomma(string.format("%.1f%%", menge / maxmenge * 100))
                 if label == "fluidhelium3" then
                     label = "Helium-3"
                 end
-                f.zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl)
+                f.zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl, einheit)
                 if debug then
                     gpu.set(x, y, string.format("Anzahl: %s / %s X:%s Y:%s", i, #tankanzeige, x, y))
                 end
@@ -403,7 +402,7 @@ function f.checkFarbe(name)
     return "unbekannt"
 end
 
-function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl)
+function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl, einheit)
     if farben[name] == nil and debug then
         nachricht = string.format("%s  %s  >>report this<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
         nachricht = split(nachricht .. string.rep(" ", breite - unicode.len(nachricht)))
@@ -421,32 +420,28 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
         nachricht = split(table.concat(ausgabe))
     else
         local ausgabe = {}
-        local einheit
         local menge = menge
         local maxmenge = maxmenge
-        if name == "EU" or name == "RF" then
-            einheit = name
+        if einheit == "EU" or einheit == "RF" then
             menge = f.zu_SI(menge)
             maxmenge = f.zu_SI(maxmenge)
-        else
-            einheit = "mb"
         end
         if breite == 40 then
             table.insert(ausgabe, string.sub(nachricht, 1, 37 - string.len(menge) - string.len(prozent)))
-            table.insert(ausgabe, string.rep(" ", 37 - unicode.len(nachricht) - string.len(menge) - string.len(prozent)))
+            table.insert(ausgabe, string.rep(" ", 39 - unicode.len(nachricht) - string.len(menge) - string.len(prozent) - string.len(einheit)))
             table.insert(ausgabe, menge)
             table.insert(ausgabe, einheit)
             table.insert(ausgabe, prozent)
             table.insert(ausgabe, " ")
         else
             table.insert(ausgabe, string.sub(nachricht, 1, 25))
-            table.insert(ausgabe, string.rep(" ", links + 38 - unicode.len(nachricht) - string.len(menge)))
+            table.insert(ausgabe, string.rep(" ", links + 40 - unicode.len(nachricht) - string.len(menge) - string.len(einheit)))
             table.insert(ausgabe, menge)
             table.insert(ausgabe, einheit)
             table.insert(ausgabe, " / ")
             table.insert(ausgabe, maxmenge)
             table.insert(ausgabe, einheit)
-            table.insert(ausgabe, string.rep(" ", rechts + 26 - string.len(maxmenge)))
+            table.insert(ausgabe, string.rep(" ", rechts + 28 - string.len(maxmenge) - string.len(einheit)))
             table.insert(ausgabe, prozent)
             table.insert(ausgabe, " ")
         end
