@@ -191,7 +191,7 @@ function f.check()
   ---------------------------------------------------------------------------
   ---------------------------------------------------------------------------
   ---------------------------------------------------------------------------
-  for _, CompName in pairs({"blockjar_0", "blockjar_3", "blockcreativejar_3"}) do
+  for _, CompName in pairs({"blockjar_0", "blockjar_3", "blockcreativejar_3", "blocktube_2", "blocktube_4", "blockmetaldevice_1", "blockstonedevice_14", "blockessentiareservoir"}) do
     for adresse, name in pairs(component.list(CompName)) do
       local k = component.proxy(adresse)
       local name = k.getEssentiaType(0)
@@ -291,7 +291,8 @@ function f.serialize(eingabe)
       ausgabe[i] = string.format([==[[%s] = {name="Tankname", label="%s", menge="1", maxmenge="1", einheit=""}, ]==], i, Tankname)
       i = i + 1
     end
-    for k, v in spairs(eingabe, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
+    --for k, v in spairs(eingabe, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
+    for k, v in spairs(eingabe, function(t,a,b) return (tonumber(t[b].menge) < tonumber(t[a].menge)) or (tonumber(t[a].menge) == tonumber(t[b].menge) and string.lower(t[a].label) <= string.lower(t[b].label)) end) do
       if v.name then
         ausgabe[i] = string.format([==[[%s] = {name="%s", label="%s", menge="%s", maxmenge="%s", einheit="%s"}, ]==], i, v.name, v.label, v.menge, v.maxmenge, v.einheit)
         i = i + 1
