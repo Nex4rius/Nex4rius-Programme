@@ -10,7 +10,7 @@ return {
 water                        = {0xFFFFFF,  0x2A3BF1,  0xFFFFFF,  0x212BC0},
 lava                         = {0x000000,  0xCF4E0C,  0xFFFFFF,  0x9C3A09},
 milk                         = {0x000000,  0xFCFCFC,  0x000000,  0xCDCDCD},
-unbekannt                    = {0xFFFFFF,  0x444444,  0xFFFFFF,  0x333333},
+unbekannt                    = {0x000000,  0xFFFFFF,  0xFFFFFF,  0x000000},
 Tankname                     = {0x000000,  0xFFFFFF,  0x000000,  0xFFFFFF},
 -- Astral Sorcery
 astralsorceryliquidstarlight = {0x000000,  0xAEAEAE,  0xFFFFFF,  0x7B7B7B},
@@ -164,11 +164,11 @@ silver                       = {0x000000,  0xCBF4F4,  0x000000,  0xABD3D3},
 aer                          = {0x000000,  0xFFDB40,  0x000000,  0xFF9240},
 terra                        = {0xFFFFFF,  0x3a652F,  0xFFFFFF,  0x4D6630},
 ignis                        = {0xFFFFFF,  0x992400,  0xFFFFFF,  0x662400},
-aqua                         = {0xFFFFFF,  0x336D80,  0xFFFFFF,  0x334980},
+aqua                         = {0x000000,  0x33B6FF,  0xFFFFFF,  0x334980},
 ordo                         = {0x000000,  0xCCDBFF,  0xFFFFFF,  0x666e7f},
 perditio                     = {0xFFFFFF,  0x1e1e1e,  0xFFFFFF,  0x3c3c3c},
 vacuos                       = {0xFFFFFF,  0x2d2d2d,  0xFFFFFF,  0x4b4b4b},
-lux                          = {0x000000,  0xFFB640,  0x000000,  0xFF9240},
+lux                          = {0x000000,  0xFFDB40,  0x000000,  0xFF9240},
 tempestas                    = {0x000000,  0xCCDBFF,  0xFFFFFF,  0x596C83},
 motus                        = {0x000000,  0xCCDBFF,  0xFFFFFF,  0x596C83},
 gelum                        = {0x000000,  0xCCDBFF,  0x000000,  0xCCFFFF},
@@ -177,8 +177,26 @@ victus                       = {0xFFFFFF,  0xCC0000,  0x000000,  0xCC4900},
 venenum                      = {0x000000,  0x66DB40,  0x000000,  0x669240},
 potentia                     = {0x000000,  0x99DBFF,  0xFFFFFF,  0x9992FF},
 permutatio                   = {0xFFFFFF,  0x4D6630,  0xFFFFFF,  0x336D40},
+metallum                     = {0x000000,  0xCCDBFF,  0xFFFFFF,  0x596C83},
+mortuus                      = {0x000000,  0xB4B4B4,  0xFFFFFF,  0x596C83},
+volatus                      = {0x000000,  0xCCDBFF,  0x000000,  0xCCFFFF},
+tenebrae                     = {0xFFFFFF,  0x1e1e1e,  0xFFFFFF,  0x3c3c3c},
+spiritus                     = {0x000000,  0xCCDBFF,  0x000000,  0xCCFFFF},
+sano                         = {0xFFFFFF,  0xCC0000,  0x000000,  0xCC4900},
+iter                         = {0xFFFFFF,  0x994000,  0x000000,  0x994900},
+alienis                      = {0xFFFFFF,  0x330080,  0xFFFFFF,  0x334980},
 
 praecantatio                 = {0xFFFFFF,  0x660080,  0xFFFFFF,  0x664980},
+
+vitium                       = {0xFFFFFF,  0x660080,  0xFFFFFF,  0x664980},
+
+sensus                       = {0x000000,  0x33B6FF,  0xFFFFFF,  0x334980},
+
+tutamen                      = {0x000000,  0x33B6FF,  0xFFFFFF,  0x334980},
+
+lucrum                       = {0x000000,  0xFFDB40,  0x000000,  0xFF9240},
+
+nebrisum                     = {0x000000,  0xFFDB40,  0x000000,  0xFF9240},
 ---------------------------------------------------------------------------
 -------- fallback -> pattern matching if exact match doesn't exist --------
 ---------------------------------------------------------------------------
