@@ -20,7 +20,12 @@ local c             = require("computer")
 local fs            = require("filesystem")
 local serialization = require("serialization")
 
-local m             = component.modem
+if not component.isAvailable("modem") then
+  print("Fehler kein Modem gefunden")
+  os.exit()
+end
+
+local m             = component.getPrimary("modem")
 
 local verschieben   = function(von, nach) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach))) end
 local entfernen     = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
