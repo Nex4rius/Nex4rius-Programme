@@ -21,6 +21,7 @@ local fs            = require("filesystem")
 local serialization = require("serialization")
 
 if not component.isAvailable("modem") then
+  term.clear()
   print("Fehler kein Modem gefunden")
   os.exit()
 end
