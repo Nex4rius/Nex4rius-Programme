@@ -523,9 +523,12 @@ function f.checksize(screenid)
     elseif (x == 8 and (y == 5 or y == 2)) or (x == 4 and y == 1) then
         return true
     else
+        f.Farben(0xFFFFFF, 0x000000)
+        term.clear()
+        gpu.setResolution(28, 3)
         gpu.set(1, 1, "Error: wrong screen size")
-        gpu.set(1, 2, "allowed sizes: 4x1, 8x2, 8x5")
-        gpu.setResolution(28, 2)
+        gpu.set(1, 2, string.format("current size: %sx%s", x, y))
+        gpu.set(1, 3, "allowed sizes: 4x1, 8x2, 8x5")
     end
 end
 
@@ -646,7 +649,7 @@ end
 
 function f.event(...)
     local signal = {...}
-    f.debug(string.format("Event: %s", serialization.serialize(signal)))
+    --f.debug(string.format("Event: %s", serialization.serialize(signal)))
     if o[signal[6]] then
         if Sendeleistung < signal[5] + 50 or Sendeleistung == math.huge then
             Sendeleistung = signal[5] + 50
