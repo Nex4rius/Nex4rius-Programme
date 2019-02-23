@@ -57,7 +57,7 @@ local function ic2(k)
   return "EU", "EU", "EU", k.getStored(), k.getCapacity()
 end
 
-local function enderio(k)
+local function rf(k)
   return "RF", "RF", "RF", k.getEnergyStored(), k.getMaxEnergyStored()
 end
 --return name, label, einheit, menge, maxmenge
@@ -72,7 +72,8 @@ local andere = {
   {ic2, "cesu"},
   {ic2, "mfe"},
   {ic2, "mfsu"},
-  {enderio, "capacitor_bank"},
+  {rf, "capacitor_bank"},
+  {rf, "energy_device"},
 }
 
 if fs.exists("/tank/version.txt") then
