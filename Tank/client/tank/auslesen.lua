@@ -121,7 +121,7 @@ function f.check()
   ---------------------------------------------------------------------------
   ---------------------------------------------------------------------------
   for _, CompName in pairs({"tank_controller", "transposer"}) do
-    for adresse, name in pairs(component.list(CompName)) do
+    for adresse in pairs(component.list(CompName)) do
       local k = component.proxy(adresse)
       for side = 0, 5 do
         if type(k.getFluidInTank(side)) == "table" then
@@ -158,7 +158,7 @@ function f.check()
   ---------------------------------------------------------------------------
   ---------------------------------------------------------------------------
   for _, CompName in pairs({"me_controller", "me_interface"}) do
-    for adresse, name in pairs(component.list(CompName)) do
+    for adresse in pairs(component.list(CompName)) do
       local k = component.proxy(adresse)
       for _, typ in pairs({{"mb", "getFluidsInNetwork"}, {"", "getEssentiaInNetwork"}, {"", "GetGasesInNetwork"}}) do
         if k[typ[2]] then
@@ -199,7 +199,7 @@ function f.check()
   ---------------------------------------------------------------------------
   ---------------------------------------------------------------------------
   for _, CompName in pairs({"blockjar_0", "blockjar_3", "blockcreativejar_3", "blocktube_2", "blocktube_4", "blockmetaldevice_1", "blockstonedevice_14", "blockessentiareservoir"}) do
-    for adresse, name in pairs(component.list(CompName)) do
+    for adresse in pairs(component.list(CompName)) do
       local k = component.proxy(adresse)
       local name = k.getEssentiaType(0)
       if name then
@@ -233,8 +233,41 @@ function f.check()
   ---------------------------------------------------------------------------
   ---------------------------------------------------------------------------
   ---------------------------------------------------------------------------
+  for _, CompName in pairs({"jar_normal", "jar_void"}) do
+    for adresse in pairs(component.list(CompName)) do
+      local k = component.proxy(adresse)
+      for label, menge in pairs(k.getAspects()) do
+        local name = string.lower(name)
+        local maxmenge = 250
+        local dazu = true
+        local c
+        for j, k in pairs(tank) do
+          if name == k.name then
+            dazu = false
+            c = j
+            break
+          end
+        end
+        if dazu then
+          tank[i] = {}
+          tank[i].name = name
+          tank[i].label = label
+          tank[i].einheit = ""
+          tank[i].menge = menge
+          tank[i].maxmenge = maxmenge
+          i = i + 1
+        else
+          tank[c].menge = tank[c].menge + menge
+          tank[c].maxmenge = tank[c].maxmenge + maxmenge
+        end
+      end
+    end
+  end
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
   for _, v in pairs(andere) do
-    for adresse, name in pairs(component.list(v[2])) do
+    for adresse in pairs(component.list(v[2])) do
       local k = component.proxy(adresse)
       local name, label, einheit, menge, maxmenge = v[1](k)
       if type(tank[i - 1]) == "table" then
