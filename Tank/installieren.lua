@@ -280,7 +280,6 @@ function f.Komponenten(typ)
     zeigen("blockmetaldevice_1", "Essentia blockmetaldevice_1")
     zeigen("blockstonedevice_14", "Essentia blockstonedevice_14")
     zeigen("blockessentiareservoir", "Essentia blockessentiareservoir")
-  }
   end
   print()
   gpu.setForeground(0xFFFFFF)
