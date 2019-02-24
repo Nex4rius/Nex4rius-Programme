@@ -233,16 +233,16 @@ function f.Komponenten(typ)
   if component.isAvailable("modem") then
     gpu.setForeground(0x00FF00)
     if component.modem.isWireless() then
+      print("Netzwerkkarte                     - OK")
       print("WLAN-Karte                        - OK")
-      print("Netzwerkkarte                     - OK")
     else
-      print("WLAN-Karte                        - fehlt")
       print("Netzwerkkarte                     - OK")
+      print("WLAN-Karte                        - fehlt")
     end
   else
     gpu.setForeground(0xFF0000)
-    print("WLAN-Karte                        - fehlt")
     print("Netzwerkkarte                     - fehlt")
+    print("WLAN-Karte                        - fehlt")
   end
   if typ == "server" then
     zeigen("internet", "Internetkarte")
