@@ -234,12 +234,14 @@ function f.Komponenten(typ)
     gpu.setForeground(0x00FF00)
     if component.modem.isWireless() then
       print("WLAN-Karte                        - OK")
+      print("Netzwerkkarte                     - OK")
     else
       print("WLAN-Karte                        - fehlt")
       print("Netzwerkkarte                     - OK")
     end
   else
     gpu.setForeground(0xFF0000)
+    print("WLAN-Karte                        - fehlt")
     print("Netzwerkkarte                     - fehlt")
   end
   if typ == "server" then
