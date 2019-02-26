@@ -31,8 +31,8 @@ local m               = component.getPrimary("modem")
 local verschieben     = function(von, nach) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach))) end
 local entfernen       = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
 
-local letzter_check   = c.uptime()
 local min_update_zeit = 15
+local letzter_check   = c.uptime() - min_update_zeit - 1
 local port            = 918
 local tank            = {}
 local f               = {}
@@ -121,9 +121,6 @@ local function firstToUpper(str)
 end
 
 function f.check()
-  if letzter_check - c.uptime() < min_update_zeit then
-    return false
-  end
   tank = {}
   local i = 1
   ---------------------------------------------------------------------------
@@ -402,17 +399,13 @@ function o.aktualisieren(signal)
 end
 
 function o.tank(signal)
-  local tank = f.check()
-  if tank then
-    f.senden(signal, "tankliste", version, f.serialize(tank))
+  if c.uptime() - letzter_check > min_update_zeit then
+    f.senden(signal, "tankliste", version, f.serialize(f.check()))
   end
 end
 
 function f.anders()
-  local tank = f.check()
-  if tank then
-    m.broadcast(port + 1, "tankliste", version, f.serialize(tank))
-  end
+  m.broadcast(port + 1, "tankliste", version, f.serialize(f.check()))
 end
 
 function f.loop(...)
