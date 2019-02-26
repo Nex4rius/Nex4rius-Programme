@@ -31,8 +31,8 @@ local m               = component.getPrimary("modem")
 local verschieben     = function(von, nach) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach))) end
 local entfernen       = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
 
-local letzter_check   = c.uptime()
 local min_update_zeit = 15
+local letzter_check   = c.uptime() - min_update_zeit - 1
 local port            = 918
 local tank            = {}
 local f               = {}
