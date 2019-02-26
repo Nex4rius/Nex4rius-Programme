@@ -227,6 +227,7 @@ function f.anzeigen()
             erlaubeAnzeigen = true
             return
         end
+        f.debug("Anzeigen werden aktualisiert")
         for screenid in component.list("screen") do
             gpu.bind(screenid, false)
             if f.checksize(screenid) then
@@ -521,7 +522,6 @@ function f.checksize(screenid)
     local x, y = component.proxy(screenid).getAspectRatio()
     if x == 1 and y == 1 then
         debugscreens[screenid] = true
-        term.write(string.format("\nDebugscreen:\nZeit: %s --- %s\nAnzeigen werden aktualisiert\n\n", os.time(), c.uptime()))
     elseif (x == 8 and (y == 5 or y == 2)) or (x == 4 and y == 1) then
         debugscreens[screenid] = false
         return true
