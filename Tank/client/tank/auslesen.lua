@@ -399,7 +399,7 @@ function o.aktualisieren(signal)
 end
 
 function o.tank(signal)
-  if letzter_check - c.uptime() > min_update_zeit then
+  if c.uptime() - letzter_check > min_update_zeit then
     f.senden(signal, "tankliste", version, f.serialize(f.check()))
   end
 end
