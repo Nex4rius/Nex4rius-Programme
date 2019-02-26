@@ -121,9 +121,6 @@ local function firstToUpper(str)
 end
 
 function f.check()
-  if letzter_check - c.uptime() < min_update_zeit then
-    return false
-  end
   tank = {}
   local i = 1
   ---------------------------------------------------------------------------
@@ -402,17 +399,13 @@ function o.aktualisieren(signal)
 end
 
 function o.tank(signal)
-  local tank = f.check()
-  if tank then
-    f.senden(signal, "tankliste", version, f.serialize(tank))
+  if letzter_check - c.uptime() > min_update_zeit then
+    f.senden(signal, "tankliste", version, f.serialize(f.check()))
   end
 end
 
 function f.anders()
-  local tank = f.check()
-  if tank then
-    m.broadcast(port + 1, "tankliste", version, f.serialize(tank))
-  end
+  m.broadcast(port + 1, "tankliste", version, f.serialize(f.check()))
 end
 
 function f.loop(...)
