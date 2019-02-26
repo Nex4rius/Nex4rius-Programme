@@ -33,6 +33,7 @@ local entfernen       = function(datei) fs.remove(datei) print(string.format("'%
 
 local min_update_zeit = 15
 local letzter_check   = c.uptime() - min_update_zeit - 1
+local letzter_anders  = letzter_check
 local port            = 918
 local tank            = {}
 local f               = {}
@@ -405,7 +406,10 @@ function o.tank(signal)
 end
 
 function f.anders()
-  m.broadcast(port + 1, "tankliste", version, f.serialize(f.check()))
+  if c.uptime() - letzter_anders > min_update_zeit then
+    m.broadcast(port + 1, "tankliste", version, f.serialize(f.check()))
+    letzter_anders = c.uptime()
+  end
 end
 
 function f.loop(...)
