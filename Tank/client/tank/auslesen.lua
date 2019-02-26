@@ -32,7 +32,7 @@ local verschieben     = function(von, nach) fs.remove(nach) fs.rename(von, nach)
 local entfernen       = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
 
 local letzter_check   = c.uptime()
-local min_update_zeit = 10
+local min_update_zeit = 15
 local port            = 918
 local tank            = {}
 local f               = {}
