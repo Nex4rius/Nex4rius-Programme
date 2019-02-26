@@ -237,7 +237,7 @@ function f.check()
     for adresse in pairs(component.list(CompName)) do
       local k = component.proxy(adresse)
       for label, menge in pairs(k.getAspects()) do
-        local name = string.lower(name)
+        local name = label:lower()
         local maxmenge = 250
         local dazu = true
         local c
