@@ -31,4 +31,5 @@ Make pull requests if you want :)
 You can add new liquids <a href="https://github.com/Nex4rius/Nex4rius-Programme/blob/Tank/Tank/server/tank/farben.lua">here</a>.
 
 tested with:<br>
-OpenComputers-MC1.7.10-1.6.1.11-universal
+OpenComputers-MC1.7.10-1.6.1.11-universal<br>
+OpenComputers-MC1.12.2-1.7.2.67
