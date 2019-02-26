@@ -55,6 +55,7 @@ function f.installieren(versionTyp)
     "chargepad_mfsu", "mfsu",
     --RF
     "capacitor_bank",
+    "energy_device",
     --ME
     "me_controller",
     "me_interface",
@@ -62,6 +63,13 @@ function f.installieren(versionTyp)
     "blockjar_0",
     "blockjar_3",
     "blockcreativejar_3",
+    "blocktube_2",
+    "blocktube_4",
+    "blockmetaldevice_1",
+    "blockstonedevice_14",
+    "blockessentiareservoir",
+    "jar_normal",
+    "jar_void",
 }
   local function Sensorcheck(name)
     if component.isAvailable(name) then
@@ -216,23 +224,25 @@ function f.Komponenten(typ)
     if component.isAvailable(name) then
       gpu.setForeground(0x00FF00)
       print(text .. string.rep(" ", 34 - string.len(text)) .. "- OK")
-    else
-      gpu.setForeground(0xFF0000)
-      print(text .. string.rep(" ", 34 - string.len(text)) .. "- fehlt")
+    --else
+    --  gpu.setForeground(0xFF0000)
+    --  print(text .. string.rep(" ", 34 - string.len(text)) .. "- fehlt")
     end
   end
   print("\nPrüfe Komponenten\n")
   if component.isAvailable("modem") then
     gpu.setForeground(0x00FF00)
     if component.modem.isWireless() then
+      print("Netzwerkkarte                     - OK")
       print("WLAN-Karte                        - OK")
     else
-      print("WLAN-Karte                        - fehlt")
       print("Netzwerkkarte                     - OK")
+      print("WLAN-Karte                        - fehlt")
     end
   else
     gpu.setForeground(0xFF0000)
     print("Netzwerkkarte                     - fehlt")
+    print("WLAN-Karte                        - fehlt")
   end
   if typ == "server" then
     zeigen("internet", "Internetkarte")
@@ -257,6 +267,19 @@ function f.Komponenten(typ)
     zeigen("chargepad_mfe", "MFE Charge Pad")
     zeigen("chargepad_mfsu", "MFSU Charge Pad")
     zeigen("capacitor_bank", "Capacitor Bank")
+    zeigen("energy_device", "RF-Energy Storage")
+    zeigen("me_controller", "ME Controller")
+    zeigen("me_interface", "ME Interface")
+    zeigen("blockjar_0", "Warded Jar")
+    zeigen("jar_normal", "Warded Jar")
+    zeigen("blockjar_3", "Void Jar")
+    zeigen("jar_void", "Void Jar")
+    zeigen("blockcreativejar_3", "Creative Jar")
+    zeigen("blocktube_2", "Essentia blocktube_2")
+    zeigen("blocktube_4", "Essentia blocktube_4")
+    zeigen("blockmetaldevice_1", "Essentia blockmetaldevice_1")
+    zeigen("blockstonedevice_14", "Essentia blockstonedevice_14")
+    zeigen("blockessentiareservoir", "Essentia blockessentiareservoir")
   end
   print()
   gpu.setForeground(0xFFFFFF)
