@@ -4,21 +4,21 @@
 
 os.sleep(2)
 
-local io            = io
-local os            = os
-local table         = table
-local string        = string
-local print         = print
-local pcall         = pcall
-local require       = require
-local loadfile      = loadfile
+local io              = io
+local os              = os
+local table           = table
+local string          = string
+local print           = print
+local pcall           = pcall
+local require         = require
+local loadfile        = loadfile
 
-local component     = require("component")
-local term          = require("term")
-local event         = require("event")
-local c             = require("computer")
-local fs            = require("filesystem")
-local serialization = require("serialization")
+local component       = require("component")
+local term            = require("term")
+local event           = require("event")
+local c               = require("computer")
+local fs              = require("filesystem")
+local serialization   = require("serialization")
 
 if not component.isAvailable("modem") then
   term.clear()
@@ -26,17 +26,19 @@ if not component.isAvailable("modem") then
   os.exit()
 end
 
-local m             = component.getPrimary("modem")
+local m               = component.getPrimary("modem")
 
-local verschieben   = function(von, nach) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach))) end
-local entfernen     = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
+local verschieben     = function(von, nach) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach))) end
+local entfernen       = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
 
-local port          = 918
-local tank          = {}
-local f             = {}
-local o             = {}
+local letzter_check   = c.uptime()
+local min_update_zeit = 15
+local port            = 918
+local tank            = {}
+local f               = {}
+local o               = {}
 
-tank[1]             = {}
+tank[1]               = {}
 
 local adresse, empfangen, version, reichweite, Tankname
 
@@ -119,6 +121,9 @@ local function firstToUpper(str)
 end
 
 function f.check()
+  if letzter_check - c.uptime() < min_update_zeit then
+    return false
+  end
   tank = {}
   local i = 1
   ---------------------------------------------------------------------------
@@ -301,12 +306,13 @@ function f.check()
   ---------------------------------------------------------------------------
   ---------------------------------------------------------------------------
   ---------------------------------------------------------------------------
-  print("\n\n\n" .. Tankname .. "\n")
+  print("\n\n\n" .. Tankname .. "\n" .. letzter_check .. "------------------------------")
   for i in pairs(tank) do
     if tank[i].name then
       print(string.format("%s - %s: %s/%s %.1f%%", tank[i].name, tank[i].label, tank[i].menge, tank[i].maxmenge, tank[i].menge / tank[i].maxmenge * 100))
     end
   end
+  letzter_check = c.uptime()
   return tank
 end
 
@@ -396,7 +402,17 @@ function o.aktualisieren(signal)
 end
 
 function o.tank(signal)
-  f.senden(signal, "tankliste", version, f.serialize(f.check()))
+  local tank = f.check()
+  if tank then
+    f.senden(signal, "tankliste", version, f.serialize(tank))
+  end
+end
+
+function f.anders()
+  local tank = f.check()
+  if tank then
+    m.broadcast(port + 1, "tankliste", version, f.serialize(tank))
+  end
 end
 
 function f.loop(...)
@@ -416,10 +432,6 @@ function f.senden(signal, name, nachricht, ...)
   m.send(signal[3], signal[4] + 1, name, f.serialize(nachricht), ...)
 end
 
-function f.anders()
-  m.broadcast(port + 1, "tankliste", version, f.serialize(f.check()))
-end
-
 function f.main()
   m.open(port)
   if m.isWireless() then
@@ -428,7 +440,7 @@ function f.main()
   term.clear()
   print("Sende Anmeldung")
   print("\n" .. Tankname)
-  m.broadcast(port + 1, "tankliste", version, f.serialize(f.check()))
+  f.anders()
   print("Warte auf Antwort...")
   event.listen("modem_message", f.loop)
   event.listen("component_added", f.anders)
