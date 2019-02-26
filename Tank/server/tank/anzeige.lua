@@ -38,6 +38,7 @@ local f               = {}
 local o               = {}
 local timer           = {}
 local Sensorliste     = {}
+local debugscreens    = {}
 local laeuft          = true
 local debug           = false
 local Sendeleistung   = math.huge
@@ -519,10 +520,13 @@ end
 function f.checksize(screenid)
     local x, y = component.proxy(screenid).getAspectRatio()
     if x == 1 and y == 1 then
+        debugscreens[screenid] = true
         term.write(string.format("\nDebugscreen:\nZeit: %s --- %s\nAnzeigen werden aktualisiert\n\n", os.time(), c.uptime()))
     elseif (x == 8 and (y == 5 or y == 2)) or (x == 4 and y == 1) then
+        debugscreens[screenid] = false
         return true
     else
+        debugscreens[screenid] = false
         f.Farben(0xFFFFFF, 0x000000)
         term.clear()
         gpu.setResolution(28, 3)
@@ -534,11 +538,15 @@ end
 
 function f.debug(text)
     for screenid in component.list("screen") do
-        gpu.bind(screenid, false)
-        local x, y = component.proxy(screenid).getAspectRatio()
-        if x == 1 and y == 1 then
-            f.Farben(0xFFFFFF, 0x000000)
-            term.write(string.format("\nDebugscreen:\nZeit: %s --- %s\n%s\n\n", os.time(), c.uptime(), text))
+        if debugscreens[screenid] then
+            gpu.bind(screenid, false)
+            local x, y = component.proxy(screenid).getAspectRatio()
+            if x == 1 and y == 1 then
+                f.Farben(0xFFFFFF, 0x000000)
+                term.write(string.format("\nDebugscreen:\nZeit: %s --- %s\n%s\n\n", os.time(), c.uptime(), text))
+            else
+                debugscreens[screenid] = false
+            end
         end
     end
 end
@@ -649,7 +657,7 @@ end
 
 function f.event(...)
     local signal = {...}
-    --f.debug(string.format("Event: %s", serialization.serialize(signal)))
+    f.debug(string.format("Event: %s", serialization.serialize(signal)))
     if o[signal[6]] then
         if Sendeleistung < signal[5] + 50 or Sendeleistung == math.huge then
             Sendeleistung = signal[5] + 50
@@ -761,8 +769,8 @@ local beenden = f.beenden
 local ergebnis, grund = pcall(f.main)
 
 if not ergebnis then
-    f.text("<FEHLER> f.main")
-    f.text(grund)
+    f.debug("<FEHLER> f.main")
+    f.debug(grund)
     os.sleep(2)
     beenden()
 end
