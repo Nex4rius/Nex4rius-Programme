@@ -163,7 +163,7 @@ silver                       = {0x000000,  0xCBF4F4,  0x000000,  0xABD3D3},
 -- Thaumcraft
 aer                          = {0x000000,  0xFFDB40,  0x000000,  0xFF9240},
 terra                        = {0xFFFFFF,  0x3a652F,  0xFFFFFF,  0x4D6630},
-ignis                        = {0xFFFFFF,  0xCC4900,  0x000000,  0x992400},
+ignis                        = {0xFFFFFF,  0xCC4900,  0xFFFFFF,  0x992400},
 aqua                         = {0x000000,  0x33B6FF,  0xFFFFFF,  0x334980},
 ordo                         = {0x000000,  0xCCDBFF,  0xFFFFFF,  0x666e7f},
 perditio                     = {0xFFFFFF,  0x1e1e1e,  0xFFFFFF,  0x3c3c3c},
