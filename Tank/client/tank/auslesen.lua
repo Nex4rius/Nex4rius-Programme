@@ -54,7 +54,11 @@ local function gt(k)
 end
 
 local function ic2(k)
-  return "EU", "EU", "EU", k.getStored(), k.getCapacity()
+  local a = "getStored"
+  if not k[a] then
+    a = "getEnergy"
+  end
+  return "EU", "EU", "EU", k[a](), k.getCapacity()
 end
 
 local function rf(k)
