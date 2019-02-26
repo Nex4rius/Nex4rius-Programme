@@ -2,6 +2,8 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/
 
+os.sleep(2)
+
 require("shell").setWorkingDirectory("/")
 
 local fs          = require("filesystem")
@@ -284,6 +286,8 @@ function f.Komponenten(typ)
   print()
   gpu.setForeground(0xFFFFFF)
 end
+
+term.clear()
 
 if versionTyp == nil then
   if type(arg) == "string" then
