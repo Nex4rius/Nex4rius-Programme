@@ -678,14 +678,29 @@ function f.checkUpdate(text)
     if text then
         term.setCursor(gpu.getResolution())
         print("\nPrüfe Version\n")
-        print("Derzeitige Version:    " .. (version or "<FEHLER>"))
-        io.write("Verfügbare Version:    ")
+        print("Derzeitige Version:      " .. (version or "<FEHLER>"))
+        io.write("Verfügbare Version:      ")
     end
     if component.isAvailable("internet") then
-        serverVersion = f.checkServerVersion() or "<FEHLER>"
+        serverVersion = f.checkServerVersion("master")
+        serverBetaVersion = f.checkServerVersion("Tank")
     end
     if text then
         print(serverVersion)
+        if serverBetaVersion ~= "<FEHLER>" then
+            io.write("Verfügbare Beta Version: ")
+            print(serverBetaVersion .. "\n\n\nUpdate auf Beta? [j/N]\n")
+            local antwort = io.read()
+            if antwort == "j" then
+                f.text("Update...")
+                if wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/Tank/Tank/installieren.lua", "/installieren.lua") then
+                    f.beenden()
+                    require("component").getPrimary("gpu").setResolution(require("component").getPrimary("gpu").maxResolution())
+                    print(pcall(loadfile("/installieren.lua"), "Tank"))
+                    os.execute("reboot")
+                end
+            end
+        end
         print()
         os.sleep(2)
     end
@@ -751,9 +766,10 @@ function f.beenden()
     event.push("interrupted")
 end
 
-function f.checkServerVersion()
-    local serverVersion
-    if wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/version.txt", "/serverVersion.txt") then
+function f.checkServerVersion(branch)
+    branch = branch or "master"
+    local serverVersion = "<FEHLER>"
+    if wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/" .. branch .. "/Tank/version.txt", "/serverVersion.txt") then
         local d = io.open ("/serverVersion.txt", "r")
         serverVersion = d:read()
         d:close()
