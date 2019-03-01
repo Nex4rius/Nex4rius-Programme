@@ -40,6 +40,7 @@ local timer           = {}
 local Sensorliste     = {}
 local debugscreens    = {}
 local laeuft          = true
+local updateAktiv     = true
 local debug           = false
 local Sendeleistung   = math.huge
 local Wartezeit       = 150
@@ -705,12 +706,14 @@ function f.checkUpdate(text)
                     print(pcall(loadfile("/installieren.lua"), "Tank"))
                     os.execute("reboot")
                 end
+            else
+                updateAktiv = false
             end
         end
         print()
         os.sleep(2)
     end
-    if serverVersion and arg and component.isAvailable("internet") and serverVersion ~= version and serverBetaVersion ~= version then
+    if updateAktiv and serverVersion and arg and component.isAvailable("internet") and serverVersion ~= version and serverBetaVersion ~= version then
         f.text("Update...")
         if wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/installieren.lua", "/installieren.lua") then
             f.beenden()
