@@ -45,7 +45,8 @@ local Sendeleistung   = math.huge
 local Wartezeit       = 150
 local Zeit            = 60
 local letzteNachricht = c.uptime()
-local letztesAnzeigen = c.uptime()
+local letztesAnzeigen = letzteNachricht
+local UpdatecheckZeit = -100
 local erlaubeAnzeigen = true
 
 local maxbreite = {}
@@ -683,8 +684,11 @@ function f.checkUpdate(text)
         io.write("Verfügbare Version:      ")
     end
     if component.isAvailable("internet") then
-        serverVersion = f.checkServerVersion("master")
-        serverBetaVersion = f.checkServerVersion("Tank")
+        if c.uptime() - UpdatecheckZeit > 60 then
+            serverVersion = f.checkServerVersion("master")
+            serverBetaVersion = f.checkServerVersion("Tank")
+            UpdatecheckZeit = c.uptime()
+        end
     end
     if text then
         print(serverVersion)
