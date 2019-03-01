@@ -693,6 +693,7 @@ function f.checkUpdate(text)
     if text then
         print(serverVersion)
         if serverBetaVersion ~= "<FEHLER>" and serverBetaVersion ~= serverVersion then
+            version = nil
             io.write("Verfügbare Beta Version: ")
             print(serverBetaVersion .. "\n\n\nUpdate auf Beta? [j/N]\n")
             local antwort = io.read()
