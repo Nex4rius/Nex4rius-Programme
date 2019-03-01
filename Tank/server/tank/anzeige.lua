@@ -724,6 +724,12 @@ function f.checkUpdate(text)
 end
 
 function f.main()
+    -----------------------------------------------------------
+    -- Bildschirme resetten damit sie wieder Farben akzeptieren
+    for screenid in component.list("screen") do
+        gpu.bind(screenid)
+    end
+    -----------------------------------------------------------
     f.Farben(0xFFFFFF, 0x000000)
     f.checkUpdate(true)
     Updatetimer = event.timer(43200, f.checkUpdate, math.huge)
