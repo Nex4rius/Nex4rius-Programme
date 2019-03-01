@@ -62,6 +62,7 @@ maxbreite[15] = 147
 maxbreite[16] = 157
 
 local function wget(...)
+    local a = {...}
     for i = 1, 21 do
         if original_wget(...) then
             return true
@@ -69,7 +70,7 @@ local function wget(...)
         if i > 20 then
             return false
         end
-        print("\nDownloadfehler ... Neustart in " .. i .. "s")
+        print("\n\n" .. a[2] .. "\n" .. a[3] .. "\nDownloadfehler ... Neustart in " .. i .. "s")
         os.sleep(i)
     end
 end
