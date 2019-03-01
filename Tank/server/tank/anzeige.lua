@@ -223,6 +223,7 @@ end
 
 function f.anzeigen()
     if erlaubeAnzeigen then
+        local anzeige_reset_timer = event.timer(30, f.anzeige_reset, 1)
         erlaubeAnzeigen = false
         local tankanzeige = tankneu
         if not tankanzeige then
@@ -363,7 +364,15 @@ function f.anzeigen()
         end
         letztesAnzeigen = c.uptime()
         erlaubeAnzeigen = true
+        event.cancel(anzeige_reset_timer)
     end
+end
+
+function f.anzeige_reset()
+    f.debug("Bildschirme werden zurückgesetzt")
+    f.workaround()
+    erlaubeAnzeigen = true
+    f.anzeigen()
 end
 
 function f.zeichenErsetzen(...)
@@ -723,13 +732,21 @@ function f.checkUpdate(text)
     end
 end
 
-function f.main()
-    -----------------------------------------------------------
-    -- Bildschirme resetten damit sie wieder Farben akzeptieren
+function f.workaround() -- Bildschirme resetten damit sie wieder Farben akzeptieren
     for screenid in component.list("screen") do
         gpu.bind(screenid)
     end
-    -----------------------------------------------------------
+end
+
+function f.component_removed()
+    f.debug("Komponenten entfernt\nComputer wird neugestartet um Problemen vorzubeugen\n\nNeustart in 5s")
+    f.beenden()
+    os.sleep(5)
+    require("computer").shutdown(true)
+end
+
+function f.main()
+    f.workaround()
     f.Farben(0xFFFFFF, 0x000000)
     f.checkUpdate(true)
     Updatetimer = event.timer(43200, f.checkUpdate, math.huge)
@@ -737,6 +754,7 @@ function f.main()
     f.text("Warte auf Daten")
     event.listen("modem_message", f.event)
     event.listen("component_added", f.anzeigen)
+    event.listen("component_removed", f.component_removed)
     timer.senden = event.timer(Zeit, f.senden, math.huge)
     timer.tank = event.timer(Zeit + 15, f.tank, 1)
     timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
@@ -753,6 +771,7 @@ function f.beenden()
     laeuft = false
     event.ignore("modem_message", f.event)
     event.ignore("component_added", f.tank)
+    event.ignore("component_removed", f.component_removed)
     event.ignore("interrupted", f.beenden)
     for k, v in pairs(timer) do
         if type(v) == "number" then
