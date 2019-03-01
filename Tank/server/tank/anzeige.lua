@@ -40,12 +40,14 @@ local timer           = {}
 local Sensorliste     = {}
 local debugscreens    = {}
 local laeuft          = true
+local updateAktiv     = true
 local debug           = false
 local Sendeleistung   = math.huge
 local Wartezeit       = 150
 local Zeit            = 60
 local letzteNachricht = c.uptime()
-local letztesAnzeigen = c.uptime()
+local letztesAnzeigen = letzteNachricht
+local UpdatecheckZeit = -100
 local erlaubeAnzeigen = true
 
 local maxbreite = {}
@@ -62,6 +64,7 @@ maxbreite[15] = 147
 maxbreite[16] = 157
 
 local function wget(...)
+    local a = {...}
     for i = 1, 21 do
         if original_wget(...) then
             return true
@@ -69,7 +72,7 @@ local function wget(...)
         if i > 20 then
             return false
         end
-        print("\nDownloadfehler ... Neustart in " .. i .. "s")
+        print("\n\n" .. a[2] .. "\n" .. a[3] .. "\nDownloadfehler ... Neustart in " .. i .. "s")
         os.sleep(i)
     end
 end
@@ -220,6 +223,7 @@ end
 
 function f.anzeigen()
     if erlaubeAnzeigen then
+        local anzeige_reset_timer = event.timer(30, f.anzeige_reset, 1)
         erlaubeAnzeigen = false
         local tankanzeige = tankneu
         if not tankanzeige then
@@ -360,7 +364,15 @@ function f.anzeigen()
         end
         letztesAnzeigen = c.uptime()
         erlaubeAnzeigen = true
+        event.cancel(anzeige_reset_timer)
     end
+end
+
+function f.anzeige_reset()
+    f.debug("Bildschirme werden zurückgesetzt")
+    f.workaround()
+    erlaubeAnzeigen = true
+    f.anzeigen()
 end
 
 function f.zeichenErsetzen(...)
@@ -678,18 +690,38 @@ function f.checkUpdate(text)
     if text then
         term.setCursor(gpu.getResolution())
         print("\nPrüfe Version\n")
-        print("Derzeitige Version:    " .. (version or "<FEHLER>"))
-        io.write("Verfügbare Version:    ")
+        print("Derzeitige Version:      " .. (version or "<FEHLER>"))
+        io.write("Verfügbare Version:      ")
     end
     if component.isAvailable("internet") then
-        serverVersion = f.checkServerVersion() or "<FEHLER>"
+        if c.uptime() - UpdatecheckZeit > 60 then
+            serverVersion = f.checkServerVersion("master")
+            serverBetaVersion = f.checkServerVersion("Tank")
+            UpdatecheckZeit = c.uptime()
+        end
     end
     if text then
         print(serverVersion)
+        if serverBetaVersion ~= "<FEHLER>" and serverBetaVersion ~= serverVersion then
+            io.write("Verfügbare Beta Version: ")
+            print(serverBetaVersion .. "\n\n\nUpdate auf Beta? [j/N]\n")
+            local antwort = io.read()
+            if antwort == "j" then
+                f.text("Update...")
+                if wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/Tank/Tank/installieren.lua", "/installieren.lua") then
+                    f.beenden()
+                    require("component").getPrimary("gpu").setResolution(require("component").getPrimary("gpu").maxResolution())
+                    print(pcall(loadfile("/installieren.lua"), "Tank"))
+                    os.execute("reboot")
+                end
+            else
+                updateAktiv = false
+            end
+        end
         print()
         os.sleep(2)
     end
-    if serverVersion and arg and component.isAvailable("internet") and serverVersion ~= version then
+    if updateAktiv and serverVersion and arg and component.isAvailable("internet") and serverVersion ~= version and serverBetaVersion ~= version then
         f.text("Update...")
         if wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/installieren.lua", "/installieren.lua") then
             f.beenden()
@@ -700,7 +732,21 @@ function f.checkUpdate(text)
     end
 end
 
+function f.workaround() -- Bildschirme resetten damit sie wieder Farben akzeptieren
+    for screenid in component.list("screen") do
+        gpu.bind(screenid)
+    end
+end
+
+function f.component_removed()
+    f.debug("Komponenten entfernt\nComputer wird neugestartet um Problemen vorzubeugen\n\nNeustart in 5s")
+    f.beenden()
+    os.sleep(5)
+    require("computer").shutdown(true)
+end
+
 function f.main()
+    f.workaround()
     f.Farben(0xFFFFFF, 0x000000)
     f.checkUpdate(true)
     Updatetimer = event.timer(43200, f.checkUpdate, math.huge)
@@ -708,6 +754,7 @@ function f.main()
     f.text("Warte auf Daten")
     event.listen("modem_message", f.event)
     event.listen("component_added", f.anzeigen)
+    event.listen("component_removed", f.component_removed)
     timer.senden = event.timer(Zeit, f.senden, math.huge)
     timer.tank = event.timer(Zeit + 15, f.tank, 1)
     timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
@@ -724,6 +771,7 @@ function f.beenden()
     laeuft = false
     event.ignore("modem_message", f.event)
     event.ignore("component_added", f.tank)
+    event.ignore("component_removed", f.component_removed)
     event.ignore("interrupted", f.beenden)
     for k, v in pairs(timer) do
         if type(v) == "number" then
@@ -751,9 +799,10 @@ function f.beenden()
     event.push("interrupted")
 end
 
-function f.checkServerVersion()
-    local serverVersion
-    if wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/version.txt", "/serverVersion.txt") then
+function f.checkServerVersion(branch)
+    branch = branch or "master"
+    local serverVersion = "<FEHLER>"
+    if wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/" .. branch .. "/Tank/version.txt", "/serverVersion.txt") then
         local d = io.open ("/serverVersion.txt", "r")
         serverVersion = d:read()
         d:close()
