@@ -687,7 +687,7 @@ function f.checkUpdate(text)
     end
     if text then
         print(serverVersion)
-        if serverBetaVersion ~= "<FEHLER>" then
+        if serverBetaVersion ~= "<FEHLER>" and serverBetaVersion ~= serverVersion then
             io.write("Verfügbare Beta Version: ")
             print(serverBetaVersion .. "\n\n\nUpdate auf Beta? [j/N]\n")
             local antwort = io.read()
@@ -704,7 +704,7 @@ function f.checkUpdate(text)
         print()
         os.sleep(2)
     end
-    if serverVersion and arg and component.isAvailable("internet") and serverVersion ~= version then
+    if serverVersion and arg and component.isAvailable("internet") and serverVersion ~= version and serverBetaVersion ~= version then
         f.text("Update...")
         if wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/installieren.lua", "/installieren.lua") then
             f.beenden()
