@@ -374,27 +374,30 @@ end
 
 function o.aktualisieren(signal)
   local dateien = serialization.unserialize(signal[7])
+  local weiter = true
   for k, v in pairs(dateien) do
     if not fs.exists("/update" .. v) then
       print("<FEHLER>")
       print("Datei fehlt: " .. tostring(v))
       f.senden(signal, "speichern", false, v)
-      os.sleep(10)
-      return
+      weiter = false
+      os.sleep(5)
     end
   end
-  print("Ersetze alte Dateien")
-  for k, v in pairs(dateien) do
-    verschieben("/update/" .. v, "/" .. v)
-  end
-  entfernen("/update")
-  print("Update vollständig")
-  os.sleep(1)
-  for i = 5, 1, -1 do
-    print(string.format("\nNeustarten in %ss", i))
+  if weiter then
+    print("Ersetze alte Dateien")
+    for k, v in pairs(dateien) do
+      verschieben("/update/" .. v, "/" .. v)
+    end
+    entfernen("/update")
+    print("Update vollständig")
     os.sleep(1)
+    for i = 10, 1, -1 do
+      print(string.format("\nNeustarten in %ss", i))
+      os.sleep(1)
+    end
+    require("computer").shutdown(true)
   end
-  require("computer").shutdown(true)
 end
 
 function o.tank(signal)
