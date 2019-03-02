@@ -221,6 +221,125 @@ function f.verarbeiten(tank)
     end
 end
 
+function f.position(maxanzahl, klein)
+    local pos = {}
+    local x = 1
+    local y = 1
+    local max = maxanzahl
+    if max > 64 then
+        max = 64
+    end
+    for anzahl = 1, max do
+        local links, rechts, breite = -15, -25, 40
+        if (32 - max) >= anzahl and max < 32 then
+            links = 40
+            rechts = 40
+            breite = 160
+        elseif (64 - max) >= anzahl and max > 16 then
+            links, rechts = 0, 0
+            breite = 80
+        end
+        if anzahl == 17 or anzahl == 33 or anzahl == 49 then
+            if max > 48 and anzahl > 48 then
+                x = 41
+                if klein and max > 5 then
+                    y = 1 + (64 - max)
+                else
+                    y = 1 + 3 * (64 - max)
+                end
+                breite = 40
+            elseif max > 32 and anzahl > 32 then
+                x = 121
+                if klein and max > 5 then
+                    y = 1 + (48 - max)
+                else
+                    y = 1 + 3 * (48 - max)
+                end
+                breite = 40
+            else
+                x = 81
+                if klein and max > 5 then
+                    y = 1 + (32 - max)
+                else
+                    y = 1 + 3 * (32 - max)
+                end
+            end
+            if y < 1 then
+                y = 1
+            end
+        end
+        if max <= 16 then
+            if klein and max <= 5 then
+                breite = 160
+            else
+                breite = maxbreite[max]
+            end
+            local a = 160 - breite
+            links = links - (math.floor(a / 2))
+            rechts = rechts - (math.ceil(a / 2))
+        end
+        pos[anzahl] = {}
+        pos[anzahl].links = links
+        pos[anzahl].rechts = rechts
+        pos[anzahl].breite = breite
+        pos[anzahl].x = x
+        pos[anzahl].y = y
+        if klein and max > 5 then
+            y = y + 1
+        else
+            y = y + 3
+        end
+    end
+    if max > 48 then -- fix 2 und 4 Spalte vertauschen
+        local a = max - 48
+        for i = max + a, 17 + a, -1 do
+            pos[i] = pos[i - a]
+        end
+        local j = 17
+        for i = max + 1, #pos do
+            pos[j] = pos[i]
+            pos[i] = nil
+            j = j + 1
+        end
+    end
+    if maxanzahl > 64 then
+        local j = 64
+        for i = maxanzahl, 65, -1 do
+            pos[i] = {}
+            pos[i].links =  pos[j].links
+            pos[i].rechts = pos[j].rechts
+            pos[i].breite = 20
+            pos[j].breite = 20
+            pos[i].x = pos[j].x + 20
+            pos[i].y = pos[j].y
+            j = j - 1
+        end
+    end
+    if maxanzahl > 48 then -- Spaltensortierung
+        local sort = {}
+        for i = 1, maxanzahl do
+            local spalte = tostring(pos[i].x)
+            if not sort[spalte] then
+                sort[spalte] = {}
+            end
+            sort[spalte][#sort[spalte] + 1] = pos[i]
+        end
+        local position = {}
+        local a = 1
+        for i = 1, 160, 20 do
+            local spalte = tostring(i)
+            if sort[spalte] then
+                for j = 1, #sort[spalte] do
+                    position[a] = sort[spalte][j]
+                    a = a + 1
+                end
+            end
+        end
+        pos = position
+    end
+    return pos
+end
+
 function f.anzeigen()
     if erlaubeAnzeigen then
         local anzeige_reset_timer = event.timer(30, f.anzeige_reset, 1)
@@ -232,6 +351,11 @@ function f.anzeigen()
             return
         end
         f.debug("Anzeigen werden aktualisiert")
+        local maxanzahl = #tankanzeige
+        if maxanzahl > 128 then
+            maxanzahl = 128
+            f.debug("Maximale Anzahl von 128 überschritten!")
+        end
         for screenid in component.list("screen") do
             gpu.bind(screenid, false)
             if f.checksize(screenid) then
@@ -240,116 +364,62 @@ function f.anzeigen()
                 if hoch <= 2 then
                     klein = true
                 end
-                local x = 1
-                local y = 1
-                local leer = true
-                local maxanzahl = #tankanzeige
                 local a, b = gpu.getResolution()
-                local function gpu_set(x, y)
+                local function gpu_setRes(x, y)
                     if a ~= x or b ~= y then
                         gpu.setResolution(x, y)
                     end
                 end
                 if maxanzahl <= 16 and maxanzahl ~= 0 then
                     if klein and maxanzahl > 5 then
-                        gpu_set(maxbreite[maxanzahl], maxanzahl)
+                        gpu_setRes(maxbreite[maxanzahl], maxanzahl)
                     elseif klein then
-                        gpu_set(160, maxanzahl * 3)
+                        gpu_setRes(160, maxanzahl * 3)
                     else
-                        gpu_set(maxbreite[maxanzahl], maxanzahl * 3)
+                        gpu_setRes(maxbreite[maxanzahl], maxanzahl * 3)
                     end
                 else
                     if klein and maxanzahl > 5 then
-                        gpu_set(160, 16)
+                        gpu_setRes(160, 16)
                     else
-                        gpu_set(160, 48)
+                        gpu_setRes(160, 48)
                     end
                 end
                 os.sleep(0.1)
-                local anzahl = 0
-                for i = 1, #tankanzeige do
-                    anzahl = anzahl + 1
-                    local links, rechts, breite = -15, -25, 40
-                    if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
-                        links = 40
-                        rechts = 40
-                        breite = 160
-                    elseif (64 - maxanzahl) >= anzahl and maxanzahl > 16 then
-                        links, rechts = 0, 0
-                        breite = 80
-                    end
-                    if anzahl == 17 or anzahl == 33 or anzahl == 49 then
-                        if maxanzahl > 48 and anzahl > 48 then
-                            x = 41
-                            if klein and maxanzahl > 5 then
-                                y = 1 + (64 - maxanzahl)
-                            else
-                                y = 1 + 3 * (64 - maxanzahl)
-                            end
-                            breite = 40
-                        elseif maxanzahl > 32 and anzahl > 32 then
-                            x = 121
-                            if klein and maxanzahl > 5 then
-                                y = 1 + (48 - maxanzahl)
-                            else
-                                y = 1 + 3 * (48 - maxanzahl)
-                            end
-                            breite = 40
-                        else
-                            x = 81
-                            if klein and maxanzahl > 5 then
-                                y = 1 + (32 - maxanzahl)
-                            else
-                                y = 1 + 3 * (32 - maxanzahl)
-                            end
-                        end
-                        if y < 1 then
-                            y = 1
-                        end
-                    end
-                    if maxanzahl <= 16 then
-                        if klein and maxanzahl <= 5 then
-                            breite = 160
-                        else
-                            breite = maxbreite[maxanzahl]
-                        end
-                        local a = 160 - breite
-                        links = links - (math.floor(a / 2))
-                        rechts = rechts - (math.ceil(a / 2))
-                    end   
+                local pos = f.position(maxanzahl, klein)
+                local leer = true
+                for i = 1, maxanzahl do
                     local name = string.gsub(tankanzeige[i].name, "%p", "")
                     local label = f.zeichenErsetzen(string.gsub(tankanzeige[i].label, "%p", ""))
                     local einheit = tankanzeige[i].einheit
                     local menge = tankanzeige[i].menge
                     local maxmenge = tankanzeige[i].maxmenge
                     local prozent = f.ErsetzePunktMitKomma(string.format("%.1f%%", menge / maxmenge * 100))
-                    if label == "fluidhelium3" then
+                    if label == "fluidhelium3" then --workaround
                         label = "Helium-3"
                     end
-                    f.zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl, einheit)
+                    f.zeigeHier(
+                        pos[i].x,
+                        pos[i].y,
+                        label,
+                        name,
+                        menge,
+                        maxmenge,
+                        string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent),
+                        pos[i].links,
+                        pos[i].rechts,
+                        pos[i].breite,
+                        string.sub(string.format(" %s", label), 1, 31),
+                        klein,
+                        maxanzahl,
+                        einheit
+                    )
                     if debug then
-                        gpu.set(x, y, string.format("Anzahl: %s / %s X:%s Y:%s", i, #tankanzeige, x, y))
+                        gpu.set(pos[i].x, pos[i].y, string.format("%s / %s X:%s Y:%s ", i, maxanzahl, pos[i].x, pos[i].y))
                     end
                     leer = false
-                    if klein and maxanzahl > 5 then
-                        y = y + 1
-                    else
-                        y = y + 3
-                    end
                 end
                 f.Farben(0xFFFFFF, 0x000000)
-                for i = anzahl, 33 do
-                    gpu.set(x, y , string.rep(" ", 80))
-                    if not (klein and maxanzahl > 5) then
-                        gpu.set(x, y + 1, string.rep(" ", 80))
-                        gpu.set(x, y + 2, string.rep(" ", 80))
-                    end
-                    if klein and maxanzahl > 5 then
-                        y = y + 1
-                    else
-                        y = y + 3
-                    end
-                end
             end
             if leer then
                 f.keineDaten()
@@ -390,7 +460,7 @@ function f.ErsetzePunktMitKomma(...)
 function f.zu_SI(wert)
     wert = tonumber(wert)
     if     wert < 10000 then
-        wert = string.format("%.f" , wert)
+        wert = string.format("%.f" , wert) .. " "
     elseif wert < 10000000 then
         wert = string.format("%.1f", wert / 1000) .. " k "
     elseif wert < 10000000000 then
@@ -426,10 +496,7 @@ function f.checkFarbe(name)
 end
 
 function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl, einheit)
-    if farben[name] == nil and debug then
-        nachricht = string.format("%s  %s  >>report this<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
-        nachricht = split(nachricht .. string.rep(" ", breite - unicode.len(nachricht)))
-    elseif name == "Tankname" then
+    if name == "Tankname" then
         local ausgabe = {}
         if klein and maxanzahl > 5 then
             table.insert(ausgabe, "━" .. string.rep("━", math.floor((breite - unicode.len(label)) / 2) - 2) .. " ")
@@ -449,13 +516,21 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
             menge = f.zu_SI(menge)
             maxmenge = f.zu_SI(maxmenge)
         end
-        if breite == 40 then
-            table.insert(ausgabe, string.sub(nachricht, 1, 37 - string.len(menge) - string.len(prozent)))
-            table.insert(ausgabe, string.rep(" ", 39 - unicode.len(nachricht) - string.len(menge) - string.len(prozent) - string.len(einheit)))
+        menge = " " .. menge
+        if breite == 20 then
+            if string.sub(nachricht, 1, 8) == " Molten " then -- nicht genung Platz entfernt das Molten davor
+                nachricht = " " .. string.sub(nachricht, 9)
+            end
+            table.insert(ausgabe, string.sub(nachricht, 1, breite - 3 - string.len(menge)))
+            table.insert(ausgabe, string.rep(" ", breite - 1 - unicode.len(nachricht) - string.len(menge) - string.len(einheit)))
+            table.insert(ausgabe, menge)
+            table.insert(ausgabe, einheit)
+        elseif breite == 40 then
+            table.insert(ausgabe, string.sub(nachricht, 1, breite - 3 - string.len(menge) - string.len(prozent)))
+            table.insert(ausgabe, string.rep(" ", breite - 1 - unicode.len(nachricht) - string.len(menge) - string.len(prozent) - string.len(einheit)))
             table.insert(ausgabe, menge)
             table.insert(ausgabe, einheit)
             table.insert(ausgabe, prozent)
-            table.insert(ausgabe, " ")
         else
             table.insert(ausgabe, string.sub(nachricht, 1, 25))
             table.insert(ausgabe, string.rep(" ", links + 40 - unicode.len(nachricht) - string.len(menge) - string.len(einheit)))
@@ -466,8 +541,8 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
             table.insert(ausgabe, einheit)
             table.insert(ausgabe, string.rep(" ", rechts + 28 - string.len(maxmenge) - string.len(einheit)))
             table.insert(ausgabe, prozent)
-            table.insert(ausgabe, " ")
         end
+        table.insert(ausgabe, " ")
         nachricht = split(table.concat(ausgabe))
     end
     if farben[name] == nil then
@@ -549,17 +624,24 @@ function f.checksize(screenid)
 end
 
 function f.debug(text)
+    local davor_screenid = gpu.getScreen()
     for screenid in component.list("screen") do
         if debugscreens[screenid] then
             gpu.bind(screenid, false)
             local x, y = component.proxy(screenid).getAspectRatio()
             if x == 1 and y == 1 then
                 f.Farben(0xFFFFFF, 0x000000)
+                if type(text) == "table" then
+                    text = serialization.serialize(text)
+                end
                 term.write(string.format("\nDebugscreen:\nZeit: %s --- %s\n%s\n\n", os.time(), c.uptime(), text))
             else
                 debugscreens[screenid] = false
             end
         end
+    end
+    if davor_screenid then
+        gpu.bind(davor_screenid, false)
     end
 end
 
@@ -688,6 +770,13 @@ end
 
 function f.checkUpdate(text)
     if text then
+        for screenid in component.list("screen") do
+            gpu.bind(screenid, false)
+            local x, y = component.proxy(screenid).getAspectRatio()
+            if x == 1 and y == 1 then
+                break
+            end
+        end
         term.setCursor(gpu.getResolution())
         print("\nPrüfe Version\n")
         print("Derzeitige Version:      " .. (version or "<FEHLER>"))
