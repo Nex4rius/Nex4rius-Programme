@@ -6,6 +6,7 @@
 
 return {
 ["Helium3"]                            = "Helium-3",
+["ic2steam"]                           = "IC2 Steam",
 ["fluidair"]                           = "Air",
 ["fluidchlorine"]                      = "Chlorine",
 ["fluidgasgas"]                        = "Refinery Gas",
