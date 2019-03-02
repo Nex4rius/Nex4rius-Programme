@@ -302,6 +302,41 @@ function f.position(maxanzahl, klein)
             j = j + 1
         end
     end
+    if maxanzahl > 64 then
+        local j = 64
+        for i = maxanzahl, 65, -1 do
+            pos[i] = {}
+            pos[i].links =  pos[j].links
+            pos[i].rechts = pos[j].rechts
+            pos[i].breite = 20
+            pos[j].breite = 20
+            pos[i].x = pos[j].x + 20
+            pos[i].y = pos[j].y
+            j = j - 1
+        end
+    end
+    if maxanzahl > 48 then -- Spaltensortierung
+        local sort = {}
+        for i = 1, maxanzahl do
+            local spalte = tostring(pos[i].x)
+            if not sort[spalte] then
+                sort[spalte] = {}
+            end
+            sort[spalte][#sort[spalte] + 1] = pos[i]
+        end
+        local position = {}
+        local a = 1
+        for i = 1, 160, 20 do
+            local spalte = tostring(i)
+            if sort[spalte] then
+                for j = 1, #sort[spalte] do
+                    position[a] = sort[spalte][j]
+                    a = a + 1
+                end
+            end
+        end
+        pos = position
+    end
     return pos
 end
 
@@ -316,6 +351,11 @@ function f.anzeigen()
             return
         end
         f.debug("Anzeigen werden aktualisiert")
+        local maxanzahl = #tankanzeige
+        if maxanzahl > 128 then
+            maxanzahl = 128
+            f.debug("Maximale Anzahl von 128 überschritten!")
+        end
         for screenid in component.list("screen") do
             gpu.bind(screenid, false)
             if f.checksize(screenid) then
@@ -325,7 +365,6 @@ function f.anzeigen()
                     klein = true
                 end
                 local a, b = gpu.getResolution()
-                local maxanzahl = #tankanzeige
                 local function gpu_setRes(x, y)
                     if a ~= x or b ~= y then
                         gpu.setResolution(x, y)
@@ -376,7 +415,7 @@ function f.anzeigen()
                         einheit
                     )
                     if debug then
-                        gpu.set(pos[i].x, pos[i].y, string.format("Anzahl: %s / %s X:%s Y:%s", i, maxanzahl, pos[i].x, pos[i].y))
+                        gpu.set(pos[i].x, pos[i].y, string.format("%s / %s X:%s Y:%s ", i, maxanzahl, pos[i].x, pos[i].y))
                     end
                     leer = false
                 end
@@ -479,6 +518,9 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
         end
         menge = " " .. menge
         if breite == 20 then
+            if string.sub(nachricht, 1, 8) == " Molten " then -- nicht genung Platz entfernt das Molten davor
+                nachricht = " " .. string.sub(nachricht, 9)
+            end
             table.insert(ausgabe, string.sub(nachricht, 1, breite - 3 - string.len(menge)))
             table.insert(ausgabe, string.rep(" ", breite - 1 - unicode.len(nachricht) - string.len(menge) - string.len(einheit)))
             table.insert(ausgabe, menge)
@@ -581,7 +623,8 @@ function f.checksize(screenid)
     end
 end
 
-function f.debug(text, davor_screenid)
+function f.debug(text)
+    local davor_screenid = gpu.getScreen()
     for screenid in component.list("screen") do
         if debugscreens[screenid] then
             gpu.bind(screenid, false)
