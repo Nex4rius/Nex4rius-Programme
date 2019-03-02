@@ -314,6 +314,7 @@ function f.check()
   return tank
 end
 
+--[[
 local function spairs(t, order)
   local keys = {}
   for k in pairs(t) do keys[#keys+1] = k end
@@ -330,6 +331,7 @@ local function spairs(t, order)
     end
   end
 end
+]]
 
 function f.serialize(eingabe)
   if type(eingabe) == "table" then
@@ -340,7 +342,8 @@ function f.serialize(eingabe)
       i = i + 1
     end
     --for k, v in spairs(eingabe, function(t,a,b) return tonumber(t[b].menge) < tonumber(t[a].menge) end) do
-    for k, v in spairs(eingabe, function(t,a,b) return (tonumber(t[b].menge) < tonumber(t[a].menge)) or (tonumber(t[a].menge) == tonumber(t[b].menge) and string.lower(t[a].label) <= string.lower(t[b].label)) end) do
+    --for k, v in spairs(eingabe, function(t,a,b) return (tonumber(t[b].menge) < tonumber(t[a].menge)) or (tonumber(t[a].menge) == tonumber(t[b].menge) and string.lower(t[a].label) <= string.lower(t[b].label)) end) do
+    for k, v in pairs(eingabe) do
       if v.name then
         ausgabe[i] = string.format([==[[%s] = {name="%s", label="%s", menge="%s", maxmenge="%s", einheit="%s"}, ]==], i, v.name, v.label, v.menge, v.maxmenge, v.einheit)
         i = i + 1
