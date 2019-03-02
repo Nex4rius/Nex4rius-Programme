@@ -221,6 +221,74 @@ function f.verarbeiten(tank)
     end
 end
 
+function f.position(maxanzahl, klein)
+    local pos = {}
+    local x = 1
+    local y = 1
+    for anzahl = 1, maxanzahl do
+        local links, rechts, breite = -15, -25, 40
+        if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
+            pos[anzahl].links = 40
+            rechts = 40
+            breite = 160
+        elseif (64 - maxanzahl) >= anzahl and maxanzahl > 16 then
+            links, rechts = 0, 0
+            breite = 80
+        end
+        if anzahl == 17 or anzahl == 33 or anzahl == 49 then
+            if maxanzahl > 48 and anzahl > 48 then
+                x = 41
+                if klein and maxanzahl > 5 then
+                    y = 1 + (64 - maxanzahl)
+                else
+                    y = 1 + 3 * (64 - maxanzahl)
+                end
+                breite = 40
+            elseif maxanzahl > 32 and anzahl > 32 then
+                x = 121
+                if klein and maxanzahl > 5 then
+                    y = 1 + (48 - maxanzahl)
+                else
+                    y = 1 + 3 * (48 - maxanzahl)
+                end
+                breite = 40
+            else
+                x = 81
+                if klein and maxanzahl > 5 then
+                    y = 1 + (32 - maxanzahl)
+                else
+                    y = 1 + 3 * (32 - maxanzahl)
+                end
+            end
+            if y < 1 then
+                y = 1
+            end
+        end
+        if maxanzahl <= 16 then
+            if klein and maxanzahl <= 5 then
+                breite = 160
+            else
+                breite = maxbreite[maxanzahl]
+            end
+            local a = 160 - breite
+            links = links - (math.floor(a / 2))
+            rechts = rechts - (math.ceil(a / 2))
+        end
+        pos[anzahl] = {}
+        pos[anzahl].links = links
+        pos[anzahl].rechts = rechts
+        pos[anzahl].breite = breite
+        pos[anzahl].x = x
+        pos[anzahl].y = y
+        if klein and maxanzahl > 5 then
+            y = y + 1
+        else
+            y = y + 3
+        end
+    end
+    return pos
+end
+
 function f.anzeigen()
     if erlaubeAnzeigen then
         local anzeige_reset_timer = event.timer(30, f.anzeige_reset, 1)
@@ -240,83 +308,37 @@ function f.anzeigen()
                 if hoch <= 2 then
                     klein = true
                 end
-                local x = 1
-                local y = 1
-                local leer = true
-                local maxanzahl = #tankanzeige
                 local a, b = gpu.getResolution()
-                local function gpu_set(x, y)
+                local maxanzahl = #tankanzeige
+                local function gpu_setRes(x, y)
                     if a ~= x or b ~= y then
                         gpu.setResolution(x, y)
                     end
                 end
                 if maxanzahl <= 16 and maxanzahl ~= 0 then
                     if klein and maxanzahl > 5 then
-                        gpu_set(maxbreite[maxanzahl], maxanzahl)
+                        gpu_setRes(maxbreite[maxanzahl], maxanzahl)
                     elseif klein then
-                        gpu_set(160, maxanzahl * 3)
+                        gpu_setRes(160, maxanzahl * 3)
                     else
-                        gpu_set(maxbreite[maxanzahl], maxanzahl * 3)
+                        gpu_setRes(maxbreite[maxanzahl], maxanzahl * 3)
                     end
                 else
                     if klein and maxanzahl > 5 then
-                        gpu_set(160, 16)
+                        gpu_setRes(160, 16)
                     else
-                        gpu_set(160, 48)
+                        gpu_setRes(160, 48)
                     end
                 end
                 os.sleep(0.1)
-                local anzahl = 0
-                for i = 1, #tankanzeige do
-                    anzahl = anzahl + 1
-                    local links, rechts, breite = -15, -25, 40
-                    if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
-                        links = 40
-                        rechts = 40
-                        breite = 160
-                    elseif (64 - maxanzahl) >= anzahl and maxanzahl > 16 then
-                        links, rechts = 0, 0
-                        breite = 80
-                    end
-                    if anzahl == 17 or anzahl == 33 or anzahl == 49 then
-                        if maxanzahl > 48 and anzahl > 48 then
-                            x = 41
-                            if klein and maxanzahl > 5 then
-                                y = 1 + (64 - maxanzahl)
-                            else
-                                y = 1 + 3 * (64 - maxanzahl)
-                            end
-                            breite = 40
-                        elseif maxanzahl > 32 and anzahl > 32 then
-                            x = 121
-                            if klein and maxanzahl > 5 then
-                                y = 1 + (48 - maxanzahl)
-                            else
-                                y = 1 + 3 * (48 - maxanzahl)
-                            end
-                            breite = 40
-                        else
-                            x = 81
-                            if klein and maxanzahl > 5 then
-                                y = 1 + (32 - maxanzahl)
-                            else
-                                y = 1 + 3 * (32 - maxanzahl)
-                            end
-                        end
-                        if y < 1 then
-                            y = 1
-                        end
-                    end
-                    if maxanzahl <= 16 then
-                        if klein and maxanzahl <= 5 then
-                            breite = 160
-                        else
-                            breite = maxbreite[maxanzahl]
-                        end
-                        local a = 160 - breite
-                        links = links - (math.floor(a / 2))
-                        rechts = rechts - (math.ceil(a / 2))
-                    end   
+                local pos = f.position(maxanzahl, klein)
+                local leer = true
+                for i = 1, maxanzahl do
+                    local links = pos[i].links
+                    local rechts = pos[i].rechts
+                    local breite = pos[i].breite
+                    local x = pos[i].x
+                    local y = pos[i].y
                     local name = string.gsub(tankanzeige[i].name, "%p", "")
                     local label = f.zeichenErsetzen(string.gsub(tankanzeige[i].label, "%p", ""))
                     local einheit = tankanzeige[i].einheit
@@ -328,27 +350,9 @@ function f.anzeigen()
                     end
                     f.zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl, einheit)
                     if debug then
-                        gpu.set(x, y, string.format("Anzahl: %s / %s X:%s Y:%s", i, #tankanzeige, x, y))
+                        gpu.set(x, y, string.format("Anzahl: %s / %s X:%s Y:%s", i, maxanzahl, x, y))
                     end
                     leer = false
-                    if klein and maxanzahl > 5 then
-                        y = y + 1
-                    else
-                        y = y + 3
-                    end
-                end
-                f.Farben(0xFFFFFF, 0x000000)
-                for i = anzahl, 33 do
-                    gpu.set(x, y , string.rep(" ", 80))
-                    if not (klein and maxanzahl > 5) then
-                        gpu.set(x, y + 1, string.rep(" ", 80))
-                        gpu.set(x, y + 2, string.rep(" ", 80))
-                    end
-                    if klein and maxanzahl > 5 then
-                        y = y + 1
-                    else
-                        y = y + 3
-                    end
                 end
             end
             if leer then
