@@ -390,6 +390,7 @@ function o.aktualisieren(signal)
     end
     entfernen("/update")
     print("Update vollständig")
+    o.datei = nil
     os.sleep(1)
     for i = 5, 1, -1 do
       print(string.format("\nNeustarten in %ss", i))
