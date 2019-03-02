@@ -42,6 +42,13 @@ function f.Pfad(versionTyp)
 end
 
 function f.installieren(versionTyp)
+  for screenid in component.list("screen") do
+    gpu.bind(screenid, false)
+    local x, y = component.proxy(screenid).getAspectRatio()
+    if x == 1 and y == 1 then
+      break
+    end
+  end
   gpu.setBackground(0x000000)
   gpu.setForeground(0xFFFFFF)
   print("\n\n")
