@@ -228,7 +228,7 @@ function f.position(maxanzahl, klein)
     for anzahl = 1, maxanzahl do
         local links, rechts, breite = -15, -25, 40
         if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
-            pos[anzahl].links = 40
+            links = 40
             rechts = 40
             breite = 160
         elseif (64 - maxanzahl) >= anzahl and maxanzahl > 16 then
@@ -334,23 +334,33 @@ function f.anzeigen()
                 local pos = f.position(maxanzahl, klein)
                 local leer = true
                 for i = 1, maxanzahl do
-                    local links = pos[i].links
-                    local rechts = pos[i].rechts
-                    local breite = pos[i].breite
-                    local x = pos[i].x
-                    local y = pos[i].y
                     local name = string.gsub(tankanzeige[i].name, "%p", "")
                     local label = f.zeichenErsetzen(string.gsub(tankanzeige[i].label, "%p", ""))
                     local einheit = tankanzeige[i].einheit
                     local menge = tankanzeige[i].menge
                     local maxmenge = tankanzeige[i].maxmenge
                     local prozent = f.ErsetzePunktMitKomma(string.format("%.1f%%", menge / maxmenge * 100))
-                    if label == "fluidhelium3" then
+                    if label == "fluidhelium3" then --workaround
                         label = "Helium-3"
                     end
-                    f.zeigeHier(x, y, label, name, menge, maxmenge, string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent), links, rechts, breite, string.sub(string.format(" %s", label), 1, 31), klein, maxanzahl, einheit)
+                    f.zeigeHier(
+                        pos[i].x,
+                        pos[i].y,
+                        label,
+                        name,
+                        menge,
+                        maxmenge,
+                        string.format("%s%s", string.rep(" ", 8 - string.len(prozent)), prozent),
+                        pos[i].links,
+                        pos[i].rechts,
+                        pos[i].breite,
+                        string.sub(string.format(" %s", label), 1, 31),
+                        klein,
+                        maxanzahl,
+                        einheit
+                    )
                     if debug then
-                        gpu.set(x, y, string.format("Anzahl: %s / %s X:%s Y:%s", i, maxanzahl, x, y))
+                        gpu.set(pos[i].x, pos[i].y, string.format("Anzahl: %s / %s X:%s Y:%s", i, maxanzahl, pos[i].x, pos[i].y))
                     end
                     leer = false
                 end
@@ -552,18 +562,24 @@ function f.checksize(screenid)
     end
 end
 
-function f.debug(text)
+function f.debug(text, davor_screenid)
     for screenid in component.list("screen") do
         if debugscreens[screenid] then
             gpu.bind(screenid, false)
             local x, y = component.proxy(screenid).getAspectRatio()
             if x == 1 and y == 1 then
                 f.Farben(0xFFFFFF, 0x000000)
+                if type(text) == "table" then
+                    text = serialization.serialize(text)
+                end
                 term.write(string.format("\nDebugscreen:\nZeit: %s --- %s\n%s\n\n", os.time(), c.uptime(), text))
             else
                 debugscreens[screenid] = false
             end
         end
+    end
+    if davor_screenid then
+        gpu.bind(davor_screenid, false)
     end
 end
 
