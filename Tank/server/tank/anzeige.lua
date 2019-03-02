@@ -225,50 +225,54 @@ function f.position(maxanzahl, klein)
     local pos = {}
     local x = 1
     local y = 1
-    for anzahl = 1, maxanzahl do
+    local max = maxanzahl
+    if max > 64 then
+        max = 64
+    end
+    for anzahl = 1, max do
         local links, rechts, breite = -15, -25, 40
-        if (32 - maxanzahl) >= anzahl and maxanzahl < 32 then
+        if (32 - max) >= anzahl and max < 32 then
             links = 40
             rechts = 40
             breite = 160
-        elseif (64 - maxanzahl) >= anzahl and maxanzahl > 16 then
+        elseif (64 - max) >= anzahl and max > 16 then
             links, rechts = 0, 0
             breite = 80
         end
         if anzahl == 17 or anzahl == 33 or anzahl == 49 then
-            if maxanzahl > 48 and anzahl > 48 then
+            if max > 48 and anzahl > 48 then
                 x = 41
-                if klein and maxanzahl > 5 then
-                    y = 1 + (64 - maxanzahl)
+                if klein and max > 5 then
+                    y = 1 + (64 - max)
                 else
-                    y = 1 + 3 * (64 - maxanzahl)
+                    y = 1 + 3 * (64 - max)
                 end
                 breite = 40
-            elseif maxanzahl > 32 and anzahl > 32 then
+            elseif max > 32 and anzahl > 32 then
                 x = 121
-                if klein and maxanzahl > 5 then
-                    y = 1 + (48 - maxanzahl)
+                if klein and max > 5 then
+                    y = 1 + (48 - max)
                 else
-                    y = 1 + 3 * (48 - maxanzahl)
+                    y = 1 + 3 * (48 - max)
                 end
                 breite = 40
             else
                 x = 81
-                if klein and maxanzahl > 5 then
-                    y = 1 + (32 - maxanzahl)
+                if klein and max > 5 then
+                    y = 1 + (32 - max)
                 else
-                    y = 1 + 3 * (32 - maxanzahl)
+                    y = 1 + 3 * (32 - max)
                 end
             end
             if y < 1 then
                 y = 1
             end
         end
-        if maxanzahl <= 16 then
-            if klein and maxanzahl <= 5 then
+        if max <= 16 then
+            if klein and max <= 5 then
                 breite = 160
             else
-                breite = maxbreite[maxanzahl]
+                breite = maxbreite[max]
             end
             local a = 160 - breite
             links = links - (math.floor(a / 2))
@@ -280,10 +284,22 @@ function f.position(maxanzahl, klein)
         pos[anzahl].breite = breite
         pos[anzahl].x = x
         pos[anzahl].y = y
-        if klein and maxanzahl > 5 then
+        if klein and max > 5 then
             y = y + 1
         else
             y = y + 3
+        end
+    end
+    if max > 48 then -- fix 2 und 4 Spalte vertauschen
+        local a = max - 48
+        for i = max + a, 17 + a, -1 do
+            pos[i] = pos[i - a]
+        end
+        local j = 17
+        for i = max + 1, #pos do
+            pos[j] = pos[i]
+            pos[i] = nil
+            j = j + 1
         end
     end
     return pos
@@ -364,6 +380,7 @@ function f.anzeigen()
                     end
                     leer = false
                 end
+                f.Farben(0xFFFFFF, 0x000000)
             end
             if leer then
                 f.keineDaten()
@@ -404,7 +421,7 @@ function f.ErsetzePunktMitKomma(...)
 function f.zu_SI(wert)
     wert = tonumber(wert)
     if     wert < 10000 then
-        wert = string.format("%.f" , wert)
+        wert = string.format("%.f" , wert) .. " "
     elseif wert < 10000000 then
         wert = string.format("%.1f", wert / 1000) .. " k "
     elseif wert < 10000000000 then
@@ -440,10 +457,7 @@ function f.checkFarbe(name)
 end
 
 function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl, einheit)
-    if farben[name] == nil and debug then
-        nachricht = string.format("%s  %s  >>report this<<<  %smb / %smb  %s", name, label, menge, maxmenge, prozent)
-        nachricht = split(nachricht .. string.rep(" ", breite - unicode.len(nachricht)))
-    elseif name == "Tankname" then
+    if name == "Tankname" then
         local ausgabe = {}
         if klein and maxanzahl > 5 then
             table.insert(ausgabe, "━" .. string.rep("━", math.floor((breite - unicode.len(label)) / 2) - 2) .. " ")
@@ -463,13 +477,18 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
             menge = f.zu_SI(menge)
             maxmenge = f.zu_SI(maxmenge)
         end
-        if breite == 40 then
-            table.insert(ausgabe, string.sub(nachricht, 1, 37 - string.len(menge) - string.len(prozent)))
-            table.insert(ausgabe, string.rep(" ", 39 - unicode.len(nachricht) - string.len(menge) - string.len(prozent) - string.len(einheit)))
+        menge = " " .. menge
+        if breite == 20 then
+            table.insert(ausgabe, string.sub(nachricht, 1, breite - 3 - string.len(menge)))
+            table.insert(ausgabe, string.rep(" ", breite - 1 - unicode.len(nachricht) - string.len(menge) - string.len(einheit)))
+            table.insert(ausgabe, menge)
+            table.insert(ausgabe, einheit)
+        elseif breite == 40 then
+            table.insert(ausgabe, string.sub(nachricht, 1, breite - 3 - string.len(menge) - string.len(prozent)))
+            table.insert(ausgabe, string.rep(" ", breite - 1 - unicode.len(nachricht) - string.len(menge) - string.len(prozent) - string.len(einheit)))
             table.insert(ausgabe, menge)
             table.insert(ausgabe, einheit)
             table.insert(ausgabe, prozent)
-            table.insert(ausgabe, " ")
         else
             table.insert(ausgabe, string.sub(nachricht, 1, 25))
             table.insert(ausgabe, string.rep(" ", links + 40 - unicode.len(nachricht) - string.len(menge) - string.len(einheit)))
@@ -480,8 +499,8 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
             table.insert(ausgabe, einheit)
             table.insert(ausgabe, string.rep(" ", rechts + 28 - string.len(maxmenge) - string.len(einheit)))
             table.insert(ausgabe, prozent)
-            table.insert(ausgabe, " ")
         end
+        table.insert(ausgabe, " ")
         nachricht = split(table.concat(ausgabe))
     end
     if farben[name] == nil then
