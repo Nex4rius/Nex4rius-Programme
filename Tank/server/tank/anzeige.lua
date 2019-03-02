@@ -717,7 +717,7 @@ end
 function o.tankliste(signal)
     local dazu = true
     if version ~= signal[7] then
-        f.checkUpdate()
+        --f.checkUpdate()
         --f.update(signal) -- buggy
     end
     for k, v in pairs(Sensorliste) do
