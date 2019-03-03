@@ -49,6 +49,7 @@ local letzteNachricht = c.uptime()
 local letztesAnzeigen = letzteNachricht
 local UpdatecheckZeit = -100
 local erlaubeAnzeigen = true
+local insert          = table.insert
 
 local maxbreite = {}
 for i = 1, 8 do
@@ -303,8 +304,12 @@ function f.position(maxanzahl, klein)
         end
     end
     if maxanzahl > 64 then
+        local max = maxanzahl
+        if max > 128 then
+            max = 128
+        end
         local j = 64
-        for i = maxanzahl, 65, -1 do
+        for i = max, 65, -1 do
             pos[i] = {}
             pos[i].links =  pos[j].links
             pos[i].rechts = pos[j].rechts
@@ -314,30 +319,46 @@ function f.position(maxanzahl, klein)
             pos[i].y = pos[j].y
             j = j - 1
         end
+        pos = f.spaltensortierung(pos, max)
     end
-    if maxanzahl > 48 then -- Spaltensortierung
-        local sort = {}
-        for i = 1, maxanzahl do
-            local spalte = tostring(pos[i].x)
-            if not sort[spalte] then
-                sort[spalte] = {}
-            end
-            sort[spalte][#sort[spalte] + 1] = pos[i]
+    if maxanzahl > 128 then
+        local j = 128
+        for i = maxanzahl, 129, -1 do
+            pos[i] = {}
+            pos[i].links =  pos[j].links
+            pos[i].rechts = pos[j].rechts
+            pos[i].breite = 10
+            pos[j].breite = 10
+            pos[i].x = pos[j].x + 10
+            pos[i].y = pos[j].y
+            j = j - 1
         end
-        local position = {}
-        local a = 1
-        for i = 1, 160, 20 do
-            local spalte = tostring(i)
-            if sort[spalte] then
-                for j = 1, #sort[spalte] do
-                    position[a] = sort[spalte][j]
-                    a = a + 1
-                end
-            end
-        end
-        pos = position
+        pos = f.spaltensortierung(pos, maxanzahl)
     end
     return pos
+end
+
+function f.spaltensortierung(pos, maxanzahl)
+    local sort = {}
+    for i = 1, maxanzahl do
+        local spalte = tostring(pos[i].x)
+        if not sort[spalte] then
+            sort[spalte] = {}
+        end
+        sort[spalte][#sort[spalte] + 1] = pos[i]
+    end
+    local position = {}
+    local a = 1
+    for i = 1, 160, 10 do
+        local spalte = tostring(i)
+        if sort[spalte] then
+            for j = 1, #sort[spalte] do
+                position[a] = sort[spalte][j]
+                a = a + 1
+            end
+        end
+    end
+    return position
 end
 
 function f.anzeigen()
@@ -352,9 +373,9 @@ function f.anzeigen()
         end
         f.debug("Anzeigen werden aktualisiert")
         local maxanzahl = #tankanzeige
-        if maxanzahl > 128 then
-            maxanzahl = 128
-            f.debug("Maximale Anzahl von 128 überschritten!")
+        if maxanzahl > 256 then
+            f.debug(string.format("Maximale Anzahl überschritten! %s/256", maxanzahl))
+            maxanzahl = 256
         end
         for screenid in component.list("screen") do
             gpu.bind(screenid, false)
@@ -439,7 +460,8 @@ function f.anzeigen()
 end
 
 function f.anzeige_reset()
-    f.debug("Bildschirme werden zurückgesetzt")
+    f.debug("<FEHLER> Bildschirme werden zurückgesetzt")
+    f.text("<FEHLER> Bildschirme werden zurückgesetzt")
     f.workaround()
     erlaubeAnzeigen = true
     f.anzeigen()
@@ -495,21 +517,26 @@ function f.checkFarbe(name)
     return "unbekannt"
 end
 
+function f.entferne_Molten(text) -- nicht genung Platz entfernt das Molten davor
+    if string.sub(text, 1, 8) == " Molten " then
+        return " " .. string.sub(text, 9)
+    end
+    return text
+end
+
 function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts, breite, nachricht, klein, maxanzahl, einheit)
+    local ausgabe = {}
     if name == "Tankname" then
-        local ausgabe = {}
         if klein and maxanzahl > 5 then
-            table.insert(ausgabe, "━" .. string.rep("━", math.floor((breite - unicode.len(label)) / 2) - 2) .. " ")
-            table.insert(ausgabe, string.sub(label, 1, breite - 4))
-            table.insert(ausgabe, " " .. string.rep("━", math.ceil((breite - unicode.len(label)) / 2) - 2) .. "━")
+            insert(ausgabe, "━" .. string.rep("━", math.floor((breite - unicode.len(label)) / 2) - 2) .. " ")
+            insert(ausgabe, string.sub(label, 1, breite - 4))
+            insert(ausgabe, " " .. string.rep("━", math.ceil((breite - unicode.len(label)) / 2) - 2) .. "━")
         else
-            table.insert(ausgabe, " ┃ " .. string.rep(" ", math.floor((breite - unicode.len(label)) / 2) - 3))
-            table.insert(ausgabe, string.sub(label, 1, breite - 6))
-            table.insert(ausgabe, string.rep(" ", math.ceil((breite - unicode.len(label)) / 2) - 3) .. " ┃ ")
+            insert(ausgabe, " ┃ " .. string.rep(" ", math.floor((breite - unicode.len(label)) / 2) - 3))
+            insert(ausgabe, string.sub(label, 1, breite - 6))
+            insert(ausgabe, string.rep(" ", math.ceil((breite - unicode.len(label)) / 2) - 3) .. " ┃ ")
         end
-        nachricht = split(table.concat(ausgabe))
     else
-        local ausgabe = {}
         local menge = menge
         local maxmenge = maxmenge
         if einheit == "EU" or einheit == "RF" then
@@ -517,38 +544,40 @@ function f.zeigeHier(x, y, label, name, menge, maxmenge, prozent, links, rechts,
             maxmenge = f.zu_SI(maxmenge)
         end
         menge = " " .. menge
-        if breite == 20 then
-            if string.sub(nachricht, 1, 8) == " Molten " then -- nicht genung Platz entfernt das Molten davor
-                nachricht = " " .. string.sub(nachricht, 9)
-            end
-            table.insert(ausgabe, string.sub(nachricht, 1, breite - 3 - string.len(menge)))
-            table.insert(ausgabe, string.rep(" ", breite - 1 - unicode.len(nachricht) - string.len(menge) - string.len(einheit)))
-            table.insert(ausgabe, menge)
-            table.insert(ausgabe, einheit)
+        if breite == 10 then
+            nachricht = f.entferne_Molten(nachricht)
+            insert(ausgabe, string.sub(nachricht, 1, breite - 1))
+            insert(ausgabe, string.rep(" ", breite - 1 - unicode.len(nachricht)))
+        elseif breite == 20 then
+            nachricht = f.entferne_Molten(nachricht)
+            insert(ausgabe, string.sub(nachricht, 1, breite - 3 - string.len(menge)))
+            insert(ausgabe, string.rep(" ", breite - 1 - unicode.len(nachricht) - string.len(menge) - string.len(einheit)))
+            insert(ausgabe, menge)
+            insert(ausgabe, einheit)
         elseif breite == 40 then
-            table.insert(ausgabe, string.sub(nachricht, 1, breite - 3 - string.len(menge) - string.len(prozent)))
-            table.insert(ausgabe, string.rep(" ", breite - 1 - unicode.len(nachricht) - string.len(menge) - string.len(prozent) - string.len(einheit)))
-            table.insert(ausgabe, menge)
-            table.insert(ausgabe, einheit)
-            table.insert(ausgabe, prozent)
+            insert(ausgabe, string.sub(nachricht, 1, breite - 3 - string.len(menge) - string.len(prozent)))
+            insert(ausgabe, string.rep(" ", breite - 1 - unicode.len(nachricht) - string.len(menge) - string.len(prozent) - string.len(einheit)))
+            insert(ausgabe, menge)
+            insert(ausgabe, einheit)
+            insert(ausgabe, prozent)
         else
-            table.insert(ausgabe, string.sub(nachricht, 1, 25))
-            table.insert(ausgabe, string.rep(" ", links + 40 - unicode.len(nachricht) - string.len(menge) - string.len(einheit)))
-            table.insert(ausgabe, menge)
-            table.insert(ausgabe, einheit)
-            table.insert(ausgabe, " / ")
-            table.insert(ausgabe, maxmenge)
-            table.insert(ausgabe, einheit)
-            table.insert(ausgabe, string.rep(" ", rechts + 28 - string.len(maxmenge) - string.len(einheit)))
-            table.insert(ausgabe, prozent)
+            insert(ausgabe, string.sub(nachricht, 1, 25))
+            insert(ausgabe, string.rep(" ", links + 40 - unicode.len(nachricht) - string.len(menge) - string.len(einheit)))
+            insert(ausgabe, menge)
+            insert(ausgabe, einheit)
+            insert(ausgabe, " / ")
+            insert(ausgabe, maxmenge)
+            insert(ausgabe, einheit)
+            insert(ausgabe, string.rep(" ", rechts + 28 - string.len(maxmenge) - string.len(einheit)))
+            insert(ausgabe, prozent)
         end
-        table.insert(ausgabe, " ")
-        nachricht = split(table.concat(ausgabe))
+        insert(ausgabe, " ")
     end
+    nachricht = split(table.concat(ausgabe))
     if farben[name] == nil then
         name = f.checkFarbe(name)
     end
-    local oben = " ┏" .. string.rep("━", breite - 4) .. "┓ "
+    local oben  = " ┏" .. string.rep("━", breite - 4) .. "┓ "
     local unten = " ┗" .. string.rep("━", breite - 4) .. "┛ "
     local grenze = math.ceil(breite * menge / maxmenge)
     f.Farben(farben[name][1], farben[name][2])
@@ -616,10 +645,11 @@ function f.checksize(screenid)
         debugscreens[screenid] = false
         f.Farben(0xFFFFFF, 0x000000)
         term.clear()
-        gpu.setResolution(28, 3)
-        gpu.set(1, 1, "Error: wrong screen size")
+        gpu.setResolution(28, 4)
+        gpu.set(1, 1, "error: wrong screen size")
         gpu.set(1, 2, string.format("current size: %sx%s", x, y))
         gpu.set(1, 3, "allowed sizes: 4x1, 8x2, 8x5")
+        gpu.set(1, 4, "debug size: 1x1")
     end
 end
 
@@ -728,7 +758,7 @@ function o.tankliste(signal)
         end
     end
     if dazu then
-        table.insert(Sensorliste, signal)
+        insert(Sensorliste, signal)
     end
     for k, v in pairs(timer) do
         event.cancel(v)
@@ -778,6 +808,7 @@ function f.checkUpdate(text)
             end
         end
         term.setCursor(gpu.getResolution())
+        term.clear()
         print("\nPrüfe Version\n")
         print("Derzeitige Version:      " .. (version or "<FEHLER>"))
         io.write("Verfügbare Version:      ")
@@ -827,11 +858,10 @@ function f.workaround() -- Bildschirme resetten damit sie wieder Farben akzeptie
     end
 end
 
-function f.component_removed()
-    f.debug("Komponenten entfernt\nComputer wird neugestartet um Problemen vorzubeugen\n\nNeustart in 5s")
-    f.beenden()
-    os.sleep(5)
-    require("computer").shutdown(true)
+function f.component_removed(...)
+    local e = {...}
+    f.debug("Komponente entfernt")
+    f.debug(e)
 end
 
 function f.main()
@@ -842,7 +872,6 @@ function f.main()
     m.open(port + 1)
     f.text("Warte auf Daten")
     event.listen("modem_message", f.event)
-    event.listen("component_added", f.anzeigen)
     event.listen("component_removed", f.component_removed)
     timer.senden = event.timer(Zeit, f.senden, math.huge)
     timer.tank = event.timer(Zeit + 15, f.tank, 1)
@@ -859,7 +888,6 @@ end
 function f.beenden()
     laeuft = false
     event.ignore("modem_message", f.event)
-    event.ignore("component_added", f.tank)
     event.ignore("component_removed", f.component_removed)
     event.ignore("interrupted", f.beenden)
     for k, v in pairs(timer) do
