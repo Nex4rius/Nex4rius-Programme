@@ -11,7 +11,7 @@ local weiter = true
 local text = ""
 
 function f.antwort(...)
-
+  print(...)
 end
 
 function f.loop()
