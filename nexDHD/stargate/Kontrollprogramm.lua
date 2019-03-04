@@ -109,8 +109,9 @@ do
   local altesSenden = sg.sendMessage
   sg.sendMessage = function(...)
     altesSenden(...)
+    local daten = {...}
     if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-      component.modem.broadcast(Sicherung.Port, ...)
+      component.modem.broadcast(Sicherung.Port, daten[1])
     end
   end
 end
