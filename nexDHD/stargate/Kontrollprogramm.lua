@@ -820,6 +820,7 @@ function f.aktualisiereStatus()
     v.IDC_Anzahl = 0
     RichtungName = ""
     RichtungName = sprachen.RichtungNameEin
+    f.openModem()
   end
   if state == "Idle" then
     v.IDC_Anzahl = 0
@@ -907,6 +908,7 @@ function f.activetime()
   if state == "Connected" then
     if reset then
       activationtime = os.time()
+      time = 0
     else
       if activationtime == 0 then
         activationtime = os.time()
