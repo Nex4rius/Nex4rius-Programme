@@ -18,7 +18,7 @@ if type(ALT) ~= "table" then ALT = {} end
 if standard then
   standard = standard()
 else
-  standard = {autoclosetime = 60, IDC = "", RF = false, Sprache = "", side = "unten", autoUpdate = true, StargateName = "", Port = 645, debug = false, control = "On", installieren = false, Theme = "normal", kein_senden = false}
+  standard = {autoclosetime = 60, IDC = "", RF = false, Sprache = "", side = "unten", autoUpdate = true, StargateName = "", Port = 645, Reichweite = 40, debug = false, control = "On", installieren = false, Theme = "normal", kein_senden = false}
 end
 
 local function reset()
@@ -31,7 +31,8 @@ local function reset()
     Sprache        = "deutsch / english / russian / czech",
     side           = "unten, oben, hinten, vorne, rechts oder links",
     autoUpdate     = "aktiviere automatische Aktualisierungen",
-    Port           = "standard 800",
+    Port           = "Standard 645",
+    Reichweite     = "Stärke des WLan-Signals",
     debug          = "zum debuggen",
     nichtsAendern  = "verändere nichts ab hier",
     StargateName   = "der Name dieses Stargates",
@@ -71,6 +72,7 @@ if type(NEU) == "table" then
   check("string" , "side")
   check("boolean", "autoUpdate")
   check("number" , "Port")
+  check("number" , "Reichweite")
   check("boolean", "debug")
   check("string" , "control")
   check("boolean", "installieren")
@@ -96,6 +98,7 @@ if type(NEU) == "table" then
   f:write('  autoUpdate    = '  .. tostring(Sicherung.autoUpdate)   ..  ', -- ' .. tostring(sprachen.autoUpdate)    .. '\n')
   f:write('  StargateName  = "' .. tostring(Sicherung.StargateName) .. '", -- ' .. tostring(sprachen.StargateName)  .. '\n')
   f:write('  Port          = '  .. tostring(Sicherung.Port)         ..  ', -- ' .. tostring(sprachen.Port)          .. '\n')
+  f:write('  Reichweite    = '  .. tostring(Sicherung.Reichweite)   ..  ', -- ' .. tostring(sprachen.Reichweite)    .. '\n')
   f:write('  Theme         = "' .. tostring(Sicherung.Theme)        .. '", -- ' .. tostring(sprachen.Theme)         .. '\n')
   f:write('  kein_senden   = '  .. tostring(Sicherung.kein_senden)  ..  ', -- ' .. tostring(sprachen.kein_senden)   .. '\n')
   f:write('\n')
