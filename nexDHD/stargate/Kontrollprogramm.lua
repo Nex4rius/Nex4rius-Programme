@@ -1709,7 +1709,9 @@ end
 
 function f.openModem()
   o.modem_message = f.modem_message
-  component.modem.broadcast(Sicherung.Port, "GDO")
+  if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
+    component.modem.broadcast(Sicherung.Port, "GDO")
+  end
 end
 
 function f.closeModem()
