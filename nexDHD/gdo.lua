@@ -24,8 +24,9 @@ function f.loop()
     gpu.set(1, 3, "IDC:")
     gpu.set(1, 5, text)
     term.setCursor(6, 3)
-    text = "IDC senden: '" .. io.read() .. "'" .. string.rep(" ", 50)
-    modem.broadcast(port, text)
+    local code = io.read()
+    text = "IDC senden: '" .. code .. "'" .. string.rep(" ", 50)
+    modem.broadcast(port, code)
   end
 end
 
