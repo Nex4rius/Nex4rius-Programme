@@ -105,17 +105,6 @@ local ersetzen                  = loadfile("/stargate/sprache/ersetzen.lua")(spr
 local sg                        = component.getPrimary("stargate")
 local screen                    = component.getPrimary("screen") or {}
 
-do
-  local altesSenden = sg.sendMessage
-  sg.sendMessage = function(...)
-    altesSenden(...)
-    local daten = {...}
-    if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-      component.modem.broadcast(Sicherung.Port, daten[1])
-    end
-  end
-end
-
 local Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
 local max_Bildschirmbreite, max_Bildschirmhoehe = gpu.maxResolution()
 
@@ -167,10 +156,20 @@ Taste.Steuerungrechts           = {}
 
 v.IDC_Anzahl                    = 0
 
-local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit, alte_modem_message
+local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit, alte_modem_message, alte_modem_send
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben
 
 do
+  local altesSenden = sg.sendMessage
+  sg.sendMessage = function(...)
+    altesSenden(...)
+    local daten = {...}
+    if component.isAvailable("modem") and type(Sicherung.Port) == "number" and daten[1] ~= alte_modem_send and state == "Connected" then
+      component.modem.broadcast(Sicherung.Port, daten[1])
+    end
+    alte_modem_send = daten[1]
+  end
+  
   if fs.exists("/einstellungen/logbuch.lua") then
     local neu = loadfile("/einstellungen/logbuch.lua")()
     if type(neu) == "table" then
