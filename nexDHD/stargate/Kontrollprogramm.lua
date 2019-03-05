@@ -150,6 +150,7 @@ local redstoneIDC               = false
 local LampenGruen               = false
 local LampenRot                 = false
 local VersionUpdate             = false
+local reset                     = false
 
 Taste.Koordinaten               = {}
 Taste.Steuerunglinks            = {}
@@ -287,7 +288,7 @@ function f.reset()
   v.reset_uptime = computer.uptime()
   v.reset_time = os.time()
   
-  return not (uptime + 5 > time and time + 5 > uptime)
+  reset = not (uptime + 5 > time and time + 5 > uptime)
 end
 
 function f.pull_event()
@@ -803,6 +804,7 @@ function f.wurmlochRichtung()
 end
 
 function f.aktualisiereStatus()
+  reset()
   gpu.setResolution(70, 25)
   sg = component.getPrimary("stargate")
   locAddr = f.getAddress(sg.localAddress())
@@ -812,7 +814,7 @@ function f.aktualisiereStatus()
   f.Zielname()
   f.wurmlochRichtung()
   f.Iriskontrolle()
-  if f.reset() then
+  if reset then
     wurmloch = "in"
     direction = "Incoming"
     v.IDC_Anzahl = 0
@@ -903,7 +905,7 @@ end
 
 function f.activetime()
   if state == "Connected" then
-    if reset() then
+    if reset then
       activationtime = os.time()
     else
       if activationtime == 0 then
@@ -1101,6 +1103,7 @@ function f.zeigeStatus()
   f.zeigeSteuerung()
   f.RedstoneKontrolle()
   f.Colorful_Lamp_Steuerung()
+  reset = false
 end
 
 function f.SchreibInAndererFarben(x, y, text, textfarbe, hintergrundfarbe, h)
