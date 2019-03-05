@@ -8,6 +8,7 @@ local fs = require("filesystem")
 
 local f = {}
 local port
+local portstandard = 645
 local weiter = true
 local text = ""
 
@@ -44,9 +45,9 @@ function f.main()
   modem.setStrength(math.huge)
   event.listen("modem_message", f.antwort)
   if fs.exists("/port") then
-    port = loadfile("/port")() or 645
+    port = loadfile("/port")() or portstandard
   else
-    print("Port? (standard: 645)")
+    print("Port? (standard: " .. portstandard .. ")")
     local eingabe = io.read()
     if type(eingabe) == "number" then
       if eingabe <= 65534 and eingabe >= 1 then
@@ -55,6 +56,8 @@ function f.main()
         d:write("return " .. port)
         d:close()
       end
+    else
+      port = portstandard
     end
   end
   loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "nexDHD GDO " .. port)
