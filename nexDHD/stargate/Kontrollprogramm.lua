@@ -1150,12 +1150,17 @@ end
 
 local debug_uptime = computer.uptime()
 local debug_time = os.time()
+local debug_einmal = false
 function f.debug()
   local uptime = computer.uptime() - debug_uptime
   local time =  (os.time() - debug_time) / 100
+  local debug_ja = uptime + 5 > time and time + 5 > uptime
+  if debug_ja then
+    debug_einmal = true
+  end
   
-  local text = string.format("uptime: %s, time: %s, gleich? %s", uptime, time, uptime + 1 > time and time + 1 > uptime)
-  f.zeigeHier(1, Bildschirmhoehe - 1, text, Bildschirmbreite)
+  local text = string.format("uptime: %s, time: %s, gleich? %s, einmal: %s", uptime, time, debug_ja, debug_einmal)
+  f.zeigeHier(5, Bildschirmhoehe - 1, text, Bildschirmbreite)
   
   debug_uptime = computer.uptime()
   debug_time = os.time()
