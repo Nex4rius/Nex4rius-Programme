@@ -1659,10 +1659,14 @@ function o.modem_message(...)
   end
 end
 
+hier = 0
+
 function f.check_IDC(code)
-  f.schreibFehlerLog(code)
-  f.schreibFehlerLog(v.IDC_Anzahl)
+  hier = hier + 1
+  print(hier, v.IDC_Anzahl, code)
   if v.IDC_Anzahl < 10 then
+    f.schreibFehlerLog(code)
+    f.schreibFehlerLog(v.IDC_Anzahl)
     v.IDC_Anzahl = v.IDC_Anzahl + 1
     if direction == "Incoming" and wurmloch == "in" then
       if code ~= "Adressliste" then
