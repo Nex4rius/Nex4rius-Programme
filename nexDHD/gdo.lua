@@ -19,7 +19,7 @@ end
 function f.loop()
   while weiter do
     term.clear()
-    gpu.set(1, 1, "nexDHD Tablet")
+    gpu.set(1, 1, "nexDHD GDO")
     gpu.set(1, 2, "IDC eingeben")
     gpu.set(1, 3, "IDC:")
     gpu.set(1, 5, text)

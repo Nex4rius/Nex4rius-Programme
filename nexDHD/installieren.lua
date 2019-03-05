@@ -318,6 +318,11 @@ function f.installieren(versionTyp)
   Statustimer = nil
 end
 
+if OC and component.isAvailable("tablet") then
+  while not wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/nexDHD/gdo.lua", "/autorun.lua") do end
+  require("computer").shutdown(true)
+end
+
 if versionTyp == nil then
   if arg == "neu" then
     if OC then
