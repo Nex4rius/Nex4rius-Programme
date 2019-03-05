@@ -804,7 +804,7 @@ function f.wurmlochRichtung()
 end
 
 function f.aktualisiereStatus()
-  reset()
+  f.reset()
   gpu.setResolution(70, 25)
   sg = component.getPrimary("stargate")
   locAddr = f.getAddress(sg.localAddress())
