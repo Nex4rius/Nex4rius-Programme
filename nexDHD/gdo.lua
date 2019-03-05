@@ -7,7 +7,7 @@ local term = require("term")
 local fs = require("filesystem")
 
 local f = {}
-local port = 645
+local port
 local weiter = true
 local text = ""
 
