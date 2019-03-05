@@ -1161,7 +1161,7 @@ function f.debug()
   debug_time = os.time()
 end
 
-event.timer(1, f.debug(), math.huge)
+event.timer(1, f.debug, math.huge)
 
 function f.Legende()
   f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
