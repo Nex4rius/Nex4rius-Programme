@@ -11,12 +11,16 @@ local port
 local portstandard = 645
 local weiter = true
 local text = ""
+local alte_modem_message
 
 function f.antwort(...)
   local e = {...}
-  text = e[6] .. string.rep(" ", 50)
-  computer.beep("-")
-  gpu.set(1, 5, text)
+  if e[6] ~= alte_modem_message then
+    text = e[6] .. string.rep(" ", 50)
+    computer.beep("-")
+    gpu.set(1, 5, text)
+    alte_modem_message = e[6]
+  end
 end
 
 function f.loop()
