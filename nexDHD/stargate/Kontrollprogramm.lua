@@ -291,6 +291,7 @@ function f.reset()
   reset = not (uptime + 5 > time and time + 5 > uptime)
   if reset then
     event.timer(10, function() reset = false end, 1)
+    o.sgDialIn()
   end
 end
 
