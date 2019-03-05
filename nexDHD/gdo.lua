@@ -55,6 +55,7 @@ function f.main()
       end
     end
   end
+  loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "nexDHD GDO")
   os.sleep(1)
   modem.open(port)
   gpu.setResolution(50, 5)
