@@ -12,18 +12,20 @@ local text = ""
 
 function f.antwort(...)
   local e = {...}
-  text = e[6] .. string.rep(" ", 30)
-  gpu.set(1, 4, text)
+  text = e[6] .. string.rep(" ", 50)
+  gpu.set(1, 5, text)
 end
 
 function f.loop()
   while weiter do
     term.clear()
-    gpu.set(1, 1, "IDC eingeben")
-    gpu.set(1, 2, "IDC:")
-    gpu.set(1, 4, text)
+    gpu.set(1, 1, "nexDHD Tablet")
+    gpu.set(1, 2, "IDC eingeben")
+    gpu.set(1, 3, "IDC:")
+    gpu.set(1, 5, text)
     term.setCursor(6, 2)
     modem.broadcast(port, io.read())
+    text = string.rep(" ", 50)
   end
 end
 
@@ -52,7 +54,7 @@ function f.main()
       end
     end
   end
-  gpu.setResolution(50, 4)
+  gpu.setResolution(50, 5)
   os.sleep(1)
   modem.open(port)
   pcall(f.loop)
