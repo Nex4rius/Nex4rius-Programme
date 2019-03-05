@@ -12,7 +12,7 @@ local text = ""
 
 function f.antwort(...)
   local e = {...}
-  text = e[6]
+  text = e[6] .. string.rep(" ", 30)
   gpu.set(1, 4, text)
 end
 
@@ -36,7 +36,6 @@ function f.main()
     print("Keine WLAN-Karte")
     return
   end
-  gpu.setResolution(40, 4)
   modem.setStrength(math.huge)
   event.listen("modem_message", f.antwort)
   if fs.exists("/port") then
@@ -53,6 +52,7 @@ function f.main()
       end
     end
   end
+  gpu.setResolution(50, 4)
   os.sleep(1)
   modem.open(port)
   pcall(f.loop)
