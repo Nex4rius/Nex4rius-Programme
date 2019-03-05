@@ -11,11 +11,11 @@ local port
 local portstandard = 645
 local weiter = true
 local text = ""
-local nachricht_entfernen_timer = 0
+local ausschalttimer = 0
 
 function f.reset()
-  event.cancel(nachricht_entfernen_timer)
-  nachricht_entfernen_timer = event.timer(120, function() text = string.rep(" ", 50) gpu.set(1, 5, text) end, 1)
+  event.cancel(ausschalttimer)
+  ausschalttimer = event.timer(30, function() require("computer").shutdown(true) end, 1)
 end
 
 function f.antwort(...)
@@ -29,6 +29,8 @@ function f.antwort(...)
 end
 
 function f.loop()
+  modem.setWakeMessage("GDO")
+  modem.setStrength(20)
   while weiter do
     f.reset()
     term.clear()
