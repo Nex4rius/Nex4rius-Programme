@@ -12,7 +12,7 @@ local text = ""
 
 function f.antwort(...)
   local e = {...}
-  text = e[7]
+  text = e[6]
   gpu.set(1, 4, text)
 end
 
