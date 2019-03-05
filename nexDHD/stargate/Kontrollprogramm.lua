@@ -34,6 +34,7 @@ local gpu, serialization, sprachen, unicode, ID, Updatetimer, log
 if OC then
   serialization = require("serialization")
   component = require("component")
+  computer = require("computer")
   event = require("event")
   unicode = require("unicode")
   gpu = component.getPrimary("gpu")
@@ -105,17 +106,6 @@ local ersetzen                  = loadfile("/stargate/sprache/ersetzen.lua")(spr
 local sg                        = component.getPrimary("stargate")
 local screen                    = component.getPrimary("screen") or {}
 
-do
-  local altesSenden = sg.sendMessage
-  sg.sendMessage = function(...)
-    altesSenden(...)
-    local daten = {...}
-    if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-      component.modem.broadcast(Sicherung.Port, daten[1])
-    end
-  end
-end
-
 local Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
 local max_Bildschirmbreite, max_Bildschirmhoehe = gpu.maxResolution()
 
@@ -160,17 +150,31 @@ local redstoneIDC               = false
 local LampenGruen               = false
 local LampenRot                 = false
 local VersionUpdate             = false
+local reset                     = false
 
 Taste.Koordinaten               = {}
 Taste.Steuerunglinks            = {}
 Taste.Steuerungrechts           = {}
 
-v.WLAN_Anzahl                   = 0
+v.IDC_Anzahl                    = 0
+v.reset_uptime                  = computer.uptime()
+v.reset_time                    = os.time()
 
-local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit
+local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit, alte_modem_message, alte_modem_send
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben
 
 do
+  local altesSenden = sg.sendMessage
+  sg.sendMessage = function(...)
+    altesSenden(...)
+    local daten = {...}
+    --if component.isAvailable("modem") and type(Sicherung.Port) == "number" and ((daten[1] ~= alte_modem_send and (state == "Dialing" or state == "Connected") and wurmloch == "in") or reset) then
+    if component.isAvailable("modem") and type(Sicherung.Port) == "number" and daten[1] ~= alte_modem_send and (state == "Dialing" or state == "Connected") then
+      component.modem.broadcast(Sicherung.Port, daten[1])
+      alte_modem_send = daten[1]
+    end
+  end
+  
   if fs.exists("/einstellungen/logbuch.lua") then
     local neu = loadfile("/einstellungen/logbuch.lua")()
     if type(neu) == "table" then
@@ -276,6 +280,20 @@ end
 function f.Farbe(hintergrund, vordergrund)
   gpu.setBackground(hintergrund)
   gpu.setForeground(vordergrund)
+end
+
+function f.reset()
+  local uptime = computer.uptime() - v.reset_uptime
+  local time =  (os.time() - v.reset_time) / 100
+  
+  v.reset_uptime = computer.uptime()
+  v.reset_time = os.time()
+  
+  reset = not (uptime + 5 > time and time + 5 > uptime)
+  if reset then
+    event.timer(10, function() reset = false end, 1)
+    o.sgDialIn()
+  end
 end
 
 function f.pull_event()
@@ -791,6 +809,7 @@ function f.wurmlochRichtung()
 end
 
 function f.aktualisiereStatus()
+  f.reset()
   gpu.setResolution(70, 25)
   sg = component.getPrimary("stargate")
   locAddr = f.getAddress(sg.localAddress())
@@ -800,8 +819,16 @@ function f.aktualisiereStatus()
   f.Zielname()
   f.wurmlochRichtung()
   f.Iriskontrolle()
+  if reset then
+    wurmloch = "in"
+    direction = "Incoming"
+    v.IDC_Anzahl = 0
+    RichtungName = ""
+    RichtungName = sprachen.RichtungNameEin
+    f.openModem()
+  end
   if state == "Idle" then
-    v.WLAN_Anzahl = 0
+    v.IDC_Anzahl = 0
     RichtungName = ""
   else
     if wurmloch == "out" then
@@ -884,12 +911,17 @@ end
 
 function f.activetime()
   if state == "Connected" then
-    if activationtime == 0 then
+    if reset then
       activationtime = os.time()
-    end
-    time = (activationtime - os.time()) / sectime
-    if time > 0 then
-      f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit1 .. f.ErsetzePunktMitKomma(string.format("%.1f", time)) .. "s")
+      time = 0
+    else
+      if activationtime == 0 then
+        activationtime = os.time()
+      end
+      time = (activationtime - os.time()) / sectime
+      if time > 0 then
+        f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit1 .. f.ErsetzePunktMitKomma(string.format("%.1f", time)) .. "s")
+      end
     end
   else
     f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit2)
@@ -1652,18 +1684,26 @@ function o.sgChevronEngaged(...)
 end
 
 function o.modem_message(...)
-  f.closeModem()
   local e = {...}
-  if e[6] and type(e[6]) == "string" and e[6] ~= "" then
-    v.WLAN_Anzahl = v.WLAN_Anzahl + 1
-    if v.WLAN_Anzahl < 20 then
-      if direction == "Incoming" and wurmloch == "in" then
-        if e[6] ~= "Adressliste" then
-          incode = e[6]
-        end
+  if e[6] and type(e[6]) == "string" and e[6] ~= "" and e[6] ~= "Adressliste" and e[6] ~= alte_modem_message then
+    f.check_IDC(e[6])
+  end
+  alte_modem_message = e[6]
+end
+
+hier = 0
+
+function f.check_IDC(code)
+  if v.IDC_Anzahl < 10 then
+    v.IDC_Anzahl = v.IDC_Anzahl + 1
+    if direction == "Incoming" and wurmloch == "in" then
+      if code ~= "Adressliste" then
+        incode = code
       end
-      event.timer(2, f.openModem, 1)
     end
+  else
+    sg.sendMessage(sprachen.IDC_blockiert)
+    f.closeModem()
   end
 end
 
@@ -1682,7 +1722,8 @@ function o.sgMessageReceived(...)
   elseif direction == "Incoming" and wurmloch == "in" then
     if e[3] == "Adressliste" then
     else
-      incode = tostring(e[3])
+      --incode = tostring(e[3])
+      f.check_IDC(tostring(e[3]))
     end
   end
   if e[4] == "Adressliste" then
@@ -1745,18 +1786,27 @@ function o.sgStargateStateChange(...)
 end
 
 function f.eventLoop()
+  local von_modem = false
   while running do
-    f.checken(f.zeigeStatus)
+    if not von_modem then
+      f.checken(f.zeigeStatus)
+    end
+    von_modem = false
     e = f.pull_event()
     if not e then
     elseif not e[1] then
+    elseif e[1] == "modem_message" then
+      von_modem = true
+      o.modem_message(nil, nil, nil, nil, nil, e[6])
     else
       d = f[e[1]]
       if d then
         f.checken(d, e)
       end
     end
-    f.zeigeAnzeige()
+    if not von_modem then
+      f.zeigeAnzeige()
+    end
   end
 end
 
@@ -1885,7 +1935,7 @@ function o.component_added(eventname, id, comp)
     r = component.getPrimary("redstone")
   elseif comp == "modem" then
     if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-      component.modem.open(Sicherung.Port)
+      component.modem.open(Sicherung.Port + 1)
       f.openModem()
     end
   end
@@ -1899,7 +1949,7 @@ end
 
 function f.main()
   if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-    component.modem.open(Sicherung.Port)
+    component.modem.open(Sicherung.Port + 1)
   end
   f.modem_message = o.modem_message
   pcall(screen.setTouchModeInverted, true)
