@@ -12,10 +12,13 @@ local portstandard = 645
 local weiter = true
 local text = ""
 local alte_modem_message
+local nachricht_entfernen_timer = 0
 
 function f.antwort(...)
   local e = {...}
   if e[6] ~= alte_modem_message then
+    event.cancel(nachricht_entfernen_timer)
+    nachricht_entfernen_timer = event.timer(120, function() text = string.rep(" ", 50) gpu.set(1, 5, text) end, 1)
     text = e[6] .. string.rep(" ", 50)
     computer.beep("--")
     gpu.set(1, 5, text)
