@@ -156,6 +156,8 @@ Taste.Steuerunglinks            = {}
 Taste.Steuerungrechts           = {}
 
 v.IDC_Anzahl                    = 0
+v.reset_uptime                  = computer.uptime()
+v.reset_time                    = os.time()
 
 local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit, alte_modem_message, alte_modem_send
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben
@@ -276,6 +278,16 @@ end
 function f.Farbe(hintergrund, vordergrund)
   gpu.setBackground(hintergrund)
   gpu.setForeground(vordergrund)
+end
+
+function f.reset()
+  local uptime = computer.uptime() - v.reset_uptime
+  local time =  (os.time() - v.reset_time) / 100
+  
+  v.reset_uptime = computer.uptime()
+  v.reset_time = os.time()
+  
+  return not (uptime + 5 > time and time + 5 > uptime)
 end
 
 function f.pull_event()
@@ -800,6 +812,13 @@ function f.aktualisiereStatus()
   f.Zielname()
   f.wurmlochRichtung()
   f.Iriskontrolle()
+  if f.reset() then
+    wurmloch = "in"
+    direction = "Incoming"
+    v.IDC_Anzahl = 0
+    RichtungName = ""
+    RichtungName = sprachen.RichtungNameEin
+  end
   if state == "Idle" then
     v.IDC_Anzahl = 0
     RichtungName = ""
@@ -884,12 +903,16 @@ end
 
 function f.activetime()
   if state == "Connected" then
-    if activationtime == 0 then
+    if reset() then
       activationtime = os.time()
-    end
-    time = (activationtime - os.time()) / sectime
-    if time > 0 then
-      f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit1 .. f.ErsetzePunktMitKomma(string.format("%.1f", time)) .. "s")
+    else
+      if activationtime == 0 then
+        activationtime = os.time()
+      end
+      time = (activationtime - os.time()) / sectime
+      if time > 0 then
+        f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit1 .. f.ErsetzePunktMitKomma(string.format("%.1f", time)) .. "s")
+      end
     end
   else
     f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit2)
@@ -1147,26 +1170,6 @@ function f.zeigeNachricht(inhalt, oben)
   end
   f.Farbe(Farben.Statusfarbe)
 end
-
-local debug_uptime = computer.uptime()
-local debug_time = os.time()
-local debug_einmal = false
-function f.debug()
-  local uptime = computer.uptime() - debug_uptime
-  local time =  (os.time() - debug_time) / 100
-  local debug_ja = uptime + 5 > time and time + 5 > uptime
-  if not debug_ja then
-    debug_einmal = true
-  end
-  
-  local text = string.format("uptime: %s, time: %s, gleich? %s, einmal: %s", uptime, time, debug_ja, debug_einmal)
-  f.zeigeHier(5, Bildschirmhoehe - 1, text, Bildschirmbreite)
-  
-  debug_uptime = computer.uptime()
-  debug_time = os.time()
-end
-
-event.timer(1, f.debug, math.huge)
 
 function f.Legende()
   f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
