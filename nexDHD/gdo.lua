@@ -1,4 +1,5 @@
 local component = require("component")
+local computer = require("computer")
 local gpu = component.getPrimary("gpu")
 local modem = component.getPrimary("modem")
 local event = require("event")
@@ -13,6 +14,7 @@ local text = ""
 function f.antwort(...)
   local e = {...}
   text = e[6] .. string.rep(" ", 50)
+  computer.beep("-")
   gpu.set(1, 5, text)
 end
 
@@ -55,7 +57,7 @@ function f.main()
       end
     end
   end
-  loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "nexDHD GDO")
+  loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "nexDHD GDO " .. port)
   os.sleep(1)
   modem.open(port)
   gpu.setResolution(50, 5)
