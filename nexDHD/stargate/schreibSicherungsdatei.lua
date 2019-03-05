@@ -31,7 +31,7 @@ local function reset()
     Sprache        = "deutsch / english / russian / czech",
     side           = "unten, oben, hinten, vorne, rechts oder links",
     autoUpdate     = "aktiviere automatische Aktualisierungen",
-    Port           = "standard 800",
+    Port           = "Standard 645",
     Reichweite     = "Stärke des WLan-Signals",
     debug          = "zum debuggen",
     nichtsAendern  = "verändere nichts ab hier",
