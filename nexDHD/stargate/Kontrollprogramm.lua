@@ -167,7 +167,7 @@ Taste.Steuerungrechts           = {}
 
 v.IDC_Anzahl                    = 0
 
-local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit
+local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit, alte_modem_message
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben
 
 do
@@ -1653,9 +1653,11 @@ end
 
 function o.modem_message(...)
   local e = {...}
-  if e[6] and type(e[6]) == "string" and e[6] ~= "" and e[6] ~= "Adressliste" then
+  print(alte_modem_message)
+  if e[6] and type(e[6]) == "string" and e[6] ~= "" and e[6] ~= "Adressliste" and e[6] ~= alte_modem_message then
     f.check_IDC(e[6])
   end
+  alte_modem_message = e[6]
 end
 
 hier = 0
