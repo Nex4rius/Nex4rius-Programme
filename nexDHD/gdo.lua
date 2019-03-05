@@ -15,12 +15,12 @@ local ausschalttimer = 0
 
 function f.reset()
   event.cancel(ausschalttimer)
-  ausschalttimer = event.timer(30, require("computer").shutdown, 1)
+  ausschalttimer = event.timer(300, require("computer").shutdown, 1)
 end
 
 function f.antwort(...)
   local e = {...}
-  if e[6] .. string.rep(" ", 50) ~= text then
+  if string.len(e[6]) > 0 and e[6] .. string.rep(" ", 50) ~= text then
     f.reset()
     text = e[6] .. string.rep(" ", 50)
     computer.beep("--")
