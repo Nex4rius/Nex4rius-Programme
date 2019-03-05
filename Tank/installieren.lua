@@ -2,199 +2,306 @@
 -- von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/
 
+os.sleep(2)
+
 require("shell").setWorkingDirectory("/")
 
 local fs          = require("filesystem")
-local arg         = require("shell").parse(...)[1]
+local term        = require("term")
+local arg         = ...
 local wget        = loadfile("/bin/wget.lua")
-local copy        = loadfile("/bin/cp.lua")
 local component   = require("component")
 local gpu         = component.gpu
-local Sicherung   = {}
-local Funktionen  = {}
-local sprachen
+local f           = {}
 
-if fs.exists("/stargate/Sicherungsdatei.lua") then
-  Sicherung = loadfile("/stargate/Sicherungsdatei.lua")()
-else
-  Sicherung.Sprache = ""
-  Sicherung.installieren = false
-end
-
-if Sicherung.Sprache then
-  if fs.exists("/stargate/sprache/" .. Sicherung.Sprache .. ".lua") then
-    sprachen = loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")()
+local function verschieben(von, nach)
+  fs.remove(nach)
+  local ergebnis, grund = fs.rename(von, nach)
+  if not ergebnis then
+    print("<FEHLER> Verschieben nicht möglich")
+    print(von .. " -> " .. nach)
+    print(grund)
+    os.exit()
+  end
+  print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach)))
+  if fs.exists(von) then
+    print("<FEHLER> Kopieren")
+    os.exit()
   end
 end
+local entfernen   = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
 
-function Funktionen.Pfad(versionTyp)
-  if versionTyp then
+function f.Pfad(versionTyp)
+  if versionTyp == "beta" then
+    return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/Tank/Tank/"
+  elseif versionTyp then
     return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/" .. versionTyp .. "/Tank/"
   else
     return "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/Tank/"
   end
 end
 
-function Funktionen.installieren(versionTyp)
+function f.installieren(versionTyp)
+  for screenid in component.list("screen") do
+    gpu.bind(screenid, false)
+    local x, y = component.proxy(screenid).getAspectRatio()
+    if x == 1 and y == 1 then
+      break
+    end
+  end
   gpu.setBackground(0x000000)
   gpu.setForeground(0xFFFFFF)
-  require("term").clear()
+  print("\n\n")
   local weiter = true
+  local sensoren = {
+    --Tank
+    "transposer",
+    "tank_controller",
+    --EU
+    "chargepad_batbox", "batbox",
+    "chargepad_cesu", "cesu",
+    "chargepad_mfe", "mfe",
+    "chargepad_mfsu", "mfsu",
+    --RF
+    "capacitor_bank",
+    "energy_device",
+    --ME
+    "me_controller",
+    "me_interface",
+    --Essentia
+    "blockjar_0",
+    "blockjar_3",
+    "blockcreativejar_3",
+    "blocktube_2",
+    "blocktube_4",
+    "blockmetaldevice_1",
+    "blockstonedevice_14",
+    "blockessentiareservoir",
+    "jar_normal",
+    "jar_void",
+}
+  local function Sensorcheck(name)
+    if component.isAvailable(name) then
+      print(name .. " gefunden. Client/Sensor wird heruntergeladen.")
+      typ = "client"
+      weiter = false
+      return true
+    end
+  end
+  for k, v in pairs(sensoren) do
+    if Sensorcheck(v) then
+      break
+    end
+  end
+  if weiter and gpu.maxResolution() == 160 then
+    print("Tier III GPU und Bildschirm gefunden. Server/Anzeige wird heruntergeladen.")
+    typ = "server"
+    weiter = false
+  end
+  if weiter then
+    print("Kein Tier III GPU, Tier III Bildschirm, Tank Controller oder Transposer gefunden.")
+  end
   while weiter do
-    print("\n\nserver (display) / client (adapter + tank)?\n")
-    typ = io.read()
+    print("\n\nServer (Anzeige) / Client (Sensor)?\n")
+    typ = string.lower(io.read())
     if typ == "server" or typ == "client" then
       weiter = false
     else
       weiter = true
     end
   end
-  Funktionen.Komponenten(typ)
-  fs.makeDirectory("/tank")
-  fs.makeDirectory("/update/tank")
+  f.Komponenten(typ)
+  local function ordner(...)
+    while not fs.exists(...) do
+      fs.makeDirectory(...)
+      print("Erstelle Ordner " .. ...)
+    end
+  end
+  ordner("/tank/client/tank")
+  ordner("/update/tank/client/tank")
+  print()
   local updateKomplett = false
+  local function download(von, nach)
+    for j = 1, 11 do
+      if wget("-f", f.Pfad(versionTyp) .. von, nach) then
+        return true
+      elseif require("component").isAvailable("internet") and j <= 10 then
+        print("\t" .. von .. "\nerneuter Downloadversuch in " .. j .. "s\n")
+        os.sleep(j)
+      else
+        print("\n<FEHLER> Download funktioniert nicht\nProgram wird beendet\n")
+        os.exit()
+      end
+    end
+  end
   local anzahl = 3
   local update = {}
-  loadfile("/bin/pastebin.lua")("run", "-f", "63v6mQtK", versionTyp)
-  update[1]   = wget("-f", Funktionen.Pfad(versionTyp) .. typ .. "/autorun.lua",       "/update/autorun.lua")
-  update[2]   = wget("-f", Funktionen.Pfad(versionTyp) ..        "/version.txt",       "/update/tank/version.txt")
+  update[1]   = download("version.txt", "/update/tank/version.txt")
+  update[2]   = download(typ .. "/autorun.lua", "/update/autorun.lua")
   if typ == "client" then
-    update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. typ .. "/tank/auslesen.lua", "/update/tank/auslesen.lua")
-    loadfile("/bin/pastebin.lua")("run", "-f", "ZbxDmMeC", versionTyp)
+    update[3] = download(typ .. "/tank/auslesen.lua", "/update/tank/auslesen.lua")
   else
-    update[3] = wget("-f", Funktionen.Pfad(versionTyp) .. typ .. "/tank/farben.lua",   "/update/tank/farben.lua")
-    update[4] = wget("-f", Funktionen.Pfad(versionTyp) .. typ .. "/tank/anzeige.lua",  "/update/tank/anzeige.lua")
-    update[5] = wget("-f", Funktionen.Pfad(versionTyp) .. typ .. "/tank/ersetzen.lua", "/update/tank/ersetzen.lua")
-    anzahl = 5
+    update[3] = download(typ .. "/tank/farben.lua", "/update/tank/farben.lua")
+    update[4] = download(typ .. "/tank/anzeige.lua", "/update/tank/anzeige.lua")
+    update[5] = download(typ .. "/tank/ersetzen.lua", "/update/tank/ersetzen.lua")
+    update[6] = download("client/autorun.lua", "/update/tank/client/autorun.lua")
+    update[7] = download("client/tank/auslesen.lua", "/update/tank/client/tank/auslesen.lua")
+    update[8] = download("version.txt", "/update/tank/client/tank/version.txt")
+    anzahl = 8
   end
   for i = 1, anzahl do
     if update[i] then
       updateKomplett = true
     else
       updateKomplett = false
-      if sprachen then
-        print(sprachen.fehlerName .. " " .. i)
-      else
-        print("Fehler " ..i)
-      end
-      local f = io.open ("/autorun.lua", "w")
-      f:write('-- pastebin run -f cyF0yhXZ\n')
-      f:write('-- von Nex4rius\n')
-      f:write('-- https://github.com/Nex4rius/Nex4rius-Programme\n')
-      f:write('\n')
-      f:write('local shell = require("shell")\n')
-      f:write('local alterPfad = shell.getWorkingDirectory("/")\n')
-      f:write('local args = shell.parse(...)[1]\n')
-      f:write('\n')
-      f:write('shell.setWorkingDirectory("/")\n')
-      f:write('\n')
-      f:write('if type(args) == "string" then\n')
+      print("<Fehler> " ..i)
+      local d = io.open ("/autorun.lua", "w")
+      d:write('-- pastebin run -f cyF0yhXZ\n')
+      d:write('-- von Nex4rius\n')
+      d:write('-- https://github.com/Nex4rius/Nex4rius-Programme\n')
+      d:write('\n')
+      d:write('local shell = require("shell")\n')
+      d:write('local alterPfad = shell.getWorkingDirectory("/")\n')
+      d:write('local args = shell.parse(...)[1]\n')
+      d:write('\n')
+      d:write('shell.setWorkingDirectory("/")\n')
+      d:write('\n')
+      d:write('if type(args) == "string" then\n')
       if typ == "client" then
-        f:write('  loadfile("/tank/auslesen.lua")(args)\n')
-        f:write('else\n')
-        f:write('  loadfile("/tank/auslesen.lua")()\n')
+        d:write('  loadfile("/tank/auslesen.lua")(args)\n')
+        d:write('else\n')
+        d:write('  loadfile("/tank/auslesen.lua")()\n')
       else
-        f:write('  loadfile("/tank/anzeige.lua")(args)\n')
-        f:write('else\n')
-        f:write('  loadfile("/tank/anzeige.lua")()\n')
+        d:write('  loadfile("/tank/anzeige.lua")(args)\n')
+        d:write('else\n')
+        d:write('  loadfile("/tank/anzeige.lua")()\n')
       end
-      f:write('end\n')
-      f:write('\n')
-      f:write('shell.setWorkingDirectory(alterPfad)\n')
-      f:close()
+      d:write('end\n')
+      d:write('\n')
+      d:write('shell.setWorkingDirectory(alterPfad)\n')
+      d:close()
       break
     end
   end
   if updateKomplett then
-    copy("/update/autorun.lua",         "/autorun.lua")
-    copy("/update/tank/version.txt",    "/tank/version.txt")
-    if typ == "client" then
-      copy("/update/tank/auslesen.lua", "/tank/auslesen.lua")
-    else
-      copy("/update/tank/anzeige.lua",  "/tank/anzeige.lua")
-      copy("/update/tank/farben.lua",   "/tank/farben.lua")
-      copy("/update/tank/ersetzen.lua", "/tank/ersetzen.lua")
+    print("\nErsetze alte Dateien")
+    local function kopieren(...)
+      for i in fs.list(...) do
+        if fs.isDirectory(i) then
+          kopieren(... .. i)
+        end
+        verschieben("/update/" .. i, "/" .. i)
+      end
     end
-    f = io.open ("/tank/version.txt", "r")
-    version = f:read()
-    f:close()
-    if versionTyp == "beta" then
-      f = io.open ("/tank/version.txt", "w")
-      f:write(version .. " BETA")
-      f:close()
-    end
-    Sicherung.installieren = true
-    --loadfile("/stargate/schreibSicherungsdatei.lua")(Sicherung)
+    kopieren("/update")
     print()
-    updateKomplett = loadfile("/bin/rm.lua")("-v", "/update", "-r")
-    updateKomplett = loadfile("/bin/rm.lua")("-v", "/installieren.lua")
+    entfernen("/update")
+    entfernen("/installieren.lua")
+    d = io.open("/tank/version.txt", "r")
+    version = d:read()
+    d:close()
+    if versionTyp == "beta" then
+      d = io.open ("/tank/version.txt", "w")
+      d:write(version .. " BETA")
+      d:close()
+    end
+    print()
   end
-  local f = io.open ("/bin/tank.lua", "w")
-  f:write('-- pastebin run -f cyF0yhXZ\n')
-  f:write('-- von Nex4rius\n')
-  f:write('-- https://github.com/Nex4rius/Nex4rius-Programme\n')
-  f:write('\n')
-  f:write('loadfile("/autorun.lua")(require("shell").parse(...)[1])\n')
-  f:close()
+  local d = io.open ("/autorun.lua", "r")
+  local e = io.open ("/bin/tank.lua", "w")
+  e:write(d:read("*a"))
+  e:close()
+  d:close()
   if updateKomplett then
-    print("\nUpdate komplett\n" .. version .. " " .. string.upper(tostring(versionTyp)))
+    print("\nUpdate vollständig\n" .. version .. " " .. string.upper(tostring(versionTyp)))
     os.sleep(2)
-    pcall(loadfile("/autorun.lua"))
   else
     print("\nERROR install / update failed\n")
   end
-  print("10s bis Neustart")
-  os.sleep(10)
+  for i = 10, 1, -1 do
+    print("Neustart in " .. i .. "s")
+    os.sleep(1)
+  end
+  if fs.exists("/log") then
+    fs.remove("/log")
+  end
   require("computer").shutdown(true)
 end
 
-function Funktionen.Komponenten(typ)
-  require("term").clear()
-  print("check components\n")
-  if component.isAvailable("internet") then
-    gpu.setForeground(0x00FF00)
-    print("Internet Card - OK")
-  else
-    gpu.setForeground(0xFF0000)
-    print("Internet Card - ERROR")
+function f.Komponenten(typ)
+  local function zeigen(name, text)
+    if component.isAvailable(name) then
+      gpu.setForeground(0x00FF00)
+      print(text .. string.rep(" ", 34 - string.len(text)) .. "- OK")
+    --else
+    --  gpu.setForeground(0xFF0000)
+    --  print(text .. string.rep(" ", 34 - string.len(text)) .. "- fehlt")
+    end
   end
+  print("\nPrüfe Komponenten\n")
   if component.isAvailable("modem") then
     gpu.setForeground(0x00FF00)
-    print("Network Card - OK")
+    if component.modem.isWireless() then
+      print("Netzwerkkarte                     - OK")
+      print("WLAN-Karte                        - OK")
+    else
+      print("Netzwerkkarte                     - OK")
+      print("WLAN-Karte                        - fehlt")
+    end
   else
     gpu.setForeground(0xFF0000)
-    print("Network Card - ERROR")
+    print("Netzwerkkarte                     - fehlt")
+    print("WLAN-Karte                        - fehlt")
   end
   if typ == "server" then
+    zeigen("internet", "Internetkarte")
     if gpu.maxResolution() == 160 then
       gpu.setForeground(0x00FF00)
-      print("Graphic Card T3 - OK")
-      print("Screen T3 - OK")
+      print("Grafikkarte Tier III              - OK")
+      print("Bildschirm Tier III               - OK")
     else
       gpu.setForeground(0xFF0000)
-      print("Graphic Card T3 - ERROR")
-      print("Screen T3 - ERROR")
+      print("Grafikkarte Tier III              - fehlt")
+      print("Bildschirm Tier III               - fehlt")
     end
   else
-    if component.isAvailable("tank_controller") then
-      gpu.setForeground(0x00FF00)
-      print("Adapter + Tank Controller Upgrade - OK")
-    else
-      gpu.setForeground(0xFF0000)
-      print("Adapter + Tank Controller Upgrade - ERROR")
-    end
+    zeigen("tank_controller", "Tank Controller Upgrade")
+    zeigen("transposer", "Transposer")
+    zeigen("batbox", "Batbox")
+    zeigen("cesu", "CESU")
+    zeigen("mfe", "MFE")
+    zeigen("mfsu", "MFSU")
+    zeigen("chargepad_batbox", "Batbox Charge Pad")
+    zeigen("chargepad_cesu", "CESU Charge Pad")
+    zeigen("chargepad_mfe", "MFE Charge Pad")
+    zeigen("chargepad_mfsu", "MFSU Charge Pad")
+    zeigen("capacitor_bank", "Capacitor Bank")
+    zeigen("energy_device", "RF-Energy Storage")
+    zeigen("me_controller", "ME Controller")
+    zeigen("me_interface", "ME Interface")
+    zeigen("blockjar_0", "Warded Jar")
+    zeigen("jar_normal", "Warded Jar")
+    zeigen("blockjar_3", "Void Jar")
+    zeigen("jar_void", "Void Jar")
+    zeigen("blockcreativejar_3", "Creative Jar")
+    zeigen("blocktube_2", "Essentia blocktube_2")
+    zeigen("blocktube_4", "Essentia blocktube_4")
+    zeigen("blockmetaldevice_1", "Essentia blockmetaldevice_1")
+    zeigen("blockstonedevice_14", "Essentia blockstonedevice_14")
+    zeigen("blockessentiareservoir", "Essentia blockessentiareservoir")
   end
+  print()
   gpu.setForeground(0xFFFFFF)
-  print("\npress enter to continue\n")
-  require("term").read()
 end
+
+term.clear()
 
 if versionTyp == nil then
   if type(arg) == "string" then
-    Funktionen.installieren(arg)
+    f.installieren(arg)
   else
-    Funktionen.installieren("master")
+    f.installieren("master")
   end
 else
-  Funktionen.installieren(versionTyp)
+  f.installieren(versionTyp)
 end

@@ -17,18 +17,19 @@ Allowed sizes: 4x1; 8x2; 8x5
 <a href="https://www.youtube.com/watch?v=avvYO2xSxGw">installation instructions</a>
 
 server / display components:
-- Internet Card (to install)
+- Internet Card (to install & update)
 - Network Card
 - Graphics Card T3
 - Screen T3
 
 client / adapter + tank components:
-- Internet Card (to install)
+- Internet Card (only to install)
 - Network Card
-- Adapter + Tank Controller Upgrade
+- Adapter + Tank Controller Upgrade or Transposer
 
 Make pull requests if you want :)
-You can add new liquids <a href="https://github.com/Nex4rius/Nex4rius-Programme/blob/beta/Tank/server/tank/farben.lua">here</a>.
+You can add new liquids <a href="https://github.com/Nex4rius/Nex4rius-Programme/blob/Tank/Tank/server/tank/farben.lua">here</a>.
 
 tested with:<br>
-OpenComputers-MC1.7.10-1.6.1.11-universal
+OpenComputers-MC1.7.10-1.6.1.11-universal<br>
+OpenComputers-MC1.12.2-1.7.2.67

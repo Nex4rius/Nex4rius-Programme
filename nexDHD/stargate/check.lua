@@ -490,7 +490,9 @@ function f.mainCheck()
             print(sprachen.autoUpdateAn or "automatische Aktualisierungen sind aktiviert")
             print()
             os.sleep(2)
-            f.update("master")
+            Funktion.update("master")
+          elseif Sicherun.autoUpdate and version == serverVersion then
+            -- nichts
           else
             antwortFrage = io.read()
             if string.lower(antwortFrage) == sprachen.ja or string.lower(antwortFrage) == "ja" or string.lower(antwortFrage) == "yes" then
