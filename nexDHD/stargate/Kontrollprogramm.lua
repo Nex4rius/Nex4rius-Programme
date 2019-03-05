@@ -1894,7 +1894,7 @@ function o.component_added(eventname, id, comp)
     r = component.getPrimary("redstone")
   elseif comp == "modem" then
     if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-      component.modem.open(Sicherung.Port)
+      component.modem.open(Sicherung.Port + 1)
       f.openModem()
     end
   end
@@ -1908,7 +1908,7 @@ end
 
 function f.main()
   if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-    component.modem.open(Sicherung.Port)
+    component.modem.open(Sicherung.Port + 1)
   end
   f.modem_message = o.modem_message
   pcall(screen.setTouchModeInverted, true)
