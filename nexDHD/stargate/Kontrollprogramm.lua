@@ -1652,7 +1652,6 @@ end
 
 function o.modem_message(...)
   local e = {...}
-  print(alte_modem_message)
   if e[6] and type(e[6]) == "string" and e[6] ~= "" and e[6] ~= "Adressliste" and e[6] ~= alte_modem_message then
     f.check_IDC(e[6])
   end
