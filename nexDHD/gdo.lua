@@ -17,7 +17,7 @@ function f.antwort(...)
   local e = {...}
   if e[6] ~= alte_modem_message then
     text = e[6] .. string.rep(" ", 50)
-    computer.beep("-")
+    computer.beep("--")
     gpu.set(1, 5, text)
     alte_modem_message = e[6]
   end
