@@ -1652,6 +1652,7 @@ function o.sgChevronEngaged(...)
 end
 
 function o.modem_message(...)
+  f.schreibFehlerLog(...)
   local e = {...}
   if e[6] and type(e[6]) == "string" and e[6] ~= "" and e[6] ~= "Adressliste" then
     f.check_IDC(e[6])
@@ -1659,8 +1660,10 @@ function o.modem_message(...)
 end
 
 function f.check_IDC(code)
-  v.IDC_Anzahl = v.IDC_Anzahl + 1
+  f.schreibFehlerLog(code)
+  f.schreibFehlerLog(v.IDC_Anzahl)
   if v.IDC_Anzahl < 10 then
+    v.IDC_Anzahl = v.IDC_Anzahl + 1
     if direction == "Incoming" and wurmloch == "in" then
       if code ~= "Adressliste" then
         incode = code
