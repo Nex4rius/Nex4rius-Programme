@@ -80,6 +80,7 @@ function f.main()
   pcall(f.loop)
   gpu.setResolution(gpu.maxResolution())
   event.ignore("modem_message", f.antwort)
+  event.cancel(ausschalttimer)
 end
 
 print(pcall(f.main))
