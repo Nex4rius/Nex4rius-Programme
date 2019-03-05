@@ -15,7 +15,7 @@ local ausschalttimer = 0
 
 function f.reset()
   event.cancel(ausschalttimer)
-  ausschalttimer = event.timer(30, require("computer").shutdown, 1)
+  ausschalttimer = event.timer(300, require("computer").shutdown, 1)
 end
 
 function f.antwort(...)
