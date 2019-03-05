@@ -11,7 +11,9 @@ local weiter = true
 local text = ""
 
 function f.antwort(...)
-  print(...)
+  local e = {...}
+  text = e[7]
+  gpu.set(1, 4, text)
 end
 
 function f.loop()
@@ -34,7 +36,7 @@ function f.main()
     print("Keine WLAN-Karte")
     return
   end
---  gpu.setResolution(40, 4)
+  gpu.setResolution(40, 4)
   modem.setStrength(math.huge)
   event.listen("modem_message", f.antwort)
   if fs.exists("/port") then
@@ -55,7 +57,7 @@ function f.main()
   modem.open(port)
   pcall(f.loop)
   gpu.setResolution(gpu.maxResolution())
-  event.ignore("modem_message")
+  event.ignore("modem_message", f.antwort)
 end
 
 print(pcall(f.main))
