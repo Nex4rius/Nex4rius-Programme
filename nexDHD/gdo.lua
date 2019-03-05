@@ -54,9 +54,9 @@ function f.main()
       end
     end
   end
-  gpu.setResolution(50, 5)
   os.sleep(1)
   modem.open(port)
+  gpu.setResolution(50, 5)
   pcall(f.loop)
   gpu.setResolution(gpu.maxResolution())
   event.ignore("modem_message", f.antwort)
