@@ -1652,7 +1652,6 @@ function o.sgChevronEngaged(...)
 end
 
 function o.modem_message(...)
-  f.schreibFehlerLog(...)
   local e = {...}
   if e[6] and type(e[6]) == "string" and e[6] ~= "" and e[6] ~= "Adressliste" then
     f.check_IDC(e[6])
@@ -1662,11 +1661,7 @@ end
 hier = 0
 
 function f.check_IDC(code)
-  hier = hier + 1
-  print(hier, v.IDC_Anzahl, code)
   if v.IDC_Anzahl < 10 then
-    f.schreibFehlerLog(code)
-    f.schreibFehlerLog(v.IDC_Anzahl)
     v.IDC_Anzahl = v.IDC_Anzahl + 1
     if direction == "Incoming" and wurmloch == "in" then
       if code ~= "Adressliste" then
@@ -1758,18 +1753,27 @@ function o.sgStargateStateChange(...)
 end
 
 function f.eventLoop()
+  local von_modem = false
   while running do
-    f.checken(f.zeigeStatus)
+    if not von_modem then
+      f.checken(f.zeigeStatus)
+    end
+    von_modem = false
     e = f.pull_event()
     if not e then
     elseif not e[1] then
+    elseif e[1] == "modem_message" then
+      von_modem = true
+      o.modem_message(nil, nil, nil, nil, nil, e[6])
     else
       d = f[e[1]]
       if d then
         f.checken(d, e)
       end
     end
-    f.zeigeAnzeige()
+    if not von_modem then
+      f.zeigeAnzeige()
+    end
   end
 end
 
