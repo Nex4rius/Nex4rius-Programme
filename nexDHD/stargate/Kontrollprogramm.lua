@@ -1151,7 +1151,12 @@ end
 local debug_uptime = computer.uptime()
 local debug_time = os.time()
 function f.debug()
-  f.zeigeHier(1, Bildschirmhoehe - 1, string.format("uptime: %s, time: %s, gleich? %s", computer.uptime() - debug_uptime, os.time() - debug_time), Bildschirmbreite)
+  local uptime = computer.uptime() - debug_uptime
+  local time =  os.time() - debug_time
+  
+  local text = string.format("uptime: %s, time: %s, gleich? %s", uptime, time, uptime + 1 > time and time + 1 > uptime)
+  f.zeigeHier(1, Bildschirmhoehe - 1, text, Bildschirmbreite)
+  
   debug_uptime = computer.uptime()
   debug_time = os.time()
 end
