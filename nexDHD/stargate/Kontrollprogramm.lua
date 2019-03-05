@@ -1709,8 +1709,13 @@ end
 
 function f.openModem()
   o.modem_message = f.modem_message
-  if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-    component.modem.broadcast(Sicherung.Port, "GDO")
+  if component.isAvailable("modem") then
+    if type(Sicherung.Port) == "number" then
+      component.modem.broadcast(Sicherung.Port, "GDO")
+    end
+    if type(Sicherung.Reichweite) == "number" then
+      component.modem.strength(Sicherung.Reichweite)
+    end
   end
 end
 
