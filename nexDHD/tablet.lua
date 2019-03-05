@@ -11,17 +11,21 @@ local weiter = true
 local text = ""
 
 function f.antwort(...)
-
+  local e = {...}
+  text = e[6] .. string.rep(" ", 50)
+  gpu.set(1, 5, text)
 end
 
 function f.loop()
   while weiter do
     term.clear()
-    gpu.set(1, 1, "IDC eingeben")
-    gpu.set(1, 2, "IDC:")
-    gpu.set(1, 4, text)
-    term.setCursor(6, 2)
+    gpu.set(1, 1, "nexDHD Tablet")
+    gpu.set(1, 2, "IDC eingeben")
+    gpu.set(1, 3, "IDC:")
+    gpu.set(1, 5, text)
+    term.setCursor(6, 3)
     modem.broadcast(port, io.read())
+    text = string.rep(" ", 50)
   end
 end
 
@@ -34,7 +38,6 @@ function f.main()
     print("Keine WLAN-Karte")
     return
   end
---  gpu.setResolution(40, 4)
   modem.setStrength(math.huge)
   event.listen("modem_message", f.antwort)
   if fs.exists("/port") then
@@ -51,11 +54,12 @@ function f.main()
       end
     end
   end
+  gpu.setResolution(50, 5)
   os.sleep(1)
   modem.open(port)
   pcall(f.loop)
   gpu.setResolution(gpu.maxResolution())
-  event.ignore("modem_message")
+  event.ignore("modem_message", f.antwort)
 end
 
 print(pcall(f.main))
