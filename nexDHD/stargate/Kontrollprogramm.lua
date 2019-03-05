@@ -1710,7 +1710,7 @@ end
 function f.openModem()
   o.modem_message = f.modem_message
   if component.isAvailable("modem") and type(Sicherung.Reichweite) == "number" then
-    component.modem.strength(Sicherung.Reichweite)
+    component.modem.setStrength(Sicherung.Reichweite)
   end
 end
 
