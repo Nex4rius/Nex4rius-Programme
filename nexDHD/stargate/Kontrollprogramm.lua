@@ -166,8 +166,8 @@ do
     local daten = {...}
     if component.isAvailable("modem") and type(Sicherung.Port) == "number" and daten[1] ~= alte_modem_send and state == "Connected" then
       component.modem.broadcast(Sicherung.Port, daten[1])
+      alte_modem_send = daten[1]
     end
-    alte_modem_send = daten[1]
   end
   
   if fs.exists("/einstellungen/logbuch.lua") then
