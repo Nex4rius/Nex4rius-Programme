@@ -11,26 +11,26 @@ local port
 local portstandard = 645
 local weiter = true
 local text = ""
-local alte_modem_message
-local nachricht_entfernen_timer = 0
+local ausschalttimer = 0
 
 function f.reset()
-  event.cancel(nachricht_entfernen_timer)
-  nachricht_entfernen_timer = event.timer(120, function() text = string.rep(" ", 50) gpu.set(1, 5, text) end, 1)
+  event.cancel(ausschalttimer)
+  ausschalttimer = event.timer(30, require("computer").shutdown, 1)
 end
 
 function f.antwort(...)
   local e = {...}
-  if e[6] ~= alte_modem_message then
+  if e[6] .. string.rep(" ", 50) ~= text then
     f.reset()
     text = e[6] .. string.rep(" ", 50)
     computer.beep("--")
     gpu.set(1, 5, text)
-    alte_modem_message = e[6]
   end
 end
 
 function f.loop()
+  modem.setWakeMessage("GDO")
+  modem.setStrength(20)
   while weiter do
     f.reset()
     term.clear()
@@ -80,6 +80,7 @@ function f.main()
   pcall(f.loop)
   gpu.setResolution(gpu.maxResolution())
   event.ignore("modem_message", f.antwort)
+  event.cancel(ausschalttimer)
 end
 
 print(pcall(f.main))
