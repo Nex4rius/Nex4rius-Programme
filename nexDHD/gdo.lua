@@ -49,7 +49,7 @@ function f.main()
     print("Port? (standard: 645)")
     local eingabe = io.read()
     if type(eingabe) == "number" then
-      if eingabe <= 65535 and eingabe >= 1 then
+      if eingabe <= 65534 and eingabe >= 1 then
         port = math.floor(eingabe)
         local d = io.open("/port", "w")
         d:write("return " .. port)
@@ -60,6 +60,7 @@ function f.main()
   loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "nexDHD GDO " .. port)
   os.sleep(1)
   modem.open(port)
+  port = port + 1
   gpu.setResolution(50, 5)
   pcall(f.loop)
   gpu.setResolution(gpu.maxResolution())
