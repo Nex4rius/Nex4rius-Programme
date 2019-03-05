@@ -1155,7 +1155,7 @@ function f.debug()
   local uptime = computer.uptime() - debug_uptime
   local time =  (os.time() - debug_time) / 100
   local debug_ja = uptime + 5 > time and time + 5 > uptime
-  if debug_ja then
+  if not debug_ja then
     debug_einmal = true
   end
   
