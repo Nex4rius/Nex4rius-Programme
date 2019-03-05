@@ -165,7 +165,7 @@ Taste.Koordinaten               = {}
 Taste.Steuerunglinks            = {}
 Taste.Steuerungrechts           = {}
 
-v.WLAN_Anzahl                   = 0
+v.IDC_Anzahl                    = 0
 
 local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben
@@ -801,7 +801,7 @@ function f.aktualisiereStatus()
   f.wurmlochRichtung()
   f.Iriskontrolle()
   if state == "Idle" then
-    v.WLAN_Anzahl = 0
+    v.IDC_Anzahl = 0
     RichtungName = ""
   else
     if wurmloch == "out" then
@@ -1652,18 +1652,23 @@ function o.sgChevronEngaged(...)
 end
 
 function o.modem_message(...)
-  f.closeModem()
   local e = {...}
-  if e[6] and type(e[6]) == "string" and e[6] ~= "" then
-    v.WLAN_Anzahl = v.WLAN_Anzahl + 1
-    if v.WLAN_Anzahl < 20 then
-      if direction == "Incoming" and wurmloch == "in" then
-        if e[6] ~= "Adressliste" then
-          incode = e[6]
-        end
+  if e[6] and type(e[6]) == "string" and e[6] ~= "" and e[6] ~= "Adressliste" then
+    f.check_IDC(e[6])
+  end
+end
+
+function f.check_IDC(code)
+  v.IDC_Anzahl = v.IDC_Anzahl + 1
+  if v.IDC_Anzahl < 10 then
+    if direction == "Incoming" and wurmloch == "in" then
+      if code ~= "Adressliste" then
+        incode = code
       end
-      event.timer(2, f.openModem, 1)
     end
+  else
+    sg.sendMessage(sprachen.IDC_blockiert)
+    f.closeModem()
   end
 end
 
@@ -1682,7 +1687,8 @@ function o.sgMessageReceived(...)
   elseif direction == "Incoming" and wurmloch == "in" then
     if e[3] == "Adressliste" then
     else
-      incode = tostring(e[3])
+      --incode = tostring(e[3])
+      f.check_IDC(tostring(e[3]))
     end
   end
   if e[4] == "Adressliste" then
