@@ -34,6 +34,7 @@ local gpu, serialization, sprachen, unicode, ID, Updatetimer, log
 if OC then
   serialization = require("serialization")
   component = require("component")
+  computer = require("computer")
   event = require("event")
   unicode = require("unicode")
   gpu = component.getPrimary("gpu")
@@ -1146,6 +1147,16 @@ function f.zeigeNachricht(inhalt, oben)
   end
   f.Farbe(Farben.Statusfarbe)
 end
+
+local debug_uptime = computer.uptime()
+local debug_time = os.time()
+function f.debug()
+  f.zeigeHier(1, Bildschirmhoehe - 1, string.format("uptime: %s, time: %s, gleich? %s", computer.uptime() - debug_uptime, os.time() - debug_time), Bildschirmbreite)
+  debug_uptime = computer.uptime()
+  debug_time = os.time()
+end
+
+event.timer(1, f.debug(), math.huge)
 
 function f.Legende()
   f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
