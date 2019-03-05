@@ -168,7 +168,8 @@ do
   sg.sendMessage = function(...)
     altesSenden(...)
     local daten = {...}
-    if component.isAvailable("modem") and type(Sicherung.Port) == "number" and ((daten[1] ~= alte_modem_send and (state == "Dialing" or state == "Connected") and wurmloch == "in") or reset) then
+    --if component.isAvailable("modem") and type(Sicherung.Port) == "number" and ((daten[1] ~= alte_modem_send and (state == "Dialing" or state == "Connected") and wurmloch == "in") or reset) then
+    if component.isAvailable("modem") and type(Sicherung.Port) == "number" and daten[1] ~= alte_modem_send and (state == "Dialing" or state == "Connected") then
       component.modem.broadcast(Sicherung.Port, daten[1])
       alte_modem_send = daten[1]
     end
