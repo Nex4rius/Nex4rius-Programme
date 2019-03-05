@@ -1709,6 +1709,7 @@ end
 
 function f.openModem()
   o.modem_message = f.modem_message
+  component.modem.broadcast(Sicherung.Port, "GDO")
 end
 
 function f.closeModem()
