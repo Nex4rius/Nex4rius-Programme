@@ -168,7 +168,7 @@ do
   sg.sendMessage = function(...)
     altesSenden(...)
     local daten = {...}
-    if component.isAvailable("modem") and type(Sicherung.Port) == "number" and daten[1] ~= alte_modem_send and (state == "Dialing" or state == "Connected") and wurmloch == "in" then
+    if component.isAvailable("modem") and type(Sicherung.Port) == "number" and ((daten[1] ~= alte_modem_send and (state == "Dialing" or state == "Connected") and wurmloch == "in") or reset) then
       component.modem.broadcast(Sicherung.Port, daten[1])
       alte_modem_send = daten[1]
     end
@@ -289,6 +289,9 @@ function f.reset()
   v.reset_time = os.time()
   
   reset = not (uptime + 5 > time and time + 5 > uptime)
+  if reset then
+    event.timer(10, function() reset = false end, 1)
+  end
 end
 
 function f.pull_event()
@@ -1105,7 +1108,6 @@ function f.zeigeStatus()
   f.zeigeSteuerung()
   f.RedstoneKontrolle()
   f.Colorful_Lamp_Steuerung()
-  reset = false
 end
 
 function f.SchreibInAndererFarben(x, y, text, textfarbe, hintergrundfarbe, h)
