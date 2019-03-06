@@ -491,7 +491,7 @@ function f.mainCheck()
             print()
             os.sleep(2)
             f.update("master")
-          elseif Sicherun.autoUpdate and version == serverVersion then
+          elseif Sicherung.autoUpdate and version == serverVersion then
             -- nichts
           else
             antwortFrage = io.read()
