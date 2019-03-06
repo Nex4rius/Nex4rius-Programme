@@ -22,7 +22,9 @@ end
 
 function f.antwort(...)
   local e = {...}
-  if string.len(e[6]) > 0 and e[6] .. string.rep(" ", 50) ~= text then
+  if e[6] == "GDO" then
+    return
+  elseif string.len(e[6]) > 0 and e[6] .. string.rep(" ", 50) ~= text then
     f.reset()
     text = e[6] .. string.rep(" ", 50)
     computer.beep("--")
