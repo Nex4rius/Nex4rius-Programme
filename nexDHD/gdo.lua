@@ -22,7 +22,7 @@ end
 
 function f.antwort(...)
   local e = {...}
-  if e[6] == "GDO" then
+  if e[6] == "nexDHD" then
     return
   elseif string.len(e[6]) > 0 and e[6] .. string.rep(" ", 50) ~= text then
     f.reset()
@@ -33,7 +33,7 @@ function f.antwort(...)
 end
 
 function f.loop()
-  modem.setWakeMessage("GDO")
+  modem.setWakeMessage("nexDHD")
   modem.setStrength(20)
   while weiter do
     f.reset()
