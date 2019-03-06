@@ -166,7 +166,7 @@ local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, Richt
 do
   sg.sendMessage_alt = sg.sendMessage
   sg.sendMessage = function(...)
-    altesSenden(...)
+    sg.sendMessage_alt(...)
     local daten = {...}
     --if component.isAvailable("modem") and type(Sicherung.Port) == "number" and ((daten[1] ~= alte_modem_send and (state == "Dialing" or state == "Connected") and wurmloch == "in") or reset) then
     if component.isAvailable("modem") and type(Sicherung.Port) == "number" and (state == "Dialing" or state == "Connected") then
