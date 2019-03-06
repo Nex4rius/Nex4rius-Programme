@@ -823,6 +823,7 @@ function f.aktualisiereStatus()
   f.Iriskontrolle()
   if state == "Idle" then
     v.IDC_Anzahl = 0
+    f.openModem()
     RichtungName = ""
   else
     if wurmloch == "out" then
@@ -1696,7 +1697,7 @@ end
 
 function f.openModem()
   o.modem_message = f.modem_message
-  if component.isAvailable("modem") and type(Sicherung.Reichweite) == "number" then
+  if component.isAvailable("modem") then
     component.modem.setStrength(Sicherung.Reichweite)
   end
 end
@@ -1757,24 +1758,22 @@ end
 
 function o.sgDialIn()
   wurmloch = "in"
-  f.openModem()
   f.Logbuch_schreiben(remoteName , f.getAddress(sg.remoteAddress()), wurmloch)
-  --if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-  --  event.timer(26, f.GDO_aufwecken, 1)
-  --end
+  event.timer(26, f.GDO_aufwecken, 1)
 end
 
---function f.GDO_aufwecken()
---  component.modem.broadcast(Sicherung.Port, "GDO")
---end
+function f.GDO_aufwecken()
+  f.openModem()
+  if component.isAvailable("modem") then
+    component.modem.broadcast(Sicherung.Port, "GDO")
+  end
+end
 
 function o.sgDialOut()
   state = "Dialling"
   wurmloch = "out"
   direction = "Outgoing"
-  --if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-  --  f.GDO_aufwecken()
-  --end
+  f.GDO_aufwecken()
 end
 
 function o.sgStargateStateChange(...)
