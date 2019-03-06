@@ -644,7 +644,6 @@ function f.Iriskontrolle()
     IDCyes = true
   elseif direction == "Incoming" and send == true then
     if f.atmosphere(true) then
-      f.openModem()
       sg.sendMessage("Iris Control: " .. Sicherung.control .. " Iris: " .. iris .. f.atmosphere(true), f.sendeAdressliste())
     else
       sg.sendMessage("Iris Control: " .. Sicherung.control .. " Iris: " .. iris, f.sendeAdressliste())
@@ -1688,7 +1687,6 @@ function f.check_IDC(code)
     end
   else
     sg.sendMessage(sprachen.IDC_blockiert)
-    f.closeModem()
   end
 end
 
@@ -1696,11 +1694,9 @@ function f.openModem()
   o.modem_message = f.modem_message
   if component.isAvailable("modem") then
     component.modem.setStrength(Sicherung.Reichweite)
+    component.modem.setWakeMessage("nexDHD")s
+    component.modem.open(Sicherung.Port + 1)
   end
-end
-
-function f.closeModem()
-  o.modem_message = function() end
 end
 
 function o.sgMessageReceived(...)
@@ -1710,7 +1706,6 @@ function o.sgMessageReceived(...)
   elseif direction == "Incoming" and wurmloch == "in" then
     if e[3] == "Adressliste" then
     else
-      --incode = tostring(e[3])
       f.check_IDC(tostring(e[3]))
     end
   end
@@ -1946,11 +1941,7 @@ function f.eventlisten(befehl)
 end
 
 function f.main()
-  if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-    component.modem.setWakeMessage("nexDHD")
-    component.modem.open(Sicherung.Port + 1)
-  end
-  f.modem_message = o.modem_message
+  f.openModem()
   pcall(screen.setTouchModeInverted, true)
   if OC then
     loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), string.format("nexDHD %s", version))
