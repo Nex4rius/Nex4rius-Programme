@@ -1686,9 +1686,7 @@ function f.check_IDC(code)
     v.IDC_Anzahl = v.IDC_Anzahl + 1
     if direction == "Incoming" and code ~= "Adressliste" then
       incode = code
-      if incode == Sicherung.IDC then
-        IDCyes = true
-      end
+      f.Iriskontrolle()
     end
   else
     sg.sendMessage(sprachen.IDC_blockiert)
