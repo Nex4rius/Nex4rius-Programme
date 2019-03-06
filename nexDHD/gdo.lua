@@ -67,13 +67,13 @@ function f.main()
     if type(eingabe) == "number" then
       if eingabe <= 65534 and eingabe >= 1 then
         port = math.floor(eingabe)
-        local d = io.open("/port", "w")
-        d:write("return " .. port)
-        d:close()
       end
     else
       port = portstandard
     end
+    local d = io.open("/port", "w")
+    d:write("return " .. port)
+    d:close()
   end
   loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "nexDHD GDO " .. port)
   modem.open(port)
