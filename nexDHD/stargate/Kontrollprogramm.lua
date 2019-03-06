@@ -1674,7 +1674,7 @@ end
 
 function o.modem_message(...)
   local e = {...}
-  if e[6] and type(e[6]) == "string" and e[6] ~= "" and e[6] ~= "Adressliste" and e[6] ~= alte_modem_message then
+  if e[6] and type(e[6]) == "string" and e[6] ~= "" and e[6] ~= "Adressliste" and e[6] ~= "nexDHD" and e[6] ~= alte_modem_message then
     f.check_IDC(e[6])
   end
   alte_modem_message = e[6]
@@ -1946,7 +1946,7 @@ end
 
 function f.main()
   if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-    component.modem.setWakeMessage("GDO")
+    component.modem.setWakeMessage("nexDHD")
     component.modem.open(Sicherung.Port + 1)
   end
   f.modem_message = o.modem_message
