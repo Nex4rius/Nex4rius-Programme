@@ -46,6 +46,7 @@ function f.loop()
     local code = io.read()
     text = "IDC senden: '" .. code .. "'" .. string.rep(" ", 50)
     modem.broadcast(port, code)
+    gpu.set(1, 5, text)
     os.sleep(2)
     modem.broadcast(port, code)
   end
