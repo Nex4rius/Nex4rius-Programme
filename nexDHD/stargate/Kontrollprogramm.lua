@@ -1869,7 +1869,8 @@ end
 function f.checken(...)
   ok, result = pcall(...)
   if not ok then
-    f.zeigeFehler(string.format("%s --- %s %s %s", result, ...))
+    local a, b, c = ...
+    f.zeigeFehler(string.format("%s --- %s %s %s", result, a, b, c))
     reset = "nochmal"
     running = false
   end
