@@ -395,6 +395,13 @@ function f.anders()
   end
 end
 
+function f.lange_nichts()
+  if c.uptime() - letzter_anders > 6000 then
+    m.broadcast(port + 1, "tankliste", version, f.serialize(f.check()))
+    letzter_anders = c.uptime()
+  end
+end
+
 function f.loop(...)
   print("\n\n")
   print(...)
@@ -414,6 +421,7 @@ end
 
 function f.main()
   m.open(port)
+  m.setWakeMessage("tank", true)
   if m.isWireless() then
     m.setStrength(math.huge)
   end
@@ -422,6 +430,7 @@ function f.main()
   print("\n" .. Tankname)
   f.anders()
   print("Warte auf Antwort...")
+  local langes_warten = event.timer(600, f.lange_nichts, math.huge)
   event.listen("modem_message", f.loop)
   event.listen("component_added", f.anders)
   event.listen("component_removed", f.anders)
@@ -429,6 +438,7 @@ function f.main()
   event.ignore("modem_message", f.loop)
   event.ignore("component_added", f.anders)
   event.ignore("component_removed", f.anders)
+  event.cancel(langes_warten)
 end
 
 loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "Tanksensor")
