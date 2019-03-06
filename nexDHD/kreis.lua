@@ -115,13 +115,8 @@ a[6] = function()
     gpu.set(9, 4, "▀")
 end
 
-a[7] = function(aktiv)
+a[7] = function()
     gpu.set(16, 2, "██")
-    if aktiv then
-        if a.aussen == a.innen then
-            a.innen = a.wurmloch
-        end
-    end
 end
 
 a[8] = function(aktiv)
@@ -167,6 +162,9 @@ function a.stargate(ausgeschaltet)
             a.aktiv[i] = false
             a.innen = a.aussen
         end
+    end
+    if a.aktiv[7] and a.aussen == a.innen then
+        a.innen = a.wurmloch
     end
     for screenid in pairs(kleine_anzeigen) do
         gpu.bind(screenid, false)
