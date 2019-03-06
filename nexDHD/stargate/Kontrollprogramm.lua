@@ -646,6 +646,7 @@ function f.Iriskontrolle()
     IDCyes = true
   elseif direction == "Incoming" and send == true then
     if f.atmosphere(true) then
+      f.openModem()
       sg.sendMessage("Iris Control: " .. Sicherung.control .. " Iris: " .. iris .. f.atmosphere(true), f.sendeAdressliste())
     else
       sg.sendMessage("Iris Control: " .. Sicherung.control .. " Iris: " .. iris, f.sendeAdressliste())
