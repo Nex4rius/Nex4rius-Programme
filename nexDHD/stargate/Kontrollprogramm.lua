@@ -708,9 +708,8 @@ function f.Iriskontrolle()
   end
   if state == "Connected" and direction == "Outgoing" and send == true then
     if outcode == "-" or outcode == nil then
-      sg.sendMessage("Adressliste", f.sendeAdressliste())
+      sg.sendMessage_alt("Adressliste", f.sendeAdressliste())
     else
-      --sg.sendMessage(outcode, f.sendeAdressliste())
       sg.sendMessage_alt(outcode, f.sendeAdressliste())
     end
     send = false
