@@ -490,7 +490,7 @@ function f.mainCheck()
             print(sprachen.autoUpdateAn or "automatische Aktualisierungen sind aktiviert")
             print()
             os.sleep(2)
-            Funktion.update("master")
+            f.update("master")
           elseif Sicherun.autoUpdate and version == serverVersion then
             -- nichts
           else
