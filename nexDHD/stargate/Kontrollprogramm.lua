@@ -296,6 +296,8 @@ end
 function f.pull_event()
   local Wartezeit = 1
   if state == "Idle" then
+    alte_modem_message = nil
+    v.IDC_Anzahl = 0
     if checkEnergy == energy and not VersionUpdate then
       if Nachrichtleer == true then
         Wartezeit = 600
@@ -820,7 +822,6 @@ function f.aktualisiereStatus()
   if state == "Idle" then
     alte_modem_message = nil
     v.IDC_Anzahl = 0
-    f.openModem()
     RichtungName = ""
   else
     if wurmloch == "out" then
@@ -1872,7 +1873,7 @@ end
 function f.checken(...)
   ok, result = pcall(...)
   if not ok then
-    f.zeigeFehler(result)
+    f.zeigeFehler(string.format("%s --- %s %s %s", result, ...))
   end
 end
 
