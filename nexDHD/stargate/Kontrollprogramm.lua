@@ -160,7 +160,7 @@ v.IDC_Anzahl                    = 0
 v.reset_uptime                  = computer.uptime()
 v.reset_time                    = os.time()
 
-local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit, alte_modem_message, alte_modem_send
+local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit, alte_modem_message
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben
 
 do
@@ -168,10 +168,8 @@ do
   sg.sendMessage = function(...)
     sg.sendMessage_alt(...)
     local daten = {...}
-    --if component.isAvailable("modem") and type(Sicherung.Port) == "number" and ((daten[1] ~= alte_modem_send and (state == "Dialing" or state == "Connected") and wurmloch == "in") or reset) then
-    if component.isAvailable("modem") and type(Sicherung.Port) == "number" and (state == "Dialing" or state == "Connected") then
+    if component.isAvailable("modem") and state ~= "Idle" then
       component.modem.broadcast(Sicherung.Port, daten[1])
-      alte_modem_send = daten[1]
     end
   end
   
@@ -289,10 +287,9 @@ function f.reset()
   v.reset_uptime = computer.uptime()
   v.reset_time = os.time()
   
-  reset = not (uptime + 5 > time and time + 5 > uptime)
-  if reset then
-    event.timer(10, function() reset = false end, 1)
-    o.sgDialIn()
+  if uptime + 5 > time and time + 5 > uptime then
+    reset = "nochmal"
+    running = false
   end
 end
 
@@ -820,14 +817,6 @@ function f.aktualisiereStatus()
   f.Zielname()
   f.wurmlochRichtung()
   f.Iriskontrolle()
-  if reset then
-    wurmloch = "in"
-    direction = "Incoming"
-    v.IDC_Anzahl = 0
-    RichtungName = ""
-    RichtungName = sprachen.RichtungNameEin
-    f.openModem()
-  end
   if state == "Idle" then
     v.IDC_Anzahl = 0
     RichtungName = ""
@@ -912,17 +901,12 @@ end
 
 function f.activetime()
   if state == "Connected" then
-    if reset then
+    if activationtime == 0 then
       activationtime = os.time()
-      time = 0
-    else
-      if activationtime == 0 then
-        activationtime = os.time()
-      end
-      time = (activationtime - os.time()) / sectime
-      if time > 0 then
-        f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit1 .. f.ErsetzePunktMitKomma(string.format("%.1f", time)) .. "s")
-      end
+    end
+    time = (activationtime - os.time()) / sectime
+    if time > 0 then
+      f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit1 .. f.ErsetzePunktMitKomma(string.format("%.1f", time)) .. "s")
     end
   else
     f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit2)
@@ -2017,3 +2001,5 @@ if v.update == "ja" or v.update == "beta" then
   end
   os.execute("pastebin run -f YVqKFnsP " .. v.update)
 end
+
+return reset
