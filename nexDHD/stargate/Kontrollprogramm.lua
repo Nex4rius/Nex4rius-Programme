@@ -1352,7 +1352,7 @@ function Taste.e()
       local eingabe = term.read(nil, false, nil, "*")
       pcall(screen.setTouchModeInverted, true)
       f.eventlisten("listen")
-      sg.sendMessage(string.sub(eingabe, 1, string.len(eingabe) - 1))
+      sg.sendMessage_alt(string.sub(eingabe, 1, string.len(eingabe) - 1))
       event.cancel(timerID)
       f.zeigeNachricht(sprachen.IDCgesendet)
     else
