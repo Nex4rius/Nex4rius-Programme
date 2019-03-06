@@ -518,10 +518,14 @@ function f.mainCheck()
       loadfile("/bin/edit.lua")("-r", "/log")
       loadfile("/bin/rm.lua")("/log")
     end
-    local erfolgreich, grund = pcall(loadfile("/stargate/Kontrollprogramm.lua"), f.update, f.checkServerVersion, version, Farben)
-    if not erfolgreich then
-      print("Kontrollprogramm.lua hat einen Fehler")
-      print(grund)
+    local erfolgreich
+    local grund = "nochmal"
+    while grund == "nochmal" do
+      erfolgreich, grund = pcall(loadfile("/stargate/Kontrollprogramm.lua"), f.update, f.checkServerVersion, version, Farben)
+      if not erfolgreich then
+        print("Kontrollprogramm.lua hat einen Fehler")
+        print(grund)
+      end
     end
   else
     print(string.format("%s\n%s %s/%s", sprachen.fehlerName, sprachen.DateienFehlen, sprachen.ja, sprachen.nein) or "\nAlles neu herunterladen? ja/nein")
