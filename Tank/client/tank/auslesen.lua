@@ -414,7 +414,7 @@ end
 
 function f.main()
   m.open(port)
-  m.setWakeMessage("Tank", true)
+  m.setWakeMessage("tank", true)
   if m.isWireless() then
     m.setStrength(math.huge)
   end

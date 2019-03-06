@@ -161,6 +161,9 @@ local sprachen = {
   links                     = "links",
   Theme                     = "normal, dunkel, schwarz_weiss",
   kein_senden               = "true -> keine Adressen senden",
+  IDC_blockiert             = "Zu viele Versuche - IDC blockiert",
+  Port                      = "Standard 645",
+  Reichweite                = "Stärke des WLAN-Signals",
 }
 
 sprachen.side               = string.format("%s, %s, %s, %s, %s %s %s", sprachen.unten, sprachen.oben, sprachen.hinten, sprachen.vorne, sprachen.rechts, sprachen.oder, sprachen.links)
