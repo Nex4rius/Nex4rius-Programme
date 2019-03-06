@@ -168,7 +168,7 @@ do
   sg.sendMessage = function(...)
     sg.sendMessage_alt(...)
     local daten = {...}
-    if component.isAvailable("modem") and state ~= "Idle" then
+    if component.isAvailable("modem") and state ~= "Idle" and state ~= "Closing" then
       component.modem.broadcast(Sicherung.Port, daten[1])
     end
   end
