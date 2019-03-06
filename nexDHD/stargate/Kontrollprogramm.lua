@@ -287,7 +287,7 @@ function f.reset()
   v.reset_uptime = computer.uptime()
   v.reset_time = os.time()
   
-  if not (uptime + 30 > time and time + 30 > uptime) then
+  if not (uptime + 300 > time and time + 300 > uptime) then
     reset = "nochmal"
     running = false
   end
