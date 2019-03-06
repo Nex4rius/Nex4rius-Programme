@@ -1756,6 +1756,7 @@ end
 function o.sgDialIn()
   wurmloch = "in"
   f.Logbuch_schreiben(remoteName , f.getAddress(sg.remoteAddress()), wurmloch)
+  event.timer(19, f.GDO_aufwecken, 1)
   event.timer(25, f.GDO_aufwecken, 1)
 end
 
@@ -1874,6 +1875,8 @@ function f.checken(...)
   ok, result = pcall(...)
   if not ok then
     f.zeigeFehler(string.format("%s --- %s %s %s", result, ...))
+    reset = "nochmal"
+    running = false
   end
 end
 
@@ -1950,7 +1953,7 @@ function f.main()
   f.modem_message = o.modem_message
   pcall(screen.setTouchModeInverted, true)
   if OC then
-    loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "nexDHD")
+    loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), string.format("nexDHD %s", version))
   elseif CC then
     shell.run("label set nexDHD")
   end
