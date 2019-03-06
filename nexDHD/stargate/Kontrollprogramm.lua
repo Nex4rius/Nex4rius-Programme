@@ -109,10 +109,6 @@ local screen                    = component.getPrimary("screen") or {}
 local Bildschirmbreite, Bildschirmhoehe = gpu.getResolution()
 local max_Bildschirmbreite, max_Bildschirmhoehe = gpu.maxResolution()
 
-event.timer(1, function()
-  gpu.set(1, Bildschirmhoehe - 1, string.format("   RAM: %.1fkB / %.1fkB%s", (computer.totalMemory() - computer.freeMemory()) / 1024, computer.totalMemory() / 1024, string.rep(" ", 35)))
-end, math.huge)
-
 local enteridc                  = ""
 local showidc                   = ""
 local remoteName                = ""
@@ -1758,7 +1754,7 @@ end
 function o.sgDialIn()
   wurmloch = "in"
   f.Logbuch_schreiben(remoteName , f.getAddress(sg.remoteAddress()), wurmloch)
-  event.timer(26, f.GDO_aufwecken, 1)
+  event.timer(25, f.GDO_aufwecken, 1)
 end
 
 function f.GDO_aufwecken()
@@ -1772,7 +1768,6 @@ function o.sgDialOut()
   state = "Dialling"
   wurmloch = "out"
   direction = "Outgoing"
-  f.GDO_aufwecken()
 end
 
 function o.sgStargateStateChange(...)
