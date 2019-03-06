@@ -287,7 +287,7 @@ function f.reset()
   v.reset_uptime = computer.uptime()
   v.reset_time = os.time()
   
-  if not (uptime + 60 > time and time + 60 > uptime) then
+  if not (uptime + 600 > time and time + 600 > uptime) then
     reset = "nochmal"
     running = false
   end
@@ -818,6 +818,7 @@ function f.aktualisiereStatus()
   f.wurmlochRichtung()
   f.Iriskontrolle()
   if state == "Idle" then
+    alte_modem_message = nil
     v.IDC_Anzahl = 0
     f.openModem()
     RichtungName = ""
