@@ -29,7 +29,7 @@ local fs                        = fs or require("filesystem")
 local shell                     = shell or require("shell")
 _G.shell = shell
 
-local gpu, serialization, sprachen, unicode, ID, Updatetimer, log
+local gpu, serialization, sprachen, unicode, ID, Updatetimer, log, computer
 
 if OC then
   serialization = require("serialization")
@@ -160,7 +160,7 @@ v.IDC_Anzahl                    = 0
 v.reset_uptime                  = computer.uptime()
 v.reset_time                    = os.time()
 
-local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit, alte_modem_message, alte_modem_send
+local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit, alte_modem_message
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben
 
 do
@@ -168,10 +168,8 @@ do
   sg.sendMessage = function(...)
     sg.sendMessage_alt(...)
     local daten = {...}
-    --if component.isAvailable("modem") and type(Sicherung.Port) == "number" and ((daten[1] ~= alte_modem_send and (state == "Dialing" or state == "Connected") and wurmloch == "in") or reset) then
-    if component.isAvailable("modem") and type(Sicherung.Port) == "number" and (state == "Dialing" or state == "Connected") then
+    if component.isAvailable("modem") and state ~= "Idle" and state ~= "Closing" then
       component.modem.broadcast(Sicherung.Port, daten[1])
-      alte_modem_send = daten[1]
     end
   end
   
@@ -289,16 +287,17 @@ function f.reset()
   v.reset_uptime = computer.uptime()
   v.reset_time = os.time()
   
-  reset = not (uptime + 5 > time and time + 5 > uptime)
-  if reset then
-    event.timer(10, function() reset = false end, 1)
-    o.sgDialIn()
+  if not (uptime + 600 > time and time + 600 > uptime) then
+    reset = "nochmal"
+    running = false
   end
 end
 
 function f.pull_event()
   local Wartezeit = 1
   if state == "Idle" then
+    alte_modem_message = nil
+    v.IDC_Anzahl = 0
     if checkEnergy == energy and not VersionUpdate then
       if Nachrichtleer == true then
         Wartezeit = 600
@@ -707,9 +706,8 @@ function f.Iriskontrolle()
   end
   if state == "Connected" and direction == "Outgoing" and send == true then
     if outcode == "-" or outcode == nil then
-      sg.sendMessage("Adressliste", f.sendeAdressliste())
+      sg.sendMessage_alt("Adressliste", f.sendeAdressliste())
     else
-      --sg.sendMessage(outcode, f.sendeAdressliste())
       sg.sendMessage_alt(outcode, f.sendeAdressliste())
     end
     send = false
@@ -820,15 +818,8 @@ function f.aktualisiereStatus()
   f.Zielname()
   f.wurmlochRichtung()
   f.Iriskontrolle()
-  if reset then
-    wurmloch = "in"
-    direction = "Incoming"
-    v.IDC_Anzahl = 0
-    RichtungName = ""
-    RichtungName = sprachen.RichtungNameEin
-    f.openModem()
-  end
   if state == "Idle" then
+    alte_modem_message = nil
     v.IDC_Anzahl = 0
     RichtungName = ""
   else
@@ -912,17 +903,12 @@ end
 
 function f.activetime()
   if state == "Connected" then
-    if reset then
+    if activationtime == 0 then
       activationtime = os.time()
-      time = 0
-    else
-      if activationtime == 0 then
-        activationtime = os.time()
-      end
-      time = (activationtime - os.time()) / sectime
-      if time > 0 then
-        f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit1 .. f.ErsetzePunktMitKomma(string.format("%.1f", time)) .. "s")
-      end
+    end
+    time = (activationtime - os.time()) / sectime
+    if time > 0 then
+      f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit1 .. f.ErsetzePunktMitKomma(string.format("%.1f", time)) .. "s")
     end
   else
     f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit2)
@@ -1365,7 +1351,7 @@ function Taste.e()
       local eingabe = term.read(nil, false, nil, "*")
       pcall(screen.setTouchModeInverted, true)
       f.eventlisten("listen")
-      sg.sendMessage(string.sub(eingabe, 1, string.len(eingabe) - 1))
+      sg.sendMessage_alt(string.sub(eingabe, 1, string.len(eingabe) - 1))
       event.cancel(timerID)
       f.zeigeNachricht(sprachen.IDCgesendet)
     else
@@ -1686,37 +1672,30 @@ end
 
 function o.modem_message(...)
   local e = {...}
-  if e[6] and type(e[6]) == "string" and e[6] ~= "" and e[6] ~= "Adressliste" and e[6] ~= alte_modem_message then
+  if e[6] and type(e[6]) == "string" and e[6] ~= "" and e[6] ~= "Adressliste" and e[6] ~= "nexDHD" and e[6] ~= alte_modem_message then
     f.check_IDC(e[6])
   end
   alte_modem_message = e[6]
 end
 
-hier = 0
-
 function f.check_IDC(code)
   if v.IDC_Anzahl < 10 then
     v.IDC_Anzahl = v.IDC_Anzahl + 1
-    if direction == "Incoming" and wurmloch == "in" then
-      if code ~= "Adressliste" then
-        incode = code
-      end
+    if direction == "Incoming" and code ~= "Adressliste" then
+      incode = code
+      f.Iriskontrolle()
     end
   else
     sg.sendMessage(sprachen.IDC_blockiert)
-    f.closeModem()
   end
 end
 
 function f.openModem()
-  o.modem_message = f.modem_message
-  if component.isAvailable("modem") and type(Sicherung.Reichweite) == "number" then
+  if component.isAvailable("modem") then
     component.modem.setStrength(Sicherung.Reichweite)
+    component.modem.setWakeMessage("nexDHD")
+    component.modem.open(Sicherung.Port + 1)
   end
-end
-
-function f.closeModem()
-  o.modem_message = function() end
 end
 
 function o.sgMessageReceived(...)
@@ -1726,7 +1705,6 @@ function o.sgMessageReceived(...)
   elseif direction == "Incoming" and wurmloch == "in" then
     if e[3] == "Adressliste" then
     else
-      --incode = tostring(e[3])
       f.check_IDC(tostring(e[3]))
     end
   end
@@ -1771,24 +1749,23 @@ end
 
 function o.sgDialIn()
   wurmloch = "in"
-  f.openModem()
   f.Logbuch_schreiben(remoteName , f.getAddress(sg.remoteAddress()), wurmloch)
-  --if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-  --  event.timer(26, f.GDO_aufwecken, 1)
-  --end
+  event.timer(19, f.GDO_aufwecken, 1)
+  event.timer(25, f.GDO_aufwecken, 1)
 end
 
---function f.GDO_aufwecken()
---  component.modem.broadcast(Sicherung.Port, "GDO")
---end
+function f.GDO_aufwecken()
+  f.openModem()
+  if component.isAvailable("modem") then
+    component.modem.broadcast(Sicherung.Port, "nexDHD")
+  end
+end
 
 function o.sgDialOut()
   state = "Dialling"
   wurmloch = "out"
   direction = "Outgoing"
-  --if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-  --  f.GDO_aufwecken()
-  --end
+  f.GDO_aufwecken()
 end
 
 function o.sgStargateStateChange(...)
@@ -1892,7 +1869,10 @@ end
 function f.checken(...)
   ok, result = pcall(...)
   if not ok then
-    f.zeigeFehler(result)
+    local a, b, c = ...
+    f.zeigeFehler(string.format("%s --- %s %s %s", result, a, b, c))
+    reset = "nochmal"
+    running = false
   end
 end
 
@@ -1962,13 +1942,10 @@ function f.eventlisten(befehl)
 end
 
 function f.main()
-  if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-    component.modem.open(Sicherung.Port + 1)
-  end
-  f.modem_message = o.modem_message
+  f.openModem()
   pcall(screen.setTouchModeInverted, true)
   if OC then
-    loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "nexDHD")
+    loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), string.format("nexDHD %s", version))
   elseif CC then
     shell.run("label set nexDHD")
   end
@@ -2017,3 +1994,5 @@ if v.update == "ja" or v.update == "beta" then
   end
   os.execute("pastebin run -f YVqKFnsP " .. v.update)
 end
+
+return reset

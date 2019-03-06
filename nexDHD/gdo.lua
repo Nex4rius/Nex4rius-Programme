@@ -17,12 +17,14 @@ os.sleep(2)
 
 function f.reset()
   event.cancel(ausschalttimer)
-  ausschalttimer = event.timer(300, require("computer").shutdown, 1)
+  ausschalttimer = event.timer(120, require("computer").shutdown, 1)
 end
 
 function f.antwort(...)
   local e = {...}
-  if string.len(e[6]) > 0 and e[6] .. string.rep(" ", 50) ~= text then
+  if e[6] == "nexDHD" then
+    return
+  elseif string.len(e[6]) > 0 and e[6] .. string.rep(" ", 50) ~= text then
     f.reset()
     text = e[6] .. string.rep(" ", 50)
     computer.beep("--")
@@ -31,7 +33,7 @@ function f.antwort(...)
 end
 
 function f.loop()
-  modem.setWakeMessage("GDO")
+  modem.setWakeMessage("nexDHD")
   modem.setStrength(20)
   while weiter do
     f.reset()
