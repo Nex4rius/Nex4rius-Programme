@@ -1694,7 +1694,7 @@ function f.openModem()
   o.modem_message = f.modem_message
   if component.isAvailable("modem") then
     component.modem.setStrength(Sicherung.Reichweite)
-    component.modem.setWakeMessage("nexDHD")s
+    component.modem.setWakeMessage("nexDHD")
     component.modem.open(Sicherung.Port + 1)
   end
 end
