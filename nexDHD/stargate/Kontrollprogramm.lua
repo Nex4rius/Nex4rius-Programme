@@ -1765,6 +1765,7 @@ function o.sgDialOut()
   state = "Dialling"
   wurmloch = "out"
   direction = "Outgoing"
+  f.GDO_aufwecken()
 end
 
 function o.sgStargateStateChange(...)
