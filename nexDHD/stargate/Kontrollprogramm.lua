@@ -1763,7 +1763,7 @@ end
 function f.GDO_aufwecken()
   f.openModem()
   if component.isAvailable("modem") then
-    component.modem.broadcast(Sicherung.Port, "GDO")
+    component.modem.broadcast(Sicherung.Port, "nexDHD")
   end
 end
 
@@ -1946,6 +1946,7 @@ end
 
 function f.main()
   if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
+    component.modem.setWakeMessage("GDO")
     component.modem.open(Sicherung.Port + 1)
   end
   f.modem_message = o.modem_message
