@@ -1676,8 +1676,6 @@ function o.modem_message(...)
   alte_modem_message = e[6]
 end
 
-hier = 0
-
 function f.check_IDC(code)
   if v.IDC_Anzahl < 10 then
     v.IDC_Anzahl = v.IDC_Anzahl + 1
