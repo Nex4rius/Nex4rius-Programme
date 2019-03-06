@@ -1684,10 +1684,8 @@ end
 function f.check_IDC(code)
   if v.IDC_Anzahl < 10 then
     v.IDC_Anzahl = v.IDC_Anzahl + 1
-    if direction == "Incoming" and wurmloch == "in" then
-      if code ~= "Adressliste" then
-        incode = code
-      end
+    if direction == "Incoming" and code ~= "Adressliste" then
+      incode = code
     end
   else
     sg.sendMessage(sprachen.IDC_blockiert)
