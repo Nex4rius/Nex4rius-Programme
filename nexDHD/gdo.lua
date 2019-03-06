@@ -13,6 +13,8 @@ local weiter = true
 local text = ""
 local ausschalttimer = 0
 
+os.sleep(2)
+
 function f.reset()
   event.cancel(ausschalttimer)
   ausschalttimer = event.timer(300, require("computer").shutdown, 1)
@@ -56,6 +58,7 @@ function f.main()
   end
   modem.setStrength(math.huge)
   event.listen("modem_message", f.antwort)
+  term.clear()
   if fs.exists("/port") then
     port = loadfile("/port")() or portstandard
   else
@@ -73,7 +76,6 @@ function f.main()
     end
   end
   loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "nexDHD GDO " .. port)
-  os.sleep(1)
   modem.open(port)
   port = port + 1
   gpu.setResolution(50, 5)
