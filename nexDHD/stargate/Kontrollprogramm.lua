@@ -164,7 +164,7 @@ local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingab
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben
 
 do
-  local altesSenden = sg.sendMessage
+  sg.sendMessage_alt = sg.sendMessage
   sg.sendMessage = function(...)
     altesSenden(...)
     local daten = {...}
@@ -709,7 +709,8 @@ function f.Iriskontrolle()
     if outcode == "-" or outcode == nil then
       sg.sendMessage("Adressliste", f.sendeAdressliste())
     else
-      sg.sendMessage(outcode, f.sendeAdressliste())
+      --sg.sendMessage(outcode, f.sendeAdressliste())
+      sg.sendMessage_alt(outcode, f.sendeAdressliste())
     end
     send = false
   end
