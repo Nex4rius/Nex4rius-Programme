@@ -287,7 +287,7 @@ end
 
 max_uptime = 0 -- debug
 max_time = 0 -- debug
-event.timer(0.1, function() gpu.set(1, 79, string.format("uptime: %s    time: %s                    ", max_uptime, max_time)) end, math.huge) -- debug
+event.timer(0.1, function() gpu.set(1, Bildschirmhoehe - 1, string.format("uptime: %s    time: %s                    ", max_uptime, max_time)) end, math.huge) -- debug
 
 function f.reset()
   local uptime = computer.uptime() - v.reset_uptime
