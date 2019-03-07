@@ -297,10 +297,10 @@ function f.reset()
   v.reset_uptime = computer.uptime()
   v.reset_time = os.time()
   
-  if uptime > max_uptime then -- debug
+  if uptime - time > max_uptime_time then -- debug
     max_uptime_time = uptime - time -- debug
   end -- debug
-  if time > max_time then -- debug
+  if time - uptime > max_time_uptime then -- debug
     max_time_uptime = time - uptime -- debug
   end -- debug
   
