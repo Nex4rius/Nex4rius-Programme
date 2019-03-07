@@ -113,6 +113,7 @@ local enteridc                  = ""
 local showidc                   = ""
 local remoteName                = ""
 local zielAdresse               = ""
+local sende_modem_jetzt         = ""
 local time                      = "-"
 local incode                    = "-"
 local codeaccepted              = "-"
@@ -164,12 +165,18 @@ local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingab
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben
 
 do
+  local function check_modem_senden()
+    if component.isAvailable("modem") and state ~= "Idle" and state ~= "Closing" then
+      return component.modem.broadcast(Sicherung.Port, sende_modem_jetzt)
+    end
+  end
   sg.sendMessage_alt = sg.sendMessage
   sg.sendMessage = function(...)
     sg.sendMessage_alt(...)
     local daten = {...}
-    if component.isAvailable("modem") and state ~= "Idle" and state ~= "Closing" then
-      component.modem.broadcast(Sicherung.Port, daten[1])
+    sende_modem_jetzt = daten[1]
+    if not check_modem_senden() then
+      event.timer(5, check_modem_senden, 1)
     end
   end
   
@@ -287,9 +294,10 @@ function f.reset()
   v.reset_uptime = computer.uptime()
   v.reset_time = os.time()
   
-  if not (uptime + 600 > time and time + 600 > uptime) then
+  if uptime - time > 6000 or time - uptime > 6000 then
     reset = "nochmal"
     running = false
+    require("computer").shutdown(true)
   end
 end
 
