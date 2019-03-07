@@ -115,6 +115,7 @@ else
     d:write("false")
   end
   d:close()
+  Tankname = "false"  
 end
 
 local function firstToUpper(str)
