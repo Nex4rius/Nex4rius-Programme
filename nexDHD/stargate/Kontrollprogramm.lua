@@ -287,10 +287,6 @@ function f.Farbe(hintergrund, vordergrund)
   gpu.setForeground(vordergrund)
 end
 
-max_uptime = max_uptime or 0 -- debug
-max_time = max_time or 0 -- debug
-event.timer(1, function() gpu.set(1, Bildschirmhoehe - 1, string.format("uptime: %s    time: %s                    ", max_uptime, max_time)) end, math.huge) -- debug
-
 function f.reset()
   local uptime = computer.uptime() - v.reset_uptime
   local time =  (os.time() - v.reset_time) / 100
@@ -298,16 +294,10 @@ function f.reset()
   v.reset_uptime = computer.uptime()
   v.reset_time = os.time()
   
-  if uptime - time > max_uptime then -- debug
-    max_uptime = uptime - time -- debug
-  end -- debug
-  if time - uptime > max_time then -- debug
-    max_time = time - uptime -- debug
-  end -- debug
-  
-  if uptime - time > 60 or time - uptime > 60 then
+  if uptime - time > 6000 or time - uptime > 6000 then
     reset = "nochmal"
     running = false
+    require("computer").shutdown(true)
   end
 end
 
