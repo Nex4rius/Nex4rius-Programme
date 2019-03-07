@@ -113,6 +113,7 @@ local enteridc                  = ""
 local showidc                   = ""
 local remoteName                = ""
 local zielAdresse               = ""
+local sende_modem_jetzt         = ""
 local time                      = "-"
 local incode                    = "-"
 local codeaccepted              = "-"
@@ -166,13 +167,13 @@ local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, Richt
 do
   local function check_modem_senden()
     if component.isAvailable("modem") and state ~= "Idle" and state ~= "Closing" then
-      return component.modem.broadcast(Sicherung.Port, daten[1])
+      return component.modem.broadcast(Sicherung.Port, sende_modem_jetzt)
     end
   end
   sg.sendMessage_alt = sg.sendMessage
   sg.sendMessage = function(...)
     sg.sendMessage_alt(...)
-    local daten = {...}
+    sende_modem_jetzt = {...}[1]
     if not check_modem_senden() then
       event.timer(5, check_modem_senden, 1)
     end
