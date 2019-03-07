@@ -297,13 +297,13 @@ function f.reset()
   v.reset_time = os.time()
   
   if uptime > max_uptime then -- debug
-    max_uptime = uptime -- debug
+    max_uptime_time = uptime - time -- debug
   end -- debug
   if time > max_time then -- debug
-    max_time = time -- debug
+    max_time_uptime = time - uptime -- debug
   end -- debug
   
-  if not (uptime + 60 > time and time + 60 > uptime) then
+  if uptime - time > 60 or time - uptime > 60 then
     reset = "nochmal"
     running = false
   end
