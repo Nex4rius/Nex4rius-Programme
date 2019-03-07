@@ -12,12 +12,15 @@ local portstandard = 645
 local weiter = true
 local text = ""
 local ausschalttimer = 0
+local texttimer = 0
 
 os.sleep(2)
 
 function f.reset()
   event.cancel(ausschalttimer)
   ausschalttimer = event.timer(300, require("computer").shutdown, 1)
+  event.cancel(texttimer)
+  texttimer = event.timer(30, function() text = "" end, 1)
 end
 
 function f.antwort(...)
