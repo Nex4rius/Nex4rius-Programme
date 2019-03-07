@@ -173,7 +173,8 @@ do
   sg.sendMessage_alt = sg.sendMessage
   sg.sendMessage = function(...)
     sg.sendMessage_alt(...)
-    sende_modem_jetzt = {...}[1]
+    local daten = {...}
+    sende_modem_jetzt = daten[1]
     if not check_modem_senden() then
       event.timer(5, check_modem_senden, 1)
     end
