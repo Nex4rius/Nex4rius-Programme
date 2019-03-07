@@ -164,12 +164,17 @@ local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingab
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben
 
 do
+  local function check_modem_senden()
+    if component.isAvailable("modem") and state ~= "Idle" and state ~= "Closing" then
+      return component.modem.broadcast(Sicherung.Port, daten[1])
+    end
+  end
   sg.sendMessage_alt = sg.sendMessage
   sg.sendMessage = function(...)
     sg.sendMessage_alt(...)
     local daten = {...}
-    if component.isAvailable("modem") and state ~= "Idle" and state ~= "Closing" then
-      component.modem.broadcast(Sicherung.Port, daten[1])
+    if not check_modem_senden() then
+      event.timer(5, check_modem_senden, 1)
     end
   end
   
@@ -280,6 +285,10 @@ function f.Farbe(hintergrund, vordergrund)
   gpu.setForeground(vordergrund)
 end
 
+max_uptime = 0 -- debug
+max_time = 0 -- debug
+event.timer(0.1, function() gpu.set(1, 79, string.format("uptime: %s    time: %s                    ", max_uptime, max_time)) end, math.huge) -- debug
+
 function f.reset()
   local uptime = computer.uptime() - v.reset_uptime
   local time =  (os.time() - v.reset_time) / 100
@@ -287,7 +296,14 @@ function f.reset()
   v.reset_uptime = computer.uptime()
   v.reset_time = os.time()
   
-  if not (uptime + 600 > time and time + 600 > uptime) then
+  if uptime > max_uptime then -- debug
+    max_uptime = uptime -- debug
+  end -- debug
+  if time > max_time then -- debug
+    max_time = time -- debug
+  end -- debug
+  
+  if not (uptime + 60 > time and time + 60 > uptime) then
     reset = "nochmal"
     running = false
   end
