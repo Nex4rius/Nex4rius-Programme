@@ -14,7 +14,7 @@ end
 
 a.c = {}
 
-a.c["Buchstabe_hier"] = {
+a.c["A"] = {
     "                                ",
     "                                ",
     "            ██████████          ",
@@ -33,7 +33,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["B"] = {
     "                                ",
     "                                ",
     "              ██████   █        ",
@@ -52,7 +52,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["C"] = {
     "                                ",
     "                                ",
     "               ████             ",
@@ -71,7 +71,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["D"] = {
     "                                ",
     "                    ██          ",
     "                   ████         ",
@@ -90,7 +90,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["E"] = {
     "                                ",
     "                                ",
     "                   ████         ",
@@ -109,7 +109,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["F"] = {
     "                                ",
     "                                ",
     "                      ████      ",
@@ -128,7 +128,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["G"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -147,7 +147,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["H"] = {
     "                                ",
     "                                ",
     "                 ████████       ",
@@ -166,7 +166,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["I"] = {
     "                                ",
     "                                ",
     "                  █             ",
@@ -185,7 +185,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["J"] = {
     "                                ",
     "                                ",
     "            █                   ",
@@ -205,7 +205,7 @@ a.c["Buchstabe_hier"] = {
 }
 
 
-a.c["Buchstabe_hier"] = {
+a.c["K"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -225,7 +225,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["L"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -245,7 +245,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["M"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -265,7 +265,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["N"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -285,7 +285,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["O"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -305,7 +305,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["P"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -325,7 +325,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["Q"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -345,7 +345,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["R"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -365,7 +365,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["S"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -385,7 +385,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["T"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -406,7 +406,7 @@ a.c["Buchstabe_hier"] = {
 }
 
 
-a.c["Buchstabe_hier"] = {
+a.c["U"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -426,7 +426,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["V"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -446,7 +446,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["W"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -466,7 +466,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["X"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -486,7 +486,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["Y"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -506,7 +506,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["Z"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -526,7 +526,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["0"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -546,7 +546,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["1"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -566,7 +566,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["2"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -586,7 +586,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["3"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -607,7 +607,7 @@ a.c["Buchstabe_hier"] = {
 }
 
 
-a.c["Buchstabe_hier"] = {
+a.c["4"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -628,7 +628,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["5"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -649,7 +649,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["6"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -670,7 +670,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["7"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -691,7 +691,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["8"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -712,7 +712,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["9"] = {
     "                                ",
     "                                ",
     "                                ",
