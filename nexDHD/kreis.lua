@@ -831,11 +831,6 @@ a[2] = function(aktiv)
     gpu.set(29, 7, "█▌")
     gpu.setBackground(a.innen)
     gpu.set(28, 7, "▐")
-    if aktiv then
-        gpu.setForeground(a.chevron_an)
-    else
-        gpu.setForeground(a.chevron_aus)
-    end
     gpu.setBackground(a.stargatefarbe)
     gpu.set(29, 8, "▀▀")
 end
@@ -844,16 +839,18 @@ a[3] = function()
     gpu.setBackground(a.aussen)
     gpu.set(27, 12, "█▛")
     gpu.setBackground(a.innen)
-    gpu.set(26, 12, "▄")
     gpu.set(27, 11, "▗")
+    gpu.setBackground(a.stargatefarbe)
+    gpu.set(28, 11, "▄")
 end
 
 a[4] = function()
     gpu.setBackground(a.aussen)
     gpu.set(5, 12, "▜█")
     gpu.setBackground(a.innen)
-    gpu.set(7, 12, "▄")
     gpu.set(6, 11, "▖")
+    gpu.setBackground(a.stargatefarbe)
+    gpu.set(5, 11, "▄")
 end
 
 a[5] = function(aktiv)
@@ -861,11 +858,6 @@ a[5] = function(aktiv)
     gpu.set(3, 7, "▐█")
     gpu.setBackground(a.innen)
     gpu.set(5, 7, "▌")
-    if aktiv then
-        gpu.setForeground(a.chevron_an)
-    else
-        gpu.setForeground(a.chevron_aus)
-    end
     gpu.setBackground(a.stargatefarbe)
     gpu.set(3, 8, "▀▀")
 end
@@ -915,6 +907,7 @@ function a.init()
     for screenid in pairs(kleine_anzeigen) do
         gpu.bind(screenid)
         gpu.setResolution(32, 16)
+        gpu.fill(1, 1, 32, 16, " ")
     end
     a.stargate()
 end
