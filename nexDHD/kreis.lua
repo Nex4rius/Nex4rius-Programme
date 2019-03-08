@@ -754,7 +754,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
 }
 
-a.c["Buchstabe_hier"] = {
+a.c["ende"] = {
     "                                ",
     "                                ",
     "              ███               ",
