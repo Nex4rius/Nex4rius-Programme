@@ -628,7 +628,7 @@ end
 
 function split(...)
     local output = {}
-    for i = 1, unicode.len(...) do
+    for i = 1, string.len(...) do
         output[i] = string.sub(..., i, i)
     end
     return output
