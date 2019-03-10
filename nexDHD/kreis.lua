@@ -1,18 +1,56 @@
-local c = require("component")
-local gpu = c.getPrimary("gpu")
-local term = require("term")
-local kleine_anzeigen = c.list("screen")
-local a = {}
+local gpu, screens = ...
+local c            = require("component")
+local term         = require("term")
+local a            = {}
 
-os.sleep(2)
+a.stargatefarbe    = 0x3C3C3C
+a.chevron_an       = 0xFF6D00
+a.chevron_aus      = 0x996D40
+a.wurmloch         = 0x0000FF
+a.irisfarbe        = 0xA5A5A5
+a.aussen           = 0x000000
 
-a.aktiv = {}
+a.aktiv            = {}
+a.c                = {}
+a.s                = {}
 
 for i = 1, 9 do
     a.aktiv[i] = false
 end
 
-a.c = {}
+a.s.a = {
+    {1,  1, "                                "},
+    {1,  2, "         ▁▄▄████████▄▄▁         "},
+    {1,  3, "       ▄▟█"},{23,  3, "█▙▄       "},
+    {1,  4, "     ▗██"},  {25,  4,   "██▖     "},
+    {1,  5, "    ▟█"},    {27,  5,     "█▙    "},
+    {1,  6, "   ▟█"},     {28,  6,      "█▙   "},
+    {1,  7, "  ▐█"},      {29,  7,       "█▌  "},
+    {1,  8, "  ██"},      {29,  8,       "██  "},
+    {1,  9, "  ██"},      {29,  9,       "██  "},
+    {1, 10, "  ▐█"},      {29, 10,       "█▌  "},
+    {1, 11, "   ▜█"},     {28, 11,      "█▛   "},
+    {1, 12, "    ▜█"},    {27, 12,     "█▛    "},
+    {1, 13, "     ▝██"},  {25, 13,   "██▘     "},
+    {1, 14, "       ▀▜█"},{23, 14, "█▛▀       "},
+    {1, 15, "         ▔▀▀████████▀▀▔         "},
+    {1, 16, "                                "},
+}
+
+a.s.i = {
+    {11,  3, "▛▀▔▔    ▔▔▀▜"},
+    { 9,  4, "▀              ▀"},
+    { 7,  5, "▀                  ▀"},
+    { 6,  6, "▘                    ▝"},
+    { 5,  7, "▌                      ▐"},
+    { 5,  8, "                        "},
+    { 5,  9, "                        "},
+    { 5, 10, "▌                      ▐"},
+    { 6, 11, "▖                    ▗"},
+    { 7, 12, "▄                  ▄"},
+    { 9, 13, "▄              ▄"},
+    {11, 14, "▙▄▁▁    ▁▁▄▟"},
+}
 
 a.c["A"] = {
     "                                ",
@@ -733,6 +771,7 @@ a.c["9"] = {
     "                                ",
 }
 
+--[[ nicht benutzt
 a.c["Buchstabe_hier"] = {
     "                                ",
     "                                ",
@@ -753,6 +792,7 @@ a.c["Buchstabe_hier"] = {
     "                                ",
     "                                ",
 }
+]]
 
 a.c["ende"] = {
     "                                ",
@@ -774,49 +814,6 @@ a.c["ende"] = {
     "                                ",
     "                                ",
 }
-
-a.s = {}
-
-a.s.a = {
-    {1,  1, "                                "},
-    {1,  2, "         ▁▄▄████████▄▄▁         "},
-    {1,  3, "       ▄▟█"},{23,  3, "█▙▄       "},
-    {1,  4, "     ▗██"},  {25,  4,   "██▖     "},
-    {1,  5, "    ▟█"},    {27,  5,     "█▙    "},
-    {1,  6, "   ▟█"},     {28,  6,      "█▙   "},
-    {1,  7, "  ▐█"},      {29,  7,       "█▌  "},
-    {1,  8, "  ██"},      {29,  8,       "██  "},
-    {1,  9, "  ██"},      {29,  9,       "██  "},
-    {1, 10, "  ▐█"},      {29, 10,       "█▌  "},
-    {1, 11, "   ▜█"},     {28, 11,      "█▛   "},
-    {1, 12, "    ▜█"},    {27, 12,     "█▛    "},
-    {1, 13, "     ▝██"},  {25, 13,   "██▘     "},
-    {1, 14, "       ▀▜█"},{23, 14, "█▛▀       "},
-    {1, 15, "         ▔▀▀████████▀▀▔         "},
-    {1, 16, "                                "},
-}
-
-a.s.i = {
-    {11,  3, "▛▀▔▔    ▔▔▀▜"},
-    { 9,  4, "▀              ▀"},
-    { 7,  5, "▀                  ▀"},
-    { 6,  6, "▘                    ▝"},
-    { 5,  7, "▌                      ▐"},
-    { 5,  8, "                        "},
-    { 5,  9, "                        "},
-    { 5, 10, "▌                      ▐"},
-    { 6, 11, "▖                    ▗"},
-    { 7, 12, "▄                  ▄"},
-    { 9, 13, "▄              ▄"},
-    {11, 14, "▙▄▁▁    ▁▁▄▟"},
-}
-
-a.stargatefarbe = 0x3C3C3C
-a.chevron_an    = 0xFF6D00
-a.chevron_aus   = 0x996D40
-a.wurmloch      = 0x0000FF
-a.irisfarbe     = 0xA5A5A5
-a.aussen        = 0x000000
 
 a[1] = function(aktiv)
     gpu.setBackground(a.aussen)
@@ -902,16 +899,6 @@ a[9] = function(aktiv)
     gpu.set(10, 14, "▄")
 end
 
-function a.init()
-    a.innen = a.aussen
-    for screenid in pairs(kleine_anzeigen) do
-        gpu.bind(screenid)
-        gpu.setResolution(32, 16)
-        gpu.fill(1, 1, 32, 16, " ")
-    end
-    a.stargate()
-end
-
 function a.stargate(ausgeschaltet)
     if ausgeschaltet then
         for i = 1, 9 do
@@ -934,19 +921,15 @@ function a.stargate(ausgeschaltet)
             gpu.set(v[1], v[2], v[3])
         end
         for chevron in pairs(a.aktiv) do
-            a.zeig_chevron(chevron, a.aktiv[chevron])
+            local aktiv = a.aktiv[chevron]
+            if aktiv then
+                gpu.setForeground(a.chevron_an)
+            else
+                gpu.setForeground(a.chevron_aus)
+            end
+            a[chevron](aktiv)
         end
     end
-end
-
-function a.zeig_chevron(chevron, aktiv)
-    if aktiv then
-        gpu.setForeground(a.chevron_an)
-    else
-        gpu.setForeground(a.chevron_aus)
-    end
-    a[chevron](aktiv)
-    a.aktiv[chevron] = aktiv
 end
 
 function a.iris(geschlossen)
@@ -961,9 +944,34 @@ function a.iris(geschlossen)
     a.stargate()
 end
 
-a.init()
+local function init(gpu, screens)
+    a.innen = a.aussen
+    a.screens = {}
+    a.screens.chevron = {}
+    a.screens.stargate = {}
+    for screenid in pairs(screens) do
+        gpu.bind(screenid)
+        gpu.setResolution(32, 16)
+        gpu.fill(1, 1, 32, 16, " ")
+        if gpu.maxDepth() > 4 then
+            table.insert(a.screens.stargate, screenid)
+        else
+            table.insert(a.screens.chevron, screenid)
+        end
+    end
+    a.stargate()
+end
+
+function a.stopp()
+    
+end
+
+init(gpu, screens)
+
+return a
 
 -------------------------------------------------------
+--[[
 
 os.sleep(5)
 
@@ -996,3 +1004,4 @@ a.stargate(true)
 os.sleep(30)
 
 os.execute("shutdown")
+]]
