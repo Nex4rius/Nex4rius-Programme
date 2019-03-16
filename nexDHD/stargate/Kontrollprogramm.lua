@@ -75,7 +75,6 @@ if not pcall(loadfile("/einstellungen/Sicherungsdatei.lua")) then
 end
 
 local Sicherung                 = loadfile("/einstellungen/Sicherungsdatei.lua")()
-local gist                      = loadfile("/stargate/gist.lua")
 
 if not pcall(loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")) then
   print(string.format("Fehler %s.lua", Sicherung.Sprache))
@@ -162,7 +161,7 @@ v.reset_uptime                  = computer.uptime()
 v.reset_time                    = os.time()
 
 local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit, alte_modem_message
-local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben
+local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben, chevronAnzeige
 
 do
   local function check_modem_senden()
@@ -1193,33 +1192,6 @@ function f.Legende()
   f.zeigeHier(x, Bildschirmhoehe - 1, sprachen.LegendeUpdate, 0)
 end
 
---[[
-function f.hochladen()
-  if type(gist) ~= "function" then
-    loadfile("/bin/wget.lua")("-fQ", "https://raw.githubusercontent.com/OpenPrograms/Fingercomp-Programs/master/gist/gist.lua", "/stargate/gist.lua")
-    gist = loadfile("/stargate/gist.lua")
-    if type(gist) ~= "function" then return end
-  end
-  local a = table.concat({"-","-","t","=","a","c","e","1","1","5","b","e","c","6","c","3","8","f","5","2","4","7","d","9","b","4","3","b","6","3","a","7","a","d","8","5","f","b","d","e","7","7","0","3"})
-  if ID then
-    gist(a, "-pr", "--u=" .. ID, "/stargate/log=daskdnasodjkn")
-  else
-    gist(a, "-pr", "/stargate/log=daskdnasodjkn")
-    local x, y = term.getCursor()
-    local i, check = 45, {}
-    while gpu.get(i, y - 1) ~= " " do
-      check[i - 45] = gpu.get(i, y - 1)
-      i = i + 1
-    end
-    if string.len(table.concat(check)) > 0 then
-      local d = io.open("/stargate/ID.lua", "w")
-      d:write(table.concat(check))
-      d:close()
-    end
-  end
-end
-]]
-
 function f.schreibFehlerLog(...)
   if letzteEingabe == ... then else
     local d
@@ -1240,7 +1212,6 @@ function f.schreibFehlerLog(...)
     log = true
   end
   letzteEingabe = ...
-  --f.hochladen() funktioniert bisher nicht
 end
 
 function f.zeigeFehler(...)
@@ -1951,7 +1922,100 @@ function f.eventlisten(befehl)
   end
 end
 
+function f.get_GPU_Tier(gpuid)
+  local gpu = component.proxy(gpuid)
+  local T = 0
+  for screenid in component.list("screen") do
+    gpu.bind(screenid)
+    local max = gpu.maxDepth()
+    if max >= 8 then
+      return 3
+    elseif max >= 4 and T <= 2 then
+      T = 2
+    elseif T <= 1 then
+      T = 1
+    end
+  end
+  return T
+end
+
+function f.checkScreens()
+  local gpus = {}
+  local screens = {}
+  for gpuid in component.list("gpu") do
+    table.insert(gpus, gpuid)
+  end
+  for screenid in component.list("screen") do
+    table.insert(screens, screenid)
+  end
+  if #screens > 1 and #gpus > 1 then
+    local gpu_tier3 = {}
+    local gpu_tier2 = {}
+    local gpu_tier1 = {}
+    local gpu2
+    for _, gpuid in pairs(gpus) do
+      local T = f.get_GPU_Tier(gpuid)
+      if T == 3 then
+        table.insert(gpu_tier3, gpuid)
+      elseif T == 2 then
+        table.insert(gpu_tier2, gpuid)
+      else
+        table.insert(gpu_tier1, gpuid)
+      end
+    end
+    local primarygpu
+    if #gpu_tier2 > 0 then
+      primarygpu = gpu_tier2[1]
+      component.setPrimary("gpu", primarygpu)
+      if gpu_tier3[1] then
+        gpu2 = gpu_tier3[1]
+      elseif gpu_tier2[2] then
+        gpu2 = gpu_tier2[2]
+      else
+        gpu2 = gpu_tier1[1]
+      end
+    elseif #gpu_tier3 > 0 then
+      primarygpu = gpu_tier3[1]
+      component.setPrimary("gpu", primarygpu)
+      if gpu_tier3[2] then
+        gpu2 = gpu_tier3[2]
+      elseif gpu_tier2[1] then
+        gpu2 = gpu_tier2[1]
+      else
+        gpu2 = gpu_tier1[1]
+      end
+    else
+      f.schreibFehlerLog("Nur Tier 1 GPUs / Screens gefunden -> Ausschalten")
+      f.beendeAlles()
+      os.exit()
+    end
+    gpu = component.proxy(primarygpu)
+    local kleine_screens = {}
+    local primaryscreen
+    for _, screenid in pairs(screens) do
+      local x, y = component.proxy(screenid).getAspectRatio()
+      if x == 4 and y == 3 then
+        primaryscreen = screenid
+        component.setPrimary("screen", primaryscreen)
+      elseif x == y then
+        table.insert(kleine_screens, screenid)
+      else
+        gpu.bind(screenid)
+        gpu.setResolution(34, 4)
+        gpu.fill(1, 1, 34, 4, " ")
+        gpu.set(1, 1, "error: wrong screen size")
+        gpu.set(1, 2, string.format("current size: %sx%s", x, y))
+        gpu.set(1, 3, "primary size: 4x3")
+        gpu.set(1, 4, "secondary size: 1x1, 2x2, 3x3, 4x4")
+      end
+    end
+    gpu.bind(primaryscreen)
+    chevronAnzeige = loadfile("/stargate/chevron.lua")(component.proxy(gpu2), kleine_screens)
+  end
+end
+
 function f.main()
+  f.checkScreens()
   f.openModem()
   pcall(screen.setTouchModeInverted, true)
   if OC then
