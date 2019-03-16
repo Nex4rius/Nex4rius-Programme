@@ -161,7 +161,11 @@ v.reset_uptime                  = computer.uptime()
 v.reset_time                    = os.time()
 
 local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit, alte_modem_message
-local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben, chevronAnzeige
+local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben
+
+local chevronAnzeige = {}
+chevronAnzeige.zeig = function() end
+chevronAnzeige.iris = function() end
 
 do
   local function check_modem_senden()
@@ -595,12 +599,14 @@ function f.irisClose()
   sg.closeIris()
   f.RedstoneAenderung(Farben.yellow, 255)
   f.Colorful_Lamp_Steuerung()
+  chevronAnzeige.iris(true)
 end
 
 function f.irisOpen()
   sg.openIris()
   f.RedstoneAenderung(Farben.yellow, 0)
   f.Colorful_Lamp_Steuerung()
+  chevronAnzeige.iris(false)
 end
 
 function f.sides()
@@ -698,6 +704,7 @@ function f.Iriskontrolle()
     if v.Anzeigetimer then
       event.cancel(v.Anzeigetimer)
     end
+    chevronAnzeige.zeig(false, "ende")
   end
   if state == "Idle" then
     incode = "-"
@@ -1647,6 +1654,7 @@ function o.sgChevronEngaged(...)
     zielAdresse = sprachen.fehlerName
   end
   f.zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
+  chevronAnzeige.zeig(state == "Connected", zielAdresse)
 end
 
 function o.modem_message(...)
