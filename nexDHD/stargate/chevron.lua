@@ -970,12 +970,23 @@ local function init(gpu, screens)
             table.insert(a.screens.chevron, screenid)
         end
     end
-    a.zeig()
+    a.zeig(false, "ende")
 end
 
-function a.zeig()
+function a.zeig(aktiv, adresse)
+    if adresse == "ende" then
+        for i = 1, 9 do
+            a.aktiv[i] = false
+        end
+    else
+        adresse = string.gsub(adresse, "-" , "")
+        for i = 1, string.len(adresse) do
+            a.aktiv[i] = true
+        end
+        adresse = string.sub(adresse, -1)
+    end
     a.stargate()
-    a.chevron("ende")
+    a.chevron(adresse)
 end
 
 function a.stopp()
