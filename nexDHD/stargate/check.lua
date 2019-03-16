@@ -397,6 +397,7 @@ function f.checkDateien()
     "stargate/version.txt",
     "stargate/farben.lua",
     "stargate/schreibSicherungsdatei.lua",
+    "stargate/chevron.lua",
     "stargate/sprache/ersetzen.lua",
   }
   if OC then
