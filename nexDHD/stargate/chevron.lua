@@ -909,7 +909,7 @@ function a.stargate(ausgeschaltet)
     if a.aktiv[7] and a.aussen == a.innen then
         a.innen = a.wurmloch
     end
-    for screenid in pairs(kleine_anzeigen) do
+    for _, screenid in pairs(a.screens.stargate) do
         gpu.bind(screenid, false)
         gpu.setForeground(a.stargatefarbe)
         gpu.setBackground(a.aussen)
@@ -944,12 +944,23 @@ function a.iris(geschlossen)
     a.stargate()
 end
 
+function a.chevron(zeichen)
+    for _, screenid in pairs(a.screens.chevron) do
+        gpu.bind(screenid, false)
+        gpu.setForeground(0xFFFFFF)
+        gpu.setBackground(0x000000)
+        for y = 1, 16 do
+            gpu.set(1, y, a.c[zeichen][y])
+        end
+    end
+end
+
 local function init(gpu, screens)
     a.innen = a.aussen
     a.screens = {}
     a.screens.chevron = {}
     a.screens.stargate = {}
-    for screenid in pairs(screens) do
+    for _, screenid in pairs(screens) do
         gpu.bind(screenid)
         gpu.setResolution(32, 16)
         gpu.fill(1, 1, 32, 16, " ")
@@ -959,7 +970,12 @@ local function init(gpu, screens)
             table.insert(a.screens.chevron, screenid)
         end
     end
+    a.zeig()
+end
+
+function a.zeig()
     a.stargate()
+    a.chevron("ende")
 end
 
 function a.stopp()
@@ -969,39 +985,3 @@ end
 init(gpu, screens)
 
 return a
-
--------------------------------------------------------
---[[
-
-os.sleep(5)
-
-local anwahl = {}
-anwahl[1] = 1
-anwahl[2] = 2
-anwahl[3] = 3
-anwahl[4] = 4
-anwahl[5] = 5
-anwahl[6] = 6
---anwahl[7] = 8
---anwahl[8] = 9
-anwahl[9] = 7
-
-for _, i in pairs(anwahl) do
-    a.aktiv[i] = true
-    os.sleep(1)
-    a.stargate()
-end
-
-os.sleep(10)
-a.iris(true)
-
-os.sleep(10)
-a.iris(false)
-
-os.sleep(10)
-a.stargate(true)
-
-os.sleep(30)
-
-os.execute("shutdown")
-]]
