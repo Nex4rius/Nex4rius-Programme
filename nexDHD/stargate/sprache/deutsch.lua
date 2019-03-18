@@ -164,6 +164,7 @@ local sprachen = {
   IDC_blockiert             = "Zu viele Versuche - IDC blockiert",
   Port                      = "Standard 645",
   Reichweite                = "Stärke des WLAN-Signals",
+  anwahl_fehler             = "Unbekannter Fehler beim Anwahlvorgang",
 }
 
 sprachen.side               = string.format("%s, %s, %s, %s, %s %s %s", sprachen.unten, sprachen.oben, sprachen.hinten, sprachen.vorne, sprachen.rechts, sprachen.oder, sprachen.links)
