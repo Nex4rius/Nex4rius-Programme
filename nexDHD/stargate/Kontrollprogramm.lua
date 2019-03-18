@@ -1241,7 +1241,7 @@ function f.dial(name, adresse)
       local AdressEnde = string.find(string.sub(ergebnis, 21), " ") + 20
       ergebnis = string.sub(ergebnis, 0, 20) .. "<" .. f.getAddress(string.sub(ergebnis, 21, AdressEnde - 1)) .. ">" .. string.sub(ergebnis, AdressEnde)
     end
-    f.zeigeNachricht(ergebnis)
+    f.zeigeNachricht(ergebnis or sprachen.anwahl_fehler)
   else
     f.Logbuch_schreiben(name , adresse, wurmloch)
   end
