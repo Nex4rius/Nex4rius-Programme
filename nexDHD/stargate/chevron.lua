@@ -1,6 +1,6 @@
 local gpu, screens = ...
-local c            = require("component")
 local term         = require("term")
+local event        = require("event")
 local a            = {}
 
 a.stargatefarbe    = 0x3C3C3C
@@ -10,9 +10,13 @@ a.wurmloch         = 0x0000FF
 a.irisfarbe        = 0xA5A5A5
 a.aussen           = 0x000000
 
+a.timer            = {}
 a.aktiv            = {}
 a.c                = {}
 a.s                = {}
+
+a.timer.iris       = 0
+a.timer.zeig       = 0
 
 for i = 1, 9 do
     a.aktiv[i] = false
@@ -932,18 +936,6 @@ function a.stargate(ausgeschaltet)
     end
 end
 
-function a.iris(geschlossen)
-    if geschlossen then
-        a.innen = a.irisfarbe
-    elseif not a.aktiv[1] then
-        a.stargate(true)
-        return
-    else
-        a.innen = a.aussen
-    end
-    a.stargate()
-end
-
 function a.chevron(zeichen)
     for _, screenid in pairs(a.screens.chevron) do
         gpu.bind(screenid, false)
@@ -973,24 +965,39 @@ local function init(gpu, screens)
     a.zeig(false, "ende")
 end
 
-function a.zeig(aktiv, adresse)
-    if adresse == "ende" then
-        for i = 1, 9 do
-            a.aktiv[i] = false
+function a.iris(geschlossen)
+    event.cancel(a.timer.iris)
+    a.timer.iris = event.timer(0.05, function()
+        if geschlossen then
+            a.innen = a.irisfarbe
+        elseif not a.aktiv[1] then
+            a.stargate(true)
+            return
+        else
+            a.innen = a.aussen
         end
-    else
-        adresse = string.gsub(adresse, "-" , "")
-        for i = 1, string.len(adresse) do
-            a.aktiv[i] = true
-        end
-        adresse = string.sub(adresse, -1)
-    end
-    a.stargate()
-    a.chevron(adresse)
+        a.stargate()
+    end, 1)
 end
 
-function a.stopp()
-    
+function a.zeig(aktiv, adresse)
+    event.cancel(a.timer.zeig)
+    a.timer.zeig = event.timer(0.05, function()
+        if adresse == "ende" then
+            a.innen = a.aussen
+            for i = 1, 9 do
+                a.aktiv[i] = false
+            end
+        else
+            adresse = string.gsub(adresse, "-" , "")
+            for i = 1, string.len(adresse) do
+                a.aktiv[i] = true
+            end
+            adresse = string.sub(adresse, -1)
+        end
+        a.stargate()
+        a.chevron(adresse)
+    end, 1)
 end
 
 init(gpu, screens)
