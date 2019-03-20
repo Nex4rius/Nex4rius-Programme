@@ -1766,25 +1766,28 @@ function o.sgStargateStateChange(...)
 end
 
 function f.eventLoop()
-  local von_modem = false
+  local skip = false
   while running do
-    if not von_modem then
+    if not skip then
       f.checken(f.zeigeStatus)
     end
     von_modem = false
     e = f.pull_event()
+    f.zeigeNachricht(e[1]) -- debug
     if not e then
     elseif not e[1] then
     elseif e[1] == "modem_message" then
-      von_modem = true
-      o.modem_message(nil, nil, nil, nil, nil, e[6])
+      skip = true
+      --if e[1] == "modem_message" then
+        o.modem_message(nil, nil, nil, nil, nil, e[6])
+      --end
     else
       d = f[e[1]]
       if d then
         f.checken(d, e)
       end
     end
-    if not von_modem then
+    if not skip then
       f.zeigeAnzeige()
     end
   end
