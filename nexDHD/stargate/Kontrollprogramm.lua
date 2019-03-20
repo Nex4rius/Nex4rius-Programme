@@ -286,8 +286,12 @@ function f.schreibeAdressen()
 end
 
 function f.Farbe(hintergrund, vordergrund)
-  gpu.setBackground(hintergrund)
-  gpu.setForeground(vordergrund)
+  if type(hintergrund) == "number" then
+    gpu.setBackground(hintergrund)
+  end
+  if type(vordergrund) == "number" then
+    gpu.setForeground(vordergrund)
+  end
 end
 
 function f.reset()
@@ -1221,10 +1225,10 @@ function f.schreibFehlerLog(...)
   letzteEingabe = ...
 end
 
-function f.zeigeFehler(...)
-  if ... == "" then else
-    f.schreibFehlerLog(...)
-    f.zeigeNachricht(string.format("%s %s", sprachen.fehlerName, ...))
+function f.zeigeFehler(text, ...)
+  if text ~= "" then
+    f.schreibFehlerLog(text, ...)
+    f.zeigeNachricht(string.format("%s %s", sprachen.fehlerName, tostring(text)))
   end
 end
 
@@ -1757,38 +1761,26 @@ function o.sgDialOut()
   event.timer(25, f.GDO_aufwecken, 1)
 end
 
-function o.sgStargateStateChange(...)
-  if true then return end --deaktiviert weil es nicht funktioniert
-  local e = {...}
-  if e[3] == "Connected" then
-    v.Anzeigetimer = event.timer(0.1, f.zeigeEnergie, math.huge)
-  end
-end
-
 function f.eventLoop()
-  local skip = false
+  local ignorieren = {}
+  ignorieren["modem_message"] = true
+  ignorieren["screen_resized"] = true
+  ignorieren["key_up"] = true
+  ignorieren["drop"] = true
+  ignorieren["touch"] = true
+
   while running do
-    if not skip then
-      f.checken(f.zeigeStatus)
-    end
-    von_modem = false
     e = f.pull_event()
-    f.schreibFehlerLog(e[1]) -- debug
-    if not e then
-    elseif not e[1] then
-    elseif e[1] == "modem_message" then
-      skip = true
-      --if e[1] == "modem_message" then
-        o.modem_message(nil, nil, nil, nil, nil, e[6])
-      --end
+    if not e or not e[1] then
+      -- nichts
     else
-      d = f[e[1]]
+      local d = f[e[1]]
       if d then
         f.checken(d, e)
       end
-    end
-    if not skip then
-      f.zeigeAnzeige()
+      if ignorieren[e[1]] then else
+        f.zeigeAnzeige()
+      end
     end
   end
 end
@@ -1977,7 +1969,7 @@ function f.checkScreens()
     local primarygpu
     if #gpu_tier2 > 0 then
       primarygpu = gpu_tier2[1]
-      component.setPrimary("gpu", primarygpu)
+      --component.setPrimary("gpu", primarygpu)
       if gpu_tier3[1] then
         gpu2 = gpu_tier3[1]
       elseif gpu_tier2[2] then
@@ -1987,7 +1979,7 @@ function f.checkScreens()
       end
     elseif #gpu_tier3 > 0 then
       primarygpu = gpu_tier3[1]
-      component.setPrimary("gpu", primarygpu)
+      --component.setPrimary("gpu", primarygpu)
       if gpu_tier3[2] then
         gpu2 = gpu_tier3[2]
       elseif gpu_tier2[1] then
@@ -1996,7 +1988,7 @@ function f.checkScreens()
         gpu2 = gpu_tier1[1]
       end
     else
-      f.schreibFehlerLog("Nur Tier 1 GPUs / Screens gefunden -> Ausschalten")
+      f.zeigeFehler("Nur Tier 1 GPUs / Screens gefunden -> Ausschalten")
       f.beendeAlles()
       os.exit()
     end
@@ -2007,7 +1999,7 @@ function f.checkScreens()
       local x, y = component.proxy(screenid).getAspectRatio()
       if x == 4 and y == 3 then
         primaryscreen = screenid
-        component.setPrimary("screen", primaryscreen)
+        --component.setPrimary("screen", primaryscreen)
       elseif x == y then
         table.insert(kleine_screens, screenid)
       else
@@ -2026,7 +2018,7 @@ function f.checkScreens()
 end
 
 function f.main()
-  f.checkScreens()
+  f.checken(f.checkScreens)
   f.openModem()
   pcall(screen.setTouchModeInverted, true)
   if OC then
@@ -2053,7 +2045,7 @@ function f.main()
     local ergebnis, grund = pcall(f.eventLoop)
     if not ergebnis then
       print(grund)
-      f.schreibFehlerLog(grund)
+      f.zeigeFehler(grund)
       os.sleep(5)
     end
   end
