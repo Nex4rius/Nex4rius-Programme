@@ -1773,7 +1773,7 @@ function f.eventLoop()
     end
     von_modem = false
     e = f.pull_event()
-    f.zeigeNachricht(e[1]) -- debug
+    f.schreibFehlerLog(e[1]) -- debug
     if not e then
     elseif not e[1] then
     elseif e[1] == "modem_message" then
