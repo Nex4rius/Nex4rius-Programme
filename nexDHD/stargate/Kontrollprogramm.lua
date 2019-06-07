@@ -1759,6 +1759,7 @@ function o.sgDialOut()
   f.GDO_aufwecken()
   event.timer(19, f.GDO_aufwecken, 1)
   event.timer(25, f.GDO_aufwecken, 1)
+  event.timer(60, f.GDO_aufwecken, 1)
 end
 
 function f.eventLoop()
