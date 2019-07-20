@@ -95,7 +95,9 @@ else
     arg = true
 end
 
-m.setStrength(math.huge)
+if m.isWireless() then
+    m.setStrength(math.huge)
+end
 
 local function spairs(t, order)
     local keys = {}
