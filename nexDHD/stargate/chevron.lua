@@ -1,6 +1,6 @@
 local gpu, screens = ...
-local c            = require("component")
 local term         = require("term")
+local event        = require("event")
 local a            = {}
 
 a.stargatefarbe    = 0x3C3C3C
@@ -10,9 +10,13 @@ a.wurmloch         = 0x0000FF
 a.irisfarbe        = 0xA5A5A5
 a.aussen           = 0x000000
 
+a.timer            = {}
 a.aktiv            = {}
 a.c                = {}
 a.s                = {}
+
+a.timer.iris       = 0
+a.timer.zeig       = 0
 
 for i = 1, 9 do
     a.aktiv[i] = false
@@ -909,7 +913,7 @@ function a.stargate(ausgeschaltet)
     if a.aktiv[7] and a.aussen == a.innen then
         a.innen = a.wurmloch
     end
-    for screenid in pairs(kleine_anzeigen) do
+    for _, screenid in pairs(a.screens.stargate) do
         gpu.bind(screenid, false)
         gpu.setForeground(a.stargatefarbe)
         gpu.setBackground(a.aussen)
@@ -932,16 +936,15 @@ function a.stargate(ausgeschaltet)
     end
 end
 
-function a.iris(geschlossen)
-    if geschlossen then
-        a.innen = a.irisfarbe
-    elseif not a.aktiv[1] then
-        a.stargate(true)
-        return
-    else
-        a.innen = a.aussen
+function a.chevron(zeichen)
+    for _, screenid in pairs(a.screens.chevron) do
+        gpu.bind(screenid, false)
+        gpu.setForeground(0xFFFFFF)
+        gpu.setBackground(0x000000)
+        for y = 1, 16 do
+            gpu.set(1, y, a.c[zeichen][y])
+        end
     end
-    a.stargate()
 end
 
 local function init(gpu, screens)
@@ -949,7 +952,7 @@ local function init(gpu, screens)
     a.screens = {}
     a.screens.chevron = {}
     a.screens.stargate = {}
-    for screenid in pairs(screens) do
+    for _, screenid in pairs(screens) do
         gpu.bind(screenid)
         gpu.setResolution(32, 16)
         gpu.fill(1, 1, 32, 16, " ")
@@ -959,49 +962,44 @@ local function init(gpu, screens)
             table.insert(a.screens.chevron, screenid)
         end
     end
-    a.stargate()
+    a.zeig(false, "ende")
 end
 
-function a.stopp()
-    
+function a.iris(geschlossen)
+    event.cancel(a.timer.iris)
+    a.timer.iris = event.timer(0.05, function()
+        if geschlossen then
+            a.innen = a.irisfarbe
+        elseif not a.aktiv[1] then
+            a.stargate(true)
+            return
+        else
+            a.innen = a.aussen
+        end
+        a.stargate()
+    end, 1)
+end
+
+function a.zeig(aktiv, adresse)
+    event.cancel(a.timer.zeig)
+    a.timer.zeig = event.timer(0.05, function()
+        if adresse == "ende" then
+            a.innen = a.aussen
+            for i = 1, 9 do
+                a.aktiv[i] = false
+            end
+        else
+            adresse = string.gsub(adresse, "-" , "")
+            for i = 1, string.len(adresse) do
+                a.aktiv[i] = true
+            end
+            adresse = string.sub(adresse, -1)
+        end
+        a.stargate()
+        a.chevron(adresse)
+    end, 1)
 end
 
 init(gpu, screens)
 
 return a
-
--------------------------------------------------------
---[[
-
-os.sleep(5)
-
-local anwahl = {}
-anwahl[1] = 1
-anwahl[2] = 2
-anwahl[3] = 3
-anwahl[4] = 4
-anwahl[5] = 5
-anwahl[6] = 6
---anwahl[7] = 8
---anwahl[8] = 9
-anwahl[9] = 7
-
-for _, i in pairs(anwahl) do
-    a.aktiv[i] = true
-    os.sleep(1)
-    a.stargate()
-end
-
-os.sleep(10)
-a.iris(true)
-
-os.sleep(10)
-a.iris(false)
-
-os.sleep(10)
-a.stargate(true)
-
-os.sleep(30)
-
-os.execute("shutdown")
-]]

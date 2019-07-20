@@ -5,7 +5,7 @@
 local Theme, OC, CC = ...
 local Farben = {}
 
-if OC then
+--if OC then
     Farben.graueFarbe          = 0x333333
     Farben.hellblau            = 0x336699
     Farben.mittelblau          = 0x6699FF
@@ -18,7 +18,8 @@ if OC then
     Farben.hellgrueneFarbe     = 0x00FF00
     Farben.grueneFarbe         = 0x336600
     Farben.orangeFarbe         = 0xFF7F24
-elseif CC then
+--[[
+else
     Farben.graueFarbe          = 128
     Farben.hellblau            = 8
     Farben.mittelblau          = 512
@@ -32,6 +33,7 @@ elseif CC then
     Farben.grueneFarbe         = 8192
     Farben.orangeFarbe         = 2
 end
+]]
 
 if Theme == "schwarz_weiss" then
     Farben.FehlerFarbe           = Farben.weisseFarbe
