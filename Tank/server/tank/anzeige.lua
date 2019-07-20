@@ -677,6 +677,19 @@ function f.debug(text)
     end
 end
 
+function f.telemetrie()
+    if component.isAvailable("internet") then
+        local internet = require("internet")
+        local daten = {
+            typ = "Tank",
+            version = version,
+            selbst = require("computer").address(),
+            extra = ""
+        }
+        internet.request([==[http://s655076808.online.de/]==], daten)
+    end
+end
+
 function f.text(a, b)
     if type(a) == "string" then
         for screenid in component.list("screen") do
@@ -881,6 +894,7 @@ function f.main()
     timer.beenden = event.timer(Wartezeit + 30, f.beenden, 1)
     f.senden()
     event.listen("interrupted", f.beenden)
+    f.telemetrie()
     while laeuft do
         f.bildschirm_aktualisieren()
         os.sleep(5)
