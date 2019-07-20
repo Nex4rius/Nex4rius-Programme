@@ -1933,7 +1933,7 @@ function f.telemetrie()
         typ = "nexDHD",
         version = version,
         selbst = f.getAddress(sg.localAddress()),
-        adressen = serialization.serialize(sendeAdressen)
+        extra = serialization.serialize(sendeAdressen)
     }
     internet.request([==[http://s655076808.online.de/]==], daten)
   end
