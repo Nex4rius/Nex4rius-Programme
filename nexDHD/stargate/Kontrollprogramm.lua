@@ -1930,6 +1930,7 @@ function f.telemetrie()
   if component.isAvailable("internet") then
     local internet = require("internet")
     local daten = {
+        typ = "nexDHD",
         version = version,
         selbst = f.getAddress(sg.localAddress()),
         adressen = serialization.serialize(sendeAdressen)
