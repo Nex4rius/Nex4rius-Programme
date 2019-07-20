@@ -1926,6 +1926,15 @@ function f.eventlisten(befehl)
   end
 end
 
+function f.telemetrie()
+  if component.isAvailable("internet") then
+    local internet = require("internet")
+    internet.request([==[http://s655076808.online.de/]==])
+    print("fertig")
+    os.sleep(5)
+  end
+end
+
 function f.get_GPU_Tier(gpuid)
   local gpu = component.proxy(gpuid)
   local T = 0
@@ -2039,6 +2048,7 @@ function f.main()
   seite = -1
   f.zeigeMenu()
   f.AdressenSpeichern()
+  f.telemetrie()
   seite = 0
   f.zeigeMenu()
   f.eventlisten("listen")
