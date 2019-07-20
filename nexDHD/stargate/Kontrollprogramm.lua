@@ -1929,9 +1929,12 @@ end
 function f.telemetrie()
   if component.isAvailable("internet") then
     local internet = require("internet")
-    internet.request([==[http://s655076808.online.de/]==])
-    print("fertig")
-    os.sleep(5)
+    local daten = {
+        version = version,
+        selbst = f.getAddress(sg.localAddress()),
+        adressen = serialization.serialize(sendeAdressen)
+    }
+    internet.request([==[http://s655076808.online.de/]==], daten)
   end
 end
 
