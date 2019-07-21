@@ -903,14 +903,15 @@ a[9] = function(aktiv)
     gpu.set(10, 14, "▄")
 end
 
-function a.stargate(ausgeschaltet)
+function a.stargate(ausgeschaltet, aktiv)
     if ausgeschaltet then
         for i = 1, 9 do
             a.aktiv[i] = false
             a.innen = a.aussen
         end
     end
-    if a.aktiv[7] and a.aussen == a.innen then
+    --if a.aktiv[7] and a.aussen == a.innen then
+    if aktiv then
         a.innen = a.wurmloch
     end
     for _, screenid in pairs(a.screens.stargate) do
@@ -976,7 +977,7 @@ function a.iris(geschlossen)
         else
             a.innen = a.aussen
         end
-        a.stargate()
+        a.stargate(false)
     end, 1)
 end
 
@@ -995,7 +996,7 @@ function a.zeig(aktiv, adresse)
             end
             adresse = string.sub(adresse, -1)
         end
-        a.stargate()
+        a.stargate(false, aktiv)
         a.chevron(adresse)
     end, 1)
 end
