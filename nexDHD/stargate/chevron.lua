@@ -995,7 +995,7 @@ function a.zeig(aktiv, adresse)
             for i = 1, lang do
                 a.aktiv[i] = true
             end
-            if not aktiv then
+            if not aktiv and lang >= 7 then
                 a.aktiv[lang + 1] = true
             end
             a.aktiv[7] = aktiv
