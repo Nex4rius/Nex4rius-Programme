@@ -907,10 +907,11 @@ function a.stargate(ausgeschaltet, aktiv)
     if ausgeschaltet then
         for i = 1, 9 do
             a.aktiv[i] = false
+        end
+        if a.innen ~= a.irisfarbe then
             a.innen = a.aussen
         end
     end
-    --if a.aktiv[7] and a.aussen == a.innen then
     if aktiv then
         a.innen = a.wurmloch
     end
