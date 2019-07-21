@@ -1647,6 +1647,7 @@ function o.sgChevronEngaged(...)
   local e = {...}
   chevron = e[3]
   local remAdr = sg.remoteAddress()
+  
   if remAdr then
     if chevron <= 4 then
       zielAdresse = string.sub(remAdr, 1, chevron)
@@ -1658,18 +1659,20 @@ function o.sgChevronEngaged(...)
   else
     zielAdresse = sprachen.fehlerName
   end
+  
   f.zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
-  chevronAnzeige.zeig(state == "Connected", zielAdresse)
-  ---------------------------------------------------------------------------------------
+  
   if chevron >= 7 then
-    for i = 0, 20 do
+    for i = 0, 10 do
       state, chevrons, direction = sg.stargateState()
-      print(state == "Connected", zielAdresse)
       os.sleep(0.1)
+      if state == "Connected" then
+        break
+      end
     end
-    os.sleep(10)
   end
-  ---------------------------------------------------------------------------------------
+  
+  chevronAnzeige.zeig(state == "Connected", zielAdresse)
 end
 
 function o.modem_message(...)
