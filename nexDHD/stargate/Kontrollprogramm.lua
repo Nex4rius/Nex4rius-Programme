@@ -1778,13 +1778,12 @@ function o.sgDialOut()
 end
 
 function f.eventLoop()
-  local ignorieren = {}
-  ignorieren["modem_message"] = true
-  ignorieren["screen_resized"] = true
-  ignorieren["key_up"] = true
-  ignorieren["drop"] = true
-  ignorieren["touch"] = true
-  
+  --local ignorieren = {}
+  --ignorieren["modem_message"] = true
+  --ignorieren["screen_resized"] = true
+  --ignorieren["key_up"] = true
+  --ignorieren["drop"] = true
+  --ignorieren["touch"] = true
   local zeit = computer.uptime()
 
   while running do
@@ -1796,7 +1795,8 @@ function f.eventLoop()
       if d then
         f.checken(d, e)
       end
-      if ignorieren[e[1]] and computer.uptime() - zeit < 10 then else
+      --if ignorieren[e[1]] and computer.uptime() - zeit < 10 then else
+      if computer.uptime() - zeit > 1 then
         f.zeigeAnzeige()
         zeit = computer.uptime()
       end
