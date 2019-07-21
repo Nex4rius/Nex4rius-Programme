@@ -309,7 +309,7 @@ function f.reset()
 end
 
 function f.pull_event()
-  local Wartezeit = 3
+  local Wartezeit = 1
   if state == "Idle" then
     alte_modem_message = nil
     v.IDC_Anzahl = 0
@@ -1777,24 +1777,20 @@ function o.sgDialOut()
 end
 
 function f.eventLoop()
-  --local ignorieren = {}
-  --ignorieren["modem_message"] = true
-  --ignorieren["screen_resized"] = true
-  --ignorieren["key_up"] = true
-  --ignorieren["drop"] = true
-  --ignorieren["touch"] = true
   local zeit = computer.uptime()
 
   while running do
     e = f.pull_event()
+
     if not e or not e[1] then
-      -- nichts
+      f.zeigeAnzeige()
+      zeit = computer.uptime()
     else
       local d = f[e[1]]
       if d then
         f.checken(d, e)
       end
-      --if ignorieren[e[1]] and computer.uptime() - zeit < 10 then else
+
       if computer.uptime() - zeit > 1 then
         f.zeigeAnzeige()
         zeit = computer.uptime()
