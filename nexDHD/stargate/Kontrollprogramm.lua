@@ -1672,7 +1672,7 @@ function o.sgChevronEngaged(...)
     end
   end
   
-  f.zeigeFehler(string.format("Hier: --- %s", state))
+  f.zeigeFehler(string.format("Hier: '%s'", state))
   chevronAnzeige.zeig(state == "Opening" or state == "Connected", zielAdresse)
 end
 
