@@ -1323,6 +1323,7 @@ function Taste.d()
       f.zeigeNachricht(sprachen.stargateAbschalten .. " " .. sprachen.stargateName)
     end
   end
+  chevronAnzeige.zeig(false, "ende")
   event.timer(2, f.zeigeMenu, 1)
 end
 
@@ -1646,6 +1647,7 @@ function o.sgChevronEngaged(...)
   local e = {...}
   chevron = e[3]
   local remAdr = sg.remoteAddress()
+  
   if remAdr then
     if chevron <= 4 then
       zielAdresse = string.sub(remAdr, 1, chevron)
@@ -1657,8 +1659,20 @@ function o.sgChevronEngaged(...)
   else
     zielAdresse = sprachen.fehlerName
   end
+  
   f.zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
-  chevronAnzeige.zeig(state == "Connected", zielAdresse)
+  
+  if chevron == 7 or chevron == 9 then
+    for i = 0, 5 do
+      if state == "Opening" or state == "Connected" then
+        break
+      end
+      os.sleep(0.1)
+      state, chevrons, direction = sg.stargateState()
+    end
+  end
+  
+  chevronAnzeige.zeig(state == "Opening" or state == "Connected", zielAdresse)
 end
 
 function o.modem_message(...)
@@ -1763,24 +1777,23 @@ function o.sgDialOut()
 end
 
 function f.eventLoop()
-  local ignorieren = {}
-  ignorieren["modem_message"] = true
-  ignorieren["screen_resized"] = true
-  ignorieren["key_up"] = true
-  ignorieren["drop"] = true
-  ignorieren["touch"] = true
+  local zeit = computer.uptime()
 
   while running do
     e = f.pull_event()
+
     if not e or not e[1] then
-      -- nichts
+      f.zeigeAnzeige()
+      zeit = computer.uptime()
     else
       local d = f[e[1]]
       if d then
         f.checken(d, e)
       end
-      if ignorieren[e[1]] then else
+
+      if computer.uptime() - zeit > 1 then
         f.zeigeAnzeige()
+        zeit = computer.uptime()
       end
     end
   end
