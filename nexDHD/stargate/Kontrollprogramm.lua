@@ -1672,6 +1672,7 @@ function o.sgChevronEngaged(...)
     end
   end
   
+  f.zeigeFehler(state)
   chevronAnzeige.zeig(state == "Opening" or state == "Connected", zielAdresse)
 end
 
