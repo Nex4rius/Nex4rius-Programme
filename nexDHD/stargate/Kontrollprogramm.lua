@@ -1784,6 +1784,8 @@ function f.eventLoop()
   ignorieren["key_up"] = true
   ignorieren["drop"] = true
   ignorieren["touch"] = true
+  
+  local zeit = computer.uptime()
 
   while running do
     e = f.pull_event()
@@ -1794,8 +1796,9 @@ function f.eventLoop()
       if d then
         f.checken(d, e)
       end
-      if ignorieren[e[1]] then else
+      if ignorieren[e[1]] and computer.uptime() - zeit < 10 then else
         f.zeigeAnzeige()
+        zeit = computer.uptime()
       end
     end
   end
