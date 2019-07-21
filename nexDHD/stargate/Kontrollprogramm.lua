@@ -1660,6 +1660,11 @@ function o.sgChevronEngaged(...)
   end
   f.zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
   chevronAnzeige.zeig(state == "Connected", zielAdresse)
+  for i = 0, 20 do
+    print(state == "Connected", zielAdresse)
+    os.sleep(0.1)
+  end
+  os.sleep(10)
 end
 
 function o.modem_message(...)
