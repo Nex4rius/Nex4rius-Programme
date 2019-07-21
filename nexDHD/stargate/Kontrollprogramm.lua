@@ -1662,8 +1662,8 @@ function o.sgChevronEngaged(...)
   
   f.zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
   
-  if chevron >= 7 then
-    for i = 0, 10 do
+  if chevron == 7 or chevron == 9 then
+    for i = 0, 5 do
       if state == "Opening" or state == "Connected" then
         break
       end
