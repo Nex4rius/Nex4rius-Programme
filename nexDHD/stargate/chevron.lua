@@ -974,6 +974,8 @@ function a.iris(geschlossen)
         elseif not a.aktiv[1] then
             a.stargate(true)
             return
+        elseif a.aktiv[7] then
+            a.innen = a.wurmloch
         else
             a.innen = a.aussen
         end
