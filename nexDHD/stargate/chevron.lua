@@ -991,9 +991,14 @@ function a.zeig(aktiv, adresse)
             end
         else
             adresse = string.gsub(adresse, "-" , "")
-            for i = 1, string.len(adresse) do
+            local lang = string.len(adresse)
+            for i = 1, lang do
                 a.aktiv[i] = true
             end
+            if not aktiv then
+                a.aktiv[lang + 1] = true
+            end
+            a.aktiv[7] = aktiv
             adresse = string.sub(adresse, -1)
         end
         a.stargate(false, aktiv)
