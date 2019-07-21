@@ -1323,6 +1323,7 @@ function Taste.d()
       f.zeigeNachricht(sprachen.stargateAbschalten .. " " .. sprachen.stargateName)
     end
   end
+  chevronAnzeige.zeig(false, "ende")
   event.timer(2, f.zeigeMenu, 1)
 end
 
