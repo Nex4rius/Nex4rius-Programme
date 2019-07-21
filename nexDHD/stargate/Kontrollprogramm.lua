@@ -1664,15 +1664,15 @@ function o.sgChevronEngaged(...)
   
   if chevron >= 7 then
     for i = 0, 10 do
-      state, chevrons, direction = sg.stargateState()
-      os.sleep(0.1)
-      if state == "Connected" then
+      if state == "Opening" or state == "Connected" then
         break
       end
+      os.sleep(0.1)
+      state, chevrons, direction = sg.stargateState()
     end
   end
   
-  chevronAnzeige.zeig(state == "Connected", zielAdresse)
+  chevronAnzeige.zeig(state == "Opening" or state == "Connected", zielAdresse)
 end
 
 function o.modem_message(...)
