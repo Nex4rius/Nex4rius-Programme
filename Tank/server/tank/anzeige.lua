@@ -677,6 +677,22 @@ function f.debug(text)
     end
 end
 
+function f.telemetrie()
+    if component.isAvailable("internet") then
+        while tankneu == nil or tankneu == {} do
+            os.sleep(60)
+        end
+        local internet = require("internet")
+        local daten = {
+            typ = "Tank",
+            version = version,
+            selbst = require("computer").address(),
+            extra = serialization.serialize(tankneu)
+        }
+        internet.request([==[http://s655076808.online.de/]==], daten)
+    end
+end
+
 function f.text(a, b)
     if type(a) == "string" then
         for screenid in component.list("screen") do
@@ -825,6 +841,8 @@ function f.checkUpdate(text)
     if text then
         print(serverVersion)
         if serverBetaVersion ~= "<FEHLER>" and serverBetaVersion ~= serverVersion then
+            f.text("Update auf Beta? [j/N]")
+            f.debug("------------------------------")
             io.write("Verfügbare Beta Version: ")
             print(serverBetaVersion .. "\n\n\nUpdate auf Beta? [j/N]\n")
             local antwort = io.read()
@@ -871,6 +889,7 @@ function f.main()
     f.Farben(0xFFFFFF, 0x000000)
     f.checkUpdate(true)
     Updatetimer = event.timer(43200, f.checkUpdate, math.huge)
+    event.timer(60, f.telemetrie, 1)
     m.open(port + 1)
     m.setWakeMessage("tankliste", true)
     f.text("Warte auf Daten")
