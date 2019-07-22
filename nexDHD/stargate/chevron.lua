@@ -912,7 +912,7 @@ function a.stargate(ausgeschaltet, aktiv)
             a.innen = a.aussen
         end
     end
-    if aktiv then
+    if aktiv and a.innen ~= a.irisfarbe then
         a.innen = a.wurmloch
     end
     for _, screenid in pairs(a.screens.stargate) do
