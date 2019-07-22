@@ -1576,7 +1576,6 @@ end
 
 function Taste.b()
   if seite == -1 then
-    chevronAnzeige.beenden()
     f.zeigeNachricht(sprachen.UpdateBeta)
     f.Farbe(Farben.AdressfarbeAktiv, Farben.AdresstextfarbeAktiv)
     f.zeigeHier(1, Taste.Koordinaten.Taste_b, "B " .. sprachen.UpdateBeta, 0)
