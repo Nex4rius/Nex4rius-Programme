@@ -819,6 +819,27 @@ a.c["ende"] = {
     "                                ",
 }
 
+a.c["beenden"] = {
+    "                                ",
+    "██                            ██",
+    "  ██                        ██  ",
+    "    ██                    ██    ",
+    "      ██                ██      ",
+    "        ██            ██        ",
+    "          ██        ██          ",
+    "            ██    ██            ",
+    "              ████              ",
+    "              ████              ",
+    "            ██    ██            ",
+    "          ██        ██          ",
+    "        ██            ██        ",
+    "      ██                ██      ",
+    "    ██                    ██    ",
+    "  ██                        ██  ",
+    "██                            ██",
+    "                                ",
+}
+
 a[1] = function(aktiv)
     gpu.setBackground(a.aussen)
     gpu.set(25, 3, "▄")
@@ -1011,6 +1032,13 @@ function a.zeig(aktiv, adresse)
         a.stargate(false, aktiv)
         a.chevron(adresse)
     end, 1)
+end
+
+function a.beenden()
+    a.innen = 0xFF0000
+    a.aussen = 0xFF0000
+    a.stargate(false, false)
+    a.chevron("beenden")
 end
 
 init(gpu, screens)
