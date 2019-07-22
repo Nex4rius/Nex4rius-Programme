@@ -959,9 +959,7 @@ function a.iris(geschlossen)
             a.stargate(true)
             return
         elseif a.aktiv[7] then
-            if a.innen ~= a.irisfarbe then
-                a.innen = a.wurmloch
-            end
+            a.innen = a.wurmloch
         else
             a.innen = a.aussen
         end
