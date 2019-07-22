@@ -976,7 +976,9 @@ function a.iris(geschlossen)
             a.stargate(true)
             return
         elseif a.aktiv[7] then
-            a.innen = a.wurmloch
+            if a.innen ~= a.irisfarbe then
+                a.innen = a.wurmloch
+            end
         else
             a.innen = a.aussen
         end
@@ -988,7 +990,9 @@ function a.zeig(aktiv, adresse)
     event.cancel(a.timer.zeig)
     a.timer.zeig = event.timer(0.05, function()
         if adresse == "ende" then
-            a.innen = a.aussen
+            if a.innen ~= a.irisfarbe then
+                a.innen = a.aussen
+            end
             for i = 1, 9 do
                 a.aktiv[i] = false
             end
