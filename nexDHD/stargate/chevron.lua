@@ -956,6 +956,7 @@ function a.iris(geschlossen)
         if geschlossen then
             a.innen = a.irisfarbe
         elseif not a.aktiv[1] then
+            a.innen = a.aussen
             a.stargate(true)
             return
         elseif a.aktiv[7] then
