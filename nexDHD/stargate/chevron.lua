@@ -997,8 +997,8 @@ function a.zeig(aktiv, adresse)
 end
 
 function a.beenden()
-    a.innen = 0xFF0000
-    a.aussen = 0xFF0000
+    a.innen = 0x990000
+    a.aussen = 0x990000
     a.stargate(false, false)
     a.chevron("beenden")
 end
