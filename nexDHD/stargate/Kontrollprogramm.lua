@@ -166,6 +166,7 @@ local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, Richt
 local chevronAnzeige = {}
 chevronAnzeige.zeig = function() end
 chevronAnzeige.iris = function() end
+chevronAnzeige.beenden = function() end
 
 do
   local function check_modem_senden()
@@ -1575,6 +1576,7 @@ end
 
 function Taste.b()
   if seite == -1 then
+    chevronAnzeige.beenden()
     f.zeigeNachricht(sprachen.UpdateBeta)
     f.Farbe(Farben.AdressfarbeAktiv, Farben.AdresstextfarbeAktiv)
     f.zeigeHier(1, Taste.Koordinaten.Taste_b, "B " .. sprachen.UpdateBeta, 0)
@@ -1890,6 +1892,7 @@ end
 function f.beendeAlles()
   event.cancel(Updatetimer)
   f.eventlisten("ignore")
+  chevronAnzeige.beenden()
   schreibSicherungsdatei(Sicherung)
   gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   f.Farbe(Farben.schwarzeFarbe, Farben.weisseFarbe)
