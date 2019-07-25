@@ -202,7 +202,21 @@ function f.start(versionTyp)
   end
 end
 
+function f.telemetrie(versionTyp)
+  if component.isAvailable("internet") then
+    local internet = require("internet")
+    local daten = {
+        typ = "nexDHD",
+        version = versionTyp,
+        selbst = "installieren",
+        extra = ""
+    }
+    internet.request([==[http://s655076808.online.de/]==], daten)
+  end
+end
+
 function f.installieren(versionTyp)
+  f.telemetrie(versionTyp)
   Statustimer = event.timer(0.1, f.status, math.huge)
   fs.makeDirectory("/update/stargate/sprache")
   local updateKomplett = false
