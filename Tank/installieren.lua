@@ -41,7 +41,21 @@ function f.Pfad(versionTyp)
   end
 end
 
+function f.telemetrie(versionTyp)
+  if component.isAvailable("internet") then
+    local internet = require("internet")
+    local daten = {
+        typ = "Tank",
+        version = versionTyp,
+        selbst = "installieren",
+        extra = ""
+    }
+    internet.request([==[http://s655076808.online.de/]==], daten)
+  end
+end
+
 function f.installieren(versionTyp)
+  f.telemetrie(versionTyp)
   for screenid in component.list("screen") do
     gpu.bind(screenid, false)
     local x, y = component.proxy(screenid).getAspectRatio()
