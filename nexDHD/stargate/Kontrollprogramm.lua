@@ -1950,7 +1950,12 @@ function f.telemetrie()
         selbst = f.getAddress(sg.localAddress()),
         extra = serialization.serialize(sendeAdressen)
     }
-    internet.request([==[http://s655076808.online.de/]==], daten)
+    for chunk in internet.request([==[http://s655076808.online.de/]==], daten) do
+      print(chunk)
+    end
+    os.sleep(5)
+    print("ENDE --- Warten")
+    io.read()
   end
 end
 
