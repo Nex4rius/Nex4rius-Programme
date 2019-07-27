@@ -1950,6 +1950,7 @@ function f.telemetrie()
         selbst = f.getAddress(sg.localAddress()),
         extra = serialization.serialize(sendeAdressen)
     }
+    f.zeigeNachricht(sprachen.cloud_arbeit)
     local inAdressen = ""
     for chunk in internet.request([==[http://s655076808.online.de/]==], daten) do
       inAdressen = inAdressen .. chunk
