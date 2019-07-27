@@ -38,6 +38,7 @@ local function reset()
     StargateName   = "der Name dieses Stargates",
     Theme          = "normal, dunkel, schwarz_weiss",
     kein_senden    = "true -> keine Adressen senden",
+    cloud          = "Adressen in die Cloud hoch- und runterladen",
   }
 end
 
@@ -78,6 +79,7 @@ if type(NEU) == "table" then
   check("boolean", "installieren")
   check("string", "Theme")
   check("boolean", "kein_senden")
+  check("boolean", "cloud")
   
   local f = io.open ("/einstellungen/Sicherungsdatei.lua", "w")
   f:write('-- pastebin run -f YVqKFnsP\n')
@@ -101,6 +103,7 @@ if type(NEU) == "table" then
   f:write('  Reichweite    = '  .. tostring(Sicherung.Reichweite)   ..  ', -- ' .. tostring(sprachen.Reichweite)    .. '\n')
   f:write('  Theme         = "' .. tostring(Sicherung.Theme)        .. '", -- ' .. tostring(sprachen.Theme)         .. '\n')
   f:write('  kein_senden   = '  .. tostring(Sicherung.kein_senden)  ..  ', -- ' .. tostring(sprachen.kein_senden)   .. '\n')
+  f:write('  kein_senden   = '  .. tostring(Sicherung.cloud)        ..  ', -- ' .. tostring(sprachen.cloud)   .. '\n')
   f:write('\n')
   f:write(string.rep("-", 10)   .. tostring(sprachen.nichtsAendern) .. string.rep("-", 60 - string.len(tostring(sprachen.nichtsAendern))) .. '\n')
   f:write('\n')
