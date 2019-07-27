@@ -165,6 +165,7 @@ local sprachen = {
   Port                      = "default 645",
   Reichweite                = "strength of the WiFi signal",
   anwahl_fehler             = "unknown error at dialling",
+  cloud                     = "up- and download of addresses into the cloud",
 }
 
 sprachen.side               = string.format("%s, %s, %s, %s, %s %s %s", sprachen.unten, sprachen.oben, sprachen.hinten, sprachen.vorne, sprachen.rechts, sprachen.oder, sprachen.links)
