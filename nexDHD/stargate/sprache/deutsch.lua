@@ -165,6 +165,8 @@ local sprachen = {
   Port                      = "Standard 645",
   Reichweite                = "Stärke des WLAN-Signals",
   anwahl_fehler             = "Unbekannter Fehler beim Anwahlvorgang",
+  cloud                     = "Adressen in die Cloud hoch- und runterladen",
+  cloud_arbeit              = "Die Adressen werden mit der Cloud synchronisiert.",
 }
 
 sprachen.side               = string.format("%s, %s, %s, %s, %s %s %s", sprachen.unten, sprachen.oben, sprachen.hinten, sprachen.vorne, sprachen.rechts, sprachen.oder, sprachen.links)
