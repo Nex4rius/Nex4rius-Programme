@@ -1950,12 +1950,14 @@ function f.telemetrie()
         selbst = f.getAddress(sg.localAddress()),
         extra = serialization.serialize(sendeAdressen)
     }
+    local inAdressen = ""
     for chunk in internet.request([==[http://s655076808.online.de/]==], daten) do
-      print(chunk)
+      inAdressen = inAdressen .. chunk
     end
-    os.sleep(5)
-    print("ENDE --- Warten")
-    io.read()
+    inAdressen = serialization.unserialize(inAdressen)
+    if type(inAdressen) == "table" then
+      f.angekommeneAdressen(inAdressen)
+    end
   end
 end
 
@@ -2072,7 +2074,9 @@ function f.main()
   seite = -1
   f.zeigeMenu()
   f.AdressenSpeichern()
-  f.telemetrie()
+  if Sicherung.cloud then
+    f.telemetrie()
+  end
   seite = 0
   f.zeigeMenu()
   f.eventlisten("listen")
