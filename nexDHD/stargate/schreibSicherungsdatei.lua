@@ -103,7 +103,7 @@ if type(NEU) == "table" then
   f:write('  Reichweite    = '  .. tostring(Sicherung.Reichweite)   ..  ', -- ' .. tostring(sprachen.Reichweite)    .. '\n')
   f:write('  Theme         = "' .. tostring(Sicherung.Theme)        .. '", -- ' .. tostring(sprachen.Theme)         .. '\n')
   f:write('  kein_senden   = '  .. tostring(Sicherung.kein_senden)  ..  ', -- ' .. tostring(sprachen.kein_senden)   .. '\n')
-  f:write('  kein_senden   = '  .. tostring(Sicherung.cloud)        ..  ', -- ' .. tostring(sprachen.cloud)   .. '\n')
+  f:write('  cloud         = '  .. tostring(Sicherung.cloud)        ..  ', -- ' .. tostring(sprachen.cloud)   .. '\n')
   f:write('\n')
   f:write(string.rep("-", 10)   .. tostring(sprachen.nichtsAendern) .. string.rep("-", 60 - string.len(tostring(sprachen.nichtsAendern))) .. '\n')
   f:write('\n')
