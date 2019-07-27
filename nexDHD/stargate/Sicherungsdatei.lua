@@ -2,8 +2,8 @@
 -- nexDHD von Nex4rius
 -- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD
 --
--- to save press "Ctrl + S"
--- to close press "Ctrl + W"
+-- zum speichern drücke "Strg + S"
+-- zum schließen drücke "Strg + W"
 --
 
 return {
@@ -18,6 +18,7 @@ return {
   Reichweite    = 40, -- strength of the wireless signal
   Theme         = "normal", -- normal, dunkel, schwarz_weiss
   kein_senden   = false, -- true -> keine Adressen senden
+  cloud         = true, -- Adressen in die Cloud hoch- und runterladen
 
 ----------don't change anything below---------------------------------
 
