@@ -1959,6 +1959,7 @@ function f.telemetrie()
     if type(inAdressen) == "table" then
       f.angekommeneAdressen(inAdressen)
     end
+    f.zeigeNachricht(sprachen.cloud_fertig)
   end
 end
 
