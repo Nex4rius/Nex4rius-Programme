@@ -1863,6 +1863,7 @@ function f.checkUpdate(...)
       end
     end
   end
+  f.telemetrie()
 end
 
 function f.checken(...)
@@ -1942,7 +1943,7 @@ function f.eventlisten(befehl)
 end
 
 function f.telemetrie()
-  if component.isAvailable("internet") then
+  if Sicherung.cloud and component.isAvailable("internet") then
     local internet = require("internet")
     local daten = {
         typ = "nexDHD",
@@ -2076,9 +2077,7 @@ function f.main()
   seite = -1
   f.zeigeMenu()
   f.AdressenSpeichern()
-  if Sicherung.cloud then
-    f.telemetrie()
-  end
+  f.telemetrie()
   seite = 0
   f.zeigeMenu()
   f.eventlisten("listen")
