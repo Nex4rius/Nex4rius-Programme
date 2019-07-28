@@ -2065,7 +2065,7 @@ function f.main()
   elseif CC then
     shell.run("label set nexDHD")
   end
-  Updatetimer = event.timer(3600, f.checkUpdate, math.huge)
+  Updatetimer = event.timer(20000, f.checkUpdate, math.huge)
   if sg.stargateState() == "Idle" and f.getIrisState() == "Closed" then
     f.irisOpen()
   end
