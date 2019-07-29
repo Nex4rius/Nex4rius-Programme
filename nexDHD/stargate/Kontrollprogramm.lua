@@ -1863,7 +1863,6 @@ function f.checkUpdate(...)
       end
     end
   end
-  f.telemetrie()
 end
 
 function f.checken(...)
