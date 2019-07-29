@@ -1002,6 +1002,7 @@ function a.beenden()
     a.aussen = 0x990000
     a.stargate(false, false)
     a.chevron("beenden")
+    gpu1.bind(screen1, false)
 end
 
 init(gpu, screens)
