@@ -1,22 +1,22 @@
-local gpu, screens = ...
-local term         = require("term")
-local event        = require("event")
-local a            = {}
+local gpu, screens, gpu1, screen1 = ...
+local term                        = require("term")
+local event                       = require("event")
+local a                           = {}
 
-a.stargatefarbe    = 0x3C3C3C
-a.chevron_an       = 0xFF6D00
-a.chevron_aus      = 0x996D40
-a.wurmloch         = 0x0000FF
-a.irisfarbe        = 0xA5A5A5
-a.aussen           = 0x000000
+a.stargatefarbe                   = 0x3C3C3C
+a.chevron_an                      = 0xFF6D00
+a.chevron_aus                     = 0x996D40
+a.wurmloch                        = 0x0000FF
+a.irisfarbe                       = 0xA5A5A5
+a.aussen                          = 0x000000
 
-a.timer            = {}
-a.aktiv            = {}
-a.c                = {}
-a.s                = {}
+a.timer                           = {}
+a.aktiv                           = {}
+a.c                               = {}
+a.s                               = {}
 
-a.timer.iris       = 0
-a.timer.zeig       = 0
+a.timer.iris                      = 0
+a.timer.zeig                      = 0
 
 for i = 1, 9 do
     a.aktiv[i] = false
@@ -919,6 +919,7 @@ function a.stargate(ausgeschaltet, aktiv)
             a[chevron](aktiv)
         end
     end
+    gpu1.bind(screen1, false)
 end
 
 function a.chevron(zeichen)
@@ -990,8 +991,8 @@ function a.zeig(aktiv, adresse)
             a.aktiv[7] = aktiv
             adresse = string.sub(adresse, -1)
         end
-        a.stargate(false, aktiv)
         a.chevron(adresse)
+        a.stargate(false, aktiv)
     end, 1)
 end
 
