@@ -1863,7 +1863,6 @@ function f.checkUpdate(...)
       end
     end
   end
-  f.telemetrie()
 end
 
 function f.checken(...)
@@ -2052,7 +2051,7 @@ function f.checkScreens()
       end
     end
     gpu.bind(primaryscreen)
-    chevronAnzeige = loadfile("/stargate/chevron.lua")(component.proxy(gpu2), kleine_screens)
+    chevronAnzeige = loadfile("/stargate/chevron.lua")(component.proxy(gpu2), kleine_screens, gpu, primaryscreen)
   end
 end
 
@@ -2077,9 +2076,9 @@ function f.main()
   seite = -1
   f.zeigeMenu()
   f.AdressenSpeichern()
-  f.telemetrie()
   seite = 0
   f.zeigeMenu()
+  f.telemetrie()
   f.eventlisten("listen")
   while running do
     local ergebnis, grund = pcall(f.eventLoop)
