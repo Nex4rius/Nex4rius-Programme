@@ -2051,7 +2051,7 @@ function f.checkScreens()
       end
     end
     gpu.bind(primaryscreen)
-    chevronAnzeige = loadfile("/stargate/chevron.lua")(component.proxy(gpu2), kleine_screens, primarygpu, primaryscreen)
+    chevronAnzeige = loadfile("/stargate/chevron.lua")(component.proxy(gpu2), kleine_screens, gpu, primaryscreen)
   end
 end
 
