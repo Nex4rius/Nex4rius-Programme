@@ -919,7 +919,6 @@ function a.stargate(ausgeschaltet, aktiv)
             a[chevron](aktiv)
         end
     end
-    gpu1.bind(screen1, false)
 end
 
 function a.chevron(zeichen)
@@ -966,6 +965,7 @@ function a.iris(geschlossen)
             a.innen = a.aussen
         end
         a.stargate(false)
+        gpu1.bind(screen1, false)
     end, 1)
 end
 
@@ -991,8 +991,9 @@ function a.zeig(aktiv, adresse)
             a.aktiv[7] = aktiv
             adresse = string.sub(adresse, -1)
         end
-        a.chevron(adresse)
         a.stargate(false, aktiv)
+        a.chevron(adresse)
+        gpu1.bind(screen1, false)
     end, 1)
 end
 
