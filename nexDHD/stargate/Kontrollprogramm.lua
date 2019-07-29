@@ -2076,9 +2076,9 @@ function f.main()
   seite = -1
   f.zeigeMenu()
   f.AdressenSpeichern()
-  f.telemetrie()
   seite = 0
   f.zeigeMenu()
+  f.telemetrie()
   f.eventlisten("listen")
   while running do
     local ergebnis, grund = pcall(f.eventLoop)
