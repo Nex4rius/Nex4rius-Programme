@@ -241,26 +241,17 @@ function f.check()
         for adresse in pairs(component.list(CompName)) do
             local k = component.proxy(adresse)
             local name, label, einheit, menge, maxmenge = func(k)
-            if type(tank[i - 1]) == "table" then
-                if  tank[i - 1].name == name then
+            if type(tank[i - 1]) == "table" and tank[i - 1].name == name then
                     tank[i - 1].menge    = tank[i - 1].menge    + menge
                     tank[i - 1].maxmenge = tank[i - 1].maxmenge + maxmenge
-                else
-                    tank[i] = {}
-                    tank[i].name     = name
-                    tank[i].label    = label
-                    tank[i].einheit  = einheit
-                    tank[i].menge    = menge
-                    tank[i].maxmenge = maxmenge
-                    i = i + 1
-                end
             else
-                tank[i] = {}
-                tank[i].name     = name
-                tank[i].label    = label
-                tank[i].einheit  = einheit
-                tank[i].menge    = menge
-                tank[i].maxmenge = maxmenge
+                local neu = {}
+                neu.name     = name
+                neu.label    = label
+                neu.einheit  = einheit
+                neu.menge    = menge
+                neu.maxmenge = maxmenge
+                tank[i] = neu
                 i = i + 1
             end
         end
