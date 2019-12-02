@@ -274,6 +274,204 @@ function f.check()
   ---------------------------------------------------------------------------
   ---------------------------------------------------------------------------
   ---------------------------------------------------------------------------
+  for _, CompName in pairs({"jar_brass"}) do
+    for adresse in pairs(component.list(CompName)) do
+      local k = component.proxy(adresse)
+      for label, menge in pairs(k.getAspects()) do
+        local name = label:lower()
+        local maxmenge = 275
+        local dazu = true
+        local c
+        for j, k in pairs(tank) do
+          if name == k.name then
+            dazu = false
+            c = j
+            break
+          end
+        end
+        if dazu then
+          tank[i] = {}
+          tank[i].name = name
+          tank[i].label = label
+          tank[i].einheit = ""
+          tank[i].menge = menge
+          tank[i].maxmenge = maxmenge
+          i = i + 1
+        else
+          tank[c].menge = tank[c].menge + menge
+          tank[c].maxmenge = tank[c].maxmenge + maxmenge
+        end
+      end
+    end
+  end
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  for _, CompName in pairs({"jar_thaumium"}) do
+    for adresse in pairs(component.list(CompName)) do
+      local k = component.proxy(adresse)
+      for label, menge in pairs(k.getAspects()) do
+        local name = label:lower()
+        local maxmenge = 350
+        local dazu = true
+        local c
+        for j, k in pairs(tank) do
+          if name == k.name then
+            dazu = false
+            c = j
+            break
+          end
+        end
+        if dazu then
+          tank[i] = {}
+          tank[i].name = name
+          tank[i].label = label
+          tank[i].einheit = ""
+          tank[i].menge = menge
+          tank[i].maxmenge = maxmenge
+          i = i + 1
+        else
+          tank[c].menge = tank[c].menge + menge
+          tank[c].maxmenge = tank[c].maxmenge + maxmenge
+        end
+      end
+    end
+  end
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  for _, CompName in pairs({"jar_eldritch"}) do
+    for adresse in pairs(component.list(CompName)) do
+      local k = component.proxy(adresse)
+      for label, menge in pairs(k.getAspects()) do
+        local name = label:lower()
+        local maxmenge = 500
+        local dazu = true
+        local c
+        for j, k in pairs(tank) do
+          if name == k.name then
+            dazu = false
+            c = j
+            break
+          end
+        end
+        if dazu then
+          tank[i] = {}
+          tank[i].name = name
+          tank[i].label = label
+          tank[i].einheit = ""
+          tank[i].menge = menge
+          tank[i].maxmenge = maxmenge
+          i = i + 1
+        else
+          tank[c].menge = tank[c].menge + menge
+          tank[c].maxmenge = tank[c].maxmenge + maxmenge
+        end
+      end
+    end
+  end
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  for _, CompName in pairs({"jar_mithrillium"}) do
+    for adresse in pairs(component.list(CompName)) do
+      local k = component.proxy(adresse)
+      for label, menge in pairs(k.getAspects()) do
+        local name = label:lower()
+        local maxmenge = 1000
+        local dazu = true
+        local c
+        for j, k in pairs(tank) do
+          if name == k.name then
+            dazu = false
+            c = j
+            break
+          end
+        end
+        if dazu then
+          tank[i] = {}
+          tank[i].name = name
+          tank[i].label = label
+          tank[i].einheit = ""
+          tank[i].menge = menge
+          tank[i].maxmenge = maxmenge
+          i = i + 1
+        else
+          tank[c].menge = tank[c].menge + menge
+          tank[c].maxmenge = tank[c].maxmenge + maxmenge
+        end
+      end
+    end
+  end
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  for _, CompName in pairs({"jar_adaminite"}) do
+    for adresse in pairs(component.list(CompName)) do
+      local k = component.proxy(adresse)
+      for label, menge in pairs(k.getAspects()) do
+        local name = label:lower()
+        local maxmenge = 2000
+        local dazu = true
+        local c
+        for j, k in pairs(tank) do
+          if name == k.name then
+            dazu = false
+            c = j
+            break
+          end
+        end
+        if dazu then
+          tank[i] = {}
+          tank[i].name = name
+          tank[i].label = label
+          tank[i].einheit = ""
+          tank[i].menge = menge
+          tank[i].maxmenge = maxmenge
+          i = i + 1
+        else
+          tank[c].menge = tank[c].menge + menge
+          tank[c].maxmenge = tank[c].maxmenge + maxmenge
+        end
+      end
+    end
+  end
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  for _, CompName in pairs({"jar_mithminite"}) do
+    for adresse in pairs(component.list(CompName)) do
+      local k = component.proxy(adresse)
+      for label, menge in pairs(k.getAspects()) do
+        local name = label:lower()
+        local maxmenge = 4000
+        local dazu = true
+        local c
+        for j, k in pairs(tank) do
+          if name == k.name then
+            dazu = false
+            c = j
+            break
+          end
+        end
+        if dazu then
+          tank[i] = {}
+          tank[i].name = name
+          tank[i].label = label
+          tank[i].einheit = ""
+          tank[i].menge = menge
+          tank[i].maxmenge = maxmenge
+          i = i + 1
+        else
+          tank[c].menge = tank[c].menge + menge
+          tank[c].maxmenge = tank[c].maxmenge + maxmenge
+        end
+      end
+    end
+  end
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
   for _, v in pairs(andere) do
     for adresse in pairs(component.list(v[2])) do
       local k = component.proxy(adresse)

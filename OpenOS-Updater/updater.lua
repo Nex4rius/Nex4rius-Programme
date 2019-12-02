@@ -146,6 +146,7 @@ function f.verarbeiten()
             end
         end
     end
+    wget("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Updater/95_screen.lua", "/update/boot/95_screen.lua")
     print("\nUpdate Beendet\n")
     if dateien["truncated"] or not komplett then
         gpu.setForeground(0xFF0000)

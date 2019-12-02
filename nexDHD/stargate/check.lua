@@ -198,7 +198,7 @@ end
 
 function f.checkOpenOS()
   if OC then
-    local OpenOS_Version = "OpenOS 1.7.0"
+    local OpenOS_Version = "OpenOS 1.7.4"
     if wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Version", "/einstellungen/OpenOS-Version") then
       local d = io.open("/einstellungen/OpenOS-Version", "r")
       OpenOS_Version = d:read()
@@ -397,6 +397,7 @@ function f.checkDateien()
     "stargate/version.txt",
     "stargate/farben.lua",
     "stargate/schreibSicherungsdatei.lua",
+    "stargate/chevron.lua",
     "stargate/sprache/ersetzen.lua",
   }
   if OC then
@@ -490,7 +491,7 @@ function f.mainCheck()
             print(sprachen.autoUpdateAn or "automatische Aktualisierungen sind aktiviert")
             print()
             os.sleep(2)
-            Funktion.update("master")
+            f.update("master")
           elseif Sicherung.autoUpdate and version == serverVersion then
             -- nichts
           else
@@ -513,15 +514,19 @@ function f.mainCheck()
   print(sprachen.laden or "\nLaden...")
   Sicherung.installieren = false
   schreibSicherungsdatei(Sicherung)
-  if f.checkDateien() then
+  if f.checkDateien() or not component.isAvailable("internet") then
     if fs.exists("/log") and component.isAvailable("keyboard") and Sicherung.debug then
       loadfile("/bin/edit.lua")("-r", "/log")
       loadfile("/bin/rm.lua")("/log")
     end
-    local erfolgreich, grund = pcall(loadfile("/stargate/Kontrollprogramm.lua"), f.update, f.checkServerVersion, version, Farben)
-    if not erfolgreich then
-      print("Kontrollprogramm.lua hat einen Fehler")
-      print(grund)
+    local erfolgreich
+    local grund = "nochmal"
+    while grund == "nochmal" do
+      erfolgreich, grund = pcall(loadfile("/stargate/Kontrollprogramm.lua"), f.update, f.checkServerVersion, version, Farben)
+      if not erfolgreich then
+        print("Kontrollprogramm.lua hat einen Fehler")
+        print(grund)
+      end
     end
   else
     print(string.format("%s\n%s %s/%s", sprachen.fehlerName, sprachen.DateienFehlen, sprachen.ja, sprachen.nein) or "\nAlles neu herunterladen? ja/nein")

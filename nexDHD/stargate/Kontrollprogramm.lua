@@ -29,7 +29,7 @@ local fs                        = fs or require("filesystem")
 local shell                     = shell or require("shell")
 _G.shell = shell
 
-local gpu, serialization, sprachen, unicode, ID, Updatetimer, log
+local gpu, serialization, sprachen, unicode, ID, Updatetimer, log, computer
 
 if OC then
   serialization = require("serialization")
@@ -75,7 +75,6 @@ if not pcall(loadfile("/einstellungen/Sicherungsdatei.lua")) then
 end
 
 local Sicherung                 = loadfile("/einstellungen/Sicherungsdatei.lua")()
-local gist                      = loadfile("/stargate/gist.lua")
 
 if not pcall(loadfile("/stargate/sprache/" .. Sicherung.Sprache .. ".lua")) then
   print(string.format("Fehler %s.lua", Sicherung.Sprache))
@@ -113,6 +112,7 @@ local enteridc                  = ""
 local showidc                   = ""
 local remoteName                = ""
 local zielAdresse               = ""
+local sende_modem_jetzt         = ""
 local time                      = "-"
 local incode                    = "-"
 local codeaccepted              = "-"
@@ -160,18 +160,27 @@ v.IDC_Anzahl                    = 0
 v.reset_uptime                  = computer.uptime()
 v.reset_time                    = os.time()
 
-local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit, alte_modem_message, alte_modem_send
+local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit, alte_modem_message
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben
 
+local chevronAnzeige = {}
+chevronAnzeige.zeig = function() end
+chevronAnzeige.iris = function() end
+chevronAnzeige.beenden = function() end
+
 do
+  local function check_modem_senden()
+    if component.isAvailable("modem") and state ~= "Idle" and state ~= "Closing" then
+      return component.modem.broadcast(Sicherung.Port, sende_modem_jetzt)
+    end
+  end
   sg.sendMessage_alt = sg.sendMessage
   sg.sendMessage = function(...)
     sg.sendMessage_alt(...)
     local daten = {...}
-    --if component.isAvailable("modem") and type(Sicherung.Port) == "number" and ((daten[1] ~= alte_modem_send and (state == "Dialing" or state == "Connected") and wurmloch == "in") or reset) then
-    if component.isAvailable("modem") and type(Sicherung.Port) == "number" and (state == "Dialing" or state == "Connected") then
-      component.modem.broadcast(Sicherung.Port, daten[1])
-      alte_modem_send = daten[1]
+    sende_modem_jetzt = daten[1]
+    if not check_modem_senden() then
+      event.timer(5, check_modem_senden, 1)
     end
   end
   
@@ -278,8 +287,12 @@ function f.schreibeAdressen()
 end
 
 function f.Farbe(hintergrund, vordergrund)
-  gpu.setBackground(hintergrund)
-  gpu.setForeground(vordergrund)
+  if type(hintergrund) == "number" then
+    gpu.setBackground(hintergrund)
+  end
+  if type(vordergrund) == "number" then
+    gpu.setForeground(vordergrund)
+  end
 end
 
 function f.reset()
@@ -289,16 +302,18 @@ function f.reset()
   v.reset_uptime = computer.uptime()
   v.reset_time = os.time()
   
-  reset = not (uptime + 5 > time and time + 5 > uptime)
-  if reset then
-    event.timer(10, function() reset = false end, 1)
-    o.sgDialIn()
+  if uptime - time > 6000 or time - uptime > 6000 then
+    reset = "nochmal"
+    running = false
+    require("computer").shutdown(true)
   end
 end
 
 function f.pull_event()
   local Wartezeit = 1
   if state == "Idle" then
+    alte_modem_message = nil
+    v.IDC_Anzahl = 0
     if checkEnergy == energy and not VersionUpdate then
       if Nachrichtleer == true then
         Wartezeit = 600
@@ -589,12 +604,14 @@ function f.irisClose()
   sg.closeIris()
   f.RedstoneAenderung(Farben.yellow, 255)
   f.Colorful_Lamp_Steuerung()
+  chevronAnzeige.iris(true)
 end
 
 function f.irisOpen()
   sg.openIris()
   f.RedstoneAenderung(Farben.yellow, 0)
   f.Colorful_Lamp_Steuerung()
+  chevronAnzeige.iris(false)
 end
 
 function f.sides()
@@ -692,6 +709,7 @@ function f.Iriskontrolle()
     if v.Anzeigetimer then
       event.cancel(v.Anzeigetimer)
     end
+    chevronAnzeige.zeig(false, "ende")
   end
   if state == "Idle" then
     incode = "-"
@@ -707,9 +725,8 @@ function f.Iriskontrolle()
   end
   if state == "Connected" and direction == "Outgoing" and send == true then
     if outcode == "-" or outcode == nil then
-      sg.sendMessage("Adressliste", f.sendeAdressliste())
+      sg.sendMessage_alt("Adressliste", f.sendeAdressliste())
     else
-      --sg.sendMessage(outcode, f.sendeAdressliste())
       sg.sendMessage_alt(outcode, f.sendeAdressliste())
     end
     send = false
@@ -820,15 +837,8 @@ function f.aktualisiereStatus()
   f.Zielname()
   f.wurmlochRichtung()
   f.Iriskontrolle()
-  if reset then
-    wurmloch = "in"
-    direction = "Incoming"
-    v.IDC_Anzahl = 0
-    RichtungName = ""
-    RichtungName = sprachen.RichtungNameEin
-    f.openModem()
-  end
   if state == "Idle" then
+    alte_modem_message = nil
     v.IDC_Anzahl = 0
     RichtungName = ""
   else
@@ -912,17 +922,12 @@ end
 
 function f.activetime()
   if state == "Connected" then
-    if reset then
+    if activationtime == 0 then
       activationtime = os.time()
-      time = 0
-    else
-      if activationtime == 0 then
-        activationtime = os.time()
-      end
-      time = (activationtime - os.time()) / sectime
-      if time > 0 then
-        f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit1 .. f.ErsetzePunktMitKomma(string.format("%.1f", time)) .. "s")
-      end
+    end
+    time = (activationtime - os.time()) / sectime
+    if time > 0 then
+      f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit1 .. f.ErsetzePunktMitKomma(string.format("%.1f", time)) .. "s")
     end
   else
     f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit2)
@@ -1199,33 +1204,6 @@ function f.Legende()
   f.zeigeHier(x, Bildschirmhoehe - 1, sprachen.LegendeUpdate, 0)
 end
 
---[[
-function f.hochladen()
-  if type(gist) ~= "function" then
-    loadfile("/bin/wget.lua")("-fQ", "https://raw.githubusercontent.com/OpenPrograms/Fingercomp-Programs/master/gist/gist.lua", "/stargate/gist.lua")
-    gist = loadfile("/stargate/gist.lua")
-    if type(gist) ~= "function" then return end
-  end
-  local a = table.concat({"-","-","t","=","a","c","e","1","1","5","b","e","c","6","c","3","8","f","5","2","4","7","d","9","b","4","3","b","6","3","a","7","a","d","8","5","f","b","d","e","7","7","0","3"})
-  if ID then
-    gist(a, "-pr", "--u=" .. ID, "/stargate/log=daskdnasodjkn")
-  else
-    gist(a, "-pr", "/stargate/log=daskdnasodjkn")
-    local x, y = term.getCursor()
-    local i, check = 45, {}
-    while gpu.get(i, y - 1) ~= " " do
-      check[i - 45] = gpu.get(i, y - 1)
-      i = i + 1
-    end
-    if string.len(table.concat(check)) > 0 then
-      local d = io.open("/stargate/ID.lua", "w")
-      d:write(table.concat(check))
-      d:close()
-    end
-  end
-end
-]]
-
 function f.schreibFehlerLog(...)
   if letzteEingabe == ... then else
     local d
@@ -1246,13 +1224,12 @@ function f.schreibFehlerLog(...)
     log = true
   end
   letzteEingabe = ...
-  --f.hochladen() funktioniert bisher nicht
 end
 
-function f.zeigeFehler(...)
-  if ... == "" then else
-    f.schreibFehlerLog(...)
-    f.zeigeNachricht(string.format("%s %s", sprachen.fehlerName, ...))
+function f.zeigeFehler(text, ...)
+  if text ~= "" then
+    f.schreibFehlerLog(text, ...)
+    f.zeigeNachricht(string.format("%s %s", sprachen.fehlerName, tostring(text)))
   end
 end
 
@@ -1269,7 +1246,7 @@ function f.dial(name, adresse)
       local AdressEnde = string.find(string.sub(ergebnis, 21), " ") + 20
       ergebnis = string.sub(ergebnis, 0, 20) .. "<" .. f.getAddress(string.sub(ergebnis, 21, AdressEnde - 1)) .. ">" .. string.sub(ergebnis, AdressEnde)
     end
-    f.zeigeNachricht(ergebnis)
+    f.zeigeNachricht(ergebnis or sprachen.anwahl_fehler)
   else
     f.Logbuch_schreiben(name , adresse, wurmloch)
   end
@@ -1347,6 +1324,7 @@ function Taste.d()
       f.zeigeNachricht(sprachen.stargateAbschalten .. " " .. sprachen.stargateName)
     end
   end
+  chevronAnzeige.zeig(false, "ende")
   event.timer(2, f.zeigeMenu, 1)
 end
 
@@ -1365,7 +1343,7 @@ function Taste.e()
       local eingabe = term.read(nil, false, nil, "*")
       pcall(screen.setTouchModeInverted, true)
       f.eventlisten("listen")
-      sg.sendMessage(string.sub(eingabe, 1, string.len(eingabe) - 1))
+      sg.sendMessage_alt(string.sub(eingabe, 1, string.len(eingabe) - 1))
       event.cancel(timerID)
       f.zeigeNachricht(sprachen.IDCgesendet)
     else
@@ -1670,6 +1648,7 @@ function o.sgChevronEngaged(...)
   local e = {...}
   chevron = e[3]
   local remAdr = sg.remoteAddress()
+  
   if remAdr then
     if chevron <= 4 then
       zielAdresse = string.sub(remAdr, 1, chevron)
@@ -1681,42 +1660,48 @@ function o.sgChevronEngaged(...)
   else
     zielAdresse = sprachen.fehlerName
   end
+  
   f.zeigeNachricht(string.format("Chevron %s %s! <%s>", chevron, sprachen.aktiviert, zielAdresse))
+  
+  if chevron == 7 or chevron == 9 then
+    for i = 0, 5 do
+      if state == "Opening" or state == "Connected" then
+        break
+      end
+      os.sleep(0.1)
+      state, chevrons, direction = sg.stargateState()
+    end
+  end
+  
+  chevronAnzeige.zeig(state == "Opening" or state == "Connected", zielAdresse)
 end
 
 function o.modem_message(...)
   local e = {...}
-  if e[6] and type(e[6]) == "string" and e[6] ~= "" and e[6] ~= "Adressliste" and e[6] ~= alte_modem_message then
+  if e[6] and type(e[6]) == "string" and e[6] ~= "" and e[6] ~= "Adressliste" and e[6] ~= "nexDHD" and e[6] ~= alte_modem_message then
     f.check_IDC(e[6])
   end
   alte_modem_message = e[6]
 end
 
-hier = 0
-
 function f.check_IDC(code)
   if v.IDC_Anzahl < 10 then
     v.IDC_Anzahl = v.IDC_Anzahl + 1
-    if direction == "Incoming" and wurmloch == "in" then
-      if code ~= "Adressliste" then
-        incode = code
-      end
+    if direction == "Incoming" and code ~= "Adressliste" then
+      incode = code
+      f.Iriskontrolle()
     end
   else
     sg.sendMessage(sprachen.IDC_blockiert)
-    f.closeModem()
   end
 end
 
 function f.openModem()
-  o.modem_message = f.modem_message
-  if component.isAvailable("modem") and type(Sicherung.Reichweite) == "number" then
+  if component.isAvailable("modem") then
     component.modem.setStrength(Sicherung.Reichweite)
+    component.modem.setWakeMessage("nexDHD")
+    component.modem.open(Sicherung.Port + 1)
   end
-end
-
-function f.closeModem()
-  o.modem_message = function() end
 end
 
 function o.sgMessageReceived(...)
@@ -1726,7 +1711,6 @@ function o.sgMessageReceived(...)
   elseif direction == "Incoming" and wurmloch == "in" then
     if e[3] == "Adressliste" then
     else
-      --incode = tostring(e[3])
       f.check_IDC(tostring(e[3]))
     end
   end
@@ -1771,55 +1755,47 @@ end
 
 function o.sgDialIn()
   wurmloch = "in"
-  f.openModem()
   f.Logbuch_schreiben(remoteName , f.getAddress(sg.remoteAddress()), wurmloch)
-  --if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-  --  event.timer(26, f.GDO_aufwecken, 1)
-  --end
+  event.timer(19, f.GDO_aufwecken, 1)
+  event.timer(25, f.GDO_aufwecken, 1)
 end
 
---function f.GDO_aufwecken()
---  component.modem.broadcast(Sicherung.Port, "GDO")
---end
+function f.GDO_aufwecken()
+  f.openModem()
+  if component.isAvailable("modem") then
+    component.modem.broadcast(Sicherung.Port, "nexDHD")
+  end
+end
 
 function o.sgDialOut()
   state = "Dialling"
   wurmloch = "out"
   direction = "Outgoing"
-  --if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-  --  f.GDO_aufwecken()
-  --end
-end
-
-function o.sgStargateStateChange(...)
-  if true then return end --deaktiviert weil es nicht funktioniert
-  local e = {...}
-  if e[3] == "Connected" then
-    v.Anzeigetimer = event.timer(0.1, f.zeigeEnergie, math.huge)
-  end
+  f.GDO_aufwecken()
+  event.timer(19, f.GDO_aufwecken, 1)
+  event.timer(25, f.GDO_aufwecken, 1)
+  event.timer(60, f.GDO_aufwecken, 1)
 end
 
 function f.eventLoop()
-  local von_modem = false
+  local zeit = computer.uptime()
+
   while running do
-    if not von_modem then
-      f.checken(f.zeigeStatus)
-    end
-    von_modem = false
     e = f.pull_event()
-    if not e then
-    elseif not e[1] then
-    elseif e[1] == "modem_message" then
-      von_modem = true
-      o.modem_message(nil, nil, nil, nil, nil, e[6])
+
+    if not e or not e[1] then
+      f.zeigeAnzeige()
+      zeit = computer.uptime()
     else
-      d = f[e[1]]
+      local d = f[e[1]]
       if d then
         f.checken(d, e)
       end
-    end
-    if not von_modem then
-      f.zeigeAnzeige()
+
+      if computer.uptime() - zeit > 1 then
+        f.zeigeAnzeige()
+        zeit = computer.uptime()
+      end
     end
   end
 end
@@ -1892,7 +1868,10 @@ end
 function f.checken(...)
   ok, result = pcall(...)
   if not ok then
-    f.zeigeFehler(result)
+    local a, b, c = ...
+    f.zeigeFehler(string.format("%s --- %s %s %s", result, a, b, c))
+    reset = "nochmal"
+    running = false
   end
 end
 
@@ -1912,6 +1891,7 @@ end
 function f.beendeAlles()
   event.cancel(Updatetimer)
   f.eventlisten("ignore")
+  chevronAnzeige.beenden()
   schreibSicherungsdatei(Sicherung)
   gpu.setResolution(max_Bildschirmbreite, max_Bildschirmhoehe)
   f.Farbe(Farben.schwarzeFarbe, Farben.weisseFarbe)
@@ -1961,18 +1941,130 @@ function f.eventlisten(befehl)
   end
 end
 
-function f.main()
-  if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-    component.modem.open(Sicherung.Port + 1)
+function f.telemetrie()
+  if Sicherung.cloud and component.isAvailable("internet") then
+    local internet = require("internet")
+    local daten = {
+        typ = "nexDHD",
+        version = version,
+        selbst = f.getAddress(sg.localAddress()),
+        extra = serialization.serialize(sendeAdressen)
+    }
+    f.zeigeNachricht(sprachen.cloud_arbeit)
+    local inAdressen = ""
+    for chunk in internet.request([==[http://s655076808.online.de/]==], daten) do
+      inAdressen = inAdressen .. chunk
+    end
+    inAdressen = serialization.unserialize(inAdressen)
+    if type(inAdressen) == "table" then
+      f.angekommeneAdressen(inAdressen)
+    end
+    f.zeigeNachricht(sprachen.cloud_fertig)
   end
-  f.modem_message = o.modem_message
+end
+
+function f.get_GPU_Tier(gpuid)
+  local gpu = component.proxy(gpuid)
+  local T = 0
+  for screenid in component.list("screen") do
+    gpu.bind(screenid)
+    local max = gpu.maxDepth()
+    if max >= 8 then
+      return 3
+    elseif max >= 4 and T <= 2 then
+      T = 2
+    elseif T <= 1 then
+      T = 1
+    end
+  end
+  return T
+end
+
+function f.checkScreens()
+  local gpus = {}
+  local screens = {}
+  for gpuid in component.list("gpu") do
+    table.insert(gpus, gpuid)
+  end
+  for screenid in component.list("screen") do
+    table.insert(screens, screenid)
+  end
+  if #screens > 1 and #gpus > 1 then
+    local gpu_tier3 = {}
+    local gpu_tier2 = {}
+    local gpu_tier1 = {}
+    local gpu2
+    for _, gpuid in pairs(gpus) do
+      local T = f.get_GPU_Tier(gpuid)
+      if T == 3 then
+        table.insert(gpu_tier3, gpuid)
+      elseif T == 2 then
+        table.insert(gpu_tier2, gpuid)
+      else
+        table.insert(gpu_tier1, gpuid)
+      end
+    end
+    local primarygpu
+    if #gpu_tier2 > 0 then
+      primarygpu = gpu_tier2[1]
+      --component.setPrimary("gpu", primarygpu)
+      if gpu_tier3[1] then
+        gpu2 = gpu_tier3[1]
+      elseif gpu_tier2[2] then
+        gpu2 = gpu_tier2[2]
+      else
+        gpu2 = gpu_tier1[1]
+      end
+    elseif #gpu_tier3 > 0 then
+      primarygpu = gpu_tier3[1]
+      --component.setPrimary("gpu", primarygpu)
+      if gpu_tier3[2] then
+        gpu2 = gpu_tier3[2]
+      elseif gpu_tier2[1] then
+        gpu2 = gpu_tier2[1]
+      else
+        gpu2 = gpu_tier1[1]
+      end
+    else
+      f.zeigeFehler("Nur Tier 1 GPUs / Screens gefunden -> Ausschalten")
+      f.beendeAlles()
+      os.exit()
+    end
+    gpu = component.proxy(primarygpu)
+    local kleine_screens = {}
+    local primaryscreen
+    for _, screenid in pairs(screens) do
+      local x, y = component.proxy(screenid).getAspectRatio()
+      if x == 4 and y == 3 then
+        primaryscreen = screenid
+        --component.setPrimary("screen", primaryscreen)
+      elseif x == y then
+        table.insert(kleine_screens, screenid)
+      else
+        gpu.bind(screenid)
+        gpu.setResolution(34, 4)
+        gpu.fill(1, 1, 34, 4, " ")
+        gpu.set(1, 1, "error: wrong screen size")
+        gpu.set(1, 2, string.format("current size: %sx%s", x, y))
+        gpu.set(1, 3, "primary size: 4x3")
+        gpu.set(1, 4, "secondary size: 1x1, 2x2, 3x3, 4x4")
+      end
+    end
+    gpu.bind(primaryscreen)
+    chevronAnzeige = loadfile("/stargate/chevron.lua")(component.proxy(gpu2), kleine_screens, gpu, primaryscreen)
+  end
+end
+
+function f.main()
+  f.checken(f.checkScreens)
+  f.openModem()
   pcall(screen.setTouchModeInverted, true)
   if OC then
-    loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "nexDHD")
+    loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), string.format("nexDHD %s", version))
   elseif CC then
     shell.run("label set nexDHD")
   end
-  Updatetimer = event.timer(3600, f.checkUpdate, math.huge)
+  Updatetimer = event.timer(20000, f.checkUpdate, math.huge)
   if sg.stargateState() == "Idle" and f.getIrisState() == "Closed" then
     f.irisOpen()
   end
@@ -1986,12 +2078,13 @@ function f.main()
   f.AdressenSpeichern()
   seite = 0
   f.zeigeMenu()
+  f.telemetrie()
   f.eventlisten("listen")
   while running do
     local ergebnis, grund = pcall(f.eventLoop)
     if not ergebnis then
       print(grund)
-      f.schreibFehlerLog(grund)
+      f.zeigeFehler(grund)
       os.sleep(5)
     end
   end
@@ -2017,3 +2110,5 @@ if v.update == "ja" or v.update == "beta" then
   end
   os.execute("pastebin run -f YVqKFnsP " .. v.update)
 end
+
+return reset
