@@ -99,6 +99,12 @@ function f.installieren(versionTyp)
     "blockessentiareservoir",
     "jar_normal",
     "jar_void",
+    "jar_brass",
+    "jar_thaumium",
+    "jar_eldritch",
+    "jar_mithrillium",
+    "jar_adaminite",
+    "jar_mithminite",
 }
   local function Sensorcheck(name)
     if component.isAvailable(name) then
