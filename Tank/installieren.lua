@@ -19,6 +19,7 @@ local function verschieben(von, nach)
   local ergebnis, grund = fs.rename(von, nach)
   if not ergebnis then
     print("<FEHLER> Verschieben nicht möglich")
+    print("<ERROR> moving not possible")
     print(von .. " -> " .. nach)
     print(grund)
     os.exit()
@@ -29,7 +30,11 @@ local function verschieben(von, nach)
     os.exit()
   end
 end
-local entfernen   = function(datei) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) end
+local entfernen   = function(datei)
+  fs.remove(datei)
+  print(string.format("'%s' wurde gelöscht", datei))
+  print(string.format("'%s' was deleted"   , datei))
+end
 
 function f.Pfad(versionTyp)
   if versionTyp == "beta" then
@@ -73,9 +78,9 @@ function f.installieren(versionTyp)
     "tank_controller",
     --EU
     "chargepad_batbox", "batbox",
-    "chargepad_cesu", "cesu",
-    "chargepad_mfe", "mfe",
-    "chargepad_mfsu", "mfsu",
+    "chargepad_cesu"  , "cesu",
+    "chargepad_mfe"   , "mfe",
+    "chargepad_mfsu"  , "mfsu",
     --RF
     "capacitor_bank",
     "energy_device",
@@ -97,6 +102,7 @@ function f.installieren(versionTyp)
   local function Sensorcheck(name)
     if component.isAvailable(name) then
       print(name .. " gefunden. Client/Sensor wird heruntergeladen.")
+      print(name .. " found. Download client/sensor.")
       typ = "client"
       weiter = false
       return true
@@ -109,14 +115,17 @@ function f.installieren(versionTyp)
   end
   if weiter and gpu.maxResolution() == 160 then
     print("Tier III GPU und Bildschirm gefunden. Server/Anzeige wird heruntergeladen.")
+    print("Tier III GPU and screen found. Download server/display.")
     typ = "server"
     weiter = false
   end
   if weiter then
     print("Kein Tier III GPU, Tier III Bildschirm, Tank Controller oder Transposer gefunden.")
+    print("found no tier III GPU, tier III screen , tank controller or transposer.")
   end
   while weiter do
     print("\n\nServer (Anzeige) / Client (Sensor)?\n")
+    print("\n\nServer (Display) / Client (Sensor)?\n")
     typ = string.lower(io.read())
     if typ == "server" or typ == "client" then
       weiter = false
@@ -129,6 +138,7 @@ function f.installieren(versionTyp)
     while not fs.exists(...) do
       fs.makeDirectory(...)
       print("Erstelle Ordner " .. ...)
+      print("Create Folder " .. ...)
     end
   end
   ordner("/tank/client/tank")
@@ -141,9 +151,11 @@ function f.installieren(versionTyp)
         return true
       elseif require("component").isAvailable("internet") and j <= 10 then
         print("\t" .. von .. "\nerneuter Downloadversuch in " .. j .. "s\n")
+        print("\t" .. von .. "\nretry download in " .. j .. "s\n")
         os.sleep(j)
       else
-        print("\n<FEHLER> Download funktioniert nicht\nProgram wird beendet\n")
+        print("\n<FEHLER> Download funktioniert nicht\nProgramm wird beendet\n")
+        print("\n<ERROR> Download doesn't work\nprogram terminates\n")
         os.exit()
       end
     end
@@ -199,6 +211,7 @@ function f.installieren(versionTyp)
   end
   if updateKomplett then
     print("\nErsetze alte Dateien")
+    print("\nreplace old files")
     local function kopieren(...)
       for i in fs.list(...) do
         if fs.isDirectory(i) then
@@ -228,12 +241,15 @@ function f.installieren(versionTyp)
   d:close()
   if updateKomplett then
     print("\nUpdate vollständig\n" .. version .. " " .. string.upper(tostring(versionTyp)))
+    print("\nUpdate complete\n"    .. version .. " " .. string.upper(tostring(versionTyp)))
     os.sleep(2)
   else
-    print("\nERROR install / update failed\n")
+    print("\n<FEHLER> Installation / Update fehlgeschlagen\n")
+    print("\n<ERROR> install / update failed\n")
   end
   for i = 10, 1, -1 do
     print("Neustart in " .. i .. "s")
+    print("restart in " .. i .. "s")
     os.sleep(1)
   end
   if fs.exists("/log") then
@@ -253,55 +269,66 @@ function f.Komponenten(typ)
     end
   end
   print("\nPrüfe Komponenten\n")
+  print("\ncheck components\n")
   if component.isAvailable("modem") then
     gpu.setForeground(0x00FF00)
     if component.modem.isWireless() then
       print("Netzwerkkarte                     - OK")
+      print("network card                      - OK")
       print("WLAN-Karte                        - OK")
+      print("Wifi-card                         - OK")
     else
       print("Netzwerkkarte                     - OK")
+      print("network card                      - OK")
       print("WLAN-Karte                        - fehlt")
+      print("Wifi-card                         - missing")
     end
   else
     gpu.setForeground(0xFF0000)
     print("Netzwerkkarte                     - fehlt")
+    print("network card                      - missing")
     print("WLAN-Karte                        - fehlt")
+    print("Wifi-card                         - missing")
   end
   if typ == "server" then
     zeigen("internet", "Internetkarte")
     if gpu.maxResolution() == 160 then
       gpu.setForeground(0x00FF00)
       print("Grafikkarte Tier III              - OK")
+      print("graphic card Tier III             - OK")
       print("Bildschirm Tier III               - OK")
+      print("screen Tier III                   - OK")
     else
       gpu.setForeground(0xFF0000)
       print("Grafikkarte Tier III              - fehlt")
+      print("graphic card Tier III             - missing")
       print("Bildschirm Tier III               - fehlt")
+      print("screen Tier III                   - missing")
     end
   else
-    zeigen("tank_controller", "Tank Controller Upgrade")
-    zeigen("transposer", "Transposer")
-    zeigen("batbox", "Batbox")
-    zeigen("cesu", "CESU")
-    zeigen("mfe", "MFE")
-    zeigen("mfsu", "MFSU")
-    zeigen("chargepad_batbox", "Batbox Charge Pad")
-    zeigen("chargepad_cesu", "CESU Charge Pad")
-    zeigen("chargepad_mfe", "MFE Charge Pad")
-    zeigen("chargepad_mfsu", "MFSU Charge Pad")
-    zeigen("capacitor_bank", "Capacitor Bank")
-    zeigen("energy_device", "RF-Energy Storage")
-    zeigen("me_controller", "ME Controller")
-    zeigen("me_interface", "ME Interface")
-    zeigen("blockjar_0", "Warded Jar")
-    zeigen("jar_normal", "Warded Jar")
-    zeigen("blockjar_3", "Void Jar")
-    zeigen("jar_void", "Void Jar")
-    zeigen("blockcreativejar_3", "Creative Jar")
-    zeigen("blocktube_2", "Essentia blocktube_2")
-    zeigen("blocktube_4", "Essentia blocktube_4")
-    zeigen("blockmetaldevice_1", "Essentia blockmetaldevice_1")
-    zeigen("blockstonedevice_14", "Essentia blockstonedevice_14")
+    zeigen("tank_controller"       , "Tank Controller Upgrade")
+    zeigen("transposer"            , "Transposer")
+    zeigen("batbox"                , "Batbox")
+    zeigen("cesu"                  , "CESU")
+    zeigen("mfe"                   , "MFE")
+    zeigen("mfsu"                  , "MFSU")
+    zeigen("chargepad_batbox"      , "Batbox Charge Pad")
+    zeigen("chargepad_cesu"        , "CESU Charge Pad")
+    zeigen("chargepad_mfe"         , "MFE Charge Pad")
+    zeigen("chargepad_mfsu"        , "MFSU Charge Pad")
+    zeigen("capacitor_bank"        , "Capacitor Bank")
+    zeigen("energy_device"         , "RF-Energy Storage")
+    zeigen("me_controller"         , "ME Controller")
+    zeigen("me_interface"          , "ME Interface")
+    zeigen("blockjar_0"            , "Warded Jar")
+    zeigen("jar_normal"            , "Warded Jar")
+    zeigen("blockjar_3"            , "Void Jar")
+    zeigen("jar_void"              , "Void Jar")
+    zeigen("blockcreativejar_3"    , "Creative Jar")
+    zeigen("blocktube_2"           , "Essentia blocktube_2")
+    zeigen("blocktube_4"           , "Essentia blocktube_4")
+    zeigen("blockmetaldevice_1"    , "Essentia blockmetaldevice_1")
+    zeigen("blockstonedevice_14"   , "Essentia blockstonedevice_14")
     zeigen("blockessentiareservoir", "Essentia blockessentiareservoir")
   end
   print()
