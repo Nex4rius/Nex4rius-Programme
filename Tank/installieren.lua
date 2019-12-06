@@ -27,6 +27,7 @@ local function verschieben(von, nach)
   print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach)))
   if fs.exists(von) then
     print("<FEHLER> Kopieren")
+    print("<ERROR> copying")
     os.exit()
   end
 end
