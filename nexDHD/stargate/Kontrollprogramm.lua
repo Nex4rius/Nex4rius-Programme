@@ -1698,11 +1698,12 @@ end
 
 function f.openModem()
   if component.isAvailable("modem") then
-    if component.modem.isWireless() then
-      component.modem.setStrength(Sicherung.Reichweite)
+    local modem = component.modem
+    if modem.isWireless() then
+      modem.setStrength(Sicherung.Reichweite)
     end
-    component.modem.setWakeMessage("nexDHD")
-    component.modem.open(Sicherung.Port + 1)
+    modem.setWakeMessage("nexDHD")
+    modem.open(Sicherung.Port + 1)
   end
 end
 
