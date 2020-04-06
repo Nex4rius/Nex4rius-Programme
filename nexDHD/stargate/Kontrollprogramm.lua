@@ -151,6 +151,7 @@ local LampenGruen               = false
 local LampenRot                 = false
 local VersionUpdate             = false
 local reset                     = false
+local AUNIS                     = false
 
 Taste.Koordinaten               = {}
 Taste.Steuerunglinks            = {}
@@ -167,6 +168,23 @@ local chevronAnzeige = {}
 chevronAnzeige.zeig = function() end
 chevronAnzeige.iris = function() end
 chevronAnzeige.beenden = function() end
+
+if sg.engageGate then
+  AUNIS = true
+  sg.energyToDial    = function() return 0 end
+  sg.openIris        = function() return false end
+  sg.closeIris       = function() return false end
+  sg.stargateState   = function() return "unbekannt", "0", "" end
+  sg.localAddress    = function() return "unbekannt" end
+  sg.remoteAddress   = function() return "unbekannt" end
+  sg.irisState       = function() return "Offline" end
+  sg.energyAvailable = function() return 0 end
+  sg.sendMessage     = function() return true end
+  sg.disconnect      = sg.disengageGate
+  sg.dial = function(adresse)
+    return false
+  end
+end
 
 do
   local function check_modem_senden()
