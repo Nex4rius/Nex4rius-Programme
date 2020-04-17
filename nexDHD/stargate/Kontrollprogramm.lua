@@ -32,16 +32,16 @@ _G.shell = shell
 local gpu, serialization, sprachen, unicode, ID, Updatetimer, log, computer
 
 if OC then
-  serialization = require("serialization")
-  component = require("component")
-  computer = require("computer")
-  event = require("event")
-  unicode = require("unicode")
-  gpu = component.getPrimary("gpu")
-  local a = gpu.setForeground
-  local b = gpu.setBackground
-  gpu.setForeground = function(code) if type(code) == "number" then a(code) end end
-  gpu.setBackground = function(code) if type(code) == "number" then b(code) end end
+  serialization       = require("serialization")
+  component           = require("component")
+  computer            = require("computer")
+  event               = require("event")
+  unicode             = require("unicode")
+  gpu                 = component.getPrimary("gpu")
+  local setForeground = gpu.setForeground
+  local setBackground = gpu.setBackground
+  gpu.setForeground = function(code) if type(code) == "number" then setForeground(code) end end
+  gpu.setBackground = function(code) if type(code) == "number" then setBackground(code) end end
 elseif CC then
   component.getPrimary = peripheral.find
   component.isAvailable = function(name)
