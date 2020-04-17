@@ -240,6 +240,16 @@ if Sicherung.RF then
   energymultiplicator           = 80
 end
 
+function f.aunis_dazu()
+  if AUNIS then
+    for name, funktion in pairs(a.sg) do
+      sg[name] = funktion
+    end
+  end
+end
+
+f.aunis_dazu()
+
 if sg.irisState() == "Offline" then
   Trennlinienhoehe              = 13
 end
@@ -252,12 +262,6 @@ if OC then
   end
 elseif CC then
   --r = peripheral.find("redstone")
-end
-
-function f.aunis_dazu()
-  for name, funktion in pairs(a.sg) do
-    sg[name] = funktion
-  end
 end
 
 function f.Logbuch_schreiben(name, adresse, richtung)
@@ -864,9 +868,7 @@ function f.aktualisiereStatus()
   f.reset()
   gpu.setResolution(70, 25)
   sg = component.getPrimary("stargate")
-  if AUNIS then
-    f.aunis_dazu()
-  end
+  f.aunis_dazu()
   locAddr = f.getAddress(sg.localAddress())
   remAddr = f.getAddress(sg.remoteAddress())
   iris = f.getIrisState()
@@ -2160,9 +2162,7 @@ function f.main()
   elseif CC then
     shell.run("label set nexDHD")
   end
-  if AUNIS then
-    f.aunis_dazu()
-  end
+  f.aunis_dazu()
   Updatetimer = event.timer(20000, f.checkUpdate, math.huge)
   if sg.stargateState() == "Idle" and f.getIrisState() == "Closed" then
     f.irisOpen()
