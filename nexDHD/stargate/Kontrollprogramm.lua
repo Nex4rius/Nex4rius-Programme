@@ -589,7 +589,7 @@ function f.AdressenSpeichern()
       gespeicherteAdressen[i + k][3] = na[3]
       gespeicherteAdressen[i + k][4] = f.ErsetzePunktMitKomma(anwahlEnergie)
     end
-    f.zeigeNachricht(sprachen.verarbeiteAdressen .. "<" .. na[2] .. "> <" .. na[1] .. ">")
+    f.zeigeNachricht(sprachen.verarbeiteAdressen .. "<" .. tostring(na[2]) .. "> <" .. tostring(na[1]) .. ">")
     maxseiten = (i + k) / 10
   end
   if not v.lokaleAdresse then
