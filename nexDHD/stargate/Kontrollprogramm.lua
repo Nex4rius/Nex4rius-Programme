@@ -125,6 +125,7 @@ local v                         = {} -- Variabeln
 local Taste                     = {}
 local Logbuch                   = {}
 local timer                     = {}
+local aktuelle_anwahl_adresse   = {}
 local activationtime            = 0
 local energy                    = 0
 local seite                     = 0
@@ -182,7 +183,8 @@ if sg.engageGate then
   sg.sendMessage     = function() return true end
   sg.disconnect      = sg.disengageGate
   sg.dial = function(adresse)
-    return false
+    aktuelle_anwahl_adresse = adresse
+    return sg.engageSymbol(aktuelle_anwahl_adresse[1])
   end
 end
 
