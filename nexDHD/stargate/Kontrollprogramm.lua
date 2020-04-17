@@ -122,6 +122,7 @@ local energytype                = "EU"
 local f                         = {} -- Funktionen
 local o                         = {} -- Funktionen für event.listen()
 local v                         = {} -- Variabeln
+local a                         = {} -- AUNIS Variabeln
 local Taste                     = {}
 local Logbuch                   = {}
 local timer                     = {}
@@ -172,17 +173,21 @@ chevronAnzeige.beenden = function() end
 if sg.engageGate then
   AUNIS = true
   aktuelle_anwahl_adresse = {}
-  sg.energyToDial    = function() return 0 end
-  sg.openIris        = function() return false end
-  sg.closeIris       = function() return false end
-  sg.stargateState   = function() return "unbekannt", "0", "" end
-  sg.localAddress    = function() return "unbekannt" end
-  sg.remoteAddress   = function() return "unbekannt" end
-  sg.irisState       = function() return "Offline" end
-  sg.energyAvailable = function() return 0 end
-  sg.sendMessage     = function() return true end
-  sg.disconnect      = sg.disengageGate
-  sg.dial = function(adresse)
+  a.state = "unbekannt"
+  a.chevrons = 0
+  a.direction = ""
+  a.sg = {}
+  a.sg.energyToDial    = function() return 0 end
+  a.sg.openIris        = function() return false end
+  a.sg.closeIris       = function() return false end
+  a.sg.stargateState   = function() return a.state, a.chevrons, a.direction end
+  a.sg.localAddress    = function() return "unbekannt" end
+  a.sg.remoteAddress   = function() return "unbekannt" end
+  a.sg.irisState       = function() return "Offline" end
+  a.sg.energyAvailable = function() return 0 end
+  a.sg.sendMessage     = function() return true end
+  a.sg.disconnect      = sg.disengageGate
+  a.sg.dial = function(adresse)
     aktuelle_anwahl_adresse = adresse
     return sg.engageSymbol(aktuelle_anwahl_adresse[1])
   end
@@ -244,6 +249,12 @@ if OC then
   end
 elseif CC then
   --r = peripheral.find("redstone")
+end
+
+function f.aunis_dazu()
+  for name, funktion in pairs(a.sg) do
+    sg[name] = funktion
+  end
 end
 
 function f.Logbuch_schreiben(name, adresse, richtung)
@@ -850,6 +861,9 @@ function f.aktualisiereStatus()
   f.reset()
   gpu.setResolution(70, 25)
   sg = component.getPrimary("stargate")
+  if AUNIS then
+    f.aunis_dazu()
+  end
   locAddr = f.getAddress(sg.localAddress())
   remAddr = f.getAddress(sg.remoteAddress())
   iris = f.getIrisState()
@@ -1800,6 +1814,62 @@ function o.sgDialOut()
   event.timer(60, f.GDO_aufwecken, 1)
 end
 
+-----------
+-- AUNIS --
+function f.aunis(caller, symbolCount)
+  if caller then
+    a.state = "Dialling"
+    wurmloch = "out"
+    a.direction = "Outgoing"
+  else
+    a.state = "Dialling"
+    wurmloch = "in"
+    a.direction = "Incoming"
+  end
+  if symbolCount then
+    a.chevron = symbolCount
+  end
+end
+
+function o.stargate_spin_start(address, caller, symbolCount, lock, symbolName)
+  f.aunis(caller, symbolCount)
+end
+
+function o.stargate_spin_chevron_engaged(address, caller, symbolCount, lock, symbolName)
+  f.aunis(caller, symbolCount)
+  if lock then
+    sg.engageGate()
+  else
+    sg.engageSymbol(aktuelle_anwahl_adresse[symbolCount + 1])
+  end
+end
+
+function o.stargate_dhd_chevron_engaged(address, caller, symbolCount, lock, symbolName)
+  f.aunis(caller, symbolCount)
+end
+
+function o.stargate_incoming_wormhole(address, caller, dialedAddressSize)
+  f.aunis(caller, dialedAddressSize)
+end
+
+function o.stargate_open(address, caller, isInitiating)
+  f.aunis(caller)
+end
+
+function o.stargate_close(address, caller)
+  f.aunis(caller)
+end
+
+function o.stargate_failed(address, caller)
+  f.aunis(caller)
+end
+
+function o.stargate_traveler(address, caller, inbound, player)
+  f.aunis(caller)
+end
+-- AUNIS --
+-----------
+
 function f.eventLoop()
   local zeit = computer.uptime()
 
@@ -2086,6 +2156,9 @@ function f.main()
     loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), string.format("nexDHD %s", version))
   elseif CC then
     shell.run("label set nexDHD")
+  end
+  if AUNIS then
+    f.aunis_dazu()
   end
   Updatetimer = event.timer(20000, f.checkUpdate, math.huge)
   if sg.stargateState() == "Idle" and f.getIrisState() == "Closed" then
