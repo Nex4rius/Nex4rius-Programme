@@ -506,9 +506,11 @@ function f.Infoseite()
   y = f.schreiben(y, "S " .. sprachen.EinstellungenAendern)
   Taste.links[y] = Taste.s
   Taste.Koordinaten.Taste_s = y
-  y = f.schreiben(y, "A " .. sprachen.Adresseingabe)
-  Taste.links[y] = Taste.a
-  Taste.Koordinaten.Taste_a = y
+  if not AUNIS then
+    y = f.schreiben(y, "A " .. sprachen.Adresseingabe)
+    Taste.links[y] = Taste.a
+    Taste.Koordinaten.Taste_a = y
+  end
   if log then
     y = f.schreiben(y, "L " .. sprachen.zeigeLog)
     Taste.links[y] = Taste.l
