@@ -190,9 +190,9 @@ if sg.engageGate then
   a.sg.energyAvailable = function() return sg.getEnergyStored() end
   a.sg.sendMessage     = function() return true end
   a.sg.disconnect      = function()
+    aktuelle_anwahl_adresse = {}
     sg.engageGate()
     sg.disengageGate()
-    aktuelle_anwahl_adresse = {}
   end
   a.sg.dial = function(adresse)
     aktuelle_anwahl_adresse = adresse
@@ -1831,21 +1831,43 @@ end
 -- AUNIS --
 function f.aunis(caller, symbolCount)
   if caller then
-    a.state = "Dialling"
+    state = "Dialling"
     wurmloch = "out"
-    a.direction = "Outgoing"
+    direction = "Outgoing"
   else
-    a.state = "Dialling"
+    state = "Dialling"
     wurmloch = "in"
-    a.direction = "Incoming"
+    direction = "Incoming"
   end
+  a.state = state
+  a.direction = direction
   if symbolCount then
-    a.chevron = symbolCount
+    chevrons = symbolCount
+    a.chevrons = chevrons
   end
+  f.zeigeAnzeige()
+end
+
+function f.aunis_idle()
+  state = "Idle"
+  wurmloch = "in"
+  direction = ""
+
+  a.state = state
+  a.direction = direction
+  
+  chevrons = 0
+  a.chevrons = chevrons
+  f.zeigeAnzeige()
 end
 
 function o.stargate_spin_start(eventname, address, caller, symbolCount, lock, symbolName)
   f.aunis(caller, symbolCount)
+  if caller then
+    o.sgDialOut()
+  else
+    o.sgDialIn()
+  end
 end
 
 function o.stargate_spin_chevron_engaged(eventname, address, caller, symbolCount, lock, symbolName)
@@ -1855,10 +1877,14 @@ function o.stargate_spin_chevron_engaged(eventname, address, caller, symbolCount
     return
   end
   if lock then
+    f.zeigeNachricht(string.format("Stargate %s!", sprachen.aktiviert))
     sg.engageGate()
   else
+    f.zeigeNachricht(string.format("Chevron %s %s! <%s>", symbolCount, sprachen.aktiviert, symbolName))
     sg.engageSymbol(aktuelle_anwahl_adresse[symbolCount + 1])
   end
+  
+  --chevronAnzeige.zeig(state == "Opening" or state == "Connected", zielAdresse)
 end
 
 function o.stargate_dhd_chevron_engaged(eventname, address, caller, symbolCount, lock, symbolName)
@@ -1870,19 +1896,19 @@ function o.stargate_incoming_wormhole(eventname, address, caller, dialedAddressS
 end
 
 function o.stargate_open(eventname, address, caller, isInitiating)
-  f.aunis(caller)
+  f.aunis(isInitiating)
 end
 
 function o.stargate_close(eventname, address, caller)
-  f.aunis(caller)
+  f.aunis_idle()
 end
 
 function o.stargate_failed(eventname, address, caller)
-  f.aunis(caller)
+  f.aunis_idle()
 end
 
 function o.stargate_traveler(eventname, address, caller, inbound, player)
-  f.aunis(caller)
+  --f.aunis(caller)
 end
 -- AUNIS --
 -----------
