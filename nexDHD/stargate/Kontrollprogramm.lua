@@ -189,7 +189,11 @@ if sg.engageGate then
   a.sg.irisState       = function() return a.irisState end
   a.sg.energyAvailable = function() return sg.getEnergyStored() end
   a.sg.sendMessage     = function() return true end
-  a.sg.disconnect      = sg.disengageGate
+  a.sg.disconnect      = function()
+    sg.engageGate()
+    sg.disengageGate()
+    aktuelle_anwahl_adresse = {}
+  end
   a.sg.dial = function(adresse)
     aktuelle_anwahl_adresse = adresse
     return sg.engageSymbol(aktuelle_anwahl_adresse[1])
@@ -1275,19 +1279,21 @@ end
 function f.dial(name, adresse)
   if state == "Idle" then
     remoteName = name
-    f.zeigeNachricht(sprachen.waehlen .. "<" .. string.sub(remoteName, 1, xVerschiebung + 12) .. "> <" .. adresse .. ">")
+    f.zeigeNachricht(sprachen.waehlen .. "<" .. string.sub(remoteName, 1, xVerschiebung + 12) .. "> <" .. tostring(adresse) .. ">")
   end
   state = "Dialling"
   wurmloch = "out"
   local ok, ergebnis = sg.dial(adresse)
   if ok == nil then
-    if string.sub(ergebnis, 0, 20) == "Stargate at address " then
-      local AdressEnde = string.find(string.sub(ergebnis, 21), " ") + 20
-      ergebnis = string.sub(ergebnis, 0, 20) .. "<" .. f.getAddress(string.sub(ergebnis, 21, AdressEnde - 1)) .. ">" .. string.sub(ergebnis, AdressEnde)
+    if not AUNIS then
+      if string.sub(ergebnis, 0, 20) == "Stargate at address " then
+        local AdressEnde = string.find(string.sub(ergebnis, 21), " ") + 20
+        ergebnis = string.sub(ergebnis, 0, 20) .. "<" .. f.getAddress(string.sub(ergebnis, 21, AdressEnde - 1)) .. ">" .. string.sub(ergebnis, AdressEnde)
+      end
     end
     f.zeigeNachricht(ergebnis or sprachen.anwahl_fehler)
   else
-    f.Logbuch_schreiben(name , adresse, wurmloch)
+    f.Logbuch_schreiben(name, tostring(adresse), wurmloch)
   end
   os.sleep(1)
 end
@@ -1836,12 +1842,16 @@ function f.aunis(caller, symbolCount)
   end
 end
 
-function o.stargate_spin_start(address, caller, symbolCount, lock, symbolName)
+function o.stargate_spin_start(eventname, address, caller, symbolCount, lock, symbolName)
   f.aunis(caller, symbolCount)
 end
 
-function o.stargate_spin_chevron_engaged(address, caller, symbolCount, lock, symbolName)
+function o.stargate_spin_chevron_engaged(eventname, address, caller, symbolCount, lock, symbolName)
   f.aunis(caller, symbolCount)
+  if next(aktuelle_anwahl_adresse) == nil then
+    sg.disconnect()
+    return
+  end
   if lock then
     sg.engageGate()
   else
@@ -1849,27 +1859,27 @@ function o.stargate_spin_chevron_engaged(address, caller, symbolCount, lock, sym
   end
 end
 
-function o.stargate_dhd_chevron_engaged(address, caller, symbolCount, lock, symbolName)
+function o.stargate_dhd_chevron_engaged(eventname, address, caller, symbolCount, lock, symbolName)
   f.aunis(caller, symbolCount)
 end
 
-function o.stargate_incoming_wormhole(address, caller, dialedAddressSize)
+function o.stargate_incoming_wormhole(eventname, address, caller, dialedAddressSize)
   f.aunis(caller, dialedAddressSize)
 end
 
-function o.stargate_open(address, caller, isInitiating)
+function o.stargate_open(eventname, address, caller, isInitiating)
   f.aunis(caller)
 end
 
-function o.stargate_close(address, caller)
+function o.stargate_close(eventname, address, caller)
   f.aunis(caller)
 end
 
-function o.stargate_failed(address, caller)
+function o.stargate_failed(eventname, address, caller)
   f.aunis(caller)
 end
 
-function o.stargate_traveler(address, caller, inbound, player)
+function o.stargate_traveler(eventname, address, caller, inbound, player)
   f.aunis(caller)
 end
 -- AUNIS --
