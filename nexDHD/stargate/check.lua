@@ -321,7 +321,7 @@ function f.checkKomponenten()
   end
   gpu.setForeground(Farben.weisseFarbe)
   if component.isAvailable("stargate") then
-    sg = component.getPrimary("stargate")
+    local sg = component.getPrimary("stargate")
     if sg.engageGate or sg.energyToDial(sg.localAddress()) then
       return true
     else
