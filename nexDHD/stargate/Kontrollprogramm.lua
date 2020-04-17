@@ -173,11 +173,11 @@ chevronAnzeige.beenden = function() end
 if sg.engageGate then
   AUNIS = true
   aktuelle_anwahl_adresse = {}
-  a.localAddress  = "unbekannt"
-  a.remoteAddress = "unbekannt"
-  a.state         = "unbekannt"
+  a.state         = "Idle"
   a.chevrons      = 0
   a.direction     = ""
+  a.localAddress  = "unbekannt"
+  a.remoteAddress = "unbekannt"
   a.irisState     = "Offline"
   a.sg = {}
   a.sg.energyToDial    = function() return 0 end
