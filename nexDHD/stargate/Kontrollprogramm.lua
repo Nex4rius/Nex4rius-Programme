@@ -125,7 +125,6 @@ local v                         = {} -- Variabeln
 local Taste                     = {}
 local Logbuch                   = {}
 local timer                     = {}
-local aktuelle_anwahl_adresse   = {}
 local activationtime            = 0
 local energy                    = 0
 local seite                     = 0
@@ -163,7 +162,7 @@ v.reset_uptime                  = computer.uptime()
 v.reset_time                    = os.time()
 
 local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit, alte_modem_message
-local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben
+local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben, aktuelle_anwahl_adresse
 
 local chevronAnzeige = {}
 chevronAnzeige.zeig = function() end
@@ -172,6 +171,7 @@ chevronAnzeige.beenden = function() end
 
 if sg.engageGate then
   AUNIS = true
+  aktuelle_anwahl_adresse = {}
   sg.energyToDial    = function() return 0 end
   sg.openIris        = function() return false end
   sg.closeIris       = function() return false end
