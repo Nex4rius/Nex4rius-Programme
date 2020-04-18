@@ -1039,12 +1039,10 @@ function f.zeigeSteuerung()
   Taste.Koordinaten.d_Y = zeile
   Taste.Koordinaten.d_X = xVerschiebung
   f.zeigeHier(Taste.Koordinaten.d_X, Taste.Koordinaten.d_Y, "  D " .. sprachen.abschalten)
-  if not AUNIS then
-    Taste.Steuerungrechts[zeile] = Taste.e
-    Taste.Koordinaten.e_Y = zeile
-    Taste.Koordinaten.e_X = xVerschiebung + 20
-    f.zeigeHier(Taste.Koordinaten.e_X, Taste.Koordinaten.e_Y, "E " .. sprachen.IDCeingabe) f.neueZeile(1)
-  end
+  Taste.Steuerungrechts[zeile] = Taste.e
+  Taste.Koordinaten.e_Y = zeile
+  Taste.Koordinaten.e_X = xVerschiebung + 20
+  f.zeigeHier(Taste.Koordinaten.e_X, Taste.Koordinaten.e_Y, "E " .. sprachen.IDCeingabe) f.neueZeile(1)
   if iris == "Offline" then
     Sicherung.control = "Off"
   else
