@@ -170,9 +170,27 @@ chevronAnzeige.zeig = function() end
 chevronAnzeige.iris = function() end
 chevronAnzeige.beenden = function() end
 
+local function split(pString, pPattern)
+  local Table = {}
+  local fpat = "(.-)" .. pPattern
+  local last_end = 1
+  local s, e, cap = pString:find(fpat, 1)
+  while s do
+     if s ~= 1 or cap ~= "" then
+    table.insert(Table,cap)
+     end
+     last_end = e+1
+     s, e, cap = pString:find(fpat, last_end)
+  end
+  if last_end <= #pString then
+     cap = pString:sub(last_end)
+     table.insert(Table, cap)
+  end
+  return Table
+end
+
 if sg.engageGate then
   AUNIS = true
-  aktuelle_anwahl_adresse = {}
   a.state         = "Idle"
   a.chevrons      = 0
   a.direction     = ""
@@ -190,13 +208,30 @@ if sg.engageGate then
   a.sg.energyAvailable = function() return sg.getEnergyStored() end
   a.sg.sendMessage     = function() return true end
   a.sg.disconnect      = function()
-    aktuelle_anwahl_adresse = {}
+    aktuelle_anwahl_adresse = nil
     sg.engageGate()
-    sg.disengageGate()
+    return sg.disengageGate()
   end
   a.sg.dial = function(adresse)
-    aktuelle_anwahl_adresse = adresse
+    aktuelle_anwahl_adresse = split(adresse, "-")
+    for i in pairs(aktuelle_anwahl_adresse) do
+      local check = tonumber(aktuelle_anwahl_adresse)
+      if check then
+        aktuelle_anwahl_adresse[i] = check
+      end
+    end
     return sg.engageSymbol(aktuelle_anwahl_adresse[1])
+  end
+  if Sicherung.RF then
+    energytype          = "RF"
+    energymultiplicator = 1
+  else
+    energymultiplicator = 0.25
+  end
+else
+  if Sicherung.RF then
+    energytype          = "RF"
+    energymultiplicator = 80
   end
 end
 
@@ -227,21 +262,16 @@ do
     ID = d:read()
     d:close()
   end
-  sectime                       = os.time()
+  sectime              = os.time()
   os.sleep(1)
-  sectime                       = sectime - os.time()
-  letzteNachrichtZeit           = os.time()
-  letzterAdressCheck            = os.time() / sectime
-  local args                    = {...}
-  f.update                      = args[1]
-  f.checkServerVersion          = args[2]
-  version                       = tostring(args[3])
-  Farben                        = args[4] or {}
-end
-
-if Sicherung.RF then
-  energytype                    = "RF"
-  energymultiplicator           = 80
+  sectime              = sectime - os.time()
+  letzteNachrichtZeit  = os.time()
+  letzterAdressCheck   = os.time() / sectime
+  local args           = {...}
+  f.update             = args[1]
+  f.checkServerVersion = args[2]
+  version              = tostring(args[3])
+  Farben               = args[4] or {}
 end
 
 function f.aunis_dazu()
@@ -1559,10 +1589,18 @@ function Taste.s()
       end
       if Sicherung.RF then
         energytype          = "RF"
-        energymultiplicator = 80
+        if AUNIS then
+          energymultiplicator = 1
+        else
+          energymultiplicator = 80
+        end
       else
         energytype          = "EU"
-        energymultiplicator = 20
+        if AUNIS then
+          energymultiplicator = 0.25
+        else
+          energymultiplicator = 20
+        end
       end
       if a ~= Sicherung.RF then
         f.AdressenSpeichern()
@@ -1872,9 +1910,8 @@ end
 
 function o.stargate_spin_chevron_engaged(eventname, address, caller, symbolCount, lock, symbolName)
   f.aunis(caller, symbolCount)
-  if next(aktuelle_anwahl_adresse) == nil then
-    sg.disconnect()
-    return
+  if not aktuelle_anwahl_adresse then
+    return sg.disconnect()
   end
   if lock then
     f.zeigeNachricht(string.format("Stargate %s!", sprachen.aktiviert))
