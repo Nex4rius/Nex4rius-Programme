@@ -194,7 +194,7 @@ if sg.engageGate then
   a.state         = "Idle"
   a.chevrons      = 0
   a.direction     = ""
-  a.localAddress  = "unbekannt"
+  a.localAddress  = Sicherung.StargateName
   a.remoteAddress = "unbekannt"
   a.irisState     = "Offline"
   a.sg = {}
@@ -449,13 +449,17 @@ function f.ErsetzePunktMitKomma(...)
   return ...
 end
 
-function f.getAddress(...)
-  if ... == "" or ... == nil then
-    return ""
-  elseif string.len(...) == 7 then
-    return string.sub(..., 1, 4) .. "-" .. string.sub(..., 5, 7)
+function f.getAddress(text)
+  if AUNIS then
+    return text
   else
-    return string.sub(..., 1, 4) .. "-" .. string.sub(..., 5, 7) .. "-" .. string.sub(..., 8, 9)
+    if text == "" or text == nil then
+      return ""
+    elseif string.len(text) == 7 then
+      return string.sub(text, 1, 4) .. "-" .. string.sub(text, 5, 7)
+    else
+      return string.sub(text, 1, 4) .. "-" .. string.sub(text, 5, 7) .. "-" .. string.sub(text, 8, 9)
+    end
   end
 end
 
@@ -590,7 +594,7 @@ function f.AdressenSpeichern()
   local k = 0
   local LokaleAdresse = f.getAddress(sg.localAddress())
   for i, na in pairs(adressen) do
-    if na[2] == LokaleAdresse then
+    if na[2] == LokaleAdresse or na[1] == LokaleAdresse then
       k = -1
       sendeAdressen[i] = {}
       sendeAdressen[i][1] = na[1]
@@ -1874,38 +1878,32 @@ end
 
 -----------
 -- AUNIS --
-function f.aunis(caller, symbolCount, lock)
+function f.aunis(caller, symbolCount)
   if caller then
-    state = "Dialling"
-    wurmloch = "out"
-    direction = "Outgoing"
+    wurmloch   = "out"
+    direction  = "Outgoing"
   else
-    state = "Dialling"
-    wurmloch = "in"
-    direction = "Incoming"
+    wurmloch   = "in"
+    direction  = "Incoming"
   end
-  if lock then
-    state = "Connected"
-  end
-  a.state = state
-  a.direction = direction
+  state        = "Dialling"
+  a.state      = state
+  a.direction  = direction
   if symbolCount then
-    chevrons = symbolCount
+    chevrons   = symbolCount
     a.chevrons = chevrons
   end
   f.zeigeAnzeige()
 end
 
 function f.aunis_idle()
-  state = "Idle"
-  wurmloch = "in"
-  direction = ""
-
-  a.state = state
+  state       = "Idle"
+  wurmloch    = "in"
+  direction   = ""
+  chevrons    = 0
+  a.state     = state
   a.direction = direction
-  
-  chevrons = 0
-  a.chevrons = chevrons
+  a.chevrons  = chevrons
   f.zeigeAnzeige()
 end
 
@@ -1919,13 +1917,16 @@ function o.stargate_spin_start(eventname, address, caller, symbolCount, lock, sy
 end
 
 function o.stargate_spin_chevron_engaged(eventname, address, caller, symbolCount, lock, symbolName)
-  f.aunis(caller, symbolCount, lock)
+  f.aunis(caller, symbolCount)
   if not aktuelle_anwahl_adresse then
     return sg.disconnect()
   end
   if lock then
     f.zeigeNachricht(string.format("Stargate %s!", sprachen.aktiviert))
-    sg.engageGate()
+    if sg.engageGate() then
+      state = "Connected"
+      a.state = state
+    end
   else
     f.zeigeNachricht(string.format("Chevron %s %s! <%s>", symbolCount, sprachen.aktiviert, symbolName))
     sg.engageSymbol(aktuelle_anwahl_adresse[symbolCount + 1])
