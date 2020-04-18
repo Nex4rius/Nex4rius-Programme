@@ -197,6 +197,10 @@ if not sg.engageGate then
     a.state, a.chevrons, a.direction = sg.stargateState()
     return a.state, a.chevrons, a.direction
   end
+  if Sicherung.RF then
+    energytype          = "RF"
+    energymultiplicator = 80
+  end
 else
   AUNIS = true
   a.state         = "Idle"
@@ -242,11 +246,6 @@ else
     energymultiplicator = 1
   else
     energymultiplicator = 0.25
-  end
-else
-  if Sicherung.RF then
-    energytype          = "RF"
-    energymultiplicator = 80
   end
 end
 
