@@ -199,7 +199,7 @@ if sg.engageGate then
   a.irisState     = "Offline"
   a.sg = {}
   a.sg.energyToDial    = function(adresse)
-    if type(adresse) == "string" and string.len(adresse) > 12 then
+    if type(adresse) == "string" and string.len(adresse) > 10 then
       return 0
     else
       return false
