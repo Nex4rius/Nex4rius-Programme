@@ -224,8 +224,14 @@ else
   a.sg.remoteAddress   = function() return a.remoteAddress end
   a.sg.irisState       = function() return a.irisState end
   a.sg.energyAvailable = function() return sg.getEnergyStored() end
-  a.sg.sendMessage     = function() return true end
-  a.sg.sendMessage_alt = function() return true end
+  a.sg.sendMessage = function(...)
+    local daten = {...}
+    sende_modem_jetzt = daten[1]
+    if not check_modem_senden() then
+      event.timer(5, check_modem_senden, 1)
+    end
+  end
+  a.sg.sendMessage_alt = a.sg.sendMessage
   a.sg.disconnect      = function()
     aktuelle_anwahl_adresse = nil
     sg.engageGate()
