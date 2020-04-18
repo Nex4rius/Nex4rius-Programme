@@ -198,7 +198,7 @@ end
 
 function f.checkOpenOS()
   if OC then
-    local OpenOS_Version = "OpenOS 1.7.4"
+    local OpenOS_Version = "OpenOS 1.7.5"
     if wget("-fQ", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/OpenOS-Version", "/einstellungen/OpenOS-Version") then
       local d = io.open("/einstellungen/OpenOS-Version", "r")
       OpenOS_Version = d:read()
@@ -321,8 +321,8 @@ function f.checkKomponenten()
   end
   gpu.setForeground(Farben.weisseFarbe)
   if component.isAvailable("stargate") then
-    sg = component.getPrimary("stargate")
-    if sg.energyToDial(sg.localAddress()) then
+    local sg = component.getPrimary("stargate")
+    if sg.engageGate or sg.energyToDial(sg.localAddress()) then
       return true
     else
       gpu.setForeground(Farben.roteFarbe)

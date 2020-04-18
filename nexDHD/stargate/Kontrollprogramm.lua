@@ -32,16 +32,16 @@ _G.shell = shell
 local gpu, serialization, sprachen, unicode, ID, Updatetimer, log, computer
 
 if OC then
-  serialization = require("serialization")
-  component = require("component")
-  computer = require("computer")
-  event = require("event")
-  unicode = require("unicode")
-  gpu = component.getPrimary("gpu")
-  local a = gpu.setForeground
-  local b = gpu.setBackground
-  gpu.setForeground = function(code) if type(code) == "number" then a(code) end end
-  gpu.setBackground = function(code) if type(code) == "number" then b(code) end end
+  serialization       = require("serialization")
+  component           = require("component")
+  computer            = require("computer")
+  event               = require("event")
+  unicode             = require("unicode")
+  gpu                 = component.getPrimary("gpu")
+  local setForeground = gpu.setForeground
+  local setBackground = gpu.setBackground
+  gpu.setForeground = function(code) if type(code) == "number" then setForeground(code) end end
+  gpu.setBackground = function(code) if type(code) == "number" then setBackground(code) end end
 elseif CC then
   component.getPrimary = peripheral.find
   component.isAvailable = function(name)
@@ -122,6 +122,7 @@ local energytype                = "EU"
 local f                         = {} -- Funktionen
 local o                         = {} -- Funktionen für event.listen()
 local v                         = {} -- Variabeln
+local a                         = {} -- AUNIS Variabeln
 local Taste                     = {}
 local Logbuch                   = {}
 local timer                     = {}
@@ -151,6 +152,7 @@ local LampenGruen               = false
 local LampenRot                 = false
 local VersionUpdate             = false
 local reset                     = false
+local AUNIS                     = false
 
 Taste.Koordinaten               = {}
 Taste.Steuerunglinks            = {}
@@ -161,12 +163,84 @@ v.reset_uptime                  = computer.uptime()
 v.reset_time                    = os.time()
 
 local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit, alte_modem_message
-local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben
+local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben, aktuelle_anwahl_adresse
 
 local chevronAnzeige = {}
 chevronAnzeige.zeig = function() end
 chevronAnzeige.iris = function() end
 chevronAnzeige.beenden = function() end
+
+local function split(pString, pPattern)
+  local Table = {}
+  local fpat = "(.-)" .. pPattern
+  local last_end = 1
+  local s, e, cap = pString:find(fpat, 1)
+  while s do
+     if s ~= 1 or cap ~= "" then
+    table.insert(Table,cap)
+     end
+     last_end = e+1
+     s, e, cap = pString:find(fpat, last_end)
+  end
+  if last_end <= #pString then
+     cap = pString:sub(last_end)
+     table.insert(Table, cap)
+  end
+  return Table
+end
+
+if sg.engageGate then
+  AUNIS = true
+  a.state         = "Idle"
+  a.chevrons      = 0
+  a.direction     = ""
+  a.localAddress  = Sicherung.StargateName
+  a.remoteAddress = "unbekannt"
+  a.irisState     = "Offline"
+  a.sg = {}
+  a.sg.energyToDial    = function(adresse)
+    if type(adresse) == "string" and string.len(adresse) > 10 and adresse ~= "XXXX-XXX-XX" then
+      return 0
+    else
+      return false
+    end
+  end
+  a.sg.openIris        = function() return false end
+  a.sg.closeIris       = function() return false end
+  a.sg.stargateState   = function() return a.state, a.chevrons, a.direction end
+  a.sg.localAddress    = function() return a.localAddress end
+  a.sg.remoteAddress   = function() return a.remoteAddress end
+  a.sg.irisState       = function() return a.irisState end
+  a.sg.energyAvailable = function() return sg.getEnergyStored() end
+  a.sg.sendMessage     = function() return true end
+  a.sg.sendMessage_alt = function() return true end
+  a.sg.disconnect      = function()
+    aktuelle_anwahl_adresse = nil
+    sg.engageGate()
+    return sg.disengageGate()
+  end
+  a.sg.dial = function(adresse)
+    aktuelle_anwahl_adresse = split(adresse, "-")
+    for i in pairs(aktuelle_anwahl_adresse) do
+      local check = tonumber(aktuelle_anwahl_adresse)
+      if check then
+        aktuelle_anwahl_adresse[i] = check
+      end
+    end
+    return sg.engageSymbol(aktuelle_anwahl_adresse[1])
+  end
+  if Sicherung.RF then
+    energytype          = "RF"
+    energymultiplicator = 1
+  else
+    energymultiplicator = 0.25
+  end
+else
+  if Sicherung.RF then
+    energytype          = "RF"
+    energymultiplicator = 80
+  end
+end
 
 do
   local function check_modem_senden()
@@ -195,22 +269,27 @@ do
     ID = d:read()
     d:close()
   end
-  sectime                       = os.time()
+  sectime              = os.time()
   os.sleep(1)
-  sectime                       = sectime - os.time()
-  letzteNachrichtZeit           = os.time()
-  letzterAdressCheck            = os.time() / sectime
-  local args                    = {...}
-  f.update                      = args[1]
-  f.checkServerVersion          = args[2]
-  version                       = tostring(args[3])
-  Farben                        = args[4] or {}
+  sectime              = sectime - os.time()
+  letzteNachrichtZeit  = os.time()
+  letzterAdressCheck   = os.time() / sectime
+  local args           = {...}
+  f.update             = args[1]
+  f.checkServerVersion = args[2]
+  version              = tostring(args[3])
+  Farben               = args[4] or {}
 end
 
-if Sicherung.RF then
-  energytype                    = "RF"
-  energymultiplicator           = 80
+function f.aunis_dazu()
+  if AUNIS then
+    for name, funktion in pairs(a.sg) do
+      sg[name] = funktion
+    end
+  end
 end
+
+f.aunis_dazu()
 
 if sg.irisState() == "Offline" then
   Trennlinienhoehe              = 13
@@ -370,13 +449,17 @@ function f.ErsetzePunktMitKomma(...)
   return ...
 end
 
-function f.getAddress(...)
-  if ... == "" or ... == nil then
-    return ""
-  elseif string.len(...) == 7 then
-    return string.sub(..., 1, 4) .. "-" .. string.sub(..., 5, 7)
+function f.getAddress(text)
+  if AUNIS then
+    return text
   else
-    return string.sub(..., 1, 4) .. "-" .. string.sub(..., 5, 7) .. "-" .. string.sub(..., 8, 9)
+    if text == "" or text == nil then
+      return ""
+    elseif string.len(text) == 7 then
+      return string.sub(text, 1, 4) .. "-" .. string.sub(text, 5, 7)
+    else
+      return string.sub(text, 1, 4) .. "-" .. string.sub(text, 5, 7) .. "-" .. string.sub(text, 8, 9)
+    end
   end
 end
 
@@ -464,9 +547,11 @@ function f.Infoseite()
   y = f.schreiben(y, "S " .. sprachen.EinstellungenAendern)
   Taste.links[y] = Taste.s
   Taste.Koordinaten.Taste_s = y
-  y = f.schreiben(y, "A " .. sprachen.Adresseingabe)
-  Taste.links[y] = Taste.a
-  Taste.Koordinaten.Taste_a = y
+  if not AUNIS then
+    y = f.schreiben(y, "A " .. sprachen.Adresseingabe)
+    Taste.links[y] = Taste.a
+    Taste.Koordinaten.Taste_a = y
+  end
   if log then
     y = f.schreiben(y, "L " .. sprachen.zeigeLog)
     Taste.links[y] = Taste.l
@@ -509,7 +594,7 @@ function f.AdressenSpeichern()
   local k = 0
   local LokaleAdresse = f.getAddress(sg.localAddress())
   for i, na in pairs(adressen) do
-    if na[2] == LokaleAdresse then
+    if na[2] == LokaleAdresse or na[1] == LokaleAdresse then
       k = -1
       sendeAdressen[i] = {}
       sendeAdressen[i][1] = na[1]
@@ -526,21 +611,21 @@ function f.AdressenSpeichern()
         sendeAdressen[i][1] = na[1]
         sendeAdressen[i][2] = na[2]
         if     anwahlEnergie < 10000 then
-          anwahlEnergie = string.format("%.f" , (sg.energyToDial(na[2]) * energymultiplicator))
+          anwahlEnergie = string.format("%.f" , anwahlEnergie)
         elseif anwahlEnergie < 10000000 then
-          anwahlEnergie = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000) .. " k"
+          anwahlEnergie = string.format("%.1f", anwahlEnergie / 1000) .. " k"
         elseif anwahlEnergie < 10000000000 then
-          anwahlEnergie = string.format("%.2f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000) .. " M"
+          anwahlEnergie = string.format("%.2f", anwahlEnergie / 1000000) .. " M"
         elseif anwahlEnergie < 10000000000000 then
-          anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000) .. " G"
+          anwahlEnergie = string.format("%.3f", anwahlEnergie / 1000000000) .. " G"
         elseif anwahlEnergie < 10000000000000000 then
-          anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000000) .. " T"
+          anwahlEnergie = string.format("%.3f", anwahlEnergie / 1000000000000) .. " T"
         elseif anwahlEnergie < 10000000000000000000 then
-          anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000000000) .. " P"
+          anwahlEnergie = string.format("%.3f", anwahlEnergie / 1000000000000000) .. " P"
         elseif anwahlEnergie < 10000000000000000000000 then
-          anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000000000000) .. " E"
+          anwahlEnergie = string.format("%.3f", anwahlEnergie / 1000000000000000000) .. " E"
         elseif anwahlEnergie < 10000000000000000000000000 then
-          anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000000000000000) .. " Z"
+          anwahlEnergie = string.format("%.3f", anwahlEnergie / 1000000000000000000000) .. " Z"
         else
           anwahlEnergie = sprachen.zuvielEnergie
         end
@@ -551,7 +636,7 @@ function f.AdressenSpeichern()
       gespeicherteAdressen[i + k][3] = na[3]
       gespeicherteAdressen[i + k][4] = f.ErsetzePunktMitKomma(anwahlEnergie)
     end
-    f.zeigeNachricht(sprachen.verarbeiteAdressen .. "<" .. na[2] .. "> <" .. na[1] .. ">")
+    f.zeigeNachricht(sprachen.verarbeiteAdressen .. "<" .. tostring(na[2]) .. "> <" .. tostring(na[1]) .. ">")
     maxseiten = (i + k) / 10
   end
   if not v.lokaleAdresse then
@@ -830,6 +915,7 @@ function f.aktualisiereStatus()
   f.reset()
   gpu.setResolution(70, 25)
   sg = component.getPrimary("stargate")
+  f.aunis_dazu()
   locAddr = f.getAddress(sg.localAddress())
   remAddr = f.getAddress(sg.remoteAddress())
   iris = f.getIrisState()
@@ -1236,19 +1322,21 @@ end
 function f.dial(name, adresse)
   if state == "Idle" then
     remoteName = name
-    f.zeigeNachricht(sprachen.waehlen .. "<" .. string.sub(remoteName, 1, xVerschiebung + 12) .. "> <" .. adresse .. ">")
+    f.zeigeNachricht(sprachen.waehlen .. "<" .. string.sub(remoteName, 1, xVerschiebung + 12) .. "> <" .. tostring(adresse) .. ">")
   end
   state = "Dialling"
   wurmloch = "out"
   local ok, ergebnis = sg.dial(adresse)
   if ok == nil then
-    if string.sub(ergebnis, 0, 20) == "Stargate at address " then
-      local AdressEnde = string.find(string.sub(ergebnis, 21), " ") + 20
-      ergebnis = string.sub(ergebnis, 0, 20) .. "<" .. f.getAddress(string.sub(ergebnis, 21, AdressEnde - 1)) .. ">" .. string.sub(ergebnis, AdressEnde)
+    if not AUNIS then
+      if string.sub(ergebnis, 0, 20) == "Stargate at address " then
+        local AdressEnde = string.find(string.sub(ergebnis, 21), " ") + 20
+        ergebnis = string.sub(ergebnis, 0, 20) .. "<" .. f.getAddress(string.sub(ergebnis, 21, AdressEnde - 1)) .. ">" .. string.sub(ergebnis, AdressEnde)
+      end
     end
     f.zeigeNachricht(ergebnis or sprachen.anwahl_fehler)
   else
-    f.Logbuch_schreiben(name , adresse, wurmloch)
+    f.Logbuch_schreiben(name, tostring(adresse), wurmloch)
   end
   os.sleep(1)
 end
@@ -1512,10 +1600,18 @@ function Taste.s()
       end
       if Sicherung.RF then
         energytype          = "RF"
-        energymultiplicator = 80
+        if AUNIS then
+          energymultiplicator = 1
+        else
+          energymultiplicator = 80
+        end
       else
         energytype          = "EU"
-        energymultiplicator = 20
+        if AUNIS then
+          energymultiplicator = 0.25
+        else
+          energymultiplicator = 20
+        end
       end
       if a ~= Sicherung.RF then
         f.AdressenSpeichern()
@@ -1779,6 +1875,91 @@ function o.sgDialOut()
   event.timer(25, f.GDO_aufwecken, 1)
   event.timer(60, f.GDO_aufwecken, 1)
 end
+
+-----------
+-- AUNIS --
+function f.aunis(caller, symbolCount)
+  if caller then
+    wurmloch   = "out"
+    direction  = "Outgoing"
+  else
+    wurmloch   = "in"
+    direction  = "Incoming"
+  end
+  state        = "Dialling"
+  a.state      = state
+  a.direction  = direction
+  if symbolCount then
+    chevrons   = symbolCount
+    a.chevrons = chevrons
+  end
+  f.zeigeAnzeige()
+end
+
+function f.aunis_idle()
+  state       = "Idle"
+  wurmloch    = "in"
+  direction   = ""
+  chevrons    = 0
+  a.state     = state
+  a.direction = direction
+  a.chevrons  = chevrons
+  f.zeigeAnzeige()
+end
+
+function o.stargate_spin_start(eventname, address, caller, symbolCount, lock, symbolName)
+  f.aunis(caller, symbolCount)
+  if caller then
+    o.sgDialOut()
+  else
+    o.sgDialIn()
+  end
+end
+
+function o.stargate_spin_chevron_engaged(eventname, address, caller, symbolCount, lock, symbolName)
+  f.aunis(caller, symbolCount)
+  if not aktuelle_anwahl_adresse then
+    return sg.disconnect()
+  end
+  if lock then
+    f.zeigeNachricht(string.format("Stargate %s!", sprachen.aktiviert))
+    if sg.engageGate() then
+      state = "Connected"
+      a.state = state
+    end
+  else
+    f.zeigeNachricht(string.format("Chevron %s %s! <%s>", symbolCount, sprachen.aktiviert, symbolName))
+    sg.engageSymbol(aktuelle_anwahl_adresse[symbolCount + 1])
+  end
+  
+  --chevronAnzeige.zeig(state == "Opening" or state == "Connected", zielAdresse)
+end
+
+function o.stargate_dhd_chevron_engaged(eventname, address, caller, symbolCount, lock, symbolName)
+  f.aunis(caller, symbolCount)
+end
+
+function o.stargate_incoming_wormhole(eventname, address, caller, dialedAddressSize)
+  f.aunis(caller, dialedAddressSize)
+end
+
+function o.stargate_open(eventname, address, caller, isInitiating)
+  f.aunis(isInitiating)
+end
+
+function o.stargate_close(eventname, address, caller)
+  f.aunis_idle()
+end
+
+function o.stargate_failed(eventname, address, caller)
+  f.aunis_idle()
+end
+
+function o.stargate_traveler(eventname, address, caller, inbound, player)
+  --f.aunis(caller)
+end
+-- AUNIS --
+-----------
 
 function f.eventLoop()
   local zeit = computer.uptime()
@@ -2067,6 +2248,7 @@ function f.main()
   elseif CC then
     shell.run("label set nexDHD")
   end
+  f.aunis_dazu()
   Updatetimer = event.timer(20000, f.checkUpdate, math.huge)
   if sg.stargateState() == "Idle" and f.getIrisState() == "Closed" then
     f.irisOpen()
