@@ -198,7 +198,13 @@ if sg.engageGate then
   a.remoteAddress = "unbekannt"
   a.irisState     = "Offline"
   a.sg = {}
-  a.sg.energyToDial    = function() return 0 end
+  a.sg.energyToDial    = function(adresse)
+    if type(adresse) == "string" then
+      return 0
+    else
+      return false
+    end
+  end
   a.sg.openIris        = function() return false end
   a.sg.closeIris       = function() return false end
   a.sg.stargateState   = function() return a.state, a.chevrons, a.direction end
@@ -207,6 +213,7 @@ if sg.engageGate then
   a.sg.irisState       = function() return a.irisState end
   a.sg.energyAvailable = function() return sg.getEnergyStored() end
   a.sg.sendMessage     = function() return true end
+  a.sg.sendMessage_alt = function() return true end
   a.sg.disconnect      = function()
     aktuelle_anwahl_adresse = nil
     sg.engageGate()
@@ -600,21 +607,21 @@ function f.AdressenSpeichern()
         sendeAdressen[i][1] = na[1]
         sendeAdressen[i][2] = na[2]
         if     anwahlEnergie < 10000 then
-          anwahlEnergie = string.format("%.f" , (sg.energyToDial(na[2]) * energymultiplicator))
+          anwahlEnergie = string.format("%.f" , anwahlEnergie)
         elseif anwahlEnergie < 10000000 then
-          anwahlEnergie = string.format("%.1f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000) .. " k"
+          anwahlEnergie = string.format("%.1f", anwahlEnergie / 1000) .. " k"
         elseif anwahlEnergie < 10000000000 then
-          anwahlEnergie = string.format("%.2f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000) .. " M"
+          anwahlEnergie = string.format("%.2f", anwahlEnergie / 1000000) .. " M"
         elseif anwahlEnergie < 10000000000000 then
-          anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000) .. " G"
+          anwahlEnergie = string.format("%.3f", anwahlEnergie / 1000000000) .. " G"
         elseif anwahlEnergie < 10000000000000000 then
-          anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000000) .. " T"
+          anwahlEnergie = string.format("%.3f", anwahlEnergie / 1000000000000) .. " T"
         elseif anwahlEnergie < 10000000000000000000 then
-          anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000000000) .. " P"
+          anwahlEnergie = string.format("%.3f", anwahlEnergie / 1000000000000000) .. " P"
         elseif anwahlEnergie < 10000000000000000000000 then
-          anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000000000000) .. " E"
+          anwahlEnergie = string.format("%.3f", anwahlEnergie / 1000000000000000000) .. " E"
         elseif anwahlEnergie < 10000000000000000000000000 then
-          anwahlEnergie = string.format("%.3f", (sg.energyToDial(na[2]) * energymultiplicator) / 1000000000000000000000) .. " Z"
+          anwahlEnergie = string.format("%.3f", anwahlEnergie / 1000000000000000000000) .. " Z"
         else
           anwahlEnergie = sprachen.zuvielEnergie
         end
@@ -1867,7 +1874,7 @@ end
 
 -----------
 -- AUNIS --
-function f.aunis(caller, symbolCount)
+function f.aunis(caller, symbolCount, lock)
   if caller then
     state = "Dialling"
     wurmloch = "out"
@@ -1876,6 +1883,9 @@ function f.aunis(caller, symbolCount)
     state = "Dialling"
     wurmloch = "in"
     direction = "Incoming"
+  end
+  if lock then
+    state = "Connected"
   end
   a.state = state
   a.direction = direction
@@ -1909,7 +1919,7 @@ function o.stargate_spin_start(eventname, address, caller, symbolCount, lock, sy
 end
 
 function o.stargate_spin_chevron_engaged(eventname, address, caller, symbolCount, lock, symbolName)
-  f.aunis(caller, symbolCount)
+  f.aunis(caller, symbolCount, lock)
   if not aktuelle_anwahl_adresse then
     return sg.disconnect()
   end
