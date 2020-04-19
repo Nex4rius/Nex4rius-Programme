@@ -1819,6 +1819,12 @@ end
 
 function o.sgMessageReceived(...)
   local e = {...}
+  f.zeigeFehler(e[1])
+  f.zeigeFehler(e[2])
+  f.zeigeFehler(e[3])
+  f.zeigeFehler(e[4])
+  f.zeigeFehler(e[5])
+  f.zeigeFehler(e[6])
   if direction == "Outgoing" then
     codeaccepted = e[3]
   elseif direction == "Incoming" and wurmloch == "in" then
