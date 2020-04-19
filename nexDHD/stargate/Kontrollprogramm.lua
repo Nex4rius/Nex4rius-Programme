@@ -1867,22 +1867,22 @@ function f.GDO_aufwecken()
 end
 
 function o.sgDialIn()
-  state = "Dialling"
-  wurmloch = "in"
-  direction = "Incoming"
-  a.state      = state
-  a.direction  = direction
+  state       = "Dialling"
+  wurmloch    = "in"
+  direction   = "Incoming"
+  a.state     = state
+  a.direction = direction
   f.Logbuch_schreiben(remoteName , f.getAddress(sg.remoteAddress()), wurmloch)
   event.timer(19, f.GDO_aufwecken, 1)
   event.timer(25, f.GDO_aufwecken, 1)
 end
 
 function o.sgDialOut()
-  state = "Dialling"
-  wurmloch = "out"
-  direction = "Outgoing"
-  a.state      = state
-  a.direction  = direction
+  state       = "Dialling"
+  wurmloch    = "out"
+  direction   = "Outgoing"
+  a.state     = state
+  a.direction = direction
   f.GDO_aufwecken()
   event.timer(19, f.GDO_aufwecken, 1)
   event.timer(25, f.GDO_aufwecken, 1)
@@ -1928,6 +1928,11 @@ function f.aunis_idle()
   f.zeigeAnzeige()
 end
 
+function f.aunis_connected()
+  state   = "Connected"
+  a.state = state
+end
+
 function o.stargate_spin_start(eventname, compadresse, caller, symbolCount, lock, symbolName)
   f.aunis(caller, symbolCount)
   if caller then
@@ -1966,14 +1971,14 @@ end
 
 function o.stargate_open(eventname, compadresse, caller, isInitiating)
   f.aunis(isInitiating)
-  state   = "Connected"
-  a.state = state
+  event.timer(4, f.aunis_connected, 1)
 end
 
 function o.stargate_close(eventname, compadresse, caller)
   f.aunis_idle()
   state   = "Closing"
   a.state = state
+  event.timer(5, f.aunis_idle, 1)
 end
 
 function o.stargate_failed(eventname, compadresse, caller)
