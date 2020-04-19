@@ -1933,11 +1933,10 @@ function f.aunis_idle()
 end
 o.stargate_idle = f.aunis_idle
 
-function f.aunis_connected()
+function o.wormhole_stabilized()
   state   = "Connected"
   a.state = state
 end
-o.wormhole_stabilized = f.aunis_connected
 
 function o.stargate_spin_start(eventname, compadresse, caller, symbolCount, lock, symbolName)
   f.aunis(caller, symbolCount)
@@ -1977,6 +1976,8 @@ end
 
 function o.stargate_open(eventname, compadresse, caller, isInitiating)
   f.aunis(isInitiating)
+  state   = "Opening"
+  a.state = state
   event.timer(5, function()
     event.push("wormhole_stabilized")
   end, 1)
