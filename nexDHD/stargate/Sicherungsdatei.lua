@@ -15,7 +15,7 @@ return {
   autoUpdate    = true, -- enable automated updates
   StargateName  = "", -- the name of this stargate
   Port          = 645, -- default 645
-  Reichweite    = 40, -- strength of the wireless signal
+  Reichweite    = 30, -- strength of the wireless signal
   Theme         = "normal", -- normal, dunkel, schwarz_weiss
   kein_senden   = false, -- true -> keine Adressen senden
   cloud         = true, -- Adressen in die Cloud hoch- und runterladen
