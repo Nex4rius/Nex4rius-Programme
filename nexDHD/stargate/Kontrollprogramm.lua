@@ -869,7 +869,7 @@ function f.sendeAdressliste()
 end
 
 function f.newAddress(idc, neueAdresse, neuerName, weiter)
-  if AddNewAddress == true and string.len(neueAdresse) >= 7 and string.len(neueAdresse) <= 11 and sg.energyToDial(neueAdresse) then
+  if AddNewAddress == true and string.len(neueAdresse) >= 7 and sg.energyToDial(neueAdresse) then
     local i = 1
     for k in pairs(adressen) do
       i = k + 1
