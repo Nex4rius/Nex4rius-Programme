@@ -1805,6 +1805,7 @@ function f.openModem()
     end
     modem.setWakeMessage("nexDHD")
     modem.open(Sicherung.Port)
+    modem.open(Sicherung.Port + 1)
   end
 end
 
@@ -2159,6 +2160,7 @@ function o.component_added(eventname, id, comp)
   elseif comp == "modem" then
     if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
       component.modem.open(Sicherung.Port)
+      component.modem.open(Sicherung.Port + 1)
       f.openModem()
     end
   end
