@@ -122,7 +122,7 @@ local energytype                = "EU"
 local f                         = {} -- Funktionen
 local o                         = {} -- Funktionen für event.listen()
 local v                         = {} -- Variabeln
-local a                         = {} -- AUNIS Variabeln
+local a                         = {} -- Status Variabeln
 local Taste                     = {}
 local Logbuch                   = {}
 local timer                     = {}
@@ -189,16 +189,33 @@ local function split(pString, pPattern)
   return Table
 end
 
-if sg.engageGate then
+local function check_modem_senden()
+  if component.isAvailable("modem") and state ~= "Idle" and state ~= "Closing" then
+    return component.modem.broadcast(Sicherung.Port, sende_modem_jetzt)
+  end
+end
+
+a.sg = {}
+if not sg.engageGate then
+  a.state, a.chevrons, a.direction = sg.stargateState()
+  a.irisState = sg.irisState()
+  a.sg.stargateStatus = function()
+    a.state, a.chevrons, a.direction = sg.stargateState()
+    return a.state, a.chevrons, a.direction
+  end
+  if Sicherung.RF then
+    energytype          = "RF"
+    energymultiplicator = 80
+  end
+else
   AUNIS = true
   a.state         = "Idle"
   a.chevrons      = 0
   a.direction     = ""
+  a.irisState     = "Offline"
   a.localAddress  = Sicherung.StargateName
   a.remoteAddress = "unbekannt"
-  a.irisState     = "Offline"
-  a.sg = {}
-  a.sg.energyToDial    = function(adresse)
+  a.sg.energyToDial = function(adresse)
     if type(adresse) == "string" and string.len(adresse) > 10 and adresse ~= "XXXX-XXX-XX" then
       return 0
     else
@@ -208,12 +225,19 @@ if sg.engageGate then
   a.sg.openIris        = function() return false end
   a.sg.closeIris       = function() return false end
   a.sg.stargateState   = function() return a.state, a.chevrons, a.direction end
+  a.sg.stargateStatus  = function() return a.state, a.chevrons, a.direction end
   a.sg.localAddress    = function() return a.localAddress end
   a.sg.remoteAddress   = function() return a.remoteAddress end
   a.sg.irisState       = function() return a.irisState end
   a.sg.energyAvailable = function() return sg.getEnergyStored() end
-  a.sg.sendMessage     = function() return true end
-  a.sg.sendMessage_alt = function() return true end
+  a.sg.sendMessage = function(...)
+    local daten = {...}
+    sende_modem_jetzt = daten[1]
+    if not check_modem_senden() then
+      event.timer(5, check_modem_senden, 1)
+    end
+  end
+  a.sg.sendMessage_alt = a.sg.sendMessage
   a.sg.disconnect      = function()
     aktuelle_anwahl_adresse = nil
     sg.engageGate()
@@ -235,19 +259,9 @@ if sg.engageGate then
   else
     energymultiplicator = 0.25
   end
-else
-  if Sicherung.RF then
-    energytype          = "RF"
-    energymultiplicator = 80
-  end
 end
 
 do
-  local function check_modem_senden()
-    if component.isAvailable("modem") and state ~= "Idle" and state ~= "Closing" then
-      return component.modem.broadcast(Sicherung.Port, sende_modem_jetzt)
-    end
-  end
   sg.sendMessage_alt = sg.sendMessage
   sg.sendMessage = function(...)
     sg.sendMessage_alt(...)
@@ -281,15 +295,13 @@ do
   Farben               = args[4] or {}
 end
 
-function f.aunis_dazu()
-  if AUNIS then
-    for name, funktion in pairs(a.sg) do
-      sg[name] = funktion
-    end
+function f.sg_proxy_funktion()
+  for name, funktion in pairs(a.sg) do
+    sg[name] = funktion
   end
 end
 
-f.aunis_dazu()
+f.sg_proxy_funktion()
 
 if sg.irisState() == "Offline" then
   Trennlinienhoehe              = 13
@@ -915,11 +927,11 @@ function f.aktualisiereStatus()
   f.reset()
   gpu.setResolution(70, 25)
   sg = component.getPrimary("stargate")
-  f.aunis_dazu()
+  f.sg_proxy_funktion()
   locAddr = f.getAddress(sg.localAddress())
   remAddr = f.getAddress(sg.remoteAddress())
   iris = f.getIrisState()
-  state, chevrons, direction = sg.stargateState()
+  state, chevrons, direction = sg.stargateStatus()
   f.Zielname()
   f.wurmlochRichtung()
   f.Iriskontrolle()
@@ -964,7 +976,7 @@ function f.autoclose()
     f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAn .. Sicherung.autoclosetime .. "s")
     if (activationtime - os.time()) / sectime > Sicherung.autoclosetime and state == "Connected" and einmalBeenden then
       einmalBeenden = false
-      state, chevrons, direction = sg.stargateState()
+      state, chevrons, direction = sg.stargateStatus()
       if direction == "Outgoing" then
         sg.disconnect()
       end
@@ -1033,12 +1045,10 @@ function f.zeigeSteuerung()
   Taste.Koordinaten.d_Y = zeile
   Taste.Koordinaten.d_X = xVerschiebung
   f.zeigeHier(Taste.Koordinaten.d_X, Taste.Koordinaten.d_Y, "  D " .. sprachen.abschalten)
-  if not AUNIS then
-    Taste.Steuerungrechts[zeile] = Taste.e
-    Taste.Koordinaten.e_Y = zeile
-    Taste.Koordinaten.e_X = xVerschiebung + 20
-    f.zeigeHier(Taste.Koordinaten.e_X, Taste.Koordinaten.e_Y, "E " .. sprachen.IDCeingabe) f.neueZeile(1)
-  end
+  Taste.Steuerungrechts[zeile] = Taste.e
+  Taste.Koordinaten.e_Y = zeile
+  Taste.Koordinaten.e_X = xVerschiebung + 20
+  f.zeigeHier(Taste.Koordinaten.e_X, Taste.Koordinaten.e_Y, "E " .. sprachen.IDCeingabe) f.neueZeile(1)
   if iris == "Offline" then
     Sicherung.control = "Off"
   else
@@ -1742,9 +1752,7 @@ function f.textanzeige(an)
   end
 end
 
-function o.sgChevronEngaged(...)
-  local e = {...}
-  chevron = e[3]
+function o.sgChevronEngaged(eventname, compadresse, chevron, symbol)
   local remAdr = sg.remoteAddress()
   
   if remAdr then
@@ -1767,7 +1775,7 @@ function o.sgChevronEngaged(...)
         break
       end
       os.sleep(0.1)
-      state, chevrons, direction = sg.stargateState()
+      state, chevrons, direction = sg.stargateStatus()
     end
   end
   
@@ -1827,10 +1835,7 @@ function o.sgMessageReceived(...)
   messageshow = true
 end
 
-function o.touch(...)
-  local e = {...}
-  local x = e[3]
-  local y = e[4]
+function o.touch(eventname, compadresse, x, y)
   if x <= 30 then
     if seite >= 0 then
       if y > 1 and y <= 21 then
@@ -1854,13 +1859,6 @@ function o.touch(...)
   end
 end
 
-function o.sgDialIn()
-  wurmloch = "in"
-  f.Logbuch_schreiben(remoteName , f.getAddress(sg.remoteAddress()), wurmloch)
-  event.timer(19, f.GDO_aufwecken, 1)
-  event.timer(25, f.GDO_aufwecken, 1)
-end
-
 function f.GDO_aufwecken()
   f.openModem()
   if component.isAvailable("modem") then
@@ -1868,14 +1866,35 @@ function f.GDO_aufwecken()
   end
 end
 
+function o.sgDialIn()
+  state = "Dialling"
+  wurmloch = "in"
+  direction = "Incoming"
+  a.state      = state
+  a.direction  = direction
+  f.Logbuch_schreiben(remoteName , f.getAddress(sg.remoteAddress()), wurmloch)
+  event.timer(19, f.GDO_aufwecken, 1)
+  event.timer(25, f.GDO_aufwecken, 1)
+end
+
 function o.sgDialOut()
   state = "Dialling"
   wurmloch = "out"
   direction = "Outgoing"
+  a.state      = state
+  a.direction  = direction
   f.GDO_aufwecken()
   event.timer(19, f.GDO_aufwecken, 1)
   event.timer(25, f.GDO_aufwecken, 1)
   event.timer(60, f.GDO_aufwecken, 1)
+end
+
+function o.sgStargateStateChange(eventname, compadresse, newstate, oldstate)
+  a.state = newstate
+end
+
+function o.sgIrisStateChange(eventname, compadresse, newstate, oldstate)
+  a.irisState = newstate
 end
 
 -----------
@@ -1909,7 +1928,7 @@ function f.aunis_idle()
   f.zeigeAnzeige()
 end
 
-function o.stargate_spin_start(eventname, address, caller, symbolCount, lock, symbolName)
+function o.stargate_spin_start(eventname, compadresse, caller, symbolCount, lock, symbolName)
   f.aunis(caller, symbolCount)
   if caller then
     o.sgDialOut()
@@ -1918,7 +1937,7 @@ function o.stargate_spin_start(eventname, address, caller, symbolCount, lock, sy
   end
 end
 
-function o.stargate_spin_chevron_engaged(eventname, address, caller, symbolCount, lock, symbolName)
+function o.stargate_spin_chevron_engaged(eventname, compadresse, caller, symbolCount, lock, symbolName)
   f.aunis(caller, symbolCount)
   if not aktuelle_anwahl_adresse then
     return sg.disconnect()
@@ -1926,7 +1945,7 @@ function o.stargate_spin_chevron_engaged(eventname, address, caller, symbolCount
   if lock then
     f.zeigeNachricht(string.format("Stargate %s!", sprachen.aktiviert))
     if sg.engageGate() then
-      state = "Connected"
+      state   = "Opening"
       a.state = state
     end
   else
@@ -1937,27 +1956,31 @@ function o.stargate_spin_chevron_engaged(eventname, address, caller, symbolCount
   --chevronAnzeige.zeig(state == "Opening" or state == "Connected", zielAdresse)
 end
 
-function o.stargate_dhd_chevron_engaged(eventname, address, caller, symbolCount, lock, symbolName)
+function o.stargate_dhd_chevron_engaged(eventname, compadresse, caller, symbolCount, lock, symbolName)
   f.aunis(caller, symbolCount)
 end
 
-function o.stargate_incoming_wormhole(eventname, address, caller, dialedAddressSize)
+function o.stargate_incoming_wormhole(eventname, compadresse, caller, dialedAddressSize)
   f.aunis(caller, dialedAddressSize)
 end
 
-function o.stargate_open(eventname, address, caller, isInitiating)
+function o.stargate_open(eventname, compadresse, caller, isInitiating)
   f.aunis(isInitiating)
+  state   = "Connected"
+  a.state = state
 end
 
-function o.stargate_close(eventname, address, caller)
+function o.stargate_close(eventname, compadresse, caller)
+  f.aunis_idle()
+  state   = "Closing"
+  a.state = state
+end
+
+function o.stargate_failed(eventname, compadresse, caller)
   f.aunis_idle()
 end
 
-function o.stargate_failed(eventname, address, caller)
-  f.aunis_idle()
-end
-
-function o.stargate_traveler(eventname, address, caller, inbound, player)
+function o.stargate_traveler(eventname, compadresse, caller, inbound, player)
   --f.aunis(caller)
 end
 -- AUNIS --
@@ -2250,9 +2273,9 @@ function f.main()
   elseif CC then
     shell.run("label set nexDHD")
   end
-  f.aunis_dazu()
+  f.sg_proxy_funktion()
   Updatetimer = event.timer(20000, f.checkUpdate, math.huge)
-  if sg.stargateState() == "Idle" and f.getIrisState() == "Closed" then
+  if sg.stargateStatus() == "Idle" and f.getIrisState() == "Closed" then
     f.irisOpen()
   end
   gpu.setResolution(70, 25)
