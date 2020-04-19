@@ -1944,7 +1944,10 @@ function o.stargate_spin_chevron_engaged(eventname, compadresse, caller, symbolC
   end
   if lock then
     f.zeigeNachricht(string.format("Stargate %s!", sprachen.aktiviert))
-    sg.engageGate()
+    if sg.engageGate() then
+      state   = "Opening"
+      a.state = state
+    end
   else
     f.zeigeNachricht(string.format("Chevron %s %s! <%s>", symbolCount, sprachen.aktiviert, symbolName))
     sg.engageSymbol(aktuelle_anwahl_adresse[symbolCount + 1])
