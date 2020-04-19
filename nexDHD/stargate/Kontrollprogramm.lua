@@ -191,7 +191,11 @@ end
 
 local function check_modem_senden()
   if component.isAvailable("modem") and state ~= "Idle" and state ~= "Closing" then
-    return component.modem.broadcast(Sicherung.Port, sende_modem_jetzt)
+    if type(sende_modem_jetzt) == "table" then
+      return component.modem.broadcast(Sicherung.Port, sende_modem_jetzt[1], sende_modem_jetzt[2], sende_modem_jetzt[3], sende_modem_jetzt[4], sende_modem_jetzt[5])
+    else
+      return component.modem.broadcast(Sicherung.Port, sende_modem_jetzt)
+    end
   end
 end
 
@@ -231,8 +235,7 @@ else
   a.sg.irisState       = function() return a.irisState end
   a.sg.energyAvailable = function() return sg.getEnergyStored() end
   a.sg.sendMessage = function(...)
-    local daten = {...}
-    sende_modem_jetzt = daten[1]
+    sende_modem_jetzt = {...}
     if not check_modem_senden() then
       event.timer(5, check_modem_senden, 1)
     end
@@ -866,7 +869,7 @@ function f.sendeAdressliste()
 end
 
 function f.newAddress(idc, neueAdresse, neuerName, weiter)
-  if AddNewAddress == true and string.len(neueAdresse) >= 7 and string.len(neueAdresse) <= 11 and sg.energyToDial(neueAdresse) then
+  if AddNewAddress == true and string.len(neueAdresse) >= 7 and sg.energyToDial(neueAdresse) then
     local i = 1
     for k in pairs(adressen) do
       i = k + 1
@@ -1782,14 +1785,6 @@ function o.sgChevronEngaged(eventname, compadresse, chevron, symbol)
   chevronAnzeige.zeig(state == "Opening" or state == "Connected", zielAdresse)
 end
 
-function o.modem_message(...)
-  local e = {...}
-  if e[6] and type(e[6]) == "string" and e[6] ~= "" and e[6] ~= "Adressliste" and e[6] ~= "nexDHD" and e[6] ~= alte_modem_message then
-    f.check_IDC(e[6])
-  end
-  alte_modem_message = e[6]
-end
-
 function f.check_IDC(code)
   if v.IDC_Anzahl < 10 then
     v.IDC_Anzahl = v.IDC_Anzahl + 1
@@ -1809,8 +1804,18 @@ function f.openModem()
       modem.setStrength(Sicherung.Reichweite)
     end
     modem.setWakeMessage("nexDHD")
+    modem.open(Sicherung.Port)
     modem.open(Sicherung.Port + 1)
   end
+end
+
+function o.modem_message(eventname, compadresse_lokal, compadresse_quelle, ...)
+  --local e = {...}
+  --if e[3] and type(e[3]) == "string" and e[3] ~= "" and e[3] ~= "Adressliste" and e[3] ~= "nexDHD" and e[3] ~= alte_modem_message then
+  --  f.check_IDC(e[3])
+  --end
+  --alte_modem_message = e[3]
+  o.sgMessageReceived(...)
 end
 
 function o.sgMessageReceived(...)
@@ -1818,8 +1823,7 @@ function o.sgMessageReceived(...)
   if direction == "Outgoing" then
     codeaccepted = e[3]
   elseif direction == "Incoming" and wurmloch == "in" then
-    if e[3] == "Adressliste" then
-    else
+    if e[3] ~= "Adressliste" then
       f.check_IDC(tostring(e[3]))
     end
   end
@@ -1867,22 +1871,22 @@ function f.GDO_aufwecken()
 end
 
 function o.sgDialIn()
-  state = "Dialling"
-  wurmloch = "in"
-  direction = "Incoming"
-  a.state      = state
-  a.direction  = direction
+  state       = "Dialling"
+  wurmloch    = "in"
+  direction   = "Incoming"
+  a.state     = state
+  a.direction = direction
   f.Logbuch_schreiben(remoteName , f.getAddress(sg.remoteAddress()), wurmloch)
   event.timer(19, f.GDO_aufwecken, 1)
   event.timer(25, f.GDO_aufwecken, 1)
 end
 
 function o.sgDialOut()
-  state = "Dialling"
-  wurmloch = "out"
-  direction = "Outgoing"
-  a.state      = state
-  a.direction  = direction
+  state       = "Dialling"
+  wurmloch    = "out"
+  direction   = "Outgoing"
+  a.state     = state
+  a.direction = direction
   f.GDO_aufwecken()
   event.timer(19, f.GDO_aufwecken, 1)
   event.timer(25, f.GDO_aufwecken, 1)
@@ -1927,6 +1931,12 @@ function f.aunis_idle()
   a.chevrons  = chevrons
   f.zeigeAnzeige()
 end
+o.stargate_idle = f.aunis_idle
+
+function o.wormhole_stabilized()
+  state   = "Connected"
+  a.state = state
+end
 
 function o.stargate_spin_start(eventname, compadresse, caller, symbolCount, lock, symbolName)
   f.aunis(caller, symbolCount)
@@ -1966,14 +1976,20 @@ end
 
 function o.stargate_open(eventname, compadresse, caller, isInitiating)
   f.aunis(isInitiating)
-  state   = "Connected"
+  state   = "Opening"
   a.state = state
+  event.timer(5, function()
+    event.push("wormhole_stabilized")
+  end, 1)
 end
 
 function o.stargate_close(eventname, compadresse, caller)
   f.aunis_idle()
   state   = "Closing"
   a.state = state
+  event.timer(6, function()
+    event.push("stargate_idle")
+  end, 1)
 end
 
 function o.stargate_failed(eventname, compadresse, caller)
@@ -2011,11 +2027,13 @@ end
 
 function f.angekommeneAdressen(eingabe)
   local AddNewAddress = false
+  local sonstLeer = false
   for a, b in pairs(eingabe) do
     local neuHinzufuegen = false
     for c, d in pairs(adressen) do
       if d[2] == "XXXX-XXX-XX" then
         adressen[c] = nil
+        sonstLeer = true
       elseif b[2] ~= d[2] then
         neuHinzufuegen = true
       elseif b[2] == d[2] and d[1] == ">>>" .. d[2] .. "<<<" and d[1] ~= b[1] then
@@ -2030,12 +2048,17 @@ function f.angekommeneAdressen(eingabe)
         break
       end
     end
-    if neuHinzufuegen == true then
+    if neuHinzufuegen then
       AddNewAddress = true
       f.newAddress(nil, b[2], b[1], true)
     end
   end
-  if AddNewAddress == true then
+  if sonstLeer then
+    for a, b in pairs(eingabe) do
+      f.newAddress(nil, b[2], b[1])
+    end
+  end
+  if AddNewAddress then
     f.schreibeAdressen()
     f.AdressenSpeichern()
     f.zeigeMenu()
@@ -2138,6 +2161,7 @@ function o.component_added(eventname, id, comp)
     r = component.getPrimary("redstone")
   elseif comp == "modem" then
     if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
+      component.modem.open(Sicherung.Port)
       component.modem.open(Sicherung.Port + 1)
       f.openModem()
     end

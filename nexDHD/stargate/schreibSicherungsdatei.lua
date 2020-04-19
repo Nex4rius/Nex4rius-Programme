@@ -18,7 +18,7 @@ if type(ALT) ~= "table" then ALT = {} end
 if standard then
   standard = standard()
 else
-  standard = {autoclosetime = 60, IDC = "", RF = false, Sprache = "", side = "unten", autoUpdate = true, StargateName = "", Port = 645, Reichweite = 40, debug = false, control = "On", installieren = false, Theme = "normal", kein_senden = false}
+  standard = {autoclosetime = 60, IDC = "", RF = false, Sprache = "", side = "unten", autoUpdate = true, StargateName = "", Port = 645, Reichweite = 30, debug = false, control = "On", installieren = false, Theme = "normal", kein_senden = false}
 end
 
 local function reset()
