@@ -191,7 +191,11 @@ end
 
 local function check_modem_senden()
   if component.isAvailable("modem") and state ~= "Idle" and state ~= "Closing" then
-    return component.modem.broadcast(Sicherung.Port, sende_modem_jetzt)
+    if type(sende_modem_jetzt) == "table" then
+      return component.modem.broadcast(Sicherung.Port, sende_modem_jetzt[1], sende_modem_jetzt[2], sende_modem_jetzt[3], sende_modem_jetzt[4], sende_modem_jetzt[5])
+    else
+      return component.modem.broadcast(Sicherung.Port, sende_modem_jetzt)
+    end
   end
 end
 
