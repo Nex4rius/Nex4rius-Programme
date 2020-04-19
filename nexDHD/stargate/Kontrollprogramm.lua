@@ -1971,14 +1971,20 @@ end
 
 function o.stargate_open(eventname, compadresse, caller, isInitiating)
   f.aunis(isInitiating)
-  event.timer(4, f.aunis_connected, 1)
+  event.timer(5, function()
+    f.aunis_connected()
+    event.push("test")
+  end, 1)
 end
 
 function o.stargate_close(eventname, compadresse, caller)
   f.aunis_idle()
   state   = "Closing"
   a.state = state
-  event.timer(5, f.aunis_idle, 1)
+  event.timer(6, function()
+    f.aunis_idle()
+    event.push("test")
+  end, 1)
 end
 
 function o.stargate_failed(eventname, compadresse, caller)
