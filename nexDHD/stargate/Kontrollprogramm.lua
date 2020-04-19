@@ -189,6 +189,12 @@ local function split(pString, pPattern)
   return Table
 end
 
+local function check_modem_senden()
+  if component.isAvailable("modem") and state ~= "Idle" and state ~= "Closing" then
+    return component.modem.broadcast(Sicherung.Port, sende_modem_jetzt)
+  end
+end
+
 a.sg = {}
 if not sg.engageGate then
   a.state, a.chevrons, a.direction = sg.stargateState()
@@ -256,11 +262,6 @@ else
 end
 
 do
-  local function check_modem_senden()
-    if component.isAvailable("modem") and state ~= "Idle" and state ~= "Closing" then
-      return component.modem.broadcast(Sicherung.Port, sende_modem_jetzt)
-    end
-  end
   sg.sendMessage_alt = sg.sendMessage
   sg.sendMessage = function(...)
     sg.sendMessage_alt(...)
