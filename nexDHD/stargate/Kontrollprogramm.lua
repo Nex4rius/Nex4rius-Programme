@@ -1927,11 +1927,13 @@ function f.aunis_idle()
   a.chevrons  = chevrons
   f.zeigeAnzeige()
 end
+o.stargate_idle = f.aunis_idle
 
 function f.aunis_connected()
   state   = "Connected"
   a.state = state
 end
+o.wormhole_stabilized = f.aunis_connected
 
 function o.stargate_spin_start(eventname, compadresse, caller, symbolCount, lock, symbolName)
   f.aunis(caller, symbolCount)
@@ -1972,8 +1974,7 @@ end
 function o.stargate_open(eventname, compadresse, caller, isInitiating)
   f.aunis(isInitiating)
   event.timer(5, function()
-    f.aunis_connected()
-    event.push("test")
+    event.push("wormhole_stabilized")
   end, 1)
 end
 
@@ -1982,8 +1983,7 @@ function o.stargate_close(eventname, compadresse, caller)
   state   = "Closing"
   a.state = state
   event.timer(6, function()
-    f.aunis_idle()
-    event.push("test")
+    event.push("stargate_idle")
   end, 1)
 end
 
