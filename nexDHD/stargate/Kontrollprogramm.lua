@@ -231,8 +231,7 @@ else
   a.sg.irisState       = function() return a.irisState end
   a.sg.energyAvailable = function() return sg.getEnergyStored() end
   a.sg.sendMessage = function(...)
-    local daten = {...}
-    sende_modem_jetzt = daten[1]
+    sende_modem_jetzt = {...}
     if not check_modem_senden() then
       event.timer(5, check_modem_senden, 1)
     end
@@ -1782,14 +1781,6 @@ function o.sgChevronEngaged(eventname, compadresse, chevron, symbol)
   chevronAnzeige.zeig(state == "Opening" or state == "Connected", zielAdresse)
 end
 
-function o.modem_message(...)
-  local e = {...}
-  if e[6] and type(e[6]) == "string" and e[6] ~= "" and e[6] ~= "Adressliste" and e[6] ~= "nexDHD" and e[6] ~= alte_modem_message then
-    f.check_IDC(e[6])
-  end
-  alte_modem_message = e[6]
-end
-
 function f.check_IDC(code)
   if v.IDC_Anzahl < 10 then
     v.IDC_Anzahl = v.IDC_Anzahl + 1
@@ -1813,13 +1804,21 @@ function f.openModem()
   end
 end
 
+function o.modem_message(eventname, compadresse_lokal, compadresse_quelle, ...)
+  --local e = {...}
+  --if e[3] and type(e[3]) == "string" and e[3] ~= "" and e[3] ~= "Adressliste" and e[3] ~= "nexDHD" and e[3] ~= alte_modem_message then
+  --  f.check_IDC(e[3])
+  --end
+  --alte_modem_message = e[3]
+  o.sgMessageReceived(...)
+end
+
 function o.sgMessageReceived(...)
   local e = {...}
   if direction == "Outgoing" then
     codeaccepted = e[3]
   elseif direction == "Incoming" and wurmloch == "in" then
-    if e[3] == "Adressliste" then
-    else
+    if e[3] ~= "Adressliste" then
       f.check_IDC(tostring(e[3]))
     end
   end
