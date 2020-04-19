@@ -2027,26 +2027,24 @@ end
 
 function f.angekommeneAdressen(eingabe)
   local AddNewAddress = false
-  local sonstLeer = true
+  local sonstLeer = false
   for a, b in pairs(eingabe) do
     local neuHinzufuegen = false
     for c, d in pairs(adressen) do
       if d[2] == "XXXX-XXX-XX" then
         adressen[c] = nil
+        sonstLeer = true
       elseif b[2] ~= d[2] then
         neuHinzufuegen = true
-        sonstLeer = false
       elseif b[2] == d[2] and d[1] == ">>>" .. d[2] .. "<<<" and d[1] ~= b[1] then
         if f.newAddress(nil, b[2], b[1], true) then
           adressen[c] = nil
         end
         AddNewAddress = true
         neuHinzufuegen = false
-        sonstLeer = false
         break
       else
         neuHinzufuegen = false
-        sonstLeer = false
         break
       end
     end
@@ -2057,7 +2055,7 @@ function f.angekommeneAdressen(eingabe)
   end
   if sonstLeer then
     for a, b in pairs(eingabe) do
-      f.newAddress(nil, b[2], b[1], true)
+      f.newAddress(nil, b[2], b[1])
     end
   end
   if AddNewAddress then
