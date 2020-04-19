@@ -1804,7 +1804,7 @@ function f.openModem()
       modem.setStrength(Sicherung.Reichweite)
     end
     modem.setWakeMessage("nexDHD")
-    modem.open(Sicherung.Port + 1)
+    modem.open(Sicherung.Port)
   end
 end
 
@@ -2158,7 +2158,7 @@ function o.component_added(eventname, id, comp)
     r = component.getPrimary("redstone")
   elseif comp == "modem" then
     if component.isAvailable("modem") and type(Sicherung.Port) == "number" then
-      component.modem.open(Sicherung.Port + 1)
+      component.modem.open(Sicherung.Port)
       f.openModem()
     end
   end
