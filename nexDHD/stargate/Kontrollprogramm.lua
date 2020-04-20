@@ -201,10 +201,14 @@ end
 
 a.sg = {}
 if not sg.engageGate then
+  a.status_update = computer.uptime()
   a.state, a.chevrons, a.direction = sg.stargateState()
   a.irisState = sg.irisState()
   a.sg.stargateStatus = function()
-    a.state, a.chevrons, a.direction = sg.stargateState()
+    if computer.uptime() > a.status_update then
+      a.status_update = computer.uptime() + 1
+      a.state, a.chevrons, a.direction = sg.stargateState()
+    end
     return a.state, a.chevrons, a.direction
   end
   if Sicherung.RF then
