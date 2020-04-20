@@ -203,8 +203,8 @@ a.sg = {}
 if not sg.engageGate then -- SGCraft
   local update_warte_sekunden = 5
   a.update = {}
-  a.update.status = math.huge
-  a.update.iris = math.huge
+  a.update.status = 0
+  a.update.iris = 0
   a.sg.irisState = function()
     if computer.uptime() > a.update.iris then
       a.update.iris = computer.uptime() + update_warte_sekunden
