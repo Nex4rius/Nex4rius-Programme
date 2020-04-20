@@ -1770,6 +1770,8 @@ end
 
 function o.sgChevronEngaged(eventname, compadresse, chevron, symbol)
   local remAdr = sg.remoteAddress()
+  chevrons = chevron
+  a.chevrons = chevrons
   
   if remAdr then
     if chevron <= 4 then
