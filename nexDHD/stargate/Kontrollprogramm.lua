@@ -200,7 +200,7 @@ local function check_modem_senden()
 end
 
 a.sg = {}
-if not sg.engageGate then
+if not sg.engageGate then -- SGCraft
   a.status_update = computer.uptime()
   a.state, a.chevrons, a.direction = sg.stargateState()
   a.irisState = sg.irisState()
@@ -215,7 +215,7 @@ if not sg.engageGate then
     energytype          = "RF"
     energymultiplicator = 80
   end
-else
+else -- AUNIS
   AUNIS = true
   a.state         = "Idle"
   a.chevrons      = 0
