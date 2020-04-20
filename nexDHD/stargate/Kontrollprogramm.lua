@@ -206,7 +206,7 @@ if not sg.engageGate then -- SGCraft
   a.irisState = sg.irisState()
   a.sg.stargateStatus = function()
     if computer.uptime() > a.status_update then
-      a.status_update = computer.uptime() + 1
+      a.status_update = computer.uptime() + 5
       a.state, a.chevrons, a.direction = sg.stargateState()
     end
     return a.state, a.chevrons, a.direction
