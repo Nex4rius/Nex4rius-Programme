@@ -201,26 +201,25 @@ end
 
 a.sg = {}
 if not sg.engageGate then -- SGCraft
-  local update_warte_sekunden = 5
   a.update = {}
   a.update.status = 0
   a.update.iris = 0
+  a.state, a.chevrons, a.direction = sg.stargateState()
+  a.irisState = sg.irisState()
   a.sg.irisState = function()
     if computer.uptime() > a.update.iris then
-      a.update.iris = computer.uptime() + update_warte_sekunden
+      a.update.iris = computer.uptime() + 5
       a.irisState = sg.irisState()
     end
     return a.irisState
   end
   a.sg.stargateStatus = function()
     if computer.uptime() > a.update.status then
-      a.update.status = computer.uptime() + update_warte_sekunden
+      a.update.status = computer.uptime() + 60
       a.state, a.chevrons, a.direction = sg.stargateState()
     end
     return a.state, a.chevrons, a.direction
   end
-  a.state, a.chevrons, a.direction = a.sg.stargateStatus()
-  a.irisState = a.sg.irisState()
   if Sicherung.RF then
     energytype          = "RF"
     energymultiplicator = 80
