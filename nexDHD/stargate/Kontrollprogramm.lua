@@ -206,7 +206,7 @@ if not sg.engageGate then -- SGCraft
   a.update.iris = 0
   a.state, a.chevrons, a.direction = sg.stargateState()
   a.irisState = sg.irisState()
-  a.sg.irisState = function()
+  a.sg.irisStatus = function()
     if computer.uptime() > a.update.iris then
       a.update.iris = computer.uptime() + 5
       a.irisState = sg.irisState()
@@ -245,7 +245,7 @@ else -- AUNIS
   a.sg.stargateStatus  = function() return a.state, a.chevrons, a.direction end
   a.sg.localAddress    = function() return a.localAddress end
   a.sg.remoteAddress   = function() return a.remoteAddress end
-  a.sg.irisState       = function() return a.irisState end
+  a.sg.irisStatus      = function() return a.irisState end
   a.sg.energyAvailable = function() return sg.getEnergyStored() end
   a.sg.sendMessage = function(...)
     sende_modem_jetzt = {...}
@@ -319,7 +319,7 @@ end
 
 f.sg_proxy_funktion()
 
-if sg.irisState() == "Offline" then
+if sg.irisStatus() == "Offline" then
   Trennlinienhoehe              = 13
 end
 
@@ -709,7 +709,7 @@ function f.zeigeFarben()
 end
 
 function f.getIrisState()
-  ok, result = pcall(sg.irisState)
+  ok, result = pcall(sg.irisStatus)
   return result
 end
 
