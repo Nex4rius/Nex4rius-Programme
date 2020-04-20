@@ -770,7 +770,7 @@ function f.Iriskontrolle()
     f.zeigeMenu()
   end
   if wurmloch == "in" and state == "Dialling" and iriscontrol == "on" and Sicherung.control == "On" then
-    if iris == "Offline" then else
+    if iris ~= "Offline" then
       f.irisClose()
       f.RedstoneAenderung(Farben.red, 255)
       redstoneIncoming = false
@@ -1879,6 +1879,7 @@ function o.sgDialIn()
   f.Logbuch_schreiben(remoteName , f.getAddress(sg.remoteAddress()), wurmloch)
   event.timer(19, f.GDO_aufwecken, 1)
   event.timer(25, f.GDO_aufwecken, 1)
+  f.Iriskontrolle()
 end
 
 function o.sgDialOut()
