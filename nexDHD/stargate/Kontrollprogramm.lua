@@ -201,19 +201,20 @@ end
 
 a.sg = {}
 if not sg.engageGate then -- SGCraft
+  local update_warte_sekunden = 5
   a.update = {}
   a.update.status = Math.huge
   a.update.iris = Math.huge
   a.sg.irisState = function()
     if computer.uptime() > a.update.iris then
-      a.update.iris = computer.uptime() + 5
+      a.update.iris = computer.uptime() + update_warte_sekunden
       a.irisState = sg.irisState()
     end
     return a.irisState
   end
   a.sg.stargateStatus = function()
     if computer.uptime() > a.update.status then
-      a.update.status = computer.uptime() + 5
+      a.update.status = computer.uptime() + update_warte_sekunden
       a.state, a.chevrons, a.direction = sg.stargateState()
     end
     return a.state, a.chevrons, a.direction
