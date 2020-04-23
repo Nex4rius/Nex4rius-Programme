@@ -48,7 +48,7 @@ function f.loop()
     term.setCursor(6, 3)
     local code = io.read()
     text = "IDC senden: '" .. code .. "'" .. string.rep(" ", 50)
-    modem.broadcast(port, code)
+    modem.broadcast(port + 1, code)
   end
 end
 
@@ -82,7 +82,6 @@ function f.main()
   end
   loadfile("/bin/label.lua")("-a", require("computer").getBootAddress(), "nexDHD GDO " .. port)
   modem.open(port)
-  port = port + 1
   gpu.setResolution(50, 5)
   pcall(f.loop)
   gpu.setResolution(gpu.maxResolution())
