@@ -969,7 +969,7 @@ function a.iris(geschlossen)
     end, 1)
 end
 
-function a.zeig(aktiv, adresse)
+function a.zeig(aktiv, adresse, symbolName)
     event.cancel(a.timer.zeig)
     a.timer.zeig = event.timer(0.05, function()
         if adresse == "ende" then
