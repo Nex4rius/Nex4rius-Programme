@@ -191,10 +191,14 @@ end
 
 local function check_modem_senden()
   if component.isAvailable("modem") and state ~= "Idle" and state ~= "Closing" then
+    local port = Sicherung.Port
+    if direction == "Outgoing" then
+      port = port + 1
+    end
     if type(sende_modem_jetzt) == "table" then
-      return component.modem.broadcast(Sicherung.Port, sende_modem_jetzt[1], sende_modem_jetzt[2], sende_modem_jetzt[3], sende_modem_jetzt[4], sende_modem_jetzt[5])
+      return component.modem.broadcast(port, sende_modem_jetzt[1], sende_modem_jetzt[2], sende_modem_jetzt[3], sende_modem_jetzt[4], sende_modem_jetzt[5])
     else
-      return component.modem.broadcast(Sicherung.Port, sende_modem_jetzt)
+      return component.modem.broadcast(port, sende_modem_jetzt)
     end
   end
 end
@@ -1818,12 +1822,17 @@ function f.openModem()
 end
 
 function o.modem_message(eventname, compadresse_lokal, compadresse_quelle, ...)
-  --local e = {...}
-  --if e[3] and type(e[3]) == "string" and e[3] ~= "" and e[3] ~= "Adressliste" and e[3] ~= "nexDHD" and e[3] ~= alte_modem_message then
-  --  f.check_IDC(e[3])
-  --end
-  --alte_modem_message = e[3]
-  o.sgMessageReceived(...)
+  local e = {...}
+
+  if e[1] == Sicherung.Port + 1 then
+    if direction == "Outgoing" then
+      return
+    end
+  end
+
+  if e[3] ~= "nexDHD" then
+    o.sgMessageReceived(...)
+  end
 end
 
 function o.sgMessageReceived(...)
@@ -1848,26 +1857,24 @@ function o.sgMessageReceived(...)
 end
 
 function o.touch(eventname, compadresse, x, y)
+  local steuerung
   if x <= 30 then
     if seite >= 0 then
       if y > 1 and y <= 21 then
         Taste.Zahl(math.floor(((y - 1) / 2) + 0.5))
       end
     elseif seite == -1 then
-      if Taste.links[y] then
-        Taste.links[y](y)
-      end
+      steuerung = Taste.links[y]
     end
   elseif x >= 35 and y >= Taste.Koordinaten.Steuerungsanfang_Y and y <= Taste.Koordinaten.Steuerungsende_Y then
     if x <= 52 then
-      if Taste.Steuerunglinks[y] then
-        Taste.Steuerunglinks[y]()
-      end
+      steuerung = Taste.Steuerunglinks[y]
     else
-      if Taste.Steuerungrechts[y] then
-        Taste.Steuerungrechts[y]()
-      end
+      steuerung = Taste.Steuerungrechts[y]
     end
+  end
+  if steuerung then
+    steuerung(y)
   end
 end
 
@@ -1885,8 +1892,10 @@ function o.sgDialIn()
   a.state     = state
   a.direction = direction
   f.Logbuch_schreiben(remoteName , f.getAddress(sg.remoteAddress()), wurmloch)
-  event.timer(19, f.GDO_aufwecken, 1)
-  event.timer(25, f.GDO_aufwecken, 1)
+  if not AUNIS then
+    event.timer(19, f.GDO_aufwecken, 1)
+    event.timer(25, f.GDO_aufwecken, 1)
+  end
   f.Iriskontrolle()
 end
 
@@ -1896,10 +1905,12 @@ function o.sgDialOut()
   direction   = "Outgoing"
   a.state     = state
   a.direction = direction
-  f.GDO_aufwecken()
-  event.timer(19, f.GDO_aufwecken, 1)
-  event.timer(25, f.GDO_aufwecken, 1)
-  event.timer(60, f.GDO_aufwecken, 1)
+  if not AUNIS then
+    f.GDO_aufwecken()
+    event.timer(19, f.GDO_aufwecken, 1)
+    event.timer(25, f.GDO_aufwecken, 1)
+    event.timer(60, f.GDO_aufwecken, 1)
+  end
 end
 
 function o.sgStargateStateChange(eventname, compadresse, newstate, oldstate)
@@ -1930,7 +1941,7 @@ function f.aunis(caller, symbolCount)
   f.zeigeAnzeige()
 end
 
-function f.aunis_idle()
+function o.stargate_idle()
   state       = "Idle"
   wurmloch    = "in"
   direction   = ""
@@ -1940,11 +1951,11 @@ function f.aunis_idle()
   a.chevrons  = chevrons
   f.zeigeAnzeige()
 end
-o.stargate_idle = f.aunis_idle
 
-function o.wormhole_stabilized()
+function o.stargate_wormhole_stabilized()
   state   = "Connected"
   a.state = state
+  f.GDO_aufwecken()
 end
 
 function o.stargate_spin_start(eventname, compadresse, caller, symbolCount, lock, symbolName)
@@ -1972,7 +1983,7 @@ function o.stargate_spin_chevron_engaged(eventname, compadresse, caller, symbolC
     sg.engageSymbol(aktuelle_anwahl_adresse[symbolCount + 1])
   end
   
-  --chevronAnzeige.zeig(state == "Opening" or state == "Connected", zielAdresse)
+  chevronAnzeige.zeig(state == "Opening" or state == "Connected", symbolName, symbolCount)
 end
 
 function o.stargate_dhd_chevron_engaged(eventname, compadresse, caller, symbolCount, lock, symbolName)
@@ -1987,22 +1998,23 @@ function o.stargate_open(eventname, compadresse, caller, isInitiating)
   f.aunis(isInitiating)
   state   = "Opening"
   a.state = state
-  event.timer(5, function()
-    event.push("wormhole_stabilized")
+  event.timer(10, function()
+    event.push("stargate_wormhole_stabilized")
   end, 1)
+  chevronAnzeige.zeig(true, "Point of Origin")
 end
 
 function o.stargate_close(eventname, compadresse, caller)
-  f.aunis_idle()
   state   = "Closing"
   a.state = state
   event.timer(6, function()
     event.push("stargate_idle")
   end, 1)
+  chevronAnzeige.zeig(false, "ende")
 end
 
 function o.stargate_failed(eventname, compadresse, caller)
-  f.aunis_idle()
+  event.push("stargate_idle")
 end
 
 function o.stargate_traveler(eventname, compadresse, caller, inbound, player)
@@ -2178,8 +2190,8 @@ function o.component_added(eventname, id, comp)
 end
 
 function f.eventlisten(befehl)
-  for k, v in pairs(o) do
-    event[befehl](k, v)
+  for name, funtkion in pairs(o) do
+    event[befehl](name, funktion)
   end
 end
 
@@ -2341,6 +2353,7 @@ f.checken(f.main)
 local update = f.update
 f = nil
 o = nil
+a = nil
 
 if v.update == "ja" or v.update == "beta" then
   print(sprachen.aktualisierenJetzt)
