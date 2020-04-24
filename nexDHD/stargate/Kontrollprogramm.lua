@@ -2190,7 +2190,7 @@ function o.component_added(eventname, id, comp)
 end
 
 function f.eventlisten(befehl)
-  for name, funtkion in pairs(o) do
+  for name, funktion in pairs(o) do
     event[befehl](name, funktion)
   end
 end
