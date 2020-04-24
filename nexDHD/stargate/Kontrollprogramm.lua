@@ -1460,7 +1460,7 @@ function Taste.e()
       event.cancel(timerID)
       f.zeigeNachricht(sprachen.IDCgesendet)
     else
-      f.zeigeNachricht(sprachen.keineVerbindung .. " -> " .. tostring(state))
+      f.zeigeNachricht(sprachen.keineVerbindung .. " -> " .. tostring(state) .. " | " .. tostring(direction))
     end
   end
 end
