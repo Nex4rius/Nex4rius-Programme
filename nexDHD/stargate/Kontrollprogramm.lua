@@ -669,7 +669,7 @@ function f.AdressenSpeichern()
   local k = 0
   local LokaleAdresse = f.getAddress(sg.localAddress())
   for i, na in pairs(adressen) do
-    if na[2] == LokaleAdresse or na[1] == LokaleAdresse then
+    if na[2] == LokaleAdresse or na[1] == LokaleAdresse or na[2] == "SGCRAFT#" .. LokaleAdresse or na[2] == "AUNIS#" .. LokaleAdresse then
       k = -1
       sendeAdressen[i] = {}
       sendeAdressen[i][1] = na[1]
