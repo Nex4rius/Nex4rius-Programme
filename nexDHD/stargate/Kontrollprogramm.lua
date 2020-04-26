@@ -252,7 +252,7 @@ else -- AUNIS
   a.remoteAddress = "unbekannt"
 
   a.sg.anwahlenergie = function(adresse)
-    if not string.find(adresse, "SGCRAFT#") and type(adresse) == "string" and string.len(adresse) > 10 and adresse ~= "XXXX-XXX-XX" then
+    if not string.find(string.upper(adresse), "SGCRAFT#") and type(adresse) == "string" and string.len(adresse) > 10 and adresse ~= "XXXX-XXX-XX" then
       return 0
     else
       return false
