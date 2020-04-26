@@ -1998,9 +1998,6 @@ function o.stargate_open(eventname, compadresse, caller, isInitiating)
   f.aunis(isInitiating)
   state   = "Opening"
   a.state = state
-  event.timer(10, function()
-    event.push("stargate_wormhole_stabilized")
-  end, 1)
   chevronAnzeige.zeig(true, "Point of Origin")
 end
 
