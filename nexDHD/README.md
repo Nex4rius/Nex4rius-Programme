@@ -67,7 +67,7 @@ SGCraft-1.13.3-mc1.7.10<br /><br />
 
 MC 1.10.2<br />
 OpenComputers-MC1.12.2-1.7.5.192<br />
-SGCraft-2.0.3
+SGCraft-2.0.3<br />
 aunis-1.12.2-1.9.6-beta
 
 ___
@@ -140,7 +140,7 @@ SGCraft-1.13.3-mc1.7.10<br /><br />
 
 MC 1.10.2<br />
 OpenComputers-MC1.12.2-1.7.5.192<br />
-SGCraft-2.0.3
+SGCraft-2.0.3<br />
 aunis-1.12.2-1.9.6-beta
 
 ___
@@ -212,5 +212,5 @@ SGCraft-1.13.3-mc1.7.10<br /><br />
 
 MC 1.10.2<br />
 OpenComputers-MC1.12.2-1.7.5.192<br />
-SGCraft-2.0.3
+SGCraft-2.0.3<br />
 aunis-1.12.2-1.9.6-beta
