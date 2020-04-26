@@ -210,13 +210,35 @@ if not sg.engageGate then -- SGCraft
   a.update.iris = 0
   a.state, a.chevrons, a.direction = sg.stargateState()
   a.irisState = sg.irisState()
+
   a.sg.stargateStatus = function()
     if computer.uptime() > a.update.status then
       a.update.status = computer.uptime() + 60
       a.state, a.chevrons, a.direction = sg.stargateState()
     end
+
     return a.state, a.chevrons, a.direction
   end
+
+  a.sg.adressauswahl = function(adresse)
+    adresse = string.upper(adresse)
+    local check = split(adresse, "SGCRAFT#")
+
+    if #check > 0 then
+      return check[#check]
+    end
+
+    return adresse
+  end
+
+  a.sg.anwahlenergie = function(adresse)
+    return sg.energyToDial(sg.adressauswahl(adresse))
+  end
+
+  a.sg.anwahl = function(adresse)
+    return sg.dial(sg.adressauswahl(adresse))
+  end
+
   if Sicherung.RF then
     energytype          = "RF"
     energymultiplicator = 80
@@ -227,45 +249,72 @@ else -- AUNIS
   a.chevrons      = 0
   a.direction     = ""
   a.irisState     = "Offline"
-  a.localAddress  = Sicherung.StargateName
   a.remoteAddress = "unbekannt"
-  a.sg.energyToDial = function(adresse)
-    if type(adresse) == "string" and string.len(adresse) > 10 and adresse ~= "XXXX-XXX-XX" then
+
+  a.sg.anwahlenergie = function(adresse)
+    if not string.find(adresse, "SGCRAFT#") and type(adresse) == "string" and string.len(adresse) > 10 and adresse ~= "XXXX-XXX-XX" then
       return 0
     else
       return false
     end
   end
+
   a.sg.openIris        = function() return false end
   a.sg.closeIris       = function() return false end
   a.sg.stargateState   = function() return a.state, a.chevrons, a.direction end
   a.sg.stargateStatus  = function() return a.state, a.chevrons, a.direction end
-  a.sg.localAddress    = function() return a.localAddress end
+  a.sg.localAddress    = function()
+    return string.format("MILKYWAY=%s-POINT OF ORIGIN:PEGASUS=%s-POINT OF ORIGIN:UNIVERSE=%s-POINT OF ORIGIN", sg.stargateAddress["MILKYWAY"], sg.stargateAddress["PEGASUS"], sg.stargateAddress["UNIVERSE"])
+  end
   a.sg.remoteAddress   = function() return a.remoteAddress end
   a.sg.irisState       = function() return a.irisState end
   a.sg.energyAvailable = function() return sg.getEnergyStored() end
+
   a.sg.sendMessage = function(...)
     sende_modem_jetzt = {...}
     if not check_modem_senden() then
       event.timer(5, check_modem_senden, 1)
     end
   end
+
   a.sg.sendMessage_alt = a.sg.sendMessage
   a.sg.disconnect      = function()
     aktuelle_anwahl_adresse = nil
     sg.engageGate()
     return sg.disengageGate()
   end
-  a.sg.dial = function(adresse)
-    aktuelle_anwahl_adresse = split(adresse, "-")
+
+  a.sg.adressauswahl = function(adresse)
+    adresse = string.upper(adresse)
+    local typ = string.format("%s=", sg.getGateType())
+    local check = split(adresse, "AUNIS#")
+  
+    if #check > 0 then
+      adresse = check[#check]
+    end
+  
+    for _, typen in pairs(split(adresse, ":")) do
+      if string.find(typen, typ) then
+        return split(typen, typ)[1]
+      end
+    end
+  
+    return adresse
+  end
+
+  a.sg.anwahl = function(adresse)
+    aktuelle_anwahl_adresse = split(sg.adressauswahl(adresse), "-")
+
     for i in pairs(aktuelle_anwahl_adresse) do
       local check = tonumber(aktuelle_anwahl_adresse)
       if check then
         aktuelle_anwahl_adresse[i] = check
       end
     end
+
     return sg.engageSymbol(aktuelle_anwahl_adresse[1])
   end
+
   if Sicherung.RF then
     energytype          = "RF"
     energymultiplicator = 1
@@ -628,7 +677,7 @@ function f.AdressenSpeichern()
       v.lokaleAdresse = true
       Sicherung.StargateName = na[1]
     else
-      local anwahlEnergie = sg.energyToDial(na[2])
+      local anwahlEnergie = sg.anwahlenergie(na[2])
       if not anwahlEnergie then
         anwahlEnergie = sprachen.fehlerName
       else
@@ -880,7 +929,7 @@ function f.sendeAdressliste()
 end
 
 function f.newAddress(idc, neueAdresse, neuerName, weiter)
-  if AddNewAddress == true and string.len(neueAdresse) >= 7 and sg.energyToDial(neueAdresse) then
+  if AddNewAddress == true and string.len(neueAdresse) >= 7 and sg.anwahlenergie(neueAdresse) then
     local i = 1
     for k in pairs(adressen) do
       i = k + 1
@@ -1352,7 +1401,7 @@ function f.dial(name, adresse)
   end
   state = "Dialling"
   wurmloch = "out"
-  local ok, ergebnis = sg.dial(adresse)
+  local ok, ergebnis = sg.anwahl(adresse)
   if ok == nil then
     if not AUNIS then
       if string.sub(ergebnis, 0, 20) == "Stargate at address " then
@@ -1483,7 +1532,7 @@ function Taste.a()
         return string.sub(eingabe, 1, string.len(eingabe) - 1)
       end
       local adresse = string.upper(eingeben(sprachen.Eingeben_Adresse))
-      if sg.energyToDial(adresse) then
+      if sg.anwahlenergie(adresse) then
         local name = eingeben(sprachen.Eingeben_Name .. adresse)
         if name == "" then
           name = ">>>" .. adresse .. "<<<"
@@ -1737,7 +1786,7 @@ function Taste.Zahl(c)
     wurmloch = "out"
     if na then
       f.dial(na[1], na[2])
-      if string.sub(na[4], 1, 1) == "<" and sg.energyToDial(na[2]) then
+      if string.sub(na[4], 1, 1) == "<" and sg.anwahlenergie(na[2]) then
         f.AdressenSpeichern()
       end
       if na[3] == "-" then
@@ -1981,7 +2030,11 @@ function o.stargate_spin_chevron_engaged(eventname, compadresse, caller, symbolC
     end
   else
     f.zeigeNachricht(string.format("Chevron %s %s! <%s>", symbolCount, sprachen.aktiviert, symbolName))
-    sg.engageSymbol(aktuelle_anwahl_adresse[symbolCount + 1])
+    if not aktuelle_anwahl_adresse[symbolCount + 1] then
+      sg.engageSymbol("Point of Origin")
+    else
+      sg.engageSymbol(aktuelle_anwahl_adresse[symbolCount + 1])
+    end
   end
   
   chevronAnzeige.zeig(state == "Opening" or state == "Connected", symbolName, symbolCount)
@@ -2196,10 +2249,15 @@ end
 function f.telemetrie()
   if Sicherung.cloud and component.isAvailable("internet") then
     local internet = require("internet")
+    if AUNIS then
+      local eigeneAdresse = string.format("AUNIS#%s", sg.localAddress())
+    else
+      local eigeneAdresse = string.format("SGCRAFT#%s", f.getAddress(sg.localAddress()))
+    end
     local daten = {
         typ = "nexDHD",
         version = version,
-        selbst = f.getAddress(sg.localAddress()),
+        selbst = eigeneAdresse,
         extra = serialization.serialize(sendeAdressen)
     }
     f.zeigeNachricht(sprachen.cloud_arbeit)
