@@ -1,5 +1,5 @@
 <a href="#english">english</a>/<a href="#deutsch">deutsch</a>/<a href="#russian">russian</a><a name="deutsch">
-<h1>nexDHD - Stargate-Programm für SG-Craft und OpenComputers</h1></a>
+<h1>nexDHD - Stargate-Programm für SG-Craft / AUNIS und OpenComputers</h1></a>
 
 <img src="https://i.imgur.com/XtCzDAs.png">
 <img src="https://i.imgur.com/jWwlBNI.png" width="700px">
@@ -66,12 +66,13 @@ OpenComputers-MC1.7.10-1.6.2.12-universal<br />
 SGCraft-1.13.3-mc1.7.10<br /><br />
 
 MC 1.10.2<br />
-OpenComputers-MC1.10.2-1.6.2.7<br />
-SGCraft-1.13.2-mc1.10.2
+OpenComputers-MC1.12.2-1.7.5.192<br />
+SGCraft-2.0.3
+aunis-1.12.2-1.9.6-beta
 
 ___
 <a href="#english">english</a>/<a href="#deutsch">deutsch</a>/<a href="#russian">russian</a><a name="english">
-<h1>nexDHD - Stargate-Program for SG-Craft and OpenComputers</h1></a>
+<h1>nexDHD - Stargate-Program for SG-Craft / AUNIS and OpenComputers</h1></a>
 
 <img src="https://i.imgur.com/E5JAcS5.png">
 <img src="https://i.imgur.com/jWwlBNI.png" width="700px">
@@ -138,12 +139,13 @@ OpenComputers-MC1.7.10-1.6.2.12-universal<br />
 SGCraft-1.13.3-mc1.7.10<br /><br />
 
 MC 1.10.2<br />
-OpenComputers-MC1.10.2-1.6.2.7<br />
-SGCraft-1.13.2-mc1.10.2
+OpenComputers-MC1.12.2-1.7.5.192<br />
+SGCraft-2.0.3
+aunis-1.12.2-1.9.6-beta
 
 ___
 <a href="#english">english</a>/<a href="#deutsch">deutsch</a>/<a href="#russian">russian</a><a name="russian">
-<h1>nexDHD - Stargate-Program для SG-Craft и OpenComputers</h1></a>
+<h1>nexDHD - Stargate-Program для SG-Craft / AUNIS и OpenComputers</h1></a>
 
 <img src="https://i.imgur.com/XtCzDAs.png">
 <img src="https://i.imgur.com/jWwlBNI.png" width="700px">
@@ -209,5 +211,6 @@ OpenComputers-MC1.7.10-1.6.2.12-universal<br />
 SGCraft-1.13.3-mc1.7.10<br /><br />
 
 MC 1.10.2<br />
-OpenComputers-MC1.10.2-1.6.2.7<br />
-SGCraft-1.13.2-mc1.10.2
+OpenComputers-MC1.12.2-1.7.5.192<br />
+SGCraft-2.0.3
+aunis-1.12.2-1.9.6-beta
