@@ -495,8 +495,9 @@ function f.AdressenLesen()
     letzterAdressCheck = os.time() / sectime
     f.AdressenSpeichern()
   end
-  for i = 1, #gespeicherteAdressen do
-    local na = gespeicherteAdressen[i]
+  local i = 0
+  for _, na in pairs(gespeicherteAdressen) do
+    i = i + 1
     if i >= 1 + seite * 10 and i <= 10 + seite * 10 then
       local AdressAnzeige = i - seite * 10
       if AdressAnzeige == 10 then
