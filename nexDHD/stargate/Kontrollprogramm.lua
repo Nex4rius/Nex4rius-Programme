@@ -264,7 +264,7 @@ else -- AUNIS
   a.sg.stargateState   = function() return a.state, a.chevrons, a.direction end
   a.sg.stargateStatus  = function() return a.state, a.chevrons, a.direction end
   a.sg.localAddress    = function()
-    return string.format("MILKYWAY=%s-POINT OF ORIGIN:PEGASUS=%s-POINT OF ORIGIN:UNIVERSE=%s-POINT OF ORIGIN", sg.stargateAddress["MILKYWAY"], sg.stargateAddress["PEGASUS"], sg.stargateAddress["UNIVERSE"])
+    return string.format("MILKYWAY=%s:PEGASUS=%s:UNIVERSE=%s", table.concat(sg.stargateAddress["MILKYWAY"], "-"), table.concat(sg.stargateAddress["PEGASUS"], "-"), table.concat(sg.stargateAddress["UNIVERSE"], "-"))
   end
   a.sg.remoteAddress   = function() return a.remoteAddress end
   a.sg.irisState       = function() return a.irisState end
