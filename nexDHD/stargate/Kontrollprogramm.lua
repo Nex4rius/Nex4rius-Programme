@@ -261,7 +261,6 @@ else -- AUNIS
 
   a.sg.openIris        = function() return false end
   a.sg.closeIris       = function() return false end
-  a.sg.stargateState   = function() return a.state, a.chevrons, a.direction end
   a.sg.stargateStatus  = function() return a.state, a.chevrons, a.direction end
   a.sg.localAddress    = function()
     return string.format("MILKYWAY=%s:PEGASUS=%s:UNIVERSE=%s", table.concat(sg.stargateAddress["MILKYWAY"], "-"), table.concat(sg.stargateAddress["PEGASUS"], "-"), table.concat(sg.stargateAddress["UNIVERSE"], "-"))
