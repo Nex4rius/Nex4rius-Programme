@@ -2019,9 +2019,11 @@ end
 
 function o.stargate_spin_chevron_engaged(eventname, compadresse, caller, symbolCount, lock, symbolName)
   f.aunis(caller, symbolCount)
+
   if not aktuelle_anwahl_adresse then
     return sg.disconnect()
   end
+
   if lock then
     f.zeigeNachricht(string.format("Stargate %s!", sprachen.aktiviert))
     if sg.engageGate() then
@@ -2030,11 +2032,17 @@ function o.stargate_spin_chevron_engaged(eventname, compadresse, caller, symbolC
     end
   else
     f.zeigeNachricht(string.format("Chevron %s %s! <%s>", symbolCount, sprachen.aktiviert, symbolName))
-    if not aktuelle_anwahl_adresse[symbolCount + 1] then
-      sg.engageSymbol("Point of Origin")
-    else
-      sg.engageSymbol(aktuelle_anwahl_adresse[symbolCount + 1])
+    local symbol = aktuelle_anwahl_adresse[symbolCount + 1]
+
+    if not symbol then
+      symbol = "Point of Origin"
     end
+
+    if symbol == "Point of Origin" and sg.getGateType() == "UNIVERSE" then
+      symbol = "Glyph 17"
+    end
+
+    sg.engageSymbol(symbol)
   end
   
   chevronAnzeige.zeig(state == "Opening" or state == "Connected", symbolName, symbolCount)
