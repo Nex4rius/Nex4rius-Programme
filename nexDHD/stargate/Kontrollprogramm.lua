@@ -261,7 +261,6 @@ else -- AUNIS
 
   a.sg.openIris        = function() return false end
   a.sg.closeIris       = function() return false end
-  a.sg.stargateState   = function() return a.state, a.chevrons, a.direction end
   a.sg.stargateStatus  = function() return a.state, a.chevrons, a.direction end
   a.sg.localAddress    = function()
     return string.format("MILKYWAY=%s:PEGASUS=%s:UNIVERSE=%s", table.concat(sg.stargateAddress["MILKYWAY"], "-"), table.concat(sg.stargateAddress["PEGASUS"], "-"), table.concat(sg.stargateAddress["UNIVERSE"], "-"))
@@ -669,7 +668,7 @@ function f.AdressenSpeichern()
   local k = 0
   local LokaleAdresse = f.getAddress(sg.localAddress())
   for i, na in pairs(adressen) do
-    if na[2] == LokaleAdresse or na[1] == LokaleAdresse then
+    if na[2] == LokaleAdresse or na[1] == LokaleAdresse or na[2] == "SGCRAFT#" .. LokaleAdresse or na[2] == "AUNIS#" .. LokaleAdresse then
       k = -1
       sendeAdressen[i] = {}
       sendeAdressen[i][1] = na[1]
@@ -2019,9 +2018,11 @@ end
 
 function o.stargate_spin_chevron_engaged(eventname, compadresse, caller, symbolCount, lock, symbolName)
   f.aunis(caller, symbolCount)
+
   if not aktuelle_anwahl_adresse then
     return sg.disconnect()
   end
+
   if lock then
     f.zeigeNachricht(string.format("Stargate %s!", sprachen.aktiviert))
     if sg.engageGate() then
@@ -2030,11 +2031,17 @@ function o.stargate_spin_chevron_engaged(eventname, compadresse, caller, symbolC
     end
   else
     f.zeigeNachricht(string.format("Chevron %s %s! <%s>", symbolCount, sprachen.aktiviert, symbolName))
-    if not aktuelle_anwahl_adresse[symbolCount + 1] then
-      sg.engageSymbol("Point of Origin")
-    else
-      sg.engageSymbol(aktuelle_anwahl_adresse[symbolCount + 1])
+    local symbol = aktuelle_anwahl_adresse[symbolCount + 1]
+
+    if not symbol then
+      symbol = "Point of Origin"
     end
+
+    if symbol == "Point of Origin" and sg.getGateType() == "UNIVERSE" then
+      symbol = "Glyph 17"
+    end
+
+    sg.engageSymbol(symbol)
   end
   
   chevronAnzeige.zeig(state == "Opening" or state == "Connected", symbolName, symbolCount)
