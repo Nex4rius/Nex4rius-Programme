@@ -162,7 +162,7 @@ v.IDC_Anzahl                    = 0
 v.reset_uptime                  = computer.uptime()
 v.reset_time                    = os.time()
 
-local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, sectime, letzteNachrichtZeit, alte_modem_message
+local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, letzteNachrichtZeit, alte_modem_message
 local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben, aktuelle_anwahl_adresse
 
 local chevronAnzeige = {}
@@ -344,11 +344,8 @@ do
     ID = d:read()
     d:close()
   end
-  sectime              = os.time()
-  os.sleep(1)
-  sectime              = sectime - os.time()
-  letzteNachrichtZeit  = os.time()
-  letzterAdressCheck   = os.time() / sectime
+  letzteNachrichtZeit  = computer.uptime()
+  letzterAdressCheck   = computer.uptime()
   local args           = {...}
   f.update             = args[1]
   f.checkServerVersion = args[2]
@@ -539,8 +536,8 @@ end
 function f.AdressenLesen()
   local y = 0
   y = f.schreiben(y, sprachen.Adressseite .. seite + 1)
-  if (not gespeicherteAdressen) or (os.time() / sectime - letzterAdressCheck > 21600) then
-    letzterAdressCheck = os.time() / sectime
+  if (not gespeicherteAdressen) or (computer.uptime() - letzterAdressCheck > 21600) then
+    letzterAdressCheck = computer.uptime()
     f.AdressenSpeichern()
   end
   local i = 0
@@ -1021,7 +1018,7 @@ function f.aktualisiereStatus()
   end
   energy = sg.energyAvailable() * energymultiplicator
   zeile = 1
-  if (letzteNachrichtZeit - os.time()) / sectime > 45 then
+  if letzteNachrichtZeit - computer.uptime() > 45 then
     if letzteNachricht ~= "" then
       f.zeigeNachricht("")
     end
@@ -1036,7 +1033,7 @@ function f.autoclose()
       Sicherung.autoclosetime = 60
     end
     f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAn .. Sicherung.autoclosetime .. "s")
-    if (activationtime - os.time()) / sectime > Sicherung.autoclosetime and state == "Connected" and einmalBeenden then
+    if activationtime - computer.uptime() > Sicherung.autoclosetime and state == "Connected" and einmalBeenden then
       einmalBeenden = false
       state, chevrons, direction = sg.stargateStatus()
       if direction == "Outgoing" then
@@ -1081,14 +1078,11 @@ function f.zeigeEnergie(eingabe)
 end
 
 function f.activetime()
-  f.zeigeFehler(state)
   if state == "Connected" then
-    f.zeigeFehler(activationtime)
     if activationtime == 0 then
-      activationtime = os.time()
+      activationtime = computer.uptime()
     end
-    time = (activationtime - os.time()) / sectime
-    f.zeigeFehler(time)
+    time = activationtime - computer.uptime()
     if time > 0 then
       f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit1 .. f.ErsetzePunktMitKomma(string.format("%.1f", time)) .. "s")
     end
