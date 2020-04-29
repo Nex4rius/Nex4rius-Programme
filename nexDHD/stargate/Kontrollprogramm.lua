@@ -1081,11 +1081,14 @@ function f.zeigeEnergie(eingabe)
 end
 
 function f.activetime()
+  f.zeigeFehler(state)
   if state == "Connected" then
+    f.zeigeFehler(activationtime)
     if activationtime == 0 then
       activationtime = os.time()
     end
     time = (activationtime - os.time()) / sectime
+    f.zeigeFehler(time)
     if time > 0 then
       f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit1 .. f.ErsetzePunktMitKomma(string.format("%.1f", time)) .. "s")
     end
