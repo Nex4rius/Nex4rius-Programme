@@ -1378,7 +1378,7 @@ function f.schreibFehlerLog(...)
       d:write(require("computer").getBootAddress() .. " - " .. f.getAddress(sg.localAddress()) .. '\n\n')
     end
     if type(...) == "string" then
-      d:write(...)
+      d:write(tostring(...))
     elseif type(...) == "table" then
       d:write(serialization.serialize(...))
     end
