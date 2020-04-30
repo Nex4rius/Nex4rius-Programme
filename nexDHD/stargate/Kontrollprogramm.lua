@@ -1033,7 +1033,7 @@ function f.autoclose()
       Sicherung.autoclosetime = 60
     end
     f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.autoSchliessungAn .. Sicherung.autoclosetime .. "s")
-    if activationtime - computer.uptime() > Sicherung.autoclosetime and state == "Connected" and einmalBeenden then
+    if computer.uptime() - activationtime > Sicherung.autoclosetime and state == "Connected" and einmalBeenden then
       einmalBeenden = false
       state, chevrons, direction = sg.stargateStatus()
       if direction == "Outgoing" then
@@ -1082,7 +1082,7 @@ function f.activetime()
     if activationtime == 0 then
       activationtime = computer.uptime()
     end
-    time = activationtime - computer.uptime()
+    time = computer.uptime() - activationtime
     if time > 0 then
       f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.zeit1 .. f.ErsetzePunktMitKomma(string.format("%.1f", time)) .. "s")
     end
