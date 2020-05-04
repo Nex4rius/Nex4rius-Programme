@@ -1988,13 +1988,14 @@ function f.aunis(caller, symbolCount)
 end
 
 function o.stargate_idle()
-  state       = "Idle"
-  wurmloch    = "in"
-  direction   = ""
-  chevrons    = 0
-  a.state     = state
-  a.direction = direction
-  a.chevrons  = chevrons
+  state           = "Idle"
+  wurmloch        = "in"
+  direction       = ""
+  chevrons        = 0
+  a.remoteAddress = ""
+  a.state         = state
+  a.direction     = direction
+  a.chevrons      = chevrons
   f.zeigeAnzeige()
 end
 
