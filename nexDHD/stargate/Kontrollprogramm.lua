@@ -252,10 +252,6 @@ else -- AUNIS
   a.remoteAddress = "unbekannt"
 
   a.sg.anwahlenergie = function(adresse)
-    if not sg.getEnergyRequiredToDial then -- vor AUNIS 1.9.6
-      return 0
-    end
-    
     local ok, ergebnis = pcall(sg.getEnergyRequiredToDial, split(sg.adressauswahl(adresse), "-"))
     if ok and ergebnis and type(ergebnis) == "table" then
       return ergebnis.open, ergebnis.keepAlive
