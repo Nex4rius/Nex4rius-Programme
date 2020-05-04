@@ -1393,6 +1393,9 @@ function f.dial(name, adresse)
   if state == "Idle" then
     remoteName = name
     f.zeigeNachricht(sprachen.waehlen .. "<" .. string.sub(remoteName, 1, xVerschiebung + 12) .. "> <" .. tostring(adresse) .. ">")
+  else
+    f.zeigeNachricht(sprachen.stargate_beschaeftigt)
+    return
   end
   state = "Dialling"
   wurmloch = "out"
