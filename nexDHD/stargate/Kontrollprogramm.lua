@@ -236,6 +236,7 @@ if not sg.engageGate then -- SGCraft
   end
 
   a.sg.anwahl = function(adresse)
+    a.remoteAddress = adresse
     return sg.dial(sg.adressauswahl(adresse))
   end
 
