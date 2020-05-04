@@ -219,6 +219,16 @@ vinculum                     = {0xFFFFFF,  0x2d2d2d,  0xFFFFFF,  0x4b4b4b},
 vitium                       = {0xFFFFFF,  0x660080,  0xFFFFFF,  0x664980},
 vitreus                      = {0x000000,  0x66B6C0,  0x000000,  0x6692C0},
 volatus                      = {0x000000,  0xCCDBFF,  0x000000,  0xCCFFFF},
+-- TC Additions
+fluctus                      = {0x000000,  0xA5A5A5,  0xFFFFFF,  0x727272},
+sonus                        = {0x000000,  0xFFAA00,  0xFFFFFF,  0xCC7700},
+exitium                      = {0xFFFFFF,  0x777777,  0xFFFFFF,  0x444444},
+caeles                       = {0xFFFFFF,  0xC936FF,  0xFFFFFF,  0x630099},
+draco                        = {0x000000,  0x10B9F5,  0xFFFFFF,  0x00538F},
+infernum                     = {0xFFFFFF,  0xF62213,  0xFFFFFF,  0x900000},
+ventus                       = {0x000000,  0xFCFCCF,  0xFFFFFF,  0x969669},
+visum                        = {0x000000,  0x44CB34,  0xFFFFFF,  0x006500},
+imperium                     = {0x000000,  0xD6A255,  0xFFFFFF,  0xA36F22},
 ---------------------------------------------------------------------------
 -------- fallback -> pattern matching if exact match doesn't exist --------
 ---------------------------------------------------------------------------
