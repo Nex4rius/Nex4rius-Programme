@@ -236,7 +236,6 @@ if not sg.engageGate then -- SGCraft
   end
 
   a.sg.anwahl = function(adresse)
-    a.remoteAddress = adresse
     return sg.dial(sg.adressauswahl(adresse))
   end
 
@@ -302,6 +301,7 @@ else -- AUNIS
   end
 
   a.sg.anwahl = function(adresse)
+    a.remoteAddress = adresse
     aktuelle_anwahl_adresse = split(sg.adressauswahl(adresse), "-")
 
     for i in pairs(aktuelle_anwahl_adresse) do
