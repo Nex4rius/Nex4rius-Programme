@@ -706,13 +706,12 @@ function f.AdressenSpeichern()
       if not anwahlEnergie then
         anwahlEnergie = sprachen.fehlerName
       else
-        anwahlEnergie = anwahlEnergie * energymultiplicator
         sendeAdressen[i] = {}
         sendeAdressen[i][1] = na[1]
         sendeAdressen[i][2] = na[2]
-        anwahlEnergie = f.zu_SI(anwahlEnergie)
+        anwahlEnergie = f.zu_SI(anwahlEnergie * energymultiplicator)
         if AUNIS then
-          betriebsEnergie = f.zu_SI(betriebsEnergie)
+          betriebsEnergie = f.zu_SI(betriebsEnergie * energymultiplicator)
         end
       end
       gespeicherteAdressen[i + k] = {}
@@ -721,7 +720,7 @@ function f.AdressenSpeichern()
       gespeicherteAdressen[i + k][3] = na[3]
       gespeicherteAdressen[i + k][4] = anwahlEnergie
       if betriebsEnergie then
-        gespeicherteAdressen[i + k][5] = string.format("%s %s/t", betriebsEnergie, energytype)
+        gespeicherteAdressen[i + k][5] = string.format("%s%s/t", betriebsEnergie, energytype)
       end
     end
     f.zeigeNachricht(sprachen.verarbeiteAdressen .. "<" .. tostring(na[2]) .. "> <" .. tostring(na[1]) .. ">")
