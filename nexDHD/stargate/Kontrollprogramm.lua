@@ -583,7 +583,8 @@ function f.AdressenLesen()
       else
         local text = "   " .. na[4]
         if na[5] then
-          text = string.format("%s - %s", text, na[5])
+          local frei = string.rep(" ", 28 - unicode.len(text) - unicode.len(na[5]))
+          text = string.format("%s%s%s", text, frei, na[5])
         end
         y = f.schreiben(y, text)
       end
@@ -720,7 +721,7 @@ function f.AdressenSpeichern()
       gespeicherteAdressen[i + k][3] = na[3]
       gespeicherteAdressen[i + k][4] = anwahlEnergie
       if betriebsEnergie then
-        gespeicherteAdressen[i + k][5] = betriebsEnergie
+        gespeicherteAdressen[i + k][5] = string.format("%s %s/t", betriebsEnergie, energytype)
       end
     end
     f.zeigeNachricht(sprachen.verarbeiteAdressen .. "<" .. tostring(na[2]) .. "> <" .. tostring(na[1]) .. ">")
@@ -1770,12 +1771,14 @@ function Taste.Zahl(c)
     f.zeigeHier(1, y * 2, Nummer .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 0)
     if string.sub(na[4], 1, 1) == "<" then
       gpu.setForeground(Farben.FehlerFarbe)
-      f.zeigeHier(1, y * 2 + 1, "", 30)
-      f.zeigeHier(1, y * 2 + 1, "   " .. na[4], 0)
-    else
-      f.zeigeHier(1, y * 2 + 1, "", 30)
-      f.zeigeHier(1, y * 2 + 1, "   " .. na[4], 0)
     end
+    local text = "   " .. na[4]
+    if na[5] then
+      local frei = string.rep(" ", 28 - unicode.len(text) - unicode.len(na[5]))
+      text = string.format("%s%s%s", text, frei, na[5])
+    end
+    f.zeigeHier(1, y * 2 + 1, "", 30)
+    f.zeigeHier(1, y * 2 + 1, text, 0)
     iriscontrol = "off"
     wurmloch = "out"
     if na then
@@ -1783,8 +1786,7 @@ function Taste.Zahl(c)
       if string.sub(na[4], 1, 1) == "<" and sg.anwahlenergie(na[2]) then
         f.AdressenSpeichern()
       end
-      if na[3] == "-" then
-      else
+      if na[3] ~= "-" then
         outcode = na[3]
       end
     end
