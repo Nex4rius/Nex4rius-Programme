@@ -2251,9 +2251,9 @@ end
 function f.telemetrie()
   if Sicherung.cloud and component.isAvailable("internet") then
     local internet = require("internet")
-    local eigeneAdresse = string.format("SGCRAFT#%s", f.getAddress(sg.localAddress()))
+    local eigeneAdresse = f.getAddress(sg.localAddress())
     if AUNIS then
-      eigeneAdresse = string.format("AUNIS#%s", sg.localAddress())
+      eigeneAdresse = sg.localAddress()
     end
     local daten = {
         typ = "nexDHD",
