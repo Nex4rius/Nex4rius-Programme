@@ -160,7 +160,7 @@ Taste.Steuerungrechts           = {}
 
 v.IDC_Anzahl                    = 0
 v.reset_uptime                  = computer.uptime()
-v.reset_time                    = os.time()
+v.reset_time                    = computer.uptime()
 
 local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, letzteNachrichtZeit, alte_modem_message
 local iris, letzteNachricht, locAddr, mess, mess_old, remAddr, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben, aktuelle_anwahl_adresse
@@ -475,10 +475,10 @@ end
 
 function f.reset()
   local uptime = computer.uptime() - v.reset_uptime
-  local time =  (os.time() - v.reset_time) / 100
+  local time =  (computer.uptime() - v.reset_time) / 100
   
   v.reset_uptime = computer.uptime()
-  v.reset_time = os.time()
+  v.reset_time = computer.uptime()
   
   if uptime - time > 6000 or time - uptime > 6000 then
     reset = "nochmal"
@@ -1326,7 +1326,7 @@ function f.zeigeNachricht(inhalt, oben)
     Nachrichtleer = false
   end
   letzteNachricht = inhalt
-  letzteNachrichtZeit = os.time()
+  letzteNachrichtZeit = computer.uptime()
   f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
   if VersionUpdate == true then
     f.zeigeHier(1, Bildschirmhoehe - 1, sprachen.aktualisierenGleich, Bildschirmbreite)
@@ -1379,7 +1379,7 @@ function f.schreibFehlerLog(...)
     elseif type(...) == "table" then
       d:write(serialization.serialize(...))
     end
-    d:write("\n" .. os.time() .. string.rep("-", 69 - string.len(os.time())) .. "\n")
+    d:write("\n" .. computer.uptime() .. string.rep("-", 69 - string.len(computer.uptime())) .. "\n")
     d:close()
     log = true
   end
