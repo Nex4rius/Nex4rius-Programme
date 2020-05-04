@@ -252,10 +252,9 @@ else -- AUNIS
   a.remoteAddress = "unbekannt"
 
   a.sg.anwahlenergie = function(adresse)
-    if not string.find(string.upper(adresse), "SGCRAFT#") and type(adresse) == "string" and string.len(adresse) > 10 and adresse ~= "XXXX-XXX-XX" then
-      return 0
-    else
-      return false
+    local ok, ergebnis = pcall(sg.getEnergyRequiredToDial, split(sg.adressauswahl(adresse), "-"))
+    if ok then
+      return ergebnis.open, ergebnis.keepAlive
     end
   end
 
@@ -752,8 +751,8 @@ function f.zeigeFarben()
 end
 
 function f.getIrisState()
-  ok, result = pcall(sg.irisState)
-  return result
+  local ok, ergebnis = pcall(sg.irisState)
+  return ergebnis
 end
 
 function f.irisClose()
@@ -2174,10 +2173,10 @@ function f.checkUpdate(...)
 end
 
 function f.checken(...)
-  ok, result = pcall(...)
+  local ok, ergebnis = pcall(...)
   if not ok then
     local a, b, c = ...
-    f.zeigeFehler(string.format("%s --- %s %s %s", result, a, b, c))
+    f.zeigeFehler(string.format("%s --- %s %s %s", ergebnis, a, b, c))
     reset = "nochmal"
     running = false
   end
