@@ -484,7 +484,7 @@ function f.reset()
 end
 
 function f.pull_event()
-  local Wartezeit = 1
+  local Wartezeit = 0.1
   if state == "Idle" then
     alte_modem_message = nil
     v.IDC_Anzahl = 0
