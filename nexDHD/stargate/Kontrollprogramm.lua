@@ -301,6 +301,7 @@ else -- AUNIS
   end
 
   a.sg.anwahl = function(adresse)
+    a.remoteAddress = adresse
     aktuelle_anwahl_adresse = split(sg.adressauswahl(adresse), "-")
 
     for i in pairs(aktuelle_anwahl_adresse) do
@@ -1392,6 +1393,9 @@ function f.dial(name, adresse)
   if state == "Idle" then
     remoteName = name
     f.zeigeNachricht(sprachen.waehlen .. "<" .. string.sub(remoteName, 1, xVerschiebung + 12) .. "> <" .. tostring(adresse) .. ">")
+  else
+    f.zeigeNachricht(sprachen.stargate_beschaeftigt)
+    return
   end
   state = "Dialling"
   wurmloch = "out"
@@ -1987,13 +1991,14 @@ function f.aunis(caller, symbolCount)
 end
 
 function o.stargate_idle()
-  state       = "Idle"
-  wurmloch    = "in"
-  direction   = ""
-  chevrons    = 0
-  a.state     = state
-  a.direction = direction
-  a.chevrons  = chevrons
+  state           = "Idle"
+  wurmloch        = "in"
+  direction       = ""
+  chevrons        = 0
+  a.remoteAddress = ""
+  a.state         = state
+  a.direction     = direction
+  a.chevrons      = chevrons
   f.zeigeAnzeige()
 end
 
