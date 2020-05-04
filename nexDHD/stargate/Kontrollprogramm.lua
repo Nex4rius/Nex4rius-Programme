@@ -160,7 +160,7 @@ Taste.Steuerungrechts           = {}
 
 v.IDC_Anzahl                    = 0
 v.reset_uptime                  = computer.uptime()
-v.reset_time                    = computer.uptime()
+v.reset_time                    = os.time()
 
 local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, letzteNachrichtZeit, alte_modem_message
 local iris, letzteNachricht, locAddr, mess, mess_old, remAddr, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben, aktuelle_anwahl_adresse
@@ -471,10 +471,10 @@ end
 
 function f.reset()
   local uptime = computer.uptime() - v.reset_uptime
-  local time =  (computer.uptime() - v.reset_time) / 100
+  local time =  (os.time() - v.reset_time) / 100
   
   v.reset_uptime = computer.uptime()
-  v.reset_time = computer.uptime()
+  v.reset_time = os.time()
   
   if uptime - time > 6000 or time - uptime > 6000 then
     reset = "nochmal"
