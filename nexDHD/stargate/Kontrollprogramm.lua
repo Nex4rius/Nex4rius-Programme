@@ -303,6 +303,19 @@ else -- AUNIS
   a.sg.anwahl = function(adresse)
     a.remoteAddress = adresse
     aktuelle_anwahl_adresse = split(sg.adressauswahl(adresse), "-")
+    
+    while true do
+      local adresscheck = aktuelle_anwahl_adresse
+      local weg = table.remove(adresscheck)
+      
+      local ok, ergebnis = pcall(sg.getEnergyRequiredToDial, adresscheck)
+      if ok and ergebnis and type(ergebnis) == "table" then
+        aktuelle_anwahl_adresse = adresscheck
+      else
+        table.insert(aktuelle_anwahl_adresse, weg)
+        break
+      end
+    end
 
     for i in pairs(aktuelle_anwahl_adresse) do
       local check = tonumber(aktuelle_anwahl_adresse)
