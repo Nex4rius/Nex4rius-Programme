@@ -168,6 +168,7 @@ local sprachen = {
   cloud                     = "up- and download of addresses into the cloud",
   cloud_arbeit              = "The addresses are being synced with the cloud.",
   cloud_fertig              = "syncing finished",
+  stargate_beschaeftigt     = "The stargate is already active",
 }
 
 sprachen.side               = string.format("%s, %s, %s, %s, %s %s %s", sprachen.unten, sprachen.oben, sprachen.hinten, sprachen.vorne, sprachen.rechts, sprachen.oder, sprachen.links)
