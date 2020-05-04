@@ -163,7 +163,7 @@ v.reset_uptime                  = computer.uptime()
 v.reset_time                    = os.time()
 
 local adressen, alte_eingabe, anwahlEnergie, ausgabe, chevron, direction, eingabe, energieMenge, ergebnis, gespeicherteAdressen, sensor, letzteNachrichtZeit, alte_modem_message
-local iris, letzteNachricht, locAddr, mess, mess_old, ok, remAddr, result, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben, aktuelle_anwahl_adresse
+local iris, letzteNachricht, locAddr, mess, mess_old, remAddr, RichtungName, sendeAdressen, sideNum, state, StatusName, version, letzterAdressCheck, c, e, d, k, r, Farben, aktuelle_anwahl_adresse
 
 local chevronAnzeige = {}
 chevronAnzeige.zeig = function() end
@@ -252,10 +252,9 @@ else -- AUNIS
   a.remoteAddress = "unbekannt"
 
   a.sg.anwahlenergie = function(adresse)
-    if not string.find(string.upper(adresse), "SGCRAFT#") and type(adresse) == "string" and string.len(adresse) > 10 and adresse ~= "XXXX-XXX-XX" then
-      return 0
-    else
-      return false
+    local ok, ergebnis = pcall(sg.getEnergyRequiredToDial, split(sg.adressauswahl(adresse), "-"))
+    if ok then
+      return ergebnis.open, ergebnis.keepAlive
     end
   end
 
@@ -444,6 +443,31 @@ function f.Farbe(hintergrund, vordergrund)
   end
 end
 
+function f.zu_SI(wert)
+    wert = tonumber(wert)
+    if     wert < 10000 then
+        wert = string.format("%.f" , wert) .. " "
+    elseif wert < 10000000 then
+        wert = string.format("%.1f", wert / 1000) .. " k "
+    elseif wert < 10000000000 then
+        wert = string.format("%.2f", wert / 1000000) .. " M "
+    elseif wert < 10000000000000 then
+        wert = string.format("%.3f", wert / 1000000000) .. " G "
+    elseif wert < 10000000000000000 then
+        wert = string.format("%.3f", wert / 1000000000000) .. " T "
+    elseif wert < 10000000000000000000 then
+        wert = string.format("%.3f", wert / 1000000000000000) .. " P "
+    elseif wert < 10000000000000000000000 then
+        wert = string.format("%.3f", wert / 1000000000000000000) .. " E "
+    elseif wert < 10000000000000000000000000 then
+        wert = string.format("%.3f", wert / 1000000000000000000000) .. " Z "
+    else
+        wert = sprachen.zuvielEnergie
+    end
+  
+    return f.ErsetzePunktMitKomma(wert)
+end
+
 function f.reset()
   local uptime = computer.uptime() - v.reset_uptime
   local time =  (os.time() - v.reset_time) / 100
@@ -557,7 +581,12 @@ function f.AdressenLesen()
         y = f.schreiben(y, "   " .. na[4], background, Farben.FehlerFarbe)
         f.Farbe(background, Farben.Adresstextfarbe)
       else
-        y = f.schreiben(y, "   " .. na[4])
+        local text = "   " .. na[4]
+        if na[5] then
+          local frei = string.rep(" ", 28 - unicode.len(text) - unicode.len(na[5]))
+          text = string.format("%s%s%s", text, frei, na[5])
+        end
+        y = f.schreiben(y, text)
       end
       f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
     end
@@ -673,39 +702,26 @@ function f.AdressenSpeichern()
       v.lokaleAdresse = true
       Sicherung.StargateName = na[1]
     else
-      local anwahlEnergie = sg.anwahlenergie(na[2])
+      local anwahlEnergie, betriebsEnergie = sg.anwahlenergie(na[2])
       if not anwahlEnergie then
         anwahlEnergie = sprachen.fehlerName
       else
-        anwahlEnergie = anwahlEnergie * energymultiplicator
         sendeAdressen[i] = {}
         sendeAdressen[i][1] = na[1]
         sendeAdressen[i][2] = na[2]
-        if     anwahlEnergie < 10000 then
-          anwahlEnergie = string.format("%.f" , anwahlEnergie)
-        elseif anwahlEnergie < 10000000 then
-          anwahlEnergie = string.format("%.1f", anwahlEnergie / 1000) .. " k"
-        elseif anwahlEnergie < 10000000000 then
-          anwahlEnergie = string.format("%.2f", anwahlEnergie / 1000000) .. " M"
-        elseif anwahlEnergie < 10000000000000 then
-          anwahlEnergie = string.format("%.3f", anwahlEnergie / 1000000000) .. " G"
-        elseif anwahlEnergie < 10000000000000000 then
-          anwahlEnergie = string.format("%.3f", anwahlEnergie / 1000000000000) .. " T"
-        elseif anwahlEnergie < 10000000000000000000 then
-          anwahlEnergie = string.format("%.3f", anwahlEnergie / 1000000000000000) .. " P"
-        elseif anwahlEnergie < 10000000000000000000000 then
-          anwahlEnergie = string.format("%.3f", anwahlEnergie / 1000000000000000000) .. " E"
-        elseif anwahlEnergie < 10000000000000000000000000 then
-          anwahlEnergie = string.format("%.3f", anwahlEnergie / 1000000000000000000000) .. " Z"
-        else
-          anwahlEnergie = sprachen.zuvielEnergie
+        anwahlEnergie = f.zu_SI(anwahlEnergie * energymultiplicator)
+        if AUNIS then
+          betriebsEnergie = f.zu_SI(betriebsEnergie * energymultiplicator)
         end
       end
       gespeicherteAdressen[i + k] = {}
       gespeicherteAdressen[i + k][1] = na[1]
       gespeicherteAdressen[i + k][2] = na[2]
       gespeicherteAdressen[i + k][3] = na[3]
-      gespeicherteAdressen[i + k][4] = f.ErsetzePunktMitKomma(anwahlEnergie)
+      gespeicherteAdressen[i + k][4] = anwahlEnergie
+      if betriebsEnergie then
+        gespeicherteAdressen[i + k][5] = string.format("%s%s/t", betriebsEnergie, energytype)
+      end
     end
     f.zeigeNachricht(sprachen.verarbeiteAdressen .. "<" .. tostring(na[2]) .. "> <" .. tostring(na[1]) .. ">")
     maxseiten = (i + k) / 10
@@ -752,8 +768,8 @@ function f.zeigeFarben()
 end
 
 function f.getIrisState()
-  ok, result = pcall(sg.irisState)
-  return result
+  local ok, ergebnis = pcall(sg.irisState)
+  return ergebnis
 end
 
 function f.irisClose()
@@ -1051,26 +1067,8 @@ function f.zeigeEnergie(eingabe)
     f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2, 0)
     f.SchreibInAndererFarben(xVerschiebung + unicode.len("  " .. sprachen.energie1 .. energytype .. sprachen.energie2), zeile, sprachen.keineEnergie, Farben.FehlerFarbe)
   else
-    if     energy < 10000 then
-      energieMenge = string.format("%.f",  energy)
-    elseif energy < 10000000 then
-      energieMenge = string.format("%.1f", energy / 1000) .. " k"
-    elseif energy < 10000000000 then
-      energieMenge = string.format("%.2f", energy / 1000000) .. " M"
-    elseif energy < 10000000000000 then
-      energieMenge = string.format("%.3f", energy / 1000000000) .. " G"
-    elseif energy < 10000000000000000 then
-      energieMenge = string.format("%.3f", energy / 1000000000000) .. " T"
-    elseif energy < 10000000000000000000 then
-      energieMenge = string.format("%.3f", energy / 1000000000000000) .. " P"
-    elseif energy < 10000000000000000000000 then
-      energieMenge = string.format("%.3f", energy / 1000000000000000000) .. " E"
-    elseif energy < 10000000000000000000000000 then
-      energieMenge = string.format("%.3f", energy / 1000000000000000000000) .. " Z"
-    else
-      energieMenge = sprachen.zuvielEnergie
-    end
-    f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2 .. f.ErsetzePunktMitKomma(energieMenge))
+    energieMenge = f.zu_SI(energy)
+    f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2 .. energieMenge)
   end
   if state ~= "Connected" and v.Anzeigetimer then
     event.cancel(v.Anzeigetimer)
@@ -1772,12 +1770,14 @@ function Taste.Zahl(c)
     f.zeigeHier(1, y * 2, Nummer .. " " .. string.sub(na[1], 1, xVerschiebung - 7), 0)
     if string.sub(na[4], 1, 1) == "<" then
       gpu.setForeground(Farben.FehlerFarbe)
-      f.zeigeHier(1, y * 2 + 1, "", 30)
-      f.zeigeHier(1, y * 2 + 1, "   " .. na[4], 0)
-    else
-      f.zeigeHier(1, y * 2 + 1, "", 30)
-      f.zeigeHier(1, y * 2 + 1, "   " .. na[4], 0)
     end
+    local text = "   " .. na[4]
+    if na[5] then
+      local frei = string.rep(" ", 28 - unicode.len(text) - unicode.len(na[5]))
+      text = string.format("%s%s%s", text, frei, na[5])
+    end
+    f.zeigeHier(1, y * 2 + 1, "", 30)
+    f.zeigeHier(1, y * 2 + 1, text, 0)
     iriscontrol = "off"
     wurmloch = "out"
     if na then
@@ -1785,8 +1785,7 @@ function Taste.Zahl(c)
       if string.sub(na[4], 1, 1) == "<" and sg.anwahlenergie(na[2]) then
         f.AdressenSpeichern()
       end
-      if na[3] == "-" then
-      else
+      if na[3] ~= "-" then
         outcode = na[3]
       end
     end
@@ -2174,10 +2173,10 @@ function f.checkUpdate(...)
 end
 
 function f.checken(...)
-  ok, result = pcall(...)
+  local ok, ergebnis = pcall(...)
   if not ok then
     local a, b, c = ...
-    f.zeigeFehler(string.format("%s --- %s %s %s", result, a, b, c))
+    f.zeigeFehler(string.format("%s --- %s %s %s", ergebnis, a, b, c))
     reset = "nochmal"
     running = false
   end
@@ -2253,10 +2252,7 @@ end
 function f.telemetrie()
   if Sicherung.cloud and component.isAvailable("internet") then
     local internet = require("internet")
-    local eigeneAdresse = string.format("SGCRAFT#%s", f.getAddress(sg.localAddress()))
-    if AUNIS then
-      eigeneAdresse = string.format("AUNIS#%s", sg.localAddress())
-    end
+    local eigeneAdresse = f.getAddress(sg.localAddress())
     local daten = {
         typ = "nexDHD",
         version = version,
