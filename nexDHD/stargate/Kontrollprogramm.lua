@@ -443,6 +443,31 @@ function f.Farbe(hintergrund, vordergrund)
   end
 end
 
+function f.zu_SI(wert)
+    wert = tonumber(wert)
+    if     wert < 10000 then
+        wert = string.format("%.f" , wert) .. " "
+    elseif wert < 10000000 then
+        wert = string.format("%.1f", wert / 1000) .. " k "
+    elseif wert < 10000000000 then
+        wert = string.format("%.2f", wert / 1000000) .. " M "
+    elseif wert < 10000000000000 then
+        wert = string.format("%.3f", wert / 1000000000) .. " G "
+    elseif wert < 10000000000000000 then
+        wert = string.format("%.3f", wert / 1000000000000) .. " T "
+    elseif wert < 10000000000000000000 then
+        wert = string.format("%.3f", wert / 1000000000000000) .. " P "
+    elseif wert < 10000000000000000000000 then
+        wert = string.format("%.3f", wert / 1000000000000000000) .. " E "
+    elseif wert < 10000000000000000000000000 then
+        wert = string.format("%.3f", wert / 1000000000000000000000) .. " Z "
+    else
+        wert = sprachen.zuvielEnergie
+    end
+  
+    return f.ErsetzePunktMitKomma(wert)
+end
+
 function f.reset()
   local uptime = computer.uptime() - v.reset_uptime
   local time =  (os.time() - v.reset_time) / 100
@@ -556,7 +581,11 @@ function f.AdressenLesen()
         y = f.schreiben(y, "   " .. na[4], background, Farben.FehlerFarbe)
         f.Farbe(background, Farben.Adresstextfarbe)
       else
-        y = f.schreiben(y, "   " .. na[4])
+        local text = "   " .. na[4]
+        if na[5] then
+          text = string.format("%s - %s", text, na[5])
+        end
+        y = f.schreiben(y, text)
       end
       f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
     end
@@ -672,7 +701,7 @@ function f.AdressenSpeichern()
       v.lokaleAdresse = true
       Sicherung.StargateName = na[1]
     else
-      local anwahlEnergie = sg.anwahlenergie(na[2])
+      local anwahlEnergie, betriebsEnergie = sg.anwahlenergie(na[2])
       if not anwahlEnergie then
         anwahlEnergie = sprachen.fehlerName
       else
@@ -680,31 +709,19 @@ function f.AdressenSpeichern()
         sendeAdressen[i] = {}
         sendeAdressen[i][1] = na[1]
         sendeAdressen[i][2] = na[2]
-        if     anwahlEnergie < 10000 then
-          anwahlEnergie = string.format("%.f" , anwahlEnergie)
-        elseif anwahlEnergie < 10000000 then
-          anwahlEnergie = string.format("%.1f", anwahlEnergie / 1000) .. " k"
-        elseif anwahlEnergie < 10000000000 then
-          anwahlEnergie = string.format("%.2f", anwahlEnergie / 1000000) .. " M"
-        elseif anwahlEnergie < 10000000000000 then
-          anwahlEnergie = string.format("%.3f", anwahlEnergie / 1000000000) .. " G"
-        elseif anwahlEnergie < 10000000000000000 then
-          anwahlEnergie = string.format("%.3f", anwahlEnergie / 1000000000000) .. " T"
-        elseif anwahlEnergie < 10000000000000000000 then
-          anwahlEnergie = string.format("%.3f", anwahlEnergie / 1000000000000000) .. " P"
-        elseif anwahlEnergie < 10000000000000000000000 then
-          anwahlEnergie = string.format("%.3f", anwahlEnergie / 1000000000000000000) .. " E"
-        elseif anwahlEnergie < 10000000000000000000000000 then
-          anwahlEnergie = string.format("%.3f", anwahlEnergie / 1000000000000000000000) .. " Z"
-        else
-          anwahlEnergie = sprachen.zuvielEnergie
+        anwahlEnergie = f.zu_SI(anwahlEnergie)
+        if AUNIS then
+          betriebsEnergie = f.zu_SI(betriebsEnergie)
         end
       end
       gespeicherteAdressen[i + k] = {}
       gespeicherteAdressen[i + k][1] = na[1]
       gespeicherteAdressen[i + k][2] = na[2]
       gespeicherteAdressen[i + k][3] = na[3]
-      gespeicherteAdressen[i + k][4] = f.ErsetzePunktMitKomma(anwahlEnergie)
+      gespeicherteAdressen[i + k][4] = anwahlEnergie
+      if betriebsEnergie then
+        gespeicherteAdressen[i + k][5] = betriebsEnergie
+      end
     end
     f.zeigeNachricht(sprachen.verarbeiteAdressen .. "<" .. tostring(na[2]) .. "> <" .. tostring(na[1]) .. ">")
     maxseiten = (i + k) / 10
@@ -1050,26 +1067,8 @@ function f.zeigeEnergie(eingabe)
     f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2, 0)
     f.SchreibInAndererFarben(xVerschiebung + unicode.len("  " .. sprachen.energie1 .. energytype .. sprachen.energie2), zeile, sprachen.keineEnergie, Farben.FehlerFarbe)
   else
-    if     energy < 10000 then
-      energieMenge = string.format("%.f",  energy)
-    elseif energy < 10000000 then
-      energieMenge = string.format("%.1f", energy / 1000) .. " k"
-    elseif energy < 10000000000 then
-      energieMenge = string.format("%.2f", energy / 1000000) .. " M"
-    elseif energy < 10000000000000 then
-      energieMenge = string.format("%.3f", energy / 1000000000) .. " G"
-    elseif energy < 10000000000000000 then
-      energieMenge = string.format("%.3f", energy / 1000000000000) .. " T"
-    elseif energy < 10000000000000000000 then
-      energieMenge = string.format("%.3f", energy / 1000000000000000) .. " P"
-    elseif energy < 10000000000000000000000 then
-      energieMenge = string.format("%.3f", energy / 1000000000000000000) .. " E"
-    elseif energy < 10000000000000000000000000 then
-      energieMenge = string.format("%.3f", energy / 1000000000000000000000) .. " Z"
-    else
-      energieMenge = sprachen.zuvielEnergie
-    end
-    f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2 .. f.ErsetzePunktMitKomma(energieMenge))
+    energieMenge = f.zu_SI(energy)
+    f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2 .. energieMenge)
   end
   if state ~= "Connected" and v.Anzeigetimer then
     event.cancel(v.Anzeigetimer)
