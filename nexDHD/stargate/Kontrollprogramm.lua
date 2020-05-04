@@ -446,7 +446,7 @@ end
 function f.zu_SI(wert)
     wert = tonumber(wert)
     if     wert < 10000 then
-        wert = string.format("%.f" , wert) .. " "
+        wert = string.format("%.f" , wert)
     elseif wert < 10000000 then
         wert = string.format("%.1f", wert / 1000) .. " k "
     elseif wert < 10000000000 then
