@@ -252,10 +252,6 @@ else -- AUNIS
   a.remoteAddress = "unbekannt"
 
   a.sg.anwahlenergie = function(adresse)
-    if not sg.getEnergyRequiredToDial then -- vor AUNIS 1.9.6
-      return 0
-    end
-    
     local ok, ergebnis = pcall(sg.getEnergyRequiredToDial, split(sg.adressauswahl(adresse), "-"))
     if ok and ergebnis and type(ergebnis) == "table" then
       return ergebnis.open, ergebnis.keepAlive
@@ -1326,7 +1322,7 @@ function f.zeigeNachricht(inhalt, oben)
     Nachrichtleer = false
   end
   letzteNachricht = inhalt
-  letzteNachrichtZeit = os.time()
+  letzteNachrichtZeit = computer.uptime()
   f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
   if VersionUpdate == true then
     f.zeigeHier(1, Bildschirmhoehe - 1, sprachen.aktualisierenGleich, Bildschirmbreite)
@@ -1379,7 +1375,7 @@ function f.schreibFehlerLog(...)
     elseif type(...) == "table" then
       d:write(serialization.serialize(...))
     end
-    d:write("\n" .. os.time() .. string.rep("-", 69 - string.len(os.time())) .. "\n")
+    d:write("\n" .. computer.uptime() .. string.rep("-", 69 - string.len(computer.uptime())) .. "\n")
     d:close()
     log = true
   end
