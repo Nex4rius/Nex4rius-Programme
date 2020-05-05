@@ -251,14 +251,6 @@ else -- AUNIS
   a.irisState     = "Offline"
   a.remoteAddress = "unbekannt"
 
-  a.sg.anwahlenergie = function(adresse)
-    local ok, ergebnis = pcall(sg.getEnergyRequiredToDial, split(sg.adressauswahl(adresse), "-"))
-    if ok and ergebnis and type(ergebnis) == "table" then
-      return ergebnis.open, ergebnis.keepAlive
-    end
-    return false
-  end
-
   a.sg.openIris        = function() return false end
   a.sg.closeIris       = function() return false end
   a.sg.stargateStatus  = function() return a.state, a.chevrons, a.direction end
@@ -268,6 +260,17 @@ else -- AUNIS
   a.sg.remoteAddress   = function() return a.remoteAddress end
   a.sg.irisState       = function() return a.irisState end
   a.sg.energyAvailable = function() return sg.getEnergyStored() end
+
+  a.sg.anwahlenergie = function(adresse)
+    local ok, ergebnis = pcall(sg.getEnergyRequiredToDial, split(sg.adressauswahl(adresse), "-"))
+    if ok and ergebnis and type(ergebnis) == "table" then
+      return ergebnis.open, ergebnis.keepAlive
+    end
+    if adresse == sg.localAddress() then
+      return 0
+    end
+    return false
+  end
 
   a.sg.sendMessage = function(...)
     sende_modem_jetzt = {...}
@@ -709,7 +712,7 @@ function f.AdressenSpeichern()
   local k = 0
   local LokaleAdresse = f.getAddress(sg.localAddress())
   for i, na in pairs(adressen) do
-    if na[2] == LokaleAdresse or na[1] == LokaleAdresse or na[2] == "SGCRAFT#" .. LokaleAdresse or na[2] == "AUNIS#" .. LokaleAdresse then
+    if na[2] == LokaleAdresse then
       k = -1
       sendeAdressen[i] = {}
       sendeAdressen[i][1] = na[1]
@@ -2172,6 +2175,7 @@ function f.checkStargateName()
     Sicherung.StargateName = string.sub(eingabe, 1, string.len(eingabe) - 1)
     schreibSicherungsdatei(Sicherung)
   end
+  AddNewAddress = true
   f.newAddress(nil, f.getAddress(sg.localAddress()), Sicherung.StargateName)
 end
 
