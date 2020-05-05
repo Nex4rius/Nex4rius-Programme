@@ -251,13 +251,6 @@ else -- AUNIS
   a.irisState     = "Offline"
   a.remoteAddress = "unbekannt"
 
-  a.sg.anwahlenergie = function(adresse)
-    local ok, ergebnis = pcall(sg.getEnergyRequiredToDial, split(sg.adressauswahl(adresse), "-"))
-    if ok and ergebnis and type(ergebnis) == "table" then
-      return ergebnis.open, ergebnis.keepAlive
-    end
-  end
-
   a.sg.openIris        = function() return false end
   a.sg.closeIris       = function() return false end
   a.sg.stargateStatus  = function() return a.state, a.chevrons, a.direction end
@@ -267,6 +260,17 @@ else -- AUNIS
   a.sg.remoteAddress   = function() return a.remoteAddress end
   a.sg.irisState       = function() return a.irisState end
   a.sg.energyAvailable = function() return sg.getEnergyStored() end
+
+  a.sg.anwahlenergie = function(adresse)
+    local ok, ergebnis = pcall(sg.getEnergyRequiredToDial, split(sg.adressauswahl(adresse), "-"))
+    if ok and ergebnis and type(ergebnis) == "table" then
+      return ergebnis.open, ergebnis.keepAlive
+    end
+    if adresse == sg.localAddress() then
+      return 0
+    end
+    return false
+  end
 
   a.sg.sendMessage = function(...)
     sende_modem_jetzt = {...}
@@ -708,7 +712,7 @@ function f.AdressenSpeichern()
   local k = 0
   local LokaleAdresse = f.getAddress(sg.localAddress())
   for i, na in pairs(adressen) do
-    if na[2] == LokaleAdresse or na[1] == LokaleAdresse or na[2] == "SGCRAFT#" .. LokaleAdresse or na[2] == "AUNIS#" .. LokaleAdresse then
+    if na[2] == LokaleAdresse then
       k = -1
       sendeAdressen[i] = {}
       sendeAdressen[i][1] = na[1]
@@ -753,9 +757,6 @@ end
 
 function f.zeigeMenu()
   f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
-  --for i = 1, Bildschirmhoehe - 3 do
-  --  f.zeigeHier(1, i, "", xVerschiebung - 3)
-  --end
   term.setCursor(1, 1)
   if seite == -1 then
     f.Infoseite()
@@ -1077,7 +1078,7 @@ function f.zeigeEnergie(eingabe)
   local zeile = eingabe or v.Energiezeile or zeile
   v.Energiezeile = zeile
   f.Farbe(Farben.Statusfarbe, Farben.Statustextfarbe)
-  if energy < 1000 then
+  if energy < 10000 then
     f.zeigeHier(xVerschiebung, zeile, "  " .. sprachen.energie1 .. energytype .. sprachen.energie2, 0)
     f.SchreibInAndererFarben(xVerschiebung + unicode.len("  " .. sprachen.energie1 .. energytype .. sprachen.energie2), zeile, sprachen.keineEnergie, Farben.FehlerFarbe)
   else
@@ -2119,11 +2120,12 @@ function f.eventLoop()
 end
 
 function f.angekommeneAdressen(eingabe)
-  local AddNewAddress = false
-  local sonstLeer = false
+  AddNewAddress = false
+  local sonstLeer = true
   for a, b in pairs(eingabe) do
     local neuHinzufuegen = false
     for c, d in pairs(adressen) do
+      sonstLeer = false
       if d[2] == "XXXX-XXX-XX" then
         adressen[c] = nil
         sonstLeer = true
@@ -2148,6 +2150,7 @@ function f.angekommeneAdressen(eingabe)
   end
   if sonstLeer then
     for a, b in pairs(eingabe) do
+      AddNewAddress = true
       f.newAddress(nil, b[2], b[1])
     end
   end
@@ -2172,6 +2175,7 @@ function f.checkStargateName()
     Sicherung.StargateName = string.sub(eingabe, 1, string.len(eingabe) - 1)
     schreibSicherungsdatei(Sicherung)
   end
+  AddNewAddress = true
   f.newAddress(nil, f.getAddress(sg.localAddress()), Sicherung.StargateName)
 end
 
