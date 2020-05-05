@@ -2119,7 +2119,7 @@ function f.eventLoop()
 end
 
 function f.angekommeneAdressen(eingabe)
-  local AddNewAddress = false
+  AddNewAddress = false
   local sonstLeer = false
   for a, b in pairs(eingabe) do
     local neuHinzufuegen = false
