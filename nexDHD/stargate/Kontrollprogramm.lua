@@ -256,6 +256,7 @@ else -- AUNIS
     if ok and ergebnis and type(ergebnis) == "table" then
       return ergebnis.open, ergebnis.keepAlive
     end
+    return false
   end
 
   a.sg.openIris        = function() return false end
@@ -753,9 +754,6 @@ end
 
 function f.zeigeMenu()
   f.Farbe(Farben.Adressfarbe, Farben.Adresstextfarbe)
-  --for i = 1, Bildschirmhoehe - 3 do
-  --  f.zeigeHier(1, i, "", xVerschiebung - 3)
-  --end
   term.setCursor(1, 1)
   if seite == -1 then
     f.Infoseite()
@@ -2120,10 +2118,11 @@ end
 
 function f.angekommeneAdressen(eingabe)
   AddNewAddress = false
-  local sonstLeer = false
+  local sonstLeer = true
   for a, b in pairs(eingabe) do
     local neuHinzufuegen = false
     for c, d in pairs(adressen) do
+      sonstLeer = false
       if d[2] == "XXXX-XXX-XX" then
         adressen[c] = nil
         sonstLeer = true
@@ -2148,6 +2147,7 @@ function f.angekommeneAdressen(eingabe)
   end
   if sonstLeer then
     for a, b in pairs(eingabe) do
+      AddNewAddress = true
       f.newAddress(nil, b[2], b[1])
     end
   end
