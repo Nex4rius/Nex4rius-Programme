@@ -2086,6 +2086,11 @@ function o.stargate_close(eventname, compadresse, caller)
   chevronAnzeige.zeig(false, "ende")
 end
 
+function o.stargate_wormhole_closed_fully(eventname, compadresse, caller)
+  event.push("stargate_idle")
+  chevronAnzeige.zeig(false, "ende")
+end
+
 function o.stargate_failed(eventname, compadresse, caller)
   event.push("stargate_idle")
 end
