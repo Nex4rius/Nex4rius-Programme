@@ -2080,9 +2080,6 @@ end
 function o.stargate_close(eventname, compadresse, caller)
   state   = "Closing"
   a.state = state
-  event.timer(6, function()
-    event.push("stargate_idle")
-  end, 1)
   chevronAnzeige.zeig(false, "ende")
 end
 
