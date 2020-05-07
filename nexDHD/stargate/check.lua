@@ -379,14 +379,15 @@ function f.checkServerVersion(branch)
 end
 
 function f.checkDateien()
-  local d = io.open ("/bin/stargate.lua", "w")
+  local d = io.open("/bin/stargate.lua", "w")
   d:write('-- pastebin run -f YVqKFnsP\n')
   d:write('-- von Nex4rius\n')
   d:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD\n')
   d:write('\n')
   d:write('if not pcall(loadfile("/stargate/check.lua"), require("shell").parse(...)[1]) then\n')
-  d:write('   loadfile("/bin/wget-lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua")\n')
-  d:write('   loadfile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", "master", "nexDHD")\n')
+  --d:write('   loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua")\n')
+  --d:write('   loadfile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", "master", "nexDHD")\n')
+  d:write('   os.execute("pastebin run -f YVqKFnsP")\n')
   d:write('end\n')
   d:close()
   local dateien = {
