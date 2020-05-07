@@ -16,8 +16,20 @@ local gpu           = component.gpu
 local disk          = component.proxy(fs.get("/").address)
 local x, y          = gpu.getResolution()
 
-local verschieben   = function(von, nach) gpu.setForeground(0x00FF00) fs.remove(nach) fs.rename(von, nach) print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach))) gpu.setForeground(0xFFFFFF) end
-local entfernen     = function(datei) gpu.setForeground(0xFF0000) fs.remove(datei) print(string.format("'%s' wurde gelöscht", datei)) gpu.setForeground(0xFFFFFF) end
+local verschieben = function(von, nach)
+    gpu.setForeground(0x00FF00)
+    fs.remove(nach)
+    fs.rename(von, nach)
+    print(string.format("%s → %s", fs.canonical(von), fs.canonical(nach)))
+    gpu.setForeground(0xFFFFFF)
+end
+
+local entfernen = function(datei)
+    gpu.setForeground(0xFF0000)
+    fs.remove(datei)
+    print(string.format("'%s' wurde gelöscht", datei))
+    gpu.setForeground(0xFFFFFF)
+end
 
 local original_wget = loadfile("/bin/wget.lua")
 
