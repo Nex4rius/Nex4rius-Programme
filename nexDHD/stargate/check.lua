@@ -593,15 +593,14 @@ function f.main()
       beta  -> Aktualisierung zur Beta-Version
       hilfe -> zeige diese Nachricht nochmal]==])
   else
-    if f.checkKomponenten() then
-      f.checkOpenOS()
-      f.mainCheck()
-    else
+    while not f.checkKomponenten() do
       print("\n")
       io.write(sprachen.fehlerName or "<FEHLER>")
       print(" kein Stargate")
-      os.sleep(5)
+      os.sleep(30)
     end
+    f.checkOpenOS()
+    f.mainCheck()
   end
   gpu.setForeground(Farben.weisseFarbe)
   gpu.setBackground(Farben.schwarzeFarbe)
