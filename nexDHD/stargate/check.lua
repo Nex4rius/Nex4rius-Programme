@@ -522,7 +522,7 @@ function f.mainCheck()
     local erfolgreich
     local grund = "nochmal"
     while grund == "nochmal" do
-      erfolgreich, grund = pcall(loadfile("/stargate/Kontrollprogramm.lua"), f.update, f.checkServerVersion, version, Farben)
+      erfolgreich, antwort, grund = xpcall(loadfile("/stargate/Kontrollprogramm.lua"), debug.traceback, f.update, f.checkServerVersion, version, Farben)
       if not erfolgreich then
         print("Kontrollprogramm.lua hat einen Fehler")
         print(grund)
