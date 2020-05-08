@@ -431,7 +431,7 @@ function f.checkDateien()
   if not fs.exists("/einstellungen/Sicherungsdatei.lua") then
     kopieren("-n", "/stargate/Sicherungsdatei.lua", "/einstellungen/Sicherungsdatei.lua")
   end
-  local alleSprachen = {"deutsch", "english", "russian", "czech"}
+  local alleSprachen = {"deutsch", "english", "russian", "czech", "polish"}
   local neueSprache
   for k, v in pairs(alleSprachen) do
     if v == tostring(Sicherung.Sprache) then
