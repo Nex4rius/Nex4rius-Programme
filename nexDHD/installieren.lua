@@ -114,7 +114,7 @@ else
   Sicherung.installieren = false
 end
 
-local Sprachliste = {"deutsch", "english", "russian", "czech"}
+local Sprachliste = {"deutsch", "english", "russian", "czech", "polish"}
 do
   local dazu = true
   for i in pairs(Sprachliste) do
