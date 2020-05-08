@@ -28,7 +28,7 @@ local function reset()
     autoclosetime  = "in Sekunden -- false für keine automatische Schließung",
     IDC            = "Iris Deaktivierungscode",
     RF             = "zeige Energie in RF anstatt in EU",
-    Sprache        = "deutsch / english / russian / czech",
+    Sprache        = "deutsch / english / russian / czech / polish",
     side           = "unten, oben, hinten, vorne, rechts oder links",
     autoUpdate     = "aktiviere automatische Aktualisierungen",
     Port           = "Standard 645",

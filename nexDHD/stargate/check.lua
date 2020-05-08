@@ -379,14 +379,15 @@ function f.checkServerVersion(branch)
 end
 
 function f.checkDateien()
-  local d = io.open ("/bin/stargate.lua", "w")
+  local d = io.open("/bin/stargate.lua", "w")
   d:write('-- pastebin run -f YVqKFnsP\n')
   d:write('-- von Nex4rius\n')
   d:write('-- https://github.com/Nex4rius/Nex4rius-Programme/tree/master/nexDHD\n')
   d:write('\n')
   d:write('if not pcall(loadfile("/stargate/check.lua"), require("shell").parse(...)[1]) then\n')
-  d:write('   loadfile("/bin/wget-lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua")\n')
-  d:write('   loadfile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", "master", "nexDHD")\n')
+  --d:write('   loadfile("/bin/wget.lua")("-f", "https://raw.githubusercontent.com/Nex4rius/Nex4rius-Programme/master/GitHub-Downloader/github.lua", "/bin/github.lua")\n')
+  --d:write('   loadfile("/bin/github.lua")("Nex4rius", "Nex4rius-Programme", "master", "nexDHD")\n')
+  d:write('   os.execute("pastebin run -f YVqKFnsP")\n')
   d:write('end\n')
   d:close()
   local dateien = {
@@ -430,7 +431,7 @@ function f.checkDateien()
   if not fs.exists("/einstellungen/Sicherungsdatei.lua") then
     kopieren("-n", "/stargate/Sicherungsdatei.lua", "/einstellungen/Sicherungsdatei.lua")
   end
-  local alleSprachen = {"deutsch", "english", "russian", "czech"}
+  local alleSprachen = {"deutsch", "english", "russian", "czech", "polish"}
   local neueSprache
   for k, v in pairs(alleSprachen) do
     if v == tostring(Sicherung.Sprache) then
@@ -593,15 +594,14 @@ function f.main()
       beta  -> Aktualisierung zur Beta-Version
       hilfe -> zeige diese Nachricht nochmal]==])
   else
-    if f.checkKomponenten() then
-      f.checkOpenOS()
-      f.mainCheck()
-    else
+    while not f.checkKomponenten() do
       print("\n")
       io.write(sprachen.fehlerName or "<FEHLER>")
       print(" kein Stargate")
-      os.sleep(5)
+      os.sleep(30)
     end
+    f.checkOpenOS()
+    f.mainCheck()
   end
   gpu.setForeground(Farben.weisseFarbe)
   gpu.setBackground(Farben.schwarzeFarbe)
