@@ -599,6 +599,7 @@ function f.main()
       io.write(sprachen.fehlerName or "<FEHLER>")
       print(" kein Stargate")
       os.sleep(30)
+      term.clear()
     end
     f.checkOpenOS()
     f.mainCheck()
