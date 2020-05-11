@@ -1501,7 +1501,7 @@ function Taste.d()
       f.zeigeNachricht(sprachen.stargateAbschalten .. " " .. sprachen.stargateName)
     end
   end
-  chevronAnzeige.zeig(false, "ende")
+  --chevronAnzeige.zeig(false, "ende")
   event.timer(2, f.zeigeMenu, 1)
 end
 
@@ -2022,6 +2022,7 @@ function o.stargate_wormhole_stabilized()
   state   = "Connected"
   a.state = state
   f.GDO_aufwecken()
+  chevronAnzeige.zeig(true, "Point of Origin", true)
 end
 
 function o.stargate_spin_start(eventname, compadresse, caller, symbolCount, lock, symbolName)
@@ -2035,6 +2036,7 @@ end
 
 function o.stargate_spin_chevron_engaged(eventname, compadresse, caller, symbolCount, lock, symbolName)
   f.aunis(caller, symbolCount)
+  chevronAnzeige.zeig(lock, symbolName, symbolCount)
 
   if not aktuelle_anwahl_adresse then
     return sg.disconnect()
@@ -2060,8 +2062,6 @@ function o.stargate_spin_chevron_engaged(eventname, compadresse, caller, symbolC
 
     sg.engageSymbol(symbol)
   end
-  
-  chevronAnzeige.zeig(state == "Opening" or state == "Connected", symbolName, symbolCount)
 end
 
 function o.stargate_dhd_chevron_engaged(eventname, compadresse, caller, symbolCount, lock, symbolName)
@@ -2070,19 +2070,18 @@ end
 
 function o.stargate_incoming_wormhole(eventname, compadresse, caller, dialedAddressSize)
   f.aunis(caller, dialedAddressSize)
+  chevronAnzeige.zeig(true, "Point of Origin", dialedAddressSize)
 end
 
 function o.stargate_open(eventname, compadresse, caller, isInitiating)
   f.aunis(isInitiating)
   state   = "Opening"
   a.state = state
-  chevronAnzeige.zeig(true, "Point of Origin")
 end
 
 function o.stargate_close(eventname, compadresse, caller)
   state   = "Closing"
   a.state = state
-  chevronAnzeige.zeig(false, "ende")
 end
 
 function o.stargate_wormhole_closed_fully(eventname, compadresse, caller)

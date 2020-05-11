@@ -113,7 +113,7 @@ a.c["C"] = {
     "                                ",
 }
 
-a.c["D"] = {
+a.c["CENTAURUS"] = {
     "                                ",
     "                    ██          ",
     "                   ████         ",
@@ -131,8 +131,9 @@ a.c["D"] = {
     "                                ",
     "                                ",
 }
+a.c["D"] = a.c["CENTAURUS"]
 
-a.c["E"] = {
+a.c["LIBRA"] = {
     "                                ",
     "                                ",
     "                   ████         ",
@@ -150,6 +151,7 @@ a.c["E"] = {
     "                                ",
     "                                ",
 }
+a.c["E"] = a.c["LIBRA"]
 
 a.c["F"] = {
     "                                ",
@@ -457,7 +459,7 @@ a.c["U"] = {
     "                                ",
 }
 
-a.c["V"] = {
+a.c["TRIANGULUM"] = {
     "                                ",
     "                                ",
     "       ██                       ",
@@ -475,6 +477,7 @@ a.c["V"] = {
     "                                ",
     "                                ",
 }
+a.c["V"] = a.c["TRIANGULUM"]
 
 a.c["W"] = {
     "                                ",
@@ -514,7 +517,7 @@ a.c["X"] = {
     "                                ",
 }
 
-a.c["Y"] = {
+a.c["CETUS"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -532,6 +535,7 @@ a.c["Y"] = {
     "                                ",
     "                                ",
 }
+a.c["Y"] = a.c["CETUS"]
 
 a.c["Z"] = {
     "                                ",
@@ -609,7 +613,7 @@ a.c["2"] = {
     "                                ",
 }
 
-a.c["3"] = {
+a.c["CANIS MINOR"] = {
     "                                ",
     "                                ",
     "               ███              ",
@@ -627,6 +631,7 @@ a.c["3"] = {
     "                                ",
     "                                ",
 }
+a.c["3"] = a.c["CANIS MINOR"]
 
 
 a.c["4"] = {
@@ -648,7 +653,7 @@ a.c["4"] = {
     "                                ",
 }
 
-a.c["5"] = {
+a.c["GEMINI"] = {
     "                                ",
     "                                ",
     "                                ",
@@ -666,6 +671,7 @@ a.c["5"] = {
     "                                ",
     "                                ",
 }
+a.c["5"] = a.c["GEMINI"]
 
 a.c["6"] = {
     "                                ",
@@ -764,7 +770,7 @@ a.c["Buchstabe_hier"] = {
 }
 ]]
 
-a.c["ende"] = {
+a.c["POINT OF ORIGIN"] = {
     "                                ",
     "              ███               ",
     "            ███████             ",
@@ -782,8 +788,9 @@ a.c["ende"] = {
     "       ███           ███        ",
     "      ████           ████       ",
 }
+a.c["ENDE"] = a.c["POINT OF ORIGIN"]
 
-a.c["beenden"] = {
+a.c["BEENDEN"] = {
     "▀▄                            ▄▀",
     "  ▀▄                        ▄▀  ",
     "    ▀▄                    ▄▀    ",
@@ -969,10 +976,11 @@ function a.iris(geschlossen)
     end, 1)
 end
 
-function a.zeig(aktiv, adresse, symbolName)
+function a.zeig(aktiv, adresse, lang)
     event.cancel(a.timer.zeig)
     a.timer.zeig = event.timer(0.05, function()
-        if adresse == "ende" then
+        adresse = string.upper(adresse)
+        if adresse == "ENDE" then
             if a.innen ~= a.irisfarbe then
                 a.innen = a.aussen
             end
@@ -980,17 +988,25 @@ function a.zeig(aktiv, adresse, symbolName)
                 a.aktiv[i] = false
             end
         else
-            adresse = string.gsub(adresse, "-" , "")
-            local lang = string.len(adresse)
-            for i = 1, lang do
-                a.aktiv[i] = true
+            if not a.c[adresse] and not lang then
+                adresse = string.gsub(adresse, "-" , "")
+                lang = string.len(adresse)
+                adresse = string.sub(adresse, -1)
             end
-            if not aktiv and lang >= 7 then
-                a.aktiv[lang + 1] = true
+
+            if tonumber(lang) then
+                for i = 1, lang do
+                    a.aktiv[i] = true
+                end
+
+                if not aktiv and lang >= 7 then
+                    a.aktiv[lang + 1] = true
+                end
             end
+
             a.aktiv[7] = aktiv
-            adresse = string.sub(adresse, -1)
         end
+        
         a.stargate(false, aktiv)
         a.chevron(adresse)
         gpu1.bind(screen1, false)
@@ -1001,7 +1017,7 @@ function a.beenden()
     a.innen = 0x990000
     a.aussen = 0x990000
     a.stargate(false, false)
-    a.chevron("beenden")
+    a.chevron("BEENDEN")
     gpu1.bind(screen1, false)
 end
 

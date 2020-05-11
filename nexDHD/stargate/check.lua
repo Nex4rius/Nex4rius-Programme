@@ -298,7 +298,7 @@ function f.checkKomponenten()
     gpu.setForeground(Farben.hellgrueneFarbe)
     print(sprachen.gpuOK2T)
   elseif gpu.maxResolution() == 160 then
-    gpu.setForeground(Farben.orangeFarbe)
+    gpu.setForeground(Farben.gelbeFarbe)
     print(sprachen.gpuOK3T)
   else
     gpu.setForeground(Farben.roteFarbe)
@@ -599,6 +599,7 @@ function f.main()
       io.write(sprachen.fehlerName or "<FEHLER>")
       print(" kein Stargate")
       os.sleep(30)
+      term.clear()
     end
     f.checkOpenOS()
     f.mainCheck()
