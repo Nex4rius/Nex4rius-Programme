@@ -68,7 +68,9 @@ SGCraft-1.13.3-mc1.7.10<br /><br />
 MC 1.10.2<br />
 OpenComputers-MC1.12.2-1.7.5.192<br />
 SGCraft-2.0.3<br />
-aunis-1.12.2-1.9.6-beta
+aunis-1.12.2-1.9.7-beta<br />
+<br />
+special thanks to ShicKla for the chevrons https://github.com/ShicKla/AuspexGateSystems/blob/release/ags/glyphsMW.ff
 
 ___
 <a href="#english">english</a>/<a href="#deutsch">deutsch</a>/<a href="#russian">russian</a><a name="english">
@@ -141,7 +143,9 @@ SGCraft-1.13.3-mc1.7.10<br /><br />
 MC 1.10.2<br />
 OpenComputers-MC1.12.2-1.7.5.192<br />
 SGCraft-2.0.3<br />
-aunis-1.12.2-1.9.6-beta
+aunis-1.12.2-1.9.7-beta<br />
+<br />
+special thanks to ShicKla for the chevrons https://github.com/ShicKla/AuspexGateSystems/blob/release/ags/glyphsMW.ff
 
 ___
 <a href="#english">english</a>/<a href="#deutsch">deutsch</a>/<a href="#russian">russian</a><a name="russian">
@@ -213,4 +217,6 @@ SGCraft-1.13.3-mc1.7.10<br /><br />
 MC 1.10.2<br />
 OpenComputers-MC1.12.2-1.7.5.192<br />
 SGCraft-2.0.3<br />
-aunis-1.12.2-1.9.6-beta
+aunis-1.12.2-1.9.7-beta<br />
+<br />
+special thanks to ShicKla for the chevrons https://github.com/ShicKla/AuspexGateSystems/blob/release/ags/glyphsMW.ff
