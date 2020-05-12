@@ -202,7 +202,7 @@ a.c["NORMA"] = {
 }
 a.c["G"] = a.c["NORMA"]
 
-a.c["SCROPIUS"] = {
+a.c["SCORPIUS"] = {
     "                  ⣤⣤⣤⣤⣤⣤⣤⣤⣀⣀⣀⣀⡀ ",
     "                  ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ ",
     "                 ⢀⣿⣿⣿⡟⠛⠛⠛⠛⠛⢻⣿⣿⣿⡆",
@@ -220,7 +220,7 @@ a.c["SCROPIUS"] = {
     "⢰⣿⣿⣿⣿⣿⣿                         ",
     "⠛⠛⠛⠛⠛⠛⠛⠃                        ",
 }
-a.c["H"] = a.c["SCROPIUS"]
+a.c["H"] = a.c["SCORPIUS"]
 
 a.c["CORONA AUSTRALIS"] = {
     "                    ⢀⣴⣷         ",
