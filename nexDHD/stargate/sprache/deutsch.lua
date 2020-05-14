@@ -169,6 +169,7 @@ local sprachen = {
   cloud_arbeit              = "Die Adressen werden mit der Cloud synchronisiert.",
   cloud_fertig              = "Synchronisation abgeschlossen",
   stargate_beschaeftigt     = "Das Stargate ist bereits aktiv",
+  AUNIS_adressen_eingeben   = "Die Symbole der Adresse müssen mit einem '-' getrennt sein.",
 }
 
 sprachen.side               = string.format("%s, %s, %s, %s, %s %s %s", sprachen.unten, sprachen.oben, sprachen.hinten, sprachen.vorne, sprachen.rechts, sprachen.oder, sprachen.links)
