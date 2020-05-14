@@ -1533,6 +1533,9 @@ function Taste.a()
     f.zeigeHier(1, Taste.Koordinaten.Taste_a, "A " .. sprachen.Adresseingabe, 0)
     if f.Tastatur() then
       f.eventlisten("ignore")
+      if AUNIS then
+        f.zeigeHier(1, Bildschirmhoehe - 1, sprachen.AUNIS_adressen_eingeben, 0)
+      end
       term.setCursor(1, Bildschirmhoehe)
       f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe)
       local timerID = event.timer(1, function() f.zeigeStatus() f.Farbe(Farben.Nachrichtfarbe, Farben.Nachrichttextfarbe) end, math.huge)
