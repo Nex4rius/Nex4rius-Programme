@@ -405,7 +405,7 @@ function f.Logbuch_schreiben(name, adresse, richtung)
   for i = 20, 1, -1 do
     rest[i + 1] = rest[i]
   end
-  rest[1] = {name, adresse, richtung}
+  rest[1] = {name, sg.adressauswahl(adresse), richtung}
   local d = io.open("/einstellungen/logbuch.lua", "w")
   d:write('-- pastebin run -f YVqKFnsP\n')
   d:write('-- nexDHD von Nex4rius\n')
@@ -741,7 +741,7 @@ function f.AdressenSpeichern()
         gespeicherteAdressen[i + k][5] = string.format("%s%s/t", betriebsEnergie, energytype)
       end
     end
-    f.zeigeNachricht(sprachen.verarbeiteAdressen .. "<" .. tostring(na[2]) .. "> <" .. tostring(na[1]) .. ">")
+    f.zeigeNachricht(sprachen.verarbeiteAdressen .. "<" .. sg.adressauswahl(tostring(na[2])) .. "> <" .. tostring(na[1]) .. ">")
     maxseiten = (i + k) / 10
   end
   if not v.lokaleAdresse then
@@ -1018,7 +1018,7 @@ function f.aktualisiereStatus()
   gpu.setResolution(70, 25)
   sg = component.getPrimary("stargate")
   f.sg_proxy_funktion()
-  locAddr = f.getAddress(sg.localAddress())
+  locAddr = sg.adressauswahl(f.getAddress(sg.localAddress()))
   remAddr = f.getAddress(sg.remoteAddress())
   iris = f.getIrisState()
   state, chevrons, direction = sg.stargateStatus()
@@ -1384,12 +1384,15 @@ function f.schreibFehlerLog(...)
       d:write('-- ' .. tostring(sprachen.schliessen) .. '\n')
       d:write(require("computer").getBootAddress() .. " - " .. f.getAddress(sg.localAddress()) .. '\n\n')
     end
+    d:write(string.rep("-", 30))
+    d:write(debug.traceback)
+    d:write(string.rep("-", 30))
     if type(...) == "string" then
       d:write(tostring(...))
     elseif type(...) == "table" then
       d:write(serialization.serialize(...))
     end
-    d:write("\n" .. computer.uptime() .. string.rep("-", 69 - string.len(computer.uptime())) .. "\n")
+    d:write("\n" .. computer.uptime() .. string.rep("=", 69 - string.len(computer.uptime())) .. "\n")
     d:close()
     log = true
   end
@@ -1406,7 +1409,7 @@ end
 function f.dial(name, adresse)
   if state == "Idle" then
     remoteName = name
-    f.zeigeNachricht(sprachen.waehlen .. "<" .. string.sub(remoteName, 1, xVerschiebung + 12) .. "> <" .. tostring(adresse) .. ">")
+    f.zeigeNachricht(sprachen.waehlen .. "<" .. string.sub(remoteName, 1, xVerschiebung + 12) .. "> <" .. sg.adressauswahl(tostring(adresse)) .. ">")
   else
     f.zeigeNachricht(sprachen.stargate_beschaeftigt)
     return
@@ -2017,6 +2020,7 @@ function o.stargate_idle()
   a.direction     = direction
   a.chevrons      = chevrons
   f.zeigeAnzeige()
+  chevronAnzeige.zeig(false, "ende")
 end
 
 function o.stargate_wormhole_stabilized()
