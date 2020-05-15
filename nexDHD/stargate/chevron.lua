@@ -997,10 +997,11 @@ local function init(gpu, screens)
     a.screens = {}
     a.screens.chevron = {}
     a.screens.stargate = {}
-    for _, screenid in pairs(screens) do
+    for i, screenid in pairs(screens) do
         gpu.bind(screenid)
         gpu.setResolution(32, 16)
         gpu.fill(1, 1, 32, 16, " ")
+        gpu.set(1, 1, tostring(i))
         if gpu.maxDepth() > 4 then
             table.insert(a.screens.stargate, screenid)
         else
@@ -1033,12 +1034,12 @@ function a.zeig(aktiv, adresse, lang)
     event.cancel(a.timer.zeig)
     a.timer.zeig = event.timer(0.05, function()
         adresse = string.upper(adresse)
+        for i = 1, 9 do
+            a.aktiv[i] = false
+        end
         if adresse == "ENDE" then
             if a.innen ~= a.irisfarbe then
                 a.innen = a.aussen
-            end
-            for i = 1, 9 do
-                a.aktiv[i] = false
             end
         else
             if not a.c[adresse] and not lang then
