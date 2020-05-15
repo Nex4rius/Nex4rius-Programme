@@ -7,15 +7,15 @@
 --
 
 return {
-  autoclosetime = 60, -- in seconds -- false for no autoclose
-  IDC           = "", -- Iris Deactivation Code
-  RF            = false, -- show energy in RF instead of EU
+  autoclosetime = 60, -- in Sekunden -- false für keine automatische Schließung
+  IDC           = "", -- Iris Deaktivierungscode
+  RF            = false, -- zeige Energie in RF anstatt in EU
   Sprache       = "", -- deutsch / english / russian / czech / polish
-  side          = "unten", -- bottom, top, back, front, right or left
-  autoUpdate    = true, -- enable automated updates
-  StargateName  = "", -- the name of this stargate
-  Port          = 645, -- default 645
-  Reichweite    = 50, -- strength of the wireless signal
+  side          = "unten", -- unten, oben, hinten, vorne, rechts oder links
+  autoUpdate    = true, -- aktiviere automatische Aktualisierungen
+  StargateName  = "", -- der Name dieses Stargates
+  Port          = 645, -- Standard 645
+  Reichweite    = 50, -- Stärke des WLan-Signals
   Theme         = "normal", -- normal, dunkel, schwarz_weiss
   kein_senden   = false, -- true -> keine Adressen senden
   cloud         = true, -- Adressen in die Cloud hoch- und runterladen
