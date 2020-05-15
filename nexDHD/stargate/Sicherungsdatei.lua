@@ -20,9 +20,9 @@ return {
   kein_senden   = false, -- true -> keine Adressen senden
   cloud         = true, -- Adressen in die Cloud hoch- und runterladen
 
-----------don't change anything below---------------------------------
+----------verändere nichts ab hier---------------------------------
 
-  debug         = false, -- for debugging
+  debug         = false, -- zum debuggen
   control       = "On",
   installieren  = false,
 }
