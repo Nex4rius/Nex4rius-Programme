@@ -170,6 +170,7 @@ local sprachen = {
   cloud_fertig              = "Synchronisation abgeschlossen",
   stargate_beschaeftigt     = "Das Stargate ist bereits aktiv",
   AUNIS_adressen_eingeben   = "Die Symbole der Adresse müssen mit einem '-' getrennt sein.",
+  orlin_stargate            = "Orlin Stargate hat keine Computerschnittstelle",
 }
 
 sprachen.side               = string.format("%s, %s, %s, %s, %s %s %s", sprachen.unten, sprachen.oben, sprachen.hinten, sprachen.vorne, sprachen.rechts, sprachen.oder, sprachen.links)
