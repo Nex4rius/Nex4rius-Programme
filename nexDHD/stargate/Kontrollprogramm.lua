@@ -247,6 +247,10 @@ if not sg.engageGate then -- SGCraft
   end
 else -- AUNIS
   AUNIS = true
+  if sg.getGateType() == "Orlin" then
+    print(sprachen.orlin_stargate or "Orlin Stargate hat keine Computerschnittstelle")
+    return
+  end
   a.state         = "Idle"
   a.chevrons      = 0
   a.direction     = ""
