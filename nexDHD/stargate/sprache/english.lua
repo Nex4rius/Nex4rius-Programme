@@ -57,6 +57,7 @@ local sprachen = {
   RedstoneGelb              = "yellow: iris closed",
   RedstoneSchwarz           = "black: idc accepted",
   RedstoneGruen             = "green: connected",
+  RedstoneOrange            = "orange: chevron engaged",
   versionName               = "Version: ",
   fehlerName                = "<ERROR>",
   SteuerungName             = "show Info",
