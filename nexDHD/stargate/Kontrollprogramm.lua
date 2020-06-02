@@ -695,6 +695,7 @@ function f.Infoseite()
   y = f.schreiben(y, sprachen.RedstoneGelb, Farben.gelbeFarbe)
   y = f.schreiben(y, sprachen.RedstoneSchwarz, Farben.schwarzeFarbe, Farben.weisseFarbe)
   y = f.schreiben(y, sprachen.RedstoneGruen, Farben.grueneFarbe)
+  y = f.schreiben(y, sprachen.RedstoneOrange, Farben.orangeFarbe)
   y = f.schreiben(y, " ", Farben.Adressfarbe, Farben.Adresstextfarbe)
   y = f.schreiben(y, sprachen.versionName .. version)
   y = f.schreiben(y, " ")
@@ -1170,10 +1171,10 @@ function f.zeigeSteuerung()
 end
 
 function f.RedstoneAenderung(a, b)
-  if sideNum == nil then
-    f.sides()
-  end
   if OC and r then
+    if sideNum == nil then
+      f.sides()
+    end
     r.setBundledOutput(sideNum, a, b)
   end
 end
@@ -1896,10 +1897,6 @@ end
 function o.modem_message(eventname, compadresse_lokal, compadresse_quelle, ...)
   local e = {...}
 
-  print(...)
-  f.zeigeFehler("hier")
-  f.zeigeFehler(e)
-
   if e[3] ~= "nexDHD" then
     o.sgMessageReceived(...)
   end
@@ -2072,6 +2069,10 @@ function o.stargate_spin_chevron_engaged(eventname, compadresse, caller, symbolC
 
     sg.engageSymbol(symbol)
   end
+  
+  f.RedstoneAenderung(Farben.orange, 255)
+  os.sleep(0.1)
+  f.RedstoneAenderung(Farben.orange, 0)
 end
 
 function o.stargate_dhd_chevron_engaged(eventname, compadresse, caller, symbolCount, lock, symbolName)
