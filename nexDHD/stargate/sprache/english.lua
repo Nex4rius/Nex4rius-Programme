@@ -57,6 +57,7 @@ local sprachen = {
   RedstoneGelb              = "yellow: iris closed",
   RedstoneSchwarz           = "black: idc accepted",
   RedstoneGruen             = "green: connected",
+  RedstoneOrange            = "orange: chevron engaged",
   versionName               = "Version: ",
   fehlerName                = "<ERROR>",
   SteuerungName             = "show Info",
@@ -170,6 +171,7 @@ local sprachen = {
   cloud_fertig              = "syncing finished",
   stargate_beschaeftigt     = "The stargate is already active",
   AUNIS_adressen_eingeben   = "The symbols of the address have to be seperated with '-'",
+  orlin_stargate            = "Orlin Stargate has no computer interface",
 }
 
 sprachen.side               = string.format("%s, %s, %s, %s, %s %s %s", sprachen.unten, sprachen.oben, sprachen.hinten, sprachen.vorne, sprachen.rechts, sprachen.oder, sprachen.links)

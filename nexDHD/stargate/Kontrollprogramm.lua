@@ -247,6 +247,10 @@ if not sg.engageGate then -- SGCraft
   end
 else -- AUNIS
   AUNIS = true
+  if sg.getGateType() == "Orlin" then
+    print(sprachen.orlin_stargate or "Orlin Stargate hat keine Computerschnittstelle")
+    return
+  end
   a.state         = "Idle"
   a.chevrons      = 0
   a.direction     = ""
@@ -544,7 +548,7 @@ function f.zeigeHier(x, y, s, h)
       gpu.set(x, y, s .. string.rep(" ", h - unicode.len(s)))
     elseif CC then
       term.setCursorPos(x, y)
-      local wiederholanzahl = h - string.len(s)
+      local wiederholanzahl = h - unicode.len(s)
       if wiederholanzahl < 0 then
         wiederholanzahl = 0
       end
@@ -569,7 +573,7 @@ function f.getAddress(text)
   else
     if text == "" or text == nil then
       return ""
-    elseif string.len(text) == 7 then
+    elseif unicode.len(text) == 7 then
       return string.sub(text, 1, 4) .. "-" .. string.sub(text, 5, 7)
     else
       return string.sub(text, 1, 4) .. "-" .. string.sub(text, 5, 7) .. "-" .. string.sub(text, 8, 9)
@@ -592,7 +596,7 @@ function f.AdressenLesen()
       if AdressAnzeige == 10 then
         AdressAnzeige = 0
       end
-      if na[2] == remAddr and string.len(tostring(remAddr)) > 5 then
+      if na[2] == remAddr and unicode.len(tostring(remAddr)) > 5 then
         f.Farbe(Farben.AdressfarbeAktiv, Farben.AdresstextfarbeAktiv)
         gpu.fill(1, y + 1, 30, 2, " ")
       end
@@ -678,7 +682,7 @@ function f.Infoseite()
   y = f.schreiben(y, "U " .. sprachen.Update)
   Taste.links[y] = Taste.u
   Taste.Koordinaten.Taste_u = y
-  local version_Zeichenlaenge = string.len(version)
+  local version_Zeichenlaenge = unicode.len(version)
   if string.sub(version, version_Zeichenlaenge - 3, version_Zeichenlaenge) == "BETA" or Sicherung.debug then
     y = f.schreiben(y, "B " .. sprachen.UpdateBeta)
     Taste.links[y] = Taste.b
@@ -691,7 +695,8 @@ function f.Infoseite()
   y = f.schreiben(y, sprachen.RedstoneGelb, Farben.gelbeFarbe)
   y = f.schreiben(y, sprachen.RedstoneSchwarz, Farben.schwarzeFarbe, Farben.weisseFarbe)
   y = f.schreiben(y, sprachen.RedstoneGruen, Farben.grueneFarbe)
-  y = f.schreiben(y, " ", Farben.Adressfarbe, Farben.Adresstextfarbe)
+  y = f.schreiben(y, sprachen.RedstoneOrange, Farben.orangeFarbe, Farben.schwarzeFarbe)
+  y = f.schreiben(y, " ", Farben.Adressfarbe, Farben.Adresstextfarbe, Farben.weisseFarbe)
   y = f.schreiben(y, sprachen.versionName .. version)
   y = f.schreiben(y, " ")
   y = f.schreiben(y, string.format("nexDHD: %s Nex4rius", sprachen.entwicklerName))
@@ -847,7 +852,7 @@ function f.Iriskontrolle()
     end
     iriscontrol = "off"
     IDCyes = true
-  elseif direction == "Incoming" and send == true then
+  elseif direction == "Incoming" and send == true and state == "Connected" then
     if f.atmosphere(true) then
       sg.sendMessage("Iris Control: " .. Sicherung.control .. " Iris: " .. iris .. f.atmosphere(true), f.sendeAdressliste())
     else
@@ -919,6 +924,7 @@ function f.Iriskontrolle()
     send = false
   end
   if codeaccepted == "-" or codeaccepted == nil then
+    -- leer
   elseif messageshow == true then
     f.zeigeNachricht(sprachen.nachrichtAngekommen .. f.zeichenErsetzen(codeaccepted) .. "                   ")
     if codeaccepted == "Request: Disconnect Stargate" then
@@ -956,7 +962,7 @@ function f.sendeAdressliste()
 end
 
 function f.newAddress(idc, neueAdresse, neuerName, weiter)
-  if AddNewAddress == true and string.len(neueAdresse) >= 7 and sg.anwahlenergie(neueAdresse) then
+  if AddNewAddress == true and unicode.len(neueAdresse) >= 7 and sg.anwahlenergie(neueAdresse) then
     local i = 1
     for k in pairs(adressen) do
       i = k + 1
@@ -1165,10 +1171,10 @@ function f.zeigeSteuerung()
 end
 
 function f.RedstoneAenderung(a, b)
-  if sideNum == nil then
-    f.sides()
-  end
   if OC and r then
+    if sideNum == nil then
+      f.sides()
+    end
     r.setBundledOutput(sideNum, a, b)
   end
 end
@@ -1392,7 +1398,7 @@ function f.schreibFehlerLog(...)
     elseif type(...) == "table" then
       d:write(serialization.serialize(...))
     end
-    d:write("\n" .. computer.uptime() .. string.rep("=", 69 - string.len(computer.uptime())) .. "\n")
+    d:write("\n" .. computer.uptime() .. string.rep("=", 69 - unicode.len(computer.uptime())) .. "\n")
     d:close()
     log = true
   end
@@ -1521,7 +1527,7 @@ function Taste.e()
       local eingabe = term.read(nil, false, nil, "*")
       pcall(screen.setTouchModeInverted, true)
       f.eventlisten("listen")
-      sg.sendMessage_alt(string.sub(eingabe, 1, string.len(eingabe) - 1))
+      sg.sendMessage_alt(string.sub(eingabe, 1, unicode.len(eingabe) - 1))
       event.cancel(timerID)
       f.zeigeNachricht(sprachen.IDCgesendet)
     else
@@ -1547,7 +1553,7 @@ function Taste.a()
         term.clearLine()
         term.write(text .. ": ")
         local eingabe = term.read(nil, false)
-        return string.sub(eingabe, 1, string.len(eingabe) - 1)
+        return string.sub(eingabe, 1, unicode.len(eingabe) - 1)
       end
       local adresse = string.upper(eingeben(sprachen.Eingeben_Adresse))
       if sg.anwahlenergie(adresse) then
@@ -1885,19 +1891,11 @@ function f.openModem()
       modem.setStrength(Sicherung.Reichweite)
     end
     modem.setWakeMessage("nexDHD")
-    modem.open(Sicherung.Port)
-    modem.open(Sicherung.Port + 1)
   end
 end
 
 function o.modem_message(eventname, compadresse_lokal, compadresse_quelle, ...)
   local e = {...}
-
-  if e[1] == Sicherung.Port + 1 then
-    if direction == "Outgoing" then
-      return
-    end
-  end
 
   if e[3] ~= "nexDHD" then
     o.sgMessageReceived(...)
@@ -1966,6 +1964,7 @@ function o.sgDialIn()
     event.timer(25, f.GDO_aufwecken, 1)
   end
   f.Iriskontrolle()
+  modem.open(Sicherung.Port + 1)
 end
 
 function o.sgDialOut()
@@ -1980,6 +1979,7 @@ function o.sgDialOut()
     event.timer(25, f.GDO_aufwecken, 1)
     event.timer(60, f.GDO_aufwecken, 1)
   end
+  modem.open(Sicherung.Port)
 end
 
 function o.sgStargateStateChange(eventname, compadresse, newstate, oldstate)
@@ -2021,13 +2021,15 @@ function o.stargate_idle()
   a.chevrons      = chevrons
   f.zeigeAnzeige()
   chevronAnzeige.zeig(false, "ende")
+  modem.close(Sicherung.Port)
+  modem.close(Sicherung.Port + 1)
 end
 
 function o.stargate_wormhole_stabilized()
   state   = "Connected"
   a.state = state
   f.GDO_aufwecken()
-  chevronAnzeige.zeig(true, "Point of Origin", true)
+  --chevronAnzeige.zeig(true, "Point of Origin", true)
 end
 
 function o.stargate_spin_start(eventname, compadresse, caller, symbolCount, lock, symbolName)
@@ -2067,6 +2069,10 @@ function o.stargate_spin_chevron_engaged(eventname, compadresse, caller, symbolC
 
     sg.engageSymbol(symbol)
   end
+  
+  f.RedstoneAenderung(Farben.orange, 255)
+  os.sleep(0.1)
+  f.RedstoneAenderung(Farben.orange, 0)
 end
 
 function o.stargate_dhd_chevron_engaged(eventname, compadresse, caller, symbolCount, lock, symbolName)
@@ -2180,7 +2186,7 @@ function f.checkStargateName()
     pcall(screen.setTouchModeInverted, false)
     local eingabe = term.read(nil, false)
     pcall(screen.setTouchModeInverted, true)
-    Sicherung.StargateName = string.sub(eingabe, 1, string.len(eingabe) - 1)
+    Sicherung.StargateName = string.sub(eingabe, 1, unicode.len(eingabe) - 1)
     schreibSicherungsdatei(Sicherung)
   end
   AddNewAddress = true
@@ -2189,8 +2195,8 @@ end
 
 function f.checkUpdate(...)
   local AndereVersion = ... or "<FEHLER>"
-  local Endpunkt = string.len(AndereVersion)
-  local EndpunktVersion = string.len(version)
+  local Endpunkt = unicode.len(AndereVersion)
+  local EndpunktVersion = unicode.len(version)
   if string.sub(AndereVersion, Endpunkt - 3, Endpunkt) ~= "BETA" and string.sub(version, EndpunktVersion - 3, EndpunktVersion) ~= "BETA" and version ~= AndereVersion and Sicherung.autoUpdate == true then
     if component.isAvailable("internet") then
       if version ~= f.checkServerVersion("master") then
