@@ -1870,6 +1870,10 @@ function o.sgChevronEngaged(eventname, compadresse, chevron, symbol)
   end
   
   chevronAnzeige.zeig(state == "Opening" or state == "Connected", zielAdresse)
+  
+  f.RedstoneAenderung(Farben.orange, 255)
+  os.sleep(0.1)
+  f.RedstoneAenderung(Farben.orange, 0)
 end
 
 function f.check_IDC(code)
