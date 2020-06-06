@@ -7,6 +7,7 @@
 local gpu, screens, gpu1, screen1 = ...
 local term                        = require("term")
 local event                       = require("event")
+local unicode                     = require("unicode")
 local a                           = {}
 
 a.stargatefarbe                   = 0x3C3C3C
@@ -880,6 +881,22 @@ a.c["BEENDEN"] = {
     "  ▄▀                        ▀▄  ",
     "▄▀                            ▀▄",
 }
+
+for _, zeichen in pairs(a.c) do
+    local max_breite = 0
+    for _, zeile in pairs(zeichen) do
+        local breite = unicode.len(zeile)
+        if breite > max_breite then
+            max_breite = breite
+        end
+    end
+
+    local abstand = math.floor((32 - max_breite) / 2)
+
+    for i, zeile in pairs(zeichen) do
+        zeichen[i] = string.rep(" ", abstand) .. zeile .. string.rep(" ", abstand + 2)
+    end
+end
 
 a[1] = function(aktiv)
     gpu.setBackground(a.aussen)
