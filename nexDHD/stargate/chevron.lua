@@ -843,7 +843,7 @@ a.c["POINT OF ORIGIN"] = {
 }
 a.c["ENDE"] = a.c["POINT OF ORIGIN"]
 
-a.c["GLYPH-1"] = {
+a.c["GLYPH 1"] = {
     "⠀⢺⣷  ",
     "⠀⣾⣏  ",
     "⠀⠈⠋  ",
