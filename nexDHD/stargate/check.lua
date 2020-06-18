@@ -335,13 +335,21 @@ end
 
 function f.is_aunis()
     local sg = component.getPrimary("stargate")
-    print(sg.engageGate, type(sg.engageGate) == "function", sg.getGateStatus, type(sg.getGateStatus) == "function", sg.getGateStatus() ~= "not_merged")
+    print(1, sg.engageGate)
+    print(2, type(sg.engageGate) == "function")
+    print(3, sg.getGateStatus)
+    print(4, type(sg.getGateStatus) == "function")
+    print(5, sg.getGateStatus() ~= "not_merged")
     return sg.engageGate and type(sg.engageGate) == "function" and sg.getGateStatus and type(sg.getGateStatus) == "function" and sg.getGateStatus() ~= "not_merged"
 end
 
 function f.is_sgcraft(sg)
     local sg = component.getPrimary("stargate")
-    print(sg.energyToDial, type(sg.energyToDial) == "function", sg.localAddress, type(sg.localAddress) == "function", sg.energyToDial(sg.localAddress()))
+    print(1, sg.energyToDial)
+    print(2, type(sg.energyToDial) == "function")
+    print(3, sg.localAddress)
+    print(4, type(sg.localAddress) == "function")
+    print(5, sg.energyToDial(sg.localAddress()))
     return sg.energyToDial and type(sg.energyToDial) == "function" and sg.localAddress and type(sg.localAddress) == "function" and sg.energyToDial(sg.localAddress())
 end
 
