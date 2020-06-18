@@ -329,13 +329,10 @@ function f.checkKomponenten()
       print()
       print(sprachen.StargateNichtKomplett or "Stargate ist funktionsunfähig")
       gpu.setForeground(Farben.weisseFarbe)
-      os.sleep(5)
-      return
     end
-  else
-    os.sleep(5)
-    return
   end
+  os.sleep(5)
+  return
 end
 
 function f.update(versionTyp, a)
