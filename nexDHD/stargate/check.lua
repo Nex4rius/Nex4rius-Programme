@@ -332,7 +332,6 @@ function f.checkKomponenten()
     end
   end
   os.sleep(5)
-  return
 end
 
 function f.update(versionTyp, a)
