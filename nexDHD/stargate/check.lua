@@ -321,6 +321,7 @@ function f.checkKomponenten()
   end
   gpu.setForeground(Farben.weisseFarbe)
   if component.isAvailable("stargate") then
+    return true -- bugfix test
     if f.is_aunis() or f.is_sgcraft() then
       return true
     else
