@@ -338,7 +338,7 @@ function f.is_aunis()
     return sg.engageGate and sg.getGateStatus and sg.getGateStatus() ~= "not_merged"
 end
 
-function f.is_sgcraft(sg)
+function f.is_sgcraft()
     local sg = component.getPrimary("stargate")
     return sg.energyToDial and sg.localAddress and sg.energyToDial(sg.localAddress())
 end
