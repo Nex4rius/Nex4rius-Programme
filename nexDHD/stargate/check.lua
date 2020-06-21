@@ -321,21 +321,27 @@ function f.checkKomponenten()
   end
   gpu.setForeground(Farben.weisseFarbe)
   if component.isAvailable("stargate") then
-    local sg = component.getPrimary("stargate")
-    if sg.engageGate or sg.energyToDial(sg.localAddress()) then
+    return true -- bugfix test
+    if f.is_aunis() or f.is_sgcraft() then
       return true
     else
       gpu.setForeground(Farben.roteFarbe)
       print()
       print(sprachen.StargateNichtKomplett or "Stargate ist funktionsunfähig")
       gpu.setForeground(Farben.weisseFarbe)
-      os.sleep(5)
-      return
     end
-  else
-    os.sleep(5)
-    return
   end
+  os.sleep(5)
+end
+
+function f.is_aunis()
+    local sg = component.getPrimary("stargate")
+    return sg.engageGate and sg.getGateStatus and sg.getGateStatus() ~= "not_merged"
+end
+
+function f.is_sgcraft()
+    local sg = component.getPrimary("stargate")
+    return sg.energyToDial and sg.localAddress and sg.energyToDial(sg.localAddress())
 end
 
 function f.update(versionTyp, a)
