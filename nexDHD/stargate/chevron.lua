@@ -882,23 +882,6 @@ a.c["BEENDEN"] = {
     "▄▀                            ▀▄",
 }
 
-for _, zeichen in pairs(a.c) do
-    local max_breite = 0
-    for _, zeile in pairs(zeichen) do
-        local breite = unicode.len(zeile)
-        if breite > max_breite then
-            max_breite = breite
-        end
-    end
-
-    local abstand = math.floor((32 - max_breite) / 2)
-
-
-    for i, zeile in pairs(zeichen) do
-        zeichen[i] = unicode.sub(string.rep(" ", abstand) .. zeile .. string.rep(" ", 32), 0, 32)
-    end
-end
-
 a[1] = function(aktiv)
     gpu.setBackground(a.aussen)
     gpu.set(25, 3, "▄")
@@ -1030,6 +1013,22 @@ function a.chevron(zeichen)
 end
 
 local function init(gpu, screens)
+    for _, zeichen in pairs(a.c) do
+        local max_breite = 0
+        for _, zeile in pairs(zeichen) do
+            local breite = unicode.len(zeile)
+            if breite > max_breite then
+                max_breite = breite
+            end
+        end
+
+        local abstand = math.floor((32 - max_breite) / 2)
+
+        for i, zeile in pairs(zeichen) do
+            zeichen[i] = unicode.sub(string.rep(" ", abstand) .. zeile .. string.rep(" ", 32), 0, 32)
+        end
+    end
+    
     a.innen = a.aussen
     a.screens = {}
     a.screens.chevron = {}
