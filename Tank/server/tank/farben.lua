@@ -42,6 +42,12 @@ rocketfuel                   = {0xFFFFFF,  0x6E6C41,  0xFFFFFF,  0xA19F5F},
 biodiesel                    = {0x000000,  0xFC7600,  0x000000,  0xCA5E00},
 ethanol                      = {0x000000,  0xFFFFFF,  0x000000,  0xCDCDCD},
 plantoil                     = {0x000000,  0xFFFF1C,  0x000000,  0xCDCD17},
+-- Immersive Petroleum
+gasoline                     = {0xFFFFFF,  0x85733F,  0x000000,  0x706035},
+diesel                       = {0xFFFFFF,  0x624C1B,  0x000000,  0x443413},
+lubricant                    = {0xFFFFFF,  0x8D742A,  0x000000,  0x604E1D},
+napalm                       = {0xFFFFFF,  0x84571C,  0x000000,  0x6B4617},
+crudeoil                     = {0xFFFFFF,  0x151515,  0x000000,  0x050505},
 -- Thermal Foundation
 aerotheum                    = {0x000000,  0xaca485,  0x000000,  0xa19e7f},
 crudeoil                     = {0xF0F0F0,  0x1E1E1E,  0xF0F0F0,  0x3C3C3C},
